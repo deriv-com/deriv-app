@@ -9,14 +9,14 @@ type TDataListRow = {
         component: React.ReactNode;
     };
     destination_link?: string;
-    row_gap: number;
+    row_gap?: number;
     row_key: string | number;
     rowRenderer: TRowRenderer;
     measure?: () => void;
-    is_dynamic_height: boolean;
+    is_dynamic_height?: boolean;
     is_new_row: boolean;
     is_scrolling: boolean;
-    passthrough: any;
+    passthrough?: any;
     row: any;
 };
 

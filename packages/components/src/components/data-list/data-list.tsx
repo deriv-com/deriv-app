@@ -22,26 +22,26 @@ const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 type CellType = { Cell: typeof DataListCell };
-export type TRowRenderer = (params: {
-    row: React.ReactNode;
-    is_footer?: boolean;
-    measure?: () => void;
-}) => React.ReactNode;
+export type TRowRenderer = (params: { row: any; is_footer?: boolean; measure?: () => void }) => React.ReactNode;
 type DataListProps = {
     className?: string;
-    data_source: [];
+    data_source: any;
     footer?: React.ReactNode;
-    getRowAction?: (row: never) => string;
-    getRowSize: () => number;
-    keyMapper: (row: React.ReactNode) => string;
-    onRowsRendered: () => void;
-    onScroll: (ev: ScrollParams) => void;
-    passthrough: unknown;
-    row_gap: number;
-    setListRef: (ref: MeasuredCellParent) => void;
+    getRowAction?: (row: React.ReactNode) => string;
+    getRowSize?: (params: any) => number;
+    keyMapper?: (row: any) => string;
+    onRowsRendered?: () => void;
+    onScroll?: (ev: ScrollParams) => void;
+    passthrough?: {
+        root_store: any;
+        WS: Record<string, any>;
+    };
+    row_gap?: number;
+    setListRef?: (ref: MeasuredCellParent) => void;
     rowRenderer: TRowRenderer;
     children?: React.ReactNode;
-    overscanRowCount: number;
+    overscanRowCount?: number;
+    Cell?: CellType;
 };
 type GetContentType = { measure?: () => void | undefined };
 
@@ -60,7 +60,7 @@ const DataList = ({
     row_gap,
     getRowAction,
     passthrough,
-}: DataListProps & CellType) => {
+}: DataListProps) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_scrolling, setIsScrolling] = React.useState(false);
     const [scroll_top, setScrollTop] = React.useState(0);
@@ -74,7 +74,7 @@ const DataList = ({
     const is_dynamic_height = !getRowSize;
 
     const trackItemsForTransition = React.useCallback(() => {
-        data_source.forEach((item, index) => {
+        data_source.forEach((item: string, index: string) => {
             const row_key: string = keyMapper?.(item) || `${index}-0`;
             items_transition_map_ref.current[row_key] = true;
         });
@@ -208,7 +208,7 @@ const DataList = ({
                                         rowHeight={
                                             is_dynamic_height && cache?.current?.rowHeight
                                                 ? cache?.current?.rowHeight
-                                                : getRowSize()
+                                                : getRowSize || 50
                                         }
                                         rowRenderer={rowRenderer}
                                         scrollingResetTimeInterval={0}

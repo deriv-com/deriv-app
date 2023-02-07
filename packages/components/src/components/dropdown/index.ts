@@ -1,4 +1,4 @@
-import Dropdown from './dropdown.jsx';
+import Dropdown from './dropdown';
 import './dropdown.scss';
 import './list.scss';
 

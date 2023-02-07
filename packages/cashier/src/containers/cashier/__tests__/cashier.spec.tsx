@@ -5,8 +5,8 @@ import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
-import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -42,7 +42,7 @@ describe('<Cashier />', () => {
         history = createBrowserHistory();
         return {
             ...render(<Router history={history}>{component}</Router>, {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }),
         };
     };
@@ -83,9 +83,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: false,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: false,
                     },
@@ -118,6 +115,8 @@ describe('<Cashier />', () => {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: true,
+                is_virtual: false,
+                is_crypto: true,
             },
             modules: {
                 cashier: {
@@ -139,9 +138,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                    },
-                    onramp: {
-                        is_onramp_tab_visible: true,
                     },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
@@ -206,9 +202,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: true,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
                     },
@@ -266,9 +259,6 @@ describe('<Cashier />', () => {
     //                 },
     //                 transaction_history: {
     //                     is_crypto_transactions_visible: false,
-    //                 },
-    //                 onramp: {
-    //                     is_onramp_tab_visible: true,
     //                 },
     //                 payment_agent_transfer: {
     //                     is_payment_agent_transfer_visible: true,
@@ -328,9 +318,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: true,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
                     },
@@ -388,9 +375,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: true,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
                     },
@@ -446,9 +430,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                    },
-                    onramp: {
-                        is_onramp_tab_visible: true,
                     },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,

@@ -5,3 +5,4 @@ export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessm
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useDepositLocked } from './useDepositLocked';
+export { default as useOnrampVisible } from './useOnrampVisible';

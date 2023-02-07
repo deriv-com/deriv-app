@@ -15,10 +15,12 @@ const NoBalance = observer(({ history }: RouteComponentProps) => {
                 general_store: { setCashierTabIndex: setTabIndex },
             },
         },
+        traders_hub: { is_account_transfer_modal_open, toggleAccountTransferModal },
     } = useStore();
 
     const onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
+        if (is_account_transfer_modal_open) toggleAccountTransferModal();
         setTabIndex(0);
         history.push(routes.cashier_deposit);
     };

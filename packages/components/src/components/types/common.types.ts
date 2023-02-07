@@ -7,3 +7,8 @@ export type TGenericObjectType = {
 export type TGetCardLables = () => ReturnType<typeof getCardLabels>;
 
 export type TGetContractTypeDisplay = (type: string, is_high_low: boolean) => ReturnType<typeof getContractTypeDisplay>;
+
+export type TItem = {
+    id: string;
+    value: Array<TItem> | string;
+};

@@ -5,13 +5,13 @@ import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deri
 import { useStore, observer } from '@deriv/stores';
 import QRCode from 'qrcode.react';
 import RecentTransaction from '../../../components/recent-transaction';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-deposit.scss';
 
 const CryptoDeposit = observer(() => {
-    const { client, modules } = useStore();
-    const { cashier } = modules;
+    const { client } = useStore();
     const { currency } = client;
-    const { onramp, transaction_history, general_store } = cashier;
+    const { onramp, transaction_history, general_store } = useCashierStore();
     const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;

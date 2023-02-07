@@ -1,3 +1,3 @@
-import IdvRejected from './idv-rejected.jsx';
+import IdvRejected from './idv-rejected';
 
 export default IdvRejected;

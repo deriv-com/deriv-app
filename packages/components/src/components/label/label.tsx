@@ -17,8 +17,8 @@ const available_modes = [
 const available_sizes = ['regular', 'large'] as const;
 
 type TLabel = {
-    mode: (typeof available_modes)[number];
-    size: (typeof available_sizes)[number];
+    mode: typeof available_modes[number];
+    size: typeof available_sizes[number];
     className?: string;
 };
 

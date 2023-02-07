@@ -1,5 +1,5 @@
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
-import { isCryptocurrency, isEmptyObject, getPropertyValue, routes } from '@deriv/shared';
+import { isCryptocurrency, isEmptyObject, getPropertyValue, routes, ContentFlag } from '@deriv/shared';
 import type { P2PAdvertInfo } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
@@ -118,7 +118,10 @@ export default class GeneralStore extends BaseStore {
     }
 
     get is_p2p_enabled(): boolean {
-        return this.is_p2p_visible && !this.root_store.client.is_eu;
+        const { content_flag } = this.root_store.traders_hub;
+        const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
+
+        return this.is_p2p_visible && !is_eu;
     }
 
     /**

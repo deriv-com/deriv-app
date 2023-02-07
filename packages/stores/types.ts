@@ -115,6 +115,7 @@ type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_pre_appstore: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_virtual: boolean;
@@ -227,6 +228,12 @@ type TNotificationStore = {
     setP2POrderProps: () => void;
 };
 
+type TTradersHubStore = {
+    closeModal: () => void;
+    content_flag: any;
+    openModal: (modal_id: string, props?: any) => void;
+};
+
 export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
@@ -234,4 +241,5 @@ export type TRootStore = {
     ui: TUiStore;
     modules: Record<string, any>;
     notifications: TNotificationStore;
+    traders_hub: TTradersHubStore;
 };

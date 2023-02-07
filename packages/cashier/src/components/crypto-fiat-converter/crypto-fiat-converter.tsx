@@ -4,7 +4,7 @@ import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import { TReactChangeEvent, TReactChildren } from 'Types';
+import { TReactChangeEvent, TReactChildren } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './crypto-fiat-converter.scss';
 

@@ -178,6 +178,12 @@ beforeEach(() => {
                 },
             },
         },
+        traders_hub: {
+            selected_account: {
+                account_id: '',
+            },
+            combined_cfd_mt5_accounts: [],
+        },
     };
     account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store as TRootStore);
 });

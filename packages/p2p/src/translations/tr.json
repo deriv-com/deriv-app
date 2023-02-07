@@ -1,7 +1,6 @@
 {
     "6794664": "Deriv P2P bakiyenize ve limitinize uyan ilanlar.",
     "19789721": "Kimse seni engellemedi. Yaşasın!",
-    "21103557": "Deriv P2P bakiyesi = geri çevrilemez mevduatlar (banka transferleri vb.) + para yatırma işlemlerinin geri alınma ihtimali olan bir bölümü (kredi kartı ödemeleri vb.)",
     "24711354": "Toplam emirler <0>30g</0> | <1>lifetime</1>",
     "47573834": "Sabit oran (1 {{account_currency}})",
     "50672601": "Satın alındı",
@@ -313,6 +312,8 @@
     "-179005984": "Kaydet",
     "-2059312414": "İlan ayrıntıları",
     "-1769584466": "İstatistikler",
+    "-808161760": "Deriv P2P balance = deposits that can’t be reversed",
+    "-684271315": "OK",
     "-2090878601": "Günlük sınır",
     "-130547447": "Ticaret hacmi <0>30g</0> | <1>lifetime</1>",
     "-1792280476": "Ödeme yönteminizi seçin",

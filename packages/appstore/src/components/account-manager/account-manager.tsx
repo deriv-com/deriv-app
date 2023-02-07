@@ -3,7 +3,7 @@ import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS, getStaticUrl, isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TPlatform, TRootStore } from 'Types';
-import WalletIcon from 'Assets/svgs/wallet';
+import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { useStores } from 'Stores/index';
 
 type TAccountManager = {
@@ -45,9 +45,9 @@ const AccountManager = ({
     const { is_eu } = client;
     const icon_size = isMobile() ? 48 : 64;
     const eu_financial_icon = is_eu ? (
-        <WalletIcon icon='CFDs' size={icon_size} onClick={openStaticPage} />
+        <TradigPlatformIconProps icon='CFDs' size={icon_size} onClick={openStaticPage} />
     ) : (
-        <WalletIcon icon='Financial' size={icon_size} onClick={openStaticPage} />
+        <TradigPlatformIconProps icon='Financial' size={icon_size} onClick={openStaticPage} />
     );
 
     return (
@@ -57,13 +57,13 @@ const AccountManager = ({
                     (type === 'financial' ? (
                         eu_financial_icon
                     ) : (
-                        <WalletIcon icon='Derived' size={icon_size} onClick={openStaticPage} />
+                        <TradigPlatformIconProps icon='Derived' size={icon_size} onClick={openStaticPage} />
                     ))}
                 {platform === CFD_PLATFORMS.DXTRADE && (
-                    <WalletIcon icon='DerivX' size={icon_size} onClick={openStaticPage} />
+                    <TradigPlatformIconProps icon='DerivX' size={icon_size} onClick={openStaticPage} />
                 )}
                 {!platform && type === 'Options' && (
-                    <WalletIcon icon='Options' size={icon_size} onClick={openStaticPage} />
+                    <TradigPlatformIconProps icon='Options' size={icon_size} onClick={openStaticPage} />
                 )}
             </div>
             <div className='account-manager__details'>

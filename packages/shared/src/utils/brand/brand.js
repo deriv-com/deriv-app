@@ -19,3 +19,8 @@ export const getPlatformSettings = platform_key => {
 export const getPlatformSettingsAppstore = platform_key => {
     return config_data.platforms_appstore[platform_key];
 };
+
+export const getAppstorePlatforms = () => {
+    const platform_data = config_data.platforms_appstore;
+    return Object.keys(platform_data).map(key => platform_data[key]);
+};

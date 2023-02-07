@@ -5,7 +5,7 @@ import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const LeavePageModal = () => {
+const LeavePageModal = ({ onLeavePage }) => {
     const { buy_sell_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 
@@ -42,6 +42,7 @@ const LeavePageModal = () => {
                     large
                     onClick={() => {
                         buy_sell_store.setShowFilterPaymentMethods(false);
+                        onLeavePage();
                         hideModal({
                             should_restore_local_state: false,
                         });

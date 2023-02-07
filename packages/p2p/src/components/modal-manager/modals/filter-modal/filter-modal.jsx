@@ -1,12 +1,26 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Checkbox, Icon, Loading, Modal, Text, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
+import {
+    Button,
+    Checkbox,
+    DesktopWrapper,
+    Icon,
+    Loading,
+    MobileFullPageModal,
+    MobileWrapper,
+    Modal,
+    Text,
+    ThemedScrollbars,
+    ToggleSwitch,
+} from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import FilterModalHeader from './filter-modal-header.jsx';
 import FilterModalSearch from './filter-modal-search.jsx';
 import FilterModalNoResults from './filter-modal-no-results.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
 
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
@@ -99,125 +113,306 @@ const FilterModal = () => {
         });
     });
 
+    const pageHeaderReturnFn = () => {
+        if (has_selected_payment_methods) {
+            showModal({
+                key: 'LeavePageModal',
+                props: {
+                    onLeavePage: () => {
+                        if (isMobile()) {
+                            setSelectedMethods(
+                                selected_methods.filter(selected_method =>
+                                    buy_sell_store.selected_payment_method_value.includes(selected_method)
+                                )
+                            );
+                            setSelectedMethodsText(
+                                selected_methods_text.filter(selected_method_text =>
+                                    buy_sell_store.selected_payment_method_text.includes(selected_method_text)
+                                )
+                            );
+                        }
+                    },
+                },
+            });
+        } else {
+            buy_sell_store.setShowFilterPaymentMethods(false);
+            my_profile_store.setSearchTerm('');
+            my_profile_store.setSearchResults([]);
+        }
+    };
+
     return (
-        <Modal
-            className={'payment-methods'}
-            has_close_icon
-            height={'56rem'}
-            title={
-                <FilterModalHeader
-                    has_selected_payment_methods={
-                        has_already_selected_payment_methods || has_recently_selected_payment_methods
+        <React.Fragment>
+            <DesktopWrapper>
+                <Modal
+                    className={'payment-methods'}
+                    has_close_icon
+                    height={'56rem'}
+                    title={
+                        <FilterModalHeader
+                            has_selected_payment_methods={
+                                has_already_selected_payment_methods || has_recently_selected_payment_methods
+                            }
+                        />
                     }
-                />
-            }
-            is_open={is_modal_open}
-            toggleModal={onClickOutside}
-            width='44rem'
-        >
-            <Modal.Body>
-                {buy_sell_store.show_filter_payment_methods ? (
-                    <React.Fragment>
-                        <FilterModalSearch />
-                        <div className='filter-modal__checkbox-container'>
-                            <ThemedScrollbars is_scrollbar_hidden>
-                                <FilterModalResult />
-                            </ThemedScrollbars>
-                        </div>
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
-                        <div
-                            className='filter-modal__row filter-modal__select'
-                            onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}
-                        >
-                            <div className='filter-modal__column'>
-                                <Text color='prominent' size='xs'>
-                                    <Localize i18n_default_text='Payment methods' />
-                                </Text>
-                                {selected_methods_text.length === my_profile_store.payment_methods_list_items.length ? (
-                                    <Text color='less-prominent' size='xs'>
-                                        <Localize i18n_default_text='All' />
+                    is_open={is_modal_open}
+                    toggleModal={onClickOutside}
+                    width='44rem'
+                >
+                    <Modal.Body>
+                        {buy_sell_store.show_filter_payment_methods ? (
+                            <React.Fragment>
+                                <FilterModalSearch />
+                                <div className='filter-modal__checkbox-container'>
+                                    <ThemedScrollbars is_scrollbar_hidden>
+                                        <FilterModalResult />
+                                    </ThemedScrollbars>
+                                </div>
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                <div
+                                    className='filter-modal__row filter-modal__select'
+                                    onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}
+                                >
+                                    <Text color='prominent' size='xs'>
+                                        <Localize i18n_default_text='Payment methods' />
                                     </Text>
+                                    {selected_methods_text.length ===
+                                    my_profile_store.payment_methods_list_items.length ? (
+                                        <Text color='less-prominent' size='xs'>
+                                            <Localize i18n_default_text='All' />
+                                        </Text>
+                                    ) : (
+                                        <Text
+                                            className='filter-modal__selected-payment-methods'
+                                            color='less-prominent'
+                                            size='xs'
+                                        >
+                                            {selected_methods_text.join(', ')}
+                                        </Text>
+                                    )}
+                                    <Icon className='filter-modal__arrow' icon='IcChevronRight' size={18} />
+                                </div>
+                                <div className='filter-modal__row'>
+                                    <div className='filter-modal__column'>
+                                        <Text color='prominent' size='xs'>
+                                            <Localize i18n_default_text='Matching ads' />
+                                        </Text>
+                                        <Text color='less-prominent' size='xs'>
+                                            <Localize i18n_default_text='Ads that match your Deriv P2P balance and limit.' />
+                                        </Text>
+                                    </div>
+                                    <ToggleSwitch
+                                        id='toggle-filter-modal'
+                                        classNameButton='filter-modal__toggle-button'
+                                        classNameLabel='filter-modal__toggle-label'
+                                        handleToggle={() =>
+                                            buy_sell_store.setShouldUseClientLimits(
+                                                !buy_sell_store.should_use_client_limits
+                                            )
+                                        }
+                                        is_enabled={buy_sell_store.should_use_client_limits}
+                                    />
+                                </div>
+                            </React.Fragment>
+                        )}
+                    </Modal.Body>
+                    <Modal.Footer has_separator>
+                        {buy_sell_store.show_filter_payment_methods ? (
+                            <Button.Group>
+                                <Button disabled={!has_selected_payment_methods} large secondary onClick={onClickClear}>
+                                    <Localize i18n_default_text='Clear' />
+                                </Button>
+                                <Button
+                                    disabled={!has_selected_payment_methods}
+                                    large
+                                    primary
+                                    onClick={() => {
+                                        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+                                        buy_sell_store.setShowFilterPaymentMethods(false);
+                                    }}
+                                >
+                                    {localize('Apply')}
+                                </Button>
+                            </Button.Group>
+                        ) : (
+                            <Button.Group>
+                                <Button
+                                    large
+                                    secondary
+                                    onClick={() => {
+                                        buy_sell_store.onClickReset();
+                                        onClickClear();
+                                    }}
+                                >
+                                    {localize('Reset')}
+                                </Button>
+                                <Button
+                                    large
+                                    primary
+                                    onClick={() => {
+                                        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+                                        hideModal();
+                                    }}
+                                >
+                                    {localize('Apply')}
+                                </Button>
+                            </Button.Group>
+                        )}
+                    </Modal.Footer>
+                </Modal>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <MobileFullPageModal
+                    body_className='filter-modal__body'
+                    is_modal_open={is_modal_open}
+                    height_offset='80px'
+                    is_flex
+                    page_header_className={classNames({
+                        'filter-modal__header': !buy_sell_store.show_filter_payment_methods,
+                    })}
+                    page_header_text={
+                        buy_sell_store.show_filter_payment_methods ? localize('Payment methods') : localize('Filter')
+                    }
+                    pageHeaderReturnFn={buy_sell_store.show_filter_payment_methods ? pageHeaderReturnFn : null}
+                    renderPageFooterChildren={() => {
+                        return (
+                            <React.Fragment>
+                                {buy_sell_store.show_filter_payment_methods ? (
+                                    <Button.Group>
+                                        <Button
+                                            disabled={!has_selected_payment_methods}
+                                            large
+                                            secondary
+                                            onClick={onClickClear}
+                                        >
+                                            <Localize i18n_default_text='Clear' />
+                                        </Button>
+                                        <Button
+                                            disabled={!has_selected_payment_methods}
+                                            large
+                                            primary
+                                            onClick={() => {
+                                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+                                                buy_sell_store.setShowFilterPaymentMethods(false);
+                                            }}
+                                        >
+                                            {localize('Apply')}
+                                        </Button>
+                                    </Button.Group>
                                 ) : (
-                                    <Text
-                                        className='filter-modal__selected-payment-methods'
-                                        color='less-prominent'
-                                        size='xs'
-                                    >
-                                        {selected_methods_text.join(', ')}
-                                    </Text>
+                                    <Button.Group>
+                                        <Button
+                                            large
+                                            secondary
+                                            onClick={() => {
+                                                buy_sell_store.onClickReset();
+                                                onClickClear();
+                                            }}
+                                        >
+                                            {localize('Reset')}
+                                        </Button>
+                                        <Button
+                                            large
+                                            primary
+                                            onClick={() => {
+                                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+                                                hideModal();
+                                            }}
+                                        >
+                                            {localize('Apply')}
+                                        </Button>
+                                    </Button.Group>
                                 )}
+                            </React.Fragment>
+                        );
+                    }}
+                >
+                    {buy_sell_store.show_filter_payment_methods ? (
+                        <React.Fragment>
+                            <FilterModalSearch />
+                            <div className='filter-modal__checkbox-container'>
+                                <ThemedScrollbars is_scrollbar_hidden>
+                                    <FilterModalResult />
+                                </ThemedScrollbars>
                             </div>
-                            <Icon className='filter-modal__arrow' icon='IcChevronRight' size={18} />
-                        </div>
-                        <div className='filter-modal__row'>
-                            <div className='filter-modal__column'>
-                                <Text color='prominent' size='xs'>
-                                    <Localize i18n_default_text='Matching ads' />
-                                </Text>
-                                <Text color='less-prominent' size='xs'>
-                                    <Localize i18n_default_text='Ads that match your Deriv P2P balance and limit.' />
-                                </Text>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <div
+                                className='filter-modal__row filter-modal__select'
+                                onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}
+                            >
+                                <div className='filter-modal__column'>
+                                    <Text color='prominent' size='xs'>
+                                        <Localize i18n_default_text='Payment methods' />
+                                    </Text>
+                                    {selected_methods_text.length ===
+                                    my_profile_store.payment_methods_list_items.length ? (
+                                        <Text color='less-prominent' size='xs'>
+                                            <Localize i18n_default_text='All' />
+                                        </Text>
+                                    ) : (
+                                        <Text
+                                            className='filter-modal__selected-payment-methods'
+                                            color='less-prominent'
+                                            size='xs'
+                                        >
+                                            {selected_methods_text.join(', ')}
+                                        </Text>
+                                    )}
+                                </div>
+                                <Icon className='filter-modal__arrow' icon='IcChevronRight' size={18} />
                             </div>
-                            <ToggleSwitch
-                                id='toggle-filter-modal'
-                                classNameButton='filter-modal__toggle-button'
-                                classNameLabel='filter-modal__toggle-label'
-                                handleToggle={() =>
-                                    buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)
-                                }
-                                is_enabled={buy_sell_store.should_use_client_limits}
-                            />
-                        </div>
-                    </React.Fragment>
-                )}
-            </Modal.Body>
-            <Modal.Footer has_separator>
-                {buy_sell_store.show_filter_payment_methods ? (
-                    <Button.Group>
-                        <Button disabled={!has_selected_payment_methods} large secondary onClick={onClickClear}>
-                            <Localize i18n_default_text='Clear' />
-                        </Button>
-                        <Button
-                            disabled={!has_selected_payment_methods}
-                            large
-                            primary
-                            onClick={() => {
-                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
-                                buy_sell_store.setShowFilterPaymentMethods(false);
-                            }}
-                        >
-                            {localize('Apply')}
-                        </Button>
-                    </Button.Group>
-                ) : (
-                    <Button.Group>
-                        <Button
-                            large
-                            secondary
-                            onClick={() => {
-                                buy_sell_store.onClickReset();
-                                onClickClear();
-                            }}
-                        >
-                            {localize('Reset')}
-                        </Button>
-                        <Button
-                            large
-                            primary
-                            onClick={() => {
-                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
-                                hideModal();
-                            }}
-                        >
-                            {localize('Apply')}
-                        </Button>
-                    </Button.Group>
-                )}
-            </Modal.Footer>
-        </Modal>
+                            <div className='filter-modal__row'>
+                                <div className='filter-modal__column'>
+                                    <Text color='prominent' size='xs'>
+                                        <Localize i18n_default_text='Matching ads' />
+                                    </Text>
+                                    <Text color='less-prominent' size='xs'>
+                                        <Localize i18n_default_text='Ads that match your Deriv P2P balance and limit.' />
+                                    </Text>
+                                </div>
+                                <ToggleSwitch
+                                    id='toggle-filter-modal'
+                                    classNameButton='filter-modal__toggle-button'
+                                    classNameLabel='filter-modal__toggle-label'
+                                    handleToggle={() =>
+                                        buy_sell_store.setShouldUseClientLimits(
+                                            !buy_sell_store.should_use_client_limits
+                                        )
+                                    }
+                                    is_enabled={buy_sell_store.should_use_client_limits}
+                                />
+                            </div>
+                        </React.Fragment>
+                    )}
+                </MobileFullPageModal>
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 
 export default observer(FilterModal);
+
+// if (buy_sell_store.show_filter_payment_methods) {
+//     return (
+//         <PageReturn
+//             onClick={() => {
+//                 if (has_selected_payment_methods) {
+//                     showModal({
+//                         key: 'LeavePageModal',
+//                     });
+//                 } else {
+//                     buy_sell_store.setShowFilterPaymentMethods(false);
+//                     my_profile_store.setSearchTerm('');
+//                     my_profile_store.setSearchResults([]);
+//                 }
+//             }}
+//             page_title={localize('Payment methods')}
+//         />
+//     );
+// }
+
+// return <Localize i18n_default_text='Filter' />;

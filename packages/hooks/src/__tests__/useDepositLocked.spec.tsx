@@ -3,6 +3,9 @@ import { StoreProvider } from '@deriv/stores';
 import type { TStores } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useDepositLocked from '../useDepositLocked';
+import useNeedAuthentication from '../useNeedAuthentication';
+
+jest.mock('../useNeedAuthentication', () => jest.fn(() => false));
 
 describe('useDepositLocked', () => {
     test('should be false if none of the conditions are met', () => {
@@ -121,7 +124,7 @@ describe('useDepositLocked', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_deposit_lock: false,
-                is_authentication_needed: true,
+                is_authentication_needed: useNeedAuthentication.mockImplementation(() => true),
                 is_tnc_needed: false,
                 is_eu: true,
                 is_financial_account: false,

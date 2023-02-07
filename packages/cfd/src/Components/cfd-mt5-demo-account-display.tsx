@@ -44,6 +44,7 @@ type TCFDDemoAccountDisplayProps = {
     residence: string;
     landing_companies?: LandingCompany;
     toggleMT5TradeModal: () => void;
+    show_eu_related_content: boolean;
 };
 
 const CFDMT5DemoAccountDisplay = ({
@@ -64,6 +65,7 @@ const CFDMT5DemoAccountDisplay = ({
     openPasswordManager,
     residence,
     toggleMT5TradeModal,
+    show_eu_related_content,
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -148,7 +150,7 @@ const CFDMT5DemoAccountDisplay = ({
 
                     {isFinancialCardVisible() && (
                         <CFDAccountCard
-                            title={is_eu_user ? localize('CFDs') : localize('Financial')}
+                            title={show_eu_related_content ? localize('CFDs') : localize('Financial')}
                             is_disabled={has_cfd_account_error}
                             is_logged_in={is_logged_in}
                             is_eu={is_eu_user}
@@ -168,7 +170,10 @@ const CFDMT5DemoAccountDisplay = ({
                                 })
                             }
                             platform={platform}
-                            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
+                            descriptor={general_messages.getFinancialAccountDescriptor(
+                                platform,
+                                show_eu_related_content
+                            )}
                             specs={financial_specs}
                             has_banner
                             toggleMT5TradeModal={toggleMT5TradeModal}

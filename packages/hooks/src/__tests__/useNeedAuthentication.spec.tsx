@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StoreProvider } from '@deriv/stores';
 import type { TStores } from '@deriv/stores';
+import { ContentFlag } from '@deriv/shared';
 import { renderHook } from '@testing-library/react-hooks';
 import useNeedAuthentication from '../useNeedAuthentication';
 
@@ -9,7 +10,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: false,
-                is_eu: false,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.CR_DEMO,
             },
         };
 
@@ -25,7 +28,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: false,
-                is_eu: true,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.LOW_RISK_CR_EU,
             },
         };
 
@@ -41,7 +46,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: true,
-                is_eu: false,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.CR_DEMO,
             },
         };
 
@@ -57,7 +64,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: true,
-                is_eu: true,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.LOW_RISK_CR_EU,
             },
         };
 

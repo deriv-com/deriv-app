@@ -11,7 +11,7 @@ type TDescriptionsItem = {
 
 export type TArticle = {
     title: string;
-    descriptions: Array<TDescriptionsItem | React.ReactElement>;
+    descriptions: Array<TDescriptionsItem & React.ReactElement>;
     onClickLearnMore?: () => void;
     className?: string;
 };

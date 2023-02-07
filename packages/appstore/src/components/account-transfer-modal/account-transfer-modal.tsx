@@ -31,6 +31,13 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        return () => {
+            if (is_modal_open) toggleModal();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_modal_open]);
+
     const modal_title = !is_transfer_confirm && <Localize i18n_default_text={'Transfer funds to your accounts'} />;
 
     const onClickDeposit = () => {

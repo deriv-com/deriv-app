@@ -201,18 +201,21 @@ const CFDAccountCardComponent = ({
     updateAccountStatus,
     real_account_creation_unlock_date,
     setShouldShowCooldownModal,
+    setAppstorePlatform,
+    show_eu_related_content,
 }: TCFDAccountCard) => {
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
 
     const should_show_extra_add_account_button =
         is_logged_in &&
-        !is_eu &&
+        !show_eu_related_content &&
         platform === CFD_PLATFORMS.MT5 &&
         (type.category === 'demo'
             ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
             : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
 
-    const platform_icon = is_eu && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
+    const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
+
     const icon: React.ReactNode | null = type.type ? (
         <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
     ) : null;
@@ -469,6 +472,7 @@ const CFDAccountCardComponent = ({
                                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                                 type='button'
                                                 onClick={() => {
+                                                    setAppstorePlatform(platform);
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(acc);
                                                 }}
@@ -517,6 +521,7 @@ const CFDAccountCardComponent = ({
                                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                                 type='button'
                                                 onClick={() => {
+                                                    setAppstorePlatform(platform);
                                                     toggleMT5TradeModal();
                                                     setMT5TradeAccount(existing_data);
                                                 }}
@@ -535,7 +540,7 @@ const CFDAccountCardComponent = ({
                             type.category === 'real' &&
                             existing_accounts_data?.map((acc, index) => (
                                 <div className='cfd-account-card__item' key={index}>
-                                    {existing_data?.display_balance && is_logged_in && !is_eu && (
+                                    {existing_data?.display_balance && is_logged_in && !show_eu_related_content && (
                                         <div className='cfd-account-card__item--banner'>
                                             <Localize
                                                 i18n_default_text={
@@ -565,16 +570,17 @@ const CFDAccountCardComponent = ({
                                                     show_currency
                                                 />
                                             </Text>
-                                            {checkMultipleSvgAcc()?.length > 1 && acc.landing_company_short === 'svg' && (
-                                                <Text
-                                                    className='cfd-account-card__balance--region'
-                                                    color='colored-background'
-                                                    size='xxxs'
-                                                    weight='bold'
-                                                >
-                                                    {getServerName(acc)}
-                                                </Text>
-                                            )}
+                                            {checkMultipleSvgAcc()?.length > 1 &&
+                                                acc.landing_company_short === 'svg' && (
+                                                    <Text
+                                                        className='cfd-account-card__balance--region'
+                                                        color='colored-background'
+                                                        size='xxxs'
+                                                        weight='bold'
+                                                    >
+                                                        {getServerName(acc)}
+                                                    </Text>
+                                                )}
                                         </div>
                                     )}
                                     <div className='cfd-account-card__manage--mt5'>
@@ -611,7 +617,7 @@ const CFDAccountCardComponent = ({
                                                                         acc.landing_company_short &&
                                                                     data.login === acc.login
                                                             );
-
+                                                            setAppstorePlatform(platform);
                                                             toggleMT5TradeModal();
                                                             setMT5TradeAccount(selected_account_data);
                                                         }}
@@ -753,7 +759,7 @@ const CFDAccountCardComponent = ({
     );
 };
 
-const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => ({
+const CFDAccountCard = connect(({ modules: { cfd }, client, ui, common, traders_hub }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
@@ -761,8 +767,10 @@ const CFDAccountCard = connect(({ modules: { cfd }, client, ui }: RootStore) => 
     setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
     setMT5TradeAccount: cfd.setMT5TradeAccount,
+    setAppstorePlatform: common.setAppstorePlatform,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     updateAccountStatus: client.updateAccountStatus,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(CFDAccountCardComponent);
 
 export { CFDAccountCard };

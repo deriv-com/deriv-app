@@ -6,10 +6,10 @@ import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deri
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { useAccountPlatformDetails } from '@deriv/hooks';
-import CryptoFiatConverter from 'Components/crypto-fiat-converter';
-import PercentageSelector from 'Components/percentage-selector';
-import RecentTransaction from 'Components/recent-transaction';
-import { TReactChangeEvent } from 'Types';
+import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
+import PercentageSelector from '../../../components/percentage-selector';
+import RecentTransaction from '../../../components/recent-transaction';
+import { TReactChangeEvent } from '../../../types';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-form.scss';
 

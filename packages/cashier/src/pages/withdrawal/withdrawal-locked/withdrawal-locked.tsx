@@ -5,7 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useCheck10kLimit } from '@deriv/hooks';
-import CashierLocked from 'Components/cashier-locked';
+import CashierLocked from '../../../components/cashier-locked';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TItem = {

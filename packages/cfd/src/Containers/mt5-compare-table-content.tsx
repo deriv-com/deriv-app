@@ -1,232 +1,140 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Table, Div100vhContainer, Button, Text, Popover } from '@deriv/components';
+import { Table, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS } from '@deriv/shared';
+import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
-import { TTradingPlatformAvailableAccount } from '../Components/props.types';
-import { DetailsOfEachMT5Loginid, GetSettings, GetAccountSettingsResponse, GetAccountStatus } from '@deriv/api-types';
+import {
+    TDMT5CompareModalContentProps,
+    TCompareAccountContentProps,
+    TCompareAccountFooterButtonData,
+    TCompareAccountContentValues,
+    TCompareAccountRowProps,
+    TCompareAccountRowItem,
+} from './props.types';
+import {
+    eu_real_content,
+    cr_real_content,
+    cr_real_footer_buttons,
+    eu_real_footer_button,
+    preappstore_cr_demo_content,
+    preappstore_cr_demo_footer_buttons,
+    preppstore_eu_demo_content,
+    eu_demo_footer_button,
+} from '../Constants/cfd_compare_account_content';
+import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 
-type TRowItem = {
-    text: string | Array<string>;
-    tooltip_msg?: string;
+const Row = ({
+    id,
+    attribute,
+    values,
+    pre_appstore_class,
+    available_accounts_count,
+    classname_for_demo_and_eu,
+    is_pre_appstore_setting,
+    content_flag,
+    is_high_risk_for_mt5,
+}: TCompareAccountRowProps) => {
+    const is_leverage_row = id === 'leverage';
+    const is_platform_row = id === 'platform';
+    const is_instruments_row = id === 'instruments';
+
+    const getContentSize = () => {
+        if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
+        return isDesktop() ? 'xxxs' : 'xxxxs';
+    };
+
+    if (is_platform_row && !is_pre_appstore_setting) {
+        return null;
+    }
+    if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR && is_high_risk_for_mt5) {
+        // needed to adjust the design for high risk
+        values.financial_svg = { text: 'MT5' };
+    }
+    return (
+        <Table.Row
+            className={
+                classname_for_demo_and_eu ??
+                classNames(`cfd-accounts-compare-modal__table-row${pre_appstore_class}`, {
+                    [`cfd-accounts-compare-modal__table-row--leverage${pre_appstore_class}`]: is_leverage_row,
+                    [`cfd-accounts-compare-modal__row-with-columns-count-${available_accounts_count + 1}`]:
+                        available_accounts_count < 6,
+                    [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}`]: is_platform_row,
+                    [`cfd-accounts-compare-modal__table-row--instruments${pre_appstore_class}`]: is_instruments_row,
+                })
+            }
+        >
+            <Table.Cell fixed>
+                <Text as='p' weight='bold' color='prominent' size='xxs'>
+                    {attribute}
+                </Text>
+            </Table.Cell>
+
+            {Object.keys(values).map(rowKey => (
+                <Table.Cell
+                    key={rowKey}
+                    className={classNames('cfd-accounts-compare-modal__table-row-item', {
+                        'cfd-accounts-compare-modal__table-row-item--tooltip': (
+                            values[rowKey] as TCompareAccountRowItem
+                        )?.tooltip_msg,
+                    })}
+                >
+                    <>
+                        {Array.isArray(values[rowKey]) ? (
+                            (values[rowKey] as TCompareAccountRowItem[])?.map((item, index) => (
+                                <Text
+                                    key={index}
+                                    as='p'
+                                    color={item?.options?.color ?? 'prominent'}
+                                    weight={item?.options?.weight ?? 'normal'}
+                                    align={item?.options?.align ?? 'center'}
+                                    size={item?.options?.size ?? getContentSize()}
+                                    styles={item?.options?.styles ?? ''}
+                                >
+                                    {item.text}
+                                    {item?.options?.should_show_asterick_at_end && (
+                                        <Text color={'loss-danger'} size={'xxxs'}>
+                                            *
+                                        </Text>
+                                    )}
+                                </Text>
+                            ))
+                        ) : (
+                            <>
+                                <Text
+                                    as='p'
+                                    weight={(values[rowKey] as TCompareAccountRowItem)?.options?.weight ?? 'normal'}
+                                    align={(values[rowKey] as TCompareAccountRowItem)?.options?.align ?? 'center'}
+                                    color={(values[rowKey] as TCompareAccountRowItem)?.options?.color ?? 'prominent'}
+                                    size={(values[rowKey] as TCompareAccountRowItem)?.options?.size ?? getContentSize()}
+                                    styles={(values[rowKey] as TCompareAccountRowItem)?.options?.styles ?? ''}
+                                >
+                                    {(values[rowKey] as TCompareAccountRowItem)?.text}
+                                </Text>
+                                {(values[rowKey] as TCompareAccountRowItem)?.tooltip_msg && (
+                                    <Popover
+                                        alignment='left'
+                                        className='cfd-compare-accounts-tooltip'
+                                        classNameBubble='cfd-compare-accounts-tooltip--msg'
+                                        icon='info'
+                                        disable_message_icon
+                                        is_bubble_hover_enabled
+                                        message={(values[rowKey] as TCompareAccountRowItem)?.tooltip_msg}
+                                        zIndex={9999}
+                                    />
+                                )}
+                            </>
+                        )}
+                    </>
+                </Table.Cell>
+            ))}
+        </Table.Row>
+    );
 };
-
-type TValues = Record<string, TRowItem | undefined>;
-
-type TInstrumentsRowProps = {
-    attr: string;
-    val: TValues;
-};
-
-type TModalContentProps = {
-    id: string;
-    attribute: string;
-    values: TValues;
-};
-
-type TFooterButtonData = { label: string; action: string };
-
-type TOpenAccountTransferMeta = {
-    category: string;
-    type?: string;
-};
-
-type TDMT5CompareModalContentProps = {
-    context: RootStore;
-    account_settings: GetSettings;
-    setAccountSettings: (get_settings_response: GetSettings) => void;
-    account_type: TOpenAccountTransferMeta;
-    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
-    clearCFDError: () => void;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
-    has_real_account: boolean;
-    is_logged_in: boolean;
-    is_demo_tab: boolean;
-    is_real_enabled: boolean;
-    is_virtual: boolean;
-    openDerivRealAccountNeededModal: () => void;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    openSwitchToRealAccountModal: () => void;
-    toggleCompareAccounts: () => void;
-    toggleCFDVerificationModal: () => void;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    show_eu_related: boolean;
-    account_status: GetAccountStatus;
-    upgradeable_landing_companies: unknown[];
-    setAppstorePlatform: (platform: string) => void;
-    should_show_derivx: boolean;
-    should_restrict_bvi_account_creation: boolean;
-    updateMT5Status: () => void;
-    real_account_creation_unlock_date: string;
-    setShouldShowCooldownModal: (value: boolean) => void;
-};
-
-const eucontent: TModalContentProps[] = [
-    {
-        id: 'jurisdiction',
-        attribute: localize('Jurisdiction'),
-        values: {
-            financial_maltainvest: { text: localize('Malta') },
-        },
-    },
-    {
-        id: 'counterparty',
-        attribute: localize('Counterparty company'),
-        values: {
-            financial_maltainvest: { text: localize('Deriv Investments (Europe) Limited') },
-        },
-    },
-    {
-        id: 'regulator',
-        attribute: localize('Regulator'),
-        values: {
-            financial_maltainvest: {
-                text: localize('Malta Financial Services Authority (MFSA) (Licence no. IS/70156)'),
-            },
-        },
-    },
-
-    {
-        id: 'leverage',
-        attribute: localize('Maximum leverage'),
-        values: {
-            financial_maltainvest: { text: localize('Up to 1:30') },
-        },
-    },
-
-    {
-        id: 'instruments',
-        attribute: localize('Trading instruments'),
-        values: {
-            financial_maltainvest: {
-                text: [
-                    localize('Forex'),
-                    localize('Stocks'),
-                    localize('Commodities'),
-                    localize('Stock indices'),
-                    localize('Synthetic indices'),
-                    localize('Cryptocurrencies'),
-                ],
-            },
-        },
-    },
-];
-const content: TModalContentProps[] = [
-    {
-        id: 'jurisdiction',
-        attribute: localize('Jurisdiction'),
-        values: {
-            synthetic_svg: { text: localize('St. Vincent & Grenadines') },
-            synthetic_bvi: { text: localize('British Virgin Islands') },
-            financial_svg: { text: localize('St. Vincent & Grenadines') },
-            financial_bvi: { text: localize('British Virgin Islands') },
-            financial_vanuatu: { text: localize('Vanuatu') },
-            financial_labuan: {
-                text: localize('Labuan'),
-                tooltip_msg: localize(
-                    'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
-                ),
-            },
-            derivx: { text: localize('St. Vincent & Grenadines') },
-        },
-    },
-    {
-        id: 'counterparty',
-        attribute: localize('Counterparty company'),
-        values: {
-            synthetic_svg: { text: localize('Deriv (SVG) LLC') },
-            synthetic_bvi: { text: localize('Deriv (BVI) Ltd') },
-            financial_svg: { text: localize('Deriv (SVG) LLC') },
-            financial_bvi: { text: localize('Deriv (BVI) Ltd') },
-            financial_vanuatu: { text: localize('Deriv (V) Ltd') },
-            financial_labuan: { text: localize('Deriv (FX) Ltd') },
-            derivx: { text: localize('Deriv (SVG) LLC') },
-        },
-    },
-    {
-        id: 'regulator',
-        attribute: localize('Regulator'),
-        values: {
-            synthetic_svg: { text: localize('-') },
-            synthetic_bvi: {
-                text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
-            },
-            financial_svg: { text: localize('-') },
-            financial_bvi: {
-                text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
-            },
-            financial_vanuatu: {
-                text: localize('Vanuatu Financial Services Commission'),
-            },
-            financial_labuan: { text: localize('Labuan Financial Services Authority (Licence no. MB/18/0024)') },
-            derivx: { text: '-' },
-        },
-    },
-
-    {
-        id: 'leverage',
-        attribute: localize('Maximum leverage'),
-        values: {
-            synthetic_svg: { text: localize('Up to 1:1000') },
-            synthetic_bvi: { text: localize('Up to 1:1000') },
-            financial_vanuatu: { text: localize('Up to 1:1000') },
-            financial_labuan: { text: localize('Up to 1:100') },
-            derivx: { text: localize('Up to 1:1000') },
-        },
-    },
-
-    {
-        id: 'instruments',
-        attribute: localize('Trading instruments'),
-        values: {
-            synthetic_svg: { text: [localize('Synthetics'), localize('Basket indices')] },
-            financial_svg: {
-                text: [
-                    localize('Forex: standard/micro'),
-                    localize('Stocks'),
-                    localize('Stock indices'),
-                    localize('Commodities'),
-                    localize('Cryptocurrencies'),
-                ],
-            },
-            financial_vanuatu: {
-                text: [
-                    localize('Forex'),
-                    localize('Stock indices'),
-                    localize('Commodities'),
-                    localize('Cryptocurrencies'),
-                ],
-            },
-            financial_labuan: { text: [localize('Forex'), localize('Cryptocurrencies')] },
-            derivx: {
-                text: [
-                    localize('Synthetics'),
-                    localize('Forex: standard/micro'),
-                    localize('Stocks'),
-                    localize('Commodities'),
-                    localize('Basket indices'),
-                    localize('Cryptocurrencies'),
-                ],
-            },
-        },
-    },
-];
-
-const footer_buttons: TFooterButtonData[] = [
-    { label: localize('Add'), action: 'synthetic_svg' },
-    { label: localize('Add'), action: 'synthetic_bvi' },
-    { label: localize('Add'), action: 'financial_svg' },
-    { label: localize('Add'), action: 'financial_bvi' },
-    { label: localize('Add'), action: 'financial_vanuatu' },
-    { label: localize('Add'), action: 'financial_labuan' },
-    { label: localize('Add'), action: 'derivx' },
-];
-const eu_footer_button: TFooterButtonData[] = [{ label: localize('Add'), action: 'financial_maltainvest' }];
 
 const DMT5CompareModalContent = ({
+    content_flag,
     account_settings,
     account_status,
     clearCFDError,
@@ -234,47 +142,54 @@ const DMT5CompareModalContent = ({
     has_real_account,
     is_demo_tab,
     is_logged_in,
+    is_pre_appstore_setting,
+    is_preappstore_cr_demo_account,
     is_real_enabled,
     is_virtual,
     openDerivRealAccountNeededModal,
     openPasswordModal,
     openSwitchToRealAccountModal,
+    real_account_creation_unlock_date,
     setAccountSettings,
     setAccountType,
+    setAppstorePlatform,
     setJurisdictionSelectedShortcode,
+    setShouldShowCooldownModal,
     should_restrict_bvi_account_creation,
-    show_eu_related,
+    should_show_derivx,
+    show_eu_related_content,
     toggleCFDVerificationModal,
     toggleCompareAccounts,
     trading_platform_available_accounts,
-    updateMT5Status,
     upgradeable_landing_companies,
-    setAppstorePlatform,
-    should_show_derivx,
-    real_account_creation_unlock_date,
-    setShouldShowCooldownModal,
+    updateMT5Status,
+    no_CR_account,
+    is_eu_user,
+    no_MF_account,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
     const mt5_platforms = trading_platform_available_accounts.map(
         account => `${account.market_type === 'gaming' ? 'synthetic' : account.market_type}_${account.shortcode}`
     );
+
     const has_synthetic = trading_platform_available_accounts.some(account => account.market_type === 'gaming');
     const available_accounts_keys = [...mt5_platforms, ...(should_show_derivx && has_synthetic ? ['derivx'] : [])];
 
-    const logged_out_available_accounts_count = show_eu_related ? 1 : 6;
+    const logged_out_available_accounts_count = show_eu_related_content ? 1 : 6;
     const available_accounts_count = is_logged_in
         ? available_accounts_keys.length
         : logged_out_available_accounts_count;
     const synthetic_accounts_count =
-        !is_logged_in && !show_eu_related
+        !is_logged_in && !show_eu_related_content
             ? 2
             : available_accounts_keys.filter(key => key.startsWith('synthetic')).length;
     const financial_accounts_count =
-        !is_logged_in && !show_eu_related
+        !is_logged_in && !show_eu_related_content
             ? 4
             : available_accounts_keys.filter(key => key.startsWith('financial')).length || 1;
 
+    const is_high_risk_for_mt5 = synthetic_accounts_count === 1 && financial_accounts_count === 1;
     const {
         poi_or_poa_not_submitted,
         poi_acknowledged_for_vanuatu_maltainvest,
@@ -306,9 +221,9 @@ const DMT5CompareModalContent = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getAvailableAccountsContent = (modal_content: TModalContentProps[]) => {
+    const getAvailableAccountsContent = (modal_content: TCompareAccountContentProps[]) => {
         if (!is_logged_in) {
-            if (show_eu_related) {
+            if (show_eu_related_content) {
                 return modal_content;
             }
             const mt5_data = modal_content.map(item => {
@@ -320,11 +235,11 @@ const DMT5CompareModalContent = ({
         return modal_content.map(row_data => {
             const available_accounts_values = Object.entries(row_data.values).reduce(
                 (acc, [key, value]) => (available_accounts_keys.includes(key) ? { ...acc, [key]: value } : acc),
-                {} as TValues
+                {} as TCompareAccountContentValues
             );
-            const content_data = { ...row_data, values: {} as TValues };
+            const content_data = { ...row_data, values: {} as TCompareAccountContentValues };
             const col_num = should_show_derivx ? 7 : 6;
-            if (available_accounts_keys.length < col_num && !show_eu_related) {
+            if (available_accounts_keys.length < col_num && !show_eu_related_content) {
                 // order of the values matters for data to be correctly displayed in the table
                 const sorted_values = [
                     'synthetic_svg',
@@ -353,16 +268,19 @@ const DMT5CompareModalContent = ({
         });
     };
 
-    const getAvailableAccountsFooterButtons = (footer_button_data: TFooterButtonData[]) => {
+    const getAvailableAccountsFooterButtons = (footer_button_data: TCompareAccountFooterButtonData[]) => {
         return footer_button_data.filter(data => available_accounts_keys.includes(data.action));
     };
 
-    const onSelectRealAccount = (item: TFooterButtonData) => {
-        const account_type = item.action.startsWith('financial') ? 'financial' : 'synthetic';
+    const onSelectRealAccount = (item: TCompareAccountFooterButtonData) => {
+        const selected_account_type = () => {
+            if (item.action === 'derivx') return 'all';
+            return item.action.startsWith('financial') ? 'financial' : 'synthetic';
+        };
 
         const type_of_account = {
             category: is_demo_tab ? 'demo' : 'real',
-            type: account_type,
+            type: selected_account_type(),
         };
         clearCFDError();
         setAccountType(type_of_account);
@@ -416,7 +334,7 @@ const DMT5CompareModalContent = ({
             case 'financial_maltainvest':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('maltainvest');
-                if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
+                if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();
@@ -430,7 +348,7 @@ const DMT5CompareModalContent = ({
         }
     };
 
-    const isMt5AccountAdded = (item: TFooterButtonData) =>
+    const isMt5AccountAdded = (item: TCompareAccountFooterButtonData) =>
         Object.entries(current_list).some(([key, value]) => {
             const [market, type] = item.action.split('_');
             const current_account_type = is_demo_tab ? 'demo' : 'real';
@@ -442,48 +360,61 @@ const DMT5CompareModalContent = ({
             );
         });
 
-    const isDxtradeAccountAdded = (item: TFooterButtonData) =>
+    const isDxtradeAccountAdded = () =>
         Object.entries(current_list).some(([key, value]) => {
             const current_account_type = is_demo_tab ? 'demo' : 'real';
             return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
         });
 
-    const onButtonClick = (item: TFooterButtonData) => {
+    const onButtonClick = (item: TCompareAccountFooterButtonData) => {
+        const if_no_corresponding_real_account = is_pre_appstore_setting
+            ? (no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)
+            : !has_real_account;
+
         const should_show_missing_real_account =
-            is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0 && is_real_enabled;
+            is_logged_in &&
+            if_no_corresponding_real_account &&
+            upgradeable_landing_companies?.length > 0 &&
+            is_real_enabled;
+
         toggleCompareAccounts();
         if (should_show_missing_real_account) {
-            if (real_account_creation_unlock_date) {
+            if (real_account_creation_unlock_date && item.action === 'financial_maltainvest') {
                 setShouldShowCooldownModal(true);
             } else {
                 openDerivRealAccountNeededModal();
             }
-        } else if (is_virtual && !['synthetic_svg', 'financial_svg'].includes(item.action)) {
+        } else if (
+            is_virtual &&
+            !['synthetic_svg', 'financial_svg', 'derivx', 'financial_maltainvest'].includes(item.action)
+        ) {
             openSwitchToRealAccountModal();
-        } else onSelectRealAccount(item);
+        } else {
+            onSelectRealAccount(item);
+        }
     };
 
-    const modal_content = show_eu_related ? eucontent : content;
-    const modal_footer = show_eu_related ? eu_footer_button : footer_buttons;
-    const getContentSize = (id: string) => {
-        if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
-        return isDesktop() ? 'xxxs' : 'xxxxs';
+    const getModalContent = () => {
+        if (is_preappstore_cr_demo_account) {
+            return preappstore_cr_demo_content;
+        } else if (show_eu_related_content) {
+            if (is_pre_appstore_setting && content_flag === ContentFlag.EU_DEMO) {
+                return preppstore_eu_demo_content;
+            }
+            return eu_real_content;
+        }
+        return cr_real_content;
     };
 
-    const isAccountAdded = (item: TFooterButtonData) =>
-        Object.entries(current_list).some(([key, value]) => {
-            const [market, type] = item.action.split('_');
-            return (
-                value.market_type === market &&
-                value.landing_company_short === type &&
-                value.account_type === 'real' &&
-                key.includes(CFD_PLATFORMS.MT5)
-            );
-        });
+    const modal_footer = () => {
+        if (is_preappstore_cr_demo_account) return preappstore_cr_demo_footer_buttons;
+        else if (is_demo_tab && show_eu_related_content) return eu_demo_footer_button;
+        return show_eu_related_content ? eu_real_footer_button : cr_real_footer_buttons;
+    };
 
-    const shouldShowPendingStatus = (item: TFooterButtonData) => {
+    const shouldShowPendingStatus = (item: TCompareAccountFooterButtonData) => {
         const type = item.action.split('_')[1];
-        if (isAccountAdded(item)) {
+        if (isMt5AccountAdded(item)) {
             return false;
         } else if (item.action === 'derivx') {
             return false;
@@ -495,167 +426,100 @@ const DMT5CompareModalContent = ({
 
     const pre_appstore_class = should_show_derivx && synthetic_accounts_count ? '__pre-appstore' : '';
 
-    const InstrumentsRow = ({ attr, val }: TInstrumentsRowProps) => (
-        <Table.Row
-            className={
-                show_eu_related
-                    ? 'cfd-real-compare-accounts-row-eu'
-                    : classNames(`cfd-real-compare-accounts__table-row--instruments${pre_appstore_class}`, {
-                          [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
-                              available_accounts_count < 6,
-                      })
-            }
-        >
-            <Table.Cell fixed>
-                <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
-                    {attr}
-                </Text>
-            </Table.Cell>
-
-            {Object.keys(val).map(rowKey => (
-                <Table.Cell key={rowKey} className='cfd-real-compare-accounts__table-row-item'>
-                    {Array.isArray(val[rowKey]?.text) ? (
-                        (val[rowKey]?.text as []).map((item, index) => (
-                            <Text key={index} as='p' weight=' normal' align='center' color='prominent' size='xxxs'>
-                                {item}
-                            </Text>
-                        ))
-                    ) : (
-                        <Text as='p' weight='normal' align='center' color='prominent' size='xxxs'>
-                            {val[rowKey]?.text}
-                        </Text>
-                    )}
-                </Table.Cell>
-            ))}
-        </Table.Row>
-    );
-
-    const Row = ({ id, attribute, values }: TModalContentProps) => {
-        const is_leverage = id === 'leverage';
-        if (id === 'instruments') {
-            return <InstrumentsRow attr={attribute} val={values} />;
-        }
-        return (
-            <Table.Row
-                className={
-                    show_eu_related
-                        ? 'cfd-real-compare-accounts-row-eu'
-                        : classNames(`cfd-real-compare-accounts__table-row${pre_appstore_class}`, {
-                              [`cfd-real-compare-accounts__table-row--leverage${pre_appstore_class}`]: is_leverage,
-                              [`cfd-real-compare-accounts__row-with-columns-count-${available_accounts_count + 1}`]:
-                                  available_accounts_count < 6,
-                          })
-                }
-            >
-                <Table.Cell fixed>
-                    <Text as='p' weight='bold' align='center' color='prominent' size='xxs'>
-                        {attribute}
-                    </Text>
-                </Table.Cell>
-
-                {Object.keys(values).map(item => (
-                    <Table.Cell
-                        key={item}
-                        className={classNames('cfd-real-compare-accounts__table-row-item', {
-                            'cfd-real-compare-accounts__table-row-item--tooltip': values[item]?.tooltip_msg,
-                        })}
-                    >
-                        <>
-                            <Text
-                                as='p'
-                                weight={id === 'jurisdiction' ? 'bold' : 'normal'}
-                                align='center'
-                                color='prominent'
-                                size={getContentSize(id)}
-                            >
-                                {values[item]?.text}
-                            </Text>
-                            {values[item]?.tooltip_msg && (
-                                <Popover
-                                    alignment='left'
-                                    className='cfd-compare-accounts-tooltip'
-                                    classNameBubble='cfd-compare-accounts-tooltip--msg'
-                                    icon='info'
-                                    disable_message_icon
-                                    is_bubble_hover_enabled
-                                    message={values[item]?.tooltip_msg}
-                                    zIndex={9999}
-                                />
-                            )}
-                        </>
-                    </Table.Cell>
-                ))}
-            </Table.Row>
-        );
+    const getClassNamesForDemoAndEu = () => {
+        if (is_preappstore_cr_demo_account) return 'cfd-accounts-compare-modal-row-demo';
+        else if (show_eu_related_content) return 'cfd-accounts-compare-modal-row-eu';
+        return null;
     };
 
-    return (
-        <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()} className='cfd-real-compare-accounts'>
-            <div className='cfd-real-compare-accounts'>
-                <div className='cfd-real-compare-accounts__table-wrapper'>
-                    <Table className='cfd-real-compare-accounts__table'>
-                        <Table.Header>
-                            <Table.Row
-                                className={
-                                    show_eu_related
-                                        ? 'cfd-real-compare-accounts-row-eu'
-                                        : classNames(`cfd-real-compare-accounts__table-header${pre_appstore_class}`, {
-                                              [`cfd-real-compare-accounts__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}${pre_appstore_class}`]:
-                                                  available_accounts_count < 6,
-                                          })
-                                }
-                            >
-                                <Table.Head fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                                {!show_eu_related && synthetic_accounts_count > 0 && (
-                                    <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                        {localize('Derived')}
-                                    </Table.Head>
-                                )}
-                                {financial_accounts_count > 0 && (
-                                    <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                        {show_eu_related ? localize('CFDs') : localize('Financial')}
-                                    </Table.Head>
-                                )}
-                                {should_show_derivx && synthetic_accounts_count > 0 && (
-                                    <Table.Head className='cfd-real-compare-accounts__table-header-item'>
-                                        {localize('Deriv X')}
-                                    </Table.Head>
-                                )}
-                            </Table.Row>
-                        </Table.Header>
+    const classname_for_demo_and_eu = getClassNamesForDemoAndEu();
 
+    return (
+        <div className='cfd-accounts-compare-modal'>
+            <div className='cfd-accounts-compare-modal__table-wrapper'>
+                <Table className='cfd-accounts-compare-modal__table'>
+                    <Table.Header>
+                        <Table.Row
+                            className={
+                                classname_for_demo_and_eu ??
+                                classNames(`cfd-accounts-compare-modal__table-header${pre_appstore_class}`, {
+                                    [`cfd-accounts-compare-modal__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}${pre_appstore_class}`]:
+                                        available_accounts_count < 6,
+                                })
+                            }
+                        >
+                            <Table.Head fixed className='cfd-accounts-compare-modal__table-empty-cell' />
+                            {!show_eu_related_content && synthetic_accounts_count > 0 && (
+                                <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
+                                    {localize('Derived')}
+                                </Table.Head>
+                            )}
+                            {financial_accounts_count > 0 && (
+                                <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
+                                    {show_eu_related_content ? localize('CFDs') : localize('Financial')}
+                                </Table.Head>
+                            )}
+                            {should_show_derivx && synthetic_accounts_count > 0 && (
+                                <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
+                                    {localize('Deriv X')}
+                                </Table.Head>
+                            )}
+                        </Table.Row>
+                    </Table.Header>
+
+                    <React.Fragment>
                         <Table.Body>
-                            {getAvailableAccountsContent(modal_content).map(row => (
-                                <Row key={row.id} {...row} />
+                            {getAvailableAccountsContent(getModalContent()).map(row => (
+                                <Row
+                                    key={row.id}
+                                    {...row}
+                                    pre_appstore_class={pre_appstore_class}
+                                    available_accounts_count={available_accounts_count}
+                                    classname_for_demo_and_eu={classname_for_demo_and_eu}
+                                    is_pre_appstore_setting={is_pre_appstore_setting}
+                                    content_flag={content_flag}
+                                    is_high_risk_for_mt5={is_high_risk_for_mt5}
+                                />
                             ))}
                         </Table.Body>
                         {is_logged_in && (
                             <Table.Row
                                 className={
-                                    show_eu_related
-                                        ? 'cfd-real-compare-accounts-row-eu columns-2'
-                                        : classNames(`cfd-real-compare-accounts__table-footer${pre_appstore_class}`, {
-                                              [`cfd-real-compare-accounts__row-with-columns-count-${
-                                                  available_accounts_count + 1
-                                              }`]: available_accounts_count < 6,
-                                          })
+                                    classname_for_demo_and_eu ??
+                                    classNames(`cfd-accounts-compare-modal__table-footer${pre_appstore_class}`, {
+                                        [`cfd-accounts-compare-modal__row-with-columns-count-${
+                                            available_accounts_count + 1
+                                        }`]: available_accounts_count < 6,
+                                    })
                                 }
                             >
-                                <Table.Cell fixed className='cfd-real-compare-accounts__table-empty-cell' />
-                                {getAvailableAccountsFooterButtons(modal_footer).map((item, index) => (
-                                    <Table.Cell key={index} className='cfd-real-compare-accounts__table-footer__item'>
-                                        {shouldShowPendingStatus(item) ? (
-                                            <div className='cfd-real-compare-accounts__table-footer__item--verification-pending'>
+                                <Table.Cell
+                                    fixed
+                                    className={
+                                        'cfd-accounts-compare-modal__table-empty-cell cfd-accounts-compare-modal__table-footer__item'
+                                    }
+                                />
+
+                                {getAvailableAccountsFooterButtons(modal_footer()).map((item, index) => (
+                                    <Table.Cell
+                                        key={index}
+                                        className={classNames('cfd-accounts-compare-modal__table-footer__item', {
+                                            [`cfd-accounts-compare-modal__table-footer__item--eu-pre_appstore}`]:
+                                                is_pre_appstore_setting && show_eu_related_content,
+                                        })}
+                                    >
+                                        {!is_demo_tab && shouldShowPendingStatus(item) ? (
+                                            <div className='cfd-accounts-compare-modal__table-footer__item--verification-pending'>
                                                 <Text size={isDesktop ? 'xxs' : 'xxxs'} align='center'>
                                                     {localize('Pending verification')}
                                                 </Text>
                                             </div>
                                         ) : (
                                             <Button
-                                                className='cfd-real-compare-accounts__table-footer__button'
+                                                className='cfd-accounts-compare-modal__table-footer__button'
                                                 disabled={
                                                     item.action === 'derivx'
-                                                        ? isDxtradeAccountAdded(item)
+                                                        ? isDxtradeAccountAdded()
                                                         : isMt5AccountAdded(item)
                                                 }
                                                 type='button'
@@ -669,14 +533,14 @@ const DMT5CompareModalContent = ({
                                 ))}
                             </Table.Row>
                         )}
-                    </Table>
-                </div>
+                    </React.Fragment>
+                </Table>
             </div>
-        </Div100vhContainer>
+        </div>
     );
 };
 
-export default connect(({ modules, client, common, ui }: RootStore) => ({
+export default connect(({ modules, client, common, ui, traders_hub }: RootStore) => ({
     account_settings: client.account_settings,
     account_status: client.account_status,
     account_type: modules.cfd.account_type,
@@ -695,4 +559,7 @@ export default connect(({ modules, client, common, ui }: RootStore) => ({
     updateMT5Status: client.updateMT5Status,
     upgradeable_landing_companies: client.upgradeable_landing_companies,
     setAppstorePlatform: common.setAppstorePlatform,
+    no_CR_account: traders_hub.no_CR_account,
+    is_eu_user: traders_hub.is_eu_user,
+    no_MF_account: traders_hub.no_MF_account,
 }))(DMT5CompareModalContent);

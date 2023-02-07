@@ -74,6 +74,7 @@
     "gh-pages": "^2.1.1",
     "glob": "^7.1.5",
     "lodash.throttle": "^4.1.1",
+    "moment": "^2.29.2",
     "prop-types": "^15.7.2",
     "react-content-loader": "^6.2.0",
     "react-div-100vh": "^0.3.8",

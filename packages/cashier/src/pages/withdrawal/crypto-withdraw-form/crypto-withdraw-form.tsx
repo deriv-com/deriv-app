@@ -5,10 +5,10 @@ import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/compon
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import CryptoFiatConverter from 'Components/crypto-fiat-converter';
-import PercentageSelector from 'Components/percentage-selector';
-import RecentTransaction from 'Components/recent-transaction';
-import { TReactChangeEvent } from 'Types';
+import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
+import PercentageSelector from '../../../components/percentage-selector';
+import RecentTransaction from '../../../components/recent-transaction';
+import { TReactChangeEvent } from '../../../types';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-form.scss';
 

@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv/components';
 import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import './reset-trading-password-modal.scss';
 
 type TResetTradingPassword = {
     setDialogTitleFunc?: (value: boolean) => void;
@@ -198,7 +199,7 @@ type TResetTradingPasswordModal = {
     is_visible: boolean;
 } & TResetTradingPassword;
 
-const ResetTradingPasswordModal = ({
+export const ResetTradingPasswordModal = ({
     disableApp,
     enableApp,
     is_loading,
@@ -258,5 +259,3 @@ ResetTradingPasswordModal.propTypes = {
     verification_code: PropTypes.string,
     platform: PropTypes.string,
 };
-
-export default ResetTradingPasswordModal;

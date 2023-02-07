@@ -4,6 +4,9 @@ import type { TStores } from '@deriv/stores';
 // Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
 import { render, screen } from '@testing-library/react';
 import useDepositLocked from '../useDepositLocked';
+import useNeedAuthentication from '../useNeedAuthentication';
+
+jest.mock('../useNeedAuthentication', () => jest.fn(() => false));
 
 const UseDepositLockedExample = () => {
     const is_deposit_locked = useDepositLocked();
@@ -132,7 +135,7 @@ describe('useDepositLocked', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_deposit_lock: false,
-                is_authentication_needed: true,
+                is_authentication_needed: useNeedAuthentication.mockImplementation(() => true),
                 is_tnc_needed: false,
                 is_eu: true,
                 is_financial_account: false,

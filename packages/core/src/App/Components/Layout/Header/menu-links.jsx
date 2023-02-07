@@ -27,7 +27,7 @@ const MenuItems = ({ item, hide_menu_item }) => {
     );
 };
 
-const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
+const MenuLinks = ({ is_logged_in, is_mobile, items, is_pre_appstore }) => (
     <React.Fragment>
         {!!items.length && (
             <div className='header__menu-links'>
@@ -37,7 +37,11 @@ const MenuLinks = ({ is_logged_in, items, is_pre_appstore }) => (
                             <MenuItems
                                 key={`${item.icon}${item.id}`}
                                 item={item}
-                                hide_menu_item={item.text() === 'Reports' && is_pre_appstore}
+                                hide_menu_item={
+                                    is_pre_appstore &&
+                                    (item?.link_to?.toLowerCase() === '/reports' ||
+                                        (item?.link_to?.toLowerCase() === '/cashier' && is_mobile))
+                                }
                             />
                         )
                     );
@@ -58,6 +62,7 @@ MenuLinks.propTypes = {
             text: PropTypes.func,
         })
     ),
+    is_mobile: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_pre_appstore: PropTypes.bool,
 };

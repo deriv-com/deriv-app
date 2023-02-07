@@ -57,7 +57,7 @@ const AdvertiserPage = () => {
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
                 advertiser_page_store.onTabChange();
-                if (general_store.block_unblock_user_error)
+                if (general_store.block_unblock_user_error) {
                     showModal({
                         key: 'ErrorModal',
                         props: {
@@ -74,6 +74,8 @@ const AdvertiserPage = () => {
                             width: isMobile() ? '90rem' : '40rem',
                         },
                     });
+                    general_store.setBlockUnblockUserError(null);
+                }
             },
             { fireImmediately: true }
         );

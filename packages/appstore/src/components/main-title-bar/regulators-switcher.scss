@@ -1,0 +1,46 @@
+.regulators-switcher {
+    &__container {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 auto;
+        user-select: none;
+    }
+
+    &__container.loader {
+        width: 20rem;
+        cursor: not-allowed;
+    }
+
+    &--text {
+        display: flex;
+        align-items: center;
+    }
+
+    &--icon {
+        padding-left: 0.5rem;
+        cursor: pointer;
+    }
+
+    &__switch {
+        display: inline-flex;
+        padding: 0.4rem;
+        margin-left: 0.8rem;
+        border-radius: 6px;
+        background-color: var(--icon-grey-background);
+
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 9.6rem;
+            height: 3.2rem;
+            border-radius: 6px;
+            text-transform: capitalize;
+            cursor: pointer;
+        }
+
+        .is-selected {
+            background-color: var(--general-main-1);
+        }
+    }
+}

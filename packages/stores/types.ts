@@ -169,6 +169,7 @@ type TClientStore = {
     is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
+    is_crypto: boolean;
 };
 
 type TCommonStoreError = {

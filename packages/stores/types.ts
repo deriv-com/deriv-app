@@ -112,8 +112,6 @@ type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
-    is_account_transfer_modal_open: boolean;
-    toggleAccountTransferModal: () => void;
 };
 
 export type TRootStore = {

@@ -1,7 +1,6 @@
 {
     "6794664": "Annonces qui correspondent à votre solde et à votre limite P2P Deriv.",
     "19789721": "Personne ne t'a bloqué. Ouaii !",
-    "21103557": "Solde P2P dérivé = dépôts qui ne peuvent pas être annulés (virements bancaires, etc.) + une partie des dépôts qui peuvent être annulés (paiements par carte de crédit, etc.)",
     "24711354": "Total des ordres <0>30j</0> | <1>tous</1>",
     "47573834": "Taux fixe (1 {{account_currency}})",
     "50672601": "Acheté",
@@ -313,6 +312,8 @@
     "-179005984": "Sauvegarder",
     "-2059312414": "Détails de l'annonce",
     "-1769584466": "Statistiques",
+    "-808161760": "Deriv P2P balance = deposits that can’t be reversed",
+    "-684271315": "OK",
     "-2090878601": "Limite journalière",
     "-130547447": "Volume des trades <0>30d</0> | <1>tous</1>",
     "-1792280476": "Choisissez votre mode de paiement",

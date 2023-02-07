@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ProgressSlider } from '@deriv/components';
-import { getCurrentTick } from '@deriv/shared';
+import { getCurrentTick, TContractInfo } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { getCardLabels } from '_common/contract';
+import moment from 'moment';
+import { TRootStore } from 'Stores/index';
 
-const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {
+type TProgressSliderStream = {
+    contract_info: Required<TContractInfo>;
+    is_loading: boolean;
+    server_time: moment.Moment;
+};
+
+const ProgressSliderStream = ({ contract_info, is_loading, server_time }: TProgressSliderStream) => {
     if (!contract_info) {
         return <div />;
     }
@@ -24,13 +31,7 @@ const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {
     );
 };
 
-ProgressSliderStream.propTypes = {
-    contract_info: PropTypes.object,
-    is_loading: PropTypes.bool,
-    server_time: PropTypes.object,
-};
-
-export default connect(({ common, portfolio }) => ({
+export default connect(({ common, portfolio }: TRootStore) => ({
     is_loading: portfolio.is_loading,
     server_time: common.server_time,
 }))(ProgressSliderStream);

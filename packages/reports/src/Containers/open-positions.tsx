@@ -20,6 +20,7 @@ import {
     getTotalProfit,
     getContractPath,
     formatPortfolioPosition,
+    TContractInfo,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -34,7 +35,6 @@ import PlaceholderComponent from '../Components/placeholder-component';
 import { getCardLabels } from '_common/contract';
 import { connect } from 'Stores/connect';
 import type { TRootStore } from 'Stores/index';
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 
 type TRangeFloatZeroToOne = React.ComponentProps<typeof ProgressBar>['value'];
 type TFormatPortfolioPosition = ReturnType<typeof formatPortfolioPosition>;

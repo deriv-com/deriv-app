@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, Label, Money, ContractCard, Popover } from '@deriv/components';
 import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import ProgressSliderStream from '../Containers/progress-slider-stream.jsx';
+import ProgressSliderStream from '../Containers/progress-slider-stream';
 
 import { getCardLabels } from '_common/contract';
 import { getProfitOrLoss } from '../Helpers/profit-loss';

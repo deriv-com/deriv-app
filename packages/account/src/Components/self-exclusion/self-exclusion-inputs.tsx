@@ -3,11 +3,36 @@ import classNames from 'classnames';
 import { Button, DatePicker, Icon, Input, Text } from '@deriv/components';
 import { getBrandWebsiteName, epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Field, useFormikContext } from 'formik';
+import {
+    Field,
+    FormikComputedProps,
+    FormikErrors,
+    FormikHandlers,
+    FormikHelpers,
+    FormikState,
+    FormikValues,
+    useFormikContext,
+} from 'formik';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionFooter from './self-exclusion-footer.jsx';
 
-const SectionTitle = ({ title, has_border_line }) => {
+type TSectionTitle = {
+    title: React.ReactElement;
+    has_border_line?: boolean;
+};
+
+type TFormikContext = {
+    errors: FormikErrors<FormikValues>;
+    handleBlur: FormikHandlers['handleBlur'];
+    handleChange: FormikHandlers['handleChange'];
+    setFieldValue?: FormikHelpers<FormikValues>['setFieldValue'];
+    dirty: FormikComputedProps<FormikValues>['dirty'];
+    isSubmitting: FormikState<FormikValues>['isSubmitting'];
+    isValid: FormikComputedProps<FormikValues>['isValid'];
+    values: FormikValues;
+};
+
+const SectionTitle = ({ title, has_border_line }: TSectionTitle) => {
     return (
         <Text
             as='h2'
@@ -24,7 +49,7 @@ const SectionTitle = ({ title, has_border_line }) => {
 
 const StakeLossAndLimitsInputs = () => {
     const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
-    const { errors, handleBlur, handleChange, values } = useFormikContext();
+    const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
     return (
         <React.Fragment>
             <SectionTitle title={<Localize i18n_default_text='Your stake and loss limits' />} />
@@ -36,8 +61,8 @@ const StakeLossAndLimitsInputs = () => {
                     <Text as='p' size='xs' className='da-self-exclusion__item-field'>
                         <Localize i18n_default_text='Max. total stake' />
                     </Text>
-                    <Field name='max_turnover'>
-                        {({ field }) => (
+                    <Field name='max_turnover' data-testid='dt_max_turnover'>
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -46,7 +71,7 @@ const StakeLossAndLimitsInputs = () => {
                                 value={values.max_turnover ?? ''}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_turnover')}
+                                maxLength={getMaxLength?.('max_turnover')}
                                 required
                                 error={errors.max_turnover}
                             />
@@ -56,7 +81,7 @@ const StakeLossAndLimitsInputs = () => {
                         <Localize i18n_default_text='Max. total loss' />
                     </Text>
                     <Field name='max_losses'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -65,7 +90,7 @@ const StakeLossAndLimitsInputs = () => {
                                 value={values.max_losses}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_losses')}
+                                maxLength={getMaxLength?.('max_losses')}
                                 required
                                 error={errors.max_losses}
                             />
@@ -80,7 +105,7 @@ const StakeLossAndLimitsInputs = () => {
                         <Localize i18n_default_text='Max. total stake' />
                     </Text>
                     <Field name='max_7day_turnover'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -89,7 +114,7 @@ const StakeLossAndLimitsInputs = () => {
                                 value={values.max_7day_turnover}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_7day_turnover')}
+                                maxLength={getMaxLength?.('max_7day_turnover')}
                                 required
                                 error={errors.max_7day_turnover}
                             />
@@ -99,7 +124,7 @@ const StakeLossAndLimitsInputs = () => {
                         <Localize i18n_default_text='Max. total loss' />
                     </Text>
                     <Field name='max_7day_losses'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -108,7 +133,7 @@ const StakeLossAndLimitsInputs = () => {
                                 value={values.max_7day_losses}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_7day_losses')}
+                                maxLength={getMaxLength?.('max_7day_losses')}
                                 required
                                 error={errors.max_7day_losses}
                             />
@@ -123,7 +148,7 @@ const StakeLossAndLimitsInputs = () => {
                         <Localize i18n_default_text='Max. total stake' />
                     </Text>
                     <Field name='max_30day_turnover'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -132,7 +157,7 @@ const StakeLossAndLimitsInputs = () => {
                                 // value={values.max_30day_turnover}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_30day_turnover')}
+                                maxLength={getMaxLength?.('max_30day_turnover')}
                                 required
                                 error={errors.max_30day_turnover}
                             />
@@ -142,7 +167,7 @@ const StakeLossAndLimitsInputs = () => {
                         <Localize i18n_default_text='Max. total loss' />
                     </Text>
                     <Field name='max_30day_losses'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -151,7 +176,7 @@ const StakeLossAndLimitsInputs = () => {
                                 value={values.max_30day_losses}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_30day_losses')}
+                                maxLength={getMaxLength?.('max_30day_losses')}
                                 required
                                 error={errors.max_30day_losses}
                             />
@@ -165,7 +190,8 @@ const StakeLossAndLimitsInputs = () => {
 
 const SessionAndLoginLimitsInputs = () => {
     const { is_mlt, is_mx, is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
-    const { errors, handleBlur, handleChange, setFieldValue, values } = useFormikContext();
+    const { errors, handleBlur, handleChange, setFieldValue, values }: TFormikContext =
+        useFormikContext<TFormikContext>();
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
@@ -180,7 +206,7 @@ const SessionAndLoginLimitsInputs = () => {
                         <Localize i18n_default_text='You will be automatically logged out from each session after this time limit.' />
                     </Text>
                     <Field name='session_duration_limit'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -201,7 +227,7 @@ const SessionAndLoginLimitsInputs = () => {
                         <Localize i18n_default_text='You will not be able to log in to your account until this date (up to 6 weeks from today).' />
                     </Text>
                     <Field name='timeout_until'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <DatePicker
                                 min_date={toMoment().add(1, 'days').format('YYYY-MM-DD')}
                                 max_date={toMoment().add(6, 'weeks').format('YYYY-MM-DD')}
@@ -210,8 +236,12 @@ const SessionAndLoginLimitsInputs = () => {
                                 className='da-self-exclusion__input'
                                 label={localize('Date')}
                                 value={values.timeout_until && epochToMoment(values.timeout_until)}
-                                onChange={({ target }) =>
-                                    setFieldValue('timeout_until', target?.value ? target.value.unix() : '', true)
+                                onChange={({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                                    setFieldValue(
+                                        'timeout_until',
+                                        target?.value ? toMoment(target.value).unix() : '',
+                                        true
+                                    )
                                 }
                                 required
                                 readOnly
@@ -225,7 +255,7 @@ const SessionAndLoginLimitsInputs = () => {
                         <Localize i18n_default_text='Your account will be excluded from the website until this date (at least 6 months, up to 5 years).' />
                     </Text>
                     <Field name='exclude_until'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <DatePicker
                                 min_date={toMoment().add(6, 'months').add(1, 'days').format('YYYY-MM-DD')}
                                 max_date={toMoment().add(5, 'years').format('YYYY-MM-DD')}
@@ -234,7 +264,7 @@ const SessionAndLoginLimitsInputs = () => {
                                 className='da-self-exclusion__input'
                                 label={localize('Date')}
                                 value={values.exclude_until}
-                                onChange={({ target }) =>
+                                onChange={({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                                     setFieldValue(
                                         'exclude_until',
                                         target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
@@ -312,7 +342,7 @@ const SessionAndLoginLimitsInputs = () => {
 
 const MaximumAccountBalanceAndOpenPositionsInputs = () => {
     const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
-    const { errors, handleBlur, handleChange, values } = useFormikContext();
+    const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
@@ -327,7 +357,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
                         <Localize i18n_default_text='Once your account balance reaches this amount, you will not be able to deposit funds into your account.' />
                     </Text>
                     <Field name='max_balance'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -336,7 +366,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
                                 value={values.max_balance}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_balance')}
+                                maxLength={getMaxLength?.('max_balance')}
                                 required
                                 error={errors.max_balance}
                             />
@@ -348,7 +378,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
                         <Localize i18n_default_text='Maximum open positions' />
                     </Text>
                     <Field name='max_open_bets'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -357,7 +387,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
                                 value={values.max_open_bets}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_open_bets')}
+                                maxLength={getMaxLength?.('max_open_bets')}
                                 required
                                 error={errors.max_open_bets}
                             />
@@ -371,7 +401,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
 
 const MaximumDepositLimitInputs = () => {
     const { currency, is_mlt, is_mf, is_mx, getMaxLength } = React.useContext(SelfExclusionContext);
-    const { errors, handleBlur, handleChange, values } = useFormikContext();
+    const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
     const { is_appstore } = React.useContext(PlatformContext);
     const should_render = is_mlt || is_mf || is_mx;
 
@@ -394,7 +424,7 @@ const MaximumDepositLimitInputs = () => {
                         <Localize i18n_default_text='Max. deposit limit' />
                     </Text>
                     <Field name='max_deposit'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -403,7 +433,7 @@ const MaximumDepositLimitInputs = () => {
                                 value={values.max_deposit}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_deposit')}
+                                maxLength={getMaxLength?.('max_deposit')}
                                 required
                                 error={errors.max_deposit}
                             />
@@ -418,7 +448,7 @@ const MaximumDepositLimitInputs = () => {
                         <Localize i18n_default_text='Max. deposit limit' />
                     </Text>
                     <Field name='max_7day_deposit'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -427,7 +457,7 @@ const MaximumDepositLimitInputs = () => {
                                 value={values.max_7day_deposit}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_7day_deposit')}
+                                maxLength={getMaxLength?.('max_7day_deposit')}
                                 required
                                 error={errors.max_7day_deposit}
                             />
@@ -442,7 +472,7 @@ const MaximumDepositLimitInputs = () => {
                         <Localize i18n_default_text='Max. deposit limit' />
                     </Text>
                     <Field name='max_30day_deposit'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Input
                                 {...field}
                                 data-lpignore='true'
@@ -451,7 +481,7 @@ const MaximumDepositLimitInputs = () => {
                                 value={values.max_30day_deposit}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                maxLength={getMaxLength('max_30day_deposit')}
+                                maxLength={getMaxLength?.('max_30day_deposit')}
                                 required
                                 error={errors.max_30day_deposit}
                             />
@@ -466,8 +496,8 @@ const MaximumDepositLimitInputs = () => {
 const SelfExclusionInputs = () => {
     const { is_appstore } = React.useContext(PlatformContext);
     const { footer_ref, goToConfirm, is_app_settings } = React.useContext(SelfExclusionContext);
-    const { dirty, isSubmitting, isValid, values } = useFormikContext();
-    const versions = {
+    const { dirty, isSubmitting, isValid, values }: TFormikContext = useFormikContext<TFormikContext>();
+    const versions: Record<string, { condition: boolean; components: Array<React.FunctionComponent> }> = {
         // Global settings for account for DWallet.
         dwallet: {
             condition: !!is_appstore,
@@ -497,7 +527,7 @@ const SelfExclusionInputs = () => {
 
     return (
         <React.Fragment>
-            {Object.keys(versions).map((version_name, version_idx) => {
+            {Object.keys(versions).map((version_name: string, version_idx) => {
                 const version = versions[version_name];
                 if (!version.condition) return null;
                 return (
@@ -517,7 +547,7 @@ const SelfExclusionInputs = () => {
                         primary
                         className='da-self-exclusion__button'
                         large
-                        onClick={() => goToConfirm(values)}
+                        onClick={() => goToConfirm?.(values)}
                         type='button'
                     >
                         <Localize i18n_default_text='Next' />

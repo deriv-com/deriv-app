@@ -15,6 +15,15 @@ export type TSelfExclusionContext = {
     state?: FormikValues;
     overlay_ref: HTMLDivElement;
     validateFields?: () => void;
+    getMaxLength?: (value: string) => void;
+    is_mlt?: boolean;
+    is_mx?: boolean;
+    is_mf?: boolean;
+    is_tablet?: boolean;
+    footer_ref?: React.RefObject<HTMLElement>;
+    session_duration_digits?: boolean;
+    goToConfirm?: (value: FormikValues) => void;
+    is_appstore?: boolean;
 };
 
 const SelfExclusionContext = React.createContext<TSelfExclusionContext>({

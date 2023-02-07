@@ -129,6 +129,7 @@ const mock = (): TRootStore => {
             is_identity_verification_needed: false,
             is_logged_in: false,
             is_logging_in: false,
+            is_pre_appstore: false,
             is_switching: false,
             is_tnc_needed: false,
             is_virtual: false,
@@ -199,6 +200,11 @@ const mock = (): TRootStore => {
             toggleAccountsDialog: jest.fn(),
             toggleCashier: jest.fn(),
             setDarkMode: jest.fn(),
+        },
+        traders_hub: {
+            closeModal: jest.fn(),
+            openModal: jest.fn(),
+            content_flag: '',
         },
         modules: {},
     };

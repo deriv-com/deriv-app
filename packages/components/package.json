@@ -56,7 +56,6 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "lint-staged": "^10.4.0",
     "node-sass": "^7.0.1",
-    "react": "^16.14.0",
     "sass-loader": "^12.6.0",
     "sass-resources-loader": "^2.1.1",
     "style-loader": "^1.2.1",
@@ -69,7 +68,6 @@
   },
   "dependencies": {
     "@contentpass/zxcvbn": "^4.4.3",
-    "@deriv/deriv-onboarding": "^1.0.0",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "classnames": "^2.2.6",
@@ -77,16 +75,16 @@
     "glob": "^7.1.5",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.7.2",
-    "react-content-loader": "^4.3.2",
+    "react-content-loader": "^6.2.0",
     "react-div-100vh": "^0.3.8",
-    "react-dom": "^16.14.0",
-    "react-drag-drawer": "^3.3.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-dropzone": "11.0.1",
-    "react-pose": "^4.0.10",
+   "framer-motion":"^6.5.1",
     "react-router-dom": "^5.2.0",
-    "react-swipeable": "^5.5.1",
-    "react-tiny-popover": "^5.1.0",
+    "react-swipeable": "^6.2.1",
+    "react-tiny-popover": "^7.0.1",
     "react-transition-group": "4.4.2",
-    "react-virtualized": "^9.22.2"
+    "@enykeev/react-virtualized": "^9.22.4-mirror.1"
   }
 }

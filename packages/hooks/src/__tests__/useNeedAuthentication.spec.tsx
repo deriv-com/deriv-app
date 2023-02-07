@@ -3,6 +3,7 @@ import { StoreProvider } from '@deriv/stores';
 import type { TStores } from '@deriv/stores';
 // Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
 import { render, screen } from '@testing-library/react';
+import { ContentFlag } from '@deriv/shared';
 import useNeedAuthentication from '../useNeedAuthentication';
 
 const UseNeedAuthenticationExample = () => {
@@ -20,7 +21,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: false,
-                is_eu: false,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.CR_DEMO,
             },
         };
 
@@ -36,7 +39,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: false,
-                is_eu: true,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.LOW_RISK_CR_EU,
             },
         };
 
@@ -52,7 +57,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: true,
-                is_eu: false,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.CR_DEMO,
             },
         };
 
@@ -68,7 +75,9 @@ describe('useNeedAuthentication', () => {
         const mockRootStore: DeepPartial<TStores> = {
             client: {
                 is_authentication_needed: true,
-                is_eu: true,
+            },
+            traders_hub: {
+                content_flag: ContentFlag.LOW_RISK_CR_EU,
             },
         };
 

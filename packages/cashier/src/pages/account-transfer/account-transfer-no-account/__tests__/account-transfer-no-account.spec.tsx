@@ -3,12 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { StoreProvider } from '@deriv/stores';
 import AccountTransferNoAccount from '../account-transfer-no-account';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore;
     beforeEach(() => {
@@ -19,6 +13,7 @@ describe('<AccountTransferNoAccount />', () => {
             ui: {
                 toggleAccountsDialog: jest.fn(),
             },
+            traders_hub: { openModal: jest.fn(), closeModal: jest.fn() },
         };
     });
 

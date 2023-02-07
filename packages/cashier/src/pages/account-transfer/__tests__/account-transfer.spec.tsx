@@ -1,9 +1,25 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
+import { useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
@@ -18,6 +34,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'mockedCryptoTransactionsHistory'));
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
+jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTransferNoAccount'));
 jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
@@ -40,7 +57,7 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    deposit: { is_deposit_locked: true },
+                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(true) },
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,
@@ -140,7 +157,7 @@ describe('<AccountTransfer />', () => {
 
         renderAccountTransfer();
 
-        expect(await screen.findByText('You need at least two accounts')).toBeInTheDocument();
+        expect(await screen.findByText('mockedAccountTransferNoAccount')).toBeInTheDocument();
     });
 
     it('should render the no balance component if the account has no balance', async () => {

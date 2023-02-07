@@ -81,7 +81,6 @@ const PurchaseFieldset = ({
                             currency={currency}
                             proposal_info={info}
                             has_increased={info.has_increased}
-                            is_accumulator={is_accumulator}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             should_fade={should_fade}

@@ -290,9 +290,8 @@ const TickContract = RawMarkerMaker(
                 bottom: barrier_2,
                 scale,
             });
-
-            if (is_in_contract_details) return;
         }
+        if (is_in_contract_details) return;
         ctx.restore();
 
         if (draw_start_line) {

@@ -356,7 +356,9 @@ const OpenPositions = ({
             is_default: is_accumulator,
         },
     ];
-    const [contract_type_value, setContractTypeValue] = React.useState(contract_types.find(type => type.is_default));
+    const [contract_type_value, setContractTypeValue] = React.useState(
+        contract_types.find(type => type.is_default)?.value || 'Options'
+    );
 
     React.useEffect(() => {
         /*
@@ -481,6 +483,7 @@ const OpenPositions = ({
                 <OpenPositionsTable
                     className='open-positions-accumulator open-positions'
                     columns={columns}
+                    is_empty={active_positions_filtered.length === 0}
                     row_size={isMobile() ? 3 : 68}
                     {...shared_props}
                 />

@@ -83,10 +83,8 @@ const ContractInfo = ({
                                     <Text size='xs' weight='bold' color='colored-background'>
                                         {!is_accumulator ? (
                                             <Money amount={stake} currency={currency} show_currency />
-                                        ) : !is_loading ? (
-                                            `${getGrowthRatePercentage(proposal_info?.growth_rate)}%`
                                         ) : (
-                                            ''
+                                            !is_loading && `${getGrowthRatePercentage(proposal_info?.growth_rate)}%`
                                         )}
                                     </Text>
                                 </div>

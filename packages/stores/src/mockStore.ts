@@ -207,6 +207,7 @@ const mock = (): TRootStore => {
             openModal: jest.fn(),
             content_flag: '',
         },
+        contract_store: {},
         modules: {},
     };
 };

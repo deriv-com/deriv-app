@@ -10,7 +10,7 @@
 // export default { Label, Button };
 
 export { default as Accordion } from './components/accordion';
-export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
+export { default as AutoHeightWrapper, TAutoHeightWrapperChildProps } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
 export { default as Button } from './components/button';
@@ -87,6 +87,7 @@ export { default as RouteWithSubroutes } from './components/route-with-subroutes
 export { default as SelectNative } from './components/select-native';
 export { default as StaticUrl } from './components/static-url';
 export { default as SendEmailTemplate } from './components/send-email-template';
+export { default as StatusBadge } from './components/status-badge';
 export { default as SwipeableWrapper } from './components/swipeable-wrapper';
 export { default as RelativeDatepicker } from './components/relative-datepicker';
 export { default as RemainingTime } from './components/remaining-time';

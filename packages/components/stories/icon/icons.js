@@ -19,6 +19,7 @@ export const icons =
         'IcAppstoreDerivLogo',
         'IcAppstoreEllipse',
         'IcAppstoreError',
+        'IcAppstoreGetMoreAccounts',
         'IcAppstoreHomeDark',
         'IcAppstoreHome',
         'IcAppstoreInformation',
@@ -29,6 +30,7 @@ export const icons =
         'IcAppstoreOptionTradeType',
         'IcAppstoreSkeletonCardBorder',
         'IcAppstoreSuccess',
+        'IcAppstoreTradersHubHome',
         'IcAppstoreTradingHubBeta',
         'IcAppstoreTradingHubOnboardingDark',
         'IcAppstoreTradingHubOnboarding',
@@ -439,6 +441,7 @@ export const icons =
         'IcNetellerLight',
         'IcNewFile',
         'IcNoAd',
+        'IcNoData',
         'IcNoOrder',
         'IcNotificationClear',
         'IcNotification',
@@ -604,6 +607,9 @@ export const icons =
         'IcCurrencyUsdk',
         'IcCurrencyUst',
         'IcCurrencyVirtual',
+    ],
+    'derivez': [
+        'IcDerivez',
     ],
     'dxtrade': [
         'IcDxtradeDerivX',

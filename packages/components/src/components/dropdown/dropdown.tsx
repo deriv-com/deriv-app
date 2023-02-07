@@ -7,7 +7,7 @@ import { TList, findNextFocusableNode, findPreviousFocusableNode, TListItem } fr
 import Items from './items';
 import DisplayText from './display-text';
 import Text from '../text/text';
-import { IClickEvent, useBlockScroll, useOnClickOutside } from '../../hooks';
+import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import Icon from '../icon/icon';
 
@@ -44,6 +44,7 @@ type TDropdown = {
     suffix_icon?: string;
     test_id?: string;
     value?: string | number;
+    classNameIcon?: string;
 };
 
 type TDropdownList = {
@@ -257,6 +258,7 @@ const Dropdown = ({
     suffix_icon,
     test_id,
     value,
+    classNameIcon,
 }: TDropdown) => {
     const dropdown_ref = React.useRef<HTMLDivElement>(null);
     const native_select_ref = React.useRef<HTMLDivElement>(null);
@@ -270,8 +272,8 @@ const Dropdown = ({
 
     useBlockScroll(list_portal_id && is_list_visible ? dropdown_ref : undefined);
 
-    const onClickOutSide = (event?: IClickEvent) => {
-        if (is_portal && list_ref.current?.contains(event?.target as Node)) return;
+    const onClickOutSide = (event: MouseEvent) => {
+        if (is_portal && list_ref.current?.contains(event.target as Node)) return;
 
         if (typeof handleBlur === 'function') handleBlur({ target: { name } });
         setIsListVisible(false);
@@ -464,7 +466,7 @@ const Dropdown = ({
                     {!(isSingleOption() || !!suffix_icon) && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
-                            className={classNames('dc-dropdown__select-arrow', {
+                            className={classNames('dc-dropdown__select-arrow', classNameIcon, {
                                 'dc-dropdown__select-arrow--left': is_alignment_left,
                                 'dc-dropdown__select-arrow--up': is_list_visible,
                                 'dc-dropdown__select-arrow--error': error || hint,

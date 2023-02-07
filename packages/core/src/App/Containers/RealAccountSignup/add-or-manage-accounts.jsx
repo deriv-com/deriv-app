@@ -24,7 +24,6 @@ const AddOrManageAccounts = props => {
         is_add_crypto,
         is_add_currency,
         is_add_fiat,
-        is_eu,
         is_loading,
         manage_real_account_tab_index,
         onError,
@@ -35,6 +34,7 @@ const AddOrManageAccounts = props => {
         setIsDeposit,
         setShouldShowCancel,
         onClose,
+        show_eu_related_content,
     } = props;
 
     const initial_active_index =
@@ -138,7 +138,7 @@ const AddOrManageAccounts = props => {
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
-            {is_eu && has_fiat ? (
+            {show_eu_related_content && has_fiat ? (
                 fiat_section
             ) : (
                 <Tabs
@@ -200,7 +200,6 @@ AddOrManageAccounts.propTypes = {
     onError: PropTypes.func,
     onLoading: PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
-    is_eu: PropTypes.bool,
     setCurrency: PropTypes.func,
     createCryptoAccount: PropTypes.func,
     has_fiat: PropTypes.bool,
@@ -216,19 +215,20 @@ AddOrManageAccounts.propTypes = {
     resetRealAccountSignupTarget: PropTypes.func,
     setIsDeposit: PropTypes.func,
     manage_real_account_tab_index: PropTypes.number,
+    show_eu_related_content: PropTypes.bool,
 };
 
-export default connect(({ client, modules, ui }) => ({
+export default connect(({ client, modules, ui, traders_hub }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
     has_fiat: client.has_fiat,
-    is_eu: client.is_eu,
     manage_real_account_tab_index: ui.manage_real_account_tab_index,
     setCurrency: client.setAccountCurrency,
     setShouldShowCancel: ui.setShouldShowCancel,
     createCryptoAccount: client.createCryptoAccount,
     resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(AddOrManageAccounts);

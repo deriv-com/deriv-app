@@ -19,7 +19,6 @@
         border-radius: 0px;
         width: 50%;
         background-color: var(--state-normal);
-
         /* postcss-bem-linter: ignore */
         .dc-btn__text {
             display: contents;
@@ -45,6 +44,40 @@
             }
         }
     }
+
+    &__toggle {
+        margin: 0;
+        border: none;
+        border-radius: 6px;
+        width: 50%;
+        background-color: var(--general-section-1);
+
+        /* postcss-bem-linter: ignore */
+        .dc-btn__text {
+            display: contents;
+        }
+        @include desktop {
+            &:hover:not(.dc-button-menu__button--active) {
+                background-color: var(--state-hover) !important;
+            }
+        }
+        /* postcss-bem-linter: ignore */
+        span {
+            @include typeface(--paragraph-left-normal-black, unset);
+            color: var(--text-less-prominent);
+        }
+        &--active {
+            cursor: initial;
+            background-color: var(--state-normal) !important;
+
+            // stylelint-disable-next-line
+            span {
+                @include typeface(--paragraph-left-bold-active, unset);
+                color: var(--text-prominent);
+            }
+        }
+    }
+
     &__counter {
         margin-left: 0.4rem;
     }

@@ -1,3 +1,3 @@
-import { ProofOfIdentityFormOnSignup } from './poi-form-on-signup.jsx';
+import { ProofOfIdentityFormOnSignup } from './poi-form-on-signup';
 
 export default ProofOfIdentityFormOnSignup;

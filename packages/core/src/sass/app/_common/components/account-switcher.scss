@@ -12,7 +12,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 30rem;
+        width: 37rem;
         height: 4rem;
         z-index: 2;
         background: var(--general-main-1);
@@ -20,9 +20,9 @@
         &:before {
             content: '';
             position: absolute;
-            left: -9rem;
-            width: 9rem;
-            height: 4rem;
+            left: -8rem;
+            width: 8rem;
+            height: 3.5rem;
             top: 0;
             background: var(--general-main-1);
         }
@@ -48,7 +48,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 30rem;
+        width: 37rem;
         height: 4rem;
         z-index: 2;
         background: var(--general-main-1);
@@ -56,9 +56,9 @@
         &:before {
             content: '';
             position: absolute;
-            left: -9rem;
-            width: 9rem;
-            height: 4rem;
+            left: -8rem;
+            width: 8rem;
+            height: 3.5rem;
             top: 0;
             background: var(--general-main-1);
         }
@@ -393,6 +393,10 @@
         grid-template-columns: auto auto;
         justify-content: space-between;
         padding-left: 1.3rem;
+
+        &--traders-hub {
+            padding: 0.5rem 0 0.3rem 1.3rem;
+        }
     }
     &__compare {
         justify-self: end;
@@ -466,6 +470,10 @@
     &__btn {
         width: calc(100% - 32px);
         margin: 0 16px 8px;
+
+        &--traders_hub {
+            margin: 1.3rem 1.1rem 1rem 1rem;
+        }
     }
 }
 

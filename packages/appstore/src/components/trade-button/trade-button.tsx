@@ -11,9 +11,10 @@ const TradeButton = ({
     is_external,
     is_buttons_disabled,
 }: Pick<Actions, 'link_to' | 'onAction' | 'is_external' | 'is_buttons_disabled'>) => {
-    const { traders_hub, modules } = useStores();
+    const { traders_hub, modules, client } = useStores();
     const { is_demo } = traders_hub;
     const { dxtrade_tokens } = modules.cfd;
+    const { setIsPreAppStore } = client;
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
     const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
@@ -25,8 +26,14 @@ const TradeButton = ({
                 </a>
             );
         }
+
         return (
-            <Link to={link_to}>
+            <Link
+                to={link_to}
+                onClick={() => {
+                    setIsPreAppStore(false);
+                }}
+            >
                 <Button primary>{localize('Trade')}</Button>
             </Link>
         );

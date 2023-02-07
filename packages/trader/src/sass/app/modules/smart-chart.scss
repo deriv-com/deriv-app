@@ -5,7 +5,7 @@
 
     &__spot {
         position: absolute;
-        bottom: -11px;
+        top: -11px;
         margin-left: -11.5px;
         display: flex;
         justify-content: center;
@@ -72,7 +72,7 @@
 .chart-spot-label {
     &-profit {
         position: relative;
-        top: 2.8rem;
+        top: -2.8rem;
         left: 2.5rem;
 
         .chart-spot-label__value-container {
@@ -125,7 +125,7 @@
             }
         }
         &--middle {
-            bottom: -21px;
+            bottom: 38px;
 
             .chart-spot-label__time-container {
                 margin-bottom: 2px;

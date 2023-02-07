@@ -862,13 +862,18 @@ export default class NotificationStore extends BaseStore {
                                       this.p2p_order_props.redirectTo('my_profile');
                                       if (this.is_notifications_visible) this.toggleNotificationsModal();
                                   },
-                                  text: localize('Go to My profile'),
+                                  text: localize('Yes, increase my limits'),
                               }
                             : {
                                   route: routes.cashier_p2p_profile,
-                                  text: localize('Go to My profile'),
+                                  text: localize('Yes, increase my limits'),
                               },
-
+                    closeOnClick: () => {
+                        this.removeNotificationMessage({
+                            key: this.client_notifications.p2p_daily_limit_increase.key,
+                            should_show_again: false,
+                        });
+                    },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
                     key: 'p2p_daily_limit_increase',
                     message: (

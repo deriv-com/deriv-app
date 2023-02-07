@@ -137,6 +137,6 @@ export type TRootStore = {
     common: TCommonStore;
     ui: TUiStore;
     modules: Record<string, any>;
-    contract_store: TContractStore;
+    contract_store?: TContractStore;
     traders_hub: TTradersHubStore;
 };

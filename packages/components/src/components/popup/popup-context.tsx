@@ -30,7 +30,7 @@ export type TPopupContext = {
     tab_icon_color: string;
     tabs_detail: TDetail[];
     title: string;
-    togglePopupModal?: () => void;
+    togglePopupModal: () => void;
 };
 
 const PopupContext = React.createContext<TPopupContext>({
@@ -50,6 +50,7 @@ const PopupContext = React.createContext<TPopupContext>({
     tab_icon_color: '',
     tabs_detail: [{ has_footer_separator: false }],
     Component: 'symbol',
+    togglePopupModal: () => '',
 });
 
 export default PopupContext;

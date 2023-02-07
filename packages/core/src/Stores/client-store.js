@@ -1584,7 +1584,7 @@ export default class ClientStore extends BaseStore {
             });
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
+                window.history.replaceState({}, document.title, urlForLanguage(language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {

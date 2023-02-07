@@ -224,7 +224,7 @@ const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setI
                                     setFieldTouched,
                                 }) => (
                                     <Form noValidate>
-                                        <Timeline className='da-api-token__timeline'>
+                                        <Timeline className='da-api-token__timeline' line_height='xxxl'>
                                             <Timeline.Item
                                                 item_title={localize('Select scopes based on the access you need.')}
                                             >

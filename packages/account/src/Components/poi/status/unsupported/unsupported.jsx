@@ -8,6 +8,9 @@ import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 import UploadComplete from '../upload-complete';
+import Verified from 'Components/poi/status/verified';
+import Limited from 'Components/poi/status/limited';
+import Expired from 'Components/poi/status/expired';
 
 const checkNimcStep = documents => {
     let has_nimc = false;
@@ -19,7 +22,16 @@ const checkNimcStep = documents => {
     return has_nimc;
 };
 
-const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }) => {
+const Unsupported = ({
+    country_code,
+    handlePOIforMT5Complete,
+    manual,
+    redirect_button,
+    needs_poa,
+    handleRequireSubmission,
+    allow_poi_resubmission,
+    ...props
+}) => {
     const [detail, setDetail] = React.useState(null);
     const toggleDetail = index => setDetail(index);
 
@@ -28,7 +40,16 @@ const Unsupported = ({ country_code, handlePOIforMT5Complete, ...props }) => {
         country_code,
     });
 
-    if (props?.manual?.status === identity_status_codes.pending) return <UploadComplete />;
+    if (manual) {
+        if (manual.status === identity_status_codes.pending) return <UploadComplete is_manual_upload />;
+        else if ([identity_status_codes.rejected, identity_status_codes.suspected].includes(manual.status)) {
+            if (!allow_poi_resubmission) return <Limited />;
+        } else if (manual.status === identity_status_codes.verified) {
+            return <Verified needs_poa={needs_poa} redirect_button={redirect_button} />;
+        } else if (manual.status === identity_status_codes.expired) {
+            return <Expired redirect_button={redirect_button} handleRequireSubmission={handleRequireSubmission} />;
+        }
+    }
 
     if (detail !== null) {
         return (

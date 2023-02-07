@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import StaticDashboard from 'Components/onboarding/static-dashboard';
+import StaticDashboard from 'Components/onboarding-new/static-dashboard';
 
 type TStep = {
     component: React.ReactNode;
@@ -42,8 +42,8 @@ export const trading_hub_contents: TTradingHubContents = {
                 }}
             />
         ),
-        footer_header: localize('Welcome to Trading Hub'),
-        footer_text: localize('This is your new dashboard'),
+        footer_header: localize(`Welcome to Trader's hub`),
+        footer_text: localize('This is your personal start page for Deriv'),
         has_next_content: false,
     },
     step2: {
@@ -75,7 +75,7 @@ export const trading_hub_contents: TTradingHubContents = {
         ),
         footer_header: localize('Trading accounts'),
         footer_text: localize(
-            'These are the trading accounts available to you. You can click on an account to find out more.'
+            `These are the trading accounts available to you. You can click on an account’s icon or description to find out more`
         ),
         has_next_content: false,
     },
@@ -159,7 +159,7 @@ export const trading_hub_contents: TTradingHubContents = {
                     options_text: true,
                     cfd_description: false,
                     options_description: false,
-                    platformlauncher: false,
+                    platformlauncher: true,
                 }}
                 is_onboarding_animated={{
                     text: false,
@@ -172,17 +172,16 @@ export const trading_hub_contents: TTradingHubContents = {
                 has_account
                 currency={'USD'}
                 mf_currency={'EUR'}
-                derived_amount={'369'}
-                financial_amount={'512'}
+                derived_amount={'0'}
+                financial_amount={'0'}
                 loginid={'20884385'}
                 has_applauncher_account
-                is_last_step
                 is_derivx_last_step
                 is_financial_last_step
             />
         ),
         footer_header: localize('Top-up your account'),
-        footer_text: localize('Once you have an account click ‘Top-up’ to add funds '),
+        footer_text: localize('Once you have an account click on ‘Deposit’ or ‘Transfer’ to add funds to an account'),
         has_next_content: false,
     },
     step6: {
@@ -214,11 +213,10 @@ export const trading_hub_contents: TTradingHubContents = {
                 has_account
                 currency={'USD'}
                 mf_currency={'EUR'}
-                derived_amount={'369'}
-                financial_amount={'512'}
+                derived_amount={'0'}
+                financial_amount={'0'}
                 loginid={'20884385'}
                 has_applauncher_account
-                is_last_step
                 is_derivx_last_step
                 is_financial_last_step
             />

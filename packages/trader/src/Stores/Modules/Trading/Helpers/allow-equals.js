@@ -4,7 +4,7 @@ import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 export const hasCallPutEqual = contract_type_list => {
     if (isEmptyObject(contract_type_list)) return false;
 
-    return (getPropertyValue(contract_type_list, 'Ups & Downs') || []).categories.some(
+    return ((getPropertyValue(contract_type_list, 'Ups & Downs') || {}).categories || []).some(
         contract => contract.value === 'rise_fall_equal'
     );
 };

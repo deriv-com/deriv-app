@@ -4,12 +4,12 @@ import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } fro
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 const OnRampProviderPopup = observer(() => {
-    const { ui, modules } = useStore();
+    const { ui } = useStore();
     const { is_dark_mode_on } = ui;
-    const { cashier } = modules;
-    const { onramp } = cashier;
+    const { onramp } = useCashierStore();
     const {
         api_error,
         deposit_address,
@@ -24,9 +24,9 @@ const OnRampProviderPopup = observer(() => {
         widget_error,
         widget_html,
     } = onramp;
-
     const el_onramp_widget_container_ref = React.useRef(null);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
+
     let timeout_clipboard: ReturnType<typeof setTimeout>;
 
     const onClickCopyDepositAddress = () => {

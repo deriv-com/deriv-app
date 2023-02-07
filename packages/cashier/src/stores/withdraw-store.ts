@@ -372,8 +372,6 @@ export default class WithdrawStore {
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(current_fiat_currency || ''),
-                min: 0,
-                max: 0,
             });
             if (!is_ok) error_message = message || '';
         }

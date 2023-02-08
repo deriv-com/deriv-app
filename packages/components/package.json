@@ -27,6 +27,7 @@
   "author": "Deriv",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@types/classnames": "^2.2.11",
     "@babel/core": "^7.12.10",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/preset-react": "^7.16.7",

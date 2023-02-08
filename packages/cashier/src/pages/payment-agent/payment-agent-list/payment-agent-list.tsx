@@ -3,14 +3,13 @@ import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import SideNote from '../../../components/side-note';
 import { TSideNotesProps } from '../../../types';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
 type TProps = {
@@ -18,7 +17,8 @@ type TProps = {
 };
 
 const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
-    const { payment_agent, general_store } = useCashierStore();
+    const { modules } = useStore();
+    const { payment_agent, general_store } = modules.cashier;
 
     React.useEffect(() => {
         if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {

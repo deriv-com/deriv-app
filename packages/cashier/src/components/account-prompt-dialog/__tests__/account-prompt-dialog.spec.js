@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccountPromptDialog from '../account-prompt-dialog.jsx';
-import CashierProviders from '../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -31,7 +31,7 @@ describe('<AccountPromptDialog />', () => {
     };
     it('should render dialog', () => {
         render(<AccountPromptDialog />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Dialog')).toBeInTheDocument();

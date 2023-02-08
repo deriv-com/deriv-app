@@ -1,21 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
 import { useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
 import { TRootStore } from 'Types';
 import type { TOnRampProps } from '../on-ramp';
-import CashierProviders from '../../../cashier-providers';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -110,9 +100,9 @@ describe('<OnRamp />', () => {
     });
     const renderOnRamp = (is_rerender = false) => {
         const ui = (
-            <CashierProviders store={mockRootStore as TRootStore}>
+            <StoreProvider store={mockRootStore as TRootStore}>
                 <OnRamp {...props} />
-            </CashierProviders>
+            </StoreProvider>
         );
         return is_rerender ? ui : render(ui);
     };

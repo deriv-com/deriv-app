@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import RecentTransaction from '../recent-transaction';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import CashierProviders from '../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<RecentTransaction />', () => {
     let history, mockRootStore;
@@ -41,11 +41,11 @@ describe('<RecentTransaction />', () => {
 
     const renderRecentTransaction = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
+            <StoreProvider store={mockRootStore}>
                 <Router history={history}>
                     <RecentTransaction />
                 </Router>
-            </CashierProviders>
+            </StoreProvider>
         );
     };
 

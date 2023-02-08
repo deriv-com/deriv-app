@@ -7,11 +7,10 @@ import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
 import { get, init, timePromise } from 'Utils/server_time';
 import { observer, useStore } from '@deriv/stores';
-import { useCashierStore } from '../../stores/useCashierStores';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = observer(({ history, location }) => {
-    const { notifications, client, ui, common } = useStore();
+    const { notifications, client, ui, common, modules } = useStore();
     const {
         addNotificationMessage,
         filterNotificationMessages,
@@ -23,7 +22,8 @@ const P2PCashier = observer(({ history, location }) => {
     const { balance, currency, local_currency_config, loginid, is_logging_in, is_virtual, residence } = client;
     const { notification_messages_ui: Notifications, is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
     const { platform } = common;
-    const { general_store } = useCashierStore();
+    const { cashier } = modules;
+    const { general_store } = cashier;
     const { setNotificationCount, setOnRemount } = general_store;
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();

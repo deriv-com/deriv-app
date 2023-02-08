@@ -3,7 +3,6 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import './deriv-real-account-required-modal.scss';
 
 const DerivRealAccountRequiredModal = ({
     is_open,
@@ -12,7 +11,6 @@ const DerivRealAccountRequiredModal = ({
     enableApp,
     openRealAccountSignup,
     is_eu_user,
-    is_pre_appstore,
 }) => {
     const createAccount = () => {
         if (is_eu_user) {
@@ -26,7 +24,6 @@ const DerivRealAccountRequiredModal = ({
 
     return (
         <Dialog
-            className={is_pre_appstore && 'open-real-account-dialog'}
             title={localize('You’ll need a Deriv account')}
             confirm_button_text={localize('Add Deriv Account')}
             onConfirm={createAccount}
@@ -50,15 +47,13 @@ DerivRealAccountRequiredModal.propTypes = {
     enableApp: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
     is_eu_user: PropTypes.string,
-    is_pre_appstore: PropTypes.bool,
 };
 
-export default connect(({ ui, traders_hub, client }) => ({
+export default connect(({ ui, traders_hub }) => ({
     is_open: ui.is_deriv_account_needed_modal_visible,
     onClose: ui.openDerivRealAccountNeededModal,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     openRealAccountSignup: ui.openRealAccountSignup,
     is_eu_user: traders_hub.is_eu_user,
-    is_pre_appstore: client.is_pre_appstore,
 }))(DerivRealAccountRequiredModal);

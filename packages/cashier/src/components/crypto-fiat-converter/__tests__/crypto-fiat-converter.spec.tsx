@@ -1,9 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoFiatConverter from '../crypto-fiat-converter';
+import { StoreProvider } from '@deriv/stores';
 import { Formik } from 'formik';
 import * as formik from 'formik';
-import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoFiatConverter />', () => {
     let mockRootStore, mockProps;
@@ -34,11 +34,11 @@ describe('<CryptoFiatConverter />', () => {
 
     const renderCryptoFiatConverter = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
+            <StoreProvider store={mockRootStore}>
                 <Formik>
                     <CryptoFiatConverter {...mockProps} />
                 </Formik>
-            </CashierProviders>
+            </StoreProvider>
         );
     };
 

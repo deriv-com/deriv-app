@@ -87,6 +87,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
 
+        // QA can manually toggle this regex now through this feature flag.
+        // Otherwise it blocks their test suite.
+        const is_allowing_validation = validation_is_enabled;
+
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
@@ -96,7 +100,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (validation_is_enabled && (is_recurring_number || is_sequential_number)) {
+        } else if (is_allowing_validation && (is_recurring_number || is_sequential_number)) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);

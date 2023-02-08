@@ -11,7 +11,6 @@ import PaymentAgentReceipt from '../payment-agent-receipt';
 import PaymentAgentSearchBox from '../payment-agent-search-box';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-container.scss';
 
 const PaymentAgentSearchWarning = () => {
@@ -29,9 +28,15 @@ const PaymentAgentSearchWarning = () => {
 };
 
 const PaymentAgentContainer = observer(({ is_deposit, verification_code }) => {
-    const { ui } = useStore();
+    const {
+        ui,
+        modules: {
+            cashier: { payment_agent: payment_agent_store },
+        },
+    } = useStore();
+
     const { app_contents_scroll_ref, is_dark_mode_on } = ui;
-    const { payment_agent: payment_agent_store } = useCashierStore();
+
     const {
         has_payment_agent_search_warning,
         is_search_loading,

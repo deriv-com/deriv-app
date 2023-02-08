@@ -5,7 +5,7 @@ import { Verified } from '../verified';
 jest.mock('Components/poa/continue-trading-button/continue-trading-button', () => ({
     ContinueTradingButton: jest.fn(() => <div>ContinueTradingButton</div>),
 }));
-jest.mock('Components/poi/poi-button/poi-button', () => ({
+jest.mock('Components/poi/poi-button/poi-button.jsx', () => ({
     PoiButton: jest.fn(() => <div>PoiButton</div>),
 }));
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
-import CashierProviders from '../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<CryptoTransactionsHistory />', () => {
     let mockRootStore;
@@ -28,7 +28,7 @@ describe('<CryptoTransactionsHistory />', () => {
 
     const renderCryptoTransactionsHistory = () =>
         render(<CryptoTransactionsHistory />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
     it('should show "USD recent transactions" and "No current transactions available" messages', () => {

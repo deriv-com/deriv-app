@@ -89,14 +89,14 @@ const AccountSwitcher = props => {
         if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
-        if (props.is_low_risk || props.is_high_risk) {
+        if (props.is_low_risk || props.is_high_risk || props.is_eu) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
                 account => !account.is_virtual && account.loginid.startsWith('CR')
             );
             setFilteredRealAccounts(real_accounts);
             const remaining_real_accounts = getRemainingRealAccounts().filter(account => account === 'svg');
             setFilteredRemainingRealAccounts(remaining_real_accounts);
-        } else if (props.is_eu) {
+        } else if (props.show_eu_related_content) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
                 account => !account.is_virtual && account.loginid.startsWith('MF')
             );

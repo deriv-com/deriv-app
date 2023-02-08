@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { TSocketRequestProps, TSocketResponseData, TSocketSubscribableEndpointNames } from '../types';
 import { useWS as useWSShared } from '@deriv/shared';
-import { TSocketSubscribableEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
+import { useState } from 'react';
 
 const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
     const [is_loading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
         setIsLoading(false);
     };
 
-    const subscribe = (...props: TSocketAcceptableProps<T>) => {
+    const subscribe = (...props: TSocketRequestProps<T> extends never ? [undefined?] : [TSocketRequestProps<T>]) => {
         setIsLoading(true);
         setSubscribed(true);
 

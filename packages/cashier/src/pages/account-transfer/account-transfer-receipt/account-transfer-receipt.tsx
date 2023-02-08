@@ -6,7 +6,6 @@ import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-receipt.scss';
 
 type TSwitch = {
@@ -20,8 +19,14 @@ type TAccountTransferReceipt = {
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
-    const { ui, common, client } = useStore();
-    const { account_transfer } = useCashierStore();
+    const {
+        ui,
+        common,
+        client,
+        modules: {
+            cashier: { account_transfer },
+        },
+    } = useStore();
 
     const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;

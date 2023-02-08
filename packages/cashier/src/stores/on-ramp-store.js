@@ -60,7 +60,6 @@ export default class OnRampStore extends BaseStore {
         });
     }
 
-    /** @deprecated Use `useOnrampVisible` from `@deriv/hooks` package instead. */
     get is_onramp_tab_visible() {
         const { client } = this.root_store;
 

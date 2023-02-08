@@ -41,7 +41,6 @@ describe('<Withdrawal />', () => {
                     general_store: {
                         is_cashier_locked: false,
                         is_crypto: false,
-                        is_system_maintenance: false,
                         setActiveTab: jest.fn(),
                     },
                     iframe: {
@@ -83,7 +82,7 @@ describe('<Withdrawal />', () => {
 
     it('should render <CashierLocked /> component', () => {
         mockRootStore.client.current_currency_type = 'crypto';
-        mockRootStore.modules.cashier.general_store.is_system_maintenance = true;
+        mockRootStore.client.account_status.cashier_validation = ['system_maintenance'];
         mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
         renderWithdrawal();
 

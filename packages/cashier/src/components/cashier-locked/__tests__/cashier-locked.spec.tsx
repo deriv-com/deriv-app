@@ -25,7 +25,7 @@ describe('<CashierLocked />', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
-                    cashier_validation: [],
+                    cashier_validation: ['system_maintenance'],
                 },
                 accounts: undefined,
                 loginid: undefined,
@@ -40,7 +40,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -60,7 +60,7 @@ describe('<CashierLocked />', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
-                    cashier_validation: [],
+                    cashier_validation: ['system_maintenance'],
                 },
                 accounts: undefined,
                 loginid: undefined,
@@ -75,7 +75,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -95,7 +95,7 @@ describe('<CashierLocked />', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
-                    cashier_validation: [],
+                    cashier_validation: ['system_maintenance'],
                 },
                 accounts: undefined,
                 loginid: undefined,
@@ -110,7 +110,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -130,7 +130,7 @@ describe('<CashierLocked />', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
-                    cashier_validation: [],
+                    cashier_validation: ['system_maintenance'],
                 },
                 accounts: undefined,
                 loginid: undefined,
@@ -145,7 +145,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -180,7 +180,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -215,7 +215,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -250,7 +250,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -285,7 +285,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -320,7 +320,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -353,7 +353,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -384,7 +384,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -418,7 +418,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -453,7 +453,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -484,7 +484,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -515,7 +515,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -550,7 +550,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -589,7 +589,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -624,7 +624,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -655,7 +655,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -690,7 +690,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -725,7 +725,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {
@@ -758,7 +758,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -789,7 +789,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: true } } },
         };
 
         render(<CashierLocked />, {
@@ -824,7 +824,7 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
-            modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
+            modules: { cashier: { general_store: { is_cashier_locked: false } } },
         };
 
         render(<CashierLocked />, {

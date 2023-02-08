@@ -4,7 +4,6 @@ import type { TRootStore } from '../types';
 const mock = (): TRootStore => {
     return {
         client: {
-            is_crypto: false,
             accounts: {
                 loginid: {
                     account_type: 'trading',
@@ -114,6 +113,7 @@ const mock = (): TRootStore => {
                     'trading_experience_not_complete',
                 ],
             },
+            account_list: [],
             balance: '',
             can_change_fiat_currency: false,
             currency: '',
@@ -141,6 +141,7 @@ const mock = (): TRootStore => {
                 decimal_places: 0,
             },
             loginid: '',
+            min_withdrawal: 0,
             residence: '',
             standpoint: {
                 iom: '',
@@ -169,6 +170,7 @@ const mock = (): TRootStore => {
             logout: jest.fn(),
             should_allow_authentication: false,
             is_landing_company_loaded: false,
+            is_crypto: false,
         },
         common: {
             error: {

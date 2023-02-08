@@ -6,6 +6,7 @@ import { isDesktop } from '@deriv/shared';
 import { useCheck10kLimit, useWithdrawLocked } from '@deriv/hooks';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
@@ -37,7 +38,7 @@ describe('<Withdrawal />', () => {
         history = createBrowserHistory();
         mockUseWithdrawLocked.mockReturnValue(false);
         mockUseCheck10kLimit.mockReturnValue(false);
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 balance: '1000',
                 currency: 'USD',
@@ -69,7 +70,7 @@ describe('<Withdrawal />', () => {
                     },
                 },
             },
-        };
+        });
         setSideNotes = jest.fn();
     });
 

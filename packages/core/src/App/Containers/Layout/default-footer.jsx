@@ -44,7 +44,6 @@ const Footer = ({
     settings_extension,
     landing_company_shortcode,
     is_pre_appstore,
-    show_eu_related_content,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -76,11 +75,7 @@ const Footer = ({
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimitsFooter />}
                 {is_logged_in && !is_virtual && (
-                    <RegulatoryInformation
-                        landing_company={landing_company_shortcode}
-                        is_eu={is_eu}
-                        show_eu_related_content={show_eu_related_content}
-                    />
+                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
                 )}
                 <FooterIconSeparator />
                 <HelpCentre />
@@ -113,11 +108,10 @@ Footer.propTypes = {
     enableApp: PropTypes.func,
     footer_extensions: PropTypes.array,
     is_pre_appstore: PropTypes.bool,
-    show_eu_related_content: PropTypes.bool,
 };
 
 export default withRouter(
-    connect(({ client, ui, traders_hub }) => ({
+    connect(({ client, ui }) => ({
         enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
         settings_extension: ui.settings_extension,
@@ -132,6 +126,5 @@ export default withRouter(
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
         is_pre_appstore: client.is_pre_appstore,
-        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(Footer)
 );

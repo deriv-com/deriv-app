@@ -3,7 +3,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
-import { useCashierStore } from 'Stores/useCashierStores';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const CashierLocked = observer(() => {
     const { client } = useStore();

@@ -14,7 +14,7 @@ import RecentTransaction from '../../components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from '../../components/side-note';
-import { useCashierStore } from 'Stores/useCashierStores';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;

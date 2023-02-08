@@ -16,7 +16,7 @@ import RecentTransaction from '../../components/recent-transaction';
 import SideNote from '../../components/side-note';
 import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
-import { useCashierStore } from 'Stores/useCashierStores';
+import { useCashierStore } from '../../stores/useCashierStores';
 import { useIsSystemMaintenance } from '@deriv/hooks';
 
 type TWithdrawalSideNoteProps = {

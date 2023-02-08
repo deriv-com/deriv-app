@@ -16,6 +16,14 @@ import Options from 'Assets/svgs/trading-platform/ic-appstore-options.svg';
 import SmartTrader from 'Assets/svgs/trading-platform/ic-brand-smarttrader.svg';
 import SmartTraderBlue from 'Assets/svgs/trading-platform/ic-appstore-smarttrader-blue.svg';
 import CFDs from 'Assets/svgs/trading-platform/ic-appstore-cfds.svg';
+import BinaryBotRebranding from 'Assets/svgs/trading-platform/ic-rebranding-binarybot.svg';
+import DBotRebranding from 'Assets/svgs/trading-platform/ic-rebranding-dbot.svg';
+import DerivGoRebranding from 'Assets/svgs/trading-platform/ic-rebranding-derivgo.svg';
+import DerivXRebranding from 'Assets/svgs/trading-platform/ic-rebranding-derivx.svg';
+import DTraderRebranding from 'Assets/svgs/trading-platform/ic-rebranding-dtrader.svg';
+import MT5DerivedRebranding from 'Assets/svgs/trading-platform/ic-rebranding-mt5-derived.svg';
+import MT5FinancialRebranding from 'Assets/svgs/trading-platform/ic-rebranding-mt5-financial.svg';
+import SmartTraderRebranding from 'Assets/svgs/trading-platform/ic-rebranding-smart-trader.svg';
 import { IconProps } from '../icon-types';
 
 export const PlatformIcons = {
@@ -36,6 +44,14 @@ export const PlatformIcons = {
     SmartTrader,
     SmartTraderBlue,
     CFDs,
+    BinaryBotRebranding,
+    DBotRebranding,
+    DerivGoRebranding,
+    DerivXRebranding,
+    DTraderRebranding,
+    MT5DerivedRebranding,
+    MT5FinancialRebranding,
+    SmartTraderRebranding,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

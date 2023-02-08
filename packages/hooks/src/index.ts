@@ -7,3 +7,4 @@ export { default as useNeedTNC } from './useNeedTNC';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
+export { default as useCashierLocked } from './useCashierLocked';

@@ -123,7 +123,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_landing_company_loaded,
         is_pre_appstore,
         setIsPreAppStore,
-        is_eu,
     } = client;
     const { cashier } = modules;
     const { general_store, payment_agent_transfer, payment_agent, account_transfer } = cashier;
@@ -131,7 +130,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
     const { is_account_transfer_visible } = account_transfer;
-    const { content_flag, should_show_exit_traders_modal, switchToCRAccount, show_eu_related_content } = traders_hub;
+    const { content_flag, should_show_exit_traders_modal, switchToCRAccount } = traders_hub;
     const is_onramp_visible = useOnrampVisible();
 
     const liveChat = useLiveChat();
@@ -551,16 +550,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
-                                            {is_eu && show_eu_related_content && !is_virtual && (
-                                                <MobileDrawer.Item>
-                                                    <MenuLink
-                                                        link_to={getStaticUrl('/regulatory')}
-                                                        icon='IcRegulatoryInformation'
-                                                        text={localize('Regulatory information')}
-                                                        onClickLink={toggleDrawer}
-                                                    />
-                                                </MobileDrawer.Item>
-                                            )}
+                                            <MobileDrawer.Item>
+                                                <MenuLink
+                                                    link_to={getStaticUrl('/regulatory')}
+                                                    icon='IcRegulatoryInformation'
+                                                    text={localize('Regulatory information')}
+                                                    onClickLink={toggleDrawer}
+                                                />
+                                            </MobileDrawer.Item>
                                             <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
                                                 <MenuLink
                                                     link_to={getStaticUrl('/')}

@@ -18,7 +18,7 @@ import { localize, Localize } from '@deriv/translations';
 import { isEmptyObject, isMobile, toTitleCase } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
-const NotificationsList = ({ notifications, toggleDialog }) => {
+const NotificationsList = ({ notifications, toggleDialog, removeNotificationByKey }) => {
     const getNotificationitemIcon = item => {
         const { type } = item;
         if (['contract_sold', 'info'].includes(type)) {
@@ -39,7 +39,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                 <div className='notifications-item' key={item.key}>
                     <Text
                         as='h2'
-                        className='notifications-item__title'
+                        className={classNames('notifications-item__title', {
+                            'notifications-item__title--closable': item.has_close_dialog_icon,
+                        })}
                         weight='bold'
                         size='xs'
                         line_height='m'
@@ -54,6 +56,14 @@ const NotificationsList = ({ notifications, toggleDialog }) => {
                             />
                         )}
                         {item.header}
+                        {item.has_close_dialog_icon && (
+                            <Icon
+                                className='notifications-item__title-close-icon'
+                                icon='IcCloseCircle'
+                                onClick={() => removeNotificationByKey(item)}
+                                custom_color='grey'
+                            />
+                        )}
                     </Text>
                     <div className='notifications-item__message'>{item.message}</div>
                     <div className='notifications-item__action'>
@@ -118,7 +128,7 @@ const ClearAllFooter = ({ is_empty, clearNotifications }) => {
 };
 
 const NotificationListWrapper = React.forwardRef(
-    ({ notifications, toggleDialog, clearNotifications, is_pre_appstore }, ref) => {
+    ({ notifications, toggleDialog, clearNotifications, is_pre_appstore, removeNotificationByKey }, ref) => {
         const is_empty = !notifications?.length;
 
         return (
@@ -151,7 +161,11 @@ const NotificationListWrapper = React.forwardRef(
                         {is_empty ? (
                             <EmptyNotification />
                         ) : (
-                            <NotificationsList notifications={notifications} toggleDialog={toggleDialog} />
+                            <NotificationsList
+                                notifications={notifications}
+                                toggleDialog={toggleDialog}
+                                removeNotificationByKey={removeNotificationByKey}
+                            />
                         )}
                     </ThemedScrollbars>
                 </div>
@@ -168,6 +182,7 @@ const NotificationsDialog = ({
     is_visible,
     notifications,
     toggleDialog,
+    removeNotificationByKey,
     removeNotificationMessage,
     removeNotificationMessageByKey,
     removeNotifications,
@@ -210,6 +225,7 @@ const NotificationsDialog = ({
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
                         clearNotifications={clearNotifications}
+                        removeNotificationByKey={removeNotificationByKey}
                     />
                 </MobileDialog>
             </MobileWrapper>
@@ -229,6 +245,7 @@ const NotificationsDialog = ({
                         notifications={notifications}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
+                        removeNotificationByKey={removeNotificationByKey}
                         removeNotificationMessage={removeNotificationMessage}
                         removeNotifications={removeNotifications}
                         removeNotificationMessageByKey={removeNotificationMessageByKey}

@@ -7,3 +7,4 @@ export { default as useNeedTNC } from './useNeedTNC';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
 export { default as useHasMaltaInvestAccount } from './useHasMaltaInvestAccount';
+export { default as useOnrampVisible } from './useOnrampVisible';

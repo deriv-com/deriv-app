@@ -73,6 +73,7 @@ type TClientStore = {
     active_accounts: {
         landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     }[];
+    is_crypto: boolean;
 };
 
 type TCommonStoreError = {

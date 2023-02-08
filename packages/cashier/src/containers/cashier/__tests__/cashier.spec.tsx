@@ -81,9 +81,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: false,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: false,
                     },
@@ -117,6 +114,8 @@ describe('<Cashier />', () => {
                 is_logged_in: true,
                 is_logging_in: true,
                 active_accounts: [],
+                is_virtual: false,
+                is_crypto: true,
             },
             modules: {
                 cashier: {
@@ -135,9 +134,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                    },
-                    onramp: {
-                        is_onramp_tab_visible: true,
                     },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
@@ -200,9 +196,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: true,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
                     },
@@ -257,9 +250,6 @@ describe('<Cashier />', () => {
     //                 },
     //                 transaction_history: {
     //                     is_crypto_transactions_visible: false,
-    //                 },
-    //                 onramp: {
-    //                     is_onramp_tab_visible: true,
     //                 },
     //                 payment_agent_transfer: {
     //                     is_payment_agent_transfer_visible: true,
@@ -317,9 +307,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: true,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
                     },
@@ -375,9 +362,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    onramp: {
-                        is_onramp_tab_visible: true,
-                    },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,
                     },
@@ -431,9 +415,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                    },
-                    onramp: {
-                        is_onramp_tab_visible: true,
                     },
                     payment_agent_transfer: {
                         is_payment_agent_transfer_visible: true,

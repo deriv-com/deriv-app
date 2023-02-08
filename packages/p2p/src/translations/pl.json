@@ -1,7 +1,7 @@
 {
     "6794664": "Ogłoszenia, które odpowiadają Twojemu saldu Deriv P2P i limitom.",
     "19789721": "Nikt cię nie zablokował. Super!",
-    "21103557": "Saldo Deriv P2P = nieodwracalne (przelew in blanco itp.) + część wpłat odwracalnych (płatności kartą kredytową itp.)",
+    "21103557": "Deriv P2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)",
     "24711354": "Wszystkie zlecenia <0>30 dni</0> | <1>od początku</1>",
     "47573834": "Stała stawka (1 {{account_currency}})",
     "50672601": "Kupiono",

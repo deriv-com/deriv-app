@@ -10,7 +10,7 @@ const PayoutHintModal = ({ is_open, onClose, type }) => (
     <Modal small is_open={is_open} is_vertical_centered toggleModal={onClose} title={localize('Payout per point')}>
         <Text size='xxs' as='p' className='payout-hint'>
             <Localize
-                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price.'
+                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
                 components={[<strong key={0} />]}
                 values={{
                     trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
@@ -90,18 +90,15 @@ const ContractInfo = ({
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {
-        if (type === 'VANILLALONGCALL') {
+        if (['VANILLALONGCALL', 'VANILLALONGPUT'].includes(type)) {
             return (
                 <Localize
-                    i18n_default_text='<0>For Call:</0> Your payout will grow by this amount for every point above your strike price.'
+                    i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
                     components={[<strong key={0} />]}
-                />
-            );
-        } else if (type === 'VANILLALONGPUT') {
-            return (
-                <Localize
-                    i18n_default_text='<0>For Put:</0> Your payout will grow by this amount for every point below your strike price.'
-                    components={[<strong key={0} />]}
+                    values={{
+                        trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+                        title: type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                    }}
                 />
             );
         }

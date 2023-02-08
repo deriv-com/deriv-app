@@ -515,7 +515,11 @@ export default class NotificationStore extends BaseStore {
 
                     if (upgradable_daily_limits)
                         this.addNotificationMessage(
-                            this.client_notifications.p2p_daily_limit_increase(max_daily_buy, max_daily_sell)
+                            this.client_notifications.p2p_daily_limit_increase(
+                                client.currency,
+                                max_daily_buy,
+                                max_daily_sell
+                            )
                         );
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
@@ -853,7 +857,7 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'danger',
             },
-            p2p_daily_limit_increase: (max_daily_buy, max_daily_sell) => {
+            p2p_daily_limit_increase: (currency, max_daily_buy, max_daily_sell) => {
                 return {
                     action:
                         routes.cashier_p2p === window.location.pathname
@@ -880,7 +884,7 @@ export default class NotificationStore extends BaseStore {
                         <Localize
                             i18n_default_text='Would you like to increase your daily limits to {{max_daily_buy}} {{currency}} (buy) and {{max_daily_sell}} {{currency}} (sell)?'
                             values={{
-                                currency: client_data.currency,
+                                currency,
                                 max_daily_buy: formatMoney(client_data.currency, max_daily_buy, true),
                                 max_daily_sell: formatMoney(client_data.currency, max_daily_sell, true),
                             }}

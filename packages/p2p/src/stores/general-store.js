@@ -393,7 +393,11 @@ export default class GeneralStore extends BaseStore {
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits;
 
         this.props.addNotificationMessage(
-            this.props.client_notifications.p2p_daily_limit_increase(max_daily_buy, max_daily_sell)
+            this.props.client_notifications.p2p_daily_limit_increase(
+                this.client.currency,
+                max_daily_buy,
+                max_daily_sell
+            )
         );
     }
 

@@ -68,7 +68,11 @@ const PurchaseButton = ({
             }}
         >
             <DesktopWrapper>
-                <div className='btn-purchase__info btn-purchase__info--left'>
+                <div
+                    className={classNames('btn-purchase__info', 'btn-purchase__info--left', {
+                        'btn-purchase__info--left--turbos': is_turbos,
+                    })}
+                >
                     <div className='btn-purchase__type-wrapper'>
                         <IconComponentWrapper type={getIconType()} />
                         <ButtonTextWrapper
@@ -80,7 +84,11 @@ const PurchaseButton = ({
                     </div>
                 </div>
                 <div className='btn-purchase__effect-detail' />
-                <div className='btn-purchase__effect-detail--arrow' />
+                <div
+                    className={classNames('btn-purchase__effect-detail--arrow', {
+                        'btn-purchase__effect-detail--arrow--turbos': is_turbos,
+                    })}
+                />
                 <div className='btn-purchase__info btn-purchase__info--right'>
                     <div className='btn-purchase__text_wrapper'>
                         {is_multiplier ? (
@@ -98,7 +106,11 @@ const PurchaseButton = ({
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='btn-purchase__top'>
+                <div
+                    className={classNames('btn-purchase__top', {
+                        'btn-purchase__turbos': is_turbos,
+                    })}
+                >
                     <IconComponentWrapper type={getIconType()} />
                     <ButtonTextWrapper
                         should_fade={should_fade}
@@ -107,18 +119,21 @@ const PurchaseButton = ({
                         is_high_low={is_high_low}
                     />
                 </div>
-                <div className='btn-purchase__bottom'>
-                    <ContractInfo
-                        basis={basis}
-                        currency={currency}
-                        has_increased={has_increased}
-                        is_loading={is_loading}
-                        is_multiplier={is_multiplier}
-                        should_fade={should_fade}
-                        proposal_info={info}
-                        type={type}
-                    />
-                </div>
+                {!is_turbos && (
+                    <div className='btn-purchase__bottom'>
+                        <ContractInfo
+                            basis={basis}
+                            currency={currency}
+                            has_increased={has_increased}
+                            is_loading={is_loading}
+                            is_multiplier={is_multiplier}
+                            is_turbos={is_turbos}
+                            should_fade={should_fade}
+                            proposal_info={info}
+                            type={type}
+                        />
+                    </div>
+                )}
             </MobileWrapper>
         </button>
     );

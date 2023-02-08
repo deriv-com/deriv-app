@@ -41,6 +41,10 @@
         &__bottom {
             width: 40vw; // TODO remove this when find a solution for fill-width inside flex.
         }
+        &__turbos {
+            align-items: center;
+            width: auto;
+        }
         &:hover {
             transform: none !important;
         }
@@ -104,6 +108,9 @@
             position: absolute;
         }
     }
+    &__info--left--turbos {
+        width: 70%;
+    }
     &__info--right {
         width: 45%;
         padding-right: 1rem;
@@ -136,6 +143,9 @@
         top: 0;
         bottom: 0;
         display: inline-block;
+    }
+    &__effect-detail--arrow--turbos {
+        left: 12rem;
     }
     &[disabled]:hover {
         cursor: initial;

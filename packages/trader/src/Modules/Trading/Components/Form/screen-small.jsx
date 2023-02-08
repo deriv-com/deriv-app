@@ -16,6 +16,8 @@ import ContractType from '../../Containers/contract-type.jsx';
 import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
 import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
+import classNames from 'classnames';
+import PayoutPerPoint from '../Elements/Turbos/payout-per-point.jsx';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -67,7 +69,16 @@ const CollapsibleTradeParams = ({
                     <RiskManagementInfo />
                 </div>
             )}
-            <div className='purchase-container'>
+            {is_turbos && (
+                <div>
+                    <PayoutPerPoint />
+                </div>
+            )}
+            <div
+                className={classNames('purchase-container', {
+                    'purchase-container__turbos': is_turbos,
+                })}
+            >
                 <Purchase />
             </div>
         </Collapsible>

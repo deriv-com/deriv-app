@@ -224,6 +224,12 @@
                     opacity: 0;
                 }
             }
+            &--turbos {
+                display: flex;
+                justify-self: left;
+                align-items: flex-start;
+                flex-direction: column;
+            }
             &-value {
                 font-size: 1.4rem;
                 font-weight: 700;
@@ -254,6 +260,10 @@
                 display: inline-block;
                 position: relative;
                 font-weight: bold;
+
+                &--turbos {
+                    margin-left: 0;
+                }
             }
             &-movement {
                 margin-left: 4px;
@@ -262,6 +272,9 @@
                 bottom: 1px;
                 position: relative;
             }
+        }
+        &-turbos {
+            align-items: center;
         }
     }
     &__price-info-currency {
@@ -565,6 +578,10 @@
         display: grid;
         grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
+
+        &__turbos {
+            display: block;
+        }
     }
     //&__lock {
     //    position: absolute;
@@ -638,6 +655,26 @@
         left: 0;
         width: calc(100vw - 1.6rem);
         transform: translate(0.8rem, 0);
+    }
+}
+
+.payout-per-point {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    &__text {
+        position: relative;
+        bottom: 0.3rem;
+
+        &-popover {
+            display: flex;
+            gap: 0.6rem;
+        }
+    }
+    &__currency {
+        position: relative;
+        bottom: 0.2rem;
     }
 }
 

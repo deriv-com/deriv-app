@@ -83,6 +83,7 @@ const PurchaseFieldset = ({
                             has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
+                            is_turbos={is_turbos}
                             should_fade={should_fade}
                             type={type}
                         />

@@ -4,6 +4,11 @@ import ButtonLoading from './button_loading';
 import Icon from '../icon';
 import Text from '../text';
 
+// <<<<<<< HEAD
+// export type TButtonCommonProps = {
+// =======
+// export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> & {
+// >>>>>>> upstream/develop
 export type TButtonCommonProps = {
     alternate: boolean;
     blue: boolean;

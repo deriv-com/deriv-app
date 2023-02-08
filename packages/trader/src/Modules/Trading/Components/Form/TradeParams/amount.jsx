@@ -10,6 +10,7 @@ import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
 import Multiplier from './Multiplier/multiplier.jsx';
+import TurbosInfo from './Turbos/turbos-info.jsx';
 
 const Input = ({
     amount,
@@ -171,6 +172,7 @@ const Amount = ({
                     />
                 </React.Fragment>
             )}
+            {is_turbos && <TurbosInfo className='trade-container__turbos-trade-info' />}
         </Fieldset>
     );
 };

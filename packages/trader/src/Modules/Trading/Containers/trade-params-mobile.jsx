@@ -174,20 +174,21 @@ export default connect(({ client, modules, ui }) => ({
 }))(TradeParamsModal);
 
 const TradeParamsMobile = ({
-    currency,
-    toggleModal,
-    isVisible,
-    setAmountTabIdx,
     amount_tab_idx,
-    setTradeParamTabIdx,
-    trade_param_tab_idx,
-    setDurationTabIdx,
+    currency,
     duration_unit,
     duration_units_list,
     duration_value,
     duration_tab_idx,
     has_amount_error,
     has_duration_error,
+    isVisible,
+    is_turbos,
+    setAmountTabIdx,
+    setTradeParamTabIdx,
+    setDurationTabIdx,
+    trade_param_tab_idx,
+    toggleModal,
     // amount
     setAmountError,
     setSelectedAmount,
@@ -237,7 +238,9 @@ const TradeParamsMobile = ({
             case 'amount':
                 return (
                     <div className='trade-params__header'>
-                        <div className='trade-params__header-label'>{localize('Amount')}</div>
+                        <div className='trade-params__header-label'>
+                            {is_turbos ? localize('Stake') : localize('Amount')}
+                        </div>
                         <div
                             className={classNames('trade-params__header-value', {
                                 'trade-params__header-value--has-error': has_amount_error,
@@ -301,6 +304,7 @@ const TradeParamsMobile = ({
 const TradeParamsMobileWrapper = connect(({ modules }) => ({
     basis_list: modules.trade.basis_list,
     basis: modules.trade.basis,
+    is_turbos: modules.trade.is_turbos,
 }))(TradeParamsMobile);
 
 export const LastDigitMobile = connect(({ modules }) => ({

@@ -135,6 +135,9 @@ export default class TradeStore extends BaseStore {
     // Turbos trade params
     number_of_contracts = 0;
     turbos_barrier_choices = [];
+    //TODO: clean up min_stake ans max_stake after BE will be ready
+    min_stake = 1;
+    max_stake = 100;
 
     // Mobile
     is_trade_params_expanded = true;

@@ -2,25 +2,27 @@ import React from 'react';
 import { Tabs, Money, Numpad } from '@deriv/components';
 import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import TurbosInfo from './Turbos/turbos-info.jsx';
 
 import { connect } from 'Stores/connect';
 
 const Basis = ({
     addToast,
+    basis,
+    currency,
     duration_unit,
     duration_value,
-    toggleModal,
-    basis,
     has_duration_error,
+    is_turbos,
+    onChangeMultiple,
     selected_basis,
     setSelectedAmount,
-    onChangeMultiple,
-    currency,
+    setAmountError,
     trade_amount,
     trade_basis,
     trade_duration,
     trade_duration_unit,
-    setAmountError,
+    toggleModal,
 }) => {
     const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
@@ -65,40 +67,52 @@ const Basis = ({
     };
 
     return (
-        <div className='trade-params__amount-keypad'>
-            <Numpad
-                value={selected_basis}
-                format={formatAmount}
-                onSubmit={setBasisAndAmount}
-                currency={currency}
-                min={min_amount}
-                is_currency
-                render={({ value: v, className }) => {
-                    return (
-                        <div className={className}>
-                            {parseFloat(v) > 0 ? <Money currency={currency} amount={v} should_format={false} /> : v}
-                        </div>
-                    );
-                }}
-                reset_press_interval={450}
-                reset_value=''
-                pip_size={user_currency_decimal_places}
-                onValidate={validateAmount}
-                submit_label={localize('OK')}
-                onValueChange={onNumberChange}
-            />
-        </div>
+        <React.Fragment>
+            {is_turbos && (
+                <div className='trade-params__stake-container'>
+                    <TurbosInfo className='trade-container__turbos-trade-info' />
+                </div>
+            )}
+            <div className='trade-params__amount-keypad'>
+                <Numpad
+                    value={selected_basis}
+                    format={formatAmount}
+                    onSubmit={setBasisAndAmount}
+                    currency={currency}
+                    min={min_amount}
+                    is_currency
+                    render={({ value, className }) => {
+                        return (
+                            <div className={className}>
+                                {parseFloat(value) > 0 ? (
+                                    <Money currency={currency} amount={value} should_format={false} />
+                                ) : (
+                                    value
+                                )}
+                            </div>
+                        );
+                    }}
+                    reset_press_interval={450}
+                    reset_value=''
+                    pip_size={user_currency_decimal_places}
+                    onValidate={validateAmount}
+                    submit_label={localize('OK')}
+                    onValueChange={onNumberChange}
+                />
+            </div>
+        </React.Fragment>
     );
 };
 
 const AmountWrapper = connect(({ modules, client, ui }) => ({
+    addToast: ui.addToast,
+    currency: client.currency,
+    is_turbos: modules.trade.is_turbos,
     onChangeMultiple: modules.trade.onChangeMultiple,
     trade_amount: modules.trade.amount,
     trade_basis: modules.trade.basis,
     trade_duration_unit: modules.trade.duration_unit,
     trade_duration: modules.trade.duration,
-    currency: client.currency,
-    addToast: ui.addToast,
 }))(Basis);
 
 const Amount = ({

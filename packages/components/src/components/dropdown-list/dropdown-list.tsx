@@ -146,7 +146,7 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
 ListItems.displayName = 'ListItems';
 
 type TRef = {
-    dropdown_ref: React.RefObject<HTMLDivElement>;
+    dropdown_ref: React.RefObject<HTMLDivElement & SVGSVGElement> | null;
     list_item_ref: React.RefObject<HTMLDivElement>;
     list_wrapper_ref: React.RefObject<HTMLDivElement>;
 };

@@ -152,11 +152,11 @@ export default class GeneralStore extends BaseStore {
             account => !isCryptocurrency(account.title) && account.title !== 'Real'
         );
 
-        if (is_p2p_restricted || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
-            this.show_p2p_in_cashier_onboarding = false;
-        } else {
-            this.show_p2p_in_cashier_onboarding = true;
-        }
+        this.show_p2p_in_cashier_onboarding = !(
+            is_p2p_restricted ||
+            is_virtual ||
+            (has_user_fiat_currency && !has_usd_currency)
+        );
     }
 
     attachCashierToMenu() {
@@ -406,6 +406,7 @@ export default class GeneralStore extends BaseStore {
         return account_status.status.some(status_name => status_name === 'cashier_locked');
     }
 
+    /** @deprecated Use `useIsSystemMaintenance` from `@deriv/hooks` package instead. */
     get is_system_maintenance() {
         const { account_status } = this.root_store.client;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useDepositLocked } from '@deriv/hooks';
+import { useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
@@ -14,7 +14,7 @@ import RecentTransaction from '../../components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from '../../components/side-note';
-import { useCashierStore } from '../../stores/useCashierStores';
+import { useCashierStore } from 'Stores/useCashierStores';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
@@ -46,11 +46,11 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_crypto,
         is_deposit,
         is_loading,
-        is_system_maintenance,
         setActiveTab,
         setIsDeposit,
         cashier_route_tab_index: tab_index,
     } = general_store;
+    const is_system_maintenance = useIsSystemMaintenance();
 
     const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
 

@@ -1,0 +1,21 @@
+.static-currency-switcher-container {
+    display: inline-flex;
+    align-items: center;
+    height: 72px;
+    border: 1px solid var(--general-hover);
+    border-radius: 8px;
+    padding: 2rem 1.6rem;
+    margin-left: auto;
+    gap: 1.6rem;
+    flex-shrink: 0;
+
+    @include mobile {
+        width: 100%;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}

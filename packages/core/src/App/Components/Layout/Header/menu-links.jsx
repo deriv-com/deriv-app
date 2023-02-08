@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Icon, Counter } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
-import { PlatformContext, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount } from '@deriv/hooks';
 import './menu-links.scss';
@@ -54,19 +54,17 @@ const CashierTab = observer(() => {
 });
 
 const MenuLinks = observer(() => {
-    const { client } = useStore();
-    const { is_logged_in } = client;
-    const { is_pre_appstore } = React.useContext(PlatformContext);
+    const { client, ui } = useStore();
+    const { is_logged_in, is_pre_appstore } = client;
+    const { is_mobile } = ui;
 
     if (!is_logged_in) return <></>;
 
     return (
-        <React.Fragment>
-            <div className='header__menu-links'>
-                {!is_pre_appstore && <ReportTab />}
-                <CashierTab />
-            </div>
-        </React.Fragment>
+        <div className='header__menu-links'>
+            {!is_pre_appstore && <ReportTab />}
+            {!is_pre_appstore && !is_mobile && <CashierTab />}
+        </div>
     );
 });
 

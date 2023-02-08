@@ -4,11 +4,6 @@ import ButtonLoading from './button_loading';
 import Icon from '../icon';
 import Text from '../text';
 
-// <<<<<<< HEAD
-// export type TButtonCommonProps = {
-// =======
-// export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> & {
-// >>>>>>> upstream/develop
 export type TButtonCommonProps = {
     alternate: boolean;
     blue: boolean;
@@ -32,7 +27,7 @@ export type TButtonCommonProps = {
     text: string;
     transparent: boolean;
 };
-type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> &
+export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> &
     TButtonCommonProps & {
         classNameSpan: string;
         icon: React.ReactNode;

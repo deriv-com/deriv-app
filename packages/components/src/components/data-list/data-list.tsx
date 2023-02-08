@@ -149,16 +149,12 @@ const DataList = <T, G>({
         }, 200);
 
         setScrollTop(scrollTop);
-        if (typeof onScroll === 'function') {
-            onScroll(e);
-        }
+        onScroll?.(e);
     };
 
     const setRef = (ref: MeasuredCellParent) => {
         list_ref.current = ref;
-        if (typeof setListRef === 'function') {
-            setListRef(ref);
-        }
+        setListRef?.(ref);
     };
 
     if (is_loading) {

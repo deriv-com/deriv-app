@@ -4,7 +4,7 @@ import CashierOnboarding from '../cashier-onboarding';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import CashierProviders from '../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<CashierOnboarding />', () => {
     let mockRootStore;
@@ -65,7 +65,7 @@ describe('<CashierOnboarding />', () => {
 
     const renderCashierOnboarding = () =>
         render(<CashierOnboarding {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
     const renderCashierOnboardingWithRouter = () =>
@@ -74,7 +74,7 @@ describe('<CashierOnboarding />', () => {
                 <CashierOnboarding {...props} />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             }
         );
 

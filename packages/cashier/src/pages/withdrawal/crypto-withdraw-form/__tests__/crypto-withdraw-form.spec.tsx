@@ -1,8 +1,8 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
 import CryptoWithdrawForm from '../crypto-withdraw-form';
-import CashierProviders from '../../../../cashier-providers';
 
 describe('<CryptoWithdrawForm />', () => {
     let mockRootStore;
@@ -41,9 +41,9 @@ describe('<CryptoWithdrawForm />', () => {
 
     const renderCryptoWithdrawForm = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
+            <StoreProvider store={mockRootStore}>
                 <CryptoWithdrawForm />
-            </CashierProviders>
+            </StoreProvider>
         );
     };
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
 import Dropdown from '../dropdown/dropdown.jsx';
-import SelectNative from '../select-native/select-native';
+import SelectNative from '../select-native/select-native.jsx';
 
 const FilterDropdown = ({
     dropdown_className,

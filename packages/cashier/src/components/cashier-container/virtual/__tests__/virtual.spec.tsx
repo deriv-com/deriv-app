@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import Virtual from '../virtual';
-import CashierProviders from '../../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<Virtual />', () => {
     const history = createBrowserHistory();
@@ -22,7 +22,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             }
         );
 
@@ -35,7 +35,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             }
         );
 
@@ -50,7 +50,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             }
         );
 
@@ -63,7 +63,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             }
         );
 

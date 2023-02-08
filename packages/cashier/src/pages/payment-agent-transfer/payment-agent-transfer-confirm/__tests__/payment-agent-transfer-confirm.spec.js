@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentTransferConfirm from '../payment-agent-transfer-confirm.jsx';
-import CashierProviders from '../../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<PaymentAgentTransferConfirm />', () => {
     let mockRootStore;
@@ -47,9 +47,9 @@ describe('<PaymentAgentTransferConfirm />', () => {
 
     const renderPaymentAgentTransferConfirm = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
+            <StoreProvider store={mockRootStore}>
                 <PaymentAgentTransferConfirm />
-            </CashierProviders>
+            </StoreProvider>
         );
     };
 

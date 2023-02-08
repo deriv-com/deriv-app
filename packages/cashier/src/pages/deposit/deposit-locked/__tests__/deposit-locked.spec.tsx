@@ -1,9 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
+import { StoreProvider } from '@deriv/stores';
 import DepositLocked from '../deposit-locked';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('Components/cashier-locked', () => {
     const CashierLocked = () => (
@@ -44,9 +44,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -78,9 +76,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -104,9 +100,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -134,9 +128,7 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(

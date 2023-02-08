@@ -3,8 +3,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
+import { StoreProvider } from '@deriv/stores';
 import AccountTransferReceipt from '../account-transfer-receipt';
-import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore;
@@ -56,9 +56,9 @@ describe('<AccountTransferReceipt />', () => {
     const renderAccountTransferReceipt = () =>
         render(<AccountTransferReceipt onClose={onClose} />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore}>
+                <StoreProvider store={mockRootStore}>
                     <Router history={history}>{children}</Router>
-                </CashierProviders>
+                </StoreProvider>
             ),
         });
 

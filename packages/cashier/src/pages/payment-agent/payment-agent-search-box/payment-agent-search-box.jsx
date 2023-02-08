@@ -1,12 +1,16 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import CashierSearchBox from 'Components/cashier-search-box';
-import { useCashierStore } from '../../../stores/useCashierStores';
 
 const PaymentAgentSearchBox = observer(() => {
-    const { payment_agent } = useCashierStore();
+    const {
+        modules: {
+            cashier: { payment_agent },
+        },
+    } = useStore();
+
     const { filterPaymentAgentList, setIsSearchLoading, search_term, setSearchTerm } = payment_agent;
 
     const debouncedFunction = debounce(() => {

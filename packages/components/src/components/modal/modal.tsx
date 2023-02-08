@@ -6,11 +6,7 @@ import Body from './modal-body';
 import Footer from './modal-footer';
 import Text from '../text/text';
 import Icon from '../icon/icon';
-import { useOnClickOutside } from '../../hooks';
-
-interface IClickEvent extends MouseEvent {
-    path?: HTMLElement[];
-}
+import { useOnClickOutside, IClickEvent } from '../../hooks';
 
 type TModalElement = {
     className?: string;

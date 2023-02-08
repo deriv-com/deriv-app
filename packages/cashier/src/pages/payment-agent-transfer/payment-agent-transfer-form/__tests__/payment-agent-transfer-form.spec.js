@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
-import CashierProviders from '../../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,
@@ -56,9 +56,9 @@ describe('<PaymentAgentTransferForm />', () => {
 
     const renderPaymentAgentTransferForm = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
+            <StoreProvider store={mockRootStore}>
                 <PaymentAgentTransferForm />
-            </CashierProviders>
+            </StoreProvider>
         );
     };
 

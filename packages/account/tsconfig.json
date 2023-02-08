@@ -4,7 +4,6 @@
         "outDir": "./dist",
         "baseUrl": "./",
         "paths": {
-            "Assets/*": ["src/Assets/*"],
             "Components/*": ["src/Components/*"],
             "Containers/*": ["src/Containers/*"],
             "Constants/*": ["src/Constants/*"],

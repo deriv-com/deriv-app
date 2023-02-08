@@ -58,6 +58,7 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
 
     React.useEffect(() => {
+        props.setIsTradingAssessmentForNewUserEnabled(true);
         props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
         const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
@@ -189,7 +190,7 @@ const AccountWizard = props => {
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
-
+        props.setRealAccountFormData(clone);
         if (payload) {
             clone = {
                 ...clone,
@@ -200,13 +201,13 @@ const AccountWizard = props => {
         return props.realAccountSignup(clone);
     };
 
-    const updateValue = (index, value, setSubmitting, goToNextStep) => {
+    const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
         saveFormData(index, value);
         clearError();
 
         // Check if account wizard is not finished
-        if (index + 1 >= state_items.length) {
-            createRealAccount();
+        if (should_override || index + 1 >= state_items.length) {
+            createRealAccount({});
         } else {
             goToNextStep();
         }
@@ -247,6 +248,7 @@ const AccountWizard = props => {
 
     const createRealAccount = (payload = undefined) => {
         props.setLoading(true);
+        const form_data = { ...form_values() };
         submitForm(payload)
             .then(response => {
                 props.setIsRiskWarningVisible(false);
@@ -268,25 +270,38 @@ const AccountWizard = props => {
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
+                } else if (error.code === 'AppropriatenessTestFailed') {
+                    if (form_data?.risk_tolerance === 'No') {
+                        props.fetchAccountSettings();
+                        props.setShouldShowRiskWarningModal(true);
+                    } else {
+                        props.setShouldShowAppropriatenessWarningModal(true);
+                    }
                 } else {
                     props.onError(error, state_items);
                 }
             })
-            .finally(() => props.setLoading(false));
+            .finally(() => {
+                props.setLoading(false);
+                localStorage.removeItem('current_question_index');
+            });
     };
 
     const onAcceptRisk = () => {
         createRealAccount({ accept_risk: 1 });
     };
+
     const onDeclineRisk = () => {
         props.onClose();
         props.setIsRiskWarningVisible(false);
     };
 
     if (props.is_loading) return <LoadingModal />;
+
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
+
     if (!mounted) return null;
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
@@ -341,44 +356,50 @@ const AccountWizard = props => {
 
 AccountWizard.propTypes = {
     account_settings: PropTypes.object,
+    closeRealAccountSignup: PropTypes.func,
+    content_flag: PropTypes.string,
+    fetchFinancialAssessment: PropTypes.func,
     fetchResidenceList: PropTypes.func,
+    fetchStatesList: PropTypes.func,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    onError: PropTypes.func,
-    onLoading: PropTypes.func,
-    onFinishSuccess: PropTypes.func,
-    onOpenWelcomeModal: PropTypes.func,
-    realAccountSignup: PropTypes.func,
-    residence: PropTypes.string,
-    residence_list: PropTypes.array,
-
-    fetchStatesList: PropTypes.func,
-    fetchFinancialAssessment: PropTypes.func,
-    onClose: PropTypes.func,
-    setLoading: PropTypes.func,
-    setIsRiskWarningVisible: PropTypes.func,
-    real_account_signup_target: PropTypes.string,
     is_loading: PropTypes.bool,
-    closeRealAccountSignup: PropTypes.func,
     is_virtual: PropTypes.bool,
+    onClose: PropTypes.func,
+    onError: PropTypes.func,
+    onFinishSuccess: PropTypes.func,
+    onLoading: PropTypes.func,
+    onOpenWelcomeModal: PropTypes.func,
+    real_account_signup_target: PropTypes.string,
+    realAccountSignup: PropTypes.func,
+    residence_list: PropTypes.array,
+    residence: PropTypes.string,
+    setIsRiskWarningVisible: PropTypes.func,
+    setLoading: PropTypes.func,
 };
 
-export default connect(({ client, notifications, ui }) => ({
+export default connect(({ client, notifications, ui, traders_hub }) => ({
     account_settings: client.account_settings,
-    is_fully_authenticated: client.is_fully_authenticated,
-    realAccountSignup: client.realAccountSignup,
     closeRealAccountSignup: ui.closeRealAccountSignup,
-    is_virtual: client.is_virtual,
-    has_real_account: client.has_active_real_account,
-    upgrade_info: client.upgrade_info,
-    real_account_signup_target: ui.real_account_signup_target,
-    has_currency: !!client.currency,
-    residence: client.residence,
-    residence_list: client.residence_list,
-    states_list: client.states_list,
-    fetchStatesList: client.fetchStatesList,
-    fetchResidenceList: client.fetchResidenceList,
-    refreshNotifications: notifications.refreshNotifications,
+    content_flag: traders_hub.content_flag,
+    fetchAccountSettings: client.fetchAccountSettings,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
+    fetchResidenceList: client.fetchResidenceList,
+    fetchStatesList: client.fetchStatesList,
     financial_assessment: client.financial_assessment,
+    has_currency: !!client.currency,
+    has_real_account: client.has_active_real_account,
+    is_fully_authenticated: client.is_fully_authenticated,
+    is_virtual: client.is_virtual,
+    real_account_signup_target: ui.real_account_signup_target,
+    realAccountSignup: client.realAccountSignup,
+    refreshNotifications: notifications.refreshNotifications,
+    residence_list: client.residence_list,
+    residence: client.residence,
+    setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
+    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
+    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    states_list: client.states_list,
+    upgrade_info: client.upgrade_info,
 }))(AccountWizard);

@@ -43,6 +43,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     onClose={destroy}
+                    icon={data.icon}
                 />
             );
         case 'trustpilot':
@@ -90,6 +91,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     className={classNames('notification', types[data.type], {
                         'notification--small': data.size === 'small',
                     })}
+                    data-testid='dt_default_component'
                 >
                     <div
                         className={classNames('notification__icon-background', {
@@ -179,6 +181,7 @@ Notification.propTypes = {
         img_src: PropTypes.string,
         is_auto_close: PropTypes.bool,
         key: PropTypes.string,
+        icon: PropTypes.string,
         message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         message_popup: PropTypes.string,
         primary_btn: PropTypes.object,

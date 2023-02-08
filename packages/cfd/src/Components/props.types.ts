@@ -47,6 +47,8 @@ export type TCFDAccountCardActionProps = {
     type: TType;
     platform: string;
     title: string;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 export type TTradingPlatformAvailableAccount = {
@@ -62,7 +64,7 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
     sub_account_type: string;
 };
 
@@ -108,6 +110,15 @@ export type TCFDAccountCard = {
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
     setMT5TradeAccount: (arg: any) => void;
+    toggleCFDVerificationModal: () => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
+    setAccountType: (account_type: { category: string; type?: string }) => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
+    updateAccountStatus: () => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
+    setAppstorePlatform: (value: string) => void;
+    show_eu_related_content: boolean;
 };
 
 export type TTradingPlatformAccounts = {

@@ -56,7 +56,7 @@ const AppStore = React.lazy(() =>
     })
 );
 
-const getModules = ({ is_appstore }, is_social_signup) => {
+const getModules = () => {
     const modules = [
         {
             path: routes.bot,
@@ -113,7 +113,6 @@ const getModules = ({ is_appstore }, is_social_signup) => {
             getTitle: () => localize('Account Settings'),
             icon_component: 'IcUserOutline',
             is_authenticated: true,
-            // TODO: Revisit this workaround for subroutes [app-routing]
             routes: [
                 {
                     getTitle: () => localize('Profile'),
@@ -124,6 +123,23 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                             component: Account,
                             getTitle: () => localize('Personal details'),
                             default: true,
+                        },
+
+                        {
+                            path: routes.languages,
+                            component: Account,
+                            getTitle: () => localize('Languages'),
+                        },
+                    ],
+                },
+                {
+                    getTitle: () => localize('Assessments'),
+                    icon: 'IcAssessment',
+                    subroutes: [
+                        {
+                            path: routes.trading_assessment,
+                            component: Account,
+                            getTitle: () => localize('Trading assessment'),
                         },
                         {
                             path: routes.financial_assessment,
@@ -146,6 +162,11 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                             component: Account,
                             getTitle: () => localize('Proof of address'),
                         },
+                        {
+                            path: routes.proof_of_ownership,
+                            component: Account,
+                            getTitle: () => localize('Proof of ownership'),
+                        },
                     ],
                 },
                 {
@@ -155,8 +176,7 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                         {
                             path: routes.passwords,
                             component: Account,
-                            getTitle: () =>
-                                is_social_signup ? localize('Passwords') : localize('Email and passwords'),
+                            getTitle: () => localize('Email and passwords'),
                         },
                         {
                             path: routes.self_exclusion,
@@ -194,6 +214,31 @@ const getModules = ({ is_appstore }, is_social_signup) => {
                             getTitle: () => localize('Close your account'),
                         },
                     ],
+                },
+            ],
+        },
+        {
+            path: routes.traders_hub,
+            component: AppStore,
+            is_authenticated: true,
+            getTitle: () => localize('Traders Hub'),
+        },
+        {
+            path: routes.onboarding,
+            component: AppStore,
+            is_authenticated: false,
+            getTitle: () => localize('Appstore'),
+            routes: [
+                {
+                    path: routes.traders_hub,
+                    component: AppStore,
+                    getTitle: () => localize('Traders Hub'),
+                },
+                {
+                    path: routes.onboarding,
+                    component: AppStore,
+                    is_authenticated: false,
+                    getTitle: () => localize('Onboarding'),
                 },
             ],
         },
@@ -279,14 +324,6 @@ const getModules = ({ is_appstore }, is_social_signup) => {
         },
     ];
 
-    if (is_appstore) {
-        modules.unshift({
-            path: routes.trading_hub,
-            component: AppStore,
-            getTitle: () => localize('Trading hub'),
-        });
-    }
-
     return modules;
 };
 
@@ -297,7 +334,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
+const initRoutesConfig = ({ is_appstore, is_eu_country }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -308,7 +345,7 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_appstore }, is_social_signup),
+    ...getModules({ is_appstore, is_eu_country }),
 ];
 
 let routesConfig;
@@ -317,9 +354,11 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_appstore = true }, is_social_signup) => {
-    routesConfig = initRoutesConfig({ is_appstore }, is_social_signup);
-    routesConfig.push(route_default);
+const getRoutesConfig = ({ is_appstore = true, is_eu_country }) => {
+    if (!routesConfig) {
+        routesConfig = initRoutesConfig({ is_appstore, is_eu_country });
+        routesConfig.push(route_default);
+    }
     return routesConfig;
 };
 

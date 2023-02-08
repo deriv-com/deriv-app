@@ -2,8 +2,8 @@ import React from 'react';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import RootStore from '../Stores/index';
+import { connect } from '../Stores/connect';
 
 type TSwitchToRealAccountModal = {
     is_open: boolean;

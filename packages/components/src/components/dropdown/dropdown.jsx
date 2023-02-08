@@ -9,7 +9,7 @@ import Items from './items.jsx';
 import DisplayText from './display-text.jsx';
 import Text from '../text/text';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
-import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import Icon from '../icon/icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
@@ -201,6 +201,7 @@ const Dropdown = ({
     suffix_icon,
     test_id,
     value,
+    classNameIcon,
 }) => {
     const dropdown_ref = React.useRef();
     const native_select_ref = React.useRef();
@@ -257,8 +258,8 @@ const Dropdown = ({
 
     React.useEffect(() => {
         if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
-    }, [is_list_visible, value]);
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_list_visible]);
     const handleSelect = item => {
         if (item.value !== value) onChange({ target: { name, value: item.value } });
 
@@ -413,7 +414,7 @@ const Dropdown = ({
                     {!(isSingleOption() || !!suffix_icon) && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
-                            className={classNames('dc-dropdown__select-arrow', {
+                            className={classNames('dc-dropdown__select-arrow', classNameIcon, {
                                 'dc-dropdown__select-arrow--left': is_alignment_left,
                                 'dc-dropdown__select-arrow--up': is_list_visible,
                                 'dc-dropdown__select-arrow--error': error || hint,
@@ -467,6 +468,7 @@ Dropdown.propTypes = {
     classNameHint: PropTypes.string,
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
+    classNameIcon: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     handleBlur: PropTypes.func,

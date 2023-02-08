@@ -1,14 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes, WS } from '@deriv/shared';
 import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { observer } from 'mobx-react-lite';
-import CashierLocked from 'Components/cashier-locked';
-import { useStore } from '../../../hooks';
+import { routes, WS } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
+import CashierLocked from '../../../components/cashier-locked';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
-const DepositLocked = () => {
-    const { client, modules } = useStore();
+const DepositLocked = observer(() => {
+    const { client } = useStore();
     const {
         account_status,
         is_financial_account,
@@ -17,8 +17,7 @@ const DepositLocked = () => {
         is_trading_experience_incomplete,
         standpoint,
     } = client;
-    const { cashier } = modules;
-    const { deposit } = cashier;
+    const { deposit } = useCashierStore();
     const { onMountDeposit: onMount } = deposit;
 
     // handle authentication locked
@@ -107,6 +106,6 @@ const DepositLocked = () => {
             )}
         </>
     );
-};
+});
 
-export default observer(DepositLocked);
+export default DepositLocked;

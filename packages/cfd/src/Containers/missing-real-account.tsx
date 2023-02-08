@@ -9,7 +9,7 @@ const MissingRealAccount = ({ onClickSignup, platform }: TMissingRealAccount) =>
         <div className='cfd-dashboard__missing-real-wrapper'>
             <Text className='cfd-dashboard__missing-real--heading' as='h1' weight='bold' line_height='l'>
                 {platform === CFD_PLATFORMS.MT5 ? (
-                    <Localize i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.' />
+                    <Localize i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real Deriv MT5 account.' />
                 ) : (
                     <Localize i18n_default_text='To create a Deriv X real account, create a Deriv real account first.' />
                 )}

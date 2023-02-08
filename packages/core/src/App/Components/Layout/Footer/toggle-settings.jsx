@@ -22,34 +22,50 @@ const LanguageSettingContainer = Loadable({
     loading: UILoader,
 });
 
-const ModalContent = ({ settings_extension }) => {
-    const content = [
-        {
-            icon: 'IcTheme',
-            label: localize('Themes'),
-            // eslint-disable-next-line react/display-name
-            value: ThemeSetting,
-        },
-        {
-            icon: 'IcLanguage',
-            label: localize('Language'),
-            value: LanguageSettingContainer,
-        },
-        ...(settings_extension || []),
-    ];
+const ModalContent = ({ settings_extension, is_pre_appstore }) => {
+    const content = [];
+    if (is_pre_appstore) {
+        content.push(...(settings_extension || []));
+    } else {
+        content.push(
+            {
+                icon: 'IcTheme',
+                label: localize('Themes'),
+                value: ThemeSetting,
+            },
+            {
+                icon: 'IcLanguage',
+                label: localize('Language'),
+                value: LanguageSettingContainer,
+            },
+            ...(settings_extension || [])
+        );
+    }
 
     return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
 };
 
-const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {
+const ToggleSettings = ({
+    enableApp,
+    is_settings_visible,
+    disableApp,
+    toggleSettings,
+    settings_extension,
+    is_pre_appstore,
+}) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
         'ic-settings--active': is_settings_visible,
     });
     return (
         <React.Fragment>
-            <a id='dt_settings_toggle' onClick={toggleSettings} className={`${toggle_settings_class} footer__link`}>
+            <a
+                id='dt_settings_toggle'
+                data-testid='dt_toggle_settings'
+                onClick={toggleSettings}
+                className={`${toggle_settings_class} footer__link`}
+            >
                 <Popover alignment='top' message={localize('Platform settings')} zIndex={9999}>
-                    <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
+                    <Icon icon='IcGear' data_testid='dt_icon' className='footer__icon ic-settings__icon' />
                 </Popover>
             </a>
             <Modal
@@ -63,7 +79,7 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
                 height='616px'
                 width='736px'
             >
-                <ModalContent settings_extension={settings_extension} />
+                <ModalContent settings_extension={settings_extension} is_pre_appstore={is_pre_appstore} />
             </Modal>
         </React.Fragment>
     );
@@ -75,6 +91,7 @@ ToggleSettings.propTypes = {
     is_settings_visible: PropTypes.bool,
     settings_extension: PropTypes.array,
     toggleSettings: PropTypes.func,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export { ToggleSettings };

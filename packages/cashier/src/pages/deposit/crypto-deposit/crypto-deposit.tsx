@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
 import QRCode from 'qrcode.react';
-import { observer } from 'mobx-react-lite';
-import RecentTransaction from 'Components/recent-transaction';
-import { useStore } from '../../../hooks';
+import RecentTransaction from '../../../components/recent-transaction';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-deposit.scss';
 
-const CryptoDeposit = () => {
-    const { client, modules } = useStore();
-    const { cashier } = modules;
+const CryptoDeposit = observer(() => {
+    const { client } = useStore();
     const { currency } = client;
-    const { onramp, transaction_history, general_store } = cashier;
+    const { onramp, transaction_history, general_store } = useCashierStore();
     const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
@@ -242,6 +241,6 @@ const CryptoDeposit = () => {
             {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
         </div>
     );
-};
+});
 
-export default observer(CryptoDeposit);
+export default CryptoDeposit;

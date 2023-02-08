@@ -1,12 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier-onboarding.scss';
 
-const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup, setDepositTarget }) => {
+const CashierOnboardingSideNote = observer(({ is_crypto }) => {
+    const { client, ui } = useStore();
+    const { general_store } = useCashierStore();
+    const { currency } = client;
+    const { openRealAccountSignup } = ui;
+    const { setDepositTarget } = general_store;
+
     const currency_code = getCurrencyDisplayCode(currency);
 
     const getSideNoteDescription = () => {
@@ -51,6 +57,7 @@ const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup,
             </Text>
             {is_crypto && (
                 <div
+                    data-testid='dt_cashier_onboarding_side_note_link'
                     className='cashier-onboarding-side-note__link'
                     onClick={() => {
                         setDepositTarget(routes.cashier_deposit);
@@ -65,19 +72,6 @@ const CashierOnboardingSideNote = ({ currency, is_crypto, openRealAccountSignup,
             )}
         </div>
     );
-};
+});
 
-CashierOnboardingSideNote.propTypes = {
-    currency: PropTypes.string,
-    is_crypto: PropTypes.bool,
-    mt5_login_list: PropTypes.array,
-    openRealAccountSignup: PropTypes.func,
-    setDepositTarget: PropTypes.func,
-};
-
-export default connect(({ client, modules, ui }) => ({
-    currency: client.currency,
-    mt5_login_list: client.mt5_login_list,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    setDepositTarget: modules.cashier.general_store.setDepositTarget,
-}))(CashierOnboardingSideNote);
+export default CashierOnboardingSideNote;

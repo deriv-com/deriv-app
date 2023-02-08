@@ -8,7 +8,6 @@ export default class OnRampStore extends BaseStore {
     api_error = null;
     deposit_address = null;
     is_deposit_address_loading = true;
-    is_deposit_address_popover_open = false;
     is_onramp_modal_open = false;
     is_requesting_widget_html = false;
     onramp_providers = [];
@@ -17,8 +16,6 @@ export default class OnRampStore extends BaseStore {
     widget_error = null;
     widget_html = null;
 
-    deposit_address_ref = null;
-
     constructor({ WS, root_store }) {
         super({ root_store });
 
@@ -26,7 +23,6 @@ export default class OnRampStore extends BaseStore {
             api_error: observable,
             deposit_address: observable,
             is_deposit_address_loading: observable,
-            is_deposit_address_popover_open: observable,
             is_onramp_modal_open: observable,
             is_requesting_widget_html: observable,
             onramp_providers: observable.shallow,
@@ -40,7 +36,6 @@ export default class OnRampStore extends BaseStore {
             should_show_dialog: computed,
             onMountOnramp: action.bound,
             onUnmountOnramp: action.bound,
-            onClickCopyDepositAddress: action.bound,
             onClickDisclaimerContinue: action.bound,
             onClickGoToDepositPage: action.bound,
             pollApiForDepositAddress: action.bound,
@@ -48,9 +43,7 @@ export default class OnRampStore extends BaseStore {
             setApiError: action.bound,
             setCopyIconRef: action.bound,
             setDepositAddress: action.bound,
-            setDepositAddressRef: action.bound,
             setIsDepositAddressLoading: action.bound,
-            setIsDepositAddressPopoverOpen: action.bound,
             setIsOnRampModalOpen: action.bound,
             setIsRequestingWidgetHtml: action.bound,
             setSelectedProvider: action.bound,
@@ -63,14 +56,11 @@ export default class OnRampStore extends BaseStore {
         this.WS = WS;
 
         this.onClientInit(async () => {
-            this.setOnrampProviders([
-                OnrampProviders.createChangellyProvider(this),
-                OnrampProviders.createXanPoolProvider(this),
-                OnrampProviders.createBanxaProvider(this),
-            ]);
+            this.setOnrampProviders([OnrampProviders.createBanxaProvider(this)]);
         });
     }
 
+    /** @deprecated Use `useOnrampVisible` from `@deriv/hooks` package instead. */
     get is_onramp_tab_visible() {
         const { client } = this.root_store;
 
@@ -112,7 +102,7 @@ export default class OnRampStore extends BaseStore {
     }
 
     get should_show_dialog() {
-        return this.api_error;
+        return !!this.api_error;
     }
 
     onMountOnramp() {
@@ -182,20 +172,6 @@ export default class OnRampStore extends BaseStore {
         }
     }
 
-    onClickCopyDepositAddress() {
-        const range = document.createRange();
-        range.selectNodeContents(this.deposit_address_ref);
-
-        const selections = window.getSelection();
-        selections.removeAllRanges();
-        selections.addRange(range);
-
-        navigator.clipboard.writeText(this.deposit_address).then(() => {
-            this.setIsDepositAddressPopoverOpen(true);
-            setTimeout(() => this.setIsDepositAddressPopoverOpen(false), 500);
-        });
-    }
-
     onClickDisclaimerContinue() {
         this.setShouldShowWidget(true);
     }
@@ -248,7 +224,6 @@ export default class OnRampStore extends BaseStore {
     resetPopup() {
         this.setApiError(null);
         this.setDepositAddress(null);
-        this.setDepositAddressRef(null);
         this.setIsDepositAddressLoading(true);
         this.setSelectedProvider(null);
         this.setShouldShowWidget(false);
@@ -268,16 +243,8 @@ export default class OnRampStore extends BaseStore {
         this.deposit_address = deposit_address;
     }
 
-    setDepositAddressRef(ref) {
-        this.deposit_address_ref = ref;
-    }
-
     setIsDepositAddressLoading(is_loading) {
         this.is_deposit_address_loading = is_loading;
-    }
-
-    setIsDepositAddressPopoverOpen(is_open) {
-        this.is_deposit_address_popover_open = is_open;
     }
 
     setIsOnRampModalOpen(is_open) {

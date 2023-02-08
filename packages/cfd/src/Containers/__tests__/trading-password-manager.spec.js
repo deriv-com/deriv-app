@@ -25,7 +25,7 @@ describe('TradingPasswordManager', () => {
         account_group: '',
     };
 
-    it('should render the proper icon and text for DMT5 for TradingPasswordManager', () => {
+    it('should render the proper icon and text for Deriv MT5 for TradingPasswordManager', () => {
         render(<TradingPasswordManager {...mock_props} platform='mt5' />);
         expect(screen.getByTestId('dt_mocked_icon')).toHaveTextContent('IcMt5OnePassword');
         expect(screen.getAllByText(/Deriv MT5 password/i)[0]).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe('TradingPasswordManager', () => {
         expect(screen.getByText(/Change password/i)).toBeInTheDocument();
     });
 
-    it('should call SendEmailModal if the confirm button is clicked for DMT5 account', async () => {
+    it('should call SendEmailModal if the confirm button is clicked for Deriv MT5 account', async () => {
         render(<TradingPasswordManager {...mock_props} />);
         fireEvent.click(screen.getByRole('button', { name: /Change password/i }));
         fireEvent.click(screen.getByRole('button', { name: /Confirm/i }));

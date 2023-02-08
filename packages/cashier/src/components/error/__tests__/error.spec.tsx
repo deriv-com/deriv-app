@@ -66,8 +66,8 @@ describe('<Error />', () => {
             const history = createBrowserHistory();
             const error = {
                 code: error_code,
-                setErrorMessage(value) {
-                    this.message = value;
+                setErrorMessage({ code, message }) {
+                    this.message = message;
                 },
                 message: '',
             };

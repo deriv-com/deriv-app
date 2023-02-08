@@ -11,6 +11,7 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
+import ConnectedAppsArticle from './connected-apps-article.jsx';
 import { PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
@@ -95,27 +96,36 @@ const ConnectedApps = () => {
                 {localize('Authorised applications')}
             </Text>
             {is_error && <ErrorComponent />}
-            {is_loading ? (
-                <Loading is_fullscreen={false} />
-            ) : (
-                <>
-                    <DesktopWrapper>
-                        <DataTable
-                            className='connected-apps'
-                            data_source={connected_apps}
-                            columns={GetConnectedAppsColumnsTemplate(handleToggleModal)}
-                        />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <DataList
-                            className='connected-apps'
-                            data_source={connected_apps}
-                            row_gap={is_appstore ? 16 : 10}
-                            rowRenderer={mobileRowRenderer}
-                        />
-                    </MobileWrapper>
-                </>
-            )}
+            <div
+                className={classNames('connected-apps__container', 'connected-apps__wrapper', {
+                    'connected-apps__wrapper--dashboard': is_appstore,
+                })}
+            >
+                {is_loading ? (
+                    <Loading is_fullscreen={false} />
+                ) : (
+                    <React.Fragment>
+                        <DesktopWrapper>
+                            <DataTable
+                                className='connected-apps'
+                                data_source={connected_apps}
+                                columns={GetConnectedAppsColumnsTemplate(handleToggleModal)}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <DataList
+                                className='connected-apps'
+                                data_source={connected_apps}
+                                row_gap={is_appstore ? 16 : 10}
+                                rowRenderer={mobileRowRenderer}
+                            />
+                        </MobileWrapper>
+                    </React.Fragment>
+                )}
+
+                {!is_loading && !!connected_apps.length && <ConnectedAppsArticle />}
+            </div>
+
             <Modal is_open={is_modal_open} className='connected-apps' toggleModal={handleToggleModal}>
                 <Modal.Body>
                     <div className='connected-app-modal'>

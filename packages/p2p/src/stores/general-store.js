@@ -14,11 +14,15 @@ import { ad_type } from 'Constants/floating-rate';
 export default class GeneralStore extends BaseStore {
     active_index = 0;
     active_notification_count = 0;
-    advertiser_id = null;
     advertiser_buy_limit = null;
+    advertiser_id = null;
+    advertiser_info = {};
     advertiser_sell_limit = null;
+    advertiser_relations_response = []; //TODO: Remove this when backend has fixed is_blocked flag issue
     block_unblock_user_error = '';
     balance;
+    cancels_remaining = null;
+    contact_info = '';
     feature_level = null;
     inactive_notification_count = 0;
     is_advertiser = false;
@@ -26,8 +30,10 @@ export default class GeneralStore extends BaseStore {
     is_blocked = false;
     is_block_unblock_user_loading = false;
     is_block_user_modal_open = false;
+    is_high_risk_fully_authed_without_fa = false;
     is_listed = false;
     is_loading = false;
+    is_modal_open = false;
     is_p2p_blocked_for_pa = false;
     is_restricted = false;
     nickname = null;
@@ -36,6 +42,7 @@ export default class GeneralStore extends BaseStore {
     order_table_type = order_list.ACTIVE;
     orders = [];
     parameters = null;
+    payment_info = '';
     poi_status = null;
     props = {};
     review_period;
@@ -43,8 +50,6 @@ export default class GeneralStore extends BaseStore {
     should_show_popup = false;
     user_blocked_count = 0;
     user_blocked_until = null;
-    is_high_risk_fully_authed_without_fa = false;
-    is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -66,8 +71,10 @@ export default class GeneralStore extends BaseStore {
             advertiser_id: observable,
             advertiser_buy_limit: observable,
             advertiser_sell_limit: observable,
+            advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            feature_level: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
@@ -121,6 +128,7 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
+            setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
             setFeatureLevel: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
@@ -199,6 +207,10 @@ export default class GeneralStore extends BaseStore {
                     this.setIsBlockUserModalOpen(false);
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
+
+                        //TODO: Remove this when backend has fixed is_blocked flag issue
+                        this.setAdvertiserRelationsResponse(p2p_advertiser_relations.blocked_advertisers);
+
                         advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
                             p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
                         );
@@ -232,6 +244,7 @@ export default class GeneralStore extends BaseStore {
                 this.setNicknameError(error.message);
             } else {
                 this.setAdvertiserId(id);
+                this.setAdvertiserInfo(p2p_advertiser_create);
                 this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
                 this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
                 this.setIsAdvertiser(!!is_approved);
@@ -439,9 +452,8 @@ export default class GeneralStore extends BaseStore {
                     const server_time = this.props.server_time.get();
                     const blocked_until_moment = toMoment(blocked_until);
 
-                    this.user_blocked_timeout = setTimeout(() => {
-                        this.setUserBlockedUntil(null);
-                    }, blocked_until_moment.diff(server_time));
+                    // Need isAfter instead of setTimeout as setTimeout has a max delay of 24.8 days
+                    if (server_time.isAfter(blocked_until_moment)) this.setUserBlockedUntil(null);
                 }
             }
         );
@@ -523,7 +535,7 @@ export default class GeneralStore extends BaseStore {
             };
 
             this.disposeLocalCurrencyReaction = reaction(
-                () => this.root_store.buy_sell_store.local_currency,
+                () => [this.root_store.buy_sell_store.local_currency, this.active_index],
                 () => {
                     this.subscribeToLocalCurrency();
                 }
@@ -537,6 +549,7 @@ export default class GeneralStore extends BaseStore {
 
     subscribeToLocalCurrency() {
         const { floating_rate_store, buy_sell_store } = this.root_store;
+        const client_currency = this.client.local_currency_config?.currency;
 
         this.ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
         this.ws_subscriptions.exchange_rate_subscription = subscribeWS(
@@ -544,7 +557,8 @@ export default class GeneralStore extends BaseStore {
                 exchange_rates: 1,
                 base_currency: this.client.currency,
                 subscribe: 1,
-                target_currency: buy_sell_store.local_currency ?? this.client.local_currency_config?.currency,
+                target_currency:
+                    this.active_index > 0 ? client_currency : buy_sell_store.local_currency ?? client_currency,
             },
             [floating_rate_store.fetchExchangeRate]
         );
@@ -609,6 +623,10 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_id = advertiser_id;
     }
 
+    setAdvertiserInfo(advertiser_info) {
+        this.advertiser_info = advertiser_info;
+    }
+
     setAdvertiserBuyLimit(advertiser_buy_limit) {
         this.advertiser_buy_limit = advertiser_buy_limit;
     }
@@ -621,8 +639,21 @@ export default class GeneralStore extends BaseStore {
         this.props = props;
     }
 
+    //TODO: Remove this when backend has fixed is_blocked flag issue
+    setAdvertiserRelationsResponse(advertiser_relations_response) {
+        this.advertiser_relations_response = advertiser_relations_response;
+    }
+
     setBlockUnblockUserError(block_unblock_user_error) {
         this.block_unblock_user_error = block_unblock_user_error;
+    }
+
+    setContactInfo(contact_info) {
+        this.contact_info = contact_info;
+    }
+
+    setDefaultAdvertDescription(default_advert_description) {
+        this.default_advert_description = default_advert_description;
     }
 
     setFeatureLevel(feature_level) {
@@ -754,6 +785,10 @@ export default class GeneralStore extends BaseStore {
         this.parameters = parameters;
     }
 
+    setPaymentInfo(payment_info) {
+        this.payment_info = payment_info;
+    }
+
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
     }
@@ -789,21 +824,28 @@ export default class GeneralStore extends BaseStore {
 
     updateAdvertiserInfo(response) {
         const {
+            blocked_by_count,
+            blocked_until,
+            contact_info,
             daily_buy,
             daily_buy_limit,
             daily_sell,
             daily_sell_limit,
-            blocked_until,
-            blocked_by_count,
+            default_advert_description,
             id,
             is_approved,
             is_blocked,
             is_listed,
             name,
+            payment_info,
+            show_name,
         } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
             this.setAdvertiserId(id);
+            this.setAdvertiserInfo(response.p2p_advertiser_info);
+            this.setContactInfo(contact_info);
+            this.setDefaultAdvertDescription(default_advert_description);
             this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
             this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
             this.setIsAdvertiser(!!is_approved);
@@ -812,8 +854,16 @@ export default class GeneralStore extends BaseStore {
             this.setNickname(name);
             this.setUserBlockedUntil(blocked_until);
             this.setUserBlockedCount(blocked_by_count);
+            this.setPaymentInfo(payment_info);
+            this.setShouldShowRealName(!!show_name);
+            this.setIsRestricted(false);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
+
+            this.setContactInfo('');
+            this.setPaymentInfo('');
+            this.setDefaultAdvertDescription('');
+
             if (response.error.code === api_error_codes.RESTRICTED_COUNTRY) {
                 this.setIsRestricted(true);
             } else if (response.error.code === api_error_codes.ADVERTISER_NOT_FOUND) {

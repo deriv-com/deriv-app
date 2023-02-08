@@ -8,10 +8,9 @@ import Text from '../text/text';
 import Icon from '../icon/icon';
 import { useOnClickOutside } from '../../hooks';
 
-type TClickEvent = React.MouseEvent<HTMLElement, MouseEvent> & {
+interface IClickEvent extends MouseEvent {
     path?: HTMLElement[];
-    composedPath?: () => HTMLElement[];
-};
+}
 
 type TModalElement = {
     className?: string;
@@ -82,7 +81,7 @@ const ModalElement = ({
     const isPortalElementVisible = () =>
         modal_root_ref.current?.querySelectorAll(portal_elements_selector.join(', ')).length;
 
-    const validateClickOutside = (e: TClickEvent): boolean => {
+    const validateClickOutside = (e: IClickEvent): boolean => {
         const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
@@ -90,12 +89,12 @@ const ModalElement = ({
             !isPortalElementVisible() &&
             is_open &&
             !is_absolute_modal_visible &&
-            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el)))
+            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement)))
         );
     };
 
-    const closeModal = (e: React.MouseEvent<HTMLElement>) => {
-        if (is_open) toggleModal?.(e);
+    const closeModal = () => {
+        if (is_open) toggleModal?.();
     };
 
     useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);
@@ -105,11 +104,11 @@ const ModalElement = ({
         const local_modal_root_ref = modal_root_ref;
 
         local_el_ref.current.classList.add('dc-modal');
-        local_modal_root_ref.current?.appendChild(local_el_ref.current);
+        local_modal_root_ref?.current?.appendChild?.(local_el_ref.current);
         onMount?.();
 
         return () => {
-            local_modal_root_ref.current?.removeChild(local_el_ref.current);
+            local_modal_root_ref?.current?.removeChild?.(local_el_ref.current);
             onUnmount?.();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

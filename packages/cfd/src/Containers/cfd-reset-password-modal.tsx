@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Formik, FormikHelpers } from 'formik';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
@@ -14,11 +14,11 @@ import {
     redirectToLogin,
 } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { getMtCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { connect } from '../Stores/connect';
+import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 
-const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
+const ResetPasswordIntent = ({ current_list, context, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
     const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
@@ -57,6 +57,8 @@ const CFDResetPasswordModal = ({
     email,
     is_cfd_reset_password_modal_enabled,
     is_eu,
+    is_pre_appstore,
+    context,
     is_logged_in,
     platform,
     setCFDPasswordResetModal,
@@ -88,7 +90,7 @@ const CFDResetPasswordModal = ({
         localStorage.removeItem('cfd_reset_password_intent');
         localStorage.removeItem('cfd_reset_password_type');
         localStorage.removeItem('cfd_reset_password_code');
-        if (history.location.pathname !== routes.mt5) {
+        if (history.location.pathname !== routes.mt5 && !is_pre_appstore) {
             history.push(`${routes.mt5}`);
         }
     };
@@ -153,19 +155,20 @@ const CFDResetPasswordModal = ({
     return (
         <Modal
             className='cfd-reset-password-modal'
+            context={context}
             is_open={is_cfd_reset_password_modal_enabled && !is_invalid_investor_token}
             toggleModal={() => setCFDPasswordResetModal(false)}
             title={
                 platform === CFD_PLATFORMS.DXTRADE
                     ? localize('Reset Deriv X investor password')
-                    : localize('Reset DMT5 investor password')
+                    : localize('Reset Deriv MT5 investor password')
             }
             onMount={() => redirectToLogin(is_logged_in, getLanguage(), true)}
             should_header_stick_body={false}
         >
             {!getIsListFetched() && !state.has_error && <Loading is_fullscreen={false} />}
             {getIsListFetched() && !state.has_error && !state.is_finished && (
-                <ResetPasswordIntent current_list={current_list} is_eu={is_eu}>
+                <ResetPasswordIntent context={context} current_list={current_list} is_eu={is_eu}>
                     {({ type, login }) => (
                         <Formik
                             initialValues={{ new_password: '' }}
@@ -285,21 +288,24 @@ CFDResetPasswordModal.propTypes = {
     email: PropTypes.string,
     is_cfd_reset_password_modal_enabled: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     platform: PropTypes.string,
     setCFDPasswordResetModal: PropTypes.func,
     history: PropTypes.object,
+    context: PropTypes.object,
 };
 
 export default React.memo(
     withRouter(
-        connect(({ modules: { cfd }, client }: RootStore) => ({
+        connect(({ modules: { cfd }, client, ui }: RootStore) => ({
             email: client.email,
             is_eu: client.is_eu,
-            is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
-            setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
+            is_cfd_reset_password_modal_enabled: ui.is_cfd_reset_password_modal_enabled,
+            setCFDPasswordResetModal: ui.setCFDPasswordResetModal,
             current_list: cfd.current_list,
             is_logged_in: client.is_logged_in,
+            is_pre_appstore: client.is_pre_appstore,
         }))(CFDResetPasswordModal)
     )
 );

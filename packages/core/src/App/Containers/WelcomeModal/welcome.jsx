@@ -30,20 +30,20 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
         if (is_uk) {
             country_options = ['Forex', 'Stocks', 'Stock indices', 'Commodities'];
         } else if (is_eu) {
-            country_options = ['Forex', 'Synthetics', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities'];
+            country_options = ['Forex', 'Derived', 'Stocks', 'Stock indices', 'Cryptocurrencies', 'Commodities'];
         } else {
-            country_options = ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities'];
+            country_options = ['Forex', 'Derived', 'Stocks and indices', 'Cryptocurrencies', 'Commodities'];
         }
         return country_options;
     };
     const mfOptions = () => {
         let mf_options;
         if (is_mlt_mf || is_mf_only) {
-            mf_options = ['Forex', 'Synthetics', 'Cryptocurrencies'];
+            mf_options = ['Forex', 'Derived', 'Cryptocurrencies'];
         } else if (is_uk) {
             mf_options = ['Forex'];
         } else {
-            mf_options = ['Forex', 'Synthetics'];
+            mf_options = ['Forex', 'Derived'];
         }
         return mf_options;
     };
@@ -98,7 +98,7 @@ const Welcome = ({ is_eu, country_standpoint, switchPlatform, can_have_mf_accoun
                         title={localize('Options')}
                         icon={<DigitalOptions />}
                         mobileIcon={<DigitalOptionsMobile />}
-                        options={is_eu ? ['Synthetics'] : ['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
+                        options={is_eu ? ['Derived'] : ['Forex', 'Derived', 'Stocks and indices', 'Commodities']}
                     />
                 )}
                 {!is_eu && (

@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useIsMounted } from '@deriv/shared';
 import { TRowRenderer } from './data-list';
 
-type TDataListRow = {
+type TDataListRow<T, G> = {
     action_desc?: {
         component: React.ReactNode;
     };
@@ -16,11 +16,11 @@ type TDataListRow = {
     is_dynamic_height?: boolean;
     is_new_row: boolean;
     is_scrolling: boolean;
-    passthrough?: any;
-    row: any;
+    passthrough?: G;
+    row: T;
 };
 
-const DataListRow = ({
+const DataListRow = <T, G>({
     action_desc,
     destination_link,
     row_gap,
@@ -29,7 +29,7 @@ const DataListRow = ({
     measure,
     is_dynamic_height,
     ...other_props
-}: TDataListRow) => {
+}: TDataListRow<T, G>) => {
     const [show_desc, setShowDesc] = React.useState(false);
     const isMounted = useIsMounted();
 

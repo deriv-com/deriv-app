@@ -21,31 +21,26 @@ import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
-type CellType = { Cell: typeof DataListCell };
 export type TRowRenderer = (params: { row: any; is_footer?: boolean; measure?: () => void }) => React.ReactNode;
-type DataListProps = {
+type DataListProps<T, G> = {
     className?: string;
-    data_source: any;
+    data_source: T[];
     footer?: React.ReactNode;
-    getRowAction?: (row: React.ReactNode) => string;
-    getRowSize?: (params: any) => number;
-    keyMapper?: (row: any) => string;
+    getRowAction?: (row: T) => string;
+    getRowSize?: (params: { index: number }) => number;
+    keyMapper?: (row: T) => number | string;
     onRowsRendered?: () => void;
     onScroll?: (ev: ScrollParams) => void;
-    passthrough?: {
-        root_store: any;
-        WS: Record<string, any>;
-    };
+    passthrough?: G;
     row_gap?: number;
     setListRef?: (ref: MeasuredCellParent) => void;
     rowRenderer: TRowRenderer;
     children?: React.ReactNode;
     overscanRowCount?: number;
-    Cell?: CellType;
 };
 type GetContentType = { measure?: () => void | undefined };
 
-const DataList = ({
+const DataList = <T, G>({
     children,
     className,
     data_source,
@@ -60,7 +55,7 @@ const DataList = ({
     row_gap,
     getRowAction,
     passthrough,
-}: DataListProps) => {
+}: DataListProps<T, G>) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_scrolling, setIsScrolling] = React.useState(false);
     const [scroll_top, setScrollTop] = React.useState(0);
@@ -68,14 +63,14 @@ const DataList = ({
     const cache = React.useRef<CellMeasurerCache>();
     const list_ref = React.useRef<MeasuredCellParent | null>(null);
     const items_transition_map_ref = React.useRef<{ [key: string]: boolean }>({});
-    const data_source_ref = React.useRef<[] | null>(null);
+    const data_source_ref = React.useRef<T[] | null>(null);
     data_source_ref.current = data_source;
 
     const is_dynamic_height = !getRowSize;
 
     const trackItemsForTransition = React.useCallback(() => {
-        data_source.forEach((item: string, index: string) => {
-            const row_key: string = keyMapper?.(item) || `${index}-0`;
+        data_source.forEach((item: T, index: number) => {
+            const row_key: string | number = keyMapper?.(item) || `${index}-0`;
             items_transition_map_ref.current[row_key] = true;
         });
     }, [data_source, keyMapper]);
@@ -111,7 +106,7 @@ const DataList = ({
         const action = getRowAction && getRowAction(row);
         const destination_link = typeof action === 'string' ? action : undefined;
         const action_desc = typeof action === 'object' ? action : undefined;
-        const row_key: string = keyMapper?.(row) || key;
+        const row_key = keyMapper?.(row) || key;
 
         const getContent = ({ measure }: GetContentType = {}) => (
             <DataListRow
@@ -208,7 +203,7 @@ const DataList = ({
                                         rowHeight={
                                             is_dynamic_height && cache?.current?.rowHeight
                                                 ? cache?.current?.rowHeight
-                                                : getRowSize || 50
+                                                : getRowSize || 0
                                         }
                                         rowRenderer={rowRenderer}
                                         scrollingResetTimeInterval={0}
@@ -240,5 +235,5 @@ const DataList = ({
 DataList.displayName = 'DataList';
 
 DataList.Cell = DataListCell;
-
-export default React.memo(DataList);
+const genericMemo: <T>(component: T) => T = React.memo;
+export default genericMemo(DataList);

@@ -1,27 +1,27 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type TRenderCellContent = {
+type TRenderCellContent<T> = {
     cell_value: object;
     is_footer: boolean;
     passthrough: unknown;
-    row_obj: object;
+    row_obj: T;
 };
-type TDataListCell = {
+type TDataListCell<T, G> = {
     className: string;
     column: {
-        col_index: number;
+        col_index: number | string;
         title: string;
-        renderCellContent: (props: TRenderCellContent) => React.ReactNode;
+        renderCellContent: (props: TRenderCellContent<T>) => React.ReactNode;
         renderHeader: (prop: renderHeaderType) => React.ReactNode;
     };
     is_footer: boolean;
-    passthrough: unknown;
-    row: [];
+    passthrough: G;
+    row: T;
 };
 
 type renderHeaderType = { title: string };
-const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataListCell) => {
+const DataListCell = <T, G>({ className, column, is_footer, passthrough, row }: TDataListCell<T, G>) => {
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];

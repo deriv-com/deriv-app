@@ -110,34 +110,24 @@ const AppModals = ({
             break;
     }
 
-    if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
-    }
-
     if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
     }
-
     if (is_close_uk_account_modal_visible) {
         ComponentToLoad = <CloseUKAccountModal />;
     }
-
     if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     }
-
     if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     }
-
     if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     }
-
     if (is_reality_check_visible) {
         ComponentToLoad = <RealityCheckModal />;
     }
-
     if (
         is_logged_in &&
         active_account_landing_company === 'maltainvest' &&
@@ -149,14 +139,16 @@ const AppModals = ({
         ComponentToLoad = <TradingAssessmentExistingUser />;
     }
 
+    if (is_acuity_modal_open) {
+        ComponentToLoad = <AcuityDownloadModal />;
+    }
+
     if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
     }
-
     if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
     }
-
     if (is_deriv_account_needed_modal_visible) {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
     }

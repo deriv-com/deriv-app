@@ -48,7 +48,7 @@ const Purchase = ({
         const info = proposal_info[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
         const is_proposal_error =
-            is_multiplier || (is_accumulator && !is_mobile) ? info.has_error && info.has_error_details : info.has_error;
+            is_multiplier || (is_accumulator && !is_mobile) ? info.has_error && !!info.message : info.has_error;
         const purchase_fieldset = (
             <PurchaseFieldset
                 basis={basis}

@@ -136,7 +136,7 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get should_highlight_current_spot() {
-        return (
+        return !!(
             this.current_symbol_spot &&
             this.accumulators_high_barrier &&
             this.accumulators_low_barrier &&

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import { validNumber } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -98,9 +98,9 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
 
     const renderPaymentAgentListedWithdrawForm = (is_rerender = false) => {
         const ui = (
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
-            </StoreProvider>
+            </CashierProviders>
         );
         return is_rerender ? ui : render(ui);
     };

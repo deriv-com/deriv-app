@@ -37,6 +37,15 @@ const FilterModal = () => {
         buy_sell_store.setSelectedPaymentMethodText([]);
     };
 
+    const onBackdropClick = () => {
+        buy_sell_store.setShowFilterPaymentMethods(false);
+        buy_sell_store.setIsFilterModalOpen(false);
+        my_profile_store.setSearchTerm('');
+        if (selected_methods_text.length && !buy_sell_store.selected_payment_method_value.length) {
+            onClickClear();
+        }
+    };
+
     React.useEffect(() => {
         buy_sell_store.setShowFilterPaymentMethods(false);
         my_profile_store.getPaymentMethodsList();
@@ -86,7 +95,7 @@ const FilterModal = () => {
             height={'56rem'}
             title={<FilterModalHeader />}
             is_open={buy_sell_store.is_filter_modal_open}
-            toggleModal={() => buy_sell_store.setIsFilterModalOpen(false)}
+            toggleModal={onBackdropClick}
             width='44rem'
         >
             <Modal.Body>

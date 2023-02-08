@@ -1,7 +1,7 @@
 {
     "6794664": "Gli annunci corrispondenti al limite e al saldo Deriv P2P.",
     "19789721": "Nessuno ti ha bloccato. Evviva!",
-    "21103557": "Saldo Deriv P2P = depositi che non possono essere annullati (bonifici bancari, ecc.) + una parte dei depositi che potrebbero essere annullati (pagamenti con carta di credito, ecc.)",
+    "21103557": "Deriv P2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)",
     "24711354": "Total ordini <0>30gg</0> | <1>a vita</1>",
     "47573834": "Tasso fisso (1 {{account_currency}})",
     "50672601": "Acquistato",

@@ -73,6 +73,7 @@ type TClientStore = {
     should_allow_authentication: boolean;
     is_landing_company_loaded: boolean;
     min_withdrawal: number;
+    is_crypto: boolean;
 };
 
 type TCommonStoreError = {

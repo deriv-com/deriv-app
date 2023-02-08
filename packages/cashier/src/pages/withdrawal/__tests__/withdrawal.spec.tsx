@@ -41,12 +41,6 @@ describe('<Withdrawal />', () => {
             client: {
                 balance: '1000',
                 currency: 'USD',
-                current_currency_type: '',
-                is_switching: false,
-                is_virtual: false,
-                verification_code: {
-                    payment_withdraw: '',
-                },
             },
             modules: {
                 cashier: {

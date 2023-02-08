@@ -850,7 +850,8 @@ export default class MyProfileStore extends BaseStore {
 
         requestWS({ p2p_advertiser_update: 1, upgrade_limits: 1 }).then(response => {
             if (response) {
-                this.setIsLoadingModalOpen(false);
+                clearTimeout(delay);
+                const delay = setTimeout(() => this.setIsLoadingModalOpen(false), 250);
 
                 if (response.error) {
                     clearTimeout(wait);

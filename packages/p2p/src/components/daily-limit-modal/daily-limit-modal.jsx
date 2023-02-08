@@ -36,7 +36,9 @@ const DailyLimitModal = () => {
                     text={localize('Yes, continue')}
                     onClick={() => {
                         my_profile_store.setIsDailyLimitModalOpen(false);
-                        my_profile_store.setIsLoadingModalOpen(true);
+
+                        clearTimeout(delay);
+                        const delay = setTimeout(() => my_profile_store.setIsLoadingModalOpen(true), 250);
                         my_profile_store.upgradeDailyLimit();
                     }}
                     primary

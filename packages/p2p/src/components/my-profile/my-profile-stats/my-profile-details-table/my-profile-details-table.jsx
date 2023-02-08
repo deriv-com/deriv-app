@@ -70,27 +70,35 @@ const MyProfileDetailsTable = () => {
                 </Table>
             </div>
             {upgradable_daily_limits && (
-                <Text as='div' color='less-prominent' line-height='l' size='xxs'>
-                    <Localize
-                        i18n_default_text='Want to increase your daily limits to <0>{{max_daily_buy}} {{currency}}</0> (buy) and <1>{{max_daily_sell}} {{currency}}</1> (sell)? <2>Increase my limits<2>'
-                        components={[
-                            <strong key={0} />,
-                            <strong key={1} />,
-                            <Button
-                                key={2}
-                                onClick={() => {
-                                    my_profile_store.setIsDailyLimitModalOpen(true);
-                                }}
-                                small
-                                tertiary
-                            />,
-                        ]}
-                        values={{
-                            currency: client.currency,
-                            max_daily_buy: formatMoney(client.currency, upgradable_daily_limits.max_daily_buy, true),
-                            max_daily_sell: formatMoney(client.currency, upgradable_daily_limits.max_daily_sell, true),
+                <Text as='div' className='my-profile-details-table--limit'>
+                    <Text color='less-prominent' line-height='l' size='xxs'>
+                        <Localize
+                            i18n_default_text='Want to increase your daily limits to <0>{{max_daily_buy}} {{currency}}</0> (buy) and <1>{{max_daily_sell}} {{currency}}</1> (sell)?'
+                            components={[<strong key={0} />, <strong key={1} />]}
+                            values={{
+                                currency: client.currency,
+                                max_daily_buy: formatMoney(
+                                    client.currency,
+                                    upgradable_daily_limits.max_daily_buy,
+                                    true
+                                ),
+                                max_daily_sell: formatMoney(
+                                    client.currency,
+                                    upgradable_daily_limits.max_daily_sell,
+                                    true
+                                ),
+                            }}
+                        />
+                    </Text>
+                    <Button
+                        onClick={() => {
+                            my_profile_store.setIsDailyLimitModalOpen(true);
                         }}
-                    />
+                        small
+                        tertiary
+                    >
+                        <Localize i18n_default_text='Increase my limits' />
+                    </Button>
                 </Text>
             )}
         </div>

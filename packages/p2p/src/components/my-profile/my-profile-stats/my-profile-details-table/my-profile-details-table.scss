@@ -45,4 +45,13 @@
             width: unset;
         }
     }
+
+    &--limit {
+        display: flex;
+        align-items: center;
+
+        & span {
+            flex: 1;
+        }
+    }
 }

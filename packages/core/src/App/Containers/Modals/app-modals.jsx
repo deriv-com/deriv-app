@@ -59,7 +59,6 @@ const AppModals = ({
     is_set_residence_modal_visible,
     is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible,
-    is_eu,
     is_logged_in,
     should_show_cooldown_modal,
     should_show_assessment_complete_modal,
@@ -75,6 +74,8 @@ const AppModals = ({
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
+
+    const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
 
     React.useEffect(() => {
         if (is_logged_in) {
@@ -109,34 +110,24 @@ const AppModals = ({
             break;
     }
 
-    if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
-    }
-
     if (is_close_mx_mlt_account_modal_visible) {
         ComponentToLoad = <CloseMxMltAccountModal />;
     }
-
     if (is_close_uk_account_modal_visible) {
         ComponentToLoad = <CloseUKAccountModal />;
     }
-
     if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     }
-
     if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     }
-
     if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     }
-
     if (is_reality_check_visible) {
         ComponentToLoad = <RealityCheckModal />;
     }
-
     if (
         is_logged_in &&
         active_account_landing_company === 'maltainvest' &&
@@ -148,14 +139,16 @@ const AppModals = ({
         ComponentToLoad = <TradingAssessmentExistingUser />;
     }
 
+    if (is_acuity_modal_open) {
+        ComponentToLoad = <AcuityDownloadModal />;
+    }
+
     if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
     }
-
     if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
     }
-
     if (is_deriv_account_needed_modal_visible) {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
     }
@@ -166,7 +159,7 @@ const AppModals = ({
 
     return (
         <>
-            <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} portal_id='popup_root' />
+            <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />
             {ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null}
         </>
     );
@@ -180,7 +173,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
-    is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
     has_maltainvest_account: client.has_maltainvest_account,

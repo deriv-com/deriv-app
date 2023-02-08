@@ -123,6 +123,12 @@ type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
     (T extends KeysMatching<TSocketRequest<T>, 1> ? T : never) | 'passthrough' | 'req_id' | 'subscribe'
 >;
 
-export type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
+type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
     ? never
     : TSocketRequestCleaned<T>;
+
+export type TSocketAcceptableProps<T extends TSocketEndpointNames> = TSocketRequestProps<T> extends never
+    ? [undefined?]
+    : Partial<TSocketRequestProps<T>> extends TSocketRequestProps<T>
+    ? [TSocketRequestProps<T>?]
+    : [TSocketRequestProps<T>];

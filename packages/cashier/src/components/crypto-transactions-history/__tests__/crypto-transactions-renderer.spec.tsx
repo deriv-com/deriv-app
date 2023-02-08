@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -44,7 +44,7 @@ describe('<CryptoTransactionsRenderer />', () => {
 
     const renderCryptoTransactionsRenderer = () =>
         render(<CryptoTransactionsRenderer {...props} />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
     it('should show the proper data in Desktop mode', () => {

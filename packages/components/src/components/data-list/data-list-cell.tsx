@@ -24,6 +24,8 @@ type renderHeaderType = { title: string };
 const DataListCell = <T, G>({ className, column, is_footer, passthrough, row }: TDataListCell<T, G>) => {
     if (!column) return null;
     const { col_index, title } = column;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const cell_value = row[col_index];
     return (
         <div className={classNames(className, column.col_index)}>

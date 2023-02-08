@@ -64,12 +64,12 @@ export default class TransactionHistoryStore {
     }
 
     async getCryptoTransactions(): Promise<void> {
-        await this.WS.subscribeCashierPayments?.().then(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.updateCryptoTransactions(crypto);
-            }
-        });
+        const response = await this.WS.subscribeCashierPayments?.();
+
+        if (response && !response.error) {
+            const { crypto } = response.cashier_payments;
+            this.updateCryptoTransactions(crypto);
+        }
     }
 
     setCryptoTransactionsHistory(transactions: TTransactionItem[]): void {

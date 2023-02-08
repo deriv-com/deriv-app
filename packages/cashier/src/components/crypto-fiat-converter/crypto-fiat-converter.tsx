@@ -19,7 +19,7 @@ type TInputGroupProps = {
 
 type TCryptoFiatConverterProps = {
     from_currency: string;
-    hint: string | TReactChildren;
+    hint?: string | TReactChildren;
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,

@@ -49,7 +49,7 @@ export default class TransactionHistoryStore {
         if (is_crypto && !switched) {
             this.setLoading(true);
             await this.unsubscribeCryptoTransactions();
-            await this.getCryptoTransactions();
+            this.getCryptoTransactions();
             this.setLoading(false);
         }
     }
@@ -63,13 +63,13 @@ export default class TransactionHistoryStore {
         });
     }
 
-    async getCryptoTransactions(): Promise<void> {
-        const response = await this.WS.subscribeCashierPayments?.();
-
-        if (response && !response.error) {
-            const { crypto } = response.cashier_payments;
-            this.updateCryptoTransactions(crypto);
-        }
+    getCryptoTransactions(): void {
+        this.WS.subscribeCashierPayments?.(response => {
+            if (!response.error) {
+                const { crypto } = response.cashier_payments;
+                this.updateCryptoTransactions(crypto);
+            }
+        });
     }
 
     setCryptoTransactionsHistory(transactions: TTransactionItem[]): void {

@@ -77,7 +77,7 @@ export type TWebSocket = {
     };
     send: (obj: unknown) => Promise<{ error: TServerError; exchange_rates: { rates: { [k: string]: string } } }>;
     serviceToken: (req: TServiceTokenRequest) => Promise<TServiceTokenResponse>;
-    subscribeCashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;
+    subscribeCashierPayments?: (callback: (response: TSubscribeCashierPayments) => void) => void;
     verifyEmail?: (email: string, withdrawal_type: string) => Promise<unknown>;
     storage: {
         mt5LoginList: () => {

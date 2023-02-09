@@ -24,9 +24,7 @@ type TAccountTransferProps = {
 
 const AccountTransfer = observer(
     ({ onClickDeposit, onClickNotes, onClose, openAccountSwitcherModal, setSideNotes }: TAccountTransferProps) => {
-        const {
-            client,
-        } = useStore();
+        const { client } = useStore();
         const { account_transfer, general_store, transaction_history } = useCashierStore();
 
         const {

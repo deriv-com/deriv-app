@@ -4,7 +4,7 @@ import CashierLocked from '../cashier-locked';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -424,7 +424,9 @@ describe('<CashierLocked />', () => {
         mockUseDepositLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(

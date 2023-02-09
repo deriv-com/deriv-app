@@ -1,31 +1,33 @@
 import classNames from 'classnames';
 import React from 'react';
+import { TPassThrough } from './data-list';
 
-type TRenderCellContent<T> = {
-    cell_value: object;
-    is_footer: boolean;
-    passthrough: unknown;
-    row_obj: T;
+type TRow = {
+    [key: string]: string;
 };
-type TDataListCell<T, G> = {
+type TRenderCellContent = {
+    cell_value: string;
+    is_footer: boolean;
+    passthrough?: TPassThrough;
+    row_obj: TRow;
+};
+type TDataListCell = {
     className: string;
     column: {
         col_index: number | string;
         title: string;
-        renderCellContent: (props: TRenderCellContent<T>) => React.ReactNode;
+        renderCellContent: (props: TRenderCellContent) => React.ReactNode;
         renderHeader: (prop: renderHeaderType) => React.ReactNode;
     };
     is_footer: boolean;
-    passthrough: G;
-    row: T;
+    passthrough?: TPassThrough;
+    row: TRow;
 };
 
 type renderHeaderType = { title: string };
-const DataListCell = <T, G>({ className, column, is_footer, passthrough, row }: TDataListCell<T, G>) => {
+const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataListCell) => {
     if (!column) return null;
     const { col_index, title } = column;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const cell_value = row[col_index];
     return (
         <div className={classNames(className, column.col_index)}>

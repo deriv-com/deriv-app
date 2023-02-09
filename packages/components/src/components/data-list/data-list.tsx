@@ -22,16 +22,20 @@ const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 export type TRowRenderer = (params: { row: any; is_footer?: boolean; measure?: () => void }) => React.ReactNode;
-type DataListProps<T, G> = {
+export type TPassThrough = { isTopUp: (item: TRow) => boolean };
+export type TRow = {
+    [key: string]: string;
+};
+type DataListProps = {
     className?: string;
-    data_source: T[];
+    data_source: TRow[];
     footer?: React.ReactNode;
-    getRowAction?: (row: T) => string;
+    getRowAction?: (row: TRow) => string;
     getRowSize?: (params: { index: number }) => number;
-    keyMapper?: (row: T) => number | string;
+    keyMapper?: (row: TRow) => number | string;
     onRowsRendered?: () => void;
     onScroll?: (ev: ScrollParams) => void;
-    passthrough?: G;
+    passthrough?: TPassThrough;
     row_gap?: number;
     setListRef?: (ref: MeasuredCellParent) => void;
     rowRenderer: TRowRenderer;
@@ -40,7 +44,7 @@ type DataListProps<T, G> = {
 };
 type GetContentType = { measure?: () => void | undefined };
 
-const DataList = <T, G>({
+const DataList = ({
     children,
     className,
     data_source,
@@ -55,7 +59,7 @@ const DataList = <T, G>({
     row_gap,
     getRowAction,
     passthrough,
-}: DataListProps<T, G>) => {
+}: DataListProps) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_scrolling, setIsScrolling] = React.useState(false);
     const [scroll_top, setScrollTop] = React.useState(0);
@@ -63,13 +67,13 @@ const DataList = <T, G>({
     const cache = React.useRef<CellMeasurerCache>();
     const list_ref = React.useRef<MeasuredCellParent | null>(null);
     const items_transition_map_ref = React.useRef<{ [key: string]: boolean }>({});
-    const data_source_ref = React.useRef<T[] | null>(null);
+    const data_source_ref = React.useRef<TRow[] | null>(null);
     data_source_ref.current = data_source;
 
     const is_dynamic_height = !getRowSize;
 
     const trackItemsForTransition = React.useCallback(() => {
-        data_source.forEach((item: T, index: number) => {
+        data_source.forEach((item: TRow, index: number) => {
             const row_key: string | number = keyMapper?.(item) || `${index}-0`;
             items_transition_map_ref.current[row_key] = true;
         });

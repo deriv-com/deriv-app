@@ -3,9 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
 import CryptoDeposit from '../crypto-deposit';
 import { TRootStore } from 'Types';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -32,7 +32,9 @@ describe('<CryptoDeposit />', () => {
     const renderWithRouter = (component: JSX.Element, mockRootStore: TRootStore) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
     };
 
@@ -361,7 +363,11 @@ describe('<CryptoDeposit />', () => {
             <Router history={history}>
                 <CryptoDeposit />
             </Router>,
-            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
+            {
+                wrapper: ({ children }) => (
+                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                ),
+            }
         );
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();

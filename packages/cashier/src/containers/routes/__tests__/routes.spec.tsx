@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import Routes from '../routes';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
+import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../cashier-providers';
 
 jest.mock('../binary-routes', () => jest.fn(() => 'BinaryRoutes'));
 
@@ -35,11 +35,7 @@ describe('<Routes />', () => {
             <Router history={history}>
                 <Routes />
             </Router>,
-            {
-                wrapper: ({ children }) => (
-                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-                ),
-            }
+            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
         );
 
         expect(screen.getByText('Something’s not right')).toBeInTheDocument();
@@ -63,11 +59,7 @@ describe('<Routes />', () => {
             <Router history={history}>
                 <Routes />
             </Router>,
-            {
-                wrapper: ({ children }) => (
-                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-                ),
-            }
+            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
         );
 
         expect(screen.getByText('BinaryRoutes')).toBeInTheDocument();

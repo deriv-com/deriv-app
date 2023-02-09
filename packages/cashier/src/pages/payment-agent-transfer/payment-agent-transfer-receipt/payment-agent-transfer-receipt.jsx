@@ -5,7 +5,6 @@ import { Button, Icon, Text } from '@deriv/components';
 import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-receipt.scss';
 
 const openStatement = (history, resetPaymentAgentTransfer) => {
@@ -14,10 +13,18 @@ const openStatement = (history, resetPaymentAgentTransfer) => {
 };
 
 const PaymentAgentTransferReceipt = observer(({ history }) => {
-    const { client, common } = useStore();
+    const {
+        client,
+        common,
+        modules: {
+            cashier: { payment_agent_transfer },
+        },
+    } = useStore();
+
     const { currency, loginid } = client;
+
     const { is_from_derivgo } = common;
-    const { payment_agent_transfer } = useCashierStore();
+
     const { receipt, resetPaymentAgentTransfer } = payment_agent_transfer;
 
     return (

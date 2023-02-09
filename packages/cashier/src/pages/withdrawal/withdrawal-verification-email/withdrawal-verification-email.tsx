@@ -8,12 +8,11 @@ import RecentTransaction from '../../../components/recent-transaction';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
 import EmptyState from '../../../components/empty-state';
 import Error from '../../../components/error';
-import { useCashierStore } from '../../../stores/useCashierStores';
 
 const WithdrawalVerificationEmail = observer(() => {
     const verify = useVerifyEmail('payment_withdraw');
-    const { client } = useStore();
-    const { transaction_history } = useCashierStore();
+    const { client, modules } = useStore();
+    const { transaction_history } = modules.cashier;
 
     React.useEffect(() => {
         transaction_history.onMount();

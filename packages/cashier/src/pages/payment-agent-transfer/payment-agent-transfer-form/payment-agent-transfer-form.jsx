@@ -6,7 +6,6 @@ import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/sh
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-form.scss';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
@@ -41,15 +40,22 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
 };
 
 const PaymentAgentTransferForm = observer(() => {
-    const { client } = useStore();
+    const {
+        client,
+        modules: {
+            cashier: { payment_agent_transfer: payment_agent_transfer_store },
+        },
+    } = useStore();
+
     const { balance, currency } = client;
-    const { payment_agent_transfer: payment_agent_transfer_store } = useCashierStore();
+
     const {
         confirm: { amount, description, client_id: transfer_to },
         error,
         requestTryPaymentAgentTransfer,
         transfer_limit,
     } = payment_agent_transfer_store;
+
     const { setErrorMessage } = error;
 
     const validateTransferPassthrough = values =>

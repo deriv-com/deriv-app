@@ -1,3 +1,3 @@
-import Expired from './expired';
+import Expired from './expired.jsx';
 
 export default Expired;

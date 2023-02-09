@@ -1,6 +1,7 @@
 {
     "6794664": "Quảng cáo trùng khớp với số dư và giới hạn Deriv P2P của bạn.",
     "19789721": "Không ai chặn bạn cả. Yay!",
+    "21103557": "Số dư P2P Deriv = các khoản tiền gửi không thể trả về (chuyển khoản ngân hàng, v. v.) + một phần tiền gửi có thể trả về (thanh toán bằng thẻ tín dụng, v. v.)",
     "24711354": "Tổng số lệnh <0>30 ngày</0> | <1>trọn đời</1>",
     "47573834": "Tỷ lệ cố định (1 {{account_currency}})",
     "50672601": "Đã mua",
@@ -312,8 +313,6 @@
     "-179005984": "Lưu",
     "-2059312414": "Chi tiết quảng cáo",
     "-1769584466": "Chỉ số",
-    "-808161760": "Div số dư P2P = tiền gửi không thể đảo ngược",
-    "-684271315": "OK",
     "-2090878601": "Giới hạn hàng ngày",
     "-130547447": "Tổng số giao dịch <0>30 ngày</0> | <1>trọn đời</1>",
     "-1792280476": "Chọn phương thức thanh toán của bạn",

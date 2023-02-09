@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsStatusModal from '../crypto-transactions-status-modal';
-import CashierProviders from '../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<CryptoTransactionsStatusModal />', () => {
     let modal_root_el, mockRootStore;
@@ -31,7 +31,7 @@ describe('<CryptoTransactionsStatusModal />', () => {
 
     const renderCryptoTransactionsStatusModal = () =>
         render(<CryptoTransactionsStatusModal />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
     it('should show proper messages and "OK" button', () => {

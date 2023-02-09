@@ -1,9 +1,6 @@
 import React, { RefObject } from 'react';
 
-export const useHover = <T extends HTMLElement & SVGSVGElement>(
-    refSetter?: RefObject<T> | null,
-    should_prevent_bubbling?: boolean
-) => {
+export const useHover = <T extends HTMLElement>(refSetter: RefObject<T> | null, should_prevent_bubbling: boolean) => {
     const [value, setValue] = React.useState(false);
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;

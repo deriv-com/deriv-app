@@ -27,8 +27,8 @@ type TDiv100vhContainer = {
 const Div100vhContainer = ({
     children,
     className,
-    is_bypassed = false,
-    is_disabled = false,
+    is_bypassed,
+    is_disabled,
     id,
     height_offset,
     max_autoheight_offset,

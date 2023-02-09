@@ -3,14 +3,14 @@ import React from 'react';
 import Icon from '../icon';
 import Text from '../text';
 
-type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'> & {
+type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
     className?: string;
     classNameLabel?: string;
     defaultChecked?: boolean;
     disabled?: boolean;
     greyDisabled?: boolean;
     id?: string;
-    label: string | React.ReactElement;
+    label: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;
@@ -67,7 +67,8 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                     ref={ref}
                     disabled={disabled}
                     onChange={onInputChange}
-                    checked={checked}
+                    defaultChecked={checked}
+                    checked={value}
                     {...otherProps}
                 />
                 <span

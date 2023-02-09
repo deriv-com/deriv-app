@@ -1,7 +1,6 @@
 {
     "6794664": "Iklan yang sesuai dengan saldo dan batas P2P Deriv Anda.",
     "19789721": "Tidak ada yang memblokir Anda. Yay!",
-    "21103557": "Saldo Deriv P2P = deposit yang tidak dapat dibatalkan (melalui tranfer bank, dsb) + sejumlah deposit yang mungkin dapat dibatalkan (melalui kartu kredit, dsb)",
     "24711354": "Total order  <0>30hari</0> | <1>semua</1>",
     "47573834": "Harga tetap (1 {{account_currency}})",
     "50672601": "Membeli",
@@ -313,6 +312,8 @@
     "-179005984": "Simpan",
     "-2059312414": "Detail iklan",
     "-1769584466": "Statistik",
+    "-808161760": "Saldo P2P Deriv = deposito yang tidak dapat dibalik",
+    "-684271315": "BAIK",
     "-2090878601": "Batas harian",
     "-130547447": "Transaksi <0>30 hari</0> | <1>semua</1>",
     "-1792280476": "Pilih metode pembayaran Anda",

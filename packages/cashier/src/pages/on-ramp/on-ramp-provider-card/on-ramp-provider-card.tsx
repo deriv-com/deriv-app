@@ -3,16 +3,16 @@ import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TProviderDetails } from '../../../types';
 import { observer, useStore } from '@deriv/stores';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TOnRampProviderCardProps = {
     provider: TProviderDetails;
 };
 
 const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => {
-    const { ui, modules } = useStore();
+    const { ui } = useStore();
     const { is_dark_mode_on, is_mobile } = ui;
-    const { cashier } = modules;
-    const { onramp } = cashier;
+    const { onramp } = useCashierStore();
     const { setSelectedProvider } = onramp;
 
     const payment_icons = provider.getPaymentIcons();

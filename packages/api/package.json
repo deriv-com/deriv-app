@@ -9,9 +9,8 @@
     },
     "devDependencies": {
         "@deriv/api-types": "^1.0.54",
-        "@testing-library/react": "^12.0.0",
-        "@testing-library/react-hooks": "^7.0.2",
         "@testing-library/user-event": "^13.5.0",
+        "@testing-library/react": "^12.0.0",
         "typescript": "^4.6.3"
     }
 }

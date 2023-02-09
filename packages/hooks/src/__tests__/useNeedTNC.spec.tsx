@@ -1,8 +1,19 @@
 import * as React from 'react';
 import { StoreProvider } from '@deriv/stores';
 import type { TStores } from '@deriv/stores';
-import { renderHook } from '@testing-library/react-hooks';
+// Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
+import { render, screen } from '@testing-library/react';
 import useNeedTNC from '../useNeedTNC';
+
+const UseNeedTNCExample = () => {
+    const is_need_tnc = useNeedTNC();
+
+    return (
+        <>
+            <p data-testid={'dt_is_need_tnc'}>{is_need_tnc ? 'true' : 'false'}</p>
+        </>
+    );
+};
 
 describe('useNeedTNC', () => {
     test('should be false if is_tnc_needed and is_eu are false and does not have an real STP account', async () => {
@@ -19,12 +30,12 @@ describe('useNeedTNC', () => {
             },
         };
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useNeedTNC(), { wrapper });
+        render(<UseNeedTNCExample />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
+        });
 
-        expect(result.current).toBe(false);
+        const is_need_tnc = screen.getByTestId('dt_is_need_tnc');
+        expect(is_need_tnc).toHaveTextContent('false');
     });
 
     test('should be false if is_tnc_needed is false but is_eu is true and does not have an real STP account', async () => {
@@ -41,12 +52,12 @@ describe('useNeedTNC', () => {
             },
         };
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useNeedTNC(), { wrapper });
+        render(<UseNeedTNCExample />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
+        });
 
-        expect(result.current).toBe(false);
+        const is_need_tnc = screen.getByTestId('dt_is_need_tnc');
+        expect(is_need_tnc).toHaveTextContent('false');
     });
 
     test('should be false if is_tnc_needed and is_eu are false but has an real STP account', async () => {
@@ -63,12 +74,12 @@ describe('useNeedTNC', () => {
             },
         };
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useNeedTNC(), { wrapper });
+        render(<UseNeedTNCExample />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
+        });
 
-        expect(result.current).toBe(false);
+        const is_need_tnc = screen.getByTestId('dt_is_need_tnc');
+        expect(is_need_tnc).toHaveTextContent('false');
     });
 
     test('should be true if is_tnc_needed is true and is_eu is false but has an real STP account', async () => {
@@ -85,12 +96,12 @@ describe('useNeedTNC', () => {
             },
         };
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useNeedTNC(), { wrapper });
+        render(<UseNeedTNCExample />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
+        });
 
-        expect(result.current).toBe(true);
+        const is_need_tnc = screen.getByTestId('dt_is_need_tnc');
+        expect(is_need_tnc).toHaveTextContent('true');
     });
 
     test('should be true if is_tnc_needed and is_eu are true and does not have an real STP account', async () => {
@@ -107,12 +118,12 @@ describe('useNeedTNC', () => {
             },
         };
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useNeedTNC(), { wrapper });
+        render(<UseNeedTNCExample />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
+        });
 
-        expect(result.current).toBe(true);
+        const is_need_tnc = screen.getByTestId('dt_is_need_tnc');
+        expect(is_need_tnc).toHaveTextContent('true');
     });
 
     test('should be true if is_tnc_needed and is_eu are true and has an real STP account', async () => {
@@ -129,11 +140,11 @@ describe('useNeedTNC', () => {
             },
         };
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useNeedTNC(), { wrapper });
+        render(<UseNeedTNCExample />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
+        });
 
-        expect(result.current).toBe(true);
+        const is_need_tnc = screen.getByTestId('dt_is_need_tnc');
+        expect(is_need_tnc).toHaveTextContent('true');
     });
 });

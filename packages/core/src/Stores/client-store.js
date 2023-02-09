@@ -6,7 +6,6 @@ import {
     State,
     deriv_urls,
     filterUrlQuery,
-    excludeParamsFromUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -21,7 +20,6 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -241,7 +239,6 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
-            is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
             is_risky_client: computed,
@@ -672,10 +669,6 @@ export default class ClientStore extends BaseStore {
         }
 
         return this.default_currency;
-    }
-
-    get is_crypto() {
-        return isCryptocurrency(this.currency);
     }
 
     get default_currency() {
@@ -1511,21 +1504,6 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
-        const unused_params = [
-            'type',
-            'acp',
-            'label',
-            'server',
-            'interface',
-            'cid',
-            'age',
-            'utm_source',
-            'first_name',
-            'second_name',
-            'email',
-            'phone',
-            '_filteredParams',
-        ];
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
@@ -1606,7 +1584,7 @@ export default class ClientStore extends BaseStore {
             });
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.history.replaceState({}, document.title, urlForLanguage(language));
+                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {
@@ -1648,13 +1626,6 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
-
-        history.replaceState(
-            null,
-            null,
-            window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
-        );
-
         return true;
     }
 

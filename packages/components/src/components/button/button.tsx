@@ -4,7 +4,7 @@ import ButtonLoading from './button_loading';
 import Icon from '../icon';
 import Text from '../text';
 
-export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> & {
+type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> & {
     alternate: boolean;
     blue: boolean;
     classNameSpan: string;

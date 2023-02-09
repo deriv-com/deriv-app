@@ -9,7 +9,6 @@ import { localize, Localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import SideNote from 'Components/side-note';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-receipt.scss';
 
 const openStatement = (history, resetPaymentAgent) => {
@@ -40,10 +39,18 @@ const PaymentAgentDetails = ({ payment_agent_email, payment_agent_phones, paymen
 };
 
 const PaymentAgentReceipt = observer(({ history }) => {
-    const { client, common } = useStore();
-    const { payment_agent: payment_agent_store } = useCashierStore();
+    const {
+        client,
+        common,
+        modules: {
+            cashier: { payment_agent: payment_agent_store },
+        },
+    } = useStore();
+
     const { currency } = client;
+
     const { is_from_derivgo } = common;
+
     const { receipt, resetPaymentAgent } = payment_agent_store;
 
     React.useEffect(() => {

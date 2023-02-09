@@ -1,8 +1,3 @@
-import type { TStores } from '@deriv/stores';
-import type CashierStore from '../../stores/cashier-store';
+import { useStore } from '@deriv/stores';
 
-export type TRootStore = TStores & {
-    modules: {
-        cashier: CashierStore;
-    };
-};
+export type TRootStore = ReturnType<typeof useStore>;

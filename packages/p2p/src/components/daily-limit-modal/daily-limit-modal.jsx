@@ -9,6 +9,7 @@ const DailyLimitModal = () => {
 
     return (
         <Modal
+            exit_classname='daily-limit-modal--exit'
             is_open={my_profile_store.is_daily_limit_modal_open}
             small
             has_close_icon={false}
@@ -36,9 +37,7 @@ const DailyLimitModal = () => {
                     text={localize('Yes, continue')}
                     onClick={() => {
                         my_profile_store.setIsDailyLimitModalOpen(false);
-
-                        clearTimeout(delay);
-                        const delay = setTimeout(() => my_profile_store.setIsLoadingModalOpen(true), 250);
+                        my_profile_store.setIsLoadingModalOpen(true);
                         my_profile_store.upgradeDailyLimit();
                     }}
                     primary

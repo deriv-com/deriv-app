@@ -4,6 +4,8 @@ import type { TRootStore } from '../types';
 const mock = (): TRootStore => {
     return {
         client: {
+            has_maltainvest_account: false,
+            active_accounts: [],
             is_crypto: false,
             accounts: {
                 loginid: {

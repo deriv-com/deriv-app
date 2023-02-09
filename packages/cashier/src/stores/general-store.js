@@ -399,6 +399,7 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
+    /** @deprecated Use `useCashierLocked` from `@deriv/hooks` package instead. */
     get is_cashier_locked() {
         const { account_status } = this.root_store.client;
 

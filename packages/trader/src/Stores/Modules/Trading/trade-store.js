@@ -1394,6 +1394,7 @@ export default class TradeStore extends BaseStore {
     // ---------- WS ----------
     wsSubscribe = (req, callback) => {
         const accumulator_ticks_interceptor = (...args) => {
+            callback(...args);
             if ('tick' in args[0]) {
                 const { current_symbol_spot, current_symbol_spot_time } = this.root_store.contract_trade;
                 const tick = args[0].tick;
@@ -1416,7 +1417,6 @@ export default class TradeStore extends BaseStore {
                     spot_pip_size: pip_size,
                 });
             }
-            callback(...args);
         };
         const passthrough_callback = this.is_accumulator ? accumulator_ticks_interceptor : callback;
         if (req.subscribe === 1) {

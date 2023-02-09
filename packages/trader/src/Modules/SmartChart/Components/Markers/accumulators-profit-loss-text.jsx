@@ -53,14 +53,6 @@ const AccumulatorsProfitLossText = ({
     };
 
     React.useEffect(() => {
-        return () => {
-            clearTimeout(fading_in_timeout_id.current);
-            clearTimeout(sliding_timeout_id.current);
-            clearInterval(interval_id_ref.current);
-        };
-    }, []);
-
-    React.useEffect(() => {
         if (profit) {
             setIsFadingIn(true);
             setIsSliding(true);
@@ -85,6 +77,11 @@ const AccumulatorsProfitLossText = ({
             };
             updateTenth(prev_profit_tenth, profit_tenth);
         }
+        return () => {
+            clearTimeout(fading_in_timeout_id.current);
+            clearTimeout(sliding_timeout_id.current);
+            clearInterval(interval_id_ref.current);
+        };
     }, [profit, prev_profit_tenth, profit_tenth]);
 
     const onRef = ref => {

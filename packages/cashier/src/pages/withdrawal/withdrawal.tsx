@@ -16,6 +16,7 @@ import RecentTransaction from '../../components/recent-transaction';
 import SideNote from '../../components/side-note';
 import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -48,13 +49,7 @@ const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) =
 };
 
 const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
-    const {
-        client,
-        modules: {
-            cashier: { iframe, general_store, transaction_history, withdraw },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const {
         balance,
         currency,
@@ -63,7 +58,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         is_virtual,
         verification_code: { payment_withdraw: verification_code },
     } = client;
-
+    const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
     const {
         is_cashier_locked,
         is_crypto,
@@ -71,15 +66,12 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         setActiveTab,
         cashier_route_tab_index: tab_index,
     } = general_store;
-
     const { iframe_url } = iframe;
-
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
         onMount: recentTransactionOnMount,
     } = transaction_history;
-
     const {
         check10kLimit,
         container,

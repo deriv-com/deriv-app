@@ -110,23 +110,6 @@ export const DBOT_ONBOARDING = [
         ...joyride_props,
     },
     {
-        target: '#id-quick-strategy',
-        content: (
-            <TourGuide
-                label={localize('Start with a template')}
-                content={[
-                    localize(
-                        "Load a template containing the Martingale, D'Alembert, or Oscar's Grind strategy, and modify it as you wish."
-                    ),
-                ]}
-                img={getImageLocation('ic-new-user-step-three.png')}
-                dashboard_tab_index={0}
-                step_index={2}
-            />
-        ),
-        ...joyride_props,
-    },
-    {
         target: '#id-charts',
         content: (
             <TourGuide

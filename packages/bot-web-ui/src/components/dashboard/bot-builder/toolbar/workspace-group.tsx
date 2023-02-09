@@ -3,6 +3,8 @@ import { localize } from '@deriv/translations';
 import ToolbarIcon from './toolbar-icon';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { Icon } from '@deriv/components';
+import ToolbarButton from './toolbar-button';
 
 type TWorkspaceGroup = {
     has_redo_stack: boolean;
@@ -14,6 +16,7 @@ type TWorkspaceGroup = {
     setPreviewOnPopup: (param: boolean) => void;
     toggleLoadModal: () => void;
     toggleSaveModal: () => void;
+    loadDataStrategy: VoidFunction;
 };
 
 const WorkspaceGroup = ({
@@ -26,8 +29,17 @@ const WorkspaceGroup = ({
     setPreviewOnPopup,
     toggleLoadModal,
     toggleSaveModal,
+    loadDataStrategy,
 }: TWorkspaceGroup) => (
     <div className='toolbar__group toolbar__group-btn'>
+        <ToolbarButton
+            popover_message={localize('Click here to start building your DBot.')}
+            button_id='db-toolbar__get-started-button'
+            button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
+            buttonOnClick={loadDataStrategy}
+            icon={<Icon icon='IcPuzzle' color='active' />}
+            button_text={localize('Quick strategy')}
+        />
         <ToolbarIcon
             popover_message={localize('Reset')}
             icon='IcReset'
@@ -85,6 +97,7 @@ const WorkspaceGroup = ({
     </div>
 );
 
-export default connect(({ dashboard }: RootStore) => ({
+export default connect(({ dashboard, quick_strategy }: RootStore) => ({
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
 }))(WorkspaceGroup);

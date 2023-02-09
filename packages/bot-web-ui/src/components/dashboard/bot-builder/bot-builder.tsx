@@ -10,6 +10,7 @@ import SaveModal from 'Components/save-modal';
 import WorkspaceWrapper from './workspace-wrapper';
 import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 import TourSlider from '../tour-slider';
+import QuickStrategy from '../quick-strategy';
 
 type TBotBuilder = {
     app: AppStore;
@@ -94,6 +95,7 @@ const BotBuilder = ({
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />
+            <QuickStrategy />
         </>
     );
 };

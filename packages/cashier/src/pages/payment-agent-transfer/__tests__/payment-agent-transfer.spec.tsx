@@ -1,9 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
+import { useCashierLocked } from '@deriv/hooks';
+import { mockStore } from '@deriv/stores';
+import { TRootStore } from '@deriv/stores/types';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -27,11 +30,17 @@ jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-receipt', () =>
     jest.fn(() => 'mockedPaymentAgentTransferReceipt')
 );
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCashierLocked: jest.fn(() => false),
+}));
+const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+
 describe('<PaymentAgentTransfer />', () => {
-    let history, mockRootStore;
+    let mockRootStore: TRootStore, history: BrowserHistory, modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
-        const modal_root_el = document.createElement('div');
+        modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });
@@ -41,7 +50,7 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 balance: '100',
                 is_virtual: false,
@@ -57,7 +66,6 @@ describe('<PaymentAgentTransfer />', () => {
                         resetPaymentAgentTransfer: jest.fn(),
                     },
                     general_store: {
-                        is_cashier_locked: false,
                         is_loading: false,
                         setActiveTab: jest.fn(),
                     },
@@ -67,9 +75,9 @@ describe('<PaymentAgentTransfer />', () => {
                 is_dark_mode_on: false,
                 toggleAccountsDialog: jest.fn(),
             },
-        };
-
+        });
         history = createBrowserHistory();
+        mockUseCashierLocked.mockReturnValue(false);
     });
 
     const renderPaymentAgentTransfer = () => {
@@ -105,7 +113,7 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
-        mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
+        mockUseCashierLocked.mockReturnValue(true);
         renderPaymentAgentTransfer();
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();

@@ -39,7 +39,6 @@ describe('<Withdrawal />', () => {
             modules: {
                 cashier: {
                     general_store: {
-                        is_cashier_locked: false,
                         is_crypto: false,
                         setActiveTab: jest.fn(),
                     },

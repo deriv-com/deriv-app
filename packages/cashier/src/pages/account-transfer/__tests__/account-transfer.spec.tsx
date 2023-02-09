@@ -1,25 +1,12 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
-import { useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
+import { mockStore } from '@deriv/stores';
+import { TRootStore } from '@deriv/stores/types';
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
@@ -38,10 +25,14 @@ jest.mock('../account-transfer-no-account', () => jest.fn(() => 'mockedAccountTr
 jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTransferReceipt'));
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
+jest.mock('@deriv/hooks');
+const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
+const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+
 describe('<AccountTransfer />', () => {
-    let mockRootStore;
+    let mockRootStore: TRootStore;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 is_switching: false,
                 is_virtual: false,
@@ -57,10 +48,8 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(true) },
                     general_store: {
                         setActiveTab: jest.fn(),
-                        is_cashier_locked: false,
                     },
                     account_transfer: {
                         error: {},
@@ -80,11 +69,14 @@ describe('<AccountTransfer />', () => {
                     },
                 },
             },
-        };
+        });
+        mockUseDepositLocked.mockReturnValue(false);
+        mockUseCashierLocked.mockReturnValue(false);
     });
 
     const props = {
         setSideNotes: jest.fn(),
+        onClose: jest.fn(),
     };
 
     const renderAccountTransfer = () => {
@@ -127,7 +119,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the cashier locked component if cashier is locked', async () => {
-        mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
+        mockUseCashierLocked.mockReturnValue(true);
 
         renderAccountTransfer();
 

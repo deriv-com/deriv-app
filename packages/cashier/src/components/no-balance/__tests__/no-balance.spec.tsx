@@ -3,19 +3,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import { useDepositLocked } from '@deriv/hooks';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
+import { TRootStore } from '@deriv/stores/types';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -24,10 +15,10 @@ jest.mock('@deriv/hooks', () => ({
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
-    let mockRootStore;
+    let mockRootStore: TRootStore;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'USD',
                 mt5_login_list: [
@@ -37,13 +28,8 @@ describe('<NoBalance />', () => {
                     },
                 ],
             },
-            modules: {
-                cashier: {
-                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(false) },
-                    general_store: { setCashierTabIndex: jest.fn() },
-                },
-            },
-        };
+            modules: { cashier: { general_store: { setCashierTabIndex: jest.fn() } } },
+        });
     });
 
     it('component should render', () => {

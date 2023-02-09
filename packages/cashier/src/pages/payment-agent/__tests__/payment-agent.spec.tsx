@@ -4,6 +4,9 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
 import CashierProviders from '../../../cashier-providers';
+import { useCashierLocked } from '@deriv/hooks';
+import { mockStore } from '@deriv/stores';
+import { TRootStore } from '@deriv/stores/types';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -17,11 +20,17 @@ jest.mock('@deriv/components', () => {
 jest.mock('Pages/payment-agent/payment-agent-list', () => jest.fn(() => 'mockedPaymentAgentList'));
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'mockedCashierLocked'));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCashierLocked: jest.fn(() => false),
+}));
+const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+
 describe('<PaymentAgent />', () => {
-    let mockRootStore;
+    let mockRootStore: TRootStore;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             ui: {
                 is_dark_mode_on: false,
                 toggleAccountsDialog: jest.fn(),
@@ -36,7 +45,6 @@ describe('<PaymentAgent />', () => {
             modules: {
                 cashier: {
                     general_store: {
-                        is_cashier_locked: false,
                         setActiveTab: jest.fn(),
                     },
                     payment_agent: {
@@ -47,7 +55,8 @@ describe('<PaymentAgent />', () => {
                     },
                 },
             },
-        };
+        });
+        mockUseCashierLocked.mockReturnValue(false);
     });
 
     const renderPaymentAgent = () => {
@@ -84,7 +93,7 @@ describe('<PaymentAgent />', () => {
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
-        mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
+        mockUseCashierLocked.mockReturnValue(true);
         renderPaymentAgent();
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();

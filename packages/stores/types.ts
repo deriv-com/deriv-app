@@ -22,7 +22,7 @@ type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    getLimits: () => void;
+    getLimits: VoidFunction;
     is_account_setting_loaded: boolean;
     is_eu: boolean;
     is_deposit_lock: boolean;
@@ -80,7 +80,7 @@ type TCommonStoreError = {
     redirect_to: string;
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;
-    redirectOnClick: () => void;
+    redirectOnClick: VoidFunction;
     setError: (has_error: boolean, error: TCommonStoreError | null) => void;
     app_routing_history: unknown[];
 };
@@ -100,16 +100,16 @@ type TUiStore = {
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
     is_mobile: boolean;
-    disableApp: () => void;
-    enableApp: () => void;
+    disableApp: VoidFunction;
+    enableApp: VoidFunction;
     setCurrentFocus: (value: string) => void;
-    toggleAccountsDialog: () => void;
-    toggleCashier: () => void;
+    toggleAccountsDialog: VoidFunction;
+    toggleCashier: VoidFunction;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
 };
 
 type TTradersHubStore = {
-    closeModal: () => void;
+    closeModal: VoidFunction;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
 };

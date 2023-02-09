@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
@@ -41,7 +41,6 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         onMount: recentTransactionOnMount,
     } = transaction_history;
     const {
-        is_cashier_locked,
         is_cashier_onboarding,
         is_crypto,
         is_deposit,
@@ -50,6 +49,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         setIsDeposit,
         cashier_route_tab_index: tab_index,
     } = general_store;
+    const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
 
     const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);

@@ -1,26 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
-import { useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
 import { TRootStore } from 'Types';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
 
 jest.mock('@deriv/components', () => {
     return {
@@ -45,6 +30,15 @@ jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
     const onRampProviderPopup = () => <div>OnRampProviderPopup</div>;
     return onRampProviderPopup;
 });
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+    useCashierLocked: jest.fn(() => false),
+}));
+const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
+const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+
 describe('<OnRamp />', () => {
     let mockRootStore: DeepPartial<TRootStore>, props: TOnRampProps;
 
@@ -79,7 +73,6 @@ describe('<OnRamp />', () => {
                     },
                     general_store: {
                         is_cashier_onboarding: false,
-                        is_cashier_locked: false,
                         is_loading: false,
                         cashier_route_tab_index: 0,
                     },
@@ -107,6 +100,8 @@ describe('<OnRamp />', () => {
                 },
             ],
         };
+        mockUseDepositLocked.mockReturnValue(false);
+        mockUseCashierLocked.mockReturnValue(false);
     });
     const renderOnRamp = (is_rerender = false) => {
         const ui = (
@@ -133,16 +128,12 @@ describe('<OnRamp />', () => {
     });
     it('should render <CashierLocked /> component', () => {
         if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
+            mockUseCashierLocked.mockReturnValue(true);
         }
         const { rerender } = renderOnRamp() as ReturnType<typeof render>;
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
-
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_cashier_locked = false;
-        }
         if (mockRootStore.modules?.cashier?.deposit) {
-            mockRootStore.modules.cashier.deposit.is_deposit_locked = useDepositLocked.mockReturnValue(true);
+            mockUseDepositLocked.mockReturnValue(true);
         }
         rerender(renderOnRamp(true) as JSX.Element);
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();

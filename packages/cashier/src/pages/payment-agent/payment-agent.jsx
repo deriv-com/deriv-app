@@ -6,6 +6,7 @@ import CashierLocked from 'Components/cashier-locked';
 import { Virtual } from 'Components/cashier-container';
 import PaymentAgentList from './payment-agent-list';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useCashierLocked } from '@deriv/hooks';
 
 const PaymentAgent = observer(({ setSideNotes }) => {
     const { client } = useStore();
@@ -15,7 +16,8 @@ const PaymentAgent = observer(({ setSideNotes }) => {
         verification_code: { payment_agent_withdraw: verification_code },
     } = client;
     const { general_store, payment_agent } = useCashierStore();
-    const { is_cashier_locked, setActiveTab } = general_store;
+    const { setActiveTab } = general_store;
+    const is_cashier_locked = useCashierLocked();
     const {
         container,
         is_withdraw: is_payment_agent_withdraw,

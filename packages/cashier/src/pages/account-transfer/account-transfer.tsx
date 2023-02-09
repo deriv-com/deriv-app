@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TSideNotesProps } from '../../types';
+import { TSideNotesProps } from 'Types';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { Virtual } from '../../components/cashier-container';
@@ -13,12 +13,13 @@ import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useCashierLocked } from '@deriv/hooks';
 
 type TAccountTransferProps = {
-    onClickDeposit?: () => void;
-    onClickNotes?: () => void;
-    onClose: () => void;
-    openAccountSwitcherModal?: () => void;
+    onClickDeposit?: VoidFunction;
+    onClickNotes?: VoidFunction;
+    onClose: VoidFunction;
+    openAccountSwitcherModal?: VoidFunction;
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
@@ -38,7 +39,8 @@ const AccountTransfer = observer(
             setAccountTransferAmount,
             setIsTransferConfirm,
         } = account_transfer;
-        const { is_cashier_locked, is_loading, setActiveTab } = general_store;
+        const { is_loading, setActiveTab } = general_store;
+        const is_cashier_locked = useCashierLocked();
         const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
         const { is_pre_appstore, is_switching, is_virtual } = client;
         const [is_loading_status, setIsLoadingStatus] = React.useState(true);

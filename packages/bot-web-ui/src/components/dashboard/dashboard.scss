@@ -255,6 +255,10 @@
     width: calc(100vw - 4.6rem);
     height: var(--tab-content-height);
 
+    .injectionDiv {
+        height: calc(100vh - 20rem);
+    }
+
     &--active {
         z-index: 1;
     }

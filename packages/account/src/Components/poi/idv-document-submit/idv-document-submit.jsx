@@ -238,7 +238,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onPaste={e => e.preventDefault()}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {

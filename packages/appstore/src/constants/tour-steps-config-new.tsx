@@ -3,6 +3,7 @@ import React from 'react';
 import { Text, Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
+import { isMobile } from '@deriv/shared';
 
 export const tour_step_config: Step[] = [
     {
@@ -37,7 +38,7 @@ export const tour_step_config: Step[] = [
             </Text>
         ),
 
-        target: '.regulators-switcher__container',
+        target: isMobile() ? '.main-title-bar-mobile--regulator' : '.regulators-switcher__container',
         disableBeacon: true,
         disableOverlayClose: true,
     },

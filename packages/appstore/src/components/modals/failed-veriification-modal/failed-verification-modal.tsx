@@ -98,7 +98,7 @@ const FailedVerificationModal = () => {
         return poi_resubmit_for_bvi_labuan;
     };
     const should_resubmit_poa = need_poa_resubmission;
-    const from_account_label = is_from_multipliers ? localize('Multipliers') : localize('MT5 CFDs');
+    const from_account_label = is_from_multipliers ? localize('Multipliers') : localize('MT5');
 
     return (
         <Dialog

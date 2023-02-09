@@ -5,7 +5,6 @@ import Flyout from 'Components/flyout';
 import Toolbox from './toolbox';
 import Toolbar from './toolbar';
 import './workspace.scss';
-import StopBotModal from '../dashboard-component/load-bot-preview/stop-bot-modal';
 
 type TWorkspaceWrapper = {
     onMount: () => void;
@@ -29,7 +28,6 @@ const WorkspaceWrapper = ({ onMount, onUnmount, is_loading }: TWorkspaceWrapper)
                 <Toolbox />
                 <Toolbar />
                 <Flyout />
-                <StopBotModal />
             </React.Fragment>
         );
 

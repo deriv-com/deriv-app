@@ -27,6 +27,7 @@
   "author": "Deriv",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@types/classnames": "^2.2.11",
     "@babel/core": "^7.12.10",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/preset-react": "^7.16.7",
@@ -87,6 +88,7 @@
     "react-swipeable": "^6.2.1",
     "react-tiny-popover": "^7.0.1",
     "react-transition-group": "4.4.2",
-    "@enykeev/react-virtualized": "^9.22.4-mirror.1"
+    "react-virtualized": "npm:@enykeev/react-virtualized@^9.22.4-mirror.1",
+    "@types/react-virtualized": "^9.21.21"
   }
 }

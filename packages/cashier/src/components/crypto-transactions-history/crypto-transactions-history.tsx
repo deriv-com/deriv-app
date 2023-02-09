@@ -76,8 +76,8 @@ const CryptoTransactionsHistory = observer(() => {
                                 <Loading is_fullscreen />
                             ) : (
                                 <DataList
-                                    data_list_className='crypto-transactions-history__data-list'
-                                    data_source={crypto_transactions}
+                                    className='crypto-transactions-history__data-list'
+                                    data_source={crypto_transactions as unknown as TCryptoTransactionDetails[]}
                                     rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
                                         <CryptoTransactionsRenderer {...row_props} />
                                     )}

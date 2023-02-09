@@ -1,7 +1,31 @@
 import classNames from 'classnames';
 import React from 'react';
+import { TPassThrough } from './data-list';
 
-const DataListCell = ({ className, column, is_footer, passthrough, row }) => {
+type TRow = {
+    [key: string]: string;
+};
+type TRenderCellContent = {
+    cell_value: string;
+    is_footer: boolean;
+    passthrough?: TPassThrough;
+    row_obj: TRow;
+};
+type TDataListCell = {
+    className: string;
+    column: {
+        col_index: number | string;
+        title: string;
+        renderCellContent: (props: TRenderCellContent) => React.ReactNode;
+        renderHeader: (prop: renderHeaderType) => React.ReactNode;
+    };
+    is_footer: boolean;
+    passthrough?: TPassThrough;
+    row: TRow;
+};
+
+type renderHeaderType = { title: string };
+const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataListCell) => {
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];

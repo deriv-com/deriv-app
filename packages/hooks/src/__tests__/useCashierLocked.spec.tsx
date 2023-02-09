@@ -1,27 +1,27 @@
 import * as React from 'react';
 import { StoreProvider, TStores } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useIsSystemMaintenance from '../useIsSystemMaintenance';
+import useCashierLocked from '../useCashierLocked';
 import { beforeEach } from '@jest/globals';
 
-describe('useIsSystemMaintenance', () => {
+describe('useCashierLocked', () => {
     let mockRootStore: DeepPartial<TStores>;
 
     beforeEach(() => {
         mockRootStore = {
             client: {
                 account_status: {
-                    cashier_validation: [],
+                    status: [],
                 },
             },
         };
     });
 
-    test('should be false if there is no system_maintenance status', () => {
+    test('should be false if there is no cashier_locked status', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useIsSystemMaintenance(), { wrapper });
+        const { result } = renderHook(() => useCashierLocked(), { wrapper });
 
         expect(result.current).toBe(false);
     });
@@ -31,17 +31,17 @@ describe('useIsSystemMaintenance', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useIsSystemMaintenance(), { wrapper });
+        const { result } = renderHook(() => useCashierLocked(), { wrapper });
 
         expect(result.current).toBe(false);
     });
 
-    test('should be true if there is system_maintenance status', () => {
-        mockRootStore.client!.account_status!.cashier_validation!.push('system_maintenance');
+    test('should be true if there is cashier_locked status', () => {
+        mockRootStore.client!.account_status!.status!.push('cashier_locked');
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useIsSystemMaintenance(), { wrapper });
+        const { result } = renderHook(() => useCashierLocked(), { wrapper });
 
         expect(result.current).toBe(true);
     });

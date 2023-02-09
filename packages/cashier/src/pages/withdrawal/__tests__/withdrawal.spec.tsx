@@ -1,11 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
+import { TRootStore } from '@deriv/stores/types';
+import { useCashierLocked } from '@deriv/hooks';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
@@ -26,9 +28,14 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isDesktop: jest.fn(() => true),
 }));
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCashierLocked: jest.fn(() => false),
+}));
+const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<Withdrawal />', () => {
-    let history, mockRootStore, setSideNotes;
+    let history: BrowserHistory, mockRootStore: TRootStore, setSideNotes;
     beforeEach(() => {
         history = createBrowserHistory();
         mockRootStore = mockStore({
@@ -66,6 +73,7 @@ describe('<Withdrawal />', () => {
             },
         });
         setSideNotes = jest.fn();
+        mockUseCashierLocked.mockReturnValue(false);
     });
 
     const renderWithdrawal = (is_rerender = false) => {
@@ -102,8 +110,8 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('Virtual')).toBeInTheDocument();
     });
 
-    it('should render <CashierLocked /> component when "is_cashier_locked = true"', () => {
-        mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
+    it('should render <CashierLocked /> component when useCashierLocked returns true', () => {
+        mockUseCashierLocked.mockReturnValue(true);
         renderWithdrawal();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();

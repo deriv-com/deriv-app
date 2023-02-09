@@ -4,12 +4,11 @@ import { useStore, observer } from '@deriv/stores';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
 import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
-import { useCashierStore } from '../../../stores/useCashierStores';
 
 const WithdrawalTab = observer(() => {
     const verify = useVerifyEmail('paymentagent_withdraw');
-    const { client } = useStore();
-    const { payment_agent } = useCashierStore();
+    const { client, modules } = useStore();
+    const { payment_agent } = modules.cashier;
     const verification_code = client.verification_code.payment_agent_withdraw;
 
     React.useEffect(() => {

@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import CashierProviders from '../../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<PaymentAgentTransferReceipt />', () => {
     let history, mockRootStore;
@@ -33,9 +33,9 @@ describe('<PaymentAgentTransferReceipt />', () => {
     const renderPaymentAgentTransferReceipt = () => {
         return render(
             <Router history={history}>
-                <CashierProviders store={mockRootStore}>
+                <StoreProvider store={mockRootStore}>
                     <PaymentAgentTransferReceipt />
-                </CashierProviders>
+                </StoreProvider>
             </Router>
         );
     };

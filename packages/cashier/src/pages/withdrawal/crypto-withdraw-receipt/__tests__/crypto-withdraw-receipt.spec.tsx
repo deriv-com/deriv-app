@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { StoreProvider } from '@deriv/stores';
 import CryptoWithdrawReceipt from '../crypto-withdraw-receipt';
-import CashierProviders from '../../../../cashier-providers';
 
 describe('<CryptoWithdrawReceipt />', () => {
     let mockRootStore;
@@ -43,9 +43,9 @@ describe('<CryptoWithdrawReceipt />', () => {
 
     const renderCryptoWithdrawReceipt = () => {
         return render(
-            <CashierProviders store={mockRootStore}>
+            <StoreProvider store={mockRootStore}>
                 <CryptoWithdrawReceipt />
-            </CashierProviders>
+            </StoreProvider>
         );
     };
 

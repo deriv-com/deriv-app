@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import { isMobile, validNumber } from '@deriv/shared';
-import CashierProviders from '../../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -49,12 +49,12 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
 
     const renderPaymentAgentUnlistedWithdrawForm = (is_rerender = false) => {
         const ui = (
-            <CashierProviders store={mockRootStore}>
+            <StoreProvider store={mockRootStore}>
                 <PaymentAgentUnlistedWithdrawForm
                     verification_code='ABCdef'
                     setIsUnlistedWithdraw={setIsUnlistedWithdraw}
                 />
-            </CashierProviders>
+            </StoreProvider>
         );
         return is_rerender ? ui : render(ui);
     };

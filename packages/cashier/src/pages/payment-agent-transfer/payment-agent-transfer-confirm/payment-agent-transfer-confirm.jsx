@@ -3,12 +3,17 @@ import { Money } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import TransferConfirm from 'Components/transfer-confirm';
-import { useCashierStore } from '../../../stores/useCashierStores';
 
 const PaymentAgentTransferConfirm = observer(() => {
-    const { client } = useStore();
-    const { payment_agent_transfer } = useCashierStore();
+    const {
+        client,
+        modules: {
+            cashier: { payment_agent_transfer },
+        },
+    } = useStore();
+
     const { currency, loginid } = client;
+
     const {
         confirm: { amount, description, client_id: transfer_to, client_name: transfer_to_name },
         error,

@@ -1,8 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderPopup from '../on-ramp-provider-popup';
+import { StoreProvider } from '@deriv/stores';
 import { TRootStore } from 'Types';
-import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...(jest.requireActual('@deriv/components') as any),
@@ -54,9 +54,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.queryByTestId('dti_on-ramp_popup')).not.toBeInTheDocument();
@@ -92,9 +90,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
@@ -130,9 +126,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Widget error')).toBeInTheDocument();
@@ -168,9 +162,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(screen.getByText('Please go to the Deposit page to get an address.')).toBeInTheDocument();
@@ -206,9 +198,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(
@@ -250,9 +240,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const cancel_btn = screen.getByRole('button', { name: 'Cancel' });
@@ -296,9 +284,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         expect(
@@ -349,9 +335,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const deposit_address_input = screen.getByRole('textbox');
@@ -388,9 +372,7 @@ describe('<OnRampProviderPopup />', () => {
         };
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
         });
 
         const cancel_btn = screen.getByRole('button', { name: 'Cancel' });

@@ -1,11 +1,14 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
-import { useCashierStore } from '../../stores/useCashierStores';
+import { useStore, observer } from '@deriv/stores';
 
 const CryptoTransactionsStatusModal = observer(() => {
-    const { transaction_history } = useCashierStore();
+    const {
+        modules: {
+            cashier: { transaction_history },
+        },
+    } = useStore();
     const {
         hideCryptoTransactionsStatusModal,
         is_crypto_transactions_status_modal_visible: is_status_modal_visible,

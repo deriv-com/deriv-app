@@ -2,8 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { TStores } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { TRootStore } from 'Types';
 
 const ErrorComponent = ({
     header,
@@ -14,7 +14,7 @@ const ErrorComponent = ({
     setError,
     redirect_to = routes.trade,
     should_show_refresh = true,
-}: TStores['common']['error']) => {
+}: TRootStore['common']['error']) => {
     const history = useHistory();
 
     React.useEffect(() => {

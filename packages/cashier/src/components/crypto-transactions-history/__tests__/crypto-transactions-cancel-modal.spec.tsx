@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsCancelModal from '../crypto-transactions-cancel-modal';
-import CashierProviders from '../../../cashier-providers';
+import { StoreProvider } from '@deriv/stores';
 
 describe('<CryptoTransactionsCancelModal />', () => {
     let modal_root_el, mockRootStore;
@@ -31,7 +31,7 @@ describe('<CryptoTransactionsCancelModal />', () => {
 
     const renderCryptoTransactionsCancelModal = () =>
         render(<CryptoTransactionsCancelModal />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
     it('should show "Are you sure you want to cancel this transaction" and "Cancel transaction" messages, "Yes" and "No" buttons', () => {

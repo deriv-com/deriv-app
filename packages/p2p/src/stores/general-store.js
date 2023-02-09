@@ -404,8 +404,9 @@ export default class GeneralStore extends BaseStore {
                     const server_time = this.props.server_time.get();
                     const blocked_until_moment = toMoment(blocked_until);
 
-                    // Need isAfter instead of setTimeout as setTimeout has a max delay of 24.8 days
-                    if (server_time.isAfter(blocked_until_moment)) this.setUserBlockedUntil(null);
+                    this.user_blocked_timeout = setTimeout(() => {
+                        this.setUserBlockedUntil(null);
+                    }, blocked_until_moment.diff(server_time));
                 }
             }
         );

@@ -6,15 +6,18 @@ import { localize, Localize } from '@deriv/translations';
 import { getStatus } from '../../constants/transaction-status';
 import { TCryptoTransactionDetails } from '../../types';
 import { useStore, observer } from '@deriv/stores';
-import { useCashierStore } from '../../stores/useCashierStores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
 };
 
 const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransactionsRendererProps) => {
-    const { client } = useStore();
-    const { transaction_history } = useCashierStore();
+    const {
+        modules: {
+            cashier: { transaction_history },
+        },
+        client,
+    } = useStore();
     const { cancelCryptoTransaction, showCryptoTransactionsCancelModal, showCryptoTransactionsStatusModal } =
         transaction_history;
     const { currency } = client;

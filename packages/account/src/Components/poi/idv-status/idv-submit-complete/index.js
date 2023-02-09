@@ -1,3 +1,3 @@
-import IdvSubmitComplete from './idv-submit-complete';
+import IdvSubmitComplete from './idv-submit-complete.jsx';
 
 export default IdvSubmitComplete;

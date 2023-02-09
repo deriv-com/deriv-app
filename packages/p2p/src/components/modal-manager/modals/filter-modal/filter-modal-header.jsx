@@ -3,32 +3,35 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { DesktopWrapper, Icon, MobileWrapper } from '@deriv/components';
+import PropTypes from 'prop-types';
 
-const FilterModalHeader = ({ has_selected_payment_methods }) => {
-    const { buy_sell_store, my_profile_store } = useStores();
-    const { showModal } = useModalManagerContext();
+const FilterModalHeader = ({ pageHeaderReturnFn }) => {
+    const { buy_sell_store } = useStores();
 
     if (buy_sell_store.show_filter_payment_methods) {
         return (
-            <PageReturn
-                onClick={() => {
-                    if (has_selected_payment_methods) {
-                        showModal({
-                            key: 'LeavePageModal',
-                        });
-                    } else {
-                        buy_sell_store.setShowFilterPaymentMethods(false);
-                        my_profile_store.setSearchTerm('');
-                        my_profile_store.setSearchResults([]);
-                    }
-                }}
-                page_title={localize('Payment methods')}
-            />
+            <React.Fragment>
+                <DesktopWrapper>
+                    <PageReturn onClick={pageHeaderReturnFn} page_title={localize('Payment methods')} />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <div className='filter-modal__header'>
+                        <div onClick={pageHeaderReturnFn} className='filter-modal__header-return-button'>
+                            <Icon icon='IcArrowLeftBold' size={16} />
+                        </div>
+                        <Localize i18n_default_text='Payment methods' />
+                    </div>
+                </MobileWrapper>
+            </React.Fragment>
         );
     }
 
     return <Localize i18n_default_text='Filter' />;
+};
+
+FilterModalHeader.propTypes = {
+    pageHeaderReturnFn: PropTypes.func,
 };
 
 export default observer(FilterModalHeader);

@@ -19,7 +19,6 @@ import FilterModalHeader from './filter-modal-header.jsx';
 import FilterModalSearch from './filter-modal-search.jsx';
 import FilterModalNoResults from './filter-modal-no-results.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 
 const FilterModal = () => {
@@ -59,16 +58,15 @@ const FilterModal = () => {
         buy_sell_store.setSelectedPaymentMethodText([]);
     };
 
-    const onClickOutside = () => {
-        if (buy_sell_store.show_filter_payment_methods && has_selected_payment_methods) {
-            showModal({
-                key: 'LeavePageModal',
-            });
-        } else {
-            buy_sell_store.setShowFilterPaymentMethods(false);
-            hideModal();
-        }
+    const onClickClose = () => {
+        buy_sell_store.setShowFilterPaymentMethods(false);
+        my_profile_store.setSearchTerm('');
+        my_profile_store.setSearchResults([]);
+        hideModal({
+            should_restore_local_state: false,
+        });
     };
+
     const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
     const has_already_selected_payment_methods =
         buy_sell_store.selected_payment_method_value?.length &&
@@ -80,6 +78,10 @@ const FilterModal = () => {
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
 
+        return () => {
+            my_profile_store.setSearchTerm('');
+            my_profile_store.setSearchResults([]);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -134,10 +136,14 @@ const FilterModal = () => {
                     },
                 },
             });
-        } else {
+        } else if (buy_sell_store.show_filter_payment_methods) {
             buy_sell_store.setShowFilterPaymentMethods(false);
             my_profile_store.setSearchTerm('');
             my_profile_store.setSearchResults([]);
+        } else {
+            hideModal({
+                should_restore_local_state: false,
+            });
         }
     };
 
@@ -148,15 +154,9 @@ const FilterModal = () => {
                     className={'payment-methods'}
                     has_close_icon
                     height={'56rem'}
-                    title={
-                        <FilterModalHeader
-                            has_selected_payment_methods={
-                                has_already_selected_payment_methods || has_recently_selected_payment_methods
-                            }
-                        />
-                    }
+                    title={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
                     is_open={is_modal_open}
-                    toggleModal={onClickOutside}
+                    toggleModal={onClickClose}
                     width='44rem'
                 >
                     <Modal.Body>
@@ -269,18 +269,13 @@ const FilterModal = () => {
                     is_modal_open={is_modal_open}
                     height_offset='80px'
                     is_flex
-                    page_header_className={classNames({
-                        'filter-modal__header': !buy_sell_store.show_filter_payment_methods,
-                    })}
-                    page_header_text={
-                        buy_sell_store.show_filter_payment_methods ? localize('Payment methods') : localize('Filter')
-                    }
-                    pageHeaderReturnFn={buy_sell_store.show_filter_payment_methods ? pageHeaderReturnFn : null}
+                    header={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
+                    onClickClose={onClickClose}
                     renderPageFooterChildren={() => {
                         return (
                             <React.Fragment>
                                 {buy_sell_store.show_filter_payment_methods ? (
-                                    <Button.Group>
+                                    <Button.Group className='filter-modal__footer-button-group'>
                                         <Button
                                             disabled={!has_selected_payment_methods}
                                             large
@@ -302,7 +297,7 @@ const FilterModal = () => {
                                         </Button>
                                     </Button.Group>
                                 ) : (
-                                    <Button.Group>
+                                    <Button.Group className='filter-modal__footer-button-group'>
                                         <Button
                                             large
                                             secondary
@@ -395,24 +390,3 @@ const FilterModal = () => {
 };
 
 export default observer(FilterModal);
-
-// if (buy_sell_store.show_filter_payment_methods) {
-//     return (
-//         <PageReturn
-//             onClick={() => {
-//                 if (has_selected_payment_methods) {
-//                     showModal({
-//                         key: 'LeavePageModal',
-//                     });
-//                 } else {
-//                     buy_sell_store.setShowFilterPaymentMethods(false);
-//                     my_profile_store.setSearchTerm('');
-//                     my_profile_store.setSearchResults([]);
-//                 }
-//             }}
-//             page_title={localize('Payment methods')}
-//         />
-//     );
-// }
-
-// return <Localize i18n_default_text='Filter' />;

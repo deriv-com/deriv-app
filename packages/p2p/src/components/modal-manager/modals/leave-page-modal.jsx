@@ -5,7 +5,7 @@ import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const LeavePageModal = ({ onLeavePage }) => {
+const LeavePageModal = ({ onLeavePage = () => {} }) => {
     const { buy_sell_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 

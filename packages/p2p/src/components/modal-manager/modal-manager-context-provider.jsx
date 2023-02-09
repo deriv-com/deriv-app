@@ -39,7 +39,9 @@ const ModalManagerContextProvider = props => {
             }
 
             return () => {
-                persisted_states.current[active_modal.key][key] = saved_state_ref.current;
+                if (persisted_states.current[active_modal.key]) {
+                    persisted_states.current[active_modal.key][key] = saved_state_ref.current;
+                }
             };
         }, []);
 

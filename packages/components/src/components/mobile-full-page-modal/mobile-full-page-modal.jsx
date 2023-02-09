@@ -104,7 +104,7 @@ const MobileFullPageModal = ({
 MobileFullPageModal.propTypes = {
     className: PropTypes.string,
     container_children: PropTypes.any,
-    header: PropTypes.string,
+    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     header_background_color: PropTypes.string,
     height_offset: PropTypes.string,
     is_flex: PropTypes.bool,

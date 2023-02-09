@@ -33,6 +33,15 @@
 
     &__header {
         justify-content: center;
+
+        @include mobile {
+            text-align: center;
+        }
+
+        &-return-button {
+            position: absolute;
+            left: 1.2rem;
+        }
     }
 
     &__body {
@@ -42,6 +51,12 @@
     &__footer {
         &-button {
             display: flex;
+            width: 100%;
+        }
+
+        &-button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             width: 100%;
         }
     }

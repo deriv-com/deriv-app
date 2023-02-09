@@ -7,7 +7,7 @@ import { isVanillaContract } from '@deriv/shared';
 
 const generateMessageForVanillaTrade = contract_info => (
     <Localize
-        i18n_default_text='<0>For {{contract_type}}:</0> Earn payout if {{index_name}} is {{strike_status}} than the strike price at the expiry time. Your payout is zero if the market is {{market_status}} than the strike price at the expiry time'
+        i18n_default_text='<0>For {{contract_type}}:</0> Get a payout if {{index_name}} is {{strike_status}} than the strike price at the expiry time. Your payout is zero if the market is {{market_status}} or equal to the strike price at the expiry time. You will start making a profit when the payout is higher than your stake.'
         components={[<strong key={0} />]}
         values={{
             contract_type: contract_info.contract_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),

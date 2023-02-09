@@ -19,6 +19,7 @@ const Strike = ({
     expiry_type,
     expiry_date,
     server_time,
+    vanilla_trade_type,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [should_open_dropdown, setShouldOpenDropdown] = React.useState(false);
@@ -77,8 +78,16 @@ const Strike = ({
                     header={localize('Strike Price')}
                     header_tooltip={
                         <Localize
-                            i18n_default_text='<0>For Call:</0> You will earn a payout if the market is above this price at the expiry time. Otherwise, your payout will be zero.<1/><1/><0>For Put:</0> You will earn a payout if the market is below this price at the expiry time. Otherwise, your payout will be zero.'
+                            i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
                             components={[<strong key={0} />, <br key={1} />]}
+                            values={{
+                                trade_type:
+                                    vanilla_trade_type === 'VANILLALONGCALL'
+                                        ? localize('For Call')
+                                        : localize('For Put'),
+                                payout_status:
+                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+                            }}
                         />
                     }
                 >
@@ -136,6 +145,7 @@ const Strike = ({
                         onChange={onChange}
                         name='barrier_1'
                         strike_price_list={strike_price_list}
+                        vanilla_trade_type={vanilla_trade_type}
                     />
                 </div>
             </MobileWrapper>
@@ -155,4 +165,5 @@ export default connect(({ modules, ui, common }) => ({
     start_date: modules.trade.start_date,
     expiry_date: modules.trade.expiry_date,
     server_time: common.server_time,
+    vanilla_trade_type: ui.vanilla_trade_type,
 }))(Strike);

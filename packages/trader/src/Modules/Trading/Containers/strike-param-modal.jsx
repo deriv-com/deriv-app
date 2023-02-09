@@ -3,7 +3,7 @@ import { Localize, localize } from '@deriv/translations';
 import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
 import classNames from 'classnames';
 
-const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike_price_list }) => (
+const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike_price_list, vanilla_trade_type }) => (
     <Modal
         className='trade-params'
         is_open={is_open}
@@ -24,8 +24,16 @@ const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike
                     is_bubble_hover_enabled
                     message={
                         <Localize
-                            i18n_default_text='<0>For Call:</0> You will earn a payout if the market is above this price at the expiry time. Otherwise, your payout will be zero.<1/><1/><0>For Put:</0> You will earn a payout if the market is below this price at the expiry time. Otherwise, your payout will be zero.'
+                            i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
                             components={[<strong key={0} />, <br key={1} />]}
+                            values={{
+                                trade_type:
+                                    vanilla_trade_type === 'VANILLALONGCALL'
+                                        ? localize('For Call')
+                                        : localize('For Put'),
+                                payout_status:
+                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+                            }}
                         />
                     }
                     classNameWrapper='trade-params--modal-wrapper'

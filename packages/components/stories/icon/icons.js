@@ -441,6 +441,7 @@ export const icons =
         'IcNetellerLight',
         'IcNewFile',
         'IcNoAd',
+        'IcNoData',
         'IcNoOrder',
         'IcNotificationClear',
         'IcNotification',

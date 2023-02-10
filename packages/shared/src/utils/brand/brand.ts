@@ -20,6 +20,7 @@ type TPlatforms = {
     dbot: TPlatform;
     mt5: TPlatform;
     dxtrade: TPlatform;
+    derivez: TPlatform;
     smarttrader: TPlatform;
     bbot: TPlatform;
     go: TPlatform;
@@ -48,4 +49,9 @@ export const getPlatformSettings = (platform_key: keyof TPlatforms): TPlatform =
     }
 
     return allowed_config_data;
+};
+
+export const getAppstorePlatforms = () => {
+    const platform_data = config_data.platforms_appstore;
+    return Object.keys(platform_data).map(key => platform_data[key]);
 };

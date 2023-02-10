@@ -1,28 +1,34 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform, PlatformContext, getPlatformSettings } from '@deriv/shared';
-
+import { routes, isDesktop, isMobile, getActivePlatform, getPlatformSettings } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
+
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
 const PlatformBox = ({ platform: { icon, title, description } }) => (
-    <>
+    <React.Fragment>
         <div className='platform-dropdown__list-platform-background' />
-        <Icon className='platform-dropdown__list-platform-icon' icon={icon} size={32} />
+        <Icon
+            data_testid='dt_platform_box_icon'
+            className='platform-dropdown__list-platform-icon'
+            icon={icon}
+            size={32}
+        />
 
         <div className='platform-dropdown__list-platform-details'>
             <p className='platform-dropdown__list-platform-title'>{title()}</p>
             <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
-    </>
+    </React.Fragment>
 );
 
 const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_items }) => {
     return !hide_dropdown_items
         ? (platform.link_to && (
               <BinaryLink
+                  data-testid='dt_platform_dropdown'
                   to={platform.link_to}
                   // This is here because in routes-config it needs to have children, but not in menu
                   exact={platform.link_to === routes.trade}
@@ -32,14 +38,18 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
                   <PlatformBox platform={platform} />
               </BinaryLink>
           )) || (
-              <a href={platform.href} className='platform-dropdown__list-platform'>
+              <a
+                  data-testid='dt_platform_dropdown_link'
+                  href={platform.href}
+                  className='platform-dropdown__list-platform'
+              >
                   <PlatformBox platform={platform} />
               </a>
           )
         : null;
 };
 
-const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
+const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, is_pre_appstore }) => {
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
 
@@ -55,7 +65,6 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config })
             closeDrawer();
         }
     };
-    const { is_pre_appstore } = React.useContext(PlatformContext);
 
     useOnClickOutside(ref, handleClickOutside, () => isDesktop());
 

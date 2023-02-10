@@ -13,9 +13,8 @@ import getRoutesConfig from '../../Constants/routes-config';
 const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...props }) => {
     const platform_context = React.useContext(PlatformContext);
     const is_appstore = platform_context?.is_appstore;
-    const is_pre_appstore = platform_context?.is_pre_appstore;
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore, is_pre_appstore }));
+    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
 
     if (!route && to) {
         throw new Error(`Route not found: ${to}`);
@@ -23,6 +22,7 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
 
     return to && !href ? (
         <span
+            data-testid='dt_span'
             className={classNames({
                 [`${active_class}__link-wrapper`]: !!active_class,
             })}
@@ -35,7 +35,9 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
             </NavLink>
         </span>
     ) : (
-        <a {...props}>{children}</a>
+        <a data-testid='dt_link' {...props}>
+            {children}
+        </a>
     );
 };
 

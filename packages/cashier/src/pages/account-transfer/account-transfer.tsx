@@ -12,6 +12,7 @@ import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TAccountTransferProps = {
     onClickDeposit?: () => void;
@@ -23,13 +24,8 @@ type TAccountTransferProps = {
 
 const AccountTransfer = observer(
     ({ onClickDeposit, onClickNotes, onClose, openAccountSwitcherModal, setSideNotes }: TAccountTransferProps) => {
-        const {
-            modules: {
-                cashier: { account_transfer, general_store, transaction_history },
-            },
-            client,
-        } = useStore();
-
+        const { client } = useStore();
+        const { account_transfer, general_store, transaction_history } = useCashierStore();
         const {
             accounts_list,
             container,
@@ -42,13 +38,9 @@ const AccountTransfer = observer(
             setAccountTransferAmount,
             setIsTransferConfirm,
         } = account_transfer;
-
         const { is_cashier_locked, is_loading, setActiveTab } = general_store;
-
         const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
-
         const { is_pre_appstore, is_switching, is_virtual } = client;
-
         const [is_loading_status, setIsLoadingStatus] = React.useState(true);
         const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
 

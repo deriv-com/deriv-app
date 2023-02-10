@@ -261,6 +261,11 @@
             transition: all 0.4s;
         }
     }
+    &--tour-active {
+        .blocklyTrash {
+            display: none;
+        }
+    }
 
     &--active {
         z-index: 1;

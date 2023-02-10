@@ -1,6 +1,6 @@
 import 'Sass/app/modules/trading-mobile.scss';
 
-import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
+import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom, Popover } from '@deriv/components';
 
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 const DEFAULT_DURATION = Object.freeze({
     t: 5,
@@ -42,6 +42,7 @@ const TradeParamsModal = ({
     toggleModal,
     currency,
     duration_units_list,
+    is_vanilla,
 }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
@@ -98,6 +99,27 @@ const TradeParamsModal = ({
 
     const isVisible = component_key => form_components.includes(component_key);
 
+    const setToolTipContent = () => {
+        if (is_vanilla && state.trade_param_tab_idx === 1)
+            return (
+                <div className='trade-params__vanilla-ic-info-wrapper'>
+                    <Popover
+                        alignment='bottom'
+                        icon='info'
+                        id='dt_multiplier-stake__tooltip'
+                        zIndex={9999}
+                        is_bubble_hover_enabled
+                        message={
+                            <Localize i18n_default_text='Your stake is a non-refundable one-time premium to purchase this contract. Your total profit/loss equals the contract value minus your stake.' />
+                        }
+                        classNameWrapper='trade-params--modal-wrapper'
+                        classNameBubble='trade-params--modal-wrapper__content'
+                    />
+                </div>
+            );
+        return null;
+    };
+
     return (
         <React.Fragment>
             <Modal
@@ -105,12 +127,12 @@ const TradeParamsModal = ({
                 className='trade-params'
                 enableApp={enableApp}
                 is_open={is_open}
-                is_vertical_top
                 header={<div />}
                 disableApp={disableApp}
                 toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
+                renderTitle={setToolTipContent}
             >
                 <ThemedScrollbars>
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>
@@ -173,6 +195,7 @@ export default connect(({ client, modules, ui }) => ({
     expiry_type: modules.trade.expiry_type,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    is_vanilla: modules.trade.is_vanilla,
 }))(TradeParamsModal);
 
 const TradeParamsMobile = ({

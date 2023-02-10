@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Loading } from '@deriv/components';
 import {
@@ -18,6 +17,70 @@ import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionModal from './self-exclusion-modal';
 import SelfExclusionWrapper from './self-exclusion-wrapper';
 import SelfExclusionForm from './self-exclusion-form';
+import { FormikHelpers, FormikValues } from 'formik';
+
+type TSelfExclusion = {
+    currency: string;
+    footer_ref?: React.RefObject<HTMLElement>;
+    is_app_settings: boolean;
+    is_cr: boolean;
+    is_appstore: boolean;
+    is_eu: boolean;
+    is_mf: boolean;
+    is_mlt: boolean;
+    is_mx: boolean;
+    is_switching: boolean;
+    is_tablet: boolean;
+    is_uk: boolean;
+    is_virtual: boolean;
+    is_wrapper_bypassed: boolean;
+    logout: () => void;
+    overlay_ref: HTMLDivElement;
+    setIsOverlayShown?: React.Dispatch<React.SetStateAction<boolean>>;
+    ws: FormikValues;
+};
+
+type TExclusionData = {
+    max_deposit: string;
+    max_turnover: string;
+    max_losses: string;
+    max_7day_deposit: string;
+    max_7day_turnover: string;
+    max_7day_losses: string;
+    max_30day_deposit: string;
+    max_30day_turnover: string;
+    max_30day_losses: string;
+    session_duration_limit: string;
+    timeout_until: string;
+    exclude_until: string;
+    max_balance: string;
+    max_open_bets: string;
+};
+
+type TCustomState = Partial<{
+    changed_attributes: string[];
+    error_message: string;
+    is_confirm_page: boolean;
+    is_loading: boolean;
+    is_success: boolean;
+    self_exclusions: Record<string, string>;
+    show_article: boolean;
+    show_confirm: boolean;
+    submit_error_message: string;
+}>;
+
+type TExclusionLimits = Partial<{
+    get_limits: {
+        open_positions: number;
+        account_balance: number;
+    };
+}>;
+
+type TResponse = {
+    error?: {
+        message: string;
+    };
+};
 
 const SelfExclusion = ({
     currency,
@@ -38,7 +101,7 @@ const SelfExclusion = ({
     overlay_ref,
     setIsOverlayShown,
     ws,
-}) => {
+}: TSelfExclusion) => {
     const exclusion_fields_settings = Object.freeze({
         max_number: 9999999999999,
         max_open_positions: 999999999,
@@ -64,9 +127,14 @@ const SelfExclusion = ({
         max_open_bets: localize('Max. open positions'),
     };
 
-    const prev_is_switching = React.useRef(null);
-    const exclusion_limits = React.useRef({});
-    const exclusion_data = React.useRef({
+    const prev_is_switching = React.useRef<boolean | null>(null);
+    const exclusion_limits = React.useRef<TExclusionLimits>({
+        get_limits: {
+            open_positions: 0,
+            account_balance: 0,
+        },
+    });
+    const exclusion_data = React.useRef<TExclusionData>({
         max_deposit: '',
         max_turnover: '',
         max_losses: '',
@@ -83,7 +151,7 @@ const SelfExclusion = ({
         max_open_bets: '',
     });
 
-    const initial_state = Object.freeze({
+    const initial_state: TCustomState = Object.freeze({
         changed_attributes: [],
         error_message: '',
         is_confirm_page: false,
@@ -96,7 +164,12 @@ const SelfExclusion = ({
     });
 
     const isMounted = useIsMounted();
-    const [state, setState] = React.useReducer((prev_state, value) => ({ ...prev_state, ...value }), initial_state);
+    const [state, setState] = React.useReducer<(prev_state: TCustomState, value: TCustomState) => TCustomState>(
+        (prev_state, value) => {
+            return { ...prev_state, ...value };
+        },
+        initial_state
+    );
 
     React.useEffect(() => {
         if (is_virtual) {
@@ -125,14 +198,14 @@ const SelfExclusion = ({
 
     React.useEffect(() => {
         if (typeof setIsOverlayShown === 'function') {
-            setIsOverlayShown(state.show_article);
+            setIsOverlayShown(state?.show_article || false);
         }
     }, [state.show_article, setIsOverlayShown]);
 
     const resetState = () => setState(initial_state);
 
-    const validateFields = values => {
-        const errors = {};
+    const validateFields = (values: FormikValues) => {
+        const errors: Record<string, string | null> = {};
 
         // Regex
         const max_number = exclusion_fields_settings.max_number;
@@ -141,16 +214,20 @@ const SelfExclusion = ({
 
         const more_than_zero_message = localize('Please input number greater than 0');
 
-        const getSmallestMinValue = decimals =>
+        const getSmallestMinValue = (decimals: number) =>
             decimals === 0
                 ? 1
                 : `0.${Array(decimals - 1)
                       .fill(0)
                       .join('')}1`;
 
-        const custom_validation = ['max_balance', 'max_open_bets', 'session_duration_limit'];
+        const custom_validation: Array<keyof TExclusionData> = [
+            'max_balance',
+            'max_open_bets',
+            'session_duration_limit',
+        ];
 
-        const only_currency = [
+        const only_currency: Array<keyof TExclusionData> = [
             'max_deposit',
             'max_7day_deposit',
             'max_30day_deposit',
@@ -182,25 +259,27 @@ const SelfExclusion = ({
 
         only_currency.forEach(item => {
             if (values[item]) {
-                const { is_ok, message } = validNumber(values[item], {
+                const result = validNumber(values[item], {
                     type: 'float',
                     decimals: getDecimalPlaces(currency),
-                    min: is_eu ? getSmallestMinValue(getDecimalPlaces(currency)) : null,
-                    max: (is_eu && state.self_exclusions[item]) || max_number,
+                    min: is_eu ? +getSmallestMinValue(getDecimalPlaces(currency)) : 0,
+                    max: (is_eu && Number(state?.self_exclusions?.[item])) || max_number,
                 });
+                const { is_ok, message } = typeof result === 'object' ? result : { is_ok: result, message: null };
                 if (!is_ok) errors[item] = message;
             }
-            if (state.self_exclusions[item] && !values[item] && !is_cr) {
+            if (state?.self_exclusions?.[item] && !values[item] && !is_cr) {
                 errors[item] = more_than_zero_message;
             }
         });
 
         if (values.session_duration_limit) {
-            const { is_ok, message } = validNumber(values.session_duration_limit, {
+            const result = validNumber(values.session_duration_limit, {
                 type: 'integer',
-                min: is_eu ? 1 : null,
-                max: is_eu ? state.self_exclusions.session_duration_limit : six_weeks,
+                min: is_eu ? 1 : 0,
+                max: is_eu ? Number(state?.self_exclusions?.session_duration_limit) : six_weeks,
             });
+            const { is_ok, message } = typeof result === 'object' ? result : { is_ok: result, message: null };
             if (!is_ok) errors.session_duration_limit = message;
             if (values.session_duration_limit > six_weeks) {
                 errors.session_duration_limit = localize(
@@ -210,48 +289,55 @@ const SelfExclusion = ({
         }
 
         if (values.max_open_bets) {
-            const { is_ok, message } = validNumber(values.max_open_bets, {
+            const result = validNumber(values.max_open_bets, {
                 type: 'integer',
-                min: is_eu ? 1 : null,
-                max: (is_eu && exclusion_limits.current.get_limits.open_positions) || max_open_positions,
+                min: is_eu ? 1 : 0,
+                max: (is_eu && exclusion_limits.current.get_limits?.open_positions) || max_open_positions,
             });
+
+            const { is_ok, message } = typeof result === 'object' ? result : { is_ok: result, message: null };
             if (!is_ok) errors.max_open_bets = message;
         }
 
         if (values.max_balance) {
-            const { is_ok, message } = validNumber(values.max_balance, {
+            const result = validNumber(values.max_balance, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
-                min: is_eu ? getSmallestMinValue(getDecimalPlaces(currency)) : null,
-                max: (is_eu && exclusion_limits.current.get_limits.account_balance) || max_number,
+                min: is_eu ? +getSmallestMinValue(getDecimalPlaces(currency)) : 0,
+                max: (is_eu && exclusion_limits.current.get_limits?.account_balance) || max_number,
             });
+            const { is_ok, message } = typeof result === 'object' ? result : { is_ok: result, message: null };
             if (!is_ok) errors.max_balance = message;
         }
 
         custom_validation.forEach(item => {
-            if (state.self_exclusions[item] && !values[item] && !is_cr) {
+            if (state?.self_exclusions?.[item] && !values[item] && !is_cr) {
                 errors[item] = more_than_zero_message;
             }
         });
         return errors;
     };
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const handleSubmit = async (values: FormikValues, { setSubmitting }: FormikHelpers<FormikValues>) => {
         const need_logout_exclusions = ['exclude_until', 'timeout_until'];
         const string_exclusions = ['exclude_until'];
-        const has_need_logout = state.changed_attributes.some(attr => need_logout_exclusions.includes(attr));
+        const has_need_logout = state?.changed_attributes?.some((attr: string) =>
+            need_logout_exclusions.includes(attr)
+        );
 
-        const makeRequest = () =>
+        const makeRequest = (): Promise<TResponse> =>
             new Promise(resolve => {
-                const request = {
+                const request: { [key: string]: number } = {
                     set_self_exclusion: 1,
                 };
 
-                state.changed_attributes.forEach(attr => {
+                state?.changed_attributes?.forEach((attr: string) => {
                     request[attr] = string_exclusions.includes(attr) ? values[attr] : +values[attr];
                 });
 
-                ws.authorized.setSelfExclusion(request).then(response => resolve(response));
+                ws.authorized
+                    .setSelfExclusion(request)
+                    .then((response: TResponse | PromiseLike<TResponse>) => resolve(response));
             });
 
         if (has_need_logout) {
@@ -286,8 +372,8 @@ const SelfExclusion = ({
         }
     };
 
-    const goToConfirm = values => {
-        const changed_attributes = Object.keys(values).filter(key => values[key] !== state.self_exclusions[key]);
+    const goToConfirm = (values: FormikValues) => {
+        const changed_attributes = Object.keys(values).filter(key => values[key] !== state?.self_exclusions?.[key]);
         setState({ changed_attributes, is_confirm_page: true });
     };
 
@@ -295,7 +381,7 @@ const SelfExclusion = ({
 
     const backFromConfirmLimits = () => setState({ is_confirm_page: false, submit_error_message: '' });
 
-    const objectValuesToString = object => {
+    const objectValuesToString = (object: FormikValues) => {
         Object.keys(object || {}).forEach(item => {
             object[item] = `${object[item]}`;
         });
@@ -305,7 +391,7 @@ const SelfExclusion = ({
 
     const toggleArticle = () => setState({ show_article: !state.show_article });
 
-    const populateExclusionResponse = response => {
+    const populateExclusionResponse = (response: FormikValues) => {
         if (response.error && isMounted()) {
             setState({
                 is_loading: false,
@@ -330,7 +416,7 @@ const SelfExclusion = ({
     const getSelfExclusion = () => {
         setState({ is_loading: true });
 
-        ws.authorized.getSelfExclusion({ get_self_exclusion: 1 }).then(self_exclusion_response => {
+        ws.authorized.getSelfExclusion({ get_self_exclusion: 1 }).then((self_exclusion_response: FormikValues) => {
             populateExclusionResponse(self_exclusion_response);
         });
     };
@@ -338,29 +424,29 @@ const SelfExclusion = ({
     const getLimits = () => {
         setState({ is_loading: true });
 
-        ws.authorized.getLimits({ get_limits: 1 }).then(limits => {
+        ws.authorized.getLimits({ get_limits: 1 }).then((limits: FormikValues) => {
             exclusion_limits.current = limits;
         });
     };
 
-    const getMaxLength = field => {
+    const getMaxLength = (field: string) => {
         const decimals_length = getDecimalPlaces(currency);
-        const isIntegerField = value => /session_duration_limit|max_open_bets/.test(value);
-        const getLength = value =>
+        const isIntegerField = (value: string) => /session_duration_limit|max_open_bets/.test(value);
+        const getLength = (value: string) =>
             value.toString().length + (isIntegerField(field) || decimals_length === 0 ? 0 : decimals_length + 1); // add 1 to allow typing dot
 
         if (/max_open_bets/.test(field) && exclusion_limits.current.get_limits?.open_positions && !is_cr)
-            return getLength(exclusion_limits.current.get_limits.open_positions);
+            return getLength(String(exclusion_limits.current.get_limits.open_positions));
 
         if (/max_balance/.test(field) && exclusion_limits.current.get_limits?.account_balance && !is_cr)
-            return getLength(exclusion_limits.current.get_limits.account_balance);
+            return getLength(String(exclusion_limits.current.get_limits.account_balance));
 
-        if (!state.self_exclusions[field] || is_cr) {
+        if (!state?.self_exclusions?.[field] || is_cr) {
             if (/max_open_bets/.test(field)) return 9; // TODO: remove when the error is fixed on BE
-            return getLength(exclusion_fields_settings.max_number);
+            return getLength(String(exclusion_fields_settings.max_number));
         }
 
-        return getLength(state.self_exclusions[field]);
+        return getLength(state?.self_exclusions?.[field]);
     };
 
     if (is_virtual) {
@@ -418,27 +504,6 @@ const SelfExclusion = ({
             {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}
         </SelfExclusionContext.Provider>
     );
-};
-
-SelfExclusion.propTypes = {
-    currency: PropTypes.string.isRequired,
-    footer_ref: PropTypes.shape({ current: PropTypes.any }),
-    is_appstore: PropTypes.bool,
-    is_app_settings: PropTypes.bool,
-    is_cr: PropTypes.bool.isRequired,
-    is_eu: PropTypes.bool.isRequired,
-    is_mf: PropTypes.bool.isRequired,
-    is_mlt: PropTypes.bool.isRequired,
-    is_mx: PropTypes.bool.isRequired,
-    is_switching: PropTypes.bool.isRequired,
-    is_tablet: PropTypes.bool.isRequired,
-    is_uk: PropTypes.bool.isRequired,
-    is_virtual: PropTypes.bool.isRequired,
-    is_wrapper_bypassed: PropTypes.bool,
-    logout: PropTypes.func.isRequired,
-    overlay_ref: PropTypes.shape({ current: PropTypes.any }),
-    setIsOverlayShown: PropTypes.func,
-    ws: PropTypes.any,
 };
 
 export default SelfExclusion;

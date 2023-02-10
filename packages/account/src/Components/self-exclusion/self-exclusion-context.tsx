@@ -1,8 +1,8 @@
-import { FormikValues } from 'formik';
+import { FormikHelpers, FormikValues } from 'formik';
 import * as React from 'react';
 
 export type TSelfExclusionContext = {
-    handleSubmit: () => void;
+    handleSubmit: (values: FormikValues, setSubmitting: FormikHelpers<FormikValues>) => void;
     is_app_settings?: boolean;
     is_wrapper_bypassed?: boolean;
     toggleArticle?: () => void;
@@ -14,7 +14,7 @@ export type TSelfExclusionContext = {
     is_uk?: boolean;
     state?: FormikValues;
     overlay_ref: HTMLDivElement;
-    validateFields?: () => void;
+    validateFields?: (values: FormikValues) => Record<string, string | null>;
 };
 
 const SelfExclusionContext = React.createContext<TSelfExclusionContext>({

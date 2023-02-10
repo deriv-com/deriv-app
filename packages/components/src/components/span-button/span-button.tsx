@@ -6,7 +6,7 @@ import { TButtonCommonProps } from '../button/button';
 type TSpanButtonProps = TButtonCommonProps &
     React.PropsWithChildren<React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>>;
 
-const SpanButton: React.FC<Partial<TSpanButtonProps>> = ({
+const SpanButton = ({
     blue,
     children,
     className = '',
@@ -28,7 +28,7 @@ const SpanButton: React.FC<Partial<TSpanButtonProps>> = ({
     transparent,
     small,
     tertiary,
-}) => {
+}: Partial<TSpanButtonProps>) => {
     const classes = classNames(
         'dc-btn',
         {

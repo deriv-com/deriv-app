@@ -5,8 +5,7 @@ import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
-import { TRootStore } from '@deriv/stores/types';
-import { mockStore } from '@deriv/stores';
+import { TRootStore } from 'Types';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -15,10 +14,10 @@ jest.mock('@deriv/hooks', () => ({
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
-    let mockRootStore: TRootStore;
+    let mockRootStore: DeepPartial<TRootStore>;
 
     beforeEach(() => {
-        mockRootStore = mockStore({
+        mockRootStore = {
             client: {
                 currency: 'USD',
                 mt5_login_list: [
@@ -29,7 +28,7 @@ describe('<NoBalance />', () => {
                 ],
             },
             modules: { cashier: { general_store: { setCashierTabIndex: jest.fn() } } },
-        });
+        };
     });
 
     it('component should render', () => {
@@ -38,7 +37,9 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => (
+                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                ),
             }
         );
 
@@ -53,7 +54,9 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => (
+                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                ),
             }
         );
 

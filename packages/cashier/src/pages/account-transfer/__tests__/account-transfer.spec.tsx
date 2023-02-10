@@ -5,8 +5,7 @@ import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
-import { TRootStore } from '@deriv/stores/types';
+import { TRootStore } from 'Types';
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
@@ -30,9 +29,9 @@ const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useD
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<AccountTransfer />', () => {
-    let mockRootStore: TRootStore;
+    let mockRootStore: DeepPartial<TRootStore>;
     beforeEach(() => {
-        mockRootStore = mockStore({
+        mockRootStore = {
             client: {
                 is_switching: false,
                 is_virtual: false,
@@ -69,7 +68,7 @@ describe('<AccountTransfer />', () => {
                     },
                 },
             },
-        });
+        };
         mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
     });
@@ -81,7 +80,9 @@ describe('<AccountTransfer />', () => {
 
     const renderAccountTransfer = () => {
         render(<AccountTransfer {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
     };
 
@@ -92,7 +93,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should not show the side notes when switching', async () => {
-        mockRootStore.client.is_switching = true;
+        mockRootStore!.client!.is_switching = true;
 
         renderAccountTransfer();
 
@@ -103,11 +104,11 @@ describe('<AccountTransfer />', () => {
 
     it('should render the virtual component if client is using a demo account', async () => {
         const history = createBrowserHistory();
-        mockRootStore.client.is_virtual = true;
+        mockRootStore.client!.is_virtual = true;
 
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore}>
+                <CashierProviders store={mockRootStore as TRootStore}>
                     <Router history={history}>{children}</Router>
                 </CashierProviders>
             ),
@@ -127,7 +128,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the transfer lock component if only transfer is locked', async () => {
-        mockRootStore.modules.cashier.account_transfer.is_transfer_locked = true;
+        mockRootStore!.modules!.cashier!.account_transfer!.is_transfer_locked = true;
 
         renderAccountTransfer();
 
@@ -135,7 +136,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the error component if there are errors when transferring between accounts', async () => {
-        mockRootStore.modules.cashier.account_transfer.error = {
+        mockRootStore!.modules!.cashier!.account_transfer!.error = {
             message: 'error',
         };
 
@@ -145,7 +146,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the no account component if the client has only one account', async () => {
-        mockRootStore.modules.cashier.account_transfer.has_no_account = true;
+        mockRootStore!.modules!.cashier!.account_transfer!.has_no_account = true;
 
         renderAccountTransfer();
 
@@ -153,12 +154,12 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should render the no balance component if the account has no balance', async () => {
-        mockRootStore.modules.cashier.account_transfer.has_no_accounts_balance = true;
+        mockRootStore!.modules!.cashier!.account_transfer!.has_no_accounts_balance = true;
         const history = createBrowserHistory();
 
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore}>
+                <CashierProviders store={mockRootStore as TRootStore}>
                     <Router history={history}>{children}</Router>
                 </CashierProviders>
             ),
@@ -168,7 +169,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should show the receipt if transfer is successful', async () => {
-        mockRootStore.modules.cashier.account_transfer.is_transfer_confirm = true;
+        mockRootStore!.modules!.cashier!.account_transfer!.is_transfer_confirm = true;
 
         renderAccountTransfer();
 
@@ -176,7 +177,7 @@ describe('<AccountTransfer />', () => {
     });
 
     it('should show the crypto transactions if triggered from recent transactions', async () => {
-        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
+        mockRootStore!.modules!.cashier!.transaction_history!.is_crypto_transactions_visible = true;
 
         renderAccountTransfer();
 

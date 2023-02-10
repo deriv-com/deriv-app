@@ -3,10 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
-import { mockStore } from '@deriv/stores';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
-import { TRootStore } from '@deriv/stores/types';
+import { TRootStore } from 'Types';
 import { useCashierLocked } from '@deriv/hooks';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
@@ -35,10 +34,10 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<Withdrawal />', () => {
-    let history: BrowserHistory, mockRootStore: TRootStore, setSideNotes;
+    let history: BrowserHistory, mockRootStore: DeepPartial<TRootStore>, setSideNotes: VoidFunction;
     beforeEach(() => {
         history = createBrowserHistory();
-        mockRootStore = mockStore({
+        mockRootStore = {
             client: {
                 balance: '1000',
                 currency: 'USD',
@@ -71,14 +70,14 @@ describe('<Withdrawal />', () => {
                     },
                 },
             },
-        });
+        };
         setSideNotes = jest.fn();
         mockUseCashierLocked.mockReturnValue(false);
     });
 
     const renderWithdrawal = (is_rerender = false) => {
         const ui = (
-            <CashierProviders store={mockRootStore}>
+            <CashierProviders store={mockRootStore as TRootStore}>
                 <Router history={history}>
                     <Withdrawal setSideNotes={setSideNotes} />
                 </Router>
@@ -88,23 +87,23 @@ describe('<Withdrawal />', () => {
     };
 
     it('should render <CashierLocked /> component', () => {
-        mockRootStore.client.current_currency_type = 'crypto';
-        mockRootStore.client.account_status.cashier_validation = ['system_maintenance'];
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
+        mockRootStore!.client!.current_currency_type = 'crypto';
+        mockRootStore!.client!.account_status!.cashier_validation = ['system_maintenance'];
+        mockRootStore!.modules!.cashier!.withdraw!.is_withdrawal_locked = true;
         renderWithdrawal();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
     it('should render <Loading /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = undefined;
+        mockRootStore!.modules!.cashier!.withdraw!.is_10k_withdrawal_limit_reached = undefined;
         renderWithdrawal();
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should render <Virtual /> component', () => {
-        mockRootStore.client.is_virtual = true;
+        mockRootStore!.client!.is_virtual = true;
         renderWithdrawal();
 
         expect(screen.getByText('Virtual')).toBeInTheDocument();
@@ -118,26 +117,26 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
+        mockRootStore!.modules!.cashier!.withdraw!.is_withdrawal_locked = true;
         renderWithdrawal();
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
-        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
+        mockRootStore!.modules!.cashier!.withdraw!.is_10k_withdrawal_limit_reached = true;
         renderWithdrawal(true);
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });
 
     it('should render <NoBalance /> component', () => {
-        mockRootStore.client.balance = '0';
+        mockRootStore!.client!.balance = '0';
         renderWithdrawal();
 
         expect(screen.getByText('NoBalance')).toBeInTheDocument();
     });
 
     it('should render <Error /> component', () => {
-        mockRootStore.modules.cashier.withdraw.error = {
+        mockRootStore!.modules!.cashier!.withdraw!.error = {
             is_show_full_page: true,
             message: 'Error message',
             setErrorMessage: jest.fn(),
@@ -146,41 +145,41 @@ describe('<Withdrawal />', () => {
 
         expect(screen.getByText('Error')).toBeInTheDocument();
 
-        mockRootStore.modules.cashier.withdraw.verification.error = { message: 'Error message' };
+        mockRootStore!.modules!.cashier!.withdraw!.verification!.error = { message: 'Error message' };
         rerender(renderWithdrawal(true) as JSX.Element);
 
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <Withdraw /> component', () => {
-        mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
+        mockRootStore!.client!.verification_code!.payment_withdraw = 'verification_code';
 
         const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
 
-        mockRootStore.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
+        mockRootStore!.modules!.cashier!.iframe!.iframe_url = 'coiframe_urlde';
         rerender(renderWithdrawal(true) as JSX.Element);
 
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
-        mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
-        mockRootStore.modules.cashier.general_store.is_crypto = true;
+        mockRootStore!.client!.verification_code!.payment_withdraw = 'verification_code';
+        mockRootStore!.modules!.cashier!.general_store!.is_crypto = true;
         renderWithdrawal();
 
         expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_withdraw_confirmed = true;
+        mockRootStore!.modules!.cashier!.withdraw!.is_withdraw_confirmed = true;
         renderWithdrawal();
 
         expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
+        mockRootStore!.modules!.cashier!.transaction_history!.is_crypto_transactions_visible = true;
         renderWithdrawal();
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
@@ -201,8 +200,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
-        mockRootStore.client.currency = 'BTC';
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [{}];
+        mockRootStore!.client!.currency = 'BTC';
+        mockRootStore!.modules!.cashier!.transaction_history!.crypto_transactions = [{}];
         renderWithdrawal();
 
         expect(setSideNotes).toHaveBeenCalledTimes(1);

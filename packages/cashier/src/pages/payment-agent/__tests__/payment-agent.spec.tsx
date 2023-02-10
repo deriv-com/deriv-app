@@ -5,8 +5,7 @@ import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv/hooks';
-import { mockStore } from '@deriv/stores';
-import { TRootStore } from '@deriv/stores/types';
+import { TRootStore } from 'Types';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -27,10 +26,10 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<PaymentAgent />', () => {
-    let mockRootStore: TRootStore;
+    let mockRootStore: DeepPartial<TRootStore>;
 
     beforeEach(() => {
-        mockRootStore = mockStore({
+        mockRootStore = {
             ui: {
                 is_dark_mode_on: false,
                 toggleAccountsDialog: jest.fn(),
@@ -55,14 +54,14 @@ describe('<PaymentAgent />', () => {
                     },
                 },
             },
-        });
+        };
         mockUseCashierLocked.mockReturnValue(false);
     });
 
     const renderPaymentAgent = () => {
         return render(
             <Router history={createBrowserHistory()}>
-                <CashierProviders store={mockRootStore}>
+                <CashierProviders store={mockRootStore as TRootStore}>
                     <PaymentAgent setSideNotes={jest.fn()} />
                 </CashierProviders>
             </Router>
@@ -72,19 +71,19 @@ describe('<PaymentAgent />', () => {
     it('should render the payment agent list', () => {
         renderPaymentAgent();
 
-        expect(mockRootStore.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
+        expect(mockRootStore!.modules!.cashier!.payment_agent!.setActiveTabIndex).toHaveBeenCalledWith(0);
         expect(screen.getByText('mockedPaymentAgentList')).toBeInTheDocument();
     });
 
     it('should render the loading component if in loading state', () => {
-        mockRootStore.client.is_switching = true;
+        mockRootStore!.client!.is_switching = true;
         renderPaymentAgent();
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the virtual component if the client is using demo account', () => {
-        mockRootStore.client.is_virtual = true;
+        mockRootStore!.client!.is_virtual = true;
         renderPaymentAgent();
 
         expect(
@@ -103,13 +102,13 @@ describe('<PaymentAgent />', () => {
         const { unmount } = renderPaymentAgent();
 
         unmount();
-        expect(mockRootStore.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
+        expect(mockRootStore!.modules!.cashier!.payment_agent!.setActiveTabIndex).toHaveBeenCalledWith(0);
     });
 
     it('should set the active tab index accordingly', () => {
-        mockRootStore.client.verification_code.payment_agent_withdraw = 'ABCdef';
+        mockRootStore!.client!.verification_code!.payment_agent_withdraw = 'ABCdef';
         renderPaymentAgent();
 
-        expect(mockRootStore.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(1);
+        expect(mockRootStore!.modules!.cashier!.payment_agent!.setActiveTabIndex).toHaveBeenCalledWith(1);
     });
 });

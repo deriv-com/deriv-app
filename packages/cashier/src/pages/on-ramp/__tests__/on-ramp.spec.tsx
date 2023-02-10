@@ -112,29 +112,19 @@ describe('<OnRamp />', () => {
         return is_rerender ? ui : render(ui);
     };
     it('should render <Loading /> component', () => {
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_loading = true;
-        }
+        mockRootStore!.modules!.cashier!.general_store!.is_loading = true;
         const { rerender } = renderOnRamp() as ReturnType<typeof render>;
         expect(screen.getByText('Loading')).toBeInTheDocument();
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_loading = false;
-        }
-        if (mockRootStore.client) {
-            mockRootStore.client.is_switching = true;
-        }
+        mockRootStore!.modules!.cashier!.general_store!.is_loading = false;
+        mockRootStore!.client!.is_switching = true;
         rerender(renderOnRamp(true) as JSX.Element);
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
     it('should render <CashierLocked /> component', () => {
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockUseCashierLocked.mockReturnValue(true);
-        }
+        mockUseCashierLocked.mockReturnValue(true);
         const { rerender } = renderOnRamp() as ReturnType<typeof render>;
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
-        if (mockRootStore.modules?.cashier?.deposit) {
-            mockUseDepositLocked.mockReturnValue(true);
-        }
+        mockUseDepositLocked.mockReturnValue(true);
         rerender(renderOnRamp(true) as JSX.Element);
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
@@ -147,9 +137,7 @@ describe('<OnRamp />', () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
-        if (mockRootStore.modules?.cashier?.onramp) {
-            mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
-        }
+        mockRootStore!.modules!.cashier!.onramp!.is_onramp_modal_open = true;
         renderOnRamp();
         expect(screen.getByText('Title of the onramp popup modal')).toBeInTheDocument();
         expect(screen.getByText('OnRampProviderPopup')).toBeInTheDocument();
@@ -160,9 +148,7 @@ describe('<OnRamp />', () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
-        if (mockRootStore.modules?.cashier?.onramp) {
-            mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
-        }
+        mockRootStore!.modules!.cashier!.onramp!.is_onramp_modal_open = true;
         renderOnRamp();
         const close_cross_btn = screen.getByRole('button', { name: '' });
         fireEvent.click(close_cross_btn);

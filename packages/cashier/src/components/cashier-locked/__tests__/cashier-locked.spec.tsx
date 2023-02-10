@@ -4,7 +4,6 @@ import CashierLocked from '../cashier-locked';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -14,7 +13,7 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
-const mockRootStoreBase = mockStore({
+const mockRootStoreBase = {
     client: {
         accounts: undefined,
         loginid: undefined,
@@ -28,7 +27,7 @@ const mockRootStoreBase = mockStore({
             },
         ],
     },
-});
+};
 
 describe('<CashierLocked />', () => {
     beforeEach(() => {

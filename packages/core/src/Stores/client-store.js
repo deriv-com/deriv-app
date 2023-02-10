@@ -519,9 +519,9 @@ export default class ClientStore extends BaseStore {
 
         const no_mt5_non_eu = !eu_user && !has_cr_mt5_account;
 
-        const no_eu_mt5 = eu_user && !has_maltainvest_mt5_account;
+        const no_eu_mt5 = !has_maltainvest_mt5_account;
 
-        const has_no_dxtrade = this.dxtrade_accounts_list.some(acc => acc.landing_company_short === 'svg');
+        const has_no_dxtrade = !this.dxtrade_accounts_list.some(acc => acc.landing_company_short === 'svg');
 
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_no_deposit_attempt_account_status = !this.account_status?.status?.includes('deposit_attempt');

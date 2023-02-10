@@ -257,6 +257,9 @@
 
     .injectionDiv {
         height: calc(100vh - 20rem);
+        .blocklyTrash {
+            transition: all 0.4s;
+        }
     }
 
     &--active {

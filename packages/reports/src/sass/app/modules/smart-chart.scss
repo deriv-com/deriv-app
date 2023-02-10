@@ -5,7 +5,7 @@
 
     &__spot {
         position: absolute;
-        top: -11px;
+        top: -1.1rem;
         margin-left: -11.5px;
         display: flex;
         justify-content: center;
@@ -125,10 +125,10 @@
             }
         }
         &--middle {
-            bottom: 38px;
+            bottom: 3.8rem;
 
             .chart-spot-label__time-container {
-                margin-bottom: 2px;
+                margin-bottom: 0.2rem;
             }
         }
         &--bottom {

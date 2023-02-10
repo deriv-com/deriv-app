@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { routes, ContentFlag } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { getLanguage, Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
@@ -50,7 +50,7 @@ const RedirectToOldInterface = ({
     content_flag,
     switchToCRAccount,
 }) => {
-    const history = useHistory();
+    const language = getLanguage();
     const current_query_params = new URLSearchParams(location.search);
     const disablePreAppstore = async () => {
         if (should_show_exit_traders_modal) {
@@ -59,10 +59,7 @@ const RedirectToOldInterface = ({
             if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
                 await switchToCRAccount();
             }
-            history.push({
-                pathname: routes.root,
-                search: current_query_params.toString(),
-            });
+            current_query_params.set('lang', language);
             setIsPreAppStore(false);
         }
     };

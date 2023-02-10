@@ -32,7 +32,13 @@ const ExitTradersHubModal = ({
                 <Modal.Body>{exit_traders_hub_modal_content}</Modal.Body>
                 <Modal.Footer has_separator>
                     <Button onClick={closeModal} has_effect text={localize('Not now')} secondary large />
-                    <Button has_effect onClick={onClickExitButton} text={localize('Yes, exit')} primary large />
+                    <Button
+                        has_effect
+                        onClick={async () => onClickExitButton()}
+                        text={localize('Yes, exit')}
+                        primary
+                        large
+                    />
                 </Modal.Footer>
             </React.Fragment>
         );
@@ -55,8 +61,9 @@ const ExitTradersHubModal = ({
             //if eu is currently selected , switch to non-eu on exiting tradershub
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
-        history.push(routes.root);
+
         setIsLoggingIn(false);
+        history.push(routes.root);
     };
 
     return (

@@ -318,7 +318,7 @@ const CFDPersonalDetailsForm = ({
                                                                 data-lpignore='true'
                                                                 autoComplete='off'
                                                                 type='text'
-                                                                label={localize('Citizenship')}
+                                                                label={localize('Citizenship*')}
                                                                 error={citizenship_error}
                                                                 disabled={is_citizenship_disabled}
                                                                 list_items={residence_list}
@@ -334,7 +334,7 @@ const CFDPersonalDetailsForm = ({
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        label={localize('Citizenship')}
+                                                        label={localize('Citizenship*')}
                                                         value={values.citizen}
                                                         list_items={residence_list}
                                                         error={citizenship_error}
@@ -430,7 +430,7 @@ const CFDPersonalDetailsForm = ({
                                                 <InputField
                                                     id='real_mt5_tax_identification_number'
                                                     name='tax_identification_number'
-                                                    label={localize('Tax identification number')}
+                                                    label={localize('Tax identification number*')}
                                                     placeholder={localize('Tax identification number')}
                                                     value={values.tax_identification_number}
                                                     onBlur={handleBlur}

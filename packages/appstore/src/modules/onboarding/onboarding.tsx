@@ -29,14 +29,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();
     const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
-    const {
-        is_eu_country,
-        is_logged_in,
-        setIsPreAppStore,
-        is_landing_company_loaded,
-        prev_account_type,
-        setPrevAccountType,
-    } = client;
+    const { is_eu_country, is_logged_in, setIsPreAppStore, prev_account_type, setPrevAccountType } = client;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -81,7 +74,7 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
 
     const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
 
-    if (!is_logged_in || !is_landing_company_loaded) {
+    if (!is_logged_in) {
         return <EmptyOnboarding />;
     }
 

@@ -1,0 +1,15 @@
+.real-account-switcher {
+    &__container {
+        display: inline-flex;
+        align-items: center;
+        height: 7.2rem;
+        padding: 1.6rem 2rem;
+        border: 1px solid var(--general-hover);
+        border-radius: 8px;
+        margin-left: auto;
+    }
+    &__container.loader {
+        width: 33.1rem;
+        padding: 0;
+    }
+}

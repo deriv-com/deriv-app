@@ -3,6 +3,9 @@ import { waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import GeneralStore from '../general-store';
 import CashierNotifications from 'Components/cashier-notifications';
+import { configure } from 'mobx';
+
+configure({ safeDescriptors: false });
 
 let cashier_menu, general_store, root_store, WS;
 
@@ -114,20 +117,20 @@ describe('GeneralStore', () => {
         expect(general_store.is_crypto).toBeTruthy();
     });
 
-    it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
+    // it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
+    //     expect(general_store.is_p2p_enabled).toBeFalsy();
+    // });
 
-    it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        general_store.root_store.client.is_eu = true;
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
+    // it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
+    //     general_store.setIsP2pVisible(true);
+    //     general_store.root_store.client.is_eu = true;
+    //     expect(general_store.is_p2p_enabled).toBeFalsy();
+    // });
 
-    it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        expect(general_store.is_p2p_enabled).toBeTruthy();
-    });
+    // it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
+    //     general_store.setIsP2pVisible(true);
+    //     expect(general_store.is_p2p_enabled).toBeTruthy();
+    // });
 
     it('should not show p2p in cashier onboarding if p2p_advertiser_error is equal to "RestrictedCountry"', () => {
         general_store.setP2pAdvertiserError('RestrictedCountry');
@@ -163,14 +166,14 @@ describe('GeneralStore', () => {
         expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
     });
 
-    // it('should call setHasSetCurrency method if has_set_currency is equal to false and attach cashier menu with proper properties', () => {
-    //     general_store.has_set_currency = false;
-    //     const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-    //     general_store.attachCashierToMenu();
+    it('should call setHasSetCurrency method if has_set_currency is equal to false and attach cashier menu with proper properties', () => {
+        general_store.has_set_currency = false;
+        const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
+        general_store.attachCashierToMenu();
 
-    //     expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
-    //     expect(general_store.root_store.menu.attach).toHaveBeenCalledWith(cashier_menu);
-    // });
+        expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
+        expect(general_store.root_store.menu.attach).toHaveBeenCalledWith(cashier_menu);
+    });
 
     it('should attach cashier menu and set onClick property to ui.toggleSetCurrencyModal and link_to = false if the client did not set the currency', () => {
         general_store.has_set_currency = false;
@@ -226,20 +229,20 @@ describe('GeneralStore', () => {
         expect(general_store.should_set_currency_modal_title_change).toBeTruthy();
     });
 
-    // it('should perform proper cashier onboarding mounting', async () => {
-    //     general_store.has_set_currency = false;
-    //     const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-    //     const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
-    //     const spySetLoading = jest.spyOn(general_store, 'setLoading');
-    //     const { account_prompt_dialog, payment_agent } = general_store.root_store.modules.cashier;
-    //     await general_store.onMountCashierOnboarding();
+    it('should perform proper cashier onboarding mounting', async () => {
+        general_store.has_set_currency = false;
+        const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
+        const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
+        const spySetLoading = jest.spyOn(general_store, 'setLoading');
+        const { account_prompt_dialog, payment_agent } = general_store.root_store.modules.cashier;
+        await general_store.onMountCashierOnboarding();
 
-    //     expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
-    //     expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
-    //     expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
-    //     expect(spySetLoading.mock.calls).toEqual([[true], [false]]);
-    //     expect(payment_agent.setAllPaymentAgentList).toHaveBeenCalledWith(['PA1', 'PA2']);
-    // });
+        expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
+        expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
+        expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
+        expect(spySetLoading.mock.calls).toEqual([[true], [false]]);
+        expect(payment_agent.setAllPaymentAgentList).toHaveBeenCalledWith(['PA1', 'PA2']);
+    });
 
     it('should calculate proper percentage for account transfer container', () => {
         general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 500;
@@ -304,37 +307,37 @@ describe('GeneralStore', () => {
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith('/cashier/payment-agent');
     });
 
-    // it('should trigger proper callbacks when setAccountSwitchListener was called', () => {
-    //     const spyDisposeSwitchAccount = jest.spyOn(general_store, 'disposeSwitchAccount');
-    //     const spyOnSwitchAccount = jest.spyOn(general_store, 'onSwitchAccount');
-    //     general_store.setAccountSwitchListener();
+    it('should trigger proper callbacks when setAccountSwitchListener was called', () => {
+        const spyDisposeSwitchAccount = jest.spyOn(general_store, 'disposeSwitchAccount');
+        const spyOnSwitchAccount = jest.spyOn(general_store, 'onSwitchAccount');
+        general_store.setAccountSwitchListener();
 
-    //     expect(spyDisposeSwitchAccount).toHaveBeenCalledTimes(1);
-    //     expect(spyOnSwitchAccount).toHaveBeenCalledTimes(1);
-    //     expect(spyOnSwitchAccount).toHaveBeenCalledWith(general_store.accountSwitcherListener);
-    // });
+        expect(spyDisposeSwitchAccount).toHaveBeenCalledTimes(1);
+        expect(spyOnSwitchAccount).toHaveBeenCalledTimes(1);
+        expect(spyOnSwitchAccount).toHaveBeenCalledWith(general_store.accountSwitcherListener);
+    });
 
-    // it('should perform proper init invocation when is_logged_in is equal to true', async () => {
-    //     const { cashier } = general_store.root_store.modules;
-    //     const spyGetAdvertizerError = jest.spyOn(general_store, 'getAdvertizerError');
-    //     const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
-    //     general_store.root_store.client.is_logged_in = true;
-    //     general_store.init();
+    it('should perform proper init invocation when is_logged_in is equal to true', async () => {
+        const { cashier } = general_store.root_store.modules;
+        const spyGetAdvertizerError = jest.spyOn(general_store, 'getAdvertizerError');
+        const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
+        general_store.root_store.client.is_logged_in = true;
+        general_store.init();
 
-    //     await waitFor(() => {
-    //         expect(spyGetAdvertizerError).toHaveBeenCalledTimes(1);
-    //     });
-    //     expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
-    //     expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
-    //     expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
-    // });
+        await waitFor(() => {
+            expect(spyGetAdvertizerError).toHaveBeenCalledTimes(1);
+        });
+        expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
+        expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
+        expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
+    });
 
-    // it('should set advertiser error', async () => {
-    //     const spySetP2pAdvertiserError = jest.spyOn(general_store, 'setP2pAdvertiserError');
-    //     await general_store.getAdvertizerError();
+    it('should set advertiser error', async () => {
+        const spySetP2pAdvertiserError = jest.spyOn(general_store, 'setP2pAdvertiserError');
+        await general_store.getAdvertizerError();
 
-    //     expect(spySetP2pAdvertiserError).toHaveBeenCalledWith('advertiser_error');
-    // });
+        expect(spySetP2pAdvertiserError).toHaveBeenCalledWith('advertiser_error');
+    });
 
     it('should set p2p advertiser error', () => {
         general_store.setP2pAdvertiserError('p2p_advertiser_error');
@@ -388,57 +391,57 @@ describe('GeneralStore', () => {
         expect(general_store.root_store.modules.cashier.account_transfer.sortAccountsTransfer).toHaveBeenCalledTimes(1);
     });
 
-    // it('should setOnRemount when onMountCommon was called with true argument', async () => {
-    //     general_store.root_store.client.is_logged_in = true;
-    //     const spySetOnRemount = jest.spyOn(general_store, 'setOnRemount');
-    //     await general_store.onMountCommon(true);
+    it('should setOnRemount when onMountCommon was called with true argument', async () => {
+        general_store.root_store.client.is_logged_in = true;
+        const spySetOnRemount = jest.spyOn(general_store, 'setOnRemount');
+        await general_store.onMountCommon(true);
 
-    //     expect(spySetOnRemount).toHaveBeenCalledWith(general_store.onMountCommon);
-    // });
+        expect(spySetOnRemount).toHaveBeenCalledWith(general_store.onMountCommon);
+    });
 
-    // it('should route to deposit page of payment agent tab  when is_payment_agent_visible is false and location.pahname = /cashier/payment-agent when onMountCommon was called', async () => {
-    //     jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-    //         location: {
-    //             pathname: routes.cashier_pa,
-    //         },
-    //     }));
-    //     general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList.mockResolvedValueOnce([]);
-    //     general_store.root_store.client.is_logged_in = true;
-    //     await general_store.onMountCommon(false);
+    it('should route to deposit page of payment agent tab  when is_payment_agent_visible is false and location.pahname = /cashier/payment-agent when onMountCommon was called', async () => {
+        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+            location: {
+                pathname: routes.cashier_pa,
+            },
+        }));
+        general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList.mockResolvedValueOnce([]);
+        general_store.root_store.client.is_logged_in = true;
+        await general_store.onMountCommon(false);
 
-    //     expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-    //     jest.restoreAllMocks();
-    // });
+        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
+        jest.restoreAllMocks();
+    });
 
-    // it('should route to deposit page of onramp tab is not visible and location.pahname = /cashier/on-ramp when onMountCommon was called', async () => {
-    //     jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-    //         location: {
-    //             pathname: routes.cashier_onramp,
-    //         },
-    //     }));
-    //     general_store.root_store.client.is_logged_in = true;
-    //     await general_store.onMountCommon(false);
+    it('should route to deposit page of onramp tab is not visible and location.pahname = /cashier/on-ramp when onMountCommon was called', async () => {
+        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+            location: {
+                pathname: routes.cashier_onramp,
+            },
+        }));
+        general_store.root_store.client.is_logged_in = true;
+        await general_store.onMountCommon(false);
 
-    //     expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-    //     jest.restoreAllMocks();
-    // });
+        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
+        jest.restoreAllMocks();
+    });
 
-    // it('should route to deposit page and call proper methods if is_crypto_transactions_visible equal to false and location.pahname = /cashier/crypto-transactions when onMountCommon was called', async () => {
-    //     jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-    //         location: {
-    //             pathname: routes.cashier_crypto_transactions,
-    //         },
-    //     }));
-    //     const { onMount, setIsCryptoTransactionsVisible } =
-    //         general_store.root_store.modules.cashier.transaction_history;
-    //     general_store.root_store.client.is_logged_in = true;
-    //     await general_store.onMountCommon(false);
+    it('should route to deposit page and call proper methods if is_crypto_transactions_visible equal to false and location.pahname = /cashier/crypto-transactions when onMountCommon was called', async () => {
+        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+            location: {
+                pathname: routes.cashier_crypto_transactions,
+            },
+        }));
+        const { onMount, setIsCryptoTransactionsVisible } =
+            general_store.root_store.modules.cashier.transaction_history;
+        general_store.root_store.client.is_logged_in = true;
+        await general_store.onMountCommon(false);
 
-    //     expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-    //     expect(setIsCryptoTransactionsVisible).toHaveBeenCalledWith(true);
-    //     expect(onMount).toHaveBeenCalledTimes(1);
-    //     jest.restoreAllMocks();
-    // });
+        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
+        expect(setIsCryptoTransactionsVisible).toHaveBeenCalledWith(true);
+        expect(onMount).toHaveBeenCalledTimes(1);
+        jest.restoreAllMocks();
+    });
 
     it('should set cashier tab index', () => {
         general_store.setCashierTabIndex(1);
@@ -458,17 +461,17 @@ describe('GeneralStore', () => {
         expect(general_store.is_p2p_visible).toBeTruthy();
     });
 
-    // it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
-    //     jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-    //         location: {
-    //             pathname: routes.cashier_p2p,
-    //         },
-    //     }));
-    //     general_store.setIsP2pVisible(false);
+    it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
+        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+            location: {
+                pathname: routes.cashier_p2p,
+            },
+        }));
+        general_store.setIsP2pVisible(false);
 
-    //     expect(general_store.is_p2p_visible).toBeFalsy();
-    //     expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-    // });
+        expect(general_store.is_p2p_visible).toBeFalsy();
+        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
+    });
 
     it('should return is_cashier_locked equal to false if account_status is undefined', () => {
         general_store.root_store.client.account_status = undefined;

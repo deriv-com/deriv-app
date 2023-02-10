@@ -6,7 +6,11 @@ import Body from './modal-body';
 import Footer from './modal-footer';
 import Text from '../text/text';
 import Icon from '../icon/icon';
-import { useOnClickOutside, IClickEvent } from '../../hooks';
+import { useOnClickOutside } from '../../hooks';
+
+interface IClickEvent extends MouseEvent {
+    path?: HTMLElement[];
+}
 
 type TModalElement = {
     className?: string;
@@ -100,11 +104,11 @@ const ModalElement = ({
         const local_modal_root_ref = modal_root_ref;
 
         local_el_ref.current.classList.add('dc-modal');
-        local_modal_root_ref.current?.appendChild(local_el_ref.current);
+        local_modal_root_ref?.current?.appendChild?.(local_el_ref.current);
         onMount?.();
 
         return () => {
-            local_modal_root_ref.current?.removeChild(local_el_ref.current);
+            local_modal_root_ref?.current?.removeChild?.(local_el_ref.current);
             onUnmount?.();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

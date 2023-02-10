@@ -216,12 +216,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 0;
             }
 
-            .emp-status {
-                .dc-select-native__wrapper {
-                    margin-top: 3rem;
-                }
-            }
-
             .dc-dropdown-container {
                 .dc-dropdown__display-text,
                 .dc-list__item-text {
@@ -391,6 +385,14 @@ $MIN_HEIGHT_FLOATING: calc(
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 grid-gap: 8px;
+            }
+
+            &--tin {
+                display: grid;
+                grid-gap: 0.4rem;
+                grid-template-rows: 1fr 1fr;
+                max-width: 40rem;
+                margin-bottom: 1rem;
             }
 
             .datepicker {
@@ -2744,6 +2746,258 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
+/** @define file uploader */
+.file-uploader {
+    display: flex;
+    position: relative;
+    & .hidden-input {
+        height: 4rem;
+        opacity: 0;
+        z-index: 10;
+        position: absolute;
+        width: 87%;
+        @include mobile {
+            width: 70%;
+        }
+    }
+}
+/** @define proof-of-ownership */
+.proof-of-ownership {
+    width: 100%;
+    overflow: hidden;
+    @include mobile {
+        margin-top: 2.4rem;
+    }
+    &__card {
+        border: 2px solid var(--general-section-5);
+        border-radius: 8px;
+        margin-bottom: 1.6rem;
+        display: flex;
+        flex-direction: column;
+        @include mobile {
+            width: 100%;
+            flex-direction: column;
+            padding: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+        @include desktop {
+            width: 80%;
+            padding: 2.4rem;
+        }
+        &-open-desc-link {
+            cursor: pointer;
+        }
+        &-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            cursor: pointer;
+            &-text {
+                line-height: 2.4rem;
+                padding-left: 1.6rem;
+            }
+
+            &-icon {
+                margin-left: auto;
+                transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+                padding: 0;
+                &--invert {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        &-open {
+            height: auto;
+
+            &-desc {
+                line-height: 2rem;
+                margin: 8px 0;
+                &-link {
+                    color: var(--text-red);
+                }
+            }
+
+            &-inputs {
+                display: grid;
+                grid-template-columns: 1fr 3fr;
+                align-items: center;
+                margin-top: 3rem;
+                @include mobile {
+                    display: flex;
+                }
+                &-upload {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    flex-grow: 4;
+                    @include mobile {
+                        width: 100%;
+                    }
+                }
+                &-field {
+                    display: flex;
+                    flex-direction: column;
+                    align-self: flex-start;
+                    flex-grow: 1;
+                    @include mobile {
+                        width: 100%;
+                    }
+                }
+                .dc-field.dc-field--error {
+                    color: var(--text-loss-danger);
+                    -webkit-text-fill-color: var(--text-loss-danger);
+                }
+                @include desktop {
+                    .dc-input {
+                        width: unset;
+                    }
+                }
+                @include mobile {
+                    .dc-input {
+                        margin-bottom: 1rem;
+                    }
+                }
+                @include mobile {
+                    flex-direction: column;
+                    padding-bottom: 1rem;
+                }
+
+                &-cardnumber {
+                    border: 1px solid #d6dadb;
+                    box-sizing: border-box;
+                    border-radius: 4px;
+                    height: 4rem;
+                    margin-right: 10px;
+                    color: var(--text-less-prominent);
+                    -webkit-text-fill-color: var(--text-less-prominent);
+                    @include mobile {
+                        width: 100%;
+                    }
+                }
+
+                &-photo {
+                    margin-bottom: 35px;
+                    @include mobile {
+                        width: 100%;
+                        margin-left: 0;
+                        margin-top: 1.6rem;
+                    }
+                    @include desktop {
+                        .dc-input {
+                            flex-grow: 8;
+                        }
+                    }
+                    &-btn {
+                        margin-left: 1rem;
+                        padding: 10px 16px;
+                        position: static;
+                        height: 40px;
+                    }
+                }
+            }
+        }
+    }
+    &__form {
+        &-container {
+            padding-top: 16px;
+        }
+
+        &-content {
+            display: flex;
+            overflow: visible;
+        }
+    }
+    &__progress {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 25px;
+        overflow: visible;
+        @include mobile {
+            margin-right: 8px;
+        }
+        &-number {
+            min-width: 24px;
+            max-width: 24px;
+            min-height: 24px;
+            max-height: 24px;
+            border-radius: 50px;
+            background-color: var(--brand-red-coral);
+            color: var(--state-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        &-bar {
+            width: 2px;
+            height: 120%;
+            background-color: var(--brand-red-coral);
+            position: relative;
+        }
+    }
+    &__container {
+        text-align: center;
+        padding: 2rem auto !important;
+        width: 72%;
+        @include mobile {
+            width: 100%;
+        }
+        &--content {
+            width: 100%;
+            padding-top: 8rem;
+            > * {
+                text-align: center;
+                display: block;
+                margin: 2rem auto;
+                text-align: center;
+            }
+        }
+    }
+    &-link {
+        font-weight: 400;
+        font-size: 1.4rem;
+    }
+    &-valid-identifier {
+        -webkit-text-fill-color: $color-green-1 !important;
+        border-color: $color-green-1 !important;
+    }
+    & .account__scrollbars_container--grid-layout {
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+.sample-credit-card-modal {
+    &-text {
+        padding: 0 2.4rem;
+    }
+    &-img {
+        padding: 2.4rem 0;
+        @include mobile {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+.expand {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.organise {
+    grid-column: 2;
+}
+.stack-top {
+    z-index: 12;
+    background-color: var(--overlay-inside-dialog);
+    padding-left: 0.5rem;
+}
+.remove-element {
+    display: none;
+}
 /* stylelint-enable */
 
 .financial-banner {

@@ -7,5 +7,5 @@ export type TRootStore = {
     config: ConfigStore;
     modules: Record<string, any>;
     notifications: Record<string, any>;
-    tradinghub: Record<string, any>;
+    traders_hub: Record<string, any>;
 };

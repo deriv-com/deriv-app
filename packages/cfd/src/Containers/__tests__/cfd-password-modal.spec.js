@@ -35,6 +35,7 @@ jest.mock('@deriv/shared', () => ({
     validPassword: jest.fn().mockReturnValue(true),
 }));
 
+jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockedMT5Icon'));
 describe('<CFDPasswordModal/>', () => {
     const mockFn = jest.fn();
     const mockDisableCFDPasswordModalFn = jest.fn();
@@ -70,6 +71,7 @@ describe('<CFDPasswordModal/>', () => {
         setMt5Error: mockSetMt5Error,
         submitMt5Password: mockSubmitMt5Password,
         submitCFDPassword: mockSubmitCFDPasswordFn,
+        updateAccountStatus: jest.fn(),
     };
 
     beforeAll(() => {
@@ -189,13 +191,14 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
     });
 
-    it('should show password dialog asking user to provide POI', async () => {
+    it('should show transfer message on successful DerivX account creation', async () => {
         const props = {
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
-            account_type: { category: 'real', type: 'financial_stp' },
-            is_eu: true,
+            account_type: { category: 'real', type: 'financial' },
+            is_eu: false,
             is_fully_authenticated: false,
+            platform: 'dxtrade',
         };
 
         render(
@@ -205,17 +208,18 @@ describe('<CFDPasswordModal/>', () => {
         );
 
         expect(
-            await screen.findByText(/we need proof of your identity and address before you can start trading./i)
+            await screen.findByText(/to start trading, transfer funds from your Deriv account into this account./i)
         ).toBeInTheDocument();
     });
 
-    it('should close the dialog when you click on Submit proof', async () => {
+    it('should close the dialog when you click on ok button', async () => {
         const props = {
             is_cfd_success_dialog_enabled: true,
             is_password_modal_exited: true,
-            account_type: { category: 'real', type: 'financial_stp' },
+            account_type: { category: 'real', type: 'financial' },
             is_eu: true,
             is_fully_authenticated: false,
+            jurisdiction_selected_shortcode: 'bvi',
         };
 
         render(
@@ -224,7 +228,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        fireEvent.click(await screen.findByRole('button', { name: /submit proof/i }));
+        fireEvent.click(await screen.findByRole('button', { name: /ok/i }));
 
         await waitFor(() => {
             expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
@@ -233,7 +237,7 @@ describe('<CFDPasswordModal/>', () => {
         });
     });
 
-    it('should show success dialog with buttons to transfer now or later when password has been updated successfully', async () => {
+    it('should show success dialog with buttons to Transfer now or later when password has been updated successfully', async () => {
         render(
             <Router history={history}>
                 <CFDPasswordModal
@@ -242,7 +246,7 @@ describe('<CFDPasswordModal/>', () => {
                     is_fully_authenticated
                     is_cfd_success_dialog_enabled
                     is_password_modal_exited
-                    account_type={{ category: 'real', type: 'financial_stp' }}
+                    account_type={{ category: 'real', type: 'financial' }}
                 />
             </Router>
         );
@@ -251,7 +255,7 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByRole('button', { name: /transfer now/i }));
     });
 
-    it('should display IcMt5SyntheticPlatform icon in Success Dialog', async () => {
+    it('should display Derived icon in Success Dialog', async () => {
         const props = {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
@@ -263,10 +267,10 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
     });
 
-    it('should display IcMt5FinancialPlatform icon in Success Dialog', async () => {
+    it('should display Financial icon in Success Dialog', async () => {
         const props = {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
@@ -278,7 +282,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
     });
 
     it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
@@ -313,7 +317,7 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText('IcDxtradeFinancialPlatform')).toBeInTheDocument();
     });
 
-    it('should display IcMt5CfdPlatform icon in Success Dialog', async () => {
+    it('should display IcCfds icon in Success Dialog', async () => {
         const props = {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
@@ -321,11 +325,10 @@ describe('<CFDPasswordModal/>', () => {
         };
         render(
             <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_eu is_cfd_success_dialog_enabled />
+                <CFDPasswordModal {...mock_props} {...props} show_eu_related_content is_cfd_success_dialog_enabled />
             </Router>
         );
-
-        expect(await screen.findByText('IcMt5CfdPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
     });
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {

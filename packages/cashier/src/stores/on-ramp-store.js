@@ -56,14 +56,11 @@ export default class OnRampStore extends BaseStore {
         this.WS = WS;
 
         this.onClientInit(async () => {
-            this.setOnrampProviders([
-                OnrampProviders.createChangellyProvider(this),
-                OnrampProviders.createXanPoolProvider(this),
-                OnrampProviders.createBanxaProvider(this),
-            ]);
+            this.setOnrampProviders([OnrampProviders.createBanxaProvider(this)]);
         });
     }
 
+    /** @deprecated Use `useOnrampVisible` from `@deriv/hooks` package instead. */
     get is_onramp_tab_visible() {
         const { client } = this.root_store;
 

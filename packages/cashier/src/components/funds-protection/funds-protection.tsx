@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useWS } from '@deriv/api';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore } from 'Types';
 import './funds-protection.scss';
 
-type TFundsProtectionProps = {
-    submitFundsProtection: () => void;
-};
+const FundsProtection = () => {
+    const { data, send } = useWS('tnc_approval');
 
-const FundsProtection = ({ submitFundsProtection }: TFundsProtectionProps) => {
+    useEffect(() => {
+        if (data) location.reload();
+    }, [data]);
+
     return (
         <div className='funds-protection'>
             <Icon icon='IcCashierFundsProtection' className='funds-protection__icon' />
@@ -33,13 +34,11 @@ const FundsProtection = ({ submitFundsProtection }: TFundsProtectionProps) => {
                     />
                 }
             </p>
-            <Button onClick={submitFundsProtection} primary large type='submit'>
+            <Button onClick={() => send({ ukgc_funds_protection: 1 })} primary large type='submit'>
                 {localize('Deposit now')}
             </Button>
         </div>
     );
 };
 
-export default connect(({ modules }: TRootStore) => ({
-    submitFundsProtection: modules.cashier.deposit.submitFundsProtection,
-}))(FundsProtection);
+export default FundsProtection;

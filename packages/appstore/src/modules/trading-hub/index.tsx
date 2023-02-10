@@ -3,8 +3,17 @@ import { observer } from 'mobx-react-lite';
 import { platform_config, mf_platform_config } from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
-import { Text, Button, ButtonToggle, Dropdown, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
-import { routes, isMobile } from '@deriv/shared';
+import {
+    Button,
+    ButtonToggle,
+    DesktopWrapper,
+    Div100vhContainer,
+    Dropdown,
+    Loading,
+    MobileWrapper,
+    Text,
+} from '@deriv/components';
+import { routes, isMobile, isDesktop } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ToggleAccountType from 'Components/toggle-account-type';
 import {
@@ -20,13 +29,12 @@ import {
     JurisdictionModal,
     CFDPasswordModal,
     CFDDbviOnBoarding,
-    CFDPersonalDetailsModal,
     CFDResetPasswordModal,
-    CFDServerErrorDialog,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
 } from '@deriv/cfd';
+import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
 import CFDAccounts from 'Components/CFDs';
 import OptionsAccounts from 'Components/options';
 import TotalAssets from 'Components/total-assets';
@@ -37,15 +45,9 @@ import './trading-hub.scss';
 
 const TradingHub: React.FC = () => {
     const store = useStores();
-    const { ui, modules, common, client, tradinghub } = useStores();
-    const {
-        is_logged_in,
-        is_eu,
-        is_eu_country,
-        is_populating_mt5_account_list,
-        is_populating_dxtrade_account_list,
-        switchAccountHandlerForAppstore,
-    } = client;
+    const { ui, modules, common, client, traders_hub } = useStores();
+    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, is_populating_dxtrade_account_list } =
+        client;
     const {
         setAccountType,
         enableCFDPasswordModal,
@@ -56,8 +58,8 @@ const TradingHub: React.FC = () => {
         getRealFinancialAccountsExistingData,
     } = modules.cfd;
     const { platform } = common;
-    const { is_dark_mode_on } = ui;
-    const { is_tour_open, toggleIsTourOpen } = tradinghub;
+    const { notification_messages_ui: Notifications, is_dark_mode_on } = ui;
+    const { is_tour_open, toggleIsTourOpen, is_onboarding_visited, setIsOnboardingVisited } = traders_hub;
     /*TODO: We need to show this component whenever user click on tour guide button*/
     const login_id = window.localStorage.getItem('active_loginid') ?? '';
     const real_active = !/^VRT/.test(login_id);
@@ -120,7 +122,6 @@ const TradingHub: React.FC = () => {
             name: string;
         };
     }) => {
-        switchAccountHandlerForAppstore(tab_account_type);
         setTabAccountType(event.target.value as TAccountCategory);
     };
     const platformTypeChange = (event: {
@@ -143,13 +144,23 @@ const TradingHub: React.FC = () => {
     ];
 
     tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
 
     eu_tour_step_locale.last = (
-        <div onClick={() => toggleIsTourOpen(false)}>
+        <div
+            onClick={() => {
+                setIsOnboardingVisited(true);
+                toggleIsTourOpen(false);
+            }}
+        >
             <Localize i18n_default_text='OK' />
         </div>
     );
@@ -189,74 +200,116 @@ const TradingHub: React.FC = () => {
     if (is_loading) return <Loading className='cfd-accounts-container__loader' is_fullscreen={false} />;
 
     return (
-        <div id='trading-hub' className='trading-hub'>
-            <div className='trading-hub_header'>
-                <div className='trading-hub_header--title'>
-                    <Text weight='bold' size={isMobile() ? 'xxs' : 'm'} align='left'>
-                        {localize("Trader's hub")}
-                    </Text>
+        <Div100vhContainer height_offset='40px' is_disabled={isDesktop()}>
+            <div id='trading-hub' className='trading-hub'>
+                <Notifications />
+                <div className='trading-hub_header'>
+                    <div className='trading-hub_header--title'>
+                        <Text weight='bold' size={isMobile() ? 'xxs' : 'm'} align='left'>
+                            {localize("Trader's hub")}
+                        </Text>
+                    </div>
+                    <div className='trading-hub_header--account'>
+                        <TotalAssets category={tab_account_type} className='trading-hub_header--account_assets' />
+                        <DesktopWrapper>
+                            <ToggleAccountType
+                                accountTypeChange={(event: {
+                                    target: {
+                                        value: string;
+                                        name: string;
+                                    };
+                                }) => {
+                                    accountTypeChange(event);
+                                }}
+                                value={tab_account_type}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <Dropdown
+                                id='platfrom_toggle_options'
+                                className='trading-hub_header--platfrom_toggle_options'
+                                is_alignment_left={false}
+                                is_nativepicker={false}
+                                list={account_toggle_options}
+                                name='multiplier'
+                                no_border={true}
+                                value={tab_account_type}
+                                onChange={accountTypeChange}
+                            />
+                        </MobileWrapper>
+                    </div>
                 </div>
-                <div className='trading-hub_header--account'>
-                    <TotalAssets category={tab_account_type} className='trading-hub_header--account_assets' />
-                    <DesktopWrapper>
-                        <ToggleAccountType
-                            accountTypeChange={(event: {
-                                target: {
-                                    value: string;
-                                    name: string;
-                                };
-                            }) => {
-                                accountTypeChange(event);
-                            }}
-                            value={tab_account_type}
-                        />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Dropdown
-                            id='platfrom_toggle_options'
-                            className='trading-hub_header--platfrom_toggle_options'
-                            is_alignment_left={false}
-                            is_nativepicker={false}
-                            list={account_toggle_options}
-                            name='multiplier'
-                            no_border={true}
-                            value={tab_account_type}
-                            onChange={accountTypeChange}
-                        />
-                    </MobileWrapper>
-                </div>
-            </div>
 
-            <div className='trading-hub_body'>
-                <DesktopWrapper>
-                    <CFDAccounts account_type={tab_account_type} />
-                    <Divider horizontal className='trading-hub_body--divider' />
-                    <OptionsAccounts
-                        platformlauncherprops={is_eu ? mf_platform_config : platform_config}
-                        accountType={tab_account_type}
-                    />
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <ButtonToggle
-                        buttons_arr={platform_toggle_options}
-                        className='trading-hub_body--platform_type_toggle'
-                        has_rounded_button
-                        is_animated
-                        name='platforn_type'
-                        onChange={platformTypeChange}
-                        value={platform_type}
-                    />
-                    {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
-                    {platform_type === 'options' && (
+                <div className='trading-hub_body'>
+                    <DesktopWrapper>
+                        <CFDAccounts account_type={tab_account_type} />
+                        <Divider horizontal className='trading-hub_body--divider' />
                         <OptionsAccounts
                             platformlauncherprops={is_eu ? mf_platform_config : platform_config}
                             accountType={tab_account_type}
                         />
-                    )}
-                </MobileWrapper>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <ButtonToggle
+                            buttons_arr={platform_toggle_options}
+                            className='trading-hub_body--platform_type_toggle'
+                            has_rounded_button
+                            is_animated
+                            name='platforn_type'
+                            onChange={platformTypeChange}
+                            value={platform_type}
+                        />
+                        {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
+                        {platform_type === 'options' && (
+                            <OptionsAccounts
+                                platformlauncherprops={is_eu ? mf_platform_config : platform_config}
+                                accountType={tab_account_type}
+                            />
+                        )}
+                    </MobileWrapper>
+                </div>
+                <Joyride
+                    run={is_tour_open}
+                    continuous
+                    disableScrolling
+                    hideCloseButton
+                    disableCloseOnEsc
+                    steps={tour_step_config}
+                    styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
+                    locale={tour_step_locale}
+                    floaterProps={{
+                        disableAnimation: true,
+                    }}
+                />
+                <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
+                <CFDPasswordModal context={store} platform={platform} />
+                <CFDDbviOnBoarding context={store} />
+                <CFDResetPasswordModal context={store} platform={platform} />
+                <CFDServerErrorDialog />
+                <CFDTopUpDemoModal context={store} />
+                <MT5TradeModal
+                    context={store}
+                    current_list={current_list}
+                    is_open={is_mt5_trade_modal_visible}
+                    onPasswordManager={togglePasswordManagerModal}
+                    toggleModal={toggleMT5TradeModal}
+                    is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
+                />
+                <CFDPasswordManagerModal
+                    is_visible={password_manager.is_visible}
+                    context={store}
+                    selected_login={password_manager.selected_login}
+                    selected_account={password_manager.selected_account}
+                    selected_account_group={password_manager.selected_account_group}
+                    selected_account_type={password_manager.selected_account_type}
+                    selected_server={password_manager.selected_server}
+                    platform={platform}
+                    toggleModal={togglePasswordManagerModal}
+                />
+                <ResetTradingPasswordModal context={store} />
             </div>
             <Joyride
-                run={is_tour_open}
+                run={!is_onboarding_visited && is_tour_open}
                 continuous
                 disableScrolling
                 hideCloseButton
@@ -271,9 +324,8 @@ const TradingHub: React.FC = () => {
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />
-            <CFDPersonalDetailsModal context={store} />
             <CFDResetPasswordModal context={store} platform={platform} />
-            <CFDServerErrorDialog context={store} />
+            <CFDServerErrorDialog />
             <CFDTopUpDemoModal context={store} />
             <MT5TradeModal
                 context={store}
@@ -295,7 +347,7 @@ const TradingHub: React.FC = () => {
                 toggleModal={togglePasswordManagerModal}
             />
             <ResetTradingPasswordModal context={store} />
-        </div>
+        </Div100vhContainer>
     );
 };
 

@@ -1649,6 +1649,11 @@ export default class ClientStore extends BaseStore {
         this.setIsLoggingIn(false);
         this.setInitialized(true);
 
+        // delete search params if it's signup when signin completed
+        if (action_param === 'signup') {
+            history.replaceState(null, null, window.location.href.replace(`${search}`, ''));
+        }
+
         history.replaceState(
             null,
             null,

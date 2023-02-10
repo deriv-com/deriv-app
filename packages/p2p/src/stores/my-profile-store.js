@@ -852,13 +852,8 @@ export default class MyProfileStore extends BaseStore {
             if (response) {
                 this.setIsLoadingModalOpen(false);
 
-                if (response.error) {
-                    clearTimeout(wait);
-                    const wait = setTimeout(() => this.setIsErrorModalOpen(true), 250);
-                } else {
-                    clearTimeout(wait);
-                    const wait = setTimeout(() => this.setIsDailyLimitSuccessModalOpen(true), 250);
-                }
+                if (response.error) this.setIsErrorModalOpen(true);
+                else this.setIsDailyLimitSuccessModalOpen(true);
 
                 general_store.props.removeNotificationByKey({
                     key: 'p2p_daily_limit_increase',

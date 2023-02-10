@@ -4,13 +4,7 @@ import { Loading, Modal } from '@deriv/components';
 
 const LoadingModal = ({ is_loading_modal_open }) => {
     return (
-        <Modal
-            exit_classname='loading-modal--exit'
-            has_close_icon={false}
-            is_open={is_loading_modal_open}
-            small
-            width='440px'
-        >
+        <Modal has_close_icon={false} is_open={is_loading_modal_open} small width='440px'>
             <Loading is_fullscreen={false} />
         </Modal>
     );

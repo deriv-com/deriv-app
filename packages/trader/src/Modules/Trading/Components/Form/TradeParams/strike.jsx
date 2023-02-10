@@ -75,7 +75,7 @@ const Strike = ({
             <DesktopWrapper>
                 <Fieldset
                     className='trade-container__fieldset trade-container__barriers'
-                    header={localize('Strike Price')}
+                    header={localize('Strike price')}
                     header_tooltip={
                         <Localize
                             i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
@@ -136,7 +136,7 @@ const Strike = ({
                     <div className='strike-widget' onClick={toggleWidget}>
                         <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
                         <div className='mobile-widget__amount'>{barrier_1}</div>
-                        <div className='mobile-widget__type'>{localize('Strike Price')}</div>
+                        <div className='mobile-widget__type'>{localize('Strike price')}</div>
                     </div>
                     <StrikeParamModal
                         is_open={is_open}

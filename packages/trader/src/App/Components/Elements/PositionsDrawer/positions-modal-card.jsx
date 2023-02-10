@@ -234,7 +234,7 @@ const PositionsModalCard = ({
                 <div className={classNames('positions-modal-card__grid-profit-payout')}>
                     <div className='positions-modal-card__purchase-price'>
                         <Text size='xxxs' className='positions-modal-card__purchase-label'>
-                            {localize('Buy Price:')}
+                            {localize('Buy price:')}
                         </Text>
                         <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
                             <Money amount={contract_info.buy_price} currency={currency} />
@@ -242,7 +242,7 @@ const PositionsModalCard = ({
                     </div>
                     <div className='positions-modal-card__payout-price'>
                         <Text size='xxxs' className='positions-modal-card__payout-label'>
-                            {localize('Contract Value:')}
+                            {localize('Contract value:')}
                         </Text>
                         <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
                             <Money amount={contract_info.bid_price} currency={currency} />
@@ -253,7 +253,7 @@ const PositionsModalCard = ({
                 <div className={classNames('positions-modal-card__grid-price-payout')}>
                     <div className='positions-modal-card__purchase-price'>
                         <Text size='xxxs' className='positions-modal-card__purchase-label'>
-                            {localize('Entry Spot:')}
+                            {localize('Entry spot:')}
                         </Text>
                         <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
                             <Money amount={contract_info.entry_spot} currency={currency} />

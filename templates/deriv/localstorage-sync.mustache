@@ -2,33 +2,60 @@
 <html>
     <head>
         <title>Deriv</title>
-        <meta charset='utf-8' />
-        <meta name='referrer' content='origin' />
+        <meta charset="utf-8" />
+        <meta name="referrer" content="origin" />
         <script>
-            window.addEventListener('message', function(message) {
+            window.addEventListener('message', function (message) {
                 var allowed_origins = [
-                    'https://app.deriv.com', 
-                    'https://app.deriv.be', 
-                    'https://app.deriv.me', 
+                    'https://app.deriv.com',
+                    'https://app.deriv.be',
+                    'https://app.deriv.me',
                     'https://staging-app.deriv.com',
                     'https://staging-app.deriv.be',
                     'https://staging-app.deriv.me',
+                    'https://localhost.binary.sx',
                 ];
+
+                const autoLogin = () => {
+                    const client_accounts = JSON.parse(message.data.value);
+                    const token_data = {};
+
+                    Object.keys(client_accounts).forEach((e, i) => {
+                        const order = i + 1;
+                        const { token, currency } = client_accounts[e];
+
+                        token_data[`accountName${order}`] = e;
+                        token_data[`cur${order}`] = currency;
+                        token_data[`token${order}`] = token;
+                    });
+
+                    const token_params = new URLSearchParams(token_data).toString();
+
+                    if(token_params === ''){
+                        // if token params aren't captured, force reload the parent window.
+                        parent.location.reload();
+                    }
+
+                    const { origin } = window.location;
+
+                    const login_url = origin + `?${token_params}`;
+
+                    window.location.href = login_url;
+                    console.log(login_url)
+                };
 
                 if (allowed_origins.includes(message.origin)) {
                     switch (message.data.key) {
-                        case 'active_loginid': 
-                        case 'client.accounts': {
-                            if (localStorage.getItem(message.data.key) !== message.data.value) {
-                                localStorage.setItem(message.data.key, message.data.value);
+                        case 'active_loginid':
+                        case 'client.accounts':
+                            {
+                                autoLogin();
                             }
                             break;
-                        }
                     }
                 }
             });
         </script>
     </head>
-    <body>
-    </body>
+    <body></body>
 </html>

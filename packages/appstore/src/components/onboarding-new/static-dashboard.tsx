@@ -259,7 +259,7 @@ const StaticDashboard = ({
                             {eu_user ? (
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
-                                        icon='DTrader'
+                                        icon='DTraderOnboarding'
                                         name='DTrader'
                                         description='Multipliers trading platform.'
                                         availability='All'
@@ -270,7 +270,7 @@ const StaticDashboard = ({
                             ) : (
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
-                                        icon='DTrader'
+                                        icon='DTraderOnboarding'
                                         name='DTrader'
                                         description='Options and multipliers trading platform.'
                                         availability='All'
@@ -285,7 +285,7 @@ const StaticDashboard = ({
                                 <React.Fragment>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon='DBot'
+                                            icon='DBotOnboarding'
                                             name='DBot'
                                             description='Automate your trading, no coding needed.'
                                             availability='Non-EU'
@@ -296,7 +296,7 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon='SmartTrader'
+                                            icon='SmartTraderOnboarding'
                                             name='SmartTrader'
                                             description='Automate your trading, no coding needed.'
                                             availability='Non-EU'
@@ -307,7 +307,7 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon='BinaryBot'
+                                            icon='BinaryBotOnboarding'
                                             name='BinaryBot'
                                             description='Our legacy automated trading platform.'
                                             availability='Non-EU'
@@ -317,7 +317,7 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon='DerivGo'
+                                            icon='DerivGoOnboarding'
                                             name='DerivGo'
                                             description='Trade on the go with our mobile app.'
                                             availability='Non-EU'

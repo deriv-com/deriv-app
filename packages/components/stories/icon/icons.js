@@ -690,6 +690,16 @@ export const icons =
         'IcOptionTouchNotouch',
         'IcOptionUpDownAsian',
     ],
+    'rebranding': [
+        'IcRebrandingBinarybotDashboard',
+        'IcRebrandingDbotDashboard',
+        'IcRebrandingDerivgoDashboard',
+        'IcRebrandingDerivxDashboard',
+        'IcRebrandingDtraderDashboard',
+        'IcRebrandingMt5DerivedDashboard',
+        'IcRebrandingMt5FinancialDashboard',
+        'IcRebrandingSmarttraderDashboard',
+    ],
     'stock': [
         'IcStockAdidasSalomon',
         'IcStockAlibaba',

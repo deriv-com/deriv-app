@@ -106,14 +106,15 @@ const TradeParamsModal = ({
                     <Popover
                         alignment='bottom'
                         icon='info'
-                        id='dt_multiplier-stake__tooltip'
+                        id='dt_vanilla-stake__tooltip'
                         zIndex={9999}
                         is_bubble_hover_enabled
+                        arrow_styles={{ top: '-9px' }}
                         message={
                             <Localize i18n_default_text='Your stake is a non-refundable one-time premium to purchase this contract. Your total profit/loss equals the contract value minus your stake.' />
                         }
                         classNameWrapper='trade-params--modal-wrapper'
-                        classNameBubble='trade-params--modal-wrapper__content'
+                        classNameBubble='trade-params--modal-wrapper__content--vanilla'
                     />
                 </div>
             );

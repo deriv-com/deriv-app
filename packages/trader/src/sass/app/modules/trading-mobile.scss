@@ -449,6 +449,10 @@
             &__content {
                 max-width: 32.8rem;
                 left: 2.5rem;
+                &--vanilla {
+                    top: -0.9rem;
+                    left: 2.3rem;
+                }
             }
         }
         &--mobile {

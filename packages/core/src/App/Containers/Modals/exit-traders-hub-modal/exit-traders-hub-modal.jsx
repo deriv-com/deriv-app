@@ -1,9 +1,8 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
-import { isMobile, routes, ContentFlag } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { isMobile, ContentFlag } from '@deriv/shared';
+import { getLanguage, localize } from '@deriv/translations';
 
 const ExitTradersHubModal = ({
     disableApp,
@@ -16,9 +15,8 @@ const ExitTradersHubModal = ({
     account_list,
     active_accounts,
     setIsLoggingIn,
+    setPreferredLanguage,
 }) => {
-    const history = useHistory();
-
     const exit_traders_hub_modal_content = (
         <Text size={isMobile() ? 'xxs' : 'xs'}>
             {localize(`You won’t be able to see your EU account in the traditional view. The open positions in your EU
@@ -43,6 +41,7 @@ const ExitTradersHubModal = ({
     };
 
     const onClickExitButton = async () => {
+        const language = getLanguage();
         setIsPreAppStore(false);
         setIsLoggingIn(true);
         const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
@@ -55,7 +54,7 @@ const ExitTradersHubModal = ({
             //if eu is currently selected , switch to non-eu on exiting tradershub
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
-        history.push(routes.root);
+        setPreferredLanguage(language);
         setIsLoggingIn(false);
     };
 
@@ -103,4 +102,5 @@ export default connect(({ ui, client, traders_hub }) => ({
     account_list: client.account_list,
     active_accounts: client.active_accounts,
     setIsLoggingIn: client.setIsLoggingIn,
+    setPreferredLanguage: client.setPreferredLanguage,
 }))(ExitTradersHubModal);

@@ -31,8 +31,6 @@
 
                     const token_params = new URLSearchParams(token_data).toString();
 
-                    console.log(token_params);
-
                     if (token_params !== '') {
                         // store the login url and fire when the user hits binary bot app directly
                         localStorage.setItem('login_url', token_params);
@@ -41,7 +39,12 @@
 
                 if (allowed_origins.includes(message.origin)) {
                     switch (message.data.key) {
-                        case 'active_loginid':
+                        case 'active_loginid': {
+                            if (localStorage.getItem(message.data.key) !== message.data.value) {
+                                localStorage.setItem(message.data.key, message.data.value);
+                            }
+                            break;
+                        }
                         case 'client.accounts': {
                             autoLogin(message);
                             break;

@@ -216,7 +216,7 @@ export default class NotificationStore extends BaseStore {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'Account'
             );
-        } else {
+        } else if (window.location.pathname !== routes.cashier_p2p) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;
@@ -239,15 +239,19 @@ export default class NotificationStore extends BaseStore {
     checkNotificationMessages() {
         const notifications_list = LocalStore.getObject('notification_messages');
         const { loginid } = this.root_store.client;
-        const refined_list = Object.values(notifications_list)
-            ? Object.values(notifications_list)
-            : Object.values(notifications_list?.[loginid]);
+        const refined_list = notifications_list[loginid] ? Object.values(notifications_list[loginid]) : [];
+        const p2p_settings = LocalStore.getObject('p2p_settings');
+        const is_p2p_notifications_visible = p2p_settings[loginid].is_notifications_visible;
 
-        if (refined_list?.length) {
-            refined_list?.map(refined => {
-                refined.map(r => {
-                    this.removeNotificationByKey({ key: r });
-                });
+        if (refined_list.length) {
+            refined_list.map(refined => {
+                if (refined === 'p2p_daily_limit_increase') {
+                    if (is_p2p_notifications_visible === false) {
+                        this.removeNotificationByKey({ key: refined });
+                    }
+                } else {
+                    this.removeNotificationByKey({ key: refined });
+                }
             });
         }
     }
@@ -865,6 +869,11 @@ export default class NotificationStore extends BaseStore {
                                   onClick: () => {
                                       this.p2p_order_props.redirectTo('my_profile');
                                       if (this.is_notifications_visible) this.toggleNotificationsModal();
+
+                                      this.removeNotificationMessage({
+                                          key: 'p2p_daily_limit_increase',
+                                          should_show_again: false,
+                                      });
                                   },
                                   text: localize('Yes, increase my limits'),
                               }
@@ -872,12 +881,6 @@ export default class NotificationStore extends BaseStore {
                                   route: routes.cashier_p2p_profile,
                                   text: localize('Yes, increase my limits'),
                               },
-                    closeOnClick: () => {
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.p2p_daily_limit_increase.key,
-                            should_show_again: false,
-                        });
-                    },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
                     key: 'p2p_daily_limit_increase',
                     message: (

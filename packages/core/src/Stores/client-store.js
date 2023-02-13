@@ -1644,7 +1644,7 @@ export default class ClientStore extends BaseStore {
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
-            WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
+            await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
         } else {
             this.resetMt5AccountListPopulation();
         }

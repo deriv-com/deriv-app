@@ -75,5 +75,4 @@ export const excluded_notifications = isMobile()
           'svg_needs_poa',
           'svg_needs_poi',
           'svg_poi_expired',
-          'p2p_daily_limit_increase',
       ];

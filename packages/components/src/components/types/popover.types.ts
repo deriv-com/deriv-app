@@ -26,5 +26,5 @@ export type TPopoverProps = {
     zIndex?: string;
     window_border?: number;
     data_testid?: string;
-    arrow_styles?: Partial<CSSStyleDeclaration>;
+    arrow_styles?: React.CSSProperties;
 };

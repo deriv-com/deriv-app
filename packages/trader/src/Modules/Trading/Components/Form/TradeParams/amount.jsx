@@ -95,15 +95,24 @@ const Amount = ({
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
+    const setToolTipContent = () => {
+        if (is_multiplier) {
+            return (
+                <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
+            );
+        } else if (contract_type === 'vanilla') {
+            return (
+                <Localize i18n_default_text='Your stake is a non-refundable one-time premium to purchase this contract. Your total profit/loss equals the contract value minus your stake.' />
+            );
+        }
+        return undefined;
+    };
+
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
             header={is_multiplier || ['high_low', 'vanilla'].includes(contract_type) ? localize('Stake') : undefined}
-            header_tooltip={
-                is_multiplier ? (
-                    <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
-                ) : undefined
-            }
+            header_tooltip={setToolTipContent()}
         >
             {basis_list.length > 1 && (
                 <ButtonToggle

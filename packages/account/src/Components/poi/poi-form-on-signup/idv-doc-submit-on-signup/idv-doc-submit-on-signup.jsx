@@ -15,7 +15,13 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
-import { getDocumentData, getRegex, isSequentialNumber, isRecurringNumberRegex } from '../../idv-document-submit/utils';
+import {
+    getDocumentData,
+    getRegex,
+    isSequentialNumber,
+    isRecurringNumberRegex,
+    documentAdditionalError,
+} from '../../idv-document-submit/utils';
 import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
@@ -105,18 +111,10 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         }
 
         if (needs_additional) {
-            if (!document_additional) {
+            const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+            if (error_message)
                 errors.document_additional =
-                    localize('Please enter your document number. ') +
-                    getExampleFormat(document_type.additional?.example_format);
-            } else {
-                const format_regex = getRegex(document_type.additional?.format);
-                if (!format_regex.test(document_additional)) {
-                    errors.document_additional =
-                        localize('Please enter the correct format. ') +
-                        getExampleFormat(document_type.additional?.example_format);
-                }
-            }
+                    localize(error_message) + getExampleFormat(document_type.additional?.example_format);
         }
 
         if (!document_number) {

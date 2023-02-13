@@ -6,7 +6,13 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { isSequentialNumber, isRecurringNumberRegex, getDocumentData, getRegex } from './utils';
+import {
+    isSequentialNumber,
+    isRecurringNumberRegex,
+    getDocumentData,
+    getRegex,
+    documentAdditionalError,
+} from './utils';
 import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -113,18 +119,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         }
 
         if (needs_additional) {
-            if (!document_additional) {
+            const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+            if (error_message)
                 errors.document_additional =
-                    localize('Please enter your document number. ') +
-                    getExampleFormat(document_type.additional?.example_format);
-            } else {
-                const format_regex = getRegex(document_type.additional?.format);
-                if (!format_regex.test(document_additional)) {
-                    errors.document_additional =
-                        localize('Please enter the correct format. ') +
-                        getExampleFormat(document_type.additional?.example_format);
-                }
-            }
+                    localize(error_message) + getExampleFormat(document_type.additional?.example_format);
         }
 
         if (!document_number) {

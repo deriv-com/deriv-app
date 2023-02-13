@@ -2,17 +2,17 @@
 <html>
     <head>
         <title>Deriv</title>
-        <meta charset="utf-8" />
-        <meta name="referrer" content="origin" />
+        <meta charset='utf-8' />
+        <meta name='referrer' content='origin' />
         <script>
-            window.addEventListener('message', function (message) {
+            window.addEventListener('message', function(message) {
                 var allowed_origins = [
-                    'https://app.deriv.com',
-                    'https://app.deriv.be',
-                    'https://app.deriv.me',
+                    'https://app.deriv.com', 
+                    'https://app.deriv.be', 
+                    'https://app.deriv.me', 
                     'https://staging-app.deriv.com',
                     'https://staging-app.deriv.be',
-                    'https://staging-app.deriv.me'
+                    'https://staging-app.deriv.me',
                 ];
 
                 const autoLogin = (message) => {
@@ -38,11 +38,10 @@
 
                 if (allowed_origins.includes(message.origin)) {
                     switch (message.data.key) {
-                        case 'client.accounts':
-                            {
-                                autoLogin(message);
-                            }
+                        case 'client.accounts': {
+                            autoLogin(message)
                             break;
+                        }
                     }
                 }
             });

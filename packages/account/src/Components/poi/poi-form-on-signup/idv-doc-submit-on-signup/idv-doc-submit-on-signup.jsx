@@ -86,7 +86,6 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
 
         document_number: value ? value.document_number : '',
     };
-    // console.log(value?.document_additional, 'initial form value: ', initial_form_values);
 
     const validateFields = values => {
         const errors = {};

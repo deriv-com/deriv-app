@@ -1651,7 +1651,12 @@ export default class ClientStore extends BaseStore {
 
         // delete search params if it's signup when signin completed
         if (action_param === 'signup') {
-            history.replaceState(null, null, window.location.href.replace(`${search}`, ''));
+            const filteredQuery = filterUrlQuery(search, ['lang']);
+            history.replaceState(
+                null,
+                null,
+                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `/?${filteredQuery}`)
+            );
         }
 
         history.replaceState(

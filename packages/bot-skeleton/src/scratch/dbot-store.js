@@ -21,7 +21,6 @@ class DBotStore extends DBotStoreInterface {
         this.is_dark_mode_on = store.is_dark_mode_on || false;
         this.client = store.client;
         this.flyout = store.flyout;
-        this.populateConfig = store.populateConfig;
         this.toolbar = store.toolbar;
         this.toolbox = store.toolbox;
         this.save_modal = store.save_modal;

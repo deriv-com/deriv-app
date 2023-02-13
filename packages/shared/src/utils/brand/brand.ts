@@ -26,6 +26,20 @@ type TPlatforms = {
     go: TPlatform;
 };
 
+type TAppstorePlatform = {
+    name: string;
+    icon: string;
+    availability: string;
+};
+
+type TAppstorePlatforms = {
+    trader: TAppstorePlatform;
+    dbot: TAppstorePlatform;
+    smarttrader: TAppstorePlatform;
+    bbot: TAppstorePlatform;
+    go: TAppstorePlatform;
+};
+
 const isDomainAllowed = (domain_name: string) => {
     // This regex will match any official deriv production and testing domain names.
     // Allowed deriv domains: binary.sx, binary.com, deriv.com, deriv.be, deriv.me and their subdomains.
@@ -54,4 +68,8 @@ export const getPlatformSettings = (platform_key: keyof TPlatforms): TPlatform =
 export const getAppstorePlatforms = () => {
     const platform_data: Record<string, Record<string, string>> = config_data.platforms_appstore;
     return Object.keys(platform_data).map(key => platform_data[key]);
+};
+
+export const getPlatformSettingsAppstore = (platform_key: keyof TAppstorePlatforms): TAppstorePlatform => {
+    return config_data.platforms_appstore[platform_key];
 };

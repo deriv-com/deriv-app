@@ -1,7 +1,9 @@
 import React from 'react';
 
 export const useDarkMode = store => {
-    const { is_dark_mode_on } = store.ui;
+    const {
+        ui: { is_dark_mode_on },
+    } = store;
     const [is_dark_mode, setDarkMode] = React.useState(false);
     const ui_store = JSON.parse(localStorage?.getItem('ui_store'));
     const theme_dark = document.body.classList.contains('theme--dark');
@@ -22,6 +24,7 @@ export const useDarkMode = store => {
         return () => {
             window.removeEventListener('storage', onStorageChanged);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return {

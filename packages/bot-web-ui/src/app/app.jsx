@@ -17,7 +17,7 @@ import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
 import { setColors } from '../../../bot-skeleton/src/scratch/hooks/colours';
-import { useDarkMode } from "../components/dashboard/hooks";
+import { useDarkMode } from '../components/dashboard/hooks';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
@@ -30,7 +30,6 @@ const App = ({ passthrough }) => {
 
     React.useEffect(() => {
         setColors(is_dark_mode);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_dark_mode]);
 
     React.useEffect(() => {

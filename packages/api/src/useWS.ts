@@ -6,7 +6,7 @@ const useWS = <T extends TSocketEndpointNames>(name: T) => {
     const [is_loading, setIsLoading] = useState(false);
     const [error, setError] = useState<unknown>();
     const [data, setData] = useState<TSocketResponseData<T>>();
-    const WS = useWSShared();
+    const WS = useWSShared(); //test
 
     const send = useCallback(
         async (...props: TSocketAcceptableProps<T>) => {

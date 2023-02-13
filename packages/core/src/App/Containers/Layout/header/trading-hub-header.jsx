@@ -10,8 +10,8 @@ import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
-import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
-import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
+import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
+import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-rebranding-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 

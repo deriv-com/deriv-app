@@ -99,7 +99,7 @@ const TradeParamsModal = ({
 
     const isVisible = component_key => form_components.includes(component_key);
 
-    const setToolTipContent = () => {
+    const setTooltipContent = () => {
         if (is_vanilla && state.trade_param_tab_idx === 1)
             return (
                 <div className='trade-params__vanilla-ic-info-wrapper'>
@@ -133,7 +133,7 @@ const TradeParamsModal = ({
                 toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
-                renderTitle={setToolTipContent}
+                renderTitle={setTooltipContent}
             >
                 <ThemedScrollbars>
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>

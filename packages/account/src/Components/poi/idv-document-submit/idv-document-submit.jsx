@@ -97,7 +97,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
 
     const validateFields = values => {
         const errors = {};
-        const { document_type, document_number, additional_document_number } = values;
+        const { document_type, document_number, document_additional } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
         const needs_additional = !!document_type.additional;
@@ -113,14 +113,14 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         }
 
         if (needs_additional) {
-            if (!additional_document_number) {
-                errors.additional_document_number =
+            if (!document_additional) {
+                errors.document_additional =
                     localize('Please enter your document number. ') +
                     getExampleFormat(document_type.additional?.example_format);
             } else {
                 const format_regex = getRegex(document_type.additional?.format);
-                if (!format_regex.test(additional_document_number)) {
-                    errors.additional_document_number =
+                if (!format_regex.test(document_additional)) {
+                    errors.document_additional =
                         localize('Please enter the correct format. ') +
                         getExampleFormat(document_type.additional?.example_format);
                 }
@@ -145,12 +145,12 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
 
     const submitHandler = (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
-        const { document_number, document_type, additional_document_number } = values;
-        const submit_data = additional_document_number
+        const { document_number, document_type, document_additional } = values;
+        const submit_data = document_additional
             ? {
                   identity_verification_document_add: 1,
                   document_number,
-                  document_additional: additional_document_number,
+                  document_additional,
                   document_type: document_type.id,
                   issuing_country: country_code,
               }
@@ -301,7 +301,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             {values.document_type.additional?.display_name && (
                                                 <Input
                                                     {...field}
-                                                    name='additional_document_number'
+                                                    name='document_additional'
                                                     bottom_label={
                                                         values.document_type.additional &&
                                                         getExampleFormat(
@@ -310,13 +310,12 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                     }
                                                     disabled={is_input_disable}
                                                     error={
-                                                        (touched.additional_document_number &&
-                                                            errors.additional_document_number) ||
+                                                        (touched.document_additional && errors.document_additional) ||
                                                         errors.error_message
                                                     }
                                                     autoComplete='off'
                                                     placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
-                                                    value={values.additional_document_number}
+                                                    value={values.document_additional}
                                                     onPaste={e => e.preventDefault()}
                                                     onBlur={handleBlur}
                                                     onChange={handleChange}
@@ -330,7 +329,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                               )
                                                             : e.target.value;
                                                         setFieldValue(
-                                                            'additional_document_number',
+                                                            'document_additional',
                                                             current_addition_input,
                                                             true
                                                         );

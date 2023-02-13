@@ -47,7 +47,21 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+                const needs_additional = !!document_data[key].additional;
 
+                if (needs_additional) {
+                    return {
+                        id: key,
+                        text: new_display_name || display_name,
+                        additional: {
+                            display_name: document_data[key].additional?.display_name,
+                            format: document_data[key].additional?.format,
+                        },
+                        value: format,
+                        sample_image,
+                        example_format,
+                    };
+                }
                 return {
                     id: key,
                     text: new_display_name || display_name,
@@ -72,12 +86,14 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
 
         document_number: value ? value.document_number : '',
     };
+    // console.log(value?.document_additional, 'initial form value: ', initial_form_values);
 
     const validateFields = values => {
         const errors = {};
-        const { document_type, document_number } = values;
+        const { document_type, document_number, document_additional } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
+        const needs_additional = !!document_type.additional;
 
         // QA can manually toggle this regex now through this feature flag.
         // Otherwise it blocks their test suite.
@@ -87,6 +103,21 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             errors.document_type = localize('Please select a document type.');
         } else {
             setInputDisable(false);
+        }
+
+        if (needs_additional) {
+            if (!document_additional) {
+                errors.document_additional =
+                    localize('Please enter your document number. ') +
+                    getExampleFormat(document_type.additional?.example_format);
+            } else {
+                const format_regex = getRegex(document_type.additional?.format);
+                if (!format_regex.test(document_additional)) {
+                    errors.document_additional =
+                        localize('Please enter the correct format. ') +
+                        getExampleFormat(document_type.additional?.example_format);
+                }
+            }
         }
 
         if (!document_number) {
@@ -282,46 +313,94 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                     <fieldset className='proof-of-identity__fieldset-input'>
                                                         <Field name='document_number'>
                                                             {({ field }) => (
-                                                                <Input
-                                                                    {...field}
-                                                                    name='document_number'
-                                                                    bottom_label={
-                                                                        values.document_type &&
-                                                                        getExampleFormat(
-                                                                            values.document_type.example_format
-                                                                        )
-                                                                    }
-                                                                    disabled={is_input_disable}
-                                                                    error={
-                                                                        touched.document_number &&
-                                                                        errors.document_number
-                                                                    }
-                                                                    autoComplete='off'
-                                                                    placeholder='Enter your document number'
-                                                                    value={values.document_number}
-                                                                    onPaste={e => e.preventDefault()}
-                                                                    onBlur={handleBlur}
-                                                                    onChange={handleChange}
-                                                                    onKeyUp={e => {
-                                                                        const { example_format } = values.document_type;
-                                                                        const current_input = example_format?.includes(
-                                                                            '-'
-                                                                        )
-                                                                            ? formatInput(
-                                                                                  example_format,
-                                                                                  current_input || e.target.value,
-                                                                                  '-'
-                                                                              )
-                                                                            : e.target.value;
-                                                                        setFieldValue(
-                                                                            'document_number',
-                                                                            current_input,
-                                                                            true
-                                                                        );
-                                                                        validateFields(values);
-                                                                    }}
-                                                                    required
-                                                                />
+                                                                <React.Fragment>
+                                                                    <Input
+                                                                        {...field}
+                                                                        name='document_number'
+                                                                        bottom_label={
+                                                                            values.document_type &&
+                                                                            getExampleFormat(
+                                                                                values.document_type.example_format
+                                                                            )
+                                                                        }
+                                                                        disabled={is_input_disable}
+                                                                        error={
+                                                                            touched.document_number &&
+                                                                            errors.document_number
+                                                                        }
+                                                                        autoComplete='off'
+                                                                        placeholder='Enter your document number'
+                                                                        value={values.document_number}
+                                                                        onPaste={e => e.preventDefault()}
+                                                                        onBlur={handleBlur}
+                                                                        onChange={handleChange}
+                                                                        onKeyUp={e => {
+                                                                            const { example_format } =
+                                                                                values.document_type;
+                                                                            const current_input =
+                                                                                example_format?.includes('-')
+                                                                                    ? formatInput(
+                                                                                          example_format,
+                                                                                          current_input ||
+                                                                                              e.target.value,
+                                                                                          '-'
+                                                                                      )
+                                                                                    : e.target.value;
+                                                                            setFieldValue(
+                                                                                'document_number',
+                                                                                current_input,
+                                                                                true
+                                                                            );
+                                                                            validateFields(values);
+                                                                        }}
+                                                                        required
+                                                                    />
+                                                                    {values.document_type.additional?.display_name && (
+                                                                        <Input
+                                                                            {...field}
+                                                                            name='document_additional'
+                                                                            bottom_label={
+                                                                                values.document_type.additional &&
+                                                                                getExampleFormat(
+                                                                                    values.document_type.additional
+                                                                                        ?.example_format
+                                                                                )
+                                                                            }
+                                                                            disabled={is_input_disable}
+                                                                            error={
+                                                                                (touched.document_additional &&
+                                                                                    errors.document_additional) ||
+                                                                                errors.error_message
+                                                                            }
+                                                                            autoComplete='off'
+                                                                            placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                                            value={values.document_additional}
+                                                                            onPaste={e => e.preventDefault()}
+                                                                            onBlur={handleBlur}
+                                                                            onChange={handleChange}
+                                                                            onKeyUp={e => {
+                                                                                const { format } =
+                                                                                    values.document_type.additional;
+                                                                                const current_addition_input =
+                                                                                    format.includes('-')
+                                                                                        ? formatInput(
+                                                                                              format,
+                                                                                              current_addition_input ||
+                                                                                                  e.target.value,
+                                                                                              '-'
+                                                                                          )
+                                                                                        : e.target.value;
+                                                                                setFieldValue(
+                                                                                    'document_additional',
+                                                                                    current_addition_input,
+                                                                                    true
+                                                                                );
+                                                                                validateFields(values);
+                                                                            }}
+                                                                            required
+                                                                        />
+                                                                    )}
+                                                                </React.Fragment>
                                                             )}
                                                         </Field>
                                                     </fieldset>

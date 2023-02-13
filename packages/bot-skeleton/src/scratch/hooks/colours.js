@@ -1,14 +1,5 @@
-const isDarkModeEnabled = () => {
-    const ui_store = localStorage.getItem('ui_store');
-
-    if (ui_store && ui_store.length > 0) {
-        return JSON.parse(ui_store).is_dark_mode_on || false;
-    }
-    return false;
-};
-
-export const setColors = () => {
-    if (isDarkModeEnabled()) {
+export const setColors = is_dark_mode => {
+    if (is_dark_mode) {
         Blockly.Colours.RootBlock = {
             colour: '#183046',
             colourSecondary: '#F2F3F5',

@@ -16,6 +16,8 @@ import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
+import { setColors } from '../../../bot-skeleton/src/scratch/hooks/colours';
+import { useDarkMode } from "../components/dashboard/hooks";
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
@@ -23,6 +25,13 @@ const App = ({ passthrough }) => {
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { showDigitalOptionsMaltainvestError } = app;
+    const dbot_theme_mode = useDarkMode(root_store);
+    const { is_dark_mode } = dbot_theme_mode;
+
+    React.useEffect(() => {
+        setColors(is_dark_mode);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_dark_mode]);
 
     React.useEffect(() => {
         /**

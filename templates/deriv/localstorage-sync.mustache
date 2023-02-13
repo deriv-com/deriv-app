@@ -15,7 +15,7 @@
                     'https://staging-app.deriv.me'
                 ];
 
-                const autoLogin = (message) => {
+                const autoLogin = () => {
                     const client_accounts = JSON.parse(message.data.value);
                     const token_data = {};
 
@@ -46,9 +46,10 @@
 
                 if (allowed_origins.includes(message.origin)) {
                     switch (message.data.key) {
+                        case 'active_loginid':
                         case 'client.accounts':
                             {
-                                autoLogin(message);
+                                autoLogin();
                             }
                             break;
                     }

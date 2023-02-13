@@ -735,12 +735,26 @@ export default class TradersHubStore extends BaseStore {
         this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
     }
 
-    openFailedVerificationModal(from_account) {
-        const { setJurisdictionSelectedShortcode } = this.root_store.modules.cfd;
-        if (from_account !== 'multipliers') {
-            setJurisdictionSelectedShortcode(from_account);
+    openFailedVerificationModal(selected_account_type) {
+        const {
+            common,
+            modules: { cfd },
+        } = this.root_store;
+        const { setJurisdictionSelectedShortcode, setAccountType } = cfd;
+        const { setAppstorePlatform } = common;
+
+        if (selected_account_type?.platform === CFD_PLATFORMS.MT5) {
+            setAppstorePlatform(selected_account_type.platform);
+            setAccountType({
+                category: selected_account_type.category,
+                type: selected_account_type.type,
+            });
+            setJurisdictionSelectedShortcode(selected_account_type.jurisdiction);
+        } else {
+            setJurisdictionSelectedShortcode('');
         }
-        this.open_failed_verification_for = from_account;
+        this.open_failed_verification_for =
+            selected_account_type?.platform === CFD_PLATFORMS.MT5 ? selected_account_type?.jurisdiction : 'multipliers';
         this.toggleFailedVerificationModalVisibility();
     }
 

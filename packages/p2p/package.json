@@ -53,16 +53,7 @@
         "commander": "^3.0.2"
     },
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
-        "@babel/plugin-proposal-class-properties": "^7.12.1",
-        "@babel/plugin-proposal-decorators": "^7.12.12",
-        "@babel/plugin-proposal-export-default-from": "^7.12.1",
-        "@babel/plugin-proposal-export-namespace-from": "^7.12.1",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
-        "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
-        "@babel/plugin-proposal-optional-chaining": "^7.12.7",
         "@babel/plugin-proposal-unicode-property-regex": "^7.16.7",
-        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "@babel/preset-env": "^7.12.11",
         "@babel/preset-react": "^7.16.7",
         "@types/react": "^18.0.7",
@@ -77,11 +68,11 @@
         "css-minimizer-webpack-plugin": "^3.0.1",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
-        "eslint-config-prettier": "^7.2.0",
-        "eslint-plugin-import": "^2.23.4",
-        "eslint-plugin-prettier": "^3.3.1",
-        "eslint-plugin-react": "^7.22.0",
-        "eslint-plugin-react-hooks": "^4.2.0",
+
+
+
+
+
         "lint-staged": "^10.4.0",
         "mini-css-extract-plugin": "^1.3.4",
         "node-sass": "^7.0.1",

@@ -47,7 +47,6 @@
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
         "@deriv/publisher": "^0.0.1-beta4",
         "@storybook/addon-docs": "^6.5.10",

@@ -22,7 +22,7 @@ export const useDarkMode = store => {
         return () => {
             window.removeEventListener('storage', onStorageChanged);
         };
-    }, [is_dark_mode]);
+    }, []);
 
     return {
         is_dark_mode,

@@ -60,7 +60,7 @@
         &__bordered,
         &__bordered--with-margin {
             @include mobile {
-                padding: 3rem;
+                padding: 3rem 3rem 15rem;
                 border: none;
                 height: 38.7rem;
                 overflow-y: scroll;

@@ -7,9 +7,9 @@ import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './rate-change-modal.scss';
 
-const RateChangeModal = () => {
+const RateChangeModal = ({ currency }) => {
     const { floating_rate_store, general_store } = useStores();
-    const local_currency = general_store.client?.local_currency_config?.currency;
+    const local_currency = currency ?? general_store.client?.local_currency_config?.currency;
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     const closeModal = () => {

@@ -88,6 +88,9 @@ const BuySellForm = props => {
                     if (is_market_rate_changed && rate_type === ad_type.FLOAT) {
                         showModal({
                             key: 'RateChangeModal',
+                            props: {
+                                currency: buy_sell_store.local_currency,
+                            },
                         });
                     }
                 }

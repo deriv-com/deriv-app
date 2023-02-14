@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick, isBot } from '@deriv/shared';
+import { isHighLow, getCurrentTick, isBot, getSubType, isTurbosContract, isMultiplierContract } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -28,8 +28,26 @@ const ContractCardHeader = ({
     const { underlying, multiplier, contract_type, shortcode, purchase_time, date_expiry, tick_count, is_sold } =
         contract_info;
 
+    const contract_type_list_info = [
+        {
+            value: 'Multiplier',
+            checkContractType: isMultiplierContract,
+            displayed_trade_text: `x${multiplier}`,
+        },
+        {
+            value: 'Turbos',
+            checkContractType: isTurbosContract,
+            displayed_trade_text: getSubType(contract_type),
+        },
+    ];
+
+    const displayed_trade_param =
+        contract_type_list_info.find(contract_type_item_info =>
+            contract_type_item_info.checkContractType(contract_type)
+        )?.displayed_trade_text || '';
+
     return (
-        <>
+        <React.Fragment>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier,
@@ -44,9 +62,9 @@ const ContractCardHeader = ({
                 </div>
                 <div id='dc-contract_card_type_label' className='dc-contract-card__type'>
                     <ContractTypeCell
+                        displayed_trade_param={displayed_trade_param}
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={isHighLow({ shortcode })}
-                        multiplier={multiplier}
                         type={contract_type}
                     />
                 </div>
@@ -95,7 +113,7 @@ const ContractCardHeader = ({
                     />
                 )}
             </DesktopWrapper>
-        </>
+        </React.Fragment>
     );
 };
 

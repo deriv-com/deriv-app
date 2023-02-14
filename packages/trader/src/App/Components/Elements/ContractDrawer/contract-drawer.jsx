@@ -27,6 +27,7 @@ const ContractDrawer = ({
     is_dark_theme,
     is_market_closed,
     is_multiplier,
+    is_turbos,
     onClickCancel,
     onClickSell,
     server_time,
@@ -39,7 +40,7 @@ const ContractDrawer = ({
     const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
 
     const getBodyContent = () => {
-        const exit_spot = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
+        const exit_spot = isUserSold(contract_info) && !is_multiplier && !is_turbos ? '-' : exit_tick_display_value;
 
         const contract_audit = (
             <ContractAudit
@@ -48,11 +49,12 @@ const ContractDrawer = ({
                 contract_end_time={getEndTime(contract_info)}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
+                is_turbos={is_turbos}
                 is_open
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier}
+                has_result={!!is_sold || is_multiplier || is_turbos}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );
@@ -66,6 +68,7 @@ const ContractDrawer = ({
                     is_mobile={is_mobile}
                     is_market_closed={is_market_closed}
                     is_multiplier={is_multiplier}
+                    is_turbos={is_turbos}
                     is_sell_requested={is_sell_requested}
                     is_collapsed={should_show_contract_audit}
                     onClickCancel={onClickCancel}
@@ -86,7 +89,7 @@ const ContractDrawer = ({
     // For non-binary contract, the status is always null, so we check for is_expired in contract_info
     const fallback_result = contract_info.status || contract_info.is_expired;
 
-    const exit_spot = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
+    const exit_spot = isUserSold(contract_info) && !is_multiplier && !is_turbos ? '-' : exit_tick_display_value;
 
     const contract_audit = (
         <ContractAudit
@@ -95,11 +98,12 @@ const ContractDrawer = ({
             contract_end_time={getEndTime(contract_info)}
             is_dark_theme={is_dark_theme}
             is_multiplier={is_multiplier}
+            is_turbos={is_turbos}
             is_open
             duration={getDurationTime(contract_info)}
             duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
             exit_spot={exit_spot}
-            has_result={!!is_sold || is_multiplier}
+            has_result={!!is_sold || is_multiplier || is_turbos}
             toggleHistoryTab={toggleHistoryTab}
         />
     );
@@ -118,7 +122,7 @@ const ContractDrawer = ({
                 id='dt_contract_drawer'
                 className={classNames('contract-drawer', {
                     'contract-drawer--with-collapsible-btn':
-                        !!getEndTime(contract_info) || (is_multiplier && isMobile()),
+                        !!getEndTime(contract_info) || ((is_multiplier || is_turbos) && isMobile()),
                     'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                     'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                 })}
@@ -174,6 +178,7 @@ ContractDrawer.propTypes = {
     is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     is_history_tab_active: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,

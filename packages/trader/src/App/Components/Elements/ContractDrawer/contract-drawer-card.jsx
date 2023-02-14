@@ -23,6 +23,7 @@ const ContractDrawerCard = ({
     is_multiplier,
     is_sell_requested,
     is_collapsed,
+    is_turbos,
     onClickCancel,
     onClickSell,
     onSwipedUp,
@@ -72,6 +73,7 @@ const ContractDrawerCard = ({
             getContractById={getContractById}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            is_turbos={is_turbos}
             is_sold={is_sold}
             removeToast={removeToast}
             server_time={server_time}
@@ -133,15 +135,17 @@ const ContractDrawerCard = ({
         </ContractCard>
     );
 
+    const has_swipeable_drawer = is_sold || is_multiplier || is_turbos;
+
     return (
         <React.Fragment>
             <DesktopWrapper>{contract_card}</DesktopWrapper>
             <MobileWrapper>
                 <SwipeableContractDrawer
-                    onSwipedUp={is_sold || is_multiplier ? onSwipedUp : undefined}
-                    onSwipedDown={is_sold || is_multiplier ? onSwipedDown : undefined}
+                    onSwipedUp={has_swipeable_drawer ? onSwipedUp : undefined}
+                    onSwipedDown={has_swipeable_drawer ? onSwipedDown : undefined}
                 >
-                    {(is_sold || is_multiplier) && (
+                    {has_swipeable_drawer && (
                         <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                     )}
                     {contract_card}
@@ -163,6 +167,7 @@ ContractDrawerCard.propTypes = {
     is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,

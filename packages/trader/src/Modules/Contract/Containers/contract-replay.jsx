@@ -14,6 +14,7 @@ import {
     isDesktop,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     isEmptyObject,
     getPlatformRedirect,
     urlFor,
@@ -74,6 +75,7 @@ const ContractReplay = ({
     if (!contract_info.underlying) return null;
 
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_turbos = isTurbosContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -84,6 +86,7 @@ const ContractReplay = ({
             is_dark_theme={is_dark_theme}
             is_market_closed={is_market_closed}
             is_multiplier={is_multiplier}
+            is_turbos={is_turbos}
             is_sell_requested={is_sell_requested}
             is_valid_to_cancel={is_valid_to_cancel}
             onClickCancel={onClickCancel}

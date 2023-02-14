@@ -44,6 +44,8 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const turbos_details = {
         barrier_choices: proposal.barrier_choices || response?.error?.details?.barrier_choices,
         number_of_contracts: proposal.number_of_contracts,
+        max_stake: proposal.max_stake,
+        min_stake: proposal.min_stake,
     };
 
     return {

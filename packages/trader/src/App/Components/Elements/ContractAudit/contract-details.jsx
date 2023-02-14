@@ -8,6 +8,7 @@ import {
     getCancellationPrice,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
@@ -47,6 +48,62 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         return localize('Deal cancellation (active)');
     };
 
+    const barrier_card_info = (
+        <ContractAuditItem
+            id='dt_bt_label'
+            icon={
+                isDigitType(contract_type) ? (
+                    <Icon icon='IcContractTarget' size={24} />
+                ) : (
+                    <Icon icon='IcContractBarrier' size={24} />
+                )
+            }
+            label={getBarrierLabel(contract_info)}
+            value={getBarrierValue(contract_info) || ' - '}
+        />
+    );
+
+    let unique_card_info;
+
+    if (isMultiplierContract(contract_type)) {
+        unique_card_info = (
+            <React.Fragment>
+                <ContractAuditItem
+                    id='dt_commission_label'
+                    icon={<Icon icon='IcContractCommission' size={24} />}
+                    label={localize('Commission')}
+                    value={<Money amount={commission} currency={currency} show_currency />}
+                />
+                {!!cancellation_price && (
+                    <ContractAuditItem
+                        id='dt_cancellation_label'
+                        icon={<Icon icon='IcContractSafeguard' size={24} />}
+                        label={getLabel()}
+                        value={<Money amount={cancellation_price} currency={currency} />}
+                    />
+                )}
+            </React.Fragment>
+        );
+    } else if (isTurbosContract(contract_type)) {
+        unique_card_info = isNaN(contract_end_time) ? null : (
+            <React.Fragment>
+                <ContractAuditItem
+                    id='dt_duration_label'
+                    icon={<Icon icon='IcContractDuration' size={24} />}
+                    label={localize('Duration')}
+                    value={
+                        tick_count > 0
+                            ? `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`
+                            : `${duration} ${duration_unit}`
+                    }
+                />
+                {barrier_card_info}
+            </React.Fragment>
+        );
+    } else {
+        unique_card_info = barrier_card_info;
+    }
+
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>
             <div className='contract-audit__tabs-content'>
@@ -57,49 +114,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                     value={localize('{{buy_value}} (Buy)', { buy_value: buy })}
                     value2={sell ? localize('{{sell_value}} (Sell)', { sell_value: sell }) : undefined}
                 />
-                {isMultiplierContract(contract_type) ? (
-                    <React.Fragment>
-                        <ContractAuditItem
-                            id='dt_commission_label'
-                            icon={<Icon icon='IcContractCommission' size={24} />}
-                            label={localize('Commission')}
-                            value={<Money amount={commission} currency={currency} show_currency />}
-                        />
-                        {!!cancellation_price && (
-                            <ContractAuditItem
-                                id='dt_cancellation_label'
-                                icon={<Icon icon='IcContractSafeguard' size={24} />}
-                                label={getLabel()}
-                                value={<Money amount={cancellation_price} currency={currency} />}
-                            />
-                        )}
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
-                        <ContractAuditItem
-                            id='dt_duration_label'
-                            icon={<Icon icon='IcContractDuration' size={24} />}
-                            label={localize('Duration')}
-                            value={
-                                tick_count > 0
-                                    ? `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`
-                                    : `${duration} ${duration_unit}`
-                            }
-                        />
-                        <ContractAuditItem
-                            id='dt_bt_label'
-                            icon={
-                                isDigitType(contract_type) ? (
-                                    <Icon icon='IcContractTarget' size={24} />
-                                ) : (
-                                    <Icon icon='IcContractBarrier' size={24} />
-                                )
-                            }
-                            label={getBarrierLabel(contract_info)}
-                            value={getBarrierValue(contract_info) || ' - '}
-                        />
-                    </React.Fragment>
-                )}
+                {unique_card_info}
                 <ContractAuditItem
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}

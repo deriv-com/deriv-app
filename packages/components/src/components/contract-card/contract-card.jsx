@@ -17,6 +17,7 @@ const ContractCard = ({
     getContractPath,
     is_multiplier,
     is_positions,
+    is_turbos,
     is_unsupported,
     onClickRemove,
     profit_loss,
@@ -36,6 +37,7 @@ const ContractCard = ({
                         getContractPath={getContractPath}
                         is_unsupported={is_unsupported}
                         is_multiplier={is_multiplier}
+                        is_turbos={is_turbos}
                         is_visible={!!contract_info.is_sold}
                         onClickRemove={onClickRemove}
                         onClick={() => toggleUnsupportedContractModal(true)}
@@ -64,6 +66,7 @@ ContractCard.propTypes = {
     getContractPath: PropTypes.func,
     is_multiplier: PropTypes.bool,
     is_positions: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     onClickRemove: PropTypes.func,
     profit_loss: PropTypes.number,

@@ -24,6 +24,14 @@ type TContractTypesConfig = {
 
 type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
 
+type TContractConfig = {
+    button_name?: React.ReactNode;
+    name: React.ReactNode;
+    position: string;
+};
+
+type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
         title: localize('Rise/Fall'),
@@ -173,10 +181,12 @@ export const unsupported_contract_types_list = [
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),
+    BARRIER_LEVEL: localize('Barrier level'),
     STAKE: localize('Stake:'),
     CLOSE: localize('Close'),
     CANCEL: localize('Cancel'),
     CURRENT_STAKE: localize('Current stake:'),
+    CURRENT_PRICE: localize('Current price'),
     DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
     TAKE_PROFIT: localize('Take profit:'),
     BUY_PRICE: localize('Buy price:'),
@@ -370,7 +380,6 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
-type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 export const getSupportedContracts = (is_high_low?: boolean) => ({
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
@@ -429,11 +438,13 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
         position: 'bottom',
     },
     TURBOSLONG: {
-        name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Turbos' />,
+        button_name: <Localize i18n_default_text='Buy' />,
         position: 'top',
     },
     TURBOSSHORT: {
-        name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Turbos' />,
+        button_name: <Localize i18n_default_text='Buy' />,
         position: 'bottom',
     },
 });
@@ -447,8 +458,12 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false) =>
-    getContractConfig(is_high_low)[type].name;
+
+export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_trade_text = false) => {
+    return show_trade_text
+        ? (getContractConfig(is_high_low)[type] as TContractConfig).button_name
+        : getContractConfig(is_high_low)[type].name;
+};
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>
     getContractConfig(is_high_low)[type].position || 'top';

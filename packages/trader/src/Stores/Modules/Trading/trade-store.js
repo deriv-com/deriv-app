@@ -135,9 +135,8 @@ export default class TradeStore extends BaseStore {
     // Turbos trade params
     number_of_contracts = 0;
     turbos_barrier_choices = [];
-    //TODO: clean up min_stake ans max_stake after BE will be ready
-    min_stake = 1;
-    max_stake = 100;
+    min_stake = 0;
+    max_stake = 0;
 
     // Mobile
     is_trade_params_expanded = true;
@@ -215,6 +214,8 @@ export default class TradeStore extends BaseStore {
             barrier_1: observable,
             barrier_2: observable,
             barrier_count: observable,
+            min_stake: observable,
+            max_stake: observable,
             main_barrier: observable,
             barriers: observable,
             start_date: observable,
@@ -1053,9 +1054,12 @@ export default class TradeStore extends BaseStore {
         if (this.is_turbos && this.proposal_info) {
             const contract_key = this.contract_type.toUpperCase();
             if (this.proposal_info[contract_key]) {
-                const { barrier_choices, number_of_contracts } = this.proposal_info[contract_key];
+                const { barrier_choices, number_of_contracts, max_stake, min_stake } = this.proposal_info[contract_key];
+
                 this.turbos_barrier_choices = barrier_choices || [];
                 this.number_of_contracts = number_of_contracts ?? 0;
+                this.max_stake = max_stake ?? 0;
+                this.min_stake = min_stake ?? 0;
                 if (barrier_choices && !barrier_choices.includes(this.barrier_1)) {
                     this.onChange({
                         target: {

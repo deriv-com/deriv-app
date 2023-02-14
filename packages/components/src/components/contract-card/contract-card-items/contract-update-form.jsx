@@ -23,6 +23,7 @@ const ContractUpdateForm = props => {
         current_focus,
         error_message_alignment,
         getCardLabels,
+        is_turbos,
         onMouseLeave,
         removeToast,
         setCurrentFocus,
@@ -63,7 +64,10 @@ const ContractUpdateForm = props => {
 
     const is_take_profit_valid = has_contract_update_take_profit ? contract_update_take_profit > 0 : isValid(stop_loss);
     const is_stop_loss_valid = has_contract_update_stop_loss ? contract_update_stop_loss > 0 : isValid(take_profit);
-    const is_valid_contract_update = is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid);
+    const is_valid_turbos_contract_update = is_turbos && !!is_take_profit_valid;
+    const is_valid_contract_update =
+        is_valid_turbos_contract_update ||
+        (is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid));
 
     const getStateToCompare = _state => {
         const props_to_pick = [
@@ -116,7 +120,7 @@ const ContractUpdateForm = props => {
             onChange={onChange}
             error_message_alignment={error_message_alignment || 'right'}
             value={contract_profit_or_loss.contract_update_take_profit}
-            is_disabled={!!is_valid_to_cancel}
+            is_disabled={!is_turbos && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
         />
     );
@@ -173,9 +177,13 @@ const ContractUpdateForm = props => {
                     </div>
                 </div>
             </MobileWrapper>
-            <div className='dc-contract-card-dialog__form'>
+            <div
+                className={classNames('dc-contract-card-dialog__form', {
+                    'dc-contract-card-dialog__form-accumulator': is_turbos,
+                })}
+            >
                 <div className='dc-contract-card-dialog__input'>{take_profit_input}</div>
-                <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>
+                {!is_turbos && <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>}
                 <div className='dc-contract-card-dialog__button'>
                     <Button
                         text={getCardLabels().APPLY}
@@ -195,6 +203,7 @@ ContractUpdateForm.propTypes = {
     current_focus: PropTypes.string,
     error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
+    is_turbos: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,

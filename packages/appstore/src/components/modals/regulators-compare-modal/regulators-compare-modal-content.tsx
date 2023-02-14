@@ -59,7 +59,7 @@ const RegulatorsCompareModalContent = () => {
                             <Table.Row className={'regulators-compare-table__table-header'}>
                                 <Table.Head fixed className='regulators-compare-table__table-empty-cell' />
                                 <Table.Head className='regulators-compare-table__table-header-item'>
-                                    {localize('Non-EU regulations')}
+                                    {localize('Non-EU regulation')}
                                 </Table.Head>
                                 <Table.Head className='regulators-compare-table__table-header-item'>
                                     {localize('EU regulation')}

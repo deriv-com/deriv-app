@@ -8,8 +8,8 @@ const JournalLoader = ({ is_mobile }: { is_mobile: boolean }) => (
         speed={3}
         width={350}
         height={92}
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
+        backgroundColor={'var(--general-section-1)'}
+        foregroundColor={'var(--general-hover)'}
     >
         <rect x='15' y='15' rx='5' ry='5' width='320' height='40' />
         <rect x='15' y='60' rx='5' ry='5' width='180' height='7' />

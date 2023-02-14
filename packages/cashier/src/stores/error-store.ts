@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 import { getPropertyValue } from '@deriv/shared';
-import { TServerError } from 'Types';
+import { TServerError } from '../types';
 
 export default class ErrorStore {
     message = '';

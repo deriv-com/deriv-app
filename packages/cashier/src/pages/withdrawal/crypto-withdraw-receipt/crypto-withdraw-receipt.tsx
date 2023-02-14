@@ -3,9 +3,10 @@ import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TAccount } from 'Types';
-import { getAccountText } from 'Utils/utility';
-import RecentTransaction from 'Components/recent-transaction';
+import { TAccount } from '../../../types';
+import { getAccountText } from '../../../utils/utility';
+import RecentTransaction from '../../../components/recent-transaction';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-receipt.scss';
 
 type TWalletInformationProps = {
@@ -97,19 +98,11 @@ const WalletInformation = ({ account, blockchain_address }: TWalletInformationPr
 };
 
 const CryptoWithdrawReceipt = observer(() => {
-    const {
-        client,
-        modules: {
-            cashier: { account_transfer, general_store, transaction_history, withdraw },
-        },
-    } = useStore();
-
-    const { selected_from: account } = account_transfer;
-
+    const { client } = useStore();
     const { currency, is_switching } = client;
-
+    const { account_transfer, general_store, transaction_history, withdraw } = useCashierStore();
+    const { selected_from: account } = account_transfer;
     const { cashier_route_tab_index: tab_index } = general_store;
-
     const {
         crypto_transactions,
         onMount: recentTransactionOnMount,

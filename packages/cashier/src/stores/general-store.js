@@ -55,8 +55,6 @@ export default class GeneralStore extends BaseStore {
             setCashierTabIndex: action.bound,
             setNotificationCount: action.bound,
             setIsP2pVisible: action.bound,
-            is_cashier_locked: computed,
-            is_system_maintenance: computed,
             setLoading: action.bound,
             setActiveTab: action.bound,
         });
@@ -397,22 +395,6 @@ export default class GeneralStore extends BaseStore {
                 this.root_store.modules.cashier.account_prompt_dialog.last_location ?? routes.cashier_deposit
             );
         }
-    }
-
-    /** @deprecated Use `useCashierLocked` from `@deriv/hooks` package instead. */
-    get is_cashier_locked() {
-        const { account_status } = this.root_store.client;
-
-        if (!account_status?.status) return false;
-        return account_status.status.some(status_name => status_name === 'cashier_locked');
-    }
-
-    /** @deprecated Use `useIsSystemMaintenance` from `@deriv/hooks` package instead. */
-    get is_system_maintenance() {
-        const { account_status } = this.root_store.client;
-
-        if (!account_status?.cashier_validation) return false;
-        return account_status.cashier_validation.some(validation => validation === 'system_maintenance');
     }
 
     setLoading(is_loading) {

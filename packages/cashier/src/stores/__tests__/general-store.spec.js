@@ -473,34 +473,6 @@ describe('GeneralStore', () => {
         expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
 
-    it('should return is_cashier_locked equal to false if account_status is undefined', () => {
-        general_store.root_store.client.account_status = undefined;
-        expect(general_store.is_cashier_locked).toBeFalsy();
-    });
-
-    it('should return is_cashier_locked equal to false if there is no cashier_locked status', () => {
-        expect(general_store.is_cashier_locked).toBeFalsy();
-    });
-
-    it('should return is_cashier_locked equal to true if there is cashier_locked status', () => {
-        general_store.root_store.client.account_status.status.push('cashier_locked');
-        expect(general_store.is_cashier_locked).toBeTruthy();
-    });
-
-    it('should return is_system_maintenance equal to false if account_status is undefined', () => {
-        general_store.root_store.client.account_status = undefined;
-        expect(general_store.is_system_maintenance).toBeFalsy();
-    });
-
-    it('should return is_system_maintenance equal to false if there is no system_maintenance status', () => {
-        expect(general_store.is_system_maintenance).toBeFalsy();
-    });
-
-    it('should return is_system_maintenance equal to true if there is system_maintenance status', () => {
-        general_store.root_store.client.account_status.cashier_validation.push('system_maintenance');
-        expect(general_store.is_system_maintenance).toBeTruthy();
-    });
-
     it('should change the value of the variable is_loading', () => {
         general_store.setLoading(true);
         expect(general_store.is_loading).toBeTruthy();

@@ -4,8 +4,10 @@ const useCashierLocked = () => {
     const { client } = useStore();
     const { account_status } = client;
 
-    if (!account_status?.status) return false;
-    return account_status.status.some(status_name => status_name === 'cashier_locked');
+    const is_cashier_locked =
+        !!account_status?.status && account_status.status.some(status_name => status_name === 'cashier_locked');
+
+    return is_cashier_locked;
 };
 
 export default useCashierLocked;

@@ -98,7 +98,7 @@ export const urlForCurrentDomain = (href: string) => {
     const url_object = new URL(href);
     if (Object.keys(host_map).includes(url_object.hostname)) {
         url_object.hostname = host_map[url_object.hostname as keyof typeof host_map];
-    } else if (url_object.hostname.indexOf(default_domain) !== -1) {
+    } else if (url_object.hostname.match(default_domain)) {
         // to keep all non-Binary links unchanged, we use default domain for all Binary links in the codebase (javascript and templates)
         url_object.hostname = url_object.hostname.replace(
             new RegExp(`\\.${default_domain}`, 'i'),

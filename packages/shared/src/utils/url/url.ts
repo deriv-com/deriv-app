@@ -171,3 +171,9 @@ export const filterUrlQuery = (search_param: string, allowed_keys: string[]) => 
     const filtered_queries = [...search_params].filter(kvp => allowed_keys.includes(kvp[0]));
     return new URLSearchParams(filtered_queries || '').toString();
 };
+
+export const excludeParamsFromUrlQuery = (search_param: string, excluded_keys: string[]) => {
+    const search_params = new URLSearchParams(search_param);
+    const filtered_queries = [...search_params].filter(([key]) => !excluded_keys.includes(key));
+    return new URLSearchParams(filtered_queries || '').toString();
+};

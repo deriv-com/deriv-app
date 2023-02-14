@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TSideNotesProps } from 'Types';
+import { TSideNotesProps } from '../../types';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { Virtual } from '../../components/cashier-container';

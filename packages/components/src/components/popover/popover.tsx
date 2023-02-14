@@ -74,7 +74,7 @@ const Popover = ({
                             ? is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))
                             : is_open ?? (is_hovered && message)) as boolean
                     }
-                    positions={[alignment]}
+                    positions={Array.isArray(alignment) ? alignment : [alignment]}
                     padding={margin + 8}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,

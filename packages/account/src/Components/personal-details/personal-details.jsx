@@ -518,7 +518,11 @@ const PersonalDetails = ({
                                                                     }}
                                                                 >
                                                                     <Popover
-                                                                        alignment={isDesktop() ? 'right' : 'left'}
+                                                                        alignment={
+                                                                            isDesktop()
+                                                                                ? ['right', 'top']
+                                                                                : ['left', 'top']
+                                                                        }
                                                                         icon='info'
                                                                         message={localize(
                                                                             'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
@@ -526,6 +530,7 @@ const PersonalDetails = ({
                                                                         zIndex={9998}
                                                                         disable_message_icon
                                                                         is_open={is_tax_residence_popover_open}
+                                                                        relative_render={isDesktop()}
                                                                     />
                                                                 </div>
                                                             </div>
@@ -554,7 +559,7 @@ const PersonalDetails = ({
                                                             }}
                                                         >
                                                             <Popover
-                                                                alignment={isDesktop() ? 'right' : 'left'}
+                                                                alignment={isDesktop() ? 'right' : ['left', 'top']}
                                                                 icon='info'
                                                                 is_open={is_tin_popover_open}
                                                                 message={
@@ -575,6 +580,7 @@ const PersonalDetails = ({
                                                                 }
                                                                 zIndex={9998}
                                                                 disable_message_icon
+                                                                relative_render={isDesktop()}
                                                             />
                                                         </div>
                                                     </div>

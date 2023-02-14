@@ -420,9 +420,10 @@ export default class ClientStore extends BaseStore {
             () => {
                 const { trading_hub } = this.account_settings;
                 const is_traders_hub = !!trading_hub;
-
+                const { preferred_language } = this.account_settings?.preferred_language;
+                const language = preferred_language && preferred_language !== 'EN' ? '' : '';
                 if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
-                    window.location.href = routes.root;
+                    window.location.href = routes.root.replace(/\?{0,1}lang=.{2}$/i, language);
                 } else if (
                     this.is_pre_appstore &&
                     window.location.pathname === routes.root &&

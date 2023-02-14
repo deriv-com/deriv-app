@@ -7,7 +7,11 @@ import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 
-const NoBalance = observer(({ history }: RouteComponentProps) => {
+type TNoBalanceProps = RouteComponentProps & {
+    onClickDeposit?: () => void;
+};
+
+const NoBalance = observer(({ history, ...props }: TNoBalanceProps) => {
     const { client } = useStore();
     const { currency } = client;
     const { general_store } = useCashierStore();
@@ -15,9 +19,13 @@ const NoBalance = observer(({ history }: RouteComponentProps) => {
     const is_deposit_locked = useDepositLocked();
 
     const onClickDeposit = () => {
-        // index of deposit tab in the cashier modal is 0
-        setTabIndex(0);
-        history.push(routes.cashier_deposit);
+        if (props.onClickDeposit) {
+            props.onClickDeposit();
+        } else {
+            // index of deposit tab in the cashier modal is 0
+            setTabIndex(0);
+            history.push(routes.cashier_deposit);
+        }
     };
 
     return (

@@ -6,7 +6,7 @@ type TThemedScrollbars = {
     autohide?: boolean;
     className?: string;
     has_horizontal?: boolean;
-    height?: string;
+    height?: number | string;
     is_bypassed?: boolean;
     is_only_horizontal?: boolean;
     is_only_horizontal_overlay?: boolean;

@@ -54,7 +54,7 @@ const AssetSummary = () => {
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
         return (
             <React.Fragment>
-                <div className='asset-summary__container loader'>
+                <div className='asset-summary__container content-loader'>
                     <TotalAssetsLoader />
                 </div>
             </React.Fragment>

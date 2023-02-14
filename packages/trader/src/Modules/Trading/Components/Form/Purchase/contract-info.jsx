@@ -6,31 +6,34 @@ import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
-const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_turbos }) => (
-    <React.Fragment>
-        <div className='trade-container__price-info-value'>
-            {!has_error_or_not_loaded && (
-                <Money
-                    amount={proposal_info.obj_contract_basis.value}
-                    className={classNames('trade-container__price-info-currency', {
-                        'trade-container__price-info-currency--turbos': is_turbos,
-                    })}
-                    currency={currency}
-                    show_currency
-                />
-            )}
-        </div>
-        {!is_turbos && (
-            <div className='trade-container__price-info-movement'>
-                {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
-                    <Icon icon='IcProfit' />
-                ) : (
-                    <Icon icon='IcLoss' />
+const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_turbos }) => {
+    const payout_amount = is_turbos ? proposal_info.number_of_contracts : proposal_info.obj_contract_basis.value;
+    return (
+        <React.Fragment>
+            <div className='trade-container__price-info-value'>
+                {!has_error_or_not_loaded && (
+                    <Money
+                        amount={payout_amount}
+                        className={classNames('trade-container__price-info-currency', {
+                            'trade-container__price-info-currency--turbos': is_turbos,
+                        })}
+                        currency={currency}
+                        show_currency
+                    />
                 )}
             </div>
-        )}
-    </React.Fragment>
-);
+            {!is_turbos && (
+                <div className='trade-container__price-info-movement'>
+                    {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
+                        <Icon icon='IcProfit' />
+                    ) : (
+                        <Icon icon='IcLoss' />
+                    )}
+                </div>
+            )}
+        </React.Fragment>
+    );
+};
 
 const ContractInfo = ({
     basis,

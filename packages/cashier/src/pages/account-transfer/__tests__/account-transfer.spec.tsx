@@ -5,7 +5,7 @@ import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,

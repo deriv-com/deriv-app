@@ -5,7 +5,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv/hooks';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

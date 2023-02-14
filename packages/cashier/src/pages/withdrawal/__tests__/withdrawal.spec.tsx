@@ -8,7 +8,7 @@ import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { useCashierLocked } from '@deriv/hooks';
 import { TRootStore } from '@deriv/stores/types';
-import { TRootStore as TRootStoreCashier } from 'Types';
+import { TRootStore as TRootStoreCashier } from '../../../types';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));

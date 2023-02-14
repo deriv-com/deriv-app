@@ -1047,7 +1047,7 @@ const AccountSwitcher = props => {
                     <React.Fragment>
                         <AccountWrapper
                             className='acc-switcher__title'
-                            header={localize('Non-EU regulation')}
+                            header={props.is_low_risk ? localize('Non-EU Deriv Account') : localize('Deriv account')}
                             is_visible={is_non_eu_regulator_visible}
                             toggleVisibility={() => {
                                 toggleVisibility('real_deriv');
@@ -1117,7 +1117,7 @@ const AccountSwitcher = props => {
                 ) : null}
                 {!props.is_high_risk || props.is_eu ? (
                     <AccountWrapper
-                        header={localize('EU regulation')}
+                        header={props.is_low_risk ? localize('EU Deriv Account') : localize('Deriv account')}
                         is_visible={is_eu_regulator_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_deriv');

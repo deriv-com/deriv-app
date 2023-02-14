@@ -21,7 +21,6 @@ type TDeposit = {
 };
 
 const Deposit = observer(({ setSideNotes }: TDeposit) => {
-    const is_deposit_locked = useDepositLocked();
     const { client, traders_hub } = useStore();
     const {
         can_change_fiat_currency,
@@ -51,6 +50,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     } = general_store;
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
+    const is_deposit_locked = useDepositLocked();
 
     const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
 

@@ -13,11 +13,11 @@ import {
 } from '@deriv/components';
 import { useOnrampVisible } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
 import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
 import { TRootStore, TRoute } from '../../types';
+import { localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier.scss';
 

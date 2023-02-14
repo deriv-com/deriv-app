@@ -4,8 +4,11 @@ const useIsSystemMaintenance = () => {
     const { client } = useStore();
     const { account_status } = client;
 
-    if (!account_status?.cashier_validation) return false;
-    return account_status.cashier_validation.some(validation => validation === 'system_maintenance');
+    const is_system_maintenance =
+        !!account_status?.cashier_validation &&
+        account_status.cashier_validation.some(validation => validation === 'system_maintenance');
+
+    return is_system_maintenance;
 };
 
 export default useIsSystemMaintenance;

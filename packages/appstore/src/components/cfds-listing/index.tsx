@@ -180,7 +180,12 @@ const CFDsListing = () => {
                                     }
                                 }}
                                 mt5_acc_auth_status={has_mt5_account_status}
-                                selected_mt5_jurisdiction={existing_account.landing_company_short}
+                                selected_mt5_jurisdiction={{
+                                    platform: existing_account.platform,
+                                    category: selected_account_type,
+                                    type: existing_account.market_type,
+                                    jurisdiction: existing_account.landing_company_short,
+                                }}
                                 openFailedVerificationModal={openFailedVerificationModal}
                             />
                         );

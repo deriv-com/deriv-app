@@ -1,7 +1,6 @@
 {
     "6794664": "Ogłoszenia, które odpowiadają Twojemu saldu Deriv P2P i limitom.",
     "19789721": "Nikt cię nie zablokował. Super!",
-    "21103557": "Saldo Deriv P2P = nieodwracalne (przelew in blanco itp.) + część wpłat odwracalnych (płatności kartą kredytową itp.)",
     "24711354": "Wszystkie zlecenia <0>30 dni</0> | <1>od początku</1>",
     "47573834": "Stała stawka (1 {{account_currency}})",
     "50672601": "Kupiono",
@@ -313,6 +312,8 @@
     "-179005984": "Zapisz",
     "-2059312414": "Szczegóły ogłoszenia",
     "-1769584466": "Statystyki",
+    "-808161760": "Saldo Deriv P2P = depozyty, których nie można odwrócić",
+    "-684271315": "DOBRZE",
     "-2090878601": "Limit dzienny",
     "-130547447": "Wielkość inwestycji <0>30 dni</0> | <1>od początku</1>",
     "-1792280476": "Wybierz metodę płatności",

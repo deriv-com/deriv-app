@@ -11,16 +11,16 @@ type TNoBalanceProps = RouteComponentProps & {
     onClickDeposit?: () => void;
 };
 
-const NoBalance = observer(({ history, ...props }: TNoBalanceProps) => {
+const NoBalance = observer(({ history, onClickDeposit }: TNoBalanceProps) => {
     const { client } = useStore();
     const { currency } = client;
     const { general_store } = useCashierStore();
     const { setCashierTabIndex: setTabIndex } = general_store;
     const is_deposit_locked = useDepositLocked();
 
-    const onClickDeposit = () => {
-        if (props.onClickDeposit) {
-            props.onClickDeposit();
+    const onClickDepositHandler = () => {
+        if (onClickDeposit) {
+            onClickDeposit();
         } else {
             // index of deposit tab in the cashier modal is 0
             setTabIndex(0);
@@ -47,7 +47,7 @@ const NoBalance = observer(({ history, ...props }: TNoBalanceProps) => {
                         className='cashier__no-balance-button'
                         has_effect
                         text={localize('Deposit now')}
-                        onClick={onClickDeposit}
+                        onClick={onClickDepositHandler}
                         primary
                         large
                     />

@@ -11,7 +11,7 @@ const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     return (
         <div className='btn-purchase__text_wrapper'>
             <Text size='xs' weight='bold' color='colored-background'>
-                {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low)}
+                {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low, true)}
             </Text>
         </div>
     );

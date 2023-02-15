@@ -24,6 +24,14 @@ type TContractTypesConfig = {
 
 type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
 
+type TContractConfig = {
+    button_name?: React.ReactNode;
+    name: React.ReactNode;
+    position: string;
+};
+
+type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
         title: localize('Rise/Fall'),
@@ -365,10 +373,10 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
-type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 export const getSupportedContracts = (is_high_low?: boolean) => ({
     ACCU: {
-        name: <Localize i18n_default_text='Buy' />,
+        button_name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Accumulator' />,
         position: 'top',
     },
     CALL: {
@@ -438,8 +446,10 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false) =>
-    getContractConfig(is_high_low)[type].name;
+export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type] as TContractConfig;
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
+};
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>
     getContractConfig(is_high_low)[type].position || 'top';

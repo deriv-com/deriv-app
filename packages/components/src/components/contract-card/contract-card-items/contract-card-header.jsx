@@ -40,9 +40,19 @@ const ContractCardHeader = ({
     } = contract_info;
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
-    const displayed_accumulator = growth_rate && `${getGrowthRatePercentage(growth_rate)}%`;
-    const displayed_multiplier = multiplier && `x${multiplier}`;
-    const displayed_trade_param = is_accumulator ? displayed_accumulator : displayed_multiplier;
+    const contract_type_list_info = [
+        {
+            is_param_displayed: multiplier,
+            displayed_param: `x${multiplier}`,
+        },
+        {
+            is_param_displayed: is_accumulator,
+            displayed_param: `${getGrowthRatePercentage(growth_rate)}%`,
+        },
+    ];
+    const displayed_trade_param =
+        contract_type_list_info.find(contract_type_item_info => contract_type_item_info.is_param_displayed)
+            ?.displayed_param || '';
 
     return (
         <>
@@ -67,9 +77,9 @@ const ContractCardHeader = ({
                     })}
                 >
                     <ContractTypeCell
+                        displayed_trade_param={displayed_trade_param}
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={isHighLow({ shortcode })}
-                        displayed_trade_param={displayed_trade_param}
                         type={contract_type}
                     />
                 </div>

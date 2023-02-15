@@ -341,27 +341,41 @@ const OpenPositions = ({
     const [has_multiplier_contract, setHasMultiplierContract] = React.useState(false);
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
-        {
-            text: localize('Options'),
-            value: 'Options',
-            is_default: !is_multiplier && !is_accumulator,
-        },
-        {
-            text: localize('Multipliers'),
-            value: 'Multipliers',
-            is_default: is_multiplier,
-        },
-        {
-            text: localize('Accumulators'),
-            value: 'Accumulators',
-            is_default: is_accumulator,
-        },
+        { text: localize('Options'), is_default: !is_multiplier && !is_accumulator },
+        { text: localize('Multipliers'), is_default: is_multiplier },
+        { text: localize('Accumulators'), is_default: is_accumulator },
     ];
     const [contract_type_value, setContractTypeValue] = React.useState(
-        contract_types.find(type => type.is_default)?.value || 'Options'
+        contract_types.find(type => type.is_default)?.text || localize('Options')
     );
-    const accumulator_rates = ['all', '0.01', '0.02', '0.03', '0.04', '0.05'];
+    const accumulator_rates = [localize('All Rates'), '1%', '2%', '3%', '4%', '5%'];
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
+    const is_accumulator_selected = contract_type_value === contract_types[2].text;
+    const is_options_selected = contract_type_value === contract_types[0].text;
+    const is_multiplier_selected = contract_type_value === contract_types[1].text;
+    const contract_types_list = contract_types.map(({ text }) => ({ text, value: text }));
+    const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
+    const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
+        if (contract_info) {
+            if (is_multiplier_selected) return isMultiplierContract(contract_info.contract_type);
+            if (is_accumulator_selected)
+                return (
+                    isAccumulatorContract(contract_info.contract_type) &&
+                    (`${getGrowthRatePercentage(contract_info.growth_rate)}%` === accumulator_rate ||
+                        !accumulator_rate.includes('%'))
+                );
+            return (
+                !isMultiplierContract(contract_info.contract_type) &&
+                !isAccumulatorContract(contract_info.contract_type)
+            );
+        }
+        return true;
+    });
+    const active_positions_filtered_totals = getOpenPositionsTotals(
+        active_positions_filtered,
+        is_multiplier_selected,
+        is_accumulator_selected
+    );
 
     React.useEffect(() => {
         /*
@@ -394,28 +408,6 @@ const OpenPositions = ({
     };
 
     if (error) return <p>{error}</p>;
-
-    const is_accumulator_selected = contract_type_value === 'Accumulators';
-    const is_multiplier_selected = contract_type_value === 'Multipliers';
-    const is_options_selected = contract_type_value === 'Options';
-
-    const active_positions_filtered = active_positions?.filter(p => {
-        if (p.contract_info) {
-            if (is_multiplier_selected) return isMultiplierContract(p.contract_info.contract_type);
-            if (is_accumulator_selected) return isAccumulatorContract(p.contract_info.contract_type);
-            return (
-                !isMultiplierContract(p.contract_info.contract_type) &&
-                !isAccumulatorContract(p.contract_info.contract_type)
-            );
-        }
-        return true;
-    });
-
-    const active_positions_filtered_totals = getOpenPositionsTotals(
-        active_positions_filtered,
-        is_multiplier_selected,
-        is_accumulator_selected
-    );
 
     const getColumns = () => {
         if (is_multiplier_selected) {
@@ -466,24 +458,6 @@ const OpenPositions = ({
         totals: active_positions_filtered_totals,
     };
 
-    const handleContractChange = e => {
-        setContractTypeValue(e.target.value);
-    };
-
-    const handleRateChange = e => {
-        setAccumulatorRate(e.target.value);
-    };
-
-    const isAccumulatorTableEmpty =
-        active_positions_filtered.length === 0 ||
-        (accumulator_rate !== active_positions_filtered['0']?.contract_info?.growth_rate?.toString() &&
-            accumulator_rate !== 'all');
-
-    const accumulators_rates_list = accumulator_rates.map(option => ({
-        text: option === 'all' ? localize('All Rates') : `${getGrowthRatePercentage(+option)}%`,
-        value: option,
-    }));
-
     const getOpenPositionsTable = () => {
         if (is_options_selected)
             return (
@@ -500,7 +474,7 @@ const OpenPositions = ({
                 <OpenPositionsTable
                     className='open-positions-accumulator open-positions'
                     columns={columns}
-                    is_empty={isAccumulatorTableEmpty}
+                    is_empty={active_positions_filtered.length === 0}
                     row_size={isMobile() ? 3 : 68}
                     {...shared_props}
                 />
@@ -533,9 +507,9 @@ const OpenPositions = ({
                                 <Dropdown
                                     is_align_text_left
                                     name='contract_types'
-                                    list={contract_types}
+                                    list={contract_types_list}
                                     value={contract_type_value}
-                                    onChange={handleContractChange}
+                                    onChange={e => setContractTypeValue(e.target.value)}
                                 />
                             </div>
                             {is_accumulator_selected && (
@@ -545,7 +519,7 @@ const OpenPositions = ({
                                         name='accumulator_rates'
                                         list={accumulators_rates_list}
                                         value={accumulator_rate}
-                                        onChange={handleRateChange}
+                                        onChange={e => setAccumulatorRate(e.target.value)}
                                     />
                                 </div>
                             )}
@@ -561,13 +535,10 @@ const OpenPositions = ({
                         >
                             <SelectNative
                                 className='open-positions__accumulator-container-mobile__contract-dropdown'
-                                list_items={contract_types.map(option => ({
-                                    text: option.text,
-                                    value: option.value,
-                                }))}
+                                list_items={contract_types_list}
                                 value={contract_type_value}
                                 should_show_empty_option={false}
-                                onChange={handleContractChange}
+                                onChange={e => setContractTypeValue(e.target.value)}
                             />
                             {is_accumulator_selected && (
                                 <SelectNative
@@ -575,7 +546,7 @@ const OpenPositions = ({
                                     list_items={accumulators_rates_list}
                                     value={accumulator_rate}
                                     should_show_empty_option={false}
-                                    onChange={handleRateChange}
+                                    onChange={e => setAccumulatorRate(e.target.value)}
                                 />
                             )}
                         </div>

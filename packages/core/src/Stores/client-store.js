@@ -6,6 +6,7 @@ import {
     State,
     deriv_urls,
     filterUrlQuery,
+    excludeParamsFromUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -20,6 +21,7 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
+    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -239,6 +241,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
+            is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
             is_risky_client: computed,
@@ -580,7 +583,7 @@ export default class ClientStore extends BaseStore {
 
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
-            if (!item.is_virtual) {
+            if (!item.is_virtual && item.landing_company_shortcode === this.landing_company_shortcode) {
                 acc.push(item.currency);
             }
             return acc;
@@ -669,6 +672,10 @@ export default class ClientStore extends BaseStore {
         }
 
         return this.default_currency;
+    }
+
+    get is_crypto() {
+        return isCryptocurrency(this.currency);
     }
 
     get default_currency() {
@@ -832,11 +839,14 @@ export default class ClientStore extends BaseStore {
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
-        return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
-            ? eu_shortcode_regex.test(financial_shortcode) ||
-                  eu_shortcode_regex.test(gaming_shortcode) ||
-                  eu_shortcode_regex.test(mt_gaming_shortcode)
-            : eu_excluded_regex.test(this.residence);
+        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
+        return (
+            is_current_mf || //is_currently logged in mf account via trdaershub
+            (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
+                ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
+                  eu_shortcode_regex.test(gaming_shortcode)
+                : eu_excluded_regex.test(this.residence))
+        );
     }
 
     get is_brazil() {
@@ -1219,8 +1229,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responsePayoutCurrencies(response) {
-        const list = response.payout_currencies || response;
-        this.currencies_list = buildCurrenciesList(list);
+        const list = response?.payout_currencies || response;
+        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
         this.selectCurrency('');
     }
 
@@ -1501,6 +1511,21 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const unused_params = [
+            'type',
+            'acp',
+            'label',
+            'server',
+            'interface',
+            'cid',
+            'age',
+            'utm_source',
+            'first_name',
+            'second_name',
+            'email',
+            'phone',
+            '_filteredParams',
+        ];
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
@@ -1581,7 +1606,7 @@ export default class ClientStore extends BaseStore {
             });
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
+                window.history.replaceState({}, document.title, urlForLanguage(language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {
@@ -1623,6 +1648,23 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+
+        // delete search params if it's signup when signin completed
+        if (action_param === 'signup') {
+            const filteredQuery = filterUrlQuery(search, ['lang']);
+            history.replaceState(
+                null,
+                null,
+                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `/?${filteredQuery}`)
+            );
+        }
+
+        history.replaceState(
+            null,
+            null,
+            window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
+        );
+
         return true;
     }
 
@@ -2558,15 +2600,16 @@ export default class ClientStore extends BaseStore {
 
     setIsPreAppStore(is_pre_appstore) {
         const trading_hub = is_pre_appstore ? 1 : 0;
-        WS.setSettings({
-            set_settings: 1,
-            trading_hub,
-        }).then(response => {
-            if (!response.error) {
-                this.account_settings = { ...this.account_settings, trading_hub };
-                localStorage.setItem('is_pre_appstore', is_pre_appstore);
-            }
-        });
+        try {
+            WS.setSettings({
+                set_settings: 1,
+                trading_hub,
+            });
+        } catch (error) {
+            return;
+        }
+        this.account_settings = { ...this.account_settings, trading_hub };
+        localStorage.setItem('is_pre_appstore', is_pre_appstore);
     }
 }
 /* eslint-enable */

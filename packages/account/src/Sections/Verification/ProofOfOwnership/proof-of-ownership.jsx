@@ -43,7 +43,7 @@ export const ProofOfOwnership = ({
     const onTryAgain = () => {
         setStatus(POO_STATUSES.none);
     };
-    if (cards?.length > 0) {
+    if (cards?.length > 0 && status !== POO_STATUSES.rejected) {
         return (
             <ProofOfOwnershipForm
                 grouped_payment_method_data={grouped_payment_method_data.groups}

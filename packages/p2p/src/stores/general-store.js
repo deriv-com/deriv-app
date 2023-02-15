@@ -231,7 +231,7 @@ export default class GeneralStore extends BaseStore {
                     }
                 } else {
                     this.setBlockUnblockUserError(response.error.message);
-                    if (!general_store.is_barred) {
+                    if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
                         general_store.showModal({
                             key: 'ErrorModal',
                             props: {

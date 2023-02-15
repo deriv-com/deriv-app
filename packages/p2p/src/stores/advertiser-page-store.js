@@ -174,7 +174,7 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onCancel() {
-        if (this.root_store.general_store.modal.key === 'BlockUserModal') {
+        if (this.root_store.general_store.isCurrentModal('BlockUserModal')) {
             this.root_store.general_store.hideModal();
         }
         this.setIsDropdownMenuVisible(false);

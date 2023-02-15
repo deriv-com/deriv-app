@@ -296,7 +296,7 @@ export default class MyProfileStore extends BaseStore {
             if (response) {
                 const { general_store, my_ads_store } = this.root_store;
 
-                if (general_store.modal.key === 'BlockUserModal') {
+                if (general_store.isCurrentModal('BlockUserModal')) {
                     general_store.hideModal();
                 }
                 this.setSelectedPaymentMethod('');
@@ -315,6 +315,10 @@ export default class MyProfileStore extends BaseStore {
                 } else {
                     this.setShouldShowAddPaymentMethodForm(false);
                     this.getAdvertiserPaymentMethods();
+
+                    if (general_store.isCurrentModal('CreateAdAddPaymentMethodModal')) {
+                        general_store.hideModal();
+                    }
                 }
 
                 setSubmitting(false);
@@ -585,7 +589,7 @@ export default class MyProfileStore extends BaseStore {
         const { general_store } = this.root_store;
 
         clearTimeout(delay);
-        if (general_store.modal.key === 'BlockUserModal') {
+        if (general_store.isCurrentModal('BlockUserModal')) {
             general_store.hideModal();
         }
         general_store.blockUnblockUser(!this.selected_trade_partner.is_blocked, this.selected_trade_partner.id);

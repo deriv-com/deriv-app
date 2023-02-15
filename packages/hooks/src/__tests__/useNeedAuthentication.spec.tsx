@@ -1,20 +1,9 @@
 import * as React from 'react';
 import { StoreProvider } from '@deriv/stores';
 import type { TStores } from '@deriv/stores';
-// Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
-import { render, screen } from '@testing-library/react';
 import { ContentFlag } from '@deriv/shared';
+import { renderHook } from '@testing-library/react-hooks';
 import useNeedAuthentication from '../useNeedAuthentication';
-
-const UseNeedAuthenticationExample = () => {
-    const is_need_authentication = useNeedAuthentication();
-
-    return (
-        <>
-            <p data-testid={'dt_is_need_authentication'}>{is_need_authentication ? 'true' : 'false'}</p>
-        </>
-    );
-};
 
 describe('useNeedAuthentication', () => {
     test('should be false if is_authentication_needed and is_eu both are false', async () => {
@@ -27,12 +16,12 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<UseNeedAuthenticationExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
-        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
 
-        const is_need_authentication = screen.getByTestId('dt_is_need_authentication');
-        expect(is_need_authentication).toHaveTextContent('false');
+        expect(result.current).toBe(false);
     });
 
     test('should be false if is_authentication_needed is false and is_eu is true', async () => {
@@ -45,12 +34,12 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<UseNeedAuthenticationExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
-        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
 
-        const is_need_authentication = screen.getByTestId('dt_is_need_authentication');
-        expect(is_need_authentication).toHaveTextContent('false');
+        expect(result.current).toBe(false);
     });
 
     test('should be false if is_authentication_needed is true and is_eu is false', async () => {
@@ -63,12 +52,12 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<UseNeedAuthenticationExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
-        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
 
-        const is_need_authentication = screen.getByTestId('dt_is_need_authentication');
-        expect(is_need_authentication).toHaveTextContent('false');
+        expect(result.current).toBe(false);
     });
 
     test('should be true if is_authentication_needed and is_eu both are true', async () => {
@@ -81,11 +70,11 @@ describe('useNeedAuthentication', () => {
             },
         };
 
-        render(<UseNeedAuthenticationExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>,
-        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
 
-        const is_need_authentication = screen.getByTestId('dt_is_need_authentication');
-        expect(is_need_authentication).toHaveTextContent('true');
+        expect(result.current).toBe(true);
     });
 });

@@ -448,7 +448,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         type_server?.map((item: TMt5StatusServerType) => item.all).some((item: number) => item === 1);
 
     const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(mt5_status_server?.demo);
-
     const is_suspended_mt5_real_server = getIsSuspendedMt5Server(mt5_status_server?.real);
 
     const has_mt5_account_error = is_demo_tab

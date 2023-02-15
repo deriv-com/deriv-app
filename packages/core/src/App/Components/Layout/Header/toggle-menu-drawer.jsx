@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
+import { useOnrampVisible } from '@deriv/hooks';
+import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -14,49 +15,76 @@ import { useLocation, useHistory } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 
-const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
-    const { common } = useStore();
-    const { changeCurrentLanguage } = common;
-    const deriv_static_url = getStaticUrl(link_to);
+const MenuLink = observer(
+    ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
+        const { common } = useStore();
+        const { changeCurrentLanguage } = common;
+        const deriv_static_url = getStaticUrl(link_to);
 
-    if (is_language) {
+        if (is_hidden) return null;
+
+        if (is_language) {
+            return (
+                <span
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                        'header__menu-mobile-link--active': is_active,
+                    })}
+                    active_class='header__menu-mobile-link--active'
+                    onClick={() => {
+                        onClickLink();
+                        changeLanguage(link_to, changeCurrentLanguage);
+                    }}
+                >
+                    <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </span>
+            );
+        } else if (!link_to) {
+            return (
+                <div
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                    })}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </div>
+            );
+        } else if (deriv_static_url) {
+            return (
+                <a
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                        'header__menu-mobile-link--active': is_active,
+                    })}
+                    href={link_to}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <Text
+                        className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
+                        as='h3'
+                        size='xs'
+                        weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
+                    >
+                        {text}
+                    </Text>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </a>
+            );
+        }
+
         return (
-            <span
+            <BinaryLink
+                to={link_to}
                 className={classNames('header__menu-mobile-link', {
                     'header__menu-mobile-link--disabled': is_disabled,
                     'header__menu-mobile-link--active': is_active,
                 })}
                 active_class='header__menu-mobile-link--active'
-                onClick={() => {
-                    onClickLink();
-                    changeLanguage(link_to, changeCurrentLanguage);
-                }}
-            >
-                <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
-                <span className='header__menu-mobile-link-text'>{text}</span>
-                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </span>
-        );
-    } else if (!link_to) {
-        return (
-            <div
-                className={classNames('header__menu-mobile-link', {
-                    'header__menu-mobile-link--disabled': is_disabled,
-                })}
-            >
-                <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                <span className='header__menu-mobile-link-text'>{text}</span>
-                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </div>
-        );
-    } else if (deriv_static_url) {
-        return (
-            <a
-                className={classNames('header__menu-mobile-link', {
-                    'header__menu-mobile-link--disabled': is_disabled,
-                    'header__menu-mobile-link--active': is_active,
-                })}
-                href={link_to}
+                onClick={onClickLink}
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <Text
@@ -68,38 +96,21 @@ const MenuLink = observer(({ link_to, icon, is_active, is_disabled, is_language,
                     {text}
                 </Text>
                 {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </a>
+            </BinaryLink>
         );
     }
-
-    return (
-        <BinaryLink
-            to={link_to}
-            className={classNames('header__menu-mobile-link', {
-                'header__menu-mobile-link--disabled': is_disabled,
-                'header__menu-mobile-link--active': is_active,
-            })}
-            active_class='header__menu-mobile-link--active'
-            onClick={onClickLink}
-        >
-            <Icon className='header__menu-mobile-link-icon' icon={icon} />
-            <Text
-                className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
-                as='h3'
-                size='xs'
-                weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
-            >
-                {text}
-            </Text>
-            {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-        </BinaryLink>
-    );
-});
+);
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
-    const { common, ui, client, modules } = useStore();
+    const { common, ui, client, traders_hub, modules } = useStore();
     const { app_routing_history } = common;
-    const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
+    const {
+        disableApp,
+        enableApp,
+        is_dark_mode_on: is_dark_mode,
+        setDarkMode: toggleTheme,
+        toggleExitTradersHubModal,
+    } = ui;
     const {
         account_status,
         is_logged_in,
@@ -110,14 +121,18 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_risky_client,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
+        is_pre_appstore,
+        setIsPreAppStore,
+        is_eu,
     } = client;
     const { cashier } = modules;
-    const { onramp, general_store, payment_agent_transfer, payment_agent, account_transfer } = cashier;
-    const { is_onramp_tab_visible } = onramp;
+    const { general_store, payment_agent_transfer, payment_agent, account_transfer } = cashier;
     const { is_p2p_enabled } = general_store;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
     const { is_account_transfer_visible } = account_transfer;
+    const { content_flag, should_show_exit_traders_modal, switchToCRAccount, show_eu_related_content } = traders_hub;
+    const is_onramp_visible = useOnrampVisible();
 
     const liveChat = useLiveChat();
     const [is_open, setIsOpen] = React.useState(false);
@@ -126,12 +141,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
     const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-    const { is_appstore, is_pre_appstore, setIsPreAppStore } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
 
     React.useEffect(() => {
         const processRoutes = () => {
-            const routes_config = getRoutesConfig({ is_appstore, is_pre_appstore });
+            const routes_config = getRoutesConfig({ is_appstore });
             let primary_routes = [];
             let secondary_routes = [];
             const location = window.location.pathname;
@@ -146,7 +161,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     routes.markets,
                 ];
                 secondary_routes = [];
-            } else if ((is_pre_appstore && location === routes.trading_hub) || is_trading_hub_category) {
+            } else if ((is_pre_appstore && location === routes.traders_hub) || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
                 secondary_routes = [];
             } else {
@@ -217,6 +232,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             return false;
         };
 
+        const hiddenRoute = route_path => {
+            if (/languages/.test(route_path)) {
+                return !is_pre_appstore;
+            }
+            return false;
+        };
+
         return (
             <MobileDrawer.SubMenu
                 key={idx}
@@ -234,7 +256,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                             (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                            (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
+                            (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                             (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                         ) {
                             return (
@@ -262,6 +284,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     <MenuLink
                                         key={subindex}
                                         is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
+                                        is_hidden={hiddenRoute(subroute.path)}
                                         link_to={subroute.path}
                                         text={subroute.getTitle()}
                                         onClickLink={toggleDrawer}
@@ -328,17 +351,25 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const history = useHistory();
 
     const is_trading_hub_category =
-        route.startsWith(routes.trading_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
+        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const tradingHubRedirect = () => {
+    const tradingHubRedirect = async () => {
         if (is_pre_appstore) {
-            setIsPreAppStore(false);
-            toggleDrawer();
-            history.push(routes.root);
+            if (should_show_exit_traders_modal) {
+                toggleDrawer();
+                toggleExitTradersHubModal();
+            } else {
+                setIsPreAppStore(false);
+                if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+                    await switchToCRAccount();
+                }
+                toggleDrawer();
+                history.push(routes.root);
+            }
         } else {
             setIsPreAppStore(true);
             toggleDrawer();
-            history.push(routes.trading_hub);
+            history.push(routes.traders_hub);
         }
     };
 
@@ -462,8 +493,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     {is_logged_in && (
                                         <MobileDrawer.Item>
                                             <MenuLink
-                                                link_to={routes.trading_hub}
-                                                icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreHome'}
+                                                link_to={routes.traders_hub}
+                                                icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
                                                 text={localize("Trader's hub")}
                                                 onClickLink={toggleDrawer}
                                             />
@@ -520,14 +551,16 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
-                                            <MobileDrawer.Item>
-                                                <MenuLink
-                                                    link_to={getStaticUrl('/regulatory')}
-                                                    icon='IcRegulatoryInformation'
-                                                    text={localize('Regulatory information')}
-                                                    onClickLink={toggleDrawer}
-                                                />
-                                            </MobileDrawer.Item>
+                                            {is_eu && show_eu_related_content && !is_virtual && (
+                                                <MobileDrawer.Item>
+                                                    <MenuLink
+                                                        link_to={getStaticUrl('/regulatory')}
+                                                        icon='IcRegulatoryInformation'
+                                                        text={localize('Regulatory information')}
+                                                        onClickLink={toggleDrawer}
+                                                    />
+                                                </MobileDrawer.Item>
+                                            )}
                                             <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
                                                 <MenuLink
                                                     link_to={getStaticUrl('/')}

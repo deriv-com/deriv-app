@@ -45,7 +45,7 @@ const NotificationsContent = ({
             <TransitionGroup component='div'>
                 {notifications.map(notification => (
                     <CSSTransition
-                        appear={!!is_notification_loaded}
+                        appear={!is_notification_loaded}
                         key={notification.key}
                         in={!!notification.header}
                         timeout={150}

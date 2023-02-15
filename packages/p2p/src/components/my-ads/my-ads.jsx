@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -25,9 +26,17 @@ const MyAds = () => {
         my_ads_store.setShowEditAdForm(false);
         my_ads_store.getAccountStatus();
 
-        return () => {
-            my_ads_store.setShowAdForm(false);
-        };
+        if (isMobile()) {
+            if (my_ads_store.has_switched_tabs) {
+                my_ads_store.setShowAdForm(false);
+                my_ads_store.setShowEditAdForm(false);
+                my_ads_store.setHasSwitchedTabs(false);
+            }
+        } else {
+            my_ads_store.setShowEditAdForm(false);
+            my_ads_store.setShowEditAdForm(false);
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

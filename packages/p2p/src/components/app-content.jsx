@@ -17,11 +17,20 @@ import Verification from './verification/verification.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const AppContent = ({ order_id }) => {
-    const { buy_sell_store, general_store } = useStores();
+    const { buy_sell_store, general_store, my_ads_store } = useStores();
     const { showModal, hideModal } = useModalManagerContext();
 
     React.useEffect(() => {
-        return reaction(
+        const hasSwitchedTabsReaction = reaction(
+            () => general_store.active_index,
+            (current_tab, previous_tab) => {
+                if (current_tab !== previous_tab && current_tab !== 2) {
+                    my_ads_store.setHasSwitchedTabs(true);
+                }
+            }
+        );
+
+        const setP2POrderPropsReaction = reaction(
             () => general_store.props.setP2POrderProps,
             () => {
                 if (isAction(general_store.props.setP2POrderProps)) {
@@ -39,6 +48,11 @@ const AppContent = ({ order_id }) => {
                 }
             }
         );
+
+        return () => {
+            hasSwitchedTabsReaction();
+            setP2POrderPropsReaction();
+        };
     }, []);
 
     if (general_store.is_loading) {

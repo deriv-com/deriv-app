@@ -40,6 +40,7 @@ export default class MyAdsStore extends BaseStore {
     update_payment_methods_error_message = '';
     required_ad_type;
     error_code = '';
+    has_switched_tabs = false;
 
     payment_method_ids = [];
     payment_method_names = [];
@@ -67,6 +68,7 @@ export default class MyAdsStore extends BaseStore {
             is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
             is_table_loading: observable,
+            has_switched_tabs: observable,
             is_loading: observable,
             item_offset: observable,
             p2p_advert_information: observable,
@@ -115,6 +117,7 @@ export default class MyAdsStore extends BaseStore {
             setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
+            setHasSwitchedTabs: action.bound,
             setIsTableLoading: action.bound,
             setItemOffset: action.bound,
             setP2pAdvertInformation: action.bound,
@@ -893,6 +896,10 @@ export default class MyAdsStore extends BaseStore {
         }
 
         return errors;
+    }
+
+    setHasSwitchedTabs(has_switched_tabs) {
+        this.has_switched_tabs = has_switched_tabs;
     }
 
     toggleMyAdsRateSwitchModal(change_ad_type, is_open_edit_form) {

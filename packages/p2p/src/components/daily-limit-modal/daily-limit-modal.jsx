@@ -36,7 +36,7 @@ const DailyLimitModal = () => {
 
     const getModalContent = () => {
         if (my_profile_store.is_loading_modal_open) {
-            return <Loading is_fullscreen={false} />;
+            return <Loading className='daily-limit-modal__loader' is_fullscreen={false} />;
         } else if (my_profile_store.is_daily_limit_success_modal_open) {
             return (
                 <Text as='p' size='xs' color='prominent'>
@@ -107,7 +107,6 @@ const DailyLimitModal = () => {
 
     return (
         <Modal
-            exit_classname='daily-limit-modal--exit'
             is_open={my_profile_store.is_daily_limit_modal_open}
             small
             has_close_icon={false}

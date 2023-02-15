@@ -1229,8 +1229,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responsePayoutCurrencies(response) {
-        const list = response.payout_currencies || response;
-        this.currencies_list = buildCurrenciesList(list);
+        const list = response?.payout_currencies || response;
+        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
         this.selectCurrency('');
     }
 
@@ -1648,6 +1648,16 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+
+        // delete search params if it's signup when signin completed
+        if (action_param === 'signup') {
+            const filteredQuery = filterUrlQuery(search, ['lang']);
+            history.replaceState(
+                null,
+                null,
+                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `/?${filteredQuery}`)
+            );
+        }
 
         history.replaceState(
             null,

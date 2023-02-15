@@ -53,22 +53,18 @@ const ProofOfOwnershipForm = ({
                     total_documents_uploaded = payment_method?.files?.filter(Boolean)?.length ?? 0;
                     if (is_pm_identifier_provided) {
                         are_files_uploaded = total_documents_uploaded === payment_method.documents_required;
-                    } else if (!payment_method?.documents_required && total_documents_uploaded === 0) {
+                    } else if (
+                        (!payment_method?.documents_required && total_documents_uploaded === 0) ||
+                        (!is_pm_identifier_provided && total_documents_uploaded === 0)
+                    ) {
                         are_files_uploaded = true;
                     } else if (
-                        payment_method?.documents_required &&
-                        is_pm_identifier_provided &&
-                        total_documents_uploaded === 0
+                        (payment_method?.documents_required &&
+                            is_pm_identifier_provided &&
+                            total_documents_uploaded === 0) ||
+                        (!is_pm_identifier_provided &&
+                            total_documents_uploaded === payment_method?.documents_required * 0.5)
                     ) {
-                        are_files_uploaded = false;
-                    } else if (!is_pm_identifier_provided && total_documents_uploaded === 0) {
-                        are_files_uploaded = true;
-                    } else if (
-                        !is_pm_identifier_provided &&
-                        total_documents_uploaded === payment_method?.documents_required * 0.5
-                    ) {
-                        are_files_uploaded = false;
-                    } else {
                         are_files_uploaded = false;
                     }
                     delete errors.data[card_key][item_key].payment_method_identifier;

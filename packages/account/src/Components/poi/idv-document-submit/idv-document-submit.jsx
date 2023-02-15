@@ -7,11 +7,11 @@ import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
 import {
-    isSequentialNumber,
-    isRecurringNumberRegex,
+    documentAdditionalError,
     getDocumentData,
     getRegex,
-    documentAdditionalError,
+    isRecurringNumberRegex,
+    isSequentialNumber,
 } from './utils';
 import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
@@ -47,9 +47,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
-                const needs_additional = !!document_data[key].additional;
+                const needs_additional_document = !!document_data[key].additional;
 
-                if (needs_additional) {
+                if (needs_additional_document) {
                     return {
                         id: key,
                         text: new_display_name || display_name,
@@ -72,6 +72,24 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             })
         );
     }, [country_code, document_data]);
+
+    const onKeyUp = (e, document_name, values, setFieldValue) => {
+        if (document_name === 'document_number') {
+            const { example_format } = values.document_type;
+            const current_input = example_format.includes('-')
+                ? formatInput(example_format, current_input || e.target.value, '-')
+                : e.target.value;
+            setFieldValue(document_name, current_input, true);
+            validateFields(values);
+        } else {
+            const { format } = values.document_type.additional;
+            const current_addition_input = format.includes('-')
+                ? formatInput(format, current_addition_input || e.target.value, '-')
+                : e.target.value;
+            setFieldValue(document_name, current_addition_input, true);
+            validateFields(values);
+        }
+    };
 
     const resetDocumentItemSelected = setFieldValue => {
         setFieldValue(
@@ -106,7 +124,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         const { document_type, document_number, document_additional } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
-        const needs_additional = !!document_type.additional;
+        const needs_additional_document = !!document_type.additional;
 
         // QA can manually toggle this regex now through this feature flag.
         // Otherwise it blocks their test suite.
@@ -118,7 +136,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             setInputDisable(false);
         }
 
-        if (needs_additional) {
+        if (needs_additional_document) {
             const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
             if (error_message)
                 errors.document_additional =
@@ -274,18 +292,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                 onPaste={e => e.preventDefault()}
                                                 onBlur={handleBlur}
                                                 onChange={handleChange}
-                                                onKeyUp={e => {
-                                                    const { example_format } = values.document_type;
-                                                    const current_input = example_format.includes('-')
-                                                        ? formatInput(
-                                                              example_format,
-                                                              current_input || e.target.value,
-                                                              '-'
-                                                          )
-                                                        : e.target.value;
-                                                    setFieldValue('document_number', current_input, true);
-                                                    validateFields(values);
-                                                }}
+                                                onKeyUp={e => onKeyUp(e, 'document_number', values, setFieldValue)}
                                                 required
                                             />
                                             {values.document_type.additional?.display_name && (
@@ -309,22 +316,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                     onPaste={e => e.preventDefault()}
                                                     onBlur={handleBlur}
                                                     onChange={handleChange}
-                                                    onKeyUp={e => {
-                                                        const { format } = values.document_type.additional;
-                                                        const current_addition_input = format.includes('-')
-                                                            ? formatInput(
-                                                                  format,
-                                                                  current_addition_input || e.target.value,
-                                                                  '-'
-                                                              )
-                                                            : e.target.value;
-                                                        setFieldValue(
-                                                            'document_additional',
-                                                            current_addition_input,
-                                                            true
-                                                        );
-                                                        validateFields(values);
-                                                    }}
+                                                    onKeyUp={e =>
+                                                        onKeyUp(e, 'document_additional', values, setFieldValue)
+                                                    }
                                                 />
                                             )}
                                         </React.Fragment>

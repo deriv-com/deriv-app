@@ -84,7 +84,6 @@ const AccountTransferForm = observer(
         const {
             client,
             common: { is_from_derivgo },
-            modules: { cashier },
         } = useStore();
 
         const {

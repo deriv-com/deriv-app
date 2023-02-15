@@ -102,6 +102,8 @@ describe('getExpiryType', () => {
     it('Return daily if expiry date is tomorrow', () => {
         store.expiry_date = moment().utc().add(1, 'days').toString();
         store.expiry_type = 'endtime';
+        store.expiry_type = 'duration';
+        store.duration_unit = 'd';
         expect(Duration.getExpiryType(store)).toEqual('daily');
     });
 

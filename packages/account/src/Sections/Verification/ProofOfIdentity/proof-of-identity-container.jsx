@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Loading } from '@deriv/components';
-import { getPlatformRedirect, WS } from '@deriv/shared';
+import { getPlatformRedirect, platforms, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import DemoMessage from 'Components/demo-message';
@@ -97,7 +97,17 @@ const ProofOfIdentityContainer = ({
     }
 
     const redirect_button = should_show_redirect_btn && (
-        <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
+        <Button
+            primary
+            className='proof-of-identity__redirect'
+            onClick={() => {
+                if (platforms[from_platform.name?.toLowerCase()].is_hard_redirect) {
+                    window.location.href = platforms[from_platform.name?.toLowerCase()].url;
+                } else {
+                    routeBackTo(from_platform.route);
+                }
+            }}
+        >
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
     );

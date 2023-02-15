@@ -152,7 +152,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                     icon='info'
                     disable_message_icon
                     is_bubble_hover_enabled
-                    message={localize('Total assets in all your accounts');}
+                    message={localize('Total assets in all your accounts')}
                     zIndex={9999}
                 />
             </div>

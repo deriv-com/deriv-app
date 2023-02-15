@@ -5,7 +5,7 @@ import { TFormErrorMessagesTypes } from './form-error-messages-types';
 
 export type TOptions = {
     min: number;
-    max: number;
+    max?: number | string;
     type?: string;
     decimals?: string | number;
     regex?: RegExp;
@@ -38,7 +38,9 @@ const validEmailToken = (value: string) => value.trim().length === 8;
 let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 
 const isMoreThanMax = (value: number, options: TOptions) =>
-    options.type === 'float' ? +value > +options.max : compareBigUnsignedInt(value, options.max) === 1;
+    options.type === 'float'
+        ? +value > +(options.max ? options.max : 0)
+        : compareBigUnsignedInt(value, options.max) === 1;
 
 export const validNumber = (value: string, opts: TOptions) => {
     const options = cloneObject(opts);

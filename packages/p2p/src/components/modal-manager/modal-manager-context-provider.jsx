@@ -57,6 +57,9 @@ const ModalManagerContextProvider = props => {
     const isCurrentModal = (...keys) => keys.includes(active_modal.key);
 
     const showModal = modal => {
+        // // if there are multiple of the same modals being called at the same time
+        if (Object.keys(active_modal).length > 0 && active_modal.key === modal.key) return;
+
         if (isDesktop()) {
             setPreviousModal(active_modal);
             setActiveModal(modal);

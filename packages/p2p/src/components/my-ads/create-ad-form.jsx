@@ -82,7 +82,6 @@ const CreateAdForm = () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');
             floating_rate_store.setApiErrorMessage('');
-            my_ads_store.setShowAdForm(false);
             buy_sell_store.setCreateSellAdFromNoAds(false);
         };
 

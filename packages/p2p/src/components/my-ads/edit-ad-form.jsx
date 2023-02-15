@@ -125,7 +125,6 @@ const EditAdForm = () => {
         }
         return () => {
             my_ads_store.setApiErrorCode(null);
-            my_ads_store.setShowEditAdForm(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

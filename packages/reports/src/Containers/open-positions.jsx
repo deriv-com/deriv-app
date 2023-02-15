@@ -23,6 +23,7 @@ import {
     website_name,
     getTotalProfit,
     getContractPath,
+    getGrowthRatePercentage,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -359,6 +360,8 @@ const OpenPositions = ({
     const [contract_type_value, setContractTypeValue] = React.useState(
         contract_types.find(type => type.is_default)?.value || 'Options'
     );
+    const accumulator_rates = ['all', '0.01', '0.02', '0.03', '0.04', '0.05'];
+    const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
 
     React.useEffect(() => {
         /*
@@ -463,9 +466,23 @@ const OpenPositions = ({
         totals: active_positions_filtered_totals,
     };
 
-    const handleChange = e => {
+    const handleContractChange = e => {
         setContractTypeValue(e.target.value);
     };
+
+    const handleRateChange = e => {
+        setAccumulatorRate(e.target.value);
+    };
+
+    const isAccumulatorTableEmpty =
+        active_positions_filtered.length === 0 ||
+        (accumulator_rate !== active_positions_filtered['0']?.contract_info?.growth_rate?.toString() &&
+            accumulator_rate !== 'all');
+
+    const accumulators_rates_list = accumulator_rates.map(option => ({
+        text: option === 'all' ? localize('All Rates') : `${getGrowthRatePercentage(+option)}%`,
+        value: option,
+    }));
 
     const getOpenPositionsTable = () => {
         if (is_options_selected)
@@ -483,7 +500,7 @@ const OpenPositions = ({
                 <OpenPositionsTable
                     className='open-positions-accumulator open-positions'
                     columns={columns}
-                    is_empty={active_positions_filtered.length === 0}
+                    is_empty={isAccumulatorTableEmpty}
                     row_size={isMobile() ? 3 : 68}
                     {...shared_props}
                 />
@@ -505,31 +522,66 @@ const OpenPositions = ({
             {active_positions.length !== 0 && (
                 <React.Fragment>
                     <DesktopWrapper>
-                        <div className='open-positions__contract-types-selector__container'>
-                            <Dropdown
-                                is_align_text_left
-                                name='contract_types'
-                                list={contract_types}
-                                value={contract_type_value}
-                                onChange={handleChange}
-                            />
+                        <div
+                            className={
+                                is_accumulator_selected
+                                    ? 'open-positions__accumulator-container'
+                                    : 'open-positions__contract-types-selector-container'
+                            }
+                        >
+                            <div className='open-positions__accumulator-container__contract-dropdown'>
+                                <Dropdown
+                                    is_align_text_left
+                                    name='contract_types'
+                                    list={contract_types}
+                                    value={contract_type_value}
+                                    onChange={handleContractChange}
+                                />
+                            </div>
+                            {is_accumulator_selected && (
+                                <div className='open-positions__accumulator-container__rates-dropdown'>
+                                    <Dropdown
+                                        is_align_text_left
+                                        name='accumulator_rates'
+                                        list={accumulators_rates_list}
+                                        value={accumulator_rate}
+                                        onChange={handleRateChange}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <SelectNative
-                            className='open-positions__contract-types-selector'
-                            list_items={contract_types.map(option => ({
-                                text: option.text,
-                                value: option.value,
-                            }))}
-                            value={contract_type_value}
-                            should_show_empty_option={false}
-                            onChange={handleChange}
-                        />
+                        <div
+                            className={
+                                is_accumulator_selected
+                                    ? 'open-positions__accumulator-container--mobile'
+                                    : 'open-positions__contract-types-selector-container--mobile'
+                            }
+                        >
+                            <SelectNative
+                                className='open-positions__accumulator-container-mobile__contract-dropdown'
+                                list_items={contract_types.map(option => ({
+                                    text: option.text,
+                                    value: option.value,
+                                }))}
+                                value={contract_type_value}
+                                should_show_empty_option={false}
+                                onChange={handleContractChange}
+                            />
+                            {is_accumulator_selected && (
+                                <SelectNative
+                                    className='open-positions__accumulator-container--mobile__rates-dropdown'
+                                    list_items={accumulators_rates_list}
+                                    value={accumulator_rate}
+                                    should_show_empty_option={false}
+                                    onChange={handleRateChange}
+                                />
+                            )}
+                        </div>
                     </MobileWrapper>
                 </React.Fragment>
             )}
-
             {getOpenPositionsTable()}
         </React.Fragment>
     );

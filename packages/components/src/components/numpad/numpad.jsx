@@ -78,9 +78,9 @@ const Numpad = ({
                 if (String(default_value) === '0') {
                     updateValue(concatenate(num, ''));
                 } else {
-                    const regex = /(?:\d+\.)(\d+)$/;
+                    const pattern = '/(?:d+.)?(d+)$/';
+                    const regex = new RegExp(pattern);
                     const matches = regex.exec(default_value);
-
                     if (matches !== null && is_float) {
                         matches.forEach((match, groupIndex) => {
                             const pip_size_allowed = groupIndex === 1 && match.length < pip_size && is_float;

@@ -1655,7 +1655,7 @@ export default class ClientStore extends BaseStore {
             history.replaceState(
                 null,
                 null,
-                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `/?${filteredQuery}`)
+                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `?${filteredQuery}`)
             );
         }
 

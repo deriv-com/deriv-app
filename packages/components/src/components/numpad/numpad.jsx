@@ -78,7 +78,8 @@ const Numpad = ({
                 if (String(default_value) === '0') {
                     updateValue(concatenate(num, ''));
                 } else {
-                    const pattern = /(?:\d+\.)?(\d+)$/;
+                    //Added regex construstor
+                    const pattern = '/(?:d+.)?(d+)$/';
                     const regex = new RegExp(pattern);
                     const matches = regex.exec(default_value);
 

@@ -38,7 +38,6 @@ const AssetSummary = () => {
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
 
-    const popover_text = localize('Total assets in all your accounts');
 
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
@@ -65,7 +64,7 @@ const AssetSummary = () => {
                     ) : null}
                     <Popover
                         alignment={isMobile() ? 'top' : 'left'}
-                        message={popover_text}
+                        message={localize('Total assets in all your accounts')}
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >

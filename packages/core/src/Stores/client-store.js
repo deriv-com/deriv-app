@@ -2509,7 +2509,11 @@ export default class ClientStore extends BaseStore {
         const { gaming_company, financial_company } = this.landing_companies;
         const low_risk_landing_company =
             financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
-        return low_risk_landing_company || this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
+        return (
+            low_risk_landing_company ||
+            (this.upgradeable_landing_companies?.includes('svg') &&
+                this.upgradeable_landing_companies?.includes('maltainvest'))
+        );
     }
 
     get has_residence() {

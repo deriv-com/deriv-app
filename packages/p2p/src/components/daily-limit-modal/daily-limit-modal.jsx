@@ -112,6 +112,7 @@ const DailyLimitModal = () => {
             small
             has_close_icon={false}
             title={getModalHeaderTitle()}
+            width='440px'
         >
             <Modal.Body>{getModalContent()}</Modal.Body>
             <Modal.Footer>{getModalFooter()}</Modal.Footer>

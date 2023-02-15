@@ -102,7 +102,8 @@ const ProofOfIdentityContainer = ({
             className='proof-of-identity__redirect'
             onClick={() => {
                 if (platforms[from_platform.name?.toLowerCase()].is_hard_redirect) {
-                    window.location.href = platforms[from_platform.name?.toLowerCase()].url;
+                    const url = platforms[from_platform.name?.toLowerCase()]?.url;
+                    window.location.href = url;
                 } else {
                     routeBackTo(from_platform.route);
                 }

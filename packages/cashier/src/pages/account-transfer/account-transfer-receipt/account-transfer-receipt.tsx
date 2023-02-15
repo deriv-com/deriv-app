@@ -25,7 +25,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;
     const { is_pre_appstore, loginid, switchAccount } = client;
-    const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccout } = account_transfer;
+    const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
     const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
 
@@ -64,7 +64,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         } else {
             // if the account transferred to is a Deriv MT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
-            setShouldSwitchAccout();
+            setShouldSwitchAccount();
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }

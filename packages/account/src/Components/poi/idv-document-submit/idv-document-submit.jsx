@@ -74,21 +74,13 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     }, [country_code, document_data]);
 
     const onKeyUp = (e, document_name, values, setFieldValue) => {
-        if (document_name === 'document_number') {
-            const { example_format } = values.document_type;
-            const current_input = example_format.includes('-')
-                ? formatInput(example_format, current_input || e.target.value, '-')
-                : e.target.value;
-            setFieldValue(document_name, current_input, true);
-            validateFields(values);
-        } else {
-            const { format } = values.document_type.additional;
-            const current_addition_input = format.includes('-')
-                ? formatInput(format, current_addition_input || e.target.value, '-')
-                : e.target.value;
-            setFieldValue(document_name, current_addition_input, true);
-            validateFields(values);
-        }
+        const { example_format } =
+            document_name === 'document_number' ? values.document_type : values.document_type.additional;
+        const current_input = example_format.includes('-')
+            ? formatInput(example_format, current_input || e.target.value, '-')
+            : e.target.value;
+        setFieldValue(document_name, current_input, true);
+        validateFields(values);
     };
 
     const resetDocumentItemSelected = setFieldValue => {

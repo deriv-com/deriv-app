@@ -192,9 +192,7 @@ const SelfExclusion = ({
     }, [is_switching]);
 
     React.useEffect(() => {
-        if (typeof setIsOverlayShown === 'function') {
-            setIsOverlayShown(state?.show_article || false);
-        }
+        setIsOverlayShown?.(!!state?.show_article);
     }, [state.show_article, setIsOverlayShown]);
 
     const resetState = () => setState(initial_state);
@@ -271,7 +269,7 @@ const SelfExclusion = ({
         if (values.session_duration_limit) {
             const result = validNumber(values.session_duration_limit, {
                 type: 'integer',
-                min: is_eu ? 1 : 0,
+                min: Number(is_eu),
                 max: is_eu ? state.self_exclusions?.session_duration_limit : six_weeks,
             });
             const { is_ok, message } = typeof result === 'object' ? result : { is_ok: result, message: null };
@@ -286,7 +284,7 @@ const SelfExclusion = ({
         if (values.max_open_bets) {
             const result = validNumber(values.max_open_bets, {
                 type: 'integer',
-                min: is_eu ? 1 : 0,
+                min: Number(is_eu),
                 max: (is_eu && exclusion_limits.current.get_limits?.open_positions) || max_open_positions,
             });
             const { is_ok, message } = typeof result === 'object' ? result : { is_ok: result, message: null };

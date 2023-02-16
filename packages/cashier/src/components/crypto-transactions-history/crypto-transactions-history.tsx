@@ -73,7 +73,7 @@ const CryptoTransactionsHistory = observer(() => {
                         )}
                         <Table.Body className='crypto-transactions-history__table-body'>
                             {is_loading ? (
-                                <Loading is_fullscreen />
+                                <Loading is_fullscreen={false} />
                             ) : (
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'

@@ -3,7 +3,7 @@ import { MobileWrapper, Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-type TAccountStatistics = {
+export type TAccountStatistics = {
     account_statistics: {
         total_withdrawals: number;
         total_deposits: number;

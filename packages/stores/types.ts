@@ -47,6 +47,7 @@ type TClientStore = {
     residence: string;
     standpoint: {
         iom: string;
+        malta: string;
     };
     switchAccount: (value?: string) => void;
     verification_code: {

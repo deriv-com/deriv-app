@@ -1,5 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard } from '@deriv/components';
@@ -14,8 +12,68 @@ import AccountStatistics from '../Components/account-statistics';
 import FilterComponent from '../Components/filter-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
+import { TRootStore } from 'Stores/index';
 
-const DetailsComponent = ({ message = '', action_type = '' }) => {
+type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
+type TColIndex = 'icon' | 'refid' | 'currency' | 'date' | 'action_type' | 'amount' | 'balance';
+
+type TFormatStatementTransaction = {
+    action: string;
+    date: string;
+    display_name: string;
+    refid: number;
+    payout: string;
+    amount: string;
+    balance: string;
+    desc: string;
+    id: number;
+    app_id: number;
+    shortcode: string;
+    action_type: string;
+    purchase_time: number;
+    transaction_time: number;
+    withdrawal_details: string;
+    longcode: string;
+};
+
+type TAction =
+    | {
+          message?: string;
+          component?: React.ReactElement;
+      }
+    | string;
+
+type TGetSupportedContractsReturn = ReturnType<typeof getSupportedContracts>;
+
+type TStatement = {
+    action_type: string;
+    account_statistics: Pick<TAccountStatistics, 'account_statistics'>;
+    component_icon: string;
+    currency: string;
+    data: TFormatStatementTransaction[];
+    date_from: number | null;
+    date_to: number | null;
+    error: string;
+    filtered_date_range: Record<string, any>;
+    handleDateChange: () => void;
+    handleFilterChange: () => void;
+    handleScroll: () => void;
+    has_selected_date: boolean;
+    is_empty: boolean;
+    is_loading: boolean;
+    is_mx_mlt: boolean;
+    is_switching: boolean;
+    is_virtual: boolean;
+    onMount: () => void;
+    onUnmount: () => void;
+};
+
+type TDetailsComponent = {
+    message: string;
+    action_type: string;
+};
+
+const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent) => {
     const address_hash_match = /:\s([0-9a-zA-Z]+.{25,28})/gm.exec(message.split(/,\s/)[0]);
     const address_hash = address_hash_match?.[1];
     const blockchain_hash_match = /:\s([0-9a-zA-Z]+.{25,34})/gm.exec(message.split(/,\s/)[1]);
@@ -52,12 +110,14 @@ const DetailsComponent = ({ message = '', action_type = '' }) => {
     );
 };
 
-const getRowAction = row_obj => {
-    let action;
+const getRowAction = (row_obj: TFormatStatementTransaction) => {
+    let action: TAction = {};
+
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         action =
-            getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
+            getSupportedContracts()[
+                extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase() as keyof TGetSupportedContractsReturn
+            ] && !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
                 ? getContractPath(row_obj.id)
                 : {
                       component: (
@@ -94,7 +154,8 @@ const getRowAction = row_obj => {
         };
     }
 
-    if (action?.message) {
+    // add typeof check because action can be object or string
+    if (typeof action === 'object' && action?.message) {
         action.component = <DetailsComponent message={action.message} action_type={row_obj.action_type} />;
     }
 
@@ -122,7 +183,7 @@ const Statement = ({
     is_virtual,
     onMount,
     onUnmount,
-}) => {
+}: TStatement) => {
     React.useEffect(() => {
         onMount();
         return () => {
@@ -133,13 +194,14 @@ const Statement = ({
 
     if (error) return <p>{error}</p>;
 
-    const columns = getStatementTableColumnsTemplate(currency);
+    const columns: TGetStatementTableColumnsTemplate = getStatementTableColumnsTemplate(currency);
     const columns_map = columns.reduce((map, item) => {
-        map[item.col_index] = item;
+        map[item.col_index as TColIndex] = item;
         return map;
-    }, {});
+    }, {} as Record<TColIndex, typeof columns[number]>);
 
-    const mobileRowRenderer = ({ row, passthrough }) => (
+    // export type instead of any from 'DataList' component when it migrates to tsx
+    const mobileRowRenderer = ({ row, passthrough }: any) => (
         <React.Fragment>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.icon} passthrough={passthrough} />
@@ -206,7 +268,8 @@ const Statement = ({
                                     getRowAction={row => getRowAction(row)}
                                     onScroll={handleScroll}
                                     passthrough={{
-                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                        isTopUp: (item: TFormatStatementTransaction) =>
+                                            is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
@@ -221,7 +284,8 @@ const Statement = ({
                                     rowRenderer={mobileRowRenderer}
                                     row_gap={8}
                                     passthrough={{
-                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                        isTopUp: (item: TFormatStatementTransaction) =>
+                                            is_virtual && item.action === 'Deposit',
                                     }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
@@ -235,47 +299,26 @@ const Statement = ({
     );
 };
 
-Statement.propTypes = {
-    action_type: PropTypes.string,
-    account_statistics: PropTypes.object,
-    component_icon: PropTypes.string,
-    currency: PropTypes.string,
-    data: MobxPropTypes.arrayOrObservableArray,
-    date_from: PropTypes.number,
-    date_to: PropTypes.number,
-    error: PropTypes.string,
-    filtered_date_range: PropTypes.object,
-    handleDateChange: PropTypes.func,
-    handleFilterChange: PropTypes.func,
-    handleScroll: PropTypes.func,
-    has_selected_date: PropTypes.bool,
-    is_empty: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_mx_mlt: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
-};
-
-export default connect(({ modules, client }) => ({
-    action_type: modules.statement.action_type,
-    account_statistics: modules.statement.account_statistics,
-    currency: client.currency,
-    data: modules.statement.data,
-    date_from: modules.statement.date_from,
-    date_to: modules.statement.date_to,
-    error: modules.statement.error,
-    filtered_date_range: modules.statement.filtered_date_range,
-    handleDateChange: modules.statement.handleDateChange,
-    handleFilterChange: modules.statement.handleFilterChange,
-    handleScroll: modules.statement.handleScroll,
-    has_selected_date: modules.statement.has_selected_date,
-    is_empty: modules.statement.is_empty,
-    is_loading: modules.statement.is_loading,
-    is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
-    is_switching: client.is_switching,
-    is_virtual: client.is_virtual,
-    onMount: modules.statement.onMount,
-    onUnmount: modules.statement.onUnmount,
-}))(withRouter(Statement));
+export default withRouter(
+    connect(({ modules, client }: TRootStore) => ({
+        action_type: modules.statement.action_type,
+        account_statistics: modules.statement.account_statistics,
+        currency: client.currency,
+        data: modules.statement.data,
+        date_from: modules.statement.date_from,
+        date_to: modules.statement.date_to,
+        error: modules.statement.error,
+        filtered_date_range: modules.statement.filtered_date_range,
+        handleDateChange: modules.statement.handleDateChange,
+        handleFilterChange: modules.statement.handleFilterChange,
+        handleScroll: modules.statement.handleScroll,
+        has_selected_date: modules.statement.has_selected_date,
+        is_empty: modules.statement.is_empty,
+        is_loading: modules.statement.is_loading,
+        is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
+        is_switching: client.is_switching,
+        is_virtual: client.is_virtual,
+        onMount: modules.statement.onMount,
+        onUnmount: modules.statement.onUnmount,
+    }))(Statement)
+);

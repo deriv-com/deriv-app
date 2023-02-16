@@ -3,14 +3,14 @@ import React from 'react';
 import Icon from '../icon';
 import Text from '../text';
 
-type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value'> & {
+type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'> & {
     className?: string;
     classNameLabel?: string;
     defaultChecked?: boolean;
     disabled?: boolean;
     greyDisabled?: boolean;
     id?: string;
-    label: string;
+    label: string | React.ReactElement;
     onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;

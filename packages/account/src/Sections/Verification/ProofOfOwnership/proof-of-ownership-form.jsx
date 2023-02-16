@@ -47,22 +47,22 @@ const ProofOfOwnershipForm = ({
                     errors.data[card_key][item_key] = errors.data?.[card_key]?.[item_key] ?? {};
                     const payment_method = items?.[item_key];
                     const payment_method_identifier = payment_method?.payment_method_identifier?.trim();
-                    const is_pm_identifier_provided =
+                    const is_payment_method_identifier_provided =
                         payment_method?.is_generic_pm || payment_method_identifier?.length > 0;
                     const is_credit_or_debit_card = payment_method?.identifier_type === IDENTIFIER_TYPES.card_number;
                     total_documents_uploaded = payment_method?.files?.filter(Boolean)?.length ?? 0;
-                    if (is_pm_identifier_provided) {
+                    if (is_payment_method_identifier_provided) {
                         are_files_uploaded = total_documents_uploaded === payment_method.documents_required;
                     } else if (
                         (!payment_method?.documents_required && total_documents_uploaded === 0) ||
-                        (!is_pm_identifier_provided && total_documents_uploaded === 0)
+                        (!is_payment_method_identifier_provided && total_documents_uploaded === 0)
                     ) {
                         are_files_uploaded = true;
                     } else if (
                         (payment_method?.documents_required &&
-                            is_pm_identifier_provided &&
+                            is_payment_method_identifier_provided &&
                             total_documents_uploaded === 0) ||
-                        (!is_pm_identifier_provided &&
+                        (!is_payment_method_identifier_provided &&
                             total_documents_uploaded === payment_method?.documents_required * 0.5)
                     ) {
                         are_files_uploaded = false;
@@ -84,7 +84,7 @@ const ProofOfOwnershipForm = ({
                             delete errors.data[card_key][item_key].files;
                         }
                         if (
-                            !is_pm_identifier_provided &&
+                            !is_payment_method_identifier_provided &&
                             (total_documents_uploaded === payment_method?.documents_required ||
                                 (!payment_method?.documents_required && total_documents_uploaded > 0) ||
                                 total_documents_uploaded === payment_method?.documents_required * 0.5)

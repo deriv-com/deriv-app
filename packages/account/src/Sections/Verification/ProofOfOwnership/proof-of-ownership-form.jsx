@@ -94,13 +94,12 @@ const ProofOfOwnershipForm = ({
                         }
                     });
                     if (
-                        (is_credit_or_debit_card &&
-                            payment_method_identifier?.length !== 0 &&
+                        is_credit_or_debit_card &&
+                        ((payment_method_identifier?.length !== 0 &&
                             (payment_method_identifier?.length !== 16 || payment_method_identifier?.length > 19) &&
                             !VALIDATIONS.is_formated_card_number(payment_method_identifier)) ||
-                        (is_credit_or_debit_card &&
-                            payment_method_identifier?.length === 16 &&
-                            VALIDATIONS.has_invalid_characters(payment_method_identifier))
+                            (payment_method_identifier?.length === 16 &&
+                                VALIDATIONS.has_invalid_characters(payment_method_identifier)))
                     ) {
                         errors.data[card_key][item_key].payment_method_identifier =
                             localize('Enter your full card number');
@@ -128,7 +127,7 @@ const ProofOfOwnershipForm = ({
                 delete form_ref.current?.values?.data?.[card_key];
             }
         });
-        has_errors = has_errors || form_ref.current?.values?.data?.filter(Boolean).length === 0;
+        has_errors = has_errors || (form_ref.current?.values?.data?.filter(Boolean).length || 0) === 0;
         if (!has_errors) {
             errors = {};
         }
@@ -264,7 +263,7 @@ const ProofOfOwnershipForm = ({
                         <Button
                             type='submit'
                             className={classNames('account-form__footer-btn')}
-                            is_disabled={!dirty || (dirty && !isValid)}
+                            is_disabled={!dirty || !isValid}
                             data-testid={'submit-button'}
                             has_effect
                             text={localize('Submit')}

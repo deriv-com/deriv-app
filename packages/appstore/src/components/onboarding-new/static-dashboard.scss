@@ -1,0 +1,209 @@
+.static-dashboard {
+    background-color: var(--general-main-1);
+    border-radius: 1.6rem;
+    padding: 3rem;
+    @include desktop {
+        min-width: 132rem;
+    }
+
+    &--deposit-button-blurry {
+        opacity: 0.2;
+        cursor: not-allowed;
+    }
+
+    &--deposit-button-animated {
+        width: fit-content;
+        box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
+        animation: triggerAnimation 0.5s linear infinite alternate;
+    }
+
+    &--eu {
+        padding-bottom: 7rem;
+    }
+
+    @include mobile {
+        width: 90%;
+        margin: 0 5%;
+        padding: 0;
+    }
+
+    &-wrapper {
+        border-radius: $BORDER_RADIUS;
+        border: 2rem solid var(--general-section-1);
+        padding: 3rem;
+
+        &__header-and-description {
+            display: flex;
+
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+
+        &__bordered {
+            border: 1px solid var(--general-hover);
+            padding: 2rem;
+            border-radius: 2.4rem;
+
+            @include mobile {
+                padding: 3rem;
+                border: none;
+            }
+        }
+
+        &__bordered--with-margin {
+            border: 1px solid var(--general-hover);
+            padding: 2.4rem;
+            border-radius: 2.4rem;
+            margin-bottom: 2rem;
+
+            @include mobile {
+                border: none;
+            }
+        }
+
+        @include mobile {
+            border: none;
+            padding: 0;
+        }
+
+        &__description {
+            margin-bottom: 1rem;
+
+            @include mobile {
+                margin-top: 1rem;
+            }
+        }
+
+        &__header {
+            display: flex;
+            flex-direction: column;
+
+            &--limited-width {
+                width: 70%;
+            }
+
+            @include mobile {
+                width: 100%;
+                padding-left: 0;
+            }
+
+            &--toggle-account {
+                background-color: var(--general-section-1);
+                padding: 0.4rem;
+                border-radius: $BORDER_RADIUS;
+                align-self: center;
+                width: 100%;
+                pointer-events: none;
+                cursor: not-allowed;
+            }
+
+            @include mobile {
+                flex-direction: column;
+            }
+
+            &-compare-accounts {
+                margin-left: 1rem;
+
+                &--blurry {
+                    opacity: 0.2;
+                }
+            }
+
+            &--underlined {
+                text-decoration: underline;
+                &--blurry {
+                    opacity: 0.2;
+                }
+            }
+
+            &--animated {
+                width: fit-content;
+                font-size: 2rem;
+                position: inherit;
+                animation: triggerAnimation 0.5s linear infinite alternate;
+            }
+
+            &--normal {
+                font-size: 2rem;
+            }
+        }
+
+        &__body {
+            display: flex;
+
+            &--header {
+                margin-top: 2rem;
+            }
+
+            &--grey {
+                padding: 0;
+            }
+
+            &--with-add {
+                display: flex;
+            }
+
+            &--add-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &-text {
+                    margin-left: 0.3rem;
+                }
+            }
+
+            @include mobile {
+                flex-direction: column;
+            }
+
+            &--apps {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-column-gap: 3rem;
+
+                @include desktop {
+                    margin-top: 1rem;
+                }
+
+                &--with-gap {
+                    grid-column-gap: 3rem;
+                }
+
+                &--eu {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+
+                    @include mobile {
+                        display: block;
+                        width: auto;
+                    }
+                }
+
+                @include mobile {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .divider {
+        width: calc(100% - 3.2rem);
+        border-top: 1px solid var(--general-section-1);
+        margin: 1rem 0 1.6rem 1.6rem;
+    }
+
+    .Add-Square {
+        display: flex;
+        align-self: center;
+        margin-left: 1rem;
+        opacity: 0.2;
+    }
+
+    .Add-Rounded {
+        opacity: 0.2;
+    }
+}

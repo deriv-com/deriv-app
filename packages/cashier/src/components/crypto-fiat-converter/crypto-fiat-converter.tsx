@@ -4,12 +4,12 @@ import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import { TReactChangeEvent, TReactChildren } from 'Types';
+import { TReactChangeEvent, TReactChildren } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
-    onComplete: () => void;
+    onComplete: VoidFunction;
 };
 
 type TInputGroupProps = {
@@ -19,17 +19,17 @@ type TInputGroupProps = {
 
 type TCryptoFiatConverterProps = {
     from_currency: string;
-    hint: string | TReactChildren;
+    hint?: string | TReactChildren;
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,
         to_currency: string
     ) => void;
     onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
-    resetConverter: () => void;
+    resetConverter: VoidFunction;
     to_currency: string;
-    validateFromAmount: () => void;
-    validateToAmount: () => void;
+    validateFromAmount: VoidFunction;
+    validateToAmount: VoidFunction;
 };
 
 const Timer = ({ onComplete }: TTimerProps) => {

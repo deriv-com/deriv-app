@@ -716,6 +716,13 @@ $side-padding: 1.2em;
         }
     }
 
+    &__contract-types-selector {
+        padding: 0 1.6rem;
+    }
+    &__contract-types-selector__container {
+        max-width: 22.4rem;
+    }
+
     &__content {
         width: fit-content;
         max-height: 100%;
@@ -820,6 +827,7 @@ $side-padding: 1.2em;
             minmax(150px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
         width: 100%;
         grid-auto-rows: 100%;
+        padding-left: 0;
 
         &_wrapper {
             display: flex;

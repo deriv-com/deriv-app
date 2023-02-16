@@ -2603,6 +2603,7 @@ export default class ClientStore extends BaseStore {
             return;
         }
         this.account_settings = { ...this.account_settings, trading_hub };
+        localStorage.setItem('is_pre_appstore', is_pre_appstore);
     }
 }
 /* eslint-enable */

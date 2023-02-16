@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { routes, ContentFlag } from '@deriv/shared';
-import { getLanguage, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
@@ -49,9 +49,8 @@ const RedirectToOldInterface = ({
     toggleExitTradersHubModal,
     content_flag,
     switchToCRAccount,
-    setPreferredLanguage,
 }) => {
-    const language = getLanguage();
+    const history = useHistory();
     const disablePreAppstore = async () => {
         if (should_show_exit_traders_modal) {
             toggleExitTradersHubModal();
@@ -59,8 +58,8 @@ const RedirectToOldInterface = ({
             if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
                 await switchToCRAccount();
             }
-            setPreferredLanguage(language);
             setIsPreAppStore(false);
+            history.push(routes.root);
         }
     };
     return (
@@ -126,6 +125,7 @@ const TradingHubHeader = ({
     is_mt5_allowed,
     is_notifications_visible,
     is_pre_appstore,
+    is_virtual,
     loginid,
     menu_items,
     modal_data,
@@ -138,8 +138,6 @@ const TradingHubHeader = ({
     toggleNotifications,
     toggleExitTradersHubModal,
     switchToCRAccount,
-    setPreferredLanguage,
-    is_virtual,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
@@ -185,7 +183,6 @@ const TradingHubHeader = ({
                         toggleExitTradersHubModal={toggleExitTradersHubModal}
                         content_flag={content_flag}
                         switchToCRAccount={switchToCRAccount}
-                        setPreferredLanguage={setPreferredLanguage}
                     />
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
@@ -310,10 +307,8 @@ export default connect(({ client, modules, notifications, ui, menu, traders_hub 
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
-    setPreferredLanguage: client.setPreferredLanguage,
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
-    switchToCRAccount: traders_hub.switchToCRAccount,
-    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleNotifications: notifications.toggleNotificationsModal,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
+    switchToCRAccount: traders_hub.switchToCRAccount,
 }))(withRouter(TradingHubHeader));

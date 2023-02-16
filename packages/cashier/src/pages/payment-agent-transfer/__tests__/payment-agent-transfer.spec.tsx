@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
-import { BrowserHistory, createBrowserHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv/hooks';
 import { TRootStore } from '../../../types';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -36,7 +37,7 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<PaymentAgentTransfer />', () => {
-    let mockRootStore: DeepPartial<TRootStore>, history: BrowserHistory, modal_root_el: HTMLDivElement;
+    let modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -49,7 +50,21 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     beforeEach(() => {
-        mockRootStore = {
+        mockUseCashierLocked.mockReturnValue(false);
+    });
+
+    const renderPaymentAgentTransfer = (mock_root_store: TRootStore) => {
+        return render(
+            <Router history={createBrowserHistory()}>
+                <CashierProviders store={mock_root_store}>
+                    <PaymentAgentTransfer />
+                </CashierProviders>
+            </Router>
+        );
+    };
+
+    it('should render the component', () => {
+        const mock_root_store = mockStore({
             client: {
                 balance: '100',
                 is_virtual: false,
@@ -69,34 +84,35 @@ describe('<PaymentAgentTransfer />', () => {
                     },
                 },
             },
-            ui: {
-                is_dark_mode_on: false,
-                toggleAccountsDialog: jest.fn(),
-            },
-        };
-        history = createBrowserHistory();
-        mockUseCashierLocked.mockReturnValue(false);
-    });
-
-    const renderPaymentAgentTransfer = () => {
-        return render(
-            <Router history={history}>
-                <CashierProviders store={mockRootStore as TRootStore}>
-                    <PaymentAgentTransfer />
-                </CashierProviders>
-            </Router>
-        );
-    };
-
-    it('should render the component', () => {
-        renderPaymentAgentTransfer();
+        });
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedPaymentAgentTransferForm')).toBeInTheDocument();
     });
 
     it('should show the virtual component if client is using demo account', () => {
-        mockRootStore!.client!.is_virtual = true;
-        renderPaymentAgentTransfer();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '100',
+                is_virtual: true,
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        error: {},
+                        is_transfer_successful: false,
+                        is_try_transfer_successful: false,
+                        onMountPaymentAgentTransfer: jest.fn(),
+                        resetPaymentAgentTransfer: jest.fn(),
+                    },
+                    general_store: {
+                        is_loading: false,
+                        setActiveTab: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(
             screen.getByText(/You need to switch to a real money account to use this feature./i)
@@ -104,43 +120,164 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     it('should show the loading component if in loading state', () => {
-        mockRootStore!.modules!.cashier!.general_store!.is_loading = true;
-        renderPaymentAgentTransfer();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '100',
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        error: {},
+                        is_transfer_successful: false,
+                        is_try_transfer_successful: false,
+                        onMountPaymentAgentTransfer: jest.fn(),
+                        resetPaymentAgentTransfer: jest.fn(),
+                    },
+                    general_store: {
+                        is_loading: true,
+                        setActiveTab: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
+        const mock_root_store = mockStore({
+            client: {
+                balance: '100',
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        error: {},
+                        is_transfer_successful: false,
+                        is_try_transfer_successful: false,
+                        onMountPaymentAgentTransfer: jest.fn(),
+                        resetPaymentAgentTransfer: jest.fn(),
+                    },
+                    general_store: {
+                        is_loading: false,
+                        setActiveTab: jest.fn(),
+                    },
+                },
+            },
+        });
         mockUseCashierLocked.mockReturnValue(true);
-        renderPaymentAgentTransfer();
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
     it('should show a popup if there is an error that needs CTA', () => {
-        mockRootStore!.modules!.cashier!.payment_agent_transfer!.error!.is_show_full_page = true;
-        renderPaymentAgentTransfer();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '100',
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        error: { is_show_full_page: true },
+                        is_transfer_successful: false,
+                        is_try_transfer_successful: false,
+                        onMountPaymentAgentTransfer: jest.fn(),
+                        resetPaymentAgentTransfer: jest.fn(),
+                    },
+                    general_store: {
+                        is_loading: false,
+                        setActiveTab: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedError')).toBeInTheDocument();
     });
 
     it('should show the no balance component if account has no balance', () => {
-        mockRootStore!.client!.balance = '0';
-        renderPaymentAgentTransfer();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '0',
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        error: {},
+                        is_transfer_successful: false,
+                        is_try_transfer_successful: false,
+                        onMountPaymentAgentTransfer: jest.fn(),
+                        resetPaymentAgentTransfer: jest.fn(),
+                    },
+                    general_store: {
+                        is_loading: false,
+                        setActiveTab: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedNoBalance')).toBeInTheDocument();
     });
 
     it('should show the confirmation if validations are passed', () => {
-        mockRootStore!.modules!.cashier!.payment_agent_transfer!.is_try_transfer_successful = true;
-        renderPaymentAgentTransfer();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '100',
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        error: {},
+                        is_transfer_successful: false,
+                        is_try_transfer_successful: true,
+                        onMountPaymentAgentTransfer: jest.fn(),
+                        resetPaymentAgentTransfer: jest.fn(),
+                    },
+                    general_store: {
+                        is_loading: false,
+                        setActiveTab: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedPaymentAgentTransferConfirm')).toBeInTheDocument();
     });
 
     it('should show the receipt if transfer is successful', () => {
-        mockRootStore!.modules!.cashier!.payment_agent_transfer!.is_transfer_successful = true;
-        renderPaymentAgentTransfer();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '100',
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    payment_agent_transfer: {
+                        error: {},
+                        is_transfer_successful: true,
+                        is_try_transfer_successful: false,
+                        onMountPaymentAgentTransfer: jest.fn(),
+                        resetPaymentAgentTransfer: jest.fn(),
+                    },
+                    general_store: {
+                        is_loading: false,
+                        setActiveTab: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedPaymentAgentTransferReceipt')).toBeInTheDocument();
     });

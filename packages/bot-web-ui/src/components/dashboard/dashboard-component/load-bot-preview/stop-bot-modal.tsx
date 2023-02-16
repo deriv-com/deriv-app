@@ -4,23 +4,14 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isMobile } from '@deriv/shared';
 
-type TStopBotModalContent = {
+type TStopBotModal = {
     is_running: boolean;
     is_dialog_open: boolean;
     onOkButtonClick: () => void;
-    closeResetDialog: () => void;
+    toggleStopBotDialog: () => void;
 };
 
-type TStopBotModal = {
-    toggleSaveModal: () => void;
-} & TStopBotModalContent;
-
-const StopBotModalContent = ({
-    is_running,
-    is_dialog_open,
-    onOkButtonClick,
-    closeResetDialog,
-}: TStopBotModalContent) => {
+const StopBotModalContent = ({ is_running, is_dialog_open, onOkButtonClick, toggleStopBotDialog }: TStopBotModal) => {
     const confirm_button_text = is_running ? localize('Stop my bot') : localize('Keep my contract');
     const cancel_button_text = is_running ? localize('Back') : localize('Close my contract');
     const title_text = is_running ? localize('Stop your current bot?') : localize('Keep your current contract?');
@@ -33,7 +24,7 @@ const StopBotModalContent = ({
                 confirm_button_text={confirm_button_text}
                 onConfirm={onOkButtonClick}
                 cancel_button_text={cancel_button_text}
-                onCancel={closeResetDialog}
+                onCancel={toggleStopBotDialog} //!TODO replace it after set implementation,
                 is_mobile_full_width={false}
                 className={'toolbar__dialog'}
                 has_close_icon
@@ -84,21 +75,13 @@ const StopBotModalContent = ({
     );
 };
 
-const StopBotModal = ({
-    is_running,
-    is_dialog_open,
-    onOkButtonClick,
-    closeResetDialog,
-    toggleSaveModal,
-}: TStopBotModal) => {
-    const is_mobile = isMobile();
-    // is_dialog_open = true; //!TODO to check, remove it after set implementation
-    return is_mobile ? (
+const StopBotModal = ({ is_running, is_dialog_open, onOkButtonClick, toggleStopBotDialog }: TStopBotModal) =>
+    isMobile() ? (
         <MobileFullPageModal
             is_modal_open={is_dialog_open}
             className='save-modal__wrapper'
             header={localize('Save strategy')}
-            onClickClose={toggleSaveModal}
+            onClickClose={toggleStopBotDialog}
             height_offset='80px'
             page_overlay
         >
@@ -106,7 +89,7 @@ const StopBotModal = ({
                 is_running={is_running}
                 is_dialog_open={is_dialog_open}
                 onOkButtonClick={onOkButtonClick}
-                closeResetDialog={closeResetDialog}
+                toggleStopBotDialog={toggleStopBotDialog}
             />
         </MobileFullPageModal>
     ) : (
@@ -114,15 +97,13 @@ const StopBotModal = ({
             is_running={is_running}
             is_dialog_open={is_dialog_open}
             onOkButtonClick={onOkButtonClick}
-            closeResetDialog={closeResetDialog}
+            toggleStopBotDialog={toggleStopBotDialog}
         />
     );
-};
 
 export default connect(({ run_panel, toolbar, quick_strategy }: RootStore) => ({
-    is_dialog_open: toolbar.is_dialog_open,
-    is_running: run_panel.is_running, //!TODO replace it after set implementation
+    is_dialog_open: quick_strategy.is_dialog_open,
+    is_running: run_panel.is_running,
     onOkButtonClick: toolbar.onResetOkButtonClick, //!TODO replace it after set implementation
-    closeResetDialog: toolbar.closeResetDialog, //!TODO replace it after set implementation
-    toggleSaveModal: quick_strategy.toggleSaveModal, //!TODO replace it after set implementation
+    toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
 }))(StopBotModal);

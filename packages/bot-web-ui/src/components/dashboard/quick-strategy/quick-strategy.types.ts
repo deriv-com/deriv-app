@@ -156,27 +156,29 @@ export type TCreateStrategy = (
 export type TQuickStrategyProps = React.PropsWithChildren<{
     active_index: number;
     description: string;
-    createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
-    getSizeDesc: TGetSizeDesc;
     initial_values: TQuickStrategyFormValues;
     is_onscreen_keyboard_active: boolean;
     is_stop_button_visible: boolean;
-    onChangeDropdownItem: TOnChangeDropdownItem;
-    onChangeInputValue: TOnChangeInputValue;
-    onHideDropdownList: TOnHideDropdownList;
-    onScrollStopDropdownList: TOnScrollStopDropdownList;
-    setActiveTypeStrategyIndex: (index: number) => void;
     selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;
     selected_duration_unit: TDurationOptions;
     selected_type_strategy: TTypeStrategy;
     symbol_dropdown: TSymbolDropdown;
-    loadDataStrategy: () => void;
     trade_type_dropdown: TTradeTypeDropdown;
+    is_dialog_open: boolean;
+    createStrategy: TCreateStrategy;
+    getSizeDesc: TGetSizeDesc;
+    onChangeDropdownItem: TOnChangeDropdownItem;
+    onChangeInputValue: TOnChangeInputValue;
+    onHideDropdownList: TOnHideDropdownList;
+    onScrollStopDropdownList: TOnScrollStopDropdownList;
+    setActiveTypeStrategyIndex: (index: number) => void;
+    loadDataStrategy: () => void;
     setCurrentFocus: TSetCurrentFocus;
     setActiveTab: (active_tab: number) => void;
+    toggleStopBotDialog: () => void;
 }>;
 
 export type TQSCache = {

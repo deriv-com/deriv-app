@@ -80,8 +80,8 @@ const TradersHub = () => {
                 height_offset='50px'
                 is_disabled={isDesktop()}
             >
+                <Notifications />
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <Notifications />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

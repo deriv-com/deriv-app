@@ -266,6 +266,7 @@ describe('<AddressDetails/>', () => {
 
     it('should disable the field if it is immuatble from BE', async () => {
         mock_props.disabled_items = ['address_line_1', 'address_line_2'];
+        mock_props.value.address_state = '';
 
         render(<AddressDetails {...mock_props} />);
 

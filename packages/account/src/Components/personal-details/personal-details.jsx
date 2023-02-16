@@ -390,7 +390,7 @@ const PersonalDetails = ({
                                                                 }
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
-                                                                    (props.value.citizen && is_fully_authenticated) ||
+                                                                    (props.value?.citizen && is_fully_authenticated) ||
                                                                     disabled_items.includes('citizen') ||
                                                                     props.value?.citizen
                                                                 }
@@ -408,7 +408,7 @@ const PersonalDetails = ({
                                                                 placeholder={localize('Citizenship')}
                                                                 name={field.name}
                                                                 disabled={
-                                                                    (props.value.citizen && is_fully_authenticated) ||
+                                                                    (props.value?.citizen && is_fully_authenticated) ||
                                                                     disabled_items.includes('citizen') ||
                                                                     props.value?.citizen
                                                                 }

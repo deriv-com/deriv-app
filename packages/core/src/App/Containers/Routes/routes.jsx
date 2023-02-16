@@ -58,8 +58,6 @@ const Routes = ({
     }, []);
 
     const lang = getLanguage();
-    const lang_regex = /[?&]lang=/;
-    const has_lang = lang_regex.test(location.search);
 
     if (has_error) {
         return <Error {...error} />;
@@ -71,13 +69,12 @@ const Routes = ({
     // non-supported language, the language still
     // shows up in the URL. This is not in sync
     // with the default language (EN), so we
-    // will remove it.
-    let langQuery = '';
-    if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
-        langQuery = lang;
-    }
-    // replace state
-    window.history.replaceState({}, document.title, urlSetQuery({ lang: langQuery, dark: is_dark_mode_on ? '1' : '' }));
+    // will remove it. (The same thing for dark_mode)
+    window.history.replaceState(
+        {},
+        document.title,
+        urlSetQuery({ lang: lang !== 'EN' ? lang : '', dark: is_dark_mode_on ? '1' : '' })
+    );
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 };

@@ -409,7 +409,8 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const { trading_hub } = this.account_settings;
-                const lang_from_url = window.location.search.slice(-2);
+                const lang_from_url = new URL(window.location.href).searchParams.get('lang');
+
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
                 if (lang_from_url) {

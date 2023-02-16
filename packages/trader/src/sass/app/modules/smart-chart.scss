@@ -121,7 +121,7 @@
                 margin-bottom: 2px;
             }
             @include mobile {
-                bottom: 9.5px;
+                bottom: 1.35rem;
             }
         }
         &--middle {
@@ -187,7 +187,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0.2rem;
+            padding: 0.5rem;
         }
     }
 }

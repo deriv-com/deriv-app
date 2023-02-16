@@ -1,15 +1,14 @@
-import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
+import React from 'react';
+import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import {
     RiskToleranceWarningModal,
-    TestWarningModal,
     TradingAssessmentForm,
+    TestWarningModal,
     tradingAssessmentConfig,
 } from '@deriv/account';
-
-import React from 'react';
 import TradingExperienceModal from './trading-experience-modal.jsx';
-import { connect } from 'Stores/connect';
 import { routes } from '@deriv/shared';
 
 const TradingAssessmentExistingUser = ({
@@ -24,8 +23,6 @@ const TradingAssessmentExistingUser = ({
     setShouldShowWarningModal,
     setShouldShowAssessmentCompleteModal,
     setIsTradingAssessmentForExistingUserEnabled,
-    fetchFinancialAssessment,
-    setCFDScore,
 }) => {
     // Get the Trading assessment questions and initial_value
     const [form_values, setFormValue] = React.useState({});
@@ -41,10 +38,7 @@ const TradingAssessmentExistingUser = ({
         );
         setFormValue(form_value);
         setAssessmentQuestions(props.assessment_questions ?? []);
-        return () => {
-            setIsTradingAssessmentForExistingUserEnabled(false);
-            fetchFinancialAssessment().then(response => setCFDScore(response?.cfd_score ?? 0));
-        };
+        return () => setIsTradingAssessmentForExistingUserEnabled(false);
     }, []);
 
     const handleSubmit = async values => {
@@ -183,6 +177,4 @@ export default connect(({ client, ui }) => ({
     updateAccountStatus: client.updateAccountStatus,
     setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
     active_account_landing_company: client.landing_company_shortcode,
-    fetchFinancialAssessment: client.fetchFinancialAssessment,
-    setCFDScore: client.setCFDScore,
 }))(TradingAssessmentExistingUser);

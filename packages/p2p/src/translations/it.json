@@ -1,7 +1,6 @@
 {
     "6794664": "Gli annunci corrispondenti al limite e al saldo Deriv P2P.",
     "19789721": "Nessuno ti ha bloccato. Evviva!",
-    "21103557": "Saldo Deriv P2P = depositi che non possono essere annullati (bonifici bancari, ecc.) + una parte dei depositi che potrebbero essere annullati (pagamenti con carta di credito, ecc.)",
     "24711354": "Total ordini <0>30gg</0> | <1>a vita</1>",
     "47573834": "Tasso fisso (1 {{account_currency}})",
     "50672601": "Acquistato",
@@ -313,6 +312,8 @@
     "-179005984": "Salva",
     "-2059312414": "Dettagli annuncio",
     "-1769584466": "Statistiche",
+    "-808161760": "Saldo P2P di Deriv = depositi che non possono essere stornati",
+    "-684271315": "OK",
     "-2090878601": "Limite giornaliero",
     "-130547447": "Volume trading <0>30gg</0> | <1>a vita</1>",
     "-1792280476": "Scegli una modalità di pagamento",

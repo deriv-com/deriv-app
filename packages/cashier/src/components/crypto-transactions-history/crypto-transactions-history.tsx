@@ -73,11 +73,11 @@ const CryptoTransactionsHistory = observer(() => {
                         )}
                         <Table.Body className='crypto-transactions-history__table-body'>
                             {is_loading ? (
-                                <Loading is_fullscreen />
+                                <Loading is_fullscreen={false} />
                             ) : (
                                 <DataList
-                                    data_list_className='crypto-transactions-history__data-list'
-                                    data_source={crypto_transactions}
+                                    className='crypto-transactions-history__data-list'
+                                    data_source={crypto_transactions as unknown as TCryptoTransactionDetails[]}
                                     rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
                                         <CryptoTransactionsRenderer {...row_props} />
                                     )}

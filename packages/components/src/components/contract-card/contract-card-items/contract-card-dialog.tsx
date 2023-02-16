@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import './sass/contract-card-dialog.scss';
-import { IClickEvent, useOnClickOutside } from '../../../hooks/use-onclickoutside';
+import { useOnClickOutside } from '../../../hooks/use-onclickoutside';
 
 export type TContractCardDialogProps = {
     children: React.ReactNode;
@@ -18,10 +18,10 @@ const ContractCardDialog = React.forwardRef(
         { children, is_visible, left, toggleDialog, toggle_ref, top }: TContractCardDialogProps,
         ref: React.ForwardedRef<HTMLDivElement>
     ) => {
-        const validateClickOutside = (event: IClickEvent) =>
+        const validateClickOutside = (event: MouseEvent) =>
             is_visible && !toggle_ref?.current?.contains(event.target as Node);
 
-        useOnClickOutside(ref, toggleDialog, validateClickOutside);
+        useOnClickOutside(ref as React.RefObject<HTMLDivElement>, toggleDialog, validateClickOutside);
 
         const dialog = (
             <CSSTransition

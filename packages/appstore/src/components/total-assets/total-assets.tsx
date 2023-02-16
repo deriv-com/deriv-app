@@ -22,7 +22,6 @@ const TotalAssets = ({ category }: TTotalAssets) => {
         mt5_login_list,
         obj_total_balance,
         has_active_real_account,
-        is_eu,
     } = client;
     const { getExchangeRate } = common;
 
@@ -117,9 +116,6 @@ const TotalAssets = ({ category }: TTotalAssets) => {
     };
 
     const currency = account_total_balance_currency;
-    const is_eu_popover_text = is_eu
-        ? localize(`Total assets in your Multipliers and DMT5 ${category} accounts`)
-        : localize(`Total assets in your Options, Deriv MT5 and Deriv X ${category} accounts`);
 
     return (
         <div className='total-assets'>
@@ -156,7 +152,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                     icon='info'
                     disable_message_icon
                     is_bubble_hover_enabled
-                    message={is_eu_popover_text}
+                    message={localize('Total assets in all your accounts')}
                     zIndex={9999}
                 />
             </div>

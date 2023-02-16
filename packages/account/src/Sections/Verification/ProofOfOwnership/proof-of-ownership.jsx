@@ -52,13 +52,17 @@ export const ProofOfOwnership = ({
                 client_email={client_email}
             />
         ); // Proof of ownership is required.
-    } else if (status === POO_STATUSES.verified) {
+    }
+    if (status === POO_STATUSES.verified) {
         return <POOVerified />; // Proof of ownership verified
-    } else if (status === POO_STATUSES.pending) {
+    }
+    if (status === POO_STATUSES.pending) {
         return <POOSubmitted />; // Proof of ownership submitted pending review
-    } else if (status === POO_STATUSES.none) {
+    }
+    if (status === POO_STATUSES.none) {
         return <POONotRequired />; // Client does not need proof of ownership.
-    } else if (status === POO_STATUSES.rejected) {
+    }
+    if (status === POO_STATUSES.rejected) {
         return <POORejetced onTryAgain={onTryAgain} />; // Proof of ownership rejected
     }
     return <Loading is_fullscreen={false} className='account__initial-loader' />;

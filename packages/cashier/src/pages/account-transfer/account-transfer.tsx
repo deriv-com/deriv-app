@@ -26,6 +26,7 @@ const AccountTransfer = observer(
     ({ onClickDeposit, onClickNotes, onClose, openAccountSwitcherModal, setSideNotes }: TAccountTransferProps) => {
         const { client } = useStore();
         const { account_transfer, general_store, transaction_history } = useCashierStore();
+
         const {
             accounts_list,
             container,
@@ -38,9 +39,13 @@ const AccountTransfer = observer(
             setAccountTransferAmount,
             setIsTransferConfirm,
         } = account_transfer;
+
         const { is_cashier_locked, is_loading, setActiveTab } = general_store;
+
         const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
+
         const { is_pre_appstore, is_switching, is_virtual } = client;
+
         const [is_loading_status, setIsLoadingStatus] = React.useState(true);
         const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
 
@@ -94,7 +99,7 @@ const AccountTransfer = observer(
             return <AccountTransferNoAccount openAccountSwitcherModal={openAccountSwitcherModal} />;
         }
         if (has_no_accounts_balance) {
-            return <NoBalance />;
+            return <NoBalance onClickDeposit={onClickDeposit} />;
         }
         if (is_transfer_confirm) {
             return <AccountTransferReceipt onClose={onClose} />;

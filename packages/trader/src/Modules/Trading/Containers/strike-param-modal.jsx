@@ -25,7 +25,7 @@ const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike
                     message={
                         <Localize
                             i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
-                            components={[<strong key={0} />, <br key={1} />]}
+                            components={[<strong key={0} />]}
                             values={{
                                 trade_type:
                                     vanilla_trade_type === 'VANILLALONGCALL'

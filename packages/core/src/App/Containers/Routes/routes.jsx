@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { urlForLanguage } from '@deriv/shared';
+import { urlForLanguage, urlForDark } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
@@ -23,6 +23,7 @@ const Routes = ({
     error,
     has_error,
     history,
+    is_dark_mode_on,
     is_logged_in,
     is_logging_in,
     location,
@@ -56,6 +57,10 @@ const Routes = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        window.history.replaceState({}, document.title, urlForDark(is_dark_mode_on));
+    }, [is_dark_mode_on]);
+
     const lang = getLanguage();
     const lang_regex = /[?&]lang=/;
     const has_lang = lang_regex.test(location.search);
@@ -71,6 +76,7 @@ const Routes = ({
     // shows up in the URL. This is not in sync
     // with the default language (EN), so we
     // will remove it.
+    // const
     if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
         window.history.replaceState({}, document.title, urlForLanguage(lang));
     }
@@ -83,6 +89,7 @@ Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
     history: PropTypes.object,
+    is_dark_mode_on: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -95,7 +102,8 @@ Routes.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
-    connect(({ client, common }) => ({
+    connect(({ client, common, ui }) => ({
+        is_dark_mode_on: ui.is_dark_mode_on,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         error: common.error,

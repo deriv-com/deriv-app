@@ -35,6 +35,18 @@ export const urlForLanguage = (lang: string, url: string = window.location.href)
     return `${current_url}`;
 };
 
+export const urlForDark = (dark: boolean, url: string = window.location.href) => {
+    const current_url = new URL(url);
+
+    if (dark) {
+        current_url.searchParams.set('dark', '1');
+    } else {
+        current_url.searchParams.delete('dark');
+    }
+
+    return `${current_url}`;
+};
+
 export const reset = () => {
     location_url = window?.location ?? location_url;
 };

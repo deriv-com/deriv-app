@@ -409,8 +409,13 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const { trading_hub } = this.account_settings;
+                const lang_from_url = window.location.search.slice(-2);
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
+                if (lang_from_url) {
+                    this.setPreferredLanguage(lang_from_url);
+                    localStorage.setItem(LANGUAGE_KEY, lang_from_url);
+                }
             }
         );
         // TODO: Remove this after setting trading_hub enabled for all users
@@ -420,10 +425,8 @@ export default class ClientStore extends BaseStore {
             () => {
                 const { trading_hub } = this.account_settings;
                 const is_traders_hub = !!trading_hub;
-                const { preferred_language } = this.account_settings?.preferred_language;
-                const language = preferred_language && preferred_language !== 'EN' ? '' : '';
                 if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
-                    window.location.href = routes.root.replace(/\?{0,1}lang=.{2}$/i, language);
+                    window.location.href = routes.root;
                 } else if (
                     this.is_pre_appstore &&
                     window.location.pathname === routes.root &&
@@ -1230,8 +1233,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responsePayoutCurrencies(response) {
-        const list = response?.payout_currencies || response;
-        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
+        const list = response.payout_currencies || response;
+        this.currencies_list = buildCurrenciesList(list);
         this.selectCurrency('');
     }
 
@@ -1649,16 +1652,6 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
-
-        // delete search params if it's signup when signin completed
-        if (action_param === 'signup') {
-            const filteredQuery = filterUrlQuery(search, ['lang']);
-            history.replaceState(
-                null,
-                null,
-                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `/?${filteredQuery}`)
-            );
-        }
 
         history.replaceState(
             null,
@@ -2610,7 +2603,6 @@ export default class ClientStore extends BaseStore {
             return;
         }
         this.account_settings = { ...this.account_settings, trading_hub };
-        localStorage.setItem('is_pre_appstore', is_pre_appstore);
     }
 }
 /* eslint-enable */

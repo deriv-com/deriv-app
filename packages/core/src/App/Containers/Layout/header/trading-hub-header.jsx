@@ -58,10 +58,8 @@ const RedirectToOldInterface = ({
             if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
                 await switchToCRAccount();
             }
+            setIsPreAppStore(false);
             history.push(routes.root);
-            setTimeout(() => {
-                setIsPreAppStore(false);
-            }, 800);
         }
     };
     return (

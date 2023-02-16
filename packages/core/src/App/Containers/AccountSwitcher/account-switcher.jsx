@@ -589,6 +589,11 @@ const AccountSwitcher = props => {
         canOpenMulti() &&
         (!props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency));
 
+    const have_more_accounts = type =>
+        getSortedAccountList(props.account_list, props.accounts).filter(
+            account => !account.is_virtual && account.loginid.startsWith(type)
+        ).length > 1;
+
     const default_demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
             {vrtc_loginid && (
@@ -1049,7 +1054,11 @@ const AccountSwitcher = props => {
                     <React.Fragment>
                         <AccountWrapper
                             className='acc-switcher__title'
-                            header={localize('Non-EU regulation')}
+                            header={
+                                props.is_low_risk
+                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'Accounts' : 'Account'}`)
+                                    : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
+                            }
                             is_visible={is_non_eu_regulator_visible}
                             toggleVisibility={() => {
                                 toggleVisibility('real_deriv');
@@ -1118,7 +1127,11 @@ const AccountSwitcher = props => {
                 ) : null}
                 {!props.is_high_risk || props.is_eu ? (
                     <AccountWrapper
-                        header={localize('EU regulation')}
+                        header={
+                            props.is_low_risk
+                                ? localize(`EU Deriv ${have_more_accounts('MF') ? 'Accounts' : 'Account'}`)
+                                : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
+                        }
                         is_visible={is_eu_regulator_visible}
                         toggleVisibility={() => {
                             toggleVisibility('real_deriv');

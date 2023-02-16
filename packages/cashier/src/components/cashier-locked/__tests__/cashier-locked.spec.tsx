@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { mockStore } from '@deriv/stores';
 import { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
@@ -13,22 +14,6 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
-const mockRootStoreBase = {
-    client: {
-        accounts: undefined,
-        loginid: undefined,
-        current_currency_type: 'fiat',
-        is_withdrawal_lock: false,
-        is_identity_verification_needed: false,
-        mt5_login_list: [
-            {
-                account_type: 'demo',
-                sub_account_type: 'financial_stp',
-            },
-        ],
-    },
-};
-
 describe('<CashierLocked />', () => {
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
@@ -36,19 +21,22 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if there is a cryptocashier maintenance', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['system_maintenance'],
-                },
+                account_status: { cashier_validation: ['system_maintenance'] },
                 current_currency_type: 'crypto',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -60,20 +48,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto withdrawal is suspended', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['system_maintenance'],
-                },
+                account_status: { cashier_validation: ['system_maintenance'] },
                 current_currency_type: 'crypto',
                 is_withdrawal_lock: true,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -85,20 +76,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto deposit is suspended', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['system_maintenance'],
-                },
+                account_status: { cashier_validation: ['system_maintenance'] },
                 current_currency_type: 'crypto',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseDepositLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -110,18 +104,22 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if there is a cashier maintenance', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['system_maintenance'],
-                },
+                account_status: { cashier_validation: ['system_maintenance'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -133,19 +131,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client does not provide residence', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['no_residence'],
-                },
+                account_status: { cashier_validation: ['no_residence'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -157,19 +159,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the documents are expired', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['documents_expired'],
-                },
+                account_status: { cashier_validation: ['documents_expired'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -181,19 +187,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has cashier_locked_status', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['cashier_locked_status'],
-                },
+                account_status: { cashier_validation: ['cashier_locked_status'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -205,19 +215,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has disabled_status', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['disabled_status'],
-                },
+                account_status: { cashier_validation: ['disabled_status'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -229,19 +243,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client account has no currency', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_CURRENCY'],
-                },
+                account_status: { cashier_validation: ['ASK_CURRENCY'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -251,19 +269,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client is not fully authenticated', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_AUTHENTICATE'],
-                },
+                account_status: { cashier_validation: ['ASK_AUTHENTICATE'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -271,19 +293,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has ask_financial_risk_approval status', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_FINANCIAL_RISK_APPROVAL'],
-                },
+                account_status: { cashier_validation: ['ASK_FINANCIAL_RISK_APPROVAL'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -294,19 +320,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client is high risk and has no FA', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['FinancialAssessmentRequired'],
-                },
+                account_status: { cashier_validation: ['FinancialAssessmentRequired'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -318,19 +348,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has ask_tin_information', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_TIN_INFORMATION'],
-                },
+                account_status: { cashier_validation: ['ASK_TIN_INFORMATION'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -338,19 +372,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has ask_uk_funds_protection', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_UK_FUNDS_PROTECTION'],
-                },
+                account_status: { cashier_validation: ['ASK_UK_FUNDS_PROTECTION'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -358,19 +396,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client does not set 30-day turnover limit', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_SELF_EXCLUSION_MAX_TURNOVER_SET'],
-                },
+                account_status: { cashier_validation: ['ASK_SELF_EXCLUSION_MAX_TURNOVER_SET'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -382,19 +424,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has missing required profile fields', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_FIX_DETAILS'],
-                },
+                account_status: { cashier_validation: ['ASK_FIX_DETAILS'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -406,25 +452,25 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has self-exluded from the website', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['SelfExclusion'],
-                },
-                accounts: {
-                    CR9000000: {
-                        excluded_until: Number(new Date()),
-                    },
-                },
+                account_status: { cashier_validation: ['SelfExclusion'] },
+                accounts: { CR9000000: { excluded_until: Number(new Date()) } },
+                current_currency_type: 'fiat',
                 loginid: 'CR9000000',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseDepositLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -436,19 +482,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has unwelcome_status', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['unwelcome_status'],
-                },
+                account_status: { cashier_validation: ['unwelcome_status'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseDepositLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -456,19 +506,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has no_withdrawal_or_trading_status', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['no_withdrawal_or_trading_status'],
-                },
+                account_status: { cashier_validation: ['no_withdrawal_or_trading_status'] },
+                current_currency_type: 'fiat',
                 is_withdrawal_lock: true,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -480,19 +534,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has withdrawal_locked_status', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['withdrawal_locked_status'],
-                },
+                account_status: { cashier_validation: ['withdrawal_locked_status'] },
+                current_currency_type: 'fiat',
                 is_withdrawal_lock: true,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -504,19 +562,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has only_pa_withdrawals_allowed_status', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['only_pa_withdrawals_allowed_status'],
-                },
+                account_status: { cashier_validation: ['only_pa_withdrawals_allowed_status'] },
+                current_currency_type: 'fiat',
                 is_withdrawal_lock: true,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -526,19 +588,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should prioritize cashier locked message if the client has a combo of deposit and cashier locked reasons', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['ASK_AUTHENTICATE', 'unwelcome_status'],
-                },
+                account_status: { cashier_validation: ['ASK_AUTHENTICATE', 'unwelcome_status'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -546,19 +612,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show cashier locked message if the client has a combo of deposit and withdrawal locked reasons', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['no_withdrawal_or_trading_status', 'unwelcome_status'],
-                },
+                account_status: { cashier_validation: ['no_withdrawal_or_trading_status', 'unwelcome_status'] },
+                current_currency_type: 'fiat',
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 
@@ -570,19 +640,23 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {
-        const mockRootStore = {
-            ...mockRootStoreBase,
+        const mock_root_store = mockStore({
             client: {
-                account_status: {
-                    cashier_validation: ['PACommisionWithdrawalLimit'],
-                },
+                account_status: { cashier_validation: ['PACommisionWithdrawalLimit'] },
+                current_currency_type: 'fiat',
                 is_withdrawal_lock: true,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
-        };
+        });
 
         render(<CashierLocked />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
             ),
         });
 

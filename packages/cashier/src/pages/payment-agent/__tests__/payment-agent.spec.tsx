@@ -6,6 +6,7 @@ import PaymentAgent from '../payment-agent';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv/hooks';
 import { TRootStore } from '../../../types';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -26,20 +27,20 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<PaymentAgent />', () => {
-    let mockRootStore: DeepPartial<TRootStore>;
+    const renderPaymentAgent = (mock_root_store: TRootStore) => {
+        return render(
+            <Router history={createBrowserHistory()}>
+                <CashierProviders store={mock_root_store}>
+                    <PaymentAgent setSideNotes={jest.fn()} />
+                </CashierProviders>
+            </Router>
+        );
+    };
 
-    beforeEach(() => {
-        mockRootStore = {
-            ui: {
-                is_dark_mode_on: false,
-                toggleAccountsDialog: jest.fn(),
-            },
+    it('should render the payment agent list', () => {
+        const mock_root_store = mockStore({
             client: {
-                is_switching: false,
                 is_virtual: false,
-                verification_code: {
-                    payment_agent_withdraw: '',
-                },
             },
             modules: {
                 cashier: {
@@ -54,37 +55,58 @@ describe('<PaymentAgent />', () => {
                     },
                 },
             },
-        };
-        mockUseCashierLocked.mockReturnValue(false);
-    });
+        });
+        renderPaymentAgent(mock_root_store as TRootStore);
 
-    const renderPaymentAgent = () => {
-        return render(
-            <Router history={createBrowserHistory()}>
-                <CashierProviders store={mockRootStore as TRootStore}>
-                    <PaymentAgent setSideNotes={jest.fn()} />
-                </CashierProviders>
-            </Router>
-        );
-    };
-
-    it('should render the payment agent list', () => {
-        renderPaymentAgent();
-
-        expect(mockRootStore!.modules!.cashier!.payment_agent!.setActiveTabIndex).toHaveBeenCalledWith(0);
+        expect(mock_root_store.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
         expect(screen.getByText('mockedPaymentAgentList')).toBeInTheDocument();
     });
 
     it('should render the loading component if in loading state', () => {
-        mockRootStore!.client!.is_switching = true;
-        renderPaymentAgent();
+        const mock_root_store = mockStore({
+            client: {
+                is_virtual: false,
+                is_switching: true,
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    payment_agent: {
+                        container: 'payment_agent',
+                        is_withdraw: false,
+                        active_tab_index: 0,
+                        setActiveTabIndex: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgent(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should show the virtual component if the client is using demo account', () => {
-        mockRootStore!.client!.is_virtual = true;
-        renderPaymentAgent();
+        const mock_root_store = mockStore({
+            client: {
+                is_virtual: true,
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    payment_agent: {
+                        container: 'payment_agent',
+                        is_withdraw: false,
+                        active_tab_index: 0,
+                        setActiveTabIndex: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgent(mock_root_store as TRootStore);
 
         expect(
             screen.getByText(/You need to switch to a real money account to use this feature./i)
@@ -92,23 +114,77 @@ describe('<PaymentAgent />', () => {
     });
 
     it('should show the cashier locked component if cashier is locked', () => {
+        const mock_root_store = mockStore({
+            client: {
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    payment_agent: {
+                        container: 'payment_agent',
+                        is_withdraw: false,
+                        active_tab_index: 0,
+                        setActiveTabIndex: jest.fn(),
+                    },
+                },
+            },
+        });
         mockUseCashierLocked.mockReturnValue(true);
-        renderPaymentAgent();
+        renderPaymentAgent(mock_root_store as TRootStore);
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
 
     it('should reset the index on unmount of component', () => {
-        const { unmount } = renderPaymentAgent();
+        const mock_root_store = mockStore({
+            client: {
+                is_virtual: false,
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    payment_agent: {
+                        container: 'payment_agent',
+                        is_withdraw: false,
+                        active_tab_index: 0,
+                        setActiveTabIndex: jest.fn(),
+                    },
+                },
+            },
+        });
+        const { unmount } = renderPaymentAgent(mock_root_store as TRootStore);
 
         unmount();
-        expect(mockRootStore!.modules!.cashier!.payment_agent!.setActiveTabIndex).toHaveBeenCalledWith(0);
+        expect(mock_root_store.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
     });
 
     it('should set the active tab index accordingly', () => {
-        mockRootStore!.client!.verification_code!.payment_agent_withdraw = 'ABCdef';
-        renderPaymentAgent();
+        const mock_root_store = mockStore({
+            client: {
+                is_virtual: false,
+                verification_code: { payment_agent_withdraw: 'ABCdef' },
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    payment_agent: {
+                        container: 'payment_agent',
+                        is_withdraw: false,
+                        active_tab_index: 0,
+                        setActiveTabIndex: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderPaymentAgent(mock_root_store as TRootStore);
 
-        expect(mockRootStore!.modules!.cashier!.payment_agent!.setActiveTabIndex).toHaveBeenCalledWith(1);
+        expect(mock_root_store.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(1);
     });
 });

@@ -6,30 +6,28 @@ import { routes } from '@deriv/shared';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
 import { TRootStore } from '../../../types';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
 }));
 
+const mock_root_store = mockStore({
+    client: {
+        currency: 'USD',
+        mt5_login_list: [
+            {
+                account_type: 'demo',
+                sub_account_type: 'financial_stp',
+            },
+        ],
+    },
+    modules: { cashier: { general_store: { setCashierTabIndex: jest.fn() } } },
+});
+
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
-    let mockRootStore: DeepPartial<TRootStore>;
-
-    beforeEach(() => {
-        mockRootStore = {
-            client: {
-                currency: 'USD',
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: { cashier: { general_store: { setCashierTabIndex: jest.fn() } } },
-        };
-    });
 
     it('component should render', () => {
         render(
@@ -38,7 +36,7 @@ describe('<NoBalance />', () => {
             </Router>,
             {
                 wrapper: ({ children }) => (
-                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                    <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
                 ),
             }
         );
@@ -55,7 +53,7 @@ describe('<NoBalance />', () => {
             </Router>,
             {
                 wrapper: ({ children }) => (
-                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                    <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
                 ),
             }
         );

@@ -9,6 +9,11 @@ type TOption = {
     language?: string;
 };
 
+type TQueryObj = {
+    dark: string;
+    lang: string;
+};
+
 const default_domain = 'binary.com';
 const host_map = {
     // the exceptions regarding updating the URLs
@@ -35,13 +40,16 @@ export const urlForLanguage = (lang: string, url: string = window.location.href)
     return `${current_url}`;
 };
 
-export const urlForDark = (dark: boolean, url: string = window.location.href) => {
+export const urlSetQuery = (queryObj: TQueryObj, url: string = window.location.href) => {
     const current_url = new URL(url);
 
-    if (dark) {
-        current_url.searchParams.set('dark', '1');
-    } else {
-        current_url.searchParams.delete('dark');
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [key, value] of Object.entries(queryObj)) {
+        if (value) {
+            current_url.searchParams.set(key, value);
+        } else {
+            current_url.searchParams.delete(key);
+        }
     }
 
     return `${current_url}`;

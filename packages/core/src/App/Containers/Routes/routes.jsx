@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { urlForLanguage, urlForDark } from '@deriv/shared';
+import { urlSetQuery } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
@@ -57,11 +57,6 @@ const Routes = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // React.useEffect(() => {
-    //     window.history.replaceState({}, document.title, urlForDark(is_dark_mode_on));
-    //     // }, [is_dark_mode_on]);
-    // }); // need to update for every change
-
     const lang = getLanguage();
     const lang_regex = /[?&]lang=/;
     const has_lang = lang_regex.test(location.search);
@@ -77,12 +72,12 @@ const Routes = ({
     // shows up in the URL. This is not in sync
     // with the default language (EN), so we
     // will remove it.
+    let langQuery = '';
     if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
-        window.history.replaceState({}, document.title, urlForLanguage(lang));
+        langQuery = lang;
     }
-
-    // need to update for every render
-    window.history.replaceState({}, document.title, urlForDark(is_dark_mode_on));
+    // replace state
+    window.history.replaceState({}, document.title, urlSetQuery({ lang: langQuery, dark: is_dark_mode_on ? '1' : '' }));
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 };

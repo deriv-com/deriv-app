@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useWS as useWSShared } from '@deriv/shared';
-import { TSocketEndpointNames, TSocketRequestProps, TSocketResponseData } from '../types';
+import { TSocketEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
 
 const useWS = <T extends TSocketEndpointNames>(name: T) => {
     const [is_loading, setIsLoading] = useState(false);
@@ -9,7 +9,7 @@ const useWS = <T extends TSocketEndpointNames>(name: T) => {
     const WS = useWSShared();
 
     const send = useCallback(
-        async (...props: TSocketRequestProps<T> extends never ? [undefined?] : [TSocketRequestProps<T>]) => {
+        async (...props: TSocketAcceptableProps<T>) => {
             setIsLoading(true);
 
             try {

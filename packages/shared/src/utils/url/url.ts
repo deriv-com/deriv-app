@@ -52,6 +52,8 @@ export const urlSetQuery = (queryObj: TQueryObj, url: string = window.location.h
         }
     }
 
+    current_url.searchParams.sort();
+
     return `${current_url}`;
 };
 

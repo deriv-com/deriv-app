@@ -57,9 +57,10 @@ const Routes = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
-        window.history.replaceState({}, document.title, urlForDark(is_dark_mode_on));
-    }, [is_dark_mode_on]);
+    // React.useEffect(() => {
+    //     window.history.replaceState({}, document.title, urlForDark(is_dark_mode_on));
+    //     // }, [is_dark_mode_on]);
+    // }); // need to update for every change
 
     const lang = getLanguage();
     const lang_regex = /[?&]lang=/;
@@ -76,10 +77,12 @@ const Routes = ({
     // shows up in the URL. This is not in sync
     // with the default language (EN), so we
     // will remove it.
-    // const
     if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
         window.history.replaceState({}, document.title, urlForLanguage(lang));
     }
+
+    // need to update for every render
+    window.history.replaceState({}, document.title, urlForDark(is_dark_mode_on));
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 };

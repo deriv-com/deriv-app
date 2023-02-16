@@ -98,7 +98,7 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                     card_details.documents_required
                                                 );
                                             }}
-                                            value={values?.data?.[index]?.[item_index]?.payment_method_identifier ?? ''}
+                                            value={values?.data?.[index]?.[item_index]?.payment_method_identifier || ''}
                                             onBlur={e => {
                                                 handleBlur(
                                                     `data[${index}].[${item_index}]`,

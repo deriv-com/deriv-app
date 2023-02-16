@@ -29,40 +29,6 @@ jest.mock('@deriv/hooks');
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
-const mock_base = mockStore({
-    client: {
-        mt5_login_list: [
-            {
-                account_type: 'demo',
-                sub_account_type: 'financial_stp',
-            },
-        ],
-    },
-    modules: {
-        cashier: {
-            general_store: {
-                setActiveTab: jest.fn(),
-            },
-            account_transfer: {
-                error: {},
-                setAccountTransferAmount: jest.fn(),
-                setIsTransferConfirm: jest.fn(),
-                onMountAccountTransfer: jest.fn(),
-                accounts_list: [],
-                has_no_account: false,
-                has_no_accounts_balance: false,
-                is_transfer_confirm: false,
-                is_transfer_locked: false,
-            },
-            crypto_fiat_converter: {},
-            transaction_history: {
-                onMount: jest.fn(),
-                is_crypto_transactions_visible: false,
-            },
-        },
-    },
-});
-
 describe('<AccountTransfer />', () => {
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
@@ -81,7 +47,40 @@ describe('<AccountTransfer />', () => {
     };
 
     it('should render the account transfer form', async () => {
-        renderAccountTransfer(mock_base as TRootStore);
+        const mock_root_store = mockStore({
+            client: {
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        setActiveTab: jest.fn(),
+                    },
+                    account_transfer: {
+                        error: {},
+                        setAccountTransferAmount: jest.fn(),
+                        setIsTransferConfirm: jest.fn(),
+                        onMountAccountTransfer: jest.fn(),
+                        accounts_list: [],
+                        has_no_account: false,
+                        has_no_accounts_balance: false,
+                        is_transfer_confirm: false,
+                        is_transfer_locked: false,
+                    },
+                    crypto_fiat_converter: {},
+                    transaction_history: {
+                        onMount: jest.fn(),
+                        is_crypto_transactions_visible: false,
+                    },
+                },
+            },
+        });
+        renderAccountTransfer(mock_root_store as TRootStore);
 
         expect(await screen.findByText('mockedAccountTransferForm')).toBeInTheDocument();
     });

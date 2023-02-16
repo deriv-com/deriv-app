@@ -34,11 +34,14 @@ const DefaultHeader = ({
     is_bot_allowed,
     is_dxtrade_allowed,
     is_eu,
+    is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
+    is_pre_appstore,
     is_route_modal_on,
+    is_switching,
     is_trading_assessment_for_existing_user_enabled,
     is_virtual,
     menu_items,
@@ -50,8 +53,6 @@ const DefaultHeader = ({
     setIsPreAppStore,
     toggleAccountsDialog,
     toggleNotifications,
-    is_landing_company_loaded,
-    is_switching,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -140,7 +141,12 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <MenuLinks
+                        is_logged_in={is_logged_in}
+                        items={menu_items}
+                        is_virtual={is_virtual}
+                        is_pre_appstore={is_pre_appstore}
+                    />
                 </div>
                 {is_logging_in
                     ? null
@@ -239,6 +245,7 @@ DefaultHeader.propTypes = {
     setIsPreAppStore: PropTypes.func,
     is_landing_company_loaded: PropTypes.bool,
     is_switching: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
@@ -277,4 +284,5 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_landing_company_loaded: client.is_landing_company_loaded,
     setIsPreAppStore: client.setIsPreAppStore,
     is_switching: client.is_switching,
+    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(DefaultHeader));

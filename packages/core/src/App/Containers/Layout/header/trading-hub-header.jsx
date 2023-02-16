@@ -139,6 +139,7 @@ const TradingHubHeader = ({
     toggleExitTradersHubModal,
     switchToCRAccount,
     setPreferredLanguage,
+    is_virtual,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
@@ -173,6 +174,7 @@ const TradingHubHeader = ({
                     is_mobile={is_mobile}
                     items={menu_items}
                     is_pre_appstore={is_pre_appstore}
+                    is_virtual={is_virtual}
                 />
             </div>
             <DesktopWrapper>
@@ -261,6 +263,7 @@ const TradingHubHeader = ({
 };
 
 TradingHubHeader.propTypes = {
+    content_flag: PropTypes.string,
     header_extension: PropTypes.any,
     is_dark_mode: PropTypes.bool,
     is_eu_country: PropTypes.bool,
@@ -271,24 +274,25 @@ TradingHubHeader.propTypes = {
     is_notifications_visible: PropTypes.bool,
     is_pre_appstore: PropTypes.bool,
     is_settings_modal_on: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     loginid: PropTypes.string,
     menu_items: PropTypes.array,
     modal_data: PropTypes.object,
     notifications_count: PropTypes.number,
     replaceCashierMenuOnclick: PropTypes.func,
-    setIsPreAppStore: PropTypes.func,
     setIsOnboardingVisited: PropTypes.func,
+    setIsPreAppStore: PropTypes.func,
+    setPreferredLanguage: PropTypes.func,
     settings_extension: PropTypes.array,
     should_show_exit_traders_modal: PropTypes.bool,
+    switchToCRAccount: PropTypes.func,
+    toggleExitTradersHubModal: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    toggleExitTradersHubModal: PropTypes.func,
-    content_flag: PropTypes.string,
-    switchToCRAccount: PropTypes.func,
-    setPreferredLanguage: PropTypes.func,
 };
 
 export default connect(({ client, modules, notifications, ui, menu, traders_hub }) => ({
+    content_flag: traders_hub.content_flag,
     header_extension: ui.header_extension,
     is_dark_mode: ui.is_dark_mode_on,
     is_eu_country: client.is_eu_country,
@@ -298,18 +302,18 @@ export default connect(({ client, modules, notifications, ui, menu, traders_hub 
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
     is_pre_appstore: client.is_pre_appstore,
-    modal_data: traders_hub.modal_data,
-    notifications_count: notifications.notifications.length,
-    toggleNotifications: notifications.toggleNotificationsModal,
+    is_virtual: client.is_virtual,
     loginid: client.loginid,
     menu_items: menu.extensions,
+    modal_data: traders_hub.modal_data,
+    notifications_count: notifications.notifications.length,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
-    should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
-    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
-    content_flag: traders_hub.content_flag,
-    switchToCRAccount: traders_hub.switchToCRAccount,
     setPreferredLanguage: client.setPreferredLanguage,
+    should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
+    switchToCRAccount: traders_hub.switchToCRAccount,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
+    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
+    toggleNotifications: notifications.toggleNotificationsModal,
 }))(withRouter(TradingHubHeader));

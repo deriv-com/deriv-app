@@ -1,14 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
-import { BrowserHistory, createBrowserHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { useCashierLocked } from '@deriv/hooks';
-import { TRootStore } from '@deriv/stores/types';
-import { TRootStore as TRootStoreCashier } from '../../../types';
+import { TRootStore } from '../../../types';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
@@ -36,10 +35,149 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 describe('<Withdrawal />', () => {
-    let history: BrowserHistory, mockRootStore: TRootStore, setSideNotes: VoidFunction;
+    let setSideNotes: VoidFunction;
+
     beforeEach(() => {
-        history = createBrowserHistory();
-        mockRootStore = mockStore({
+        setSideNotes = jest.fn();
+        mockUseCashierLocked.mockReturnValue(false);
+    });
+
+    const renderWithdrawal = (mock_root_store: TRootStore, is_rerender = false) => {
+        const ui = (
+            <CashierProviders store={mock_root_store}>
+                <Router history={createBrowserHistory()}>
+                    <Withdrawal setSideNotes={setSideNotes} />
+                </Router>
+            </CashierProviders>
+        );
+        return is_rerender ? ui : render(ui);
+    };
+
+    it('should render <CashierLocked /> component', () => {
+        const mock_root_store = mockStore({
+            client: {
+                account_status: { cashier_validation: ['system_maintenance'] },
+                balance: '1000',
+                currency: 'USD',
+                current_currency_type: 'crypto',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: true,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
+
+        expect(screen.getByText('CashierLocked')).toBeInTheDocument();
+    });
+
+    it('should render <Loading /> component', () => {
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: undefined,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
+
+        expect(screen.getByText('Loading')).toBeInTheDocument();
+    });
+
+    it('should render <Virtual /> component', () => {
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+                is_virtual: true,
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
+
+        expect(screen.getByText('Virtual')).toBeInTheDocument();
+    });
+
+    it('should render <CashierLocked /> component when useCashierLocked returns true', () => {
+        const mock_root_store = mockStore({
             client: {
                 balance: '1000',
                 currency: 'USD',
@@ -73,138 +211,431 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        setSideNotes = jest.fn();
-        mockUseCashierLocked.mockReturnValue(false);
-    });
-
-    const renderWithdrawal = (is_rerender = false) => {
-        const ui = (
-            <CashierProviders store={mockRootStore as TRootStoreCashier}>
-                <Router history={history}>
-                    <Withdrawal setSideNotes={setSideNotes} />
-                </Router>
-            </CashierProviders>
-        );
-        return is_rerender ? ui : render(ui);
-    };
-
-    it('should render <CashierLocked /> component', () => {
-        mockRootStore.client.current_currency_type = 'crypto';
-        mockRootStore.client.account_status.cashier_validation = ['system_maintenance'];
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
-        renderWithdrawal();
-
-        expect(screen.getByText('CashierLocked')).toBeInTheDocument();
-    });
-
-    it('should render <Loading /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = undefined;
-        renderWithdrawal();
-
-        expect(screen.getByText('Loading')).toBeInTheDocument();
-    });
-
-    it('should render <Virtual /> component', () => {
-        mockRootStore.client.is_virtual = true;
-        renderWithdrawal();
-
-        expect(screen.getByText('Virtual')).toBeInTheDocument();
-    });
-
-    it('should render <CashierLocked /> component when useCashierLocked returns true', () => {
         mockUseCashierLocked.mockReturnValue(true);
-        renderWithdrawal();
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
-        renderWithdrawal();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: true,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
-        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
-        renderWithdrawal(true);
+        mock_root_store.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
+        renderWithdrawal(mock_root_store as TRootStore, true);
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });
 
     it('should render <NoBalance /> component', () => {
-        mockRootStore.client.balance = '0';
-        renderWithdrawal();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '0',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(screen.getByText('NoBalance')).toBeInTheDocument();
     });
 
     it('should render <Error /> component', () => {
-        mockRootStore.modules.cashier.withdraw.error = {
-            is_show_full_page: true,
-            message: 'Error message',
-            setErrorMessage: jest.fn(),
-        };
-        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            is_show_full_page: true,
+                            message: 'Error message',
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        const { rerender } = renderWithdrawal(mock_root_store as TRootStore) as ReturnType<typeof render>;
 
         expect(screen.getByText('Error')).toBeInTheDocument();
 
-        mockRootStore.modules.cashier.withdraw.verification.error = { message: 'Error message' };
-        rerender(renderWithdrawal(true) as JSX.Element);
+        mock_root_store.modules.cashier.withdraw.verification.error = { message: 'Error message' };
+        rerender(renderWithdrawal(mock_root_store as TRootStore, true) as JSX.Element);
 
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <Withdraw /> component', () => {
-        mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
-
-        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+                verification_code: { payment_withdraw: 'verification_code' },
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        const { rerender } = renderWithdrawal(mock_root_store as TRootStore) as ReturnType<typeof render>;
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
 
-        mockRootStore.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
-        rerender(renderWithdrawal(true) as JSX.Element);
+        mock_root_store.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
+        rerender(renderWithdrawal(mock_root_store as TRootStore, true) as JSX.Element);
 
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
-        mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
-        mockRootStore.modules.cashier.general_store.is_crypto = true;
-        renderWithdrawal();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+                verification_code: { payment_withdraw: 'verification_code' },
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: true,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_withdraw_confirmed = true;
-        renderWithdrawal();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: true,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
-        renderWithdrawal();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: true,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalVerificationEmail /> component', () => {
-        renderWithdrawal();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
+        const mock_root_store = mockStore({
+            client: {
+                account_status: { cashier_validation: ['system_maintenance'] },
+                balance: '1000',
+                currency: 'USD',
+                current_currency_type: 'crypto',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: true,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
         isDesktop.mockReturnValueOnce(false);
 
-        renderWithdrawal();
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(setSideNotes).not.toHaveBeenCalled();
     });
 
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
-        mockRootStore.client.currency = 'BTC';
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [{}];
-        renderWithdrawal();
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    general_store: {
+                        is_crypto: false,
+                        setActiveTab: jest.fn(),
+                    },
+                    iframe: {
+                        iframe_url: '',
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        is_crypto_transactions_visible: false,
+                        onMount: jest.fn(),
+                    },
+                    withdraw: {
+                        check10kLimit: jest.fn(),
+                        is_10k_withdrawal_limit_reached: false,
+                        is_withdraw_confirmed: false,
+                        is_withdrawal_locked: false,
+                        error: {
+                            setErrorMessage: jest.fn(),
+                        },
+                        verification: {
+                            error: {},
+                        },
+                        willMountWithdraw: jest.fn(),
+                    },
+                },
+            },
+        });
+        renderWithdrawal(mock_root_store as TRootStore);
 
         expect(setSideNotes).toHaveBeenCalledTimes(1);
     });

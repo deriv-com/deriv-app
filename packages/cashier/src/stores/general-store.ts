@@ -282,7 +282,7 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
+            const { payment_agent, payment_agent_transfer } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
@@ -295,9 +295,6 @@ export default class GeneralStore extends BaseStore {
                     if (!payment_agent_transfer.is_payment_agent) {
                         payment_agent_transfer.checkIsPaymentAgent();
                     }
-                    // check if withdrawal limit is reached
-                    // if yes, this will trigger to show a notification
-                    await withdraw.check10kLimit();
                 }
             }
         }

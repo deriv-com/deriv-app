@@ -1,7 +1,9 @@
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    icon?: string;
+};
 
 type TAccountsList = {
     account?: {
@@ -111,7 +113,6 @@ type TClientStore = {
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
-    is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_pre_appstore: boolean;
@@ -169,6 +170,8 @@ type TClientStore = {
     is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
+    is_landing_company_loaded: boolean;
+    min_withdrawal: number;
     is_crypto: boolean;
 };
 

@@ -21,6 +21,7 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
+    getMinWithdrawal,
     isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
@@ -386,6 +387,7 @@ export default class ClientStore extends BaseStore {
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             setIsPreAppStore: action.bound,
+            min_withdrawal: computed,
             setPrevAccountType: action.bound,
         });
 
@@ -1080,6 +1082,10 @@ export default class ClientStore extends BaseStore {
 
     get is_multipliers_only() {
         return isMultipliersOnly(this.residence);
+    }
+
+    get min_withdrawal() {
+        return getMinWithdrawal(this.currency);
     }
 
     /**

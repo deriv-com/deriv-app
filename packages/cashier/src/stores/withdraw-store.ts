@@ -1,6 +1,6 @@
-import { action, computed, observable, makeObservable } from 'mobx';
-import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
-import { CryptoConfig } from '@deriv/api-types';
+import React from 'react';
+import { action, observable, makeObservable } from 'mobx';
+import { formatMoney, getDecimalPlaces, isMobile, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
@@ -13,10 +13,8 @@ export default class WithdrawStore {
             blockchain_address: observable,
             container: observable,
             error: observable,
-            is_10k_withdrawal_limit_reached: observable,
             is_withdraw_confirmed: observable,
             withdraw_amount: observable,
-            max_withdraw_amount: observable,
             crypto_config: observable,
             setIsWithdrawConfirmed: action.bound,
             setWithdrawAmount: action.bound,
@@ -26,15 +24,10 @@ export default class WithdrawStore {
             setBlockchainAddress: action.bound,
             onMountWithdraw: action.bound,
             onMountCryptoWithdraw: action.bound,
-            is_withdrawal_locked: computed,
-            setMaxWithdrawAmount: action.bound,
-            check10kLimit: action.bound,
-            set10kLimitation: action.bound,
             setCryptoConfig: action.bound,
             setWithdrawPercentageSelectorResult: action.bound,
             validateWithdrawFromAmount: action.bound,
             validateWithdrawToAmount: action.bound,
-            account_platform_icon: computed,
         });
 
         this.root_store = root_store;
@@ -44,13 +37,9 @@ export default class WithdrawStore {
     blockchain_address = '';
     container = Constants.containers.withdraw;
     error = new ErrorStore();
-    is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;
     withdraw_amount = '';
-    max_withdraw_amount = 0;
-    crypto_config: CryptoConfig = {
-        currencies_config: {},
-    };
+    crypto_config = {};
 
     setIsWithdrawConfirmed(is_withdraw_confirmed: boolean) {
         const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
@@ -264,36 +253,7 @@ export default class WithdrawStore {
         this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
     }
 
-    get is_withdrawal_locked() {
-        const { client } = this.root_store;
-        const { authentication } = client.account_status;
-
-        if (!client.account_status?.status) return false;
-        const need_poi = authentication?.needs_verification.includes('identity');
-        const need_authentication = this.error.is_ask_authentication && need_poi;
-
-        return client.is_withdrawal_lock || need_authentication || this.error.is_ask_financial_risk_approval;
-    }
-
-    setMaxWithdrawAmount(amount: number) {
-        this.max_withdraw_amount = amount;
-    }
-
-    async check10kLimit() {
-        const { client } = this.root_store;
-
-        const remainder = (await client.getLimits())?.get_limits?.remainder;
-        this.setMaxWithdrawAmount(Number(remainder));
-        const min_withdrawal = getMinWithdrawal(client.currency);
-        const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
-        this.set10kLimitation(is_limit_reached);
-    }
-
-    set10kLimitation(is_limit_reached: boolean) {
-        this.is_10k_withdrawal_limit_reached = is_limit_reached;
-    }
-
-    setWithdrawPercentageSelectorResult(amount: number) {
+    setWithdrawPercentageSelectorResult(amount) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;
@@ -377,12 +337,5 @@ export default class WithdrawStore {
         }
 
         setConverterToError(error_message);
-    }
-
-    get account_platform_icon() {
-        const { account_list, loginid } = this.root_store.client;
-        const platform_icon = account_list.find(acc => loginid === acc.loginid)?.icon;
-
-        return platform_icon;
     }
 }

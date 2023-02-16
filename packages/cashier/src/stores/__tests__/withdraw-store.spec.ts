@@ -1,4 +1,5 @@
 import { isMobile, validNumber } from '@deriv/shared';
+import { useCheck10kLimit } from '@deriv/hooks';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
 import { TWebSocket, TRootStore } from 'Types';
@@ -14,9 +15,11 @@ jest.mock('@deriv/shared', () => ({
     }),
 }));
 
+jest.mock('@deriv/hooks');
+
 describe('WithdrawStore', () => {
     let withdraw_store: WithdrawStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
-
+    useCheck10kLimit.mockReturnValue(false);
     beforeEach(() => {
         root_store = {
             client: {
@@ -231,43 +234,6 @@ describe('WithdrawStore', () => {
         expect(setLoading).toHaveBeenCalledWith(false);
     });
 
-    it('should return is_withdrawal_locked equal to false if there is no account status', () => {
-        withdraw_store.root_store.client.account_status = {
-            currency_config: {},
-            prompt_client_to_authenticate: 0,
-            risk_classification: '',
-            status: [],
-        };
-        expect(withdraw_store.is_withdrawal_locked).toBeFalsy();
-    });
-
-    it('should return is_withdrawal_locked equal to true if client needs POI verification', () => {
-        withdraw_store.root_store.client.account_status.status = ['authentication_needed'];
-        withdraw_store.error.is_ask_authentication = true;
-        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
-    });
-
-    it('should return is_withdrawal_locked equal to true if client needs financial risk approval', () => {
-        withdraw_store.error.is_ask_financial_risk_approval = true;
-        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
-    });
-
-    it('should set max_withdraw_amount', () => {
-        withdraw_store.setMaxWithdrawAmount(100);
-        expect(withdraw_store.max_withdraw_amount).toBe(100);
-    });
-
-    it('should check 10k limit', async () => {
-        await withdraw_store.check10kLimit();
-        expect(withdraw_store.max_withdraw_amount).toBe(80);
-        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
-    });
-
-    it('should set is_10k_withdrawal_limit_reached', () => {
-        withdraw_store.set10kLimitation(true);
-        expect(withdraw_store.is_10k_withdrawal_limit_reached).toBeTruthy();
-    });
-
     it('should set crypto_config', () => {
         withdraw_store.setCryptoConfig();
         expect(withdraw_store.crypto_config).toBeTruthy();
@@ -323,9 +289,5 @@ describe('WithdrawStore', () => {
 
         withdraw_store.validateWithdrawToAmount();
         expect(setConverterToError).toHaveBeenCalledWith(error_message);
-    });
-
-    it('should get account_platform_icon', () => {
-        expect(withdraw_store.account_platform_icon).toBe('icon');
     });
 });

@@ -5,6 +5,7 @@ import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/compon
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useAccountPlatformDetails } from '@deriv/hooks';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
 import RecentTransaction from '../../../components/recent-transaction';
@@ -58,7 +59,6 @@ const CryptoWithdrawForm = observer(() => {
     const { crypto_fiat_converter, general_store, transaction_history, withdraw } = useCashierStore();
     const crypto_currency = currency;
     const {
-        account_platform_icon,
         blockchain_address,
         onMountCryptoWithdraw: onMountWithdraw,
         requestWithdraw,
@@ -77,6 +77,7 @@ const CryptoWithdrawForm = observer(() => {
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+    const account_platform_icon = useAccountPlatformDetails()?.icon;
 
     React.useEffect(() => {
         recentTransactionOnMount();

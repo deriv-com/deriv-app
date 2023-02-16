@@ -3,12 +3,15 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
+import { useCheck10kLimit } from '@deriv/hooks';
 import WithdrawalLocked from '../withdrawal-locked';
 import CashierProviders from '../../../../cashier-providers';
 
 type TStatus = 'document' | 'none' | 'pending' | '';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
+jest.mock('@deriv/hooks');
+const mockUseCheck10kLimit = useCheck10kLimit as jest.MockedFunction<typeof useCheck10kLimit>;
 
 const fireButtonEvent = (button: 'proof_of_identity_btn' | 'proof_of_address_btn' | 'financial_assessment_btn') => {
     const [proof_of_identity_btn, proof_of_address_btn, financial_assessment_btn] = screen.getAllByTestId(
@@ -50,6 +53,7 @@ const setAccountStatus = (identity_status: TStatus, document_status: TStatus, ne
 describe('WithdrawalLocked', () => {
     let history, mockRootStore;
     beforeEach(() => {
+        mockUseCheck10kLimit.mockReturnValue(true);
         history = createBrowserHistory();
         mockRootStore = {
             client: {
@@ -58,7 +62,6 @@ describe('WithdrawalLocked', () => {
             modules: {
                 cashier: {
                     withdraw: {
-                        is_10k_withdrawal_limit_reached: true,
                         error: {
                             is_ask_financial_risk_approval: false,
                         },
@@ -120,7 +123,7 @@ describe('WithdrawalLocked', () => {
 
     it('should render <CashierLocked /> component', () => {
         mockRootStore.client.account_status = setAccountStatus('', '', '');
-        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = false;
+        mockUseCheck10kLimit.mockReturnValue(false);
         renderWithdrawalLocked();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();

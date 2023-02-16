@@ -3,9 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
-import { mockStore } from '@deriv/stores';
+import { useCheck10kLimit, useWithdrawLocked } from '@deriv/hooks';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
@@ -27,10 +28,16 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     isDesktop: jest.fn(() => true),
 }));
 
+jest.mock('@deriv/hooks');
+const mockUseWithdrawLocked = useWithdrawLocked as jest.MockedFunction<typeof useWithdrawLocked>;
+const mockUseCheck10kLimit = useCheck10kLimit as jest.MockedFunction<typeof useCheck10kLimit>;
+
 describe('<Withdrawal />', () => {
     let history, mockRootStore, setSideNotes;
     beforeEach(() => {
         history = createBrowserHistory();
+        mockUseWithdrawLocked.mockReturnValue(false);
+        mockUseCheck10kLimit.mockReturnValue(false);
         mockRootStore = mockStore({
             client: {
                 balance: '1000',
@@ -52,10 +59,7 @@ describe('<Withdrawal />', () => {
                         onMount: jest.fn(),
                     },
                     withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
                         is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
                         error: {
                             setErrorMessage: jest.fn(),
                         },
@@ -82,16 +86,16 @@ describe('<Withdrawal />', () => {
     };
 
     it('should render <CashierLocked /> component', () => {
+        mockUseWithdrawLocked.mockReturnValue(true);
         mockRootStore.client.current_currency_type = 'crypto';
         mockRootStore.modules.cashier.general_store.is_system_maintenance = true;
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
         renderWithdrawal();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
     it('should render <Loading /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = undefined;
+        mockUseCheck10kLimit.mockReturnValue(undefined);
         renderWithdrawal();
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
@@ -112,13 +116,13 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
-        renderWithdrawal();
+        mockUseWithdrawLocked.mockReturnValue(true);
+        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
-        mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
-        renderWithdrawal(true);
+        mockUseCheck10kLimit.mockReturnValue(true);
+        rerender(renderWithdrawal(true) as JSX.Element);
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });

@@ -4,20 +4,20 @@ import Icon from '../icon';
 import Button from '../button';
 
 type TItemStatusProps = {
-    button_text: string;
+    button_text?: string;
     onClick: () => void;
     status: string;
 };
 
 type TChecklistItem = TItemStatusProps & {
-    is_disabled: boolean;
+    is_disabled?: boolean;
     content: string;
 };
 
 type TChecklistProps = {
     items: TChecklistItem[];
     className: string;
-    itemClassName: string;
+    itemClassName?: string;
 };
 
 const ItemStatus = ({ status, onClick, button_text }: TItemStatusProps) => {

@@ -4,9 +4,9 @@ import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
-import { TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import RootStore from '../Stores/index';
+import { connect } from '../Stores/connect';
+import { TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
 
 type TExtendedCurrentAccount = DetailsOfEachMT5Loginid & {
@@ -24,6 +24,7 @@ type TCFDTopUpDemoModalProps = {
     is_top_up_virtual_open: boolean;
     is_top_up_virtual_in_progress: boolean;
     is_top_up_virtual_success: boolean;
+    context: RootStore;
     platform: string;
     topUpVirtual: (platform: string) => void;
 };
@@ -38,6 +39,7 @@ const CFDTopUpDemoModal = ({
     is_top_up_virtual_in_progress,
     is_top_up_virtual_success,
     platform,
+    context,
     topUpVirtual,
 }: TCFDTopUpDemoModalProps) => {
     const getAccountTitle = React.useCallback(() => {
@@ -62,6 +64,7 @@ const CFDTopUpDemoModal = ({
             <Modal
                 toggleModal={closeTopUpModal}
                 is_open={is_top_up_virtual_open}
+                context={context}
                 className='top-up-virtual'
                 title={localize('Fund top up')}
                 width='384px'

@@ -2,33 +2,20 @@ import React, { useState } from 'react';
 import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
 import QRCode from 'qrcode.react';
-import { connect } from 'Stores/connect';
-import { TRootStore, TClientStore, TCryptoTransactionDetails } from 'Types';
-import RecentTransaction from 'Components/recent-transaction';
+import RecentTransaction from '../../../components/recent-transaction';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-deposit.scss';
 
-type TCryptoDeposit = {
-    api_error: string;
-    crypto_transactions: Array<TCryptoTransactionDetails>;
-    currency: TClientStore['currency'];
-    deposit_address: string;
-    is_deposit_address_loading: boolean;
-    recentTransactionOnMount: () => void;
-    pollApiForDepositAddress: (poll: boolean) => void;
-    setIsDeposit: (is_deposit: boolean) => void;
-};
+const CryptoDeposit = observer(() => {
+    const { client } = useStore();
+    const { currency } = client;
+    const { onramp, transaction_history, general_store } = useCashierStore();
+    const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
+    const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
+    const { setIsDeposit } = general_store;
 
-const CryptoDeposit = ({
-    api_error,
-    currency,
-    crypto_transactions,
-    deposit_address,
-    is_deposit_address_loading,
-    recentTransactionOnMount,
-    pollApiForDepositAddress,
-    setIsDeposit,
-}: TCryptoDeposit) => {
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -254,15 +241,6 @@ const CryptoDeposit = ({
             {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
         </div>
     );
-};
+});
 
-export default connect(({ modules, client }: TRootStore) => ({
-    api_error: modules.cashier.onramp.api_error,
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    deposit_address: modules.cashier.onramp.deposit_address,
-    is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
-    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
-    pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
-    setIsDeposit: modules.cashier.general_store.setIsDeposit,
-}))(CryptoDeposit);
+export default CryptoDeposit;

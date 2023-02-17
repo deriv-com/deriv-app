@@ -1,5 +1,5 @@
 import { Formik, Field, FormikProps, FormikValues } from 'formik';
-import React, { RefObject } from 'react';
+import React from 'react';
 import {
     Modal,
     Autocomplete,
@@ -40,6 +40,7 @@ export type TAddressDetails = {
         next_step: () => void
     ) => void;
     is_svg: boolean;
+    is_mf?: boolean;
     is_gb_residence: boolean | string;
     onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
     selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
@@ -78,10 +79,10 @@ const InputField = (props: TInputField) => {
                     <Input
                         type='text'
                         autoComplete='off'
+                        maxLength={props.maxLength || 30}
                         error={touched[field.name] && errors[field.name]}
                         {...field}
                         {...props}
-                        maxLength={props.maxLength || '30'}
                     />
                 </React.Fragment>
             )}
@@ -99,6 +100,7 @@ const AddressDetails = ({
     validate,
     onSubmit,
     is_svg,
+    is_mf,
     is_gb_residence,
     onSubmitEnabledChange,
     selected_step_ref,
@@ -191,7 +193,7 @@ const AddressDetails = ({
                                 <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                     {is_appstore && (
                                         <div className='details-form__sub-header'>
-                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() ? 'center' : ''}>
                                                 {localize(
                                                     'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
                                                 )}
@@ -201,14 +203,15 @@ const AddressDetails = ({
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_appstore || is_mf}
                                             label={
-                                                is_svg || is_appstore
+                                                is_svg || is_appstore || is_mf
                                                     ? localize('First line of address*')
                                                     : localize('First line of address')
                                             }
                                             maxLength={255}
                                             placeholder={localize('First line of address')}
+                                            disabled={props.value?.address_line_1}
                                         />
                                         <InputField
                                             name='address_line_2'
@@ -220,14 +223,18 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('Second line of address')}
+                                            disabled={props.value?.address_line_2}
                                         />
                                         <InputField
                                             name='address_city'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_appstore || is_mf}
                                             label={
-                                                is_svg || is_appstore ? localize('Town/City*') : localize('Town/City')
+                                                is_svg || is_appstore || is_mf
+                                                    ? localize('Town/City*')
+                                                    : localize('Town/City')
                                             }
                                             placeholder={localize('Town/City')}
+                                            disabled={props.value?.address_city}
                                         />
                                         {!has_fetched_states_list && (
                                             <div className='details-form__loader'>
@@ -258,6 +265,7 @@ const AddressDetails = ({
                                                                     setAddressStateToDisplay('');
                                                                 }}
                                                                 list_portal_id={is_appstore ? '' : 'modal_root'}
+                                                                disabled={props.value?.address_state}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -275,6 +283,7 @@ const AddressDetails = ({
                                                                     );
                                                                     setAddressStateToDisplay('');
                                                                 }}
+                                                                disabled={props.value?.address_state}
                                                             />
                                                         </MobileWrapper>
                                                     </>
@@ -286,6 +295,7 @@ const AddressDetails = ({
                                                 name='address_state'
                                                 label={localize('State/Province')}
                                                 placeholder={localize('State/Province')}
+                                                disabled={props.value?.address_state}
                                             />
                                         )}
                                         <InputField
@@ -299,6 +309,7 @@ const AddressDetails = ({
                                                 setFieldTouched('address_postcode', true);
                                                 handleChange(e);
                                             }}
+                                            disabled={props.value?.address_postcode}
                                         />
                                     </div>
                                 </ThemedScrollbars>

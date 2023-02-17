@@ -5,9 +5,10 @@ import { Localize } from 'Components/i18next';
 import { observer } from 'mobx-react-lite';
 
 const MyProfileDetailsTable = () => {
-    const { general_store, my_profile_store } = useStores();
+    const { general_store } = useStores();
 
-    const { daily_buy, daily_buy_limit, daily_sell, daily_sell_limit } = my_profile_store.advertiser_info;
+    const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
+    const { advertiser_buy_limit, advertiser_sell_limit, client } = general_store;
 
     return (
         <div className='my-profile-details-table'>
@@ -23,7 +24,7 @@ const MyProfileDetailsTable = () => {
                             <Localize i18n_default_text='Daily limit' />
                         </Text>
                         <Text color='prominent' size='xs' weight='bold'>
-                            <Money amount={daily_buy_limit} currency={general_store.client.currency} show_currency />
+                            <Money amount={daily_buy_limit} currency={client.currency} show_currency />
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-details-table--cell'>
@@ -31,11 +32,7 @@ const MyProfileDetailsTable = () => {
                             <Localize i18n_default_text='Available' />
                         </Text>
                         <Text color='prominent' size='xs' weight='bold'>
-                            <Money
-                                amount={`${daily_buy_limit - daily_buy}`}
-                                currency={general_store.client.currency}
-                                show_currency
-                            />
+                            <Money amount={advertiser_buy_limit} currency={client.currency} show_currency />
                         </Text>
                     </Table.Cell>
                 </Table.Row>
@@ -52,7 +49,7 @@ const MyProfileDetailsTable = () => {
                             <Localize i18n_default_text='Daily limit' />
                         </Text>
                         <Text color='prominent' size='xs' weight='bold'>
-                            <Money amount={daily_sell_limit} currency={general_store.client.currency} show_currency />
+                            <Money amount={daily_sell_limit} currency={client.currency} show_currency />
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='my-profile-details-table--cell'>
@@ -61,7 +58,7 @@ const MyProfileDetailsTable = () => {
                         </Text>
                         <Text color='prominent' size='xs' weight='bold'>
                             <Money
-                                amount={`${daily_sell_limit - daily_sell}`}
+                                amount={advertiser_sell_limit}
                                 currency={general_store.client.currency}
                                 show_currency
                             />

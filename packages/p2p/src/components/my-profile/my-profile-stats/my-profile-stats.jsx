@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Icon, Loading, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
@@ -25,14 +25,10 @@ const MyStats = () => {
             onClick: () => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE),
         },
         {
-            default_text: 'Blocked advertisers',
-            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.BLOCKED_ADVERTISERS),
+            default_text: 'My counterparties',
+            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES),
         },
     ];
-
-    if (my_profile_store.is_loading) {
-        return <Loading is_fullscreen={false} />;
-    }
 
     return (
         <React.Fragment>

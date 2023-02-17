@@ -1,5 +1,8 @@
 import PaymentAgentTransferStore from '../payment-agent-transfer-store';
 import { routes } from '@deriv/shared';
+import { configure } from 'mobx';
+
+configure({ safeDescriptors: false });
 
 let payment_agent_transfer_store, response_payment_agent, root_store, transfer_data, WS;
 

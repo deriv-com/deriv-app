@@ -3,27 +3,30 @@ import { useHistory } from 'react-router-dom';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { TClientStore, TRootStore } from 'Types';
-import CashierLocked from 'Components/cashier-locked';
-
-type TWithdrawalLockedProps = {
-    account_status: Required<TClientStore['account_status']>;
-    is_10K_limit: boolean;
-    is_ask_financial_risk_approval: boolean;
-};
+import { useStore, observer } from '@deriv/stores';
+import CashierLocked from '../../../components/cashier-locked';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TItem = {
     content: string;
     status: string;
-    onClick: () => void;
+    onClick: VoidFunction;
 };
 
-const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_approval }: TWithdrawalLockedProps) => {
-    const { document, identity, needs_verification } = account_status.authentication;
+const WithdrawalLocked = observer(() => {
+    const { client } = useStore();
+    const { account_status } = client;
+    const { withdraw } = useCashierStore();
+    const {
+        is_10k_withdrawal_limit_reached: is_10K_limit,
+        error: { is_ask_financial_risk_approval },
+    } = withdraw;
+    const document = account_status.authentication?.document;
+    const identity = account_status.authentication?.identity;
+    const needs_verification = account_status.authentication?.needs_verification;
     const is_poi_needed = is_10K_limit && identity?.status !== 'verified';
     const has_poi_submitted = identity?.status !== 'none';
-    const is_poa_needed = is_10K_limit && (needs_verification.includes('document') || document?.status !== 'verified');
+    const is_poa_needed = is_10K_limit && (needs_verification?.includes('document') || document?.status !== 'verified');
     const has_poa_submitted = document?.status !== 'none';
     const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
     const history = useHistory();
@@ -80,10 +83,6 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_
             )}
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules, client }: TRootStore) => ({
-    account_status: client.account_status,
-    is_10K_limit: modules.cashier.withdraw.is_10k_withdrawal_limit_reached,
-    is_ask_financial_risk_approval: modules.cashier.withdraw.error.is_ask_financial_risk_approval,
-}))(WithdrawalLocked);
+export default WithdrawalLocked;

@@ -1,18 +1,20 @@
-import { action, computed, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore, TWebSocket } from '../types';
 
 export default class DepositStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
-        this.root_store = root_store;
-        this.WS = WS;
+        makeObservable(this, {
+            container: observable,
+            error: observable,
+            onMountDeposit: action.bound,
+        });
     }
 
-    @observable container = Constants.containers.deposit;
-    @observable error = new ErrorStore();
+    container = Constants.containers.deposit;
+    error = new ErrorStore();
 
-    @action.bound
     async onMountDeposit(): Promise<void> {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
@@ -33,7 +35,6 @@ export default class DepositStore {
 
         this.error.setErrorMessage({ code: '', message: '' }, null, false);
         setContainerHeight(0);
-        setLoading(true);
 
         if (!is_session_timeout) {
             checkIframeLoaded();
@@ -76,51 +77,5 @@ export default class DepositStore {
         }
 
         setLoading(false);
-    }
-
-    @computed
-    get is_deposit_locked(): boolean {
-        const {
-            is_authentication_needed,
-            is_tnc_needed,
-            is_financial_account,
-            is_financial_information_incomplete,
-            is_trading_experience_incomplete,
-            account_status,
-            is_eu,
-            mt5_login_list,
-            is_deposit_lock,
-        } = this.root_store.client;
-        if (!account_status?.status) return false;
-
-        const need_authentication = this.error.is_ask_authentication || (is_authentication_needed && is_eu);
-        const need_financial_assessment =
-            is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
-        // CR can deposit without accepting latest tnc except those with Financial STP
-        const need_tnc =
-            (is_eu ||
-                mt5_login_list.some(
-                    item => item.account_type === 'real' && item.sub_account_type === 'financial_stp'
-                )) &&
-            is_tnc_needed;
-
-        return (
-            is_deposit_lock ||
-            need_authentication ||
-            need_tnc ||
-            need_financial_assessment ||
-            this.error.is_ask_financial_risk_approval
-        );
-    }
-
-    @action.bound
-    submitFundsProtection(): void {
-        this.WS.send({ ukgc_funds_protection: 1, tnc_approval: 1 }).then(response => {
-            if (response.error) {
-                this.error.setMessage(response.error.message);
-            } else {
-                location.reload();
-            }
-        });
     }
 }

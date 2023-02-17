@@ -19,6 +19,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         account_currency,
         amount,
         amount_display,
+        effective_rate,
         id,
         is_active,
         local_currency,
@@ -46,6 +47,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
         rate: rate_display,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate: effective_rate,
     });
 
     const ad_pause_color = general_store.is_listed && !general_store.is_barred ? 'general' : 'less-prominent';
@@ -298,9 +300,7 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
                                             general_store.is_barred || is_activate_ad_disabled,
                                     }
                                 )}
-                                message={localize('{{status}}', {
-                                    status: is_advert_active && !general_store.is_barred ? 'Deactivate' : 'Activate',
-                                })}
+                                message={is_advert_active ? localize('Deactivate') : localize('Activate')}
                             >
                                 <Icon
                                     icon={`${

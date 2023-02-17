@@ -5,9 +5,11 @@ import {
     AccountLimits,
     Passwords,
     PersonalDetails,
+    TradingAssessment,
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ProofOfOwnership,
     ApiToken,
     TwoFactorAuthentication,
     SelfExclusion,
@@ -17,13 +19,14 @@ import {
     LoginHistory,
     AccountClosed,
     DeactivateAccount,
+    LanguageSettings,
 } from 'Sections';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 // Order matters
-const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
+const initRoutesConfig = ({ is_appstore }) => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -54,6 +57,22 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                         default: true,
                     },
                     {
+                        path: routes.languages,
+                        component: LanguageSettings,
+                        getTitle: () => localize('Languages'),
+                    },
+                ],
+            },
+            {
+                getTitle: () => localize('Assessments'),
+                icon: 'IcAssessment',
+                subroutes: [
+                    {
+                        path: routes.trading_assessment,
+                        component: TradingAssessment,
+                        getTitle: () => localize('Trading assessment'),
+                    },
+                    {
                         path: routes.financial_assessment,
                         component: FinancialAssessment,
                         getTitle: () => localize('Financial assessment'),
@@ -74,6 +93,11 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                         component: ProofOfAddress,
                         getTitle: () => localize('Proof of address'),
                     },
+                    {
+                        path: routes.proof_of_ownership,
+                        component: ProofOfOwnership,
+                        getTitle: () => localize('Proof of ownership'),
+                    },
                 ],
             },
             {
@@ -83,7 +107,7 @@ const initRoutesConfig = ({ is_appstore }, is_social_signup) => [
                     {
                         path: routes.passwords,
                         component: Passwords,
-                        getTitle: () => (is_social_signup ? localize('Passwords') : localize('Email and passwords')),
+                        getTitle: () => localize('Email and passwords'),
                     },
                     {
                         path: routes.self_exclusion,
@@ -147,9 +171,11 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }, is_social_signup) => {
-    routesConfig = initRoutesConfig({ is_appstore }, is_social_signup);
-    routesConfig.push(route_default);
+const getRoutesConfig = ({ is_appstore }) => {
+    if (!routesConfig) {
+        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig.push(route_default);
+    }
     return routesConfig;
 };
 

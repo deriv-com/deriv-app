@@ -12,7 +12,7 @@ const DeletePaymentMethodErrorModal = () => {
             is_open={my_profile_store.is_delete_payment_method_error_modal_open}
             small
             has_close_icon={false}
-            title={localize("Something's not right")}
+            title={localize('That payment method cannot be deleted')}
             onMount={() => general_store.setIsModalOpen(true)}
             onUnmount={() => general_store.setIsModalOpen(false)}
         >

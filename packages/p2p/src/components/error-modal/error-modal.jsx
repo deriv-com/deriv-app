@@ -11,15 +11,15 @@ const ErrorModal = ({
     has_close_icon,
     is_error_modal_open,
     setIsErrorModalOpen,
-    small,
+    width,
 }) => {
     return (
         <Modal
             className='error-modal'
             has_close_icon={has_close_icon}
             is_open={is_error_modal_open}
-            small={small}
             title={error_modal_title}
+            width={width}
         >
             <Modal.Body className='error-modal__body'>{error_message}</Modal.Body>
             <Modal.Footer>
@@ -37,7 +37,7 @@ ErrorModal.propTypes = {
     has_close_icon: PropTypes.bool,
     is_error_modal_open: PropTypes.bool,
     setIsErrorModalOpen: PropTypes.func,
-    small: PropTypes.bool,
+    width: PropTypes.string,
 };
 
 export default observer(ErrorModal);

@@ -5,18 +5,19 @@ import { getBrandWebsiteName, getPlatformSettings, toTitleCase, WS } from '@deri
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
-import UnlinkModal from 'Components/unlink-modal';
 import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
 import DerivGoLight from 'Assets/ic-brand-deriv-go-light.svg';
 import DerivGoDark from 'Assets/ic-brand-deriv-go-dark.svg';
 
 const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identity_provider }) => {
-    const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
-        WS.verifyEmail(email, 'reset_password');
-        setIsUnlinkModalOpen(false);
+        if (social_identity_provider === 'apple') {
+            WS.verifyEmail(email, 'request_email');
+        } else {
+            WS.verifyEmail(email, 'reset_password');
+        }
         setIsSentEmailModalOpen(true);
     };
 
@@ -46,7 +47,10 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                         />
                     </Text>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        <Localize i18n_default_text='Apps you can use with your Deriv login:' />
+                        <Localize
+                            i18n_default_text='Apps you have linked to your <0>Deriv password:</0>'
+                            components={[<strong key={0} />]}
+                        />
                     </Text>
                     <div className='passwords-platform__logo-container'>
                         <DerivComLogo className='passwords-platform__single-icon' />
@@ -72,46 +76,22 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                 {is_social_signup ? (
                     <React.Fragment>
                         <div className='account__passwords-item passwords-social-buttons'>
-                            <div className='passwords-social-buttons__desc'>
-                                <Text
-                                    as='p'
-                                    className='passwords-platform__desc'
-                                    color='prominent'
-                                    size='xs'
-                                    weight='lighter'
-                                >
-                                    <Localize
-                                        i18n_default_text="You're using your {{identifier_title}} account to log in to your Deriv account. To change your login method into using a username and password, click the <0>Unlink</0> button."
-                                        components={[<strong key={0} />]}
-                                        values={{ identifier_title: capitalized_identifier }}
-                                    />
-                                </Text>
-                            </div>
-                            <div className='account__passwords-linked'>
+                            <div className='account__passwords-linked' onClick={onClickSendEmail}>
                                 {social_identity_provider ? (
                                     <React.Fragment>
                                         <Icon icon={`IcStock${capitalized_identifier}`} size={16} />
                                         <Text size='xs'>
                                             <Localize
-                                                i18n_default_text='Linked with {{identifier_title}}'
+                                                i18n_default_text='Unlink from {{identifier_title}}'
                                                 values={{ identifier_title: capitalized_identifier }}
                                             />
                                         </Text>
+                                        <Icon icon='IcChevronRight' size={16} />
                                     </React.Fragment>
                                 ) : (
                                     ''
                                 )}
                             </div>
-                            <Button
-                                onClick={() => {
-                                    setIsUnlinkModalOpen(true);
-                                    setIsSentEmailModalOpen(true);
-                                }}
-                                type='button'
-                                text={localize('Unlink')}
-                                tertiary
-                                large
-                            />
                         </div>
                     </React.Fragment>
                 ) : (
@@ -133,17 +113,8 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                         />
                     </div>
                 )}
-                <UnlinkModal
-                    is_open={is_unlink_modal_open}
-                    onClose={() => {
-                        setIsUnlinkModalOpen(false);
-                        setIsSentEmailModalOpen(false);
-                    }}
-                    identifier_title={capitalized_identifier}
-                    onClickSendEmail={onClickSendEmail}
-                />
                 <SentEmailModal
-                    is_open={is_sent_email_modal_open && !is_unlink_modal_open}
+                    is_open={is_sent_email_modal_open}
                     onClose={() => setIsSentEmailModalOpen(false)}
                     identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}

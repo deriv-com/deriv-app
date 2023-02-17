@@ -13,7 +13,7 @@ const MT5AccountNeededModal = ({
     enableApp,
     openRealAccountSignup,
 }) => {
-    const dmt5_label = is_eu ? localize('CFDs') : localize('DMT5');
+    const dmt5_label = is_eu ? localize('CFDs') : localize('Deriv MT5');
     const deriv_label = is_eu ? localize('Deriv Multipliers') : localize('Deriv');
 
     const createAccount = () => {

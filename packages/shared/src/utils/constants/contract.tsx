@@ -130,12 +130,15 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
 });
 
 export const getContractCategoriesConfig = () => ({
-    [localize('Multipliers')]: ['multiplier'],
-    [localize('Ups & Downs')]: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
-    [localize('Highs & Lows')]: ['high_low', 'touch', 'tick_high_low'],
-    [localize('Ins & Outs')]: ['end', 'stay'],
-    [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
-    [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
+    Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
+    'Ups & Downs': {
+        name: localize('Ups & Downs'),
+        categories: ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
+    },
+    'Highs & Lows': { name: localize('Highs & Lows'), categories: ['high_low', 'touch', 'tick_high_low'] },
+    'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
+    'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
+    Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
 });
 
 export const unsupported_contract_types_list = [
@@ -252,7 +255,9 @@ export const getMarketNamesMap = () => ({
     WLDUSD: localize('USD Basket'),
     '1HZ10V': localize('Volatility 10 (1s) Index'),
     '1HZ100V': localize('Volatility 100 (1s) Index'),
+    '1HZ150V': localize('Volatility 150 (1s) Index'),
     '1HZ200V': localize('Volatility 200 (1s) Index'),
+    '1HZ250V': localize('Volatility 250 (1s) Index'),
     '1HZ300V': localize('Volatility 300 (1s) Index'),
     JD10: localize('Jump 10 Index'),
     JD25: localize('Jump 25 Index'),
@@ -411,7 +416,7 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
 });
 
-export const getContractConfig = (is_high_low: boolean) => ({
+export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });

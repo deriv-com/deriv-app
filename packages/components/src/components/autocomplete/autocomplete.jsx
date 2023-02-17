@@ -31,19 +31,24 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
 const Autocomplete = React.memo(props => {
     const {
         autoComplete,
+        data_testid,
         className,
         dropdown_offset,
         historyValue,
         error,
         has_updating_list = true,
+        hide_list = false,
         input_id,
         is_alignment_top,
+        is_list_visible = false,
         list_items,
         list_portal_id,
         onHideDropdownList,
         onItemSelection,
         onScrollStop,
+        onShowDropdownList,
         should_filter_by_char,
+        show_list = false,
         value,
         ...other_props
     } = props;
@@ -65,9 +70,11 @@ const Autocomplete = React.memo(props => {
 
     React.useEffect(() => {
         if (has_updating_list) {
-            setFilteredItems(list_items);
+            const new_filtered_items = is_list_visible ? getFilteredItems(value.toLowerCase(), list_items) : list_items;
+
+            setFilteredItems(new_filtered_items);
             if (historyValue) {
-                const index = filtered_items.findIndex(object => {
+                const index = new_filtered_items.findIndex(object => {
                     return object.text === historyValue;
                 });
                 setInputValue(historyValue);
@@ -80,11 +87,21 @@ const Autocomplete = React.memo(props => {
     }, [list_items, has_updating_list, historyValue]);
 
     React.useEffect(() => {
+        if (is_list_visible) {
+            const index = filtered_items.findIndex(item => item.text === historyValue);
+            setActiveIndex(index);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filtered_items]);
+
+    React.useEffect(() => {
+        if (show_list) showDropdownList();
+        if (hide_list) hideDropdownList();
         if (should_show_list && list_item_ref.current) {
             const item = list_item_ref.current.offsetTop;
             dropdown_ref.current.scrollTo({ top: item, behavior: 'smooth' });
         }
-    }, [should_show_list, list_item_ref]);
+    }, [show_list, hide_list, should_show_list, list_item_ref]);
 
     React.useEffect(() => {
         if (list_wrapper_ref.current && list_portal_id && should_show_list) {
@@ -204,7 +221,7 @@ const Autocomplete = React.memo(props => {
         e.preventDefault();
         hideDropdownList();
 
-        setFilteredItems(props.list_items);
+        if (!is_list_visible) setFilteredItems(list_items);
 
         if (input_value === '' && typeof props.onItemSelection === 'function') {
             props.onItemSelection({
@@ -227,7 +244,13 @@ const Autocomplete = React.memo(props => {
         }
     };
 
-    const showDropdownList = () => setShouldShowList(true);
+    const showDropdownList = () => {
+        setShouldShowList(true);
+
+        if (typeof props.onShowDropdownList === 'function') {
+            props.onShowDropdownList();
+        }
+    };
 
     const hideDropdownList = () => {
         setShouldShowList(false);
@@ -248,7 +271,7 @@ const Autocomplete = React.memo(props => {
     };
 
     return (
-        <div className={classNames('dc-autocomplete', className)}>
+        <div data-testid={data_testid} className={classNames('dc-autocomplete', className)}>
             <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>
                 <Input
                     {...other_props}
@@ -299,7 +322,7 @@ const Autocomplete = React.memo(props => {
                         // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
                     }),
                 }}
-                is_visible={should_show_list}
+                is_visible={should_show_list || is_list_visible}
                 list_items={filtered_items}
                 list_height={props.list_height}
                 // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
@@ -321,6 +344,8 @@ Autocomplete.defaultProps = {
 
 Autocomplete.propTypes = {
     className: PropTypes.string,
+    data_testid: PropTypes.string,
+    is_list_visible: PropTypes.bool,
     list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
         PropTypes.arrayOf(
@@ -334,6 +359,7 @@ Autocomplete.propTypes = {
     not_found_text: PropTypes.string,
     onHideDropdownList: PropTypes.func,
     onItemSelection: PropTypes.func,
+    onShowDropdownList: PropTypes.func,
     list_portal_id: PropTypes.string,
     is_alignment_top: PropTypes.bool,
     should_filter_by_char: PropTypes.bool,
@@ -345,6 +371,8 @@ Autocomplete.propTypes = {
     onScrollStop: PropTypes.func,
     value: PropTypes.string,
     onBlur: PropTypes.func,
+    show_list: PropTypes.bool,
+    hide_list: PropTypes.bool,
 };
 
 export default Autocomplete;

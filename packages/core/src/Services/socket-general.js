@@ -30,14 +30,10 @@ const BinarySocketGeneral = (() => {
 
     const onMessage = response => {
         handleError(response);
-        console.log(response.msg_type, 'response.msg_type');
-        debugger;
         // Header.hideNotification('CONNECTION_ERROR');
         switch (response.msg_type) {
             case 'authorize':
                 if (response.error) {
-                    console.log(response.error, 'response.error');
-                    debugger;
                     const is_active_tab = sessionStorage.getItem('active_tab') === '1';
                     if (getPropertyValue(response, ['error', 'code']) === 'SelfExclusion' && is_active_tab) {
                         sessionStorage.removeItem('active_tab');
@@ -45,8 +41,6 @@ const BinarySocketGeneral = (() => {
                     }
                     client_store.logout();
                 } else if (!/authorize/.test(State.get('skip_response'))) {
-                    console.log(response.authorize.loginid, 'response.authorize.loginid');
-                    debugger;
                     // is_populating_account_list is a check to avoid logout on the first logged-in session
                     // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (
@@ -54,11 +48,6 @@ const BinarySocketGeneral = (() => {
                         !client_store.is_populating_account_list &&
                         !client_store.is_switching
                     ) {
-                        console.log(response.authorize.loginid, 'response.authorize.loginid');
-                        console.log(client_store.loginid, 'client_store.loginid');
-                        console.log(!client_store.is_populating_account_list, '!client_store.is_populating_account_list');
-                        console.log(!client_store.is_switching, '!client_store.is_switching');
-                        debugger;
                         client_store.logout();
                     } else if (response.authorize.loginid === client_store.loginid) {
                         // All other cases continue with the loginid and authorize the profile
@@ -114,8 +103,6 @@ const BinarySocketGeneral = (() => {
             const remaining_session_time = duration * 60 * 1000 - current_session_duration;
             clearTimeout(session_timeout);
             session_timeout = setTimeout(() => {
-                console.log(client_store, 'session_timeout');
-                debugger;
                 client_store.logout();
                 sessionStorage.removeItem('session_start_time');
             }, remaining_session_time);
@@ -216,8 +203,7 @@ const BinarySocketGeneral = (() => {
 
                 // DBot handles this internally. Special case: 'client.invalid_token'
                 if (active_platform === 'DBot') return;
-                console.log(active_platform, 'active_platform');
-                debugger;
+
                 client_store.logout().then(() => {
                     let redirect_to = routes.trade;
                     const action = getActionFromUrl();
@@ -235,8 +221,6 @@ const BinarySocketGeneral = (() => {
                 if (msg_type === 'buy') {
                     return;
                 }
-                console.log(msg_type, client_store, 'client_store');
-                debugger;
                 client_store.logout();
                 break;
             // no default

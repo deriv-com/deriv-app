@@ -69,14 +69,6 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-// {generateModalTitle(
-//     general_store.is_form_modified,
-//     buy_sell_store.selected_ad_state,
-//     my_profile_store.setShouldShowAddPaymentMethodForm,
-//     my_profile_store.should_show_add_payment_method_form,
-//     showModal,
-//     buy_sell_store.table_type
-// )}
 const useGenerateModalTitle = () => {
     const { general_store, buy_sell_store, advertiser_page_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();

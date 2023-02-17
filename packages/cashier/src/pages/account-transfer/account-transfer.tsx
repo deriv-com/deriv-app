@@ -99,7 +99,7 @@ const AccountTransfer = observer(
             return <AccountTransferNoAccount openAccountSwitcherModal={openAccountSwitcherModal} />;
         }
         if (has_no_accounts_balance) {
-            return <NoBalance />;
+            return <NoBalance onClickDeposit={onClickDeposit} />;
         }
         if (is_transfer_confirm) {
             return <AccountTransferReceipt onClose={onClose} />;

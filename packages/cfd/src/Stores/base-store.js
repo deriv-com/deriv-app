@@ -490,6 +490,7 @@ export default class BaseStore {
     }
 
     disposeLogout() {
+        console.log('disposeLogout', 'base-store js')
         if (typeof this.logoutDisposer === 'function') {
             this.logoutDisposer();
         }

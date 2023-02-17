@@ -69,7 +69,7 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-const useGenerateModalTitle = () => {
+const BuySellModalTitle = () => {
     const { general_store, buy_sell_store, advertiser_page_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
 
@@ -116,8 +116,6 @@ const BuySellModal = () => {
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
     const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 2000;
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
-
-    const modal_title = useGenerateModalTitle();
 
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
@@ -248,7 +246,7 @@ const BuySellModal = () => {
                     is_flex
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell__modal-header'
-                    page_header_text={modal_title}
+                    page_header_text={<BuySellModalTitle />}
                     pageHeaderReturnFn={onCancel}
                 >
                     {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
@@ -287,7 +285,7 @@ const BuySellModal = () => {
                     height={buy_sell_store.table_type === buy_sell.BUY ? 'auto' : '649px'}
                     width='456px'
                     is_open={is_modal_open}
-                    title={modal_title}
+                    title={<BuySellModalTitle />}
                     portalId={general_store.props.modal_root_id}
                     toggleModal={onCancel}
                 >

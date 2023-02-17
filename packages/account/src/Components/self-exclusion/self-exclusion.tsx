@@ -198,7 +198,7 @@ const SelfExclusion = ({
     const resetState = () => setState(initial_state);
 
     const validateFields = (values: FormikValues) => {
-        const errors: Record<string, string | null> = {};
+        const errors: Record<string, string | null | undefined> = {};
 
         // Regex
         const max_number = exclusion_fields_settings.max_number;

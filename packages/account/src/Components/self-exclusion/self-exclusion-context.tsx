@@ -20,10 +20,10 @@ export type TSelfExclusionContext = {
     is_tablet?: boolean;
     is_wrapper_bypassed?: boolean;
     overlay_ref: HTMLDivElement;
-    session_duration_digits?: boolean;
+    session_duration_digits?: number | boolean;
     state?: FormikValues;
     toggleArticle?: () => void;
-    validateFields?: (values: FormikValues) => Record<string, string | null>;
+    validateFields?: (values: FormikValues) => Record<string, string | null | undefined>;
 };
 
 const SelfExclusionContext = React.createContext<TSelfExclusionContext>({

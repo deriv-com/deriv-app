@@ -24,7 +24,7 @@ export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-
 export const validTaxID = (value: string) => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
 export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
 export const validLetterSymbol = (value: string) => {
-    const pattern = "^[A-Za-z][A-Za-z.' -]*[a-zA-Z.' -]+$";
+    const pattern = "^[A-Za-z][A-Za-z.' -]*[A-Za-z.' -]$";
     const regex = new RegExp(pattern);
     regex.test(value);
 };

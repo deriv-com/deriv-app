@@ -2505,8 +2505,12 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         const { gaming_company, financial_company } = this.landing_companies;
+
+        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
+        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
+
         const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
-        return high_risk_landing_company || this.account_status.risk_classification === 'high';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
     get is_low_risk() {

@@ -8,7 +8,6 @@ import {
     getLimitOrderAmount,
     getCurrentTick,
     getDisplayStatus,
-    getTotalProfit,
     isValidToCancel,
     isValidToSell,
     shouldShowCancellation,
@@ -24,8 +23,8 @@ import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 
 const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sold, progress_slider, status }) => {
-    const { buy_price, bid_price, entry_spot_display_value, barrier } = contract_info;
-    const total_profit = getTotalProfit(contract_info);
+    const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit } = contract_info;
+    const contract_value = is_sold ? sell_price : bid_price;
 
     return (
         <React.Fragment>
@@ -36,7 +35,7 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                     </ContractCardItem>
 
                     <ContractCardItem header={getCardLabels().CONTRACT_VALUE}>
-                        <Money amount={bid_price} currency={currency} />
+                        <Money amount={contract_value} currency={currency} />
                     </ContractCardItem>
 
                     <ContractCardItem header={getCardLabels().ENTRY_SPOT}>
@@ -51,10 +50,10 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                     className='dc-contract-card-item__total-profit-loss'
                     header={getCardLabels().TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={+total_profit < 0}
-                    is_won={+total_profit > 0}
+                    is_loss={+profit < 0}
+                    is_won={+profit > 0}
                 >
-                    <Money amount={total_profit} currency={currency} />
+                    <Money amount={profit} currency={currency} />
                     <div
                         className={classNames('dc-contract-card__indicative--movement', {
                             'dc-contract-card__indicative--movement-complete': is_sold,
@@ -79,7 +78,7 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
 
                     <div className='dc-contract-card-items-wrapper-group'>
                         <ContractCardItem header={getCardLabels().CONTRACT_VALUE}>
-                            <Money amount={bid_price} currency={currency} />
+                            <Money amount={contract_value} currency={currency} />
                         </ContractCardItem>
 
                         <ContractCardItem header={getCardLabels().STRIKE}>
@@ -99,10 +98,10 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                         className='dc-contract-card-item__total-profit-loss'
                         header={getCardLabels().TOTAL_PROFIT_LOSS}
                         is_crypto={isCryptocurrency(currency)}
-                        is_loss={+total_profit < 0}
-                        is_won={+total_profit > 0}
+                        is_loss={+profit < 0}
+                        is_won={+profit > 0}
                     >
-                        <Money amount={total_profit} currency={currency} />
+                        <Money amount={profit} currency={currency} />
                         <div
                             className={classNames('dc-contract-card__indicative--movement', {
                                 'dc-contract-card__indicative--movement-complete': is_sold,
@@ -141,7 +140,6 @@ const MultiplierCardBody = ({
 }) => {
     const { buy_price, bid_price, profit, limit_order, underlying } = contract_info;
 
-    const total_profit = getTotalProfit(contract_info);
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
     const cancellation_price = getCancellationPrice(contract_info);
     const is_valid_to_cancel = isValidToCancel(contract_info);
@@ -225,10 +223,10 @@ const MultiplierCardBody = ({
                 className='dc-contract-card-item__total-profit-loss'
                 header={getCardLabels().TOTAL_PROFIT_LOSS}
                 is_crypto={isCryptocurrency(currency)}
-                is_loss={+total_profit < 0}
-                is_won={+total_profit > 0}
+                is_loss={+profit < 0}
+                is_won={+profit > 0}
             >
-                <Money amount={total_profit} currency={currency} />
+                <Money amount={profit} currency={currency} />
                 <div
                     className={classNames('dc-contract-card__indicative--movement', {
                         'dc-contract-card__indicative--movement-complete': is_sold,

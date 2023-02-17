@@ -409,8 +409,13 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const { trading_hub } = this.account_settings;
+                const lang_from_url = window.location.search.slice(-2);
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
+                if (lang_from_url) {
+                    this.setPreferredLanguage(lang_from_url);
+                    localStorage.setItem(LANGUAGE_KEY, lang_from_url);
+                }
             }
         );
         // TODO: Remove this after setting trading_hub enabled for all users
@@ -420,7 +425,6 @@ export default class ClientStore extends BaseStore {
             () => {
                 const { trading_hub } = this.account_settings;
                 const is_traders_hub = !!trading_hub;
-
                 if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
                     window.location.href = routes.root;
                 } else if (
@@ -1655,7 +1659,7 @@ export default class ClientStore extends BaseStore {
             history.replaceState(
                 null,
                 null,
-                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `/?${filteredQuery}`)
+                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `?${filteredQuery}`)
             );
         }
 
@@ -2509,7 +2513,11 @@ export default class ClientStore extends BaseStore {
         const { gaming_company, financial_company } = this.landing_companies;
         const low_risk_landing_company =
             financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
-        return low_risk_landing_company || this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
+        return (
+            low_risk_landing_company ||
+            (this.upgradeable_landing_companies?.includes('svg') &&
+                this.upgradeable_landing_companies?.includes('maltainvest'))
+        );
     }
 
     get has_residence() {

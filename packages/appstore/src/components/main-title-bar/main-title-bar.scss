@@ -1,0 +1,45 @@
+.main-title-bar {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 2.4rem;
+
+    &__text {
+        font-size: 1.9rem;
+    }
+
+    &__right {
+        display: inline-flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 2rem;
+
+        &--regulator {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 14rem;
+
+            &__container.loader {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                cursor: not-allowed;
+            }
+
+            &--compare-modal {
+                padding-right: 1rem;
+            }
+        }
+
+        &--account-type-dropdown {
+            padding-top: 0.5rem;
+        }
+    }
+}

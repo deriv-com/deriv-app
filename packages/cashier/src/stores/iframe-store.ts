@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
-import Constants from 'Constants/constants';
-import { TRootStore } from 'Types';
+import Constants from '../constants/constants';
+import { TRootStore } from '../types';
 
 type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 
@@ -79,7 +79,7 @@ export default class IframeStore {
         }
     }
 
-    setIframeUrl(url: string): void {
+    setIframeUrl(url?: string): void {
         const { client, ui } = this.root_store;
 
         if (url) {
@@ -94,7 +94,7 @@ export default class IframeStore {
                 client.setVerificationCode('', Constants.map_action[container_key]);
             }
         } else {
-            this.iframe_url = url;
+            this.iframe_url = url || '';
         }
     }
 

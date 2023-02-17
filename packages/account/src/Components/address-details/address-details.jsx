@@ -158,6 +158,7 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('First line of address')}
+                                            disabled={props.value?.address_line_1}
                                         />
                                         <InputField
                                             name='address_line_2'
@@ -169,6 +170,7 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('Second line of address')}
+                                            disabled={props.value?.address_line_2}
                                         />
                                         <InputField
                                             name='address_city'
@@ -179,6 +181,7 @@ const AddressDetails = ({
                                                     : localize('Town/City')
                                             }
                                             placeholder={localize('Town/City')}
+                                            disabled={props.value?.address_city}
                                         />
                                         {!has_fetched_states_list && (
                                             <div className='details-form__loader'>
@@ -209,6 +212,7 @@ const AddressDetails = ({
                                                                     setAddressStateToDisplay('');
                                                                 }}
                                                                 list_portal_id={is_appstore ? '' : 'modal_root'}
+                                                                disabled={props.value?.address_state}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -226,6 +230,7 @@ const AddressDetails = ({
                                                                     );
                                                                     setAddressStateToDisplay('');
                                                                 }}
+                                                                disabled={props.value?.address_state}
                                                             />
                                                         </MobileWrapper>
                                                     </>
@@ -237,6 +242,7 @@ const AddressDetails = ({
                                                 name='address_state'
                                                 label={localize('State/Province')}
                                                 placeholder={localize('State/Province')}
+                                                disabled={props.value?.address_state}
                                             />
                                         )}
                                         <InputField
@@ -250,6 +256,7 @@ const AddressDetails = ({
                                                 setFieldTouched('address_postcode', true);
                                                 handleChange(e);
                                             }}
+                                            disabled={props.value?.address_postcode}
                                         />
                                     </div>
                                 </ThemedScrollbars>

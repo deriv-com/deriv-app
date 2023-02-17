@@ -3,12 +3,13 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
-import { TReactChangeEvent, TReactChildren } from 'Types';
+import { observer } from '@deriv/stores';
+import { TReactChangeEvent, TReactChildren } from '../../types';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
-    onComplete: () => void;
+    onComplete: VoidFunction;
 };
 
 type TInputGroupProps = {
@@ -18,17 +19,17 @@ type TInputGroupProps = {
 
 type TCryptoFiatConverterProps = {
     from_currency: string;
-    hint: string | TReactChildren;
+    hint?: string | TReactChildren;
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,
         to_currency: string
     ) => void;
     onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
-    resetConverter: () => void;
+    resetConverter: VoidFunction;
     to_currency: string;
-    validateFromAmount: () => void;
-    validateToAmount: () => void;
+    validateFromAmount: VoidFunction;
+    validateToAmount: VoidFunction;
 };
 
 const Timer = ({ onComplete }: TTimerProps) => {
@@ -74,11 +75,7 @@ const CryptoFiatConverter = observer(
         validateFromAmount,
         validateToAmount,
     }: TCryptoFiatConverterProps) => {
-        const {
-            modules: {
-                cashier: { crypto_fiat_converter },
-            },
-        } = useStore();
+        const { crypto_fiat_converter } = useCashierStore();
 
         const {
             converter_from_amount,

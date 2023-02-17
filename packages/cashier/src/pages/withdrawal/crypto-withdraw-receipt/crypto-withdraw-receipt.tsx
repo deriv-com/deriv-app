@@ -3,9 +3,10 @@ import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TAccount } from 'Types';
-import { getAccountText } from 'Utils/utility';
-import RecentTransaction from 'Components/recent-transaction';
+import { TAccount } from '../../../types';
+import { getAccountText } from '../../../utils/utility';
+import RecentTransaction from '../../../components/recent-transaction';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-receipt.scss';
 
 type TWalletInformationProps = {
@@ -27,7 +28,7 @@ const Status = () => {
     );
 };
 
-const AcountInformation = ({ account }: { account: TAccount }) => {
+const AccountInformation = ({ account }: { account: TAccount }) => {
     return (
         <div className='crypto-withdraw-receipt__account-info'>
             <div className='crypto-withdraw-receipt__account-info-detail'>
@@ -97,26 +98,18 @@ const WalletInformation = ({ account, blockchain_address }: TWalletInformationPr
 };
 
 const CryptoWithdrawReceipt = observer(() => {
-    const {
-        client,
-        modules: {
-            cashier: { account_transfer, general_store, transaction_history, withdraw },
-        },
-    } = useStore();
-
-    const { selected_from: account } = account_transfer;
-
+    const { client } = useStore();
     const { currency, is_switching } = client;
-
+    const { account_transfer, general_store, transaction_history, withdraw } = useCashierStore();
+    const { selected_from: account } = account_transfer;
     const { cashier_route_tab_index: tab_index } = general_store;
-
     const {
         crypto_transactions,
         onMount: recentTransactionOnMount,
         setIsCryptoTransactionsVisible,
     } = transaction_history;
 
-    const { blockchain_address, resetWithrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
+    const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -125,7 +118,7 @@ const CryptoWithdrawReceipt = observer(() => {
     React.useEffect(() => {
         return () => {
             setIsWithdrawConfirmed(false);
-            resetWithrawForm();
+            resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, tab_index]);
@@ -160,7 +153,7 @@ const CryptoWithdrawReceipt = observer(() => {
                     />
                 </Text>
                 {isMobile() && <Status />}
-                <AcountInformation account={account} />
+                <AccountInformation account={account} />
                 <Icon className='crypto-withdraw-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} />
             </div>

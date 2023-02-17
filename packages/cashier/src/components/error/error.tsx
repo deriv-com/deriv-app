@@ -11,7 +11,7 @@ type TErrorComponentProps = {
     footer?: JSX.Element;
     header?: JSX.Element | string;
     message?: JSX.Element;
-    onClickButton?: () => void;
+    onClickButton?: VoidFunction;
 };
 
 type TErrorFields = {

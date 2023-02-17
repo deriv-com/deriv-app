@@ -58,8 +58,15 @@ export const removeToken = token => {
 };
 
 export const removeAllTokens = () => {
+    const is_logging_in = localStorage.getItem('is_logging_in');
+
+    if (!is_logging_in) {
+        set('active_loginid', null);
+    }
+
     delete store.tokenList;
-    set('active_loginid', null);
+    delete localStorage.is_logging_in;
+
     set('tokenList', '[]');
     set('client.accounts', '[]');
     syncWithDerivApp();

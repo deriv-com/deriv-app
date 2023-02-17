@@ -91,7 +91,7 @@
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
         <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
         <script>
-            document.getElementById("localstorage-sync").src = "https://localhost.binary.sx";
+           document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
 
             // Auto login from deriv app
             const login_url = localStorage.getItem('login_url')
@@ -100,6 +100,7 @@
 
             if(login_url && !is_logged_in){
                const { origin } = window.location;
+               localStorage.setItem('is_logging_in',true)
                window.location.href = `${origin}?${login_url}`
             }
 

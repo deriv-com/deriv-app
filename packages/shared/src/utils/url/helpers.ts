@@ -33,7 +33,7 @@ export const getUrlSmartTrader = () => {
 export const getUrlBinaryBot = () => {
     const { is_deriv_app } = getPlatformFromUrl();
 
-    return 'https://deriv-binary-4ui2756zh.binary.sx/';
+    return is_deriv_app ? deriv_urls.BINARYBOT_PRODUCTION : deriv_urls.BINARYBOT_STAGING;
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {

@@ -5,6 +5,7 @@ import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import React from 'react';
 import RootStore from './root-store';
+import { setColors } from '../../../bot-skeleton/src/scratch/hooks/colours';
 
 export type TWorkspace = {
     id: string;
@@ -26,6 +27,8 @@ interface ILoadModalStore {
     selected_strategy_id: string[] | string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
+    refreshStratagies: () => void;
+    refreshStratagiesr: () => void;
     preview_workspace: () => void;
     handleFileChange: (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
@@ -71,6 +74,8 @@ export default class LoadModalStore implements ILoadModalStore {
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
+            refreshStratagies: action.bound,
+            refreshStratagiesr: action.bound,
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
             loadFileFromLocal: action.bound,
@@ -192,7 +197,9 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-
+    refreshStratagiesr = (): void => {
+        load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
+    };
     loadFileFromRecent = (): void => {
         this.is_open_button_loading = true;
 
@@ -336,7 +343,9 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
-        load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
+        const dark_mode = document.body.classList.contains('theme--dark');
+        setColors(dark_mode);
+        this.refreshStratagiesr();
         const {
             save_modal: { updateBotName },
         } = this.root_store;

@@ -17,7 +17,11 @@ type TBotBuilder = {
     has_started_onboarding_tour: boolean;
     has_started_bot_builder_tour: boolean;
     is_preview_on_popup: boolean;
+    is_dark_mode_on: boolean;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => boolean;
+    loadFileFromRecent: () => void;
+    selected_strategy_id: string;
+    previewRecentStrategy: (selected_strategy_id: string) => void;
 };
 
 const BotBuilder = ({
@@ -26,9 +30,19 @@ const BotBuilder = ({
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
     is_preview_on_popup,
+    is_dark_mode_on,
+    selected_strategy_id,
+    loadFileFromRecent,
+    previewRecentStrategy,
 }: TBotBuilder) => {
     const [is_tour_running] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            previewRecentStrategy(selected_strategy_id);
+        }, 0); // made this async to give it a split second delay
+    }, [is_dark_mode_on]);
 
     React.useEffect(() => {
         onMount();
@@ -98,11 +112,15 @@ const BotBuilder = ({
     );
 };
 
-export default connect(({ app, dashboard }: RootStore) => ({
+export default connect(({ app, dashboard, load_modal, ui }: RootStore) => ({
     app,
     active_tab: dashboard.active_tab,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_preview_on_popup: dashboard.is_preview_on_popup,
+    is_dark_mode_on: ui.is_dark_mode_on,
+    loadFileFromRecent: load_modal.loadFileFromRecent,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
+    previewRecentStrategy: load_modal.previewRecentStrategy,
+    selected_strategy_id: load_modal.selected_strategy_id,
 }))(BotBuilder);

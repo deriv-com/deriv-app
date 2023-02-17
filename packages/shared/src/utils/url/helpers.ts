@@ -33,7 +33,7 @@ export const getUrlSmartTrader = () => {
 export const getUrlBinaryBot = () => {
     const { is_deriv_app } = getPlatformFromUrl();
 
-    return 'https://deriv-binary-bot-git-fork-rupato-deriv-fix-local-storage-issue.binary.sx/';
+    return 'https://deriv-binary-4ui2756zh.binary.sx/';
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {

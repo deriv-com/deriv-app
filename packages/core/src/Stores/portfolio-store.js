@@ -472,7 +472,6 @@ export default class PortfolioStore extends BaseStore {
     }
 
     onUnmount() {
-        console.log('onUnmount', 'portfolio-store.js');
         const is_reports_path = /^\/reports/.test(window.location.pathname);
         if (!is_reports_path) {
             this.clearTable();

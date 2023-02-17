@@ -1553,7 +1553,6 @@ export default class ClientStore extends BaseStore {
 
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
-            console.log('handleNotFoundLoginId', 'client-store.js', authorize_response?.error);
             await this.logout();
             this.root_store.common.setError(true, {
                 header: authorize_response.error.message,
@@ -1825,7 +1824,6 @@ export default class ClientStore extends BaseStore {
             message: localize('Could not switch to default account.'),
             type: 'danger',
         });
-        console.log('handleNotFoundLoginId', 'client-store.js');
         // request a logout
         this.logout();
     }
@@ -2014,7 +2012,6 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
-        console.log('onUnmount', 'client-store.js');
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 

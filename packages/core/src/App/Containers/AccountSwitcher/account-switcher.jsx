@@ -589,6 +589,10 @@ const AccountSwitcher = props => {
         canOpenMulti() &&
         (!props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency));
 
+    const can_manage_account_when_virtual =
+        props.is_virtual &&
+        (!props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency));
+
     const have_more_accounts = type =>
         getSortedAccountList(props.account_list, props.accounts).filter(
             account => !account.is_virtual && account.loginid.startsWith(type)
@@ -1110,7 +1114,8 @@ const AccountSwitcher = props => {
                                                 if (props.real_account_creation_unlock_date) {
                                                     closeAccountsDialog();
                                                     props.setShouldShowCooldownModal(true);
-                                                } else if (can_manage_account) props.openRealAccountSignup('manage');
+                                                } else if (can_manage_account || can_manage_account_when_virtual)
+                                                    props.openRealAccountSignup('manage');
                                                 else props.openRealAccountSignup(account);
                                             }}
                                             className='acc-switcher__new-account-btn'

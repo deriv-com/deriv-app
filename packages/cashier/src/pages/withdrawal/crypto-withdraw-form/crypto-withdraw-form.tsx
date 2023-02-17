@@ -66,7 +66,7 @@ const CryptoWithdrawForm = observer(() => {
         setWithdrawPercentageSelectorResult,
         validateWithdrawFromAmount,
         validateWithdrawToAmount,
-        resetWithrawForm,
+        resetWithdrawForm,
     } = withdraw;
     const {
         converter_from_error,
@@ -87,7 +87,7 @@ const CryptoWithdrawForm = observer(() => {
 
         return () => {
             percentageSelectorSelectionStatus(false);
-            resetWithrawForm();
+            resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -108,7 +108,7 @@ const CryptoWithdrawForm = observer(() => {
         <div className='cashier__wrapper' data-testid='dt_crypto_withdraw_form'>
             {!isMobile() && <Header currency={currency} />}
             <div className={classNames({ 'crypto-withdraw-form__icon': isMobile() })}>
-                <Icon icon={`IcCurrency-${account_platform_icon.toLowerCase()}`} size={isMobile() ? 64 : 128} />
+                <Icon icon={`IcCurrency-${account_platform_icon?.toLowerCase()}`} size={isMobile() ? 64 : 128} />
             </div>
             {isMobile() && <Header currency={currency} />}
             <Formik

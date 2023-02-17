@@ -20,6 +20,7 @@ const setStorageEvents = root_store => {
             }
             case 'active_loginid':
                 if (localStorage.getItem('active_loginid') === 'null' || !localStorage.getItem('active_loginid')) {
+                    console.log('active_loginid', 'init-store js')
                     root_store.client.logout();
                 }
                 if (document.hidden) {

@@ -44,6 +44,7 @@ type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
     has_submitted_cfd_personal_details: boolean;
+    is_authenticated_with_idv_photoid: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
@@ -55,6 +56,7 @@ type TItemsState = {
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
+    // console.log('Rendered: CFDFinancialStpRealAccountSignup');
     const {
         account_status,
         authentication_status,
@@ -63,6 +65,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         refreshNotifications,
         has_submitted_cfd_personal_details,
         jurisdiction_selected_shortcode,
+        is_authenticated_with_idv_photoid,
     } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
@@ -96,7 +99,14 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             address_postcode: get_settings.address_postcode,
             upload_file: '',
         },
-        forwarded_props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+        forwarded_props: [
+            'states_list',
+            'get_settings',
+            'storeProofOfAddress',
+            'refreshNotifications',
+            'jurisdiction_selected_shortcode',
+            'is_authenticated_with_idv_photoid',
+        ],
     };
 
     const personal_details_config: TItemsState = {
@@ -117,9 +127,16 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         }
         return need_poi_for_bvi_labuan;
     };
-    const should_show_poa = !(
-        authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
-    );
+
+    let should_show_poa = false;
+
+    if (jurisdiction_selected_shortcode === 'labuan' && is_authenticated_with_idv_photoid) {
+        should_show_poa = true;
+    } else {
+        should_show_poa = !(
+            authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
+        );
+    }
 
     const should_show_personal_details =
         !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== 'maltainvest';
@@ -229,4 +246,5 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     account_status: client.account_status,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
+    is_authenticated_with_idv_photoid: client.is_authenticated_with_idv_photoid,
 }))(CFDFinancialStpRealAccountSignup);

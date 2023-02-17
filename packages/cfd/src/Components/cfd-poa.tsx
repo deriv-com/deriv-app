@@ -84,6 +84,8 @@ export type TCFDPOAProps = {
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
+    is_authenticated_with_idv_photoid: boolean;
+    jurisdiction_selected_shortcode: string;
 };
 type TUpload = {
     upload: () => void;
@@ -91,7 +93,15 @@ type TUpload = {
 
 let file_uploader_ref: React.RefObject<HTMLElement & TUpload>;
 
-const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => {
+const CFDPOA = ({
+    onSave,
+    index,
+    onSubmit,
+    refreshNotifications,
+    jurisdiction_selected_shortcode,
+    is_authenticated_with_idv_photoid,
+    ...props
+}: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
 
     const [is_loading, setIsLoading] = React.useState(true);
@@ -227,7 +237,10 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
     React.useEffect(() => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
-                const poa_status = response.get_account_status?.authentication?.document?.status;
+                const poa_status =
+                    jurisdiction_selected_shortcode === 'labuan' && is_authenticated_with_idv_photoid
+                        ? 'none'
+                        : response.get_account_status?.authentication?.document?.status;
                 const poi_status = response.get_account_status?.authentication?.identity?.status;
                 const poa_failed_status = ['rejected', 'expired', 'suspected'];
                 if (poa_status && poi_status) {

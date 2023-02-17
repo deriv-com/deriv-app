@@ -61,8 +61,12 @@ const CFDDbviOnboarding = ({
             const { get_account_status } = response;
 
             if (get_account_status?.authentication) {
-                const { poi_acknowledged_for_vanuatu_maltainvest, poi_acknowledged_for_bvi_labuan, poa_acknowledged } =
-                    getAuthenticationStatusInfo(get_account_status);
+                const {
+                    poa_resubmit_for_labuan,
+                    poi_acknowledged_for_vanuatu_maltainvest,
+                    poi_acknowledged_for_bvi_labuan,
+                    poa_acknowledged,
+                } = getAuthenticationStatusInfo(get_account_status);
                 if (jurisdiction_selected_shortcode === 'vanuatu') {
                     setShowSubmittedModal(
                         poi_acknowledged_for_vanuatu_maltainvest &&
@@ -71,6 +75,12 @@ const CFDDbviOnboarding = ({
                     );
                 } else if (jurisdiction_selected_shortcode === 'maltainvest') {
                     setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
+                } else if (jurisdiction_selected_shortcode === 'labuan') {
+                    setShowSubmittedModal(
+                        poi_acknowledged_for_vanuatu_maltainvest &&
+                            !poa_resubmit_for_labuan &&
+                            has_submitted_cfd_personal_details
+                    );
                 } else
                     setShowSubmittedModal(
                         poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details
@@ -90,7 +100,6 @@ const CFDDbviOnboarding = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
-
     const getModalContent = () => {
         if (is_loading) {
             return <Loading is_fullscreen={false} />;

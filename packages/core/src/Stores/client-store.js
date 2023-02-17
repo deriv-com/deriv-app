@@ -742,6 +742,10 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.includes('dxtrade_password_not_set');
     }
 
+    get is_authenticated_with_idv_photoid() {
+        return this.account_status?.status?.includes('authenticated_with_idv_photoid');
+    }
+
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }

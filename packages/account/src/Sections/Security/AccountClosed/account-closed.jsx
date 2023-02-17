@@ -11,7 +11,6 @@ const AccountClosed = ({ logout }) => {
 
     React.useEffect(() => {
         window.history.pushState(null, null, '/');
-        console.log('window.history', 'logout');
         logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {

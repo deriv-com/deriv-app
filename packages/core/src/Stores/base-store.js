@@ -494,6 +494,7 @@ export default class BaseStore {
         if (typeof this.logoutDisposer === 'function') {
             this.logoutDisposer();
         }
+        console.log('disposeLogout', 'base-store.js');
         this.logout_listener = null;
     }
 

@@ -457,12 +457,12 @@ const AccountSwitcher = props => {
         const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, exchanged_rate_cfd_demo);
         const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, exchanged_rate_cfd_demo);
 
-        const total =
-            (vrtc_currency !== account_total_balance_currency ? vrtc_balance * exchanged_rate_demo : vrtc_balance) +
-            mt5_demo_total.balance +
-            dxtrade_demo_total.balance;
+        const exchanged_balance =
+            vrtc_currency !== account_total_balance_currency ? vrtc_balance * exchanged_rate_demo : vrtc_balance;
 
-        return props.is_pre_appstore ? vrtc_balance : total;
+        const total = exchanged_balance + mt5_demo_total.balance + dxtrade_demo_total.balance;
+
+        return props.is_pre_appstore ? exchanged_balance : total;
     };
 
     const getTotalRealAssets = () => {

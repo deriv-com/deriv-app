@@ -2,18 +2,27 @@ import { FormikHelpers, FormikValues } from 'formik';
 import * as React from 'react';
 
 export type TSelfExclusionContext = {
-    handleSubmit: (values: FormikValues, setSubmitting: FormikHelpers<FormikValues>) => void;
-    is_app_settings?: boolean;
-    is_wrapper_bypassed?: boolean;
-    toggleArticle?: () => void;
     backFromConfirmLimits?: () => void;
     currency: string;
     currency_display?: string;
     exclusion_texts?: Record<string, string>;
+    footer_ref?: React.RefObject<HTMLElement>;
+    getMaxLength?: (value: string) => void;
+    goToConfirm?: (value: FormikValues) => void;
+    handleSubmit: (values: FormikValues, setSubmitting: FormikHelpers<FormikValues>) => void;
+    is_appstore?: boolean;
+    is_app_settings?: boolean;
     is_eu?: boolean;
     is_uk?: boolean;
-    state?: FormikValues;
+    is_mlt?: boolean;
+    is_mx?: boolean;
+    is_mf?: boolean;
+    is_tablet?: boolean;
+    is_wrapper_bypassed?: boolean;
     overlay_ref: HTMLDivElement;
+    session_duration_digits?: boolean;
+    state?: FormikValues;
+    toggleArticle?: () => void;
     validateFields?: (values: FormikValues) => Record<string, string | null>;
 };
 

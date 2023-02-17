@@ -69,27 +69,36 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-const generateModalTitle = (
-    is_form_modified,
-    selected_ad,
-    setShouldShowAddPaymentMethodForm,
-    should_show_add_payment_method_form,
-    showModal,
-    table_type
-) => {
-    if (should_show_add_payment_method_form) {
+// {generateModalTitle(
+//     general_store.is_form_modified,
+//     buy_sell_store.selected_ad_state,
+//     my_profile_store.setShouldShowAddPaymentMethodForm,
+//     my_profile_store.should_show_add_payment_method_form,
+//     showModal,
+//     buy_sell_store.table_type
+// )}
+const useGenerateModalTitle = () => {
+    const { general_store, buy_sell_store, advertiser_page_store, my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
+
+    const { account_currency } = buy_sell_store.selected_ad_state;
+    const table_type = buy_sell_store.show_advertiser_page
+        ? advertiser_page_store.counterparty_type
+        : buy_sell_store.table_type;
+
+    if (my_profile_store.should_show_add_payment_method_form) {
         if (isDesktop()) {
             return (
                 <React.Fragment>
                     <Icon
                         icon='IcArrowLeftBold'
                         onClick={() => {
-                            if (is_form_modified) {
+                            if (general_store.is_form_modified) {
                                 showModal({
                                     key: 'CancelAddPaymentMethodModal',
                                 });
                             } else {
-                                setShouldShowAddPaymentMethodForm(false);
+                                my_profile_store.setShouldShowAddPaymentMethodForm(false);
                             }
                         }}
                         className='buy-sell__modal-icon'
@@ -101,9 +110,9 @@ const generateModalTitle = (
         return localize('Add payment method');
     }
     if (table_type === buy_sell.BUY) {
-        return localize('Buy {{ currency }}', { currency: selected_ad.account_currency });
+        return localize('Buy {{ currency }}', { currency: account_currency });
     }
-    return localize('Sell {{ currency }}', { currency: selected_ad.account_currency });
+    return localize('Sell {{ currency }}', { currency: account_currency });
 };
 
 const BuySellModal = () => {
@@ -115,6 +124,8 @@ const BuySellModal = () => {
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
     const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 2000;
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
+
+    const modal_title = useGenerateModalTitle();
 
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
@@ -245,14 +256,7 @@ const BuySellModal = () => {
                     is_flex
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell__modal-header'
-                    page_header_text={generateModalTitle(
-                        general_store.is_form_modified,
-                        buy_sell_store.selected_ad_state,
-                        my_profile_store.setShouldShowAddPaymentMethodForm,
-                        my_profile_store.should_show_add_payment_method_form,
-                        showModal,
-                        buy_sell_store.table_type
-                    )}
+                    page_header_text={modal_title}
                     pageHeaderReturnFn={onCancel}
                 >
                     {buy_sell_store.table_type === buy_sell.SELL && is_account_balance_low && <LowBalanceMessage />}
@@ -291,14 +295,7 @@ const BuySellModal = () => {
                     height={buy_sell_store.table_type === buy_sell.BUY ? 'auto' : '649px'}
                     width='456px'
                     is_open={is_modal_open}
-                    title={generateModalTitle(
-                        general_store.is_form_modified,
-                        buy_sell_store.selected_ad_state,
-                        my_profile_store.setShouldShowAddPaymentMethodForm,
-                        my_profile_store.should_show_add_payment_method_form,
-                        showModal,
-                        buy_sell_store.table_type
-                    )}
+                    title={modal_title}
                     portalId={general_store.props.modal_root_id}
                     toggleModal={onCancel}
                 >

@@ -1,21 +1,43 @@
-import classNames from 'classnames';
 import React from 'react';
-import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
-import VerticalTabHeader from './vertical-tab-header.jsx';
-import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
-import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
+import classNames from 'classnames';
+import VerticalTabWrapper from './vertical-tab-wrapper';
+import VerticalTabHeader, { TItem } from './vertical-tab-header';
+import VerticalTabHeaderGroup from './vertical-tab-header-group';
+import VerticalTabHeaderTitle from './vertical-tab-header-title';
 
-const offsetTop = (extra_offset, is_floating, ref, selected) => {
+type TVerticalTabHeaders = {
+    className?: string;
+    extra_offset?: number;
+    has_mixed_dimensions?: boolean;
+    header_title?: string;
+    is_collapsible?: boolean;
+    is_floating?: boolean;
+    is_routed?: boolean;
+    item_groups?: TItem[];
+    items: TItem[];
+    onChange: (item: TItem) => void;
+    selected: TItem;
+    selectedKey?: string;
+};
+
+const offsetTop = (
+    extra_offset: number | undefined,
+    is_floating: boolean | undefined,
+    ref: React.RefObject<HTMLDivElement>,
+    selected: Partial<TItem>
+) => {
     let calculated_offset = 0;
     let item_offset = 0;
-    const headers = ref.current.querySelectorAll(
+    let selected_el: HTMLDivElement | undefined;
+    const headers = ref?.current?.querySelectorAll<HTMLDivElement>(
         '.dc-vertical-tab__header__link, .dc-vertical-tab__header-group__link'
     );
-    const selected_el = [...headers].find(header =>
-        typeof selected.getTitle === 'function'
-            ? header.innerText === selected.getTitle()
-            : header.innerText === selected.label
-    );
+
+    if (headers) {
+        selected_el = [...headers].find(header =>
+            selected.getTitle ? header.innerText === selected.getTitle() : header.innerText === selected.label
+        );
+    }
 
     if (selected_el) {
         item_offset = is_floating ? extra_offset || 18 : 10;
@@ -38,13 +60,15 @@ const VerticalTabHeaders = ({
     onChange,
     selected,
     selectedKey = 'label',
-}) => {
+}: TVerticalTabHeaders) => {
     const ref = React.useRef(null);
     const [top, setTop] = React.useState(0);
     const [should_skip_animation, setShouldSkipAnimation] = React.useState(false);
 
     React.useEffect(() => {
-        const selected_item = items.find(item => item[selectedKey] === selected[selectedKey]);
+        const selected_item = items.find(
+            item => item[selectedKey as keyof TItem] === selected[selectedKey as keyof TItem]
+        );
         if (selected_item?.label) setTop(offsetTop(extra_offset, is_floating, ref, { label: selected_item.label }));
     }, [selected, is_floating, extra_offset, selectedKey, items]);
     return (
@@ -68,7 +92,6 @@ const VerticalTabHeaders = ({
                                   )) ||
                               (!group.subitems && group === selected)
                           }
-                          items={items}
                           is_collapsible={is_collapsible}
                           is_routed={is_routed}
                           group={group}

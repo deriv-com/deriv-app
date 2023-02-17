@@ -1,23 +1,63 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { matchRoute } from '@deriv/shared';
-import VerticalTabContentContainer from './vertical-tab-content-container.jsx';
-import VerticalTabHeader from './vertical-tab-header.jsx';
-import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
-import VerticalTabHeaders from './vertical-tab-headers.jsx';
-import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
-import VerticalTabLayout from './vertical-tab-layout.jsx';
-import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
+import VerticalTabContentContainer from './vertical-tab-content-container';
+import VerticalTabHeader, { TItem } from './vertical-tab-header';
+import VerticalTabHeaderGroup from './vertical-tab-header-group';
+import VerticalTabHeaders from './vertical-tab-headers';
+import VerticalTabHeaderTitle from './vertical-tab-header-title';
+import VerticalTabLayout from './vertical-tab-layout';
+import VerticalTabWrapper from './vertical-tab-wrapper';
 import Icon from '../icon/icon';
 
-const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
-    let index;
+type TSetSelectedIndex = {
+    current_path: string;
+    list: TItem[];
+    is_routed?: boolean;
+    selected_index?: number | TItem | undefined;
+    setCurrTabIndex: (index: number) => void;
+    setVerticalTabIndex?: (index: number) => void;
+};
+
+type TVerticalTab = {
+    className?: string;
+    current_path: string;
+    extra_content?: React.ReactNode | React.ReactNode[];
+    extra_offset?: number;
+    has_mixed_dimensions?: boolean;
+    header_classname?: string;
+    header_title?: string;
+    is_collapsible?: boolean;
+    is_floating?: boolean;
+    is_grid?: boolean;
+    is_full_width?: boolean;
+    is_routed?: boolean;
+    is_sidebar_enabled?: boolean;
+    list: TItem[];
+    list_groups?: TItem[];
+    onClickClose?: () => void;
+    setVerticalTabIndex?: (index: number) => void;
+    tab_headers_note: React.ReactNode | React.ReactNode[];
+    title?: string;
+    vertical_tab_index?: number;
+};
+
+const setSelectedIndex = ({
+    current_path,
+    list,
+    is_routed,
+    selected_index,
+    setCurrTabIndex,
+    setVerticalTabIndex,
+}: TSetSelectedIndex) => {
+    let index: number;
 
     if (typeof selected_index === 'undefined') {
         index = is_routed
             ? Math.max(
-                  list.indexOf(list.find(item => matchRoute(item, current_path)) || list.find(item => item.default)),
+                  list.indexOf(
+                      (list.find(item => matchRoute(item, current_path)) || list.find(item => item.default)) as TItem
+                  ),
                   0
               )
             : 0;
@@ -26,15 +66,10 @@ const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCu
     }
 
     setCurrTabIndex(index);
-
-    if (typeof setVerticalTabIndex === 'function') {
-        setVerticalTabIndex(index);
-    }
+    setVerticalTabIndex?.(index);
 };
 
 const VerticalTab = ({
-    action_bar,
-    action_bar_classname,
     className,
     current_path,
     extra_content,
@@ -47,7 +82,7 @@ const VerticalTab = ({
     is_grid,
     is_full_width,
     is_routed,
-    is_sidebar_enabled,
+    is_sidebar_enabled = true,
     list,
     list_groups,
     onClickClose,
@@ -55,11 +90,12 @@ const VerticalTab = ({
     tab_headers_note,
     title,
     vertical_tab_index,
-}) => {
+}: TVerticalTab) => {
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
 
-    const changeSelected = e => {
+    const changeSelected = (e: TItem) => {
         setSelectedIndex({
+            current_path,
             list,
             selected_index: e,
             setCurrTabIndex,
@@ -119,7 +155,6 @@ const VerticalTab = ({
                         is_floating={is_floating}
                         is_routed={is_routed}
                         header_title={header_title}
-                        tab_headers_note={tab_headers_note}
                     />
                     {is_floating && tab_headers_note && (
                         <div className='dc-vertical-tab__tab-bottom-note'>{tab_headers_note}</div>
@@ -128,8 +163,6 @@ const VerticalTab = ({
                 </div>
             )}
             <VerticalTabContentContainer
-                action_bar={action_bar}
-                action_bar_classname={action_bar_classname}
                 className={className}
                 is_floating={is_floating}
                 items={list}
@@ -138,57 +171,6 @@ const VerticalTab = ({
             />
         </div>
     );
-};
-
-VerticalTab.defaultProps = {
-    is_sidebar_enabled: true,
-};
-
-VerticalTab.propTypes = {
-    action_bar: PropTypes.arrayOf(
-        PropTypes.shape({
-            component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-            icon: PropTypes.string,
-            onClick: PropTypes.func,
-            title: PropTypes.string,
-        })
-    ),
-    action_bar_classname: PropTypes.string,
-    className: PropTypes.string,
-    current_path: PropTypes.string,
-    header_classname: PropTypes.string,
-    header_title: PropTypes.string,
-    is_floating: PropTypes.bool,
-    is_full_width: PropTypes.bool,
-    is_routed: PropTypes.bool,
-    is_sidebar_enabled: PropTypes.bool,
-    list: PropTypes.arrayOf(
-        PropTypes.shape({
-            default: PropTypes.bool,
-            icon: PropTypes.string,
-            label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-            path: PropTypes.string,
-            value: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-        })
-    ).isRequired,
-    list_groups: PropTypes.arrayOf(
-        PropTypes.shape({
-            icon: PropTypes.string,
-            label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-            subitems: PropTypes.arrayOf(PropTypes.number),
-        })
-    ),
-    tab_headers_note: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    selected_index: PropTypes.number,
-    setVerticalTabIndex: PropTypes.func,
-    vertical_tab_index: PropTypes.number,
-    extra_content: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
-    extra_offset: PropTypes.number,
-    has_mixed_dimensions: PropTypes.bool,
-    is_collapsible: PropTypes.bool,
-    is_grid: PropTypes.bool,
-    onClickClose: PropTypes.func,
-    title: PropTypes.string,
 };
 
 VerticalTab.ContentContainer = VerticalTabContentContainer;

@@ -33,7 +33,7 @@ export const matchStringByChar = (s: string, p: string) => {
 
 export const numberToString = (n: number) => (typeof n === 'number' ? String(n) : n);
 
-export const getKebabCase = (str: string) => {
+export const getKebabCase = (str?: string) => {
     if (!str) return str;
     return str
         .replace(/([a-z0-9])([A-Z])/g, '$1-$2') // get all lowercase letters that are near to uppercase ones

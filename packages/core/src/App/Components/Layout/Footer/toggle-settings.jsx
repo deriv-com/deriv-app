@@ -42,7 +42,7 @@ const ModalContent = ({ settings_extension, is_pre_appstore }) => {
         );
     }
 
-    return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
+    return <VerticalTab list={content} />;
 };
 
 const ToggleSettings = ({

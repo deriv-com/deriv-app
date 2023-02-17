@@ -1,9 +1,20 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import Icon from '../icon/icon';
+import { THeader, THeaderIcon, TItem } from './vertical-tab-header';
 
-const HeaderIcon = ({ icon, is_active }) => (
+type TVerticalTabHeaderGroup = {
+    className?: string;
+    group: TItem;
+    selected: boolean;
+    is_collapsible?: boolean;
+    is_routed?: boolean;
+    onChange: (group: TItem) => void;
+    onToggle: (toggle: boolean) => void;
+};
+
+const HeaderIcon = ({ icon, is_active }: THeaderIcon) => (
     <Icon
         icon={icon}
         className={classNames('dc-vertical-tab__header-group__icon', {
@@ -12,7 +23,7 @@ const HeaderIcon = ({ icon, is_active }) => (
     />
 );
 
-const Header = ({ text }) => <div className='dc-vertical-tab__header-group__link'>{text}</div>;
+const Header = ({ text }: THeader) => <div className='dc-vertical-tab__header-group__link'>{text}</div>;
 
 const VerticalTabHeaderGroup = ({
     children,
@@ -23,16 +34,16 @@ const VerticalTabHeaderGroup = ({
     is_routed,
     onChange,
     onToggle,
-}) => {
+}: React.PropsWithChildren<TVerticalTabHeaderGroup>) => {
     const [show_items, setShowItems] = React.useState(true);
 
     React.useEffect(() => {
         onToggle(true);
     }, [show_items, onToggle]);
 
-    const label = typeof group.getTitle === 'function' ? group.getTitle() : group.label || group.title;
+    const label = group.getTitle ? group.getTitle() : group.label || group.title;
     const handleClick = () => {
-        if (!group.subitems && typeof onChange === 'function') {
+        if (!group.subitems) {
             onChange(group);
         } else if (is_collapsible && !selected) {
             setShowItems(!show_items);

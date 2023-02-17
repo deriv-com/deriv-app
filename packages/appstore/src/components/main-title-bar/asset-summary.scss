@@ -7,16 +7,6 @@
         align-items: center;
     }
 
-    &__container.content-loader {
-        width: 12rem;
-        cursor: not-allowed;
-        margin-left: auto;
-
-        @include mobile {
-            width: 23rem;
-        }
-    }
-
     &--total {
         display: flex;
         border-bottom: 4px dotted var(--checkbox-disabled-grey);

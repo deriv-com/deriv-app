@@ -233,6 +233,21 @@ type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
+    selected_account_type: 'real' | 'demo';
+    platform_real_balance: { balance: number; currency: string };
+    cfd_demo_balance: { balance: number; currency: string };
+    platform_demo_balance: { balance: number; currency: string };
+    cfd_real_balance: { balance: number; currency: string };
+    is_eu_user: boolean;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
+    totalBalance: { balance: number; currency: string };
+    is_currency_switcher_disabled_for_mf: boolean;
+    multipliers_account_status: 'need_verification' | 'failed' | 'pending' | null;
+    openFailedVerificationModal: (selected_account_type: unknown) => void;
+    selectRegion: (region: string) => void;
+    selected_region: string;
+    toggleRegulatorsCompareModal: () => void;
 };
 
 export type TRootStore = {

@@ -6,11 +6,6 @@
         user-select: none;
     }
 
-    &__container.content-loader {
-        width: 20rem;
-        cursor: not-allowed;
-    }
-
     &--text {
         display: flex;
         align-items: center;

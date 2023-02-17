@@ -863,14 +863,17 @@ const AccountSwitcher = props => {
                             </Button>
                         </div>
                     ))}
-                    {can_manage_account && (
+                    {(can_manage_account || !props.has_active_real_account) && (
                         <Button
                             className='acc-switcher__btn'
                             secondary
                             onClick={
                                 props.has_any_real_account && !hasSetCurrency()
                                     ? setAccountCurrency
-                                    : () => props.openRealAccountSignup('manage')
+                                    : () =>
+                                          props.has_active_real_account
+                                              ? props.openRealAccountSignup('manage')
+                                              : props.openRealAccountSignup()
                             }
                         >
                             {props.has_fiat && props.available_crypto_currencies?.length === 0

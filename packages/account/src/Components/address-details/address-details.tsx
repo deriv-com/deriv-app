@@ -64,6 +64,7 @@ type TInputField = {
     maxLength?: number | string;
     placeholder: string;
     onChange?: (e: any) => void;
+    disabled?: string;
 };
 
 type TAutoComplete = {

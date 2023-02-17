@@ -93,6 +93,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             setInputDisable(false);
         }
 
+        if (document_number === document_type.example_format) {
+            errors.document_number = localize('Please enter a valid ID number different from example.');
+        }
+
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
@@ -238,7 +242,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onPaste={e => e.preventDefault()}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {

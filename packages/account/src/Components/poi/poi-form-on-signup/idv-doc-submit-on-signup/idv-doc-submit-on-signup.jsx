@@ -85,6 +85,10 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             setInputDisable(false);
         }
 
+        if (document_number === document_type.example_format) {
+            errors.document_number = localize('Please enter a valid ID number different from example.');
+        }
+
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
@@ -295,7 +299,6 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
-                                                                    onPaste={e => e.preventDefault()}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
                                                                     onKeyUp={e => {

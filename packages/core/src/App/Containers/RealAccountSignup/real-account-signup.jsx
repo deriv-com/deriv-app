@@ -599,6 +599,9 @@ const RealAccountSignup = ({
                                             is_pre_appstore={is_pre_appstore}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
+                                            available_crypto_currencies={available_crypto_currencies}
+                                            is_eu={show_eu_related_content}
+                                            has_fiat={has_fiat}
                                         />
                                     );
                                 }

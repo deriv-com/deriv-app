@@ -136,9 +136,12 @@ const AddOrManageAccounts = props => {
         );
     }
 
+    const val = false;
+
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
-            {show_eu_related_content && has_fiat ? (
+            {/* {show_eu_related_content && has_fiat ? ( */}
+            {val && show_eu_related_content && has_fiat ? (
                 fiat_section
             ) : (
                 <Tabs

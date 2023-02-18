@@ -25,7 +25,13 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
     }
 
     return list.filter(item =>
-        is_string_array ? item.toLowerCase().includes(val) : item.text.toLowerCase().includes(val)
+        is_string_array
+            ? item.toLowerCase().includes(val)
+            : item.text
+                  .normalize('NFD')
+                  .replace(/[^a-z]/i, '')
+                  .toLowerCase()
+                  .includes(val) || item.text.toLowerCase().includes(val)
     );
 };
 const Autocomplete = React.memo(props => {

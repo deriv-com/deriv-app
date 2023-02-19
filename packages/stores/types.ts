@@ -227,6 +227,7 @@ type TUiStore = {
     should_show_cancellation_warning: boolean;
     toggleCancellationWarning: () => void;
     toggleUnsupportedContractModal: () => void;
+    toggleSetCurrencyModal: () => void;
 };
 
 type TPortfolioStore = {

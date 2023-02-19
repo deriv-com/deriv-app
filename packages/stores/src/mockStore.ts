@@ -1,4 +1,5 @@
 import merge from 'lodash.merge';
+import moment from 'moment';
 import type { TRootStore } from '../types';
 
 const mock = (): TRootStore => {
@@ -151,6 +152,7 @@ const mock = (): TRootStore => {
             responseTradingPlatformAccountsList: jest.fn(),
             standpoint: {
                 iom: '',
+                malta: '',
             },
             switchAccount: jest.fn(),
             verification_code: {
@@ -208,6 +210,7 @@ const mock = (): TRootStore => {
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
             is_network_online: false,
+            server_time: moment(),
         },
         ui: {
             current_focus: null,

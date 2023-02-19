@@ -10,7 +10,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 type TItem = {
     content: string;
     status: string;
-    onClick: () => void;
+    onClick: VoidFunction;
 };
 
 const WithdrawalLocked = observer(() => {

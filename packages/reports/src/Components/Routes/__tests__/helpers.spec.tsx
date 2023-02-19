@@ -14,8 +14,8 @@ describe('Helpers', () => {
             expect(result?.path).toBe(routes.reports);
         });
         it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
-            const reports_routes_length = routesConfig.find(r => r.path === routes.reports)?.routes?.length;
-            expect(Object.keys(Helpers.findRouteByPath(routes.profit, routesConfig) || {})).toEqual(
+            const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports)?.routes?.length;
+            expect(Object.keys(Helpers.findRouteByPath(routes.profit, getRoutesConfig()) || {})).toEqual(
                 expect.arrayContaining([
                     'path',
                     'component',
@@ -25,10 +25,12 @@ describe('Helpers', () => {
                     'getTitle',
                 ])
             );
-            expect(Helpers.findRouteByPath(routes.profit, routesConfig)?.routes).toBeInstanceOf(Array);
-            expect(Helpers.findRouteByPath(routes.profit, routesConfig)?.routes).toHaveLength(reports_routes_length);
-            expect(Helpers.findRouteByPath(routes.profit, routesConfig)?.is_authenticated).toBe(true);
-            expect(Helpers.findRouteByPath(routes.profit, routesConfig)?.path).toBe(routes.reports);
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())?.routes).toBeInstanceOf(Array);
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())?.routes).toHaveLength(
+                reports_routes_length
+            );
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())?.is_authenticated).toBe(true);
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())?.path).toBe(routes.reports);
         });
     });
 

@@ -1,10 +1,19 @@
+@keyframes closeDrawerWrapper {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 @include mobile {
     /** disabling pull to refresh on iOS / Android browsers */
     /* postcss-bem-linter: ignore */
     body,
     .deriv-app,
     .modal-root,
-    .dc-mobile-drawer__wrapper {
+    .dc-mobile-drawer__overlay {
         /* Break the flow */
         position: absolute !important;
         top: 0 !important;
@@ -22,6 +31,15 @@
         /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
         @supports (-webkit-touch-callout: none) {
             position: fixed !important;
+        }
+    }
+    .dc-mobile-drawer__overlay {
+        position: fixed !important;
+        &.exit {
+            animation-name: closeDrawerWrapper;
+            animation-delay: 1s;
+            animation-duration: 0.1s;
+            animation-fill-mode: forwards;
         }
     }
     .body {
@@ -98,12 +116,6 @@
 
     @include desktop {
         display: none;
-    }
-
-    @include tablet {
-        @media screen and (orientation: portrait) {
-            display: none;
-        }
     }
 
     @include mobile {

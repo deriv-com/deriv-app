@@ -1,13 +1,15 @@
 import React from 'react';
 import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
+import { useDepositLocked } from '@deriv/hooks';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
-import SideNote from 'Components/side-note';
-import { TReactFormEvent } from 'Types';
+import CashierLocked from '../../components/cashier-locked';
+import SideNote from '../../components/side-note';
+import { TReactFormEvent } from '../../types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './on-ramp.scss';
 
 type TMenuOption = {
@@ -55,8 +57,8 @@ const OnRampInfo = () => (
 );
 
 const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
-    const { modules, common, client } = useStore();
-    const { onramp, general_store, deposit } = modules.cashier;
+    const { common, client } = useStore();
+    const { onramp, general_store } = useCashierStore();
     const {
         filtered_onramp_providers,
         is_onramp_modal_open,
@@ -68,9 +70,9 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
         should_show_dialog,
     } = onramp;
     const { is_cashier_onboarding, is_cashier_locked, is_loading, cashier_route_tab_index } = general_store;
-    const { is_deposit_locked } = deposit;
     const { is_switching } = client;
     const { routeTo } = common;
+    const is_deposit_locked = useDepositLocked();
 
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 

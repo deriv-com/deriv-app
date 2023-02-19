@@ -47,6 +47,7 @@ const AddressDetails = ({
     validate,
     onSubmit,
     is_svg,
+    is_mf,
     is_gb_residence,
     onSubmitEnabledChange,
     selected_step_ref,
@@ -149,14 +150,15 @@ const AddressDetails = ({
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_appstore || is_mf}
                                             label={
-                                                is_svg || is_appstore
+                                                is_svg || is_appstore || is_mf
                                                     ? localize('First line of address*')
                                                     : localize('First line of address')
                                             }
                                             maxLength={255}
                                             placeholder={localize('First line of address')}
+                                            disabled={props.value?.address_line_1}
                                         />
                                         <InputField
                                             name='address_line_2'
@@ -168,14 +170,18 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('Second line of address')}
+                                            disabled={props.value?.address_line_2}
                                         />
                                         <InputField
                                             name='address_city'
-                                            required={is_svg || is_appstore}
+                                            required={is_svg || is_appstore || is_mf}
                                             label={
-                                                is_svg || is_appstore ? localize('Town/City*') : localize('Town/City')
+                                                is_svg || is_appstore || is_mf
+                                                    ? localize('Town/City*')
+                                                    : localize('Town/City')
                                             }
                                             placeholder={localize('Town/City')}
+                                            disabled={props.value?.address_city}
                                         />
                                         {!has_fetched_states_list && (
                                             <div className='details-form__loader'>
@@ -206,6 +212,7 @@ const AddressDetails = ({
                                                                     setAddressStateToDisplay('');
                                                                 }}
                                                                 list_portal_id={is_appstore ? '' : 'modal_root'}
+                                                                disabled={props.value?.address_state}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -223,6 +230,7 @@ const AddressDetails = ({
                                                                     );
                                                                     setAddressStateToDisplay('');
                                                                 }}
+                                                                disabled={props.value?.address_state}
                                                             />
                                                         </MobileWrapper>
                                                     </>
@@ -234,6 +242,7 @@ const AddressDetails = ({
                                                 name='address_state'
                                                 label={localize('State/Province')}
                                                 placeholder={localize('State/Province')}
+                                                disabled={props.value?.address_state}
                                             />
                                         )}
                                         <InputField
@@ -247,6 +256,7 @@ const AddressDetails = ({
                                                 setFieldTouched('address_postcode', true);
                                                 handleChange(e);
                                             }}
+                                            disabled={props.value?.address_postcode}
                                         />
                                     </div>
                                 </ThemedScrollbars>

@@ -1,10 +1,26 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
 import { TRootStore } from 'Types';
 import type { TOnRampProps } from '../on-ramp';
+import CashierProviders from '../../../cashier-providers';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
 
 jest.mock('@deriv/components', () => {
     return {
@@ -39,6 +55,12 @@ describe('<OnRamp />', () => {
                 account_status: {
                     status: [],
                 },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             common: {
                 routeTo: jest.fn(),
@@ -54,9 +76,6 @@ describe('<OnRamp />', () => {
                         setIsOnRampModalOpen: jest.fn(),
                         should_show_dialog: false,
                         onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    deposit: {
-                        is_deposit_locked: false,
                     },
                     general_store: {
                         is_cashier_onboarding: false,
@@ -91,9 +110,9 @@ describe('<OnRamp />', () => {
     });
     const renderOnRamp = (is_rerender = false) => {
         const ui = (
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore as TRootStore}>
                 <OnRamp {...props} />
-            </StoreProvider>
+            </CashierProviders>
         );
         return is_rerender ? ui : render(ui);
     };
@@ -123,7 +142,7 @@ describe('<OnRamp />', () => {
             mockRootStore.modules.cashier.general_store.is_cashier_locked = false;
         }
         if (mockRootStore.modules?.cashier?.deposit) {
-            mockRootStore.modules.cashier.deposit.is_deposit_locked = true;
+            mockRootStore.modules.cashier.deposit.is_deposit_locked = useDepositLocked.mockReturnValue(true);
         }
         rerender(renderOnRamp(true) as JSX.Element);
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();

@@ -46,7 +46,9 @@ describe('Helpers', () => {
 
     describe('getPath', () => {
         it('should return param values in params as a part of path', () => {
-            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).toBe('/contract/37511105068');
+            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).toBe(
+                '/contract/37511105068'
+            );
             expect(
                 Helpers.getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', {
                     something_made_up_param1: '789',

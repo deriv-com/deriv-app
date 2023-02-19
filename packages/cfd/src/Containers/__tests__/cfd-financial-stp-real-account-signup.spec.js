@@ -162,6 +162,9 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             text: 'Central Singapore',
             value: '01',
         },
+        account_status: {
+            risk_classification: 'low',
+        },
     };
 
     it('should render CFDFinancialStpRealAccountSignup component', () => {

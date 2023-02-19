@@ -56,7 +56,6 @@ type TItemsState = {
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    // console.log('Rendered: CFDFinancialStpRealAccountSignup');
     const {
         account_status,
         authentication_status,

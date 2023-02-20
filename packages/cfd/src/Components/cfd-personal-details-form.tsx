@@ -277,9 +277,10 @@ const CFDPersonalDetailsForm = ({
                     const item_value = item.value ? item.text : '';
                     setFieldValue(_field, item_value, true);
                 };
-                const is_tin_mandatory =
-                    (!values.tax_residence && is_tin_required) ||
-                    residence_list.find(res => res.text === values.tax_residence && res.tin_format)?.tin_format;
+                const tin_field_label = residence_list.find(res => res.text === values.tax_residence && res.tin_format)
+                    ?.tin_format
+                    ? localize('Tax identification number*')
+                    : localize('Tax identification number');
 
                 return (
                     <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
@@ -433,16 +434,8 @@ const CFDPersonalDetailsForm = ({
                                                 <InputField
                                                     id='real_mt5_tax_identification_number'
                                                     name='tax_identification_number'
-                                                    label={
-                                                        is_tin_mandatory
-                                                            ? localize('Tax identification number*')
-                                                            : localize('Tax identification number')
-                                                    }
-                                                    placeholder={
-                                                        is_tin_mandatory
-                                                            ? localize('Tax identification number*')
-                                                            : localize('Tax identification number')
-                                                    }
+                                                    label={tin_field_label}
+                                                    placeholder={tin_field_label}
                                                     value={values.tax_identification_number}
                                                     onBlur={handleBlur}
                                                     disabled={

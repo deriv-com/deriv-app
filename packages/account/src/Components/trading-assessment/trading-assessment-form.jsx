@@ -15,6 +15,7 @@ const TradingAssessmentForm = ({
     onCancel,
     is_header_navigation,
     should_move_to_next,
+    setSubSectionIndex,
 }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
@@ -23,7 +24,7 @@ const TradingAssessmentForm = ({
     });
     const [form_data, setFormData] = React.useState({});
 
-    const stored_items = parseInt(localStorage.getItem('current_question_index'));
+    const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
     const last_question_index = assessment_questions.length - 1;
 
     React.useEffect(() => {
@@ -36,6 +37,7 @@ const TradingAssessmentForm = ({
                     : assessment_questions[prevState.current_question_index],
             };
         });
+        setSubSectionIndex(stored_items);
         setFormData(form_value);
     }, []);
 
@@ -54,6 +56,7 @@ const TradingAssessmentForm = ({
                 setCurrentQuestionDetails(prev_state_question => {
                     const next_state_question_index = prev_state_question.current_question_index + 1;
                     localStorage.setItem('current_question_index', next_state_question_index);
+                    setSubSectionIndex(next_state_question_index);
                     return {
                         current_question_index: next_state_question_index,
                         current_question: assessment_questions[next_state_question_index],
@@ -69,6 +72,7 @@ const TradingAssessmentForm = ({
             setCurrentQuestionDetails(prev_state_question => {
                 const prev_state_question_index = prev_state_question.current_question_index - 1;
                 localStorage.setItem('current_question_index', prev_state_question_index);
+                setSubSectionIndex(prev_state_question_index);
                 return {
                     current_question_index: prev_state_question_index,
                     current_question: assessment_questions[prev_state_question_index],

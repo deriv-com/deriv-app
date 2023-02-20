@@ -2,14 +2,15 @@ import React from 'react';
 import classNames from 'classnames';
 import Text from '../text';
 
-type TStep = { header: { active_title: string; title: string } };
+type TStep = { header: { active_title: string; title: string }; sub_step_count: number };
 
 type TFormProgress = {
     steps: TStep[];
     current_step: number;
+    sub_section_index: number;
 };
 
-const FormProgress = ({ steps = [], current_step }: TFormProgress) => {
+const FormProgress = ({ steps = [], current_step, sub_section_index }: TFormProgress) => {
     React.useEffect(() => {
         animateCompleteBar();
     });
@@ -17,13 +18,16 @@ const FormProgress = ({ steps = [], current_step }: TFormProgress) => {
     const el_completed_bar = React.useRef<HTMLDivElement | null>(null);
 
     const animateCompleteBar = () => {
+        const has_sub_steps = steps[current_step]?.sub_step_count || null;
         const el_first_identifier = (document.querySelector('.identifier') as HTMLSpanElement) || {
             offsetLeft: 0,
             clientWidth: 1,
         };
         const each = 100 / steps.length;
+        const sub_divisions = has_sub_steps ? Math.ceil(each / has_sub_steps) : 0;
+        const sub_index = sub_section_index + 1;
         if (el_completed_bar.current) {
-            el_completed_bar.current.style.width = `${current_step * each}%`;
+            el_completed_bar.current.style.width = `${current_step * each + sub_index * sub_divisions}%`;
             el_completed_bar.current.style.transform = `translateX(${
                 el_first_identifier.offsetLeft + el_first_identifier.clientWidth / 2
             }px)`;

@@ -290,19 +290,19 @@ export const trading_assessment_form_config = {
     },
 };
 
-const tradingAssessmentConfig = ({ real_account_signup_target }, TradingAssessmentNewUser) => {
-    return {
-        header: {
-            active_title: localize('Complete your trading assessment'),
-            title: localize('Trading assessment'),
-        },
-        body: TradingAssessmentNewUser,
-        form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
-        props: {
-            validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
-            assessment_questions: trading_assessment_questions,
-        },
-    };
-};
+const tradingAssessmentConfig = ({ real_account_signup_target, setSubSectionIndex }, TradingAssessmentNewUser) => ({
+    header: {
+        active_title: localize('Complete your trading assessment'),
+        title: localize('Trading assessment'),
+    },
+    body: TradingAssessmentNewUser,
+    form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
+    props: {
+        validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
+        assessment_questions: trading_assessment_questions,
+        setSubSectionIndex,
+    },
+    sub_step_count: trading_assessment_questions.length,
+});
 
 export default tradingAssessmentConfig;

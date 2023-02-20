@@ -653,9 +653,10 @@ $side-padding: 1.2em;
 
                 /* postcss-bem-linter: ignore */
                 &--content {
-                    padding: 0 1.6rem;
-                    display: grid;
-                    grid-template-columns: 0.7fr 1fr;
+                    flex: 1;
+                    padding: 0.8rem 1.6rem 0;
+                    display: flex;
+                    justify-content: space-between;
 
                     /* postcss-bem-linter: ignore */
                     .profit {

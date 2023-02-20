@@ -73,6 +73,9 @@
             }
             &-bold {
                 border-width: 0.3rem;
+                @include mobile {
+                    border-width: 0.2rem;
+                }
             }
         }
     }

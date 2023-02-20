@@ -1,9 +1,8 @@
 import React, { HTMLAttributes } from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { region_availability } from 'Constants/platform-config';
-import { observer } from 'mobx-react-lite';
 import './regulators-switcher.scss';
 
 type SwitcherItemProps = {

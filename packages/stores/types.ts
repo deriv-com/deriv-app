@@ -248,6 +248,7 @@ type TTradersHubStore = {
     selectRegion: (region: string) => void;
     selected_region: string;
     toggleRegulatorsCompareModal: () => void;
+    handleTabItemClick: (index: number) => void;
 };
 
 export type TRootStore = {

@@ -1,9 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import BalanceText from 'Components/elements/text/balance-text';
 import './asset-summary.scss';
 

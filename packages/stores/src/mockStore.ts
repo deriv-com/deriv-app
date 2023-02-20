@@ -246,6 +246,7 @@ const mock = (): TRootStore => {
             selectRegion: jest.fn(),
             selected_region: '',
             toggleRegulatorsCompareModal: jest.fn(),
+            handleTabItemClick: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

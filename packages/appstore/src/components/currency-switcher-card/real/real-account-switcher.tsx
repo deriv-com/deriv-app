@@ -1,7 +1,6 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { StatusBadge, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';

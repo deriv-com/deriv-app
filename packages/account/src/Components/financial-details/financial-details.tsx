@@ -166,14 +166,23 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
 
                 return (
                     <AutoHeightWrapper default_height={200}>
-                        {({ setRef, height }: { setRef: (instance: HTMLFormElement) => void; height?: any }) => (
+                        {({
+                            setRef,
+                            height,
+                        }: {
+                            setRef: (instance: HTMLFormElement) => void;
+                            height?: number | string;
+                        }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ThemedScrollbars autohide={!(window.innerHeight < 890)} height={height - 77}>
+                                    <ThemedScrollbars
+                                        autohide={!(window.innerHeight < 890)}
+                                        height={Number(height) - 77}
+                                    >
                                         <div className='details-form__elements  details-form__elements--wide'>
                                             <FinancialInformation
                                                 shared_props={shared_props}

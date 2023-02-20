@@ -63,6 +63,7 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
                 confirm_button_text={localize('Proceed')}
                 onCancel={onCancelDialog}
                 onConfirm={onConfirmDialog}
+                dismissable={onCancelDialog}
             >
                 {localize('You are being redirected to an external website.')}
             </Dialog>

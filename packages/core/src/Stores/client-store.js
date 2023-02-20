@@ -2507,9 +2507,10 @@ export default class ClientStore extends BaseStore {
         const { gaming_company, financial_company } = this.landing_companies;
 
         // This is a conditional check for countries like Australia/Norway which fulfil one of these following conditions.
-        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
-        financial_company?.shortcode === 'svg' ||
+        const restricted_countries =
+            financial_company?.shortcode === 'svg' ||
             (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
+
         const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
         return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }

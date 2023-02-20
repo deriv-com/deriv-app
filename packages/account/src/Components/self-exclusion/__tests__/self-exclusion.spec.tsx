@@ -2,6 +2,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SelfExclusion from '../self-exclusion';
+import { FormikValues } from 'formik';
 
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
@@ -9,7 +10,7 @@ document.body.appendChild(portal_root);
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
-    connect: () => Component => Component,
+    connect: () => (Component: React.Component) => Component,
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -17,15 +18,52 @@ jest.mock('@deriv/shared', () => ({
     useIsMounted: jest.fn().mockImplementation(() => () => true),
 }));
 
-jest.mock('../self-exclusion-modal', () => () => <div>SelfExclusionModal</div>);
+jest.mock('../self-exclusion-modal', () => {
+    const MockSelfExclusionModal = () => <div>SelfExclusionModal</div>;
+    return MockSelfExclusionModal;
+});
 
 describe('<SelfExclusion />', () => {
-    let mock_props = {};
+    let mock_props = {
+        currency: '',
+        footer_ref: undefined,
+        is_app_settings: false,
+        is_appstore: false,
+        is_cr: false,
+        is_eu: false,
+        is_mf: false,
+        is_mlt: false,
+        is_mx: false,
+        is_switching: false,
+        is_tablet: false,
+        is_uk: false,
+        is_virtual: false,
+        is_wrapper_bypassed: false,
+        logout: jest.fn(),
+        overlay_ref: document.createElement('div'),
+        setIsOverlayShown: jest.fn(),
+        ws: {
+            authorized: {
+                getLimits: () =>
+                    Promise.resolve({
+                        get_limits: {},
+                    }),
+                getSelfExclusion: () =>
+                    Promise.resolve({
+                        error: { message: '' },
+                    }),
+                setSelfExclusion: () =>
+                    Promise.resolve({
+                        error: {},
+                    }),
+            },
+        },
+    };
 
     beforeEach(() => {
         mock_props = {
             currency: 'Test currency',
-            footer_ref: portal_root,
+            footer_ref: undefined,
             is_app_settings: false,
             is_appstore: false,
             is_cr: false,
@@ -39,13 +77,13 @@ describe('<SelfExclusion />', () => {
             is_virtual: false,
             is_wrapper_bypassed: false,
             logout: jest.fn(),
-            overlay_ref: {},
+            overlay_ref: document.createElement('div'),
             setIsOverlayShown: jest.fn(),
             ws: {
                 authorized: {
                     getLimits: () =>
                         Promise.resolve({
-                            get_limits: jest.fn(),
+                            get_limits: {},
                         }),
                     getSelfExclusion: () =>
                         Promise.resolve({
@@ -53,7 +91,7 @@ describe('<SelfExclusion />', () => {
                         }),
                     setSelfExclusion: () =>
                         Promise.resolve({
-                            error: { message: '' },
+                            error: {},
                         }),
                 },
             },
@@ -100,10 +138,13 @@ describe('<SelfExclusion />', () => {
         render(<SelfExclusion {...mock_props} />);
 
         const inputs = await screen.findAllByRole('textbox');
-        const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
+        const session_duration_limit_input = inputs.find(
+            (input: FormikValues) => input.name === 'session_duration_limit'
+        );
 
         await act(async () => {
-            fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
+            if (session_duration_limit_input)
+                fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
         });
 
         expect(
@@ -111,7 +152,8 @@ describe('<SelfExclusion />', () => {
         ).toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
+            if (session_duration_limit_input)
+                fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
         });
 
         expect(
@@ -120,26 +162,26 @@ describe('<SelfExclusion />', () => {
     });
 
     it('Should trigger exclude_until input and show error depends on input value', async () => {
-        Date.now = jest.fn(() => new Date('2022-02-03'));
+        (Date.now as jest.Mock) = jest.fn(() => new Date('2022-02-03'));
 
         render(<SelfExclusion {...mock_props} />);
 
         const inputs = await screen.findAllByRole('textbox');
-        const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
+        const exclude_until_input = inputs.find((input: FormikValues) => input.name === 'exclude_until');
 
         await act(async () => {
-            fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
         });
 
         expect(screen.getByText('Exclude time must be after today.')).toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
         });
         expect(screen.getByText('Exclude time cannot be less than 6 months.')).toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
         });
         expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
     });
@@ -160,12 +202,12 @@ describe('<SelfExclusion />', () => {
 
         const inputs_1 = await screen.findAllByRole('textbox');
         expect(inputs_1.length).toBe(11);
-        const max_turnover_input = inputs_1.find(input => input.name === 'max_turnover');
-        const max_open_bets_input = inputs_1.find(input => input.name === 'max_open_bets');
+        const max_turnover_input = inputs_1.find((input: FormikValues) => input.name === 'max_turnover');
+        const max_open_bets_input = inputs_1.find((input: FormikValues) => input.name === 'max_open_bets');
 
         act(() => {
-            fireEvent.change(max_turnover_input, { target: { value: '1700' } });
-            fireEvent.change(max_open_bets_input, { target: { value: '999' } });
+            if (max_turnover_input) fireEvent.change(max_turnover_input, { target: { value: '1700' } });
+            if (max_open_bets_input) fireEvent.change(max_open_bets_input, { target: { value: '999' } });
         });
 
         await waitFor(() => {
@@ -191,10 +233,10 @@ describe('<SelfExclusion />', () => {
         expect(next_btn_2).toHaveTextContent('Next');
         const inputs_2 = await screen.findAllByRole('textbox');
         expect(inputs_2.length).toBe(11);
-        const max_balance_input = inputs_1.find(input => input.name === 'max_balance');
+        const max_balance_input = inputs_1.find((input: FormikValues) => input.name === 'max_balance');
 
         act(() => {
-            fireEvent.change(max_balance_input, { target: { value: '10000' } });
+            if (max_balance_input) fireEvent.change(max_balance_input, { target: { value: '10000' } });
         });
 
         await waitFor(() => {
@@ -238,26 +280,29 @@ describe('<SelfExclusion />', () => {
         const inputs = await screen.findAllByRole('textbox');
         expect(inputs.length).toBe(11);
 
-        const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
-        const max_open_bets_input = inputs.find(input => input.name === 'max_open_bets');
-        const max_losses_input = inputs.find(input => input.name === 'max_losses');
-        const max_turnover_input = inputs.find(input => input.name === 'max_turnover');
-        const max_7day_losses_input = inputs.find(input => input.name === 'max_7day_losses');
-        const max_7day_turnover_input = inputs.find(input => input.name === 'max_7day_turnover');
-        const max_30day_losses_input = inputs.find(input => input.name === 'max_30day_losses');
-        const max_30day_turnover_input = inputs.find(input => input.name === 'max_30day_turnover');
-        const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
+        const exclude_until_input = inputs.find((input: FormikValues) => input.name === 'exclude_until');
+        const max_open_bets_input = inputs.find((input: FormikValues) => input.name === 'max_open_bets');
+        const max_losses_input = inputs.find((input: FormikValues) => input.name === 'max_losses');
+        const max_turnover_input = inputs.find((input: FormikValues) => input.name === 'max_turnover');
+        const max_7day_losses_input = inputs.find((input: FormikValues) => input.name === 'max_7day_losses');
+        const max_7day_turnover_input = inputs.find((input: FormikValues) => input.name === 'max_7day_turnover');
+        const max_30day_losses_input = inputs.find((input: FormikValues) => input.name === 'max_30day_losses');
+        const max_30day_turnover_input = inputs.find((input: FormikValues) => input.name === 'max_30day_turnover');
+        const session_duration_limit_input = inputs.find(
+            (input: FormikValues) => input.name === 'session_duration_limit'
+        );
 
         act(() => {
-            fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
-            fireEvent.change(max_open_bets_input, { target: { value: '99' } });
-            fireEvent.change(max_losses_input, { target: { value: '1000' } });
-            fireEvent.change(max_turnover_input, { target: { value: '1700' } });
-            fireEvent.change(max_7day_losses_input, { target: { value: '700' } });
-            fireEvent.change(max_7day_turnover_input, { target: { value: '700' } });
-            fireEvent.change(max_30day_losses_input, { target: { value: '3000' } });
-            fireEvent.change(max_30day_turnover_input, { target: { value: '5000' } });
-            fireEvent.change(session_duration_limit_input, { target: { value: '60399' } });
+            if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
+            if (max_open_bets_input) fireEvent.change(max_open_bets_input, { target: { value: '99' } });
+            if (max_losses_input) fireEvent.change(max_losses_input, { target: { value: '1000' } });
+            if (max_turnover_input) fireEvent.change(max_turnover_input, { target: { value: '1700' } });
+            if (max_7day_losses_input) fireEvent.change(max_7day_losses_input, { target: { value: '700' } });
+            if (max_7day_turnover_input) fireEvent.change(max_7day_turnover_input, { target: { value: '700' } });
+            if (max_30day_losses_input) fireEvent.change(max_30day_losses_input, { target: { value: '3000' } });
+            if (max_30day_turnover_input) fireEvent.change(max_30day_turnover_input, { target: { value: '5000' } });
+            if (session_duration_limit_input)
+                fireEvent.change(session_duration_limit_input, { target: { value: '60399' } });
         });
 
         await waitFor(() => {

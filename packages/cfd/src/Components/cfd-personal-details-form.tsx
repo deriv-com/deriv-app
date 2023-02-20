@@ -278,7 +278,7 @@ const CFDPersonalDetailsForm = ({
                     setFieldValue(_field, item_value, true);
                 };
                 const is_tin_mandatory =
-                    // (!values.tax_residence && is_tin_required) ||
+                    (!values.tax_residence && is_tin_required) ||
                     residence_list.find(res => res.text === values.tax_residence && res.tin_format)?.tin_format;
 
                 return (

@@ -1,6 +1,14 @@
 import { TOptions, getPreBuildDVRs, TInitPreBuildDVRs } from '@deriv/shared';
 import Error from './errors';
 
+type TRuleOptions = {
+    func: (value: string | number, options?: TOptions, store?: any, inputs?: any) => boolean;
+    condition: (store: any) => boolean;
+    message: string;
+};
+
+type TRule = string | Array<string | TRuleOptions>;
+
 const template = (string: string, content: string | Array<string>) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
@@ -64,7 +72,7 @@ class Validator {
                 return;
             }
 
-            this.rules[attribute].forEach(rule => {
+            this.rules[attribute].forEach((rule: TRule) => {
                 const ruleObject = Validator.getRuleObject(rule);
 
                 if (!ruleObject.validator && typeof ruleObject.validator !== 'function') {
@@ -109,21 +117,15 @@ class Validator {
      * @param {array} rule
      * @return {object}
      */
-    static getRuleObject(
-        rule:
-            | string
-            | Array<
-                  | string
-                  | { func: (value: string, options: TOptions, store: any, inputs?: any) => boolean; message: string }
-              >
-    ) {
+    static getRuleObject(rule: TRule) {
         const is_rule_string = typeof rule === 'string';
-        const rule_object_name = is_rule_string ? rule : rule[0];
-        const rule_object_options = is_rule_string ? {} : rule[1] || {};
+        const rule_object_name = (is_rule_string ? rule : rule[0]) as string;
+        const rule_object_options = (is_rule_string ? {} : rule[1] || {}) as TRuleOptions;
         return {
             name: rule_object_name,
             options: rule_object_options,
-            validator: rule_object_name === 'custom' ? rule[1].func : getPreBuildDVRs()[rule_object_name].func,
+            validator:
+                rule_object_name === 'custom' ? rule_object_options.func : getPreBuildDVRs()[rule_object_name].func,
         };
     }
 }

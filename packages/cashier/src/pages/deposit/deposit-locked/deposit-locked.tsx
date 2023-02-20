@@ -5,9 +5,10 @@ import { Localize, localize } from '@deriv/translations';
 import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../../components/cashier-locked';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 const DepositLocked = observer(() => {
-    const { client, modules } = useStore();
+    const { client } = useStore();
     const {
         account_status,
         is_financial_account,
@@ -16,8 +17,7 @@ const DepositLocked = observer(() => {
         is_trading_experience_incomplete,
         standpoint,
     } = client;
-    const { cashier } = modules;
-    const { deposit } = cashier;
+    const { deposit } = useCashierStore();
     const { onMountDeposit: onMount } = deposit;
 
     // handle authentication locked

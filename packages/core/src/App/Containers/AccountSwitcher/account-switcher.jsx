@@ -21,6 +21,7 @@ import {
     getAccountTypeFields,
     getPlatformSettings,
     CFD_PLATFORMS,
+    ContentFlag,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -88,14 +89,14 @@ const AccountSwitcher = props => {
         if (cfd_demo_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
-        if (props.is_low_risk) {
+        if (props.is_low_risk || props.is_high_risk) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
                 account => !account.is_virtual && account.loginid.startsWith('CR')
             );
             setFilteredRealAccounts(real_accounts);
             const remaining_real_accounts = getRemainingRealAccounts().filter(account => account === 'svg');
             setFilteredRemainingRealAccounts(remaining_real_accounts);
-        } else if (props.show_eu_related_content) {
+        } else if (props.is_eu) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
                 account => !account.is_virtual && account.loginid.startsWith('MF')
             );
@@ -369,6 +370,12 @@ const AccountSwitcher = props => {
     };
 
     const getRealMT5 = () => {
+        const low_risk_non_eu = props.content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+        if (low_risk_non_eu) {
+            return getSortedCFDList(props.mt5_login_list).filter(
+                account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
+            );
+        }
         return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
     };
 
@@ -417,6 +424,7 @@ const AccountSwitcher = props => {
             props.show_eu_related_content ||
             props.is_virtual ||
             !canOpenMulti() ||
+            props.is_pre_appstore ||
             is_regulated_able_to_change_currency
         ) {
             return props.upgradeable_landing_companies;
@@ -1344,6 +1352,7 @@ AccountSwitcher.propTypes = {
     updateMt5LoginList: PropTypes.func,
     real_account_creation_unlock_date: PropTypes.number,
     setShouldShowCooldownModal: PropTypes.func,
+    content_flag: PropTypes.string,
 };
 
 const account_switcher = withRouter(
@@ -1409,6 +1418,7 @@ const account_switcher = withRouter(
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         trading_platform_available_accounts: client.trading_platform_available_accounts,
         show_eu_related_content: traders_hub.show_eu_related_content,
+        content_flag: traders_hub.content_flag,
     }))(AccountSwitcher)
 );
 

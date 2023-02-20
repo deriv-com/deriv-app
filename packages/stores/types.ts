@@ -69,6 +69,7 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_landing_company_loaded: boolean;
+    is_crypto: boolean;
 };
 
 type TCommonStoreError = {
@@ -109,6 +110,7 @@ type TUiStore = {
 
 type TTradersHubStore = {
     closeModal: () => void;
+    content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
 };
 

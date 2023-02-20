@@ -118,9 +118,17 @@ const RecentWorkspace = ({
             }}
         >
             <div className='load-strategy__recent-item-text'>
-                <div className='load-strategy__recent-item-title'>{workspace.name}</div>
+                <div className='load-strategy__recent-item-title'>
+                    <Text align='left' as='p' size={is_desktop ? 'xs' : 'xxs'} line_height='l'>
+                        {workspace.name}
+                    </Text>
+                </div>
             </div>
-            <div className='load-strategy__recent-item-time'>{timeSince(workspace.timestamp)}</div>
+            <div className='load-strategy__recent-item-time'>
+                <Text align='left' as='p' size={is_desktop ? 'xs' : 'xxs'} line_height='l'>
+                    {timeSince(workspace.timestamp)}
+                </Text>
+            </div>
             <div className='load-strategy__recent-item-location'>
                 <Icon
                     icon={getRecentFileIcon(workspace.save_type)}
@@ -128,7 +136,11 @@ const RecentWorkspace = ({
                         'load-strategy__recent-icon--active': workspace.save_type === save_types.GOOGLE_DRIVE,
                     })}
                 />
-                <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>
+                <div className='load-strategy__recent-item-saved'>
+                    <Text align='left' as='p' size={is_desktop ? 'xs' : 'xxs'} line_height='l'>
+                        {getSaveType(workspace.save_type)}
+                    </Text>
+                </div>
             </div>
             <DesktopWrapper>
                 <div className='load-strategy__recent-item__button'>

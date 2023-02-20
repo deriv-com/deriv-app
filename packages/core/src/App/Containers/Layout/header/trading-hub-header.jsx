@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { routes, ContentFlag } from '@deriv/shared';
-import { getLanguage, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
@@ -49,9 +49,8 @@ const RedirectToOldInterface = ({
     toggleExitTradersHubModal,
     content_flag,
     switchToCRAccount,
-    setPreferredLanguage,
 }) => {
-    const language = getLanguage();
+    const history = useHistory();
     const disablePreAppstore = async () => {
         if (should_show_exit_traders_modal) {
             toggleExitTradersHubModal();
@@ -59,8 +58,8 @@ const RedirectToOldInterface = ({
             if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
                 await switchToCRAccount();
             }
-            setPreferredLanguage(language);
             setIsPreAppStore(false);
+            history.push(routes.root);
         }
     };
     return (
@@ -134,7 +133,6 @@ const TradingHubHeader = ({
     toggleNotifications,
     toggleExitTradersHubModal,
     switchToCRAccount,
-    setPreferredLanguage,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
@@ -173,7 +171,6 @@ const TradingHubHeader = ({
                         toggleExitTradersHubModal={toggleExitTradersHubModal}
                         content_flag={content_flag}
                         switchToCRAccount={switchToCRAccount}
-                        setPreferredLanguage={setPreferredLanguage}
                     />
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
@@ -271,7 +268,6 @@ TradingHubHeader.propTypes = {
     toggleExitTradersHubModal: PropTypes.func,
     content_flag: PropTypes.string,
     switchToCRAccount: PropTypes.func,
-    setPreferredLanguage: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui, traders_hub }) => ({
@@ -293,5 +289,4 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     content_flag: traders_hub.content_flag,
     switchToCRAccount: traders_hub.switchToCRAccount,
-    setPreferredLanguage: client.setPreferredLanguage,
 }))(withRouter(TradingHubHeader));

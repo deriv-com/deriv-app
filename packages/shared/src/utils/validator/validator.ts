@@ -1,4 +1,4 @@
-import { TOptions, getPreBuildDVRs, TInitPreBuildDVRs } from '@deriv/shared';
+import { TOptions, getPreBuildDVRs, TInitPreBuildDVRs } from '../validation/declarative-validation-rules';
 import Error from './errors';
 
 type TRuleOptions = {

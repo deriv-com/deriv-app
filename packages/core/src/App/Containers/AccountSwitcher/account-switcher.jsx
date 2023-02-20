@@ -855,9 +855,9 @@ const AccountSwitcher = props => {
                                     if (props.real_account_creation_unlock_date) {
                                         closeAccountsDialog();
                                         props.setShouldShowCooldownModal(true);
-                                    } else {
-                                        props.openRealAccountSignup(account);
-                                    }
+                                    } else if (can_manage_account || can_manage_account_when_virtual)
+                                        props.openRealAccountSignup('manage');
+                                    else props.openRealAccountSignup(account);
                                 }}
                                 className='acc-switcher__new-account-btn'
                                 secondary

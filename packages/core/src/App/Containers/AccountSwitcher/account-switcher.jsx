@@ -598,7 +598,7 @@ const AccountSwitcher = props => {
         <div className='acc-switcher__list-wrapper'>
             {vrtc_loginid && (
                 <AccountWrapper
-                    header={localize('Deriv Accounts')}
+                    header={localize('Deriv account')}
                     is_visible={is_deriv_demo_visible}
                     toggleVisibility={() => {
                         toggleVisibility('demo_deriv');
@@ -767,7 +767,7 @@ const AccountSwitcher = props => {
         <div className='acc-switcher__list-wrapper'>
             {vrtc_loginid && (
                 <AccountWrapper
-                    header={localize('Deriv Account')}
+                    header={localize('Deriv account')}
                     is_visible={is_deriv_demo_visible}
                     toggleVisibility={() => {
                         toggleVisibility('demo_deriv');
@@ -805,7 +805,7 @@ const AccountSwitcher = props => {
         <div ref={scroll_ref} className='acc-switcher__list-wrapper'>
             <React.Fragment>
                 <AccountWrapper
-                    header={localize('Deriv Accounts')}
+                    header={localize(`Deriv ${filtered_real_accounts.length > 1 ? 'accounts' : 'account'}`)}
                     is_visible={is_deriv_real_visible}
                     toggleVisibility={() => {
                         toggleVisibility('real_deriv');
@@ -1056,7 +1056,7 @@ const AccountSwitcher = props => {
                             className='acc-switcher__title'
                             header={
                                 props.is_low_risk
-                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'Accounts' : 'Account'}`)
+                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                                     : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                             }
                             is_visible={is_non_eu_regulator_visible}
@@ -1129,7 +1129,7 @@ const AccountSwitcher = props => {
                     <AccountWrapper
                         header={
                             props.is_low_risk
-                                ? localize(`EU Deriv ${have_more_accounts('MF') ? 'Accounts' : 'Account'}`)
+                                ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                                 : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                         }
                         is_visible={is_eu_regulator_visible}

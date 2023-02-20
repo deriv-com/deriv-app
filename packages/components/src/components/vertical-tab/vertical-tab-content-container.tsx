@@ -53,16 +53,16 @@ const Content = ({ is_routed, items, selected }: TContent) => {
     const TabContent = selected_item?.value as React.ElementType;
     const [side_notes, setSideNotes] = React.useState<React.ReactNode[] | null>(null);
 
-    const notes_array: React.ReactNode[] = [];
+    const notes_array: React.ReactNode[][] = [];
 
-    const addToNotesQueue = React.useCallback((notes: React.ReactNode) => {
+    const addToNotesQueue = React.useCallback((notes: React.ReactNode[]) => {
         notes_array.unshift(notes);
-        setSideNotes(notes_array);
+        setSideNotes(notes);
     }, []);
 
     React.useEffect(() => {
         if (selected_item?.label !== previous_selected_item?.label) {
-            setSideNotes(notes_array[0] ? notes_array : null);
+            setSideNotes(notes_array[0] ?? null);
             notes_array.splice(0, notes_array.length);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

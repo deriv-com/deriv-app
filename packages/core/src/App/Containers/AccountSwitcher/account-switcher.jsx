@@ -585,13 +585,9 @@ const AccountSwitcher = props => {
         : default_total_assets_message;
 
     const can_manage_account =
-        !canUpgrade() &&
-        canOpenMulti() &&
-        (!props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency));
-
-    const can_manage_account_when_virtual =
-        props.is_virtual &&
-        (!props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency));
+        !props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency);
+    const can_manage_account_virtual = props.is_virtual && can_manage_account;
+    const can_manage_account_multi = !canUpgrade() && canOpenMulti() && can_manage_account;
 
     const have_more_accounts = type =>
         getSortedAccountList(props.account_list, props.accounts).filter(
@@ -855,7 +851,7 @@ const AccountSwitcher = props => {
                                     if (props.real_account_creation_unlock_date) {
                                         closeAccountsDialog();
                                         props.setShouldShowCooldownModal(true);
-                                    } else if (can_manage_account || can_manage_account_when_virtual)
+                                    } else if (can_manage_account_multi || can_manage_account_virtual)
                                         props.openRealAccountSignup('manage');
                                     else props.openRealAccountSignup(account);
                                 }}
@@ -867,7 +863,7 @@ const AccountSwitcher = props => {
                             </Button>
                         </div>
                     ))}
-                    {can_manage_account && (
+                    {can_manage_account_multi && (
                         <Button
                             className='acc-switcher__btn'
                             secondary
@@ -1114,7 +1110,7 @@ const AccountSwitcher = props => {
                                                 if (props.real_account_creation_unlock_date) {
                                                     closeAccountsDialog();
                                                     props.setShouldShowCooldownModal(true);
-                                                } else if (can_manage_account || can_manage_account_when_virtual)
+                                                } else if (can_manage_account_multi || can_manage_account_virtual)
                                                     props.openRealAccountSignup('manage');
                                                 else props.openRealAccountSignup(account);
                                             }}
@@ -1275,7 +1271,7 @@ const AccountSwitcher = props => {
                     'acc-switcher__footer--traders-hub': props.is_pre_appstore,
                 })}
             >
-                {props.is_pre_appstore && isRealAccountTab && can_manage_account && (
+                {props.is_pre_appstore && isRealAccountTab && can_manage_account_multi && (
                     <Button
                         className={classNames('acc-switcher__btn', {
                             'acc-switcher__btn--traders_hub': props.is_pre_appstore,

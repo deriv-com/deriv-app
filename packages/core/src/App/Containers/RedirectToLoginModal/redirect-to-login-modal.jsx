@@ -31,7 +31,6 @@ const RedirectToLoginModal = ({ is_logged_in, logout, disableApp, enableApp, is_
     };
 
     React.useEffect(() => {
-        console.log('logout()', 'redirect-to-login')
         if (is_logged_in) {
             logout().then(() => showModal());
         } else {

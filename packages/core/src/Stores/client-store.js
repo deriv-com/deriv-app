@@ -532,10 +532,6 @@ export default class ClientStore extends BaseStore {
             return [];
         };
 
-        const { gaming_company, financial_company } = this.landing_companies;
-        // // this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
-        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
-
         if (!this.landing_companies || !this.root_store.ui) {
             return [];
         }
@@ -546,11 +542,9 @@ export default class ClientStore extends BaseStore {
             ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
             this.current_landing_company
         ) {
-            return this.is_pre_appstore && restricted_countries
+            return this.is_pre_appstore
                 ? getDefaultAllowedCurrencies()
-                : this.current_landing_company.legal_allowed_currencies; // return here
-
-            // return this.current_landing_company.legal_allowed_currencies; // return here
+                : this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 

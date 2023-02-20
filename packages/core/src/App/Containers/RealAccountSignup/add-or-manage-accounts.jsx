@@ -35,6 +35,8 @@ const AddOrManageAccounts = props => {
         setShouldShowCancel,
         onClose,
         show_eu_related_content,
+        is_low_risk,
+        is_pre_appstore,
     } = props;
 
     const initial_active_index =
@@ -136,12 +138,9 @@ const AddOrManageAccounts = props => {
         );
     }
 
-    const val = false;
-
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
-            {/* {show_eu_related_content && has_fiat ? ( */}
-            {val && show_eu_related_content && has_fiat ? (
+            {show_eu_related_content && !(is_low_risk && is_pre_appstore) && has_fiat ? (
                 fiat_section
             ) : (
                 <Tabs
@@ -219,6 +218,8 @@ AddOrManageAccounts.propTypes = {
     setIsDeposit: PropTypes.func,
     manage_real_account_tab_index: PropTypes.number,
     show_eu_related_content: PropTypes.bool,
+    is_low_risk: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
 };
 
 export default connect(({ client, modules, ui, traders_hub }) => ({
@@ -234,4 +235,6 @@ export default connect(({ client, modules, ui, traders_hub }) => ({
     resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    is_low_risk: client.is_low_risk,
+    is_pre_appstore: client.is_pre_appstore,
 }))(AddOrManageAccounts);

@@ -82,7 +82,7 @@
         "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.8",
-        "@deriv/deriv-charts": "1.1.2",
+        "@deriv/deriv-charts": "1.1.1",
         "@deriv/reports": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",

@@ -1,6 +1,5 @@
 import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
-import { isProduction, isEmptyObject } from '@deriv/shared';
-import Validator from 'Utils/validator/validator';
+import { isProduction, isEmptyObject, Validator } from '@deriv/shared';
 import type { TRootStore } from 'Types';
 
 type TListenerResponse = {

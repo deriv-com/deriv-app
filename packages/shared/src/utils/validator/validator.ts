@@ -24,14 +24,13 @@ const template = (string: string, content: string | Array<string>) => {
 };
 
 class Validator {
-    input: { [key: string]: string };
-    rules: TInitPreBuildDVRs;
+    input: { [key: string]: any };
+    rules: Partial<TInitPreBuildDVRs>;
     store: any;
     errors: Error;
     error_count: number;
 
-    constructor(options: TValidatorOptions) {
-        const { input, rules, store } = options;
+    constructor(input: { [key: string]: any }, rules: Partial<TInitPreBuildDVRs>, store: any) {
         this.input = input;
         this.rules = rules;
         this.store = store;

@@ -128,6 +128,13 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         return example_format ? localize('Example: ') + example_format : '';
     };
 
+    const handleInputPaste = e => {
+        const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
+        if (clipboardData.length === 0) {
+            e.preventDefault();
+        }
+    };
+
     return (
         <Formik
             initialValues={initial_form_values}
@@ -299,6 +306,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
+                                                                    onPaste={e => handleInputPaste(e)}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
                                                                     onKeyUp={e => {

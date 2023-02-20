@@ -81,6 +81,13 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         return example_format ? localize('Example: ') + example_format : '';
     };
 
+    const handleInputPaste = e => {
+        const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
+        if (clipboardData.length === 0) {
+            e.preventDefault();
+        }
+    };
+
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number } = values;
@@ -242,6 +249,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
+                                            onPaste={e => handleInputPaste(e)}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import {
     simpleMovingAverage as sma,
     simpleMovingAverageArray as smaa,
@@ -73,7 +72,7 @@ describe('Relative Strength Index', () => {
         Object.keys(expected).forEach(name => {
             const endResult = JSON.parse(JSON.stringify(result[name]));
             const expectedResult = JSON.parse(JSON.stringify(expected[name]));
-            expect(endResult).to.deep.equal(expectedResult);
+            expect(endResult).toEqual(expectedResult);
         });
     });
 });

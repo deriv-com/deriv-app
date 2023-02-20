@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon

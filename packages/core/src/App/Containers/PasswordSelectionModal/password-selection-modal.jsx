@@ -76,13 +76,15 @@ const PasswordSelectionModal = ({
                         type='button'
                         onClick={() => isModalVisible(false)}
                     />
-                    <Button
-                        large
-                        primary
-                        text={localize('Create new account')}
-                        type='button'
-                        onClick={() => redirectToSignUp({ is_appstore })}
-                    />
+                    <div>
+                        <Button
+                            large
+                            primary
+                            text={localize('Create new account')}
+                            type='button'
+                            onClick={() => redirectToSignUp({ is_appstore })}
+                        />
+                    </div>
                 </div>
             </React.Fragment>
         ) : (

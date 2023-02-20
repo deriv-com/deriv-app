@@ -11,13 +11,13 @@ jest.mock('Stores/connect', () => ({
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
-    ProofOfIdentityContainerforMt5: () => <div>ProofOfIdentityContainerforMt5</div>,
+    ProofOfIdentityContainerForMt5: () => <div>ProofOfIdentityContainerForMt5</div>,
 }));
 
 describe('<CFDPOI />', () => {
     let props;
 
-    const ProofOfIdentityContainerforMt5 = 'ProofOfIdentityContainerforMt5';
+    const ProofOfIdentityContainerForMt5 = 'ProofOfIdentityContainerForMt5';
 
     beforeEach(() => {
         props = {
@@ -92,8 +92,8 @@ describe('<CFDPOI />', () => {
         };
     });
 
-    it('should render ProofOfIdentityContainerforMt5', () => {
+    it('should render ProofOfIdentityContainerForMt5', () => {
         render(<CFDPOI {...props} />);
-        expect(screen.getByText(ProofOfIdentityContainerforMt5)).toBeInTheDocument();
+        expect(screen.getByText(ProofOfIdentityContainerForMt5)).toBeInTheDocument();
     });
 });

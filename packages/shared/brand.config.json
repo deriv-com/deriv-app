@@ -1,5 +1,5 @@
 {
-    "brand_name" : "Deriv",
+    "brand_name": "Deriv",
     "domain_name": "Deriv.com",
     "legal_entities": {
         "fx": "Deriv (FX) Ltd",
@@ -20,12 +20,16 @@
             "icon": "IcBrandDbot"
         },
         "mt5": {
-            "name": "DMT5",
+            "name": "Deriv MT5",
             "icon": "IcBrandDmt5"
         },
         "dxtrade": {
             "name": "Deriv X",
             "icon": "IcBrandDxtrade"
+        },
+        "derivez": {
+            "name": "Deriv EZ",
+            "icon": "IcDerivez"
         },
         "smarttrader": {
             "name": "SmartTrader",
@@ -36,8 +40,35 @@
             "icon": "IcBrandBinarybot"
         },
         "go": {
-            "name": "Deriv Go"
+            "name": "Deriv Go",
+            "icon": ""
+        }
+    },
+    "platforms_appstore": {
+        "trader": {
+            "name": "DTrader",
+            "icon": "DTrader",
+            "availability": "All"
+        },
+        "dbot": {
+            "name": "DBot",
+            "icon": "DBot",
+            "availability": "Non-EU"
+        },
+        "smarttrader": {
+            "name": "SmartTrader",
+            "icon": "SmartTrader",
+            "availability": "Non-EU"
+        },
+        "bbot": {
+            "name": "Binary Bot",
+            "icon": "BinaryBot",
+            "availability": "Non-EU"
+        },
+        "go": {
+            "name": "Deriv Go",
+            "icon": "DerivGo",
+            "availability": "Non-EU"
         }
     }
-    
 }

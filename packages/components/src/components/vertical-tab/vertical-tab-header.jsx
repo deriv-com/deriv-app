@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { getKebabCase } from '@deriv/shared';
 import Counter from '../counter';
-import Icon from '../icon/icon.jsx';
+import Icon from '../icon/icon';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon
@@ -35,7 +35,10 @@ const VerticalTabHeader = ({
     const handleClick = () => onChange(item);
     const id = `dc_${getKebabCase(label)}_link`;
     const is_disabled = !!item.is_disabled;
+    const is_hidden = !!item.is_hidden;
     const count = item.count || 0;
+
+    if (is_hidden) return null;
 
     return is_routed ? (
         <NavLink

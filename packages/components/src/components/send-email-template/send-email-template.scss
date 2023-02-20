@@ -32,16 +32,16 @@
     &__resend {
         display: grid;
         grid-template-rows: 1fr 1fr 1fr;
-        grid-row-gap: 16px;
-        max-width: 400px;
-        margin: 24px auto 0;
+        grid-row-gap: 1.6rem;
+        max-width: 40rem;
+        margin: 2.4rem auto 0;
         color: var(--text-prominent);
         font-size: var(--text-size-xxs);
         line-height: 1.5;
         .sent-email__content {
             display: grid;
             grid-template-columns: 3.2rem auto;
-            grid-gap: 8px;
+            grid-gap: 0.8rem;
 
             .inline-icon {
                 width: 3.2rem;

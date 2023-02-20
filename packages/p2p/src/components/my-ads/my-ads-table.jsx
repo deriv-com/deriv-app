@@ -45,18 +45,8 @@ const AdSwitchHintBox = () => {
         );
     }
 
-    return floating_rate_store.reached_target_date ? (
+    return (
         <Localize i18n_default_text='Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.' />
-    ) : (
-        <Localize
-            i18n_default_text={
-                'Fixed rates are enabled for {{local_currency}}. Ads with floating rates will be deactivated. Switch to fixed rates by {{end_date}}.'
-            }
-            values={{
-                local_currency: general_store.client.local_currency_config.currency || '',
-                end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
-            }}
-        />
     );
 };
 

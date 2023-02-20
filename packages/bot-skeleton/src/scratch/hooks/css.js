@@ -140,7 +140,7 @@ Blockly.Css.CONTENT = [
     'min-height: 34px;',
     'background-color: #d6dadb;',
     'border-radius: 4px;',
-    'color: var(--text-prominent);',
+    'color: #333333;',
     'padding: 8px;',
     'font-size: 12px;',
     'font-family: "IBM Plex Sans";',
@@ -222,7 +222,7 @@ Blockly.Css.CONTENT = [
     'margin: 4px;',
     'border-radius: 4px;',
     'background: $colour_numPadBackground;',
-    'color: var(--text-general);',
+    'color: #333333;',
     'outline: none;',
     'border: 1px solid $colour_numPadBorder;',
     'cursor: pointer;',
@@ -290,6 +290,7 @@ Blockly.Css.CONTENT = [
 
     '.blocklyPath {',
     'stroke-width: 0.3px;',
+
     '}',
 
     '.blocklySelected>.blocklyPath {',
@@ -373,7 +374,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyText {',
-    'fill: var(--text-general);',
+    'fill: #333333;',
     'font-family: inherit;',
     'font-size: var(--text-size-s);',
     'font-weight: normal;',
@@ -393,16 +394,16 @@ Blockly.Css.CONTENT = [
 
     '.blocklyNonEditableText>text,',
     '.blocklyEditableText>text {',
-    // 'fill: $colour_text;',
+    'fill: var(--text-prominent);',
     // 'fill: #575E75 !important;',
     '}',
 
     '.blocklyEditableText>.blocklyEditableLabel {',
-    'fill: var(--text-general);',
+    'fill: var(--text-prominent);',
     '}',
 
     '.blocklyDropdownText {',
-    'fill: var(--text-general) !important;',
+    'fill: var(--text-prominent)!important;',
     '}',
 
     '.blocklyBubbleText {',
@@ -634,12 +635,13 @@ Blockly.Css.CONTENT = [
 
     '.blocklyMainBackground {',
     'stroke-width: 0;',
+    'fill: var(--general-main-1) !important',
     // 'stroke: #c6c6c6;',  /* Equates to #ddd due to border being off-pixel. */
     '}',
 
     '.blocklyMutatorBackground {',
     'fill: #fff;',
-    'stroke: #ddd;',
+    'stroke: #fff;',
     'stroke-width: 1;',
     '}',
 
@@ -1003,7 +1005,7 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyDropDownDiv .goog-menuitem {',
-    'color: var(--text-general);',
+    'color: #333333;',
     'font: normal 13px "Helvetica Neue", Helvetica, sans-serif;',
     'font-weight: bold;',
     'list-style: none;',

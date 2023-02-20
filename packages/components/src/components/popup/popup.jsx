@@ -16,7 +16,7 @@ const Popup = ({
     balance,
     close_icon_color,
     currency,
-    header_backgound_color,
+    header_background_color,
     header_banner_text,
     header_big_text,
     header_button_text,
@@ -37,7 +37,7 @@ const Popup = ({
         balance,
         close_icon_color,
         currency,
-        header_backgound_color,
+        header_background_color,
         header_banner_text,
         header_big_text,
         header_button_text,
@@ -59,7 +59,7 @@ const Popup = ({
                 <div className='dc-popup'>
                     <MobileFullPageModal
                         container_children={<PopupOverlayContainer refSetter={ref => setOverlayRef(ref)} />}
-                        header_backgound_color={header_backgound_color}
+                        header_background_color={header_background_color}
                         height_offset='39px'
                         is_flex
                         is_popup
@@ -87,7 +87,7 @@ const Popup = ({
                     className='popup'
                     has_close_icon={false}
                     header={<PopupHeader />}
-                    header_backgound_color={header_backgound_color}
+                    header_background_color={header_background_color}
                     header_icon={close_icon_color}
                     height='636px'
                     is_open={should_show_popup}
@@ -111,7 +111,7 @@ Popup.propTypes = {
     active_tab_icon_color: PropTypes.string,
     balance: PropTypes.number,
     close_icon_color: PropTypes.string,
-    header_backgound_color: PropTypes.string,
+    header_background_color: PropTypes.string,
     header_banner_text: PropTypes.string,
     header_big_text: PropTypes.string,
     header_button_text: PropTypes.string,

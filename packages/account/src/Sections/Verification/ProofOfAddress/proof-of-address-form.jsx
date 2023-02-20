@@ -45,7 +45,7 @@ let file_uploader_ref = null;
 const UploaderSideNote = () => (
     <div className='account-poa__upload-box account-poa__upload-box-dashboard'>
         <Text size='xs' line_height='s'>
-            <Localize i18n_default_text='A recent utility bill (e.g. electricity, water, gas, phone or internet)' />
+            <Localize i18n_default_text='A recent utility bill (e.g. electricity, water or gas)' />
         </Text>
         <Text size='xs' line_height='s'>
             <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address.' />
@@ -57,6 +57,7 @@ const ProofOfAddressForm = ({
     account_settings,
     addNotificationByKey,
     is_eu,
+    is_resubmit,
     fetchResidenceList,
     fetchStatesList,
     onSubmit,
@@ -86,6 +87,8 @@ const ProofOfAddressForm = ({
     }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
 
     const validateFields = values => {
+        Object.entries(values).forEach(([key, value]) => (values[key] = value.trim()));
+
         setFormState({ ...form_state, ...{ should_allow_submit: false } });
         const errors = {};
         const validateValues = validate(errors, values);
@@ -282,6 +285,13 @@ const ProofOfAddressForm = ({
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
+                                {is_resubmit && (
+                                    <Text size='xs' align='left' color='loss-danger'>
+                                        {localize(
+                                            'We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.'
+                                        )}
+                                    </Text>
+                                )}
                                 <FormSubHeader
                                     title={localize('1. Address')}
                                     subtitle={localize('(All fields are required)')}
@@ -458,6 +468,7 @@ ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
     addNotificationByKey: PropTypes.func,
     is_eu: PropTypes.bool,
+    is_resubmit: PropTypes.bool,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,

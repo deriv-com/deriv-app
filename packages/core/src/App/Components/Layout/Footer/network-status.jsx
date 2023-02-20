@@ -8,6 +8,7 @@ import { connect } from 'Stores/connect';
 const NetworkStatus = ({ is_mobile, status }) => {
     const network_status_element = (
         <div
+            data-testid='dt_network_status_element'
             className={classNames('network-status__circle', {
                 'network-status__circle--offline': status.class === 'offline',
                 'network-status__circle--online': status.class === 'online',
@@ -17,6 +18,7 @@ const NetworkStatus = ({ is_mobile, status }) => {
     );
     return (
         <div
+            data-testid='dt_network_status'
             className={classNames('network-status__wrapper', {
                 'network-status__wrapper--is-mobile': is_mobile,
             })}

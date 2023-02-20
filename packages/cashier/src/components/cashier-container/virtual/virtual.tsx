@@ -1,19 +1,19 @@
 import classNames from 'classnames';
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { RootStore } from 'Types';
+import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
 
-type TVirtualProps = RouteComponentProps & {
-    is_dark_mode_on: boolean;
-    toggleAccountsDialog: () => void;
-};
-const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
+const Virtual = observer(() => {
+    const {
+        ui: { is_dark_mode_on, toggleAccountsDialog },
+        client: { is_pre_appstore },
+    } = useStore();
+    const history = useHistory();
+
     return (
         <div className='cashier__wrapper' data-testid='dt_cashier_wrapper_id'>
             <React.Fragment>
@@ -42,16 +42,24 @@ const Virtual = ({ is_dark_mode_on, toggleAccountsDialog }: TVirtualProps) => {
                         i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                         components={[
                             <br key={0} />,
-                            <span key={1} className='virtual__account-switch-text' onClick={toggleAccountsDialog} />,
+                            <span
+                                key={1}
+                                className='virtual__account-switch-text'
+                                onClick={() => {
+                                    if (is_pre_appstore) {
+                                        history.push(routes.trade);
+                                        toggleAccountsDialog();
+                                    } else {
+                                        toggleAccountsDialog();
+                                    }
+                                }}
+                            />,
                         ]}
                     />
                 </Text>
             </React.Fragment>
         </div>
     );
-};
+});
 
-export default connect(({ ui }: RootStore) => ({
-    is_dark_mode_on: ui.is_dark_mode_on,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
-}))(withRouter(Virtual));
+export default withRouter(Virtual);

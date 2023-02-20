@@ -25,7 +25,7 @@ const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) =
     );
 };
 
-const OrderRow = ({ style, row: order }) => {
+const OrderRow = ({ row: order }) => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
@@ -47,12 +47,11 @@ const OrderRow = ({ style, row: order }) => {
         is_buy_order_for_user,
         is_completed_order,
         is_order_reviewable,
-        is_user_rated_previously,
+        is_user_recommended_previously,
         local_currency,
         order_expiry_milliseconds,
         order_purchase_datetime,
         other_user_details,
-        previous_recommendation,
         price_display,
         rating,
         should_highlight_alert,
@@ -76,7 +75,7 @@ const OrderRow = ({ style, row: order }) => {
 
     const onRowClick = () => {
         if (should_show_order_details.current) {
-            return order_store.setQueryDetails(order);
+            return order_store.setOrderId(order.id);
         }
 
         return () => {};
@@ -107,7 +106,7 @@ const OrderRow = ({ style, row: order }) => {
             <RatingModal
                 is_buy_order_for_user={is_buy_order_for_user}
                 is_rating_modal_open={should_show_rating_modal}
-                is_user_rated_previously={is_user_rated_previously}
+                is_user_recommended_previously={is_user_recommended_previously}
                 onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                 onClickDone={() => {
                     order_store.setOrderRating(id);
@@ -116,6 +115,9 @@ const OrderRow = ({ style, row: order }) => {
                     order_store.setRatingValue(0);
                     general_store.props.removeNotificationMessage({ key: `order-${id}` });
                     general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                    order_store.setIsLoading(true);
+                    order_store.setOrders([]);
+                    order_store.loadMoreOrders({ startIndex: 0 });
                 }}
                 onClickNotRecommended={() => order_store.setIsRecommended(0)}
                 onClickRecommended={() => order_store.setIsRecommended(1)}
@@ -125,7 +127,6 @@ const OrderRow = ({ style, row: order }) => {
                     should_show_order_details.current = true;
                 }}
                 onClickStar={order_store.handleRating}
-                previous_recommendation={previous_recommendation}
                 rating_value={order_store.rating_value}
             />
             <div onClick={onRowClick}>
@@ -177,7 +178,6 @@ const OrderRow = ({ style, row: order }) => {
                 </DesktopWrapper>
                 <MobileWrapper>
                     <Table.Row
-                        style={style}
                         className={classNames('orders__mobile', {
                             'orders__mobile--attention': !isOrderSeen(id),
                         })}
@@ -259,7 +259,6 @@ const OrderRow = ({ style, row: order }) => {
 
 OrderRow.propTypes = {
     order: PropTypes.object,
-    style: PropTypes.object,
     row: PropTypes.object,
     server_time: PropTypes.object,
 };

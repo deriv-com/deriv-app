@@ -9,12 +9,13 @@ import {
     removeBranchName,
     default_title,
 } from '@deriv/shared';
+import { TStores } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { TClientStore, TRouteConfig, TRoute } from 'Types';
+import { TRouteConfig, TRoute } from 'Types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & {
-    is_logged_in: TClientStore['is_logged_in'];
-    is_logging_in: TClientStore['is_logging_in'];
+    is_logged_in: TStores['client']['is_logged_in'];
+    is_logging_in: TStores['client']['is_logging_in'];
 };
 
 type TDefaultSubroute = TRoute | undefined;
@@ -55,7 +56,5 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
 
     return <Route exact={route.exact} path={route.path} render={renderFactory} />;
 };
-
-export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
 export default RouteWithSubRoutes;

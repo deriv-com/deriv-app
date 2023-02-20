@@ -58,6 +58,7 @@ const Endpoint = () => {
                 LocalStore.set('show_dbot_dashboard', values.show_dbot_dashboard);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
                 platform_store.setIsAppStore(values.is_appstore_enabled);
+                window.localStorage.removeItem('config.platform');
                 location.reload();
             }}
         >

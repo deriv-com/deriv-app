@@ -1,16 +1,20 @@
-import { action, reaction } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { action, reaction, makeObservable } from 'mobx';
+import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
     constructor(root_store) {
+        makeObservable(this, {
+            onMount: action.bound,
+            onUnmount: action.bound,
+        });
+
         this.root_store = root_store;
         this.dbot_store = null;
         this.api_helpers_store = null;
     }
 
-    @action.bound
     onMount() {
         const { blockly_store, core, main_content } = this.root_store;
         const { client, common, ui } = core;
@@ -33,10 +37,9 @@ export default class AppStore {
         main_content.getCachedActiveTab();
     }
 
-    @action.bound
     onUnmount() {
         DBot.terminateBot();
-
+        DBot.terminateConnection();
         if (Blockly.derivWorkspace) {
             clearInterval(Blockly.derivWorkspace.save_workspace_interval);
             Blockly.derivWorkspace.dispose();
@@ -145,16 +148,16 @@ export default class AppStore {
             () => {
                 if (
                     (!client.is_logged_in && client.is_eu_country) ||
-                    client.has_maltainvest_account ||
+                    (client.is_eu && window.location.pathname === routes.bot) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(
-                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
                         title: localize('DBot is not available for this account'),
-                        link: localize('Go to DMT5 dashboard'),
+                        link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
             }
@@ -169,16 +172,16 @@ export default class AppStore {
             () => {
                 if (
                     (!client.is_logged_in && client.is_eu_country) ||
-                    client.has_maltainvest_account ||
+                    (client.is_eu && window.location.pathname === routes.bot) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(
-                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                            'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
                         title: localize('DBot is not available for this account'),
-                        link: localize('Go to DMT5 dashboard'),
+                        link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
             }
@@ -236,16 +239,16 @@ export default class AppStore {
     showDigitalOptionsMaltainvestError = (client, common) => {
         if (
             (!client.is_logged_in && client.is_eu_country) ||
-            client.has_maltainvest_account ||
+            (client.is_eu && window.location.pathname === routes.bot) ||
             isEuResidenceWithOnlyVRTC(client.active_accounts) ||
             client.is_options_blocked
         ) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(
-                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
+                    'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                 ),
                 title: localize('DBot is not available for this account'),
-                link: localize('Go to DMT5 dashboard'),
+                link: localize('Go to Deriv MT5 dashboard'),
             });
         } else if (common.has_error) {
             common.setError(false, null);

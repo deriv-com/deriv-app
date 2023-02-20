@@ -22,6 +22,10 @@ const MyProfileHeader = () => {
             text: localize('Ad details'),
             value: my_profile_tabs.AD_TEMPLATE,
         },
+        {
+            text: localize('My counterparties'),
+            value: my_profile_tabs.MY_COUNTERPARTIES,
+        },
     ];
 
     const onChangeTab = event => my_profile_store.setActiveTab(event.target.value);

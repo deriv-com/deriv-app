@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
@@ -7,19 +8,11 @@ import { useStores } from 'Stores';
 import MyProfileForm from './my-profile-form';
 import MyProfileStats from './my-profile-stats';
 import PaymentMethods from './payment-methods';
+import BlockUser from './block-user';
 
 const MyProfileContent = () => {
     const { my_profile_store } = useStores();
     const formik_ref = React.useRef();
-
-    const generatePageHeaderText = () => {
-        if (my_profile_store.should_show_add_payment_method_form) {
-            return localize('Add payment method');
-        } else if (my_profile_store.should_show_edit_payment_method_form) {
-            return localize('Edit payment method');
-        }
-        return localize('Payment methods');
-    };
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;
@@ -31,12 +24,16 @@ const MyProfileContent = () => {
                 </DesktopWrapper>
                 <MobileWrapper>
                     <MobileFullPageModal
-                        body_className='payment-methods-list__modal'
+                        body_className={classNames('payment-methods-list__modal', {
+                            'payment-methods-list__modal-add':
+                                my_profile_store.selected_payment_method ||
+                                my_profile_store.should_show_edit_payment_method_form,
+                        })}
                         height_offset='80px'
                         is_modal_open
                         is_flex
                         page_header_className='buy-sell__modal-header'
-                        page_header_text={generatePageHeaderText()}
+                        page_header_text={localize('Add payment method')}
                         pageHeaderReturnFn={() => {
                             if (
                                 (formik_ref.current && formik_ref.current.dirty) ||
@@ -55,6 +52,8 @@ const MyProfileContent = () => {
                 </MobileWrapper>
             </React.Fragment>
         );
+    } else if (my_profile_store.active_tab === my_profile_tabs.MY_COUNTERPARTIES) {
+        return <BlockUser />;
     }
     return <MyProfileStats />;
 };

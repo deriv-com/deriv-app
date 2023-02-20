@@ -97,12 +97,10 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
     const [is_loading, setIsLoading] = React.useState(true);
     const [form_state, setFormState] = useStateCallback({
         poa_status: 'none',
-        resubmit_poa: false,
         has_poi: false,
         form_error: '',
     });
     const [document_upload, setDocumentUpload] = useStateCallback({ files: [], error_message: null });
-    const [form_values, setFormValues] = React.useState({});
     const [hasPOAFailed, sethasPOAfailed] = React.useState(false);
 
     const validateForm = (values: TFormValuesInputs) => {
@@ -183,15 +181,6 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         });
     };
 
-    const onProceed = () => {
-        const { files, error_message } = document_upload;
-        onSubmit(index, {
-            ...form_values,
-            ...form_state,
-            ...{ document_file: files, file_error_message: error_message },
-        });
-    };
-
     const onSubmitValues = async (values: TFormValues, actions: FormikHelpers<TFormValues>) => {
         const uploadables = { ...values };
         delete uploadables.document_file;
@@ -203,22 +192,11 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
             actions.setSubmitting(false);
             return;
         }
-        const { error, get_settings } = await WS.authorized.storage.getSettings();
+        const { error } = await WS.authorized.storage.getSettings();
         if (error) {
             setFormState({ ...form_state, ...{ form_error: error.message } });
             return;
         }
-
-        // Store newly stored values in the component.
-        const { _address_line_1, _address_line_2, _address_city, _address_state, _address_postcode } = get_settings;
-
-        setFormValues({
-            _address_line_1,
-            _address_line_2,
-            _address_city,
-            _address_postcode,
-            _address_state,
-        });
 
         setFormState({ ...form_state, ...{ form_error: '' } });
 
@@ -236,10 +214,11 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
                 actions.setSubmitting(false);
                 return;
             }
-            onProceed();
         } catch (e: unknown) {
             setFormState({ ...form_state, ...{ form_error: (e as Error).message } });
         }
+
+        actions.setSubmitting(false);
         onSave(index, values);
         onSubmit(index, values);
     };
@@ -278,9 +257,9 @@ const CFDPOA = ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCF
         states_list,
         value: { address_line_1, address_line_2, address_city, address_state, address_postcode },
     } = props;
-    const { form_error, poa_status, resubmit_poa } = form_state;
+    const { form_error, poa_status } = form_state;
 
-    const is_form_visible = !is_loading && (resubmit_poa || poa_status === PoaStatusCodes.none);
+    const is_form_visible = !is_loading && poa_status !== PoaStatusCodes.verified;
 
     return (
         <Formik

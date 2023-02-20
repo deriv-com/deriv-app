@@ -72,6 +72,7 @@
         --general-section-3: #{$color-grey-11};
         --general-section-4: #{$color-grey-12};
         --general-section-5: #{$color-grey-2};
+        --general-section-6: #{$color-grey-2};
         --general-disabled: #{$color-grey-3};
         --general-hover: #{$color-grey-4};
         --general-active: #{$color-grey-5};
@@ -90,6 +91,7 @@
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-grey-2};
+        --icon-black-plus: #{$color-black-7};
         --text-status-info-blue: #{$color-blue};
         --text-hint: #{$color-black-1};
         // Purchase
@@ -117,6 +119,7 @@
         --shadow-menu: #{$alpha-color-black-4};
         --shadow-menu-2: #{$alpha-color-black-4};
         --shadow-drop: #{$alpha-color-black-3};
+        --shadow-box: #{$COLOR_LIGHT_BLACK_2};
         // States
         --state-normal: #{$color-white};
         --state-hover: #{$color-grey-4};
@@ -194,6 +197,7 @@
         // @TODO: get color from design
         --general-section-4: #{$color-black-5};
         --general-section-5: #{$color-black-5};
+        --general-section-6: #{$color-grey-7};
         --general-disabled: #{$color-black-4};
         --general-hover: #{$color-black-5};
         --general-active: #{$color-black-8};
@@ -211,6 +215,7 @@
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
         --icon-grey-background: #{$color-black-1};
+        --icon-black-plus: #{$color-white};
         // Purchase
         --purchase-main-1: #{$color-green-3};
         --purchase-section-1: #{$color-green-4};
@@ -235,6 +240,7 @@
         --shadow-menu: #{$alpha-color-black-5};
         --shadow-menu-2: #{$alpha-color-black-1};
         --shadow-drop: #{$alpha-color-black-6};
+        --shadow-box: #{$COLOR_DARK_GRAY_3};
         // States
         --state-normal: #{$color-black};
         --state-hover: #{$color-black-5};

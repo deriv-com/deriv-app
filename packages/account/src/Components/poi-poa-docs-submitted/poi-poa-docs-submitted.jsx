@@ -1,48 +1,60 @@
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import IconMessageContent from 'Components/icon-message-content';
 
-const PoiPoaSubmitted = ({ onClickOK, onClickYes, account_type, mt5_login_list, is_eu }) => {
-    const [should_show_svg_msg, setShouldShowSvgMsg] = React.useState(false);
-    const message = localize('Your documents were submitted successfully');
+const PoiPoaDocsSubmitted = ({
+    account_status,
+    jurisdiction_selected_shortcode,
+    onClickOK,
+    updateAccountStatus,
+    has_created_account_for_selected_jurisdiction,
+    openPasswordModal,
+}) => {
+    const [is_loading, setIsLoading] = React.useState(false);
     React.useEffect(() => {
-        if (account_type.type && account_type.category && !is_eu) {
-            const svg_accounts = mt5_login_list.filter(
-                data =>
-                    data.market_type === account_type.type &&
-                    data.landing_company_short === 'svg' &&
-                    data.account_type === 'real'
-            );
-            if (!svg_accounts.length) {
-                setShouldShowSvgMsg(true);
-            }
-        }
+        setIsLoading(true);
+        updateAccountStatus()
+            .then(() => {
+                setIsLoading(false);
+            })
+            .finally(() => setIsLoading(false));
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const SVGRoutingData = () => (
-        <>
-            <Text size='xs' align='center' className='poi-poa-submitted__svg-text'>
-                {localize('Meanwhile, do you want to explore other accounts?')}
-            </Text>
-            <div className='poi-poa-submitted__svg-footer'>
-                <Button has_effect text={localize('No')} onClick={onClickOK} secondary />
-                <Button has_effect text={localize('Yes')} onClick={onClickYes} secondary />
-            </div>
-        </>
-    );
-    return (
+
+    const onSubmit = () => {
+        onClickOK();
+        if (!has_created_account_for_selected_jurisdiction) {
+            openPasswordModal();
+        }
+    };
+
+    const getDescription = () => {
+        const { manual_status, poi_verified_for_vanuatu_maltainvest, poi_verified_for_bvi_labuan, poa_pending } =
+            getAuthenticationStatusInfo(account_status);
+        const is_vanuatu_or_maltainvest_selected =
+            jurisdiction_selected_shortcode === 'vanuatu' || jurisdiction_selected_shortcode === 'maltainvest';
+        if (
+            (is_vanuatu_or_maltainvest_selected && poi_verified_for_vanuatu_maltainvest && poa_pending) ||
+            (!is_vanuatu_or_maltainvest_selected && poi_verified_for_bvi_labuan && poa_pending) ||
+            manual_status === 'pending'
+        ) {
+            return localize('We’ll review your documents and notify you of its status within 1 - 3 working days.');
+        }
+        return localize('We’ll review your documents and notify you of its status within 5 minutes.');
+    };
+    return is_loading ? (
+        <Loading is_fullscreen={false} />
+    ) : (
         <IconMessageContent
-            message={message}
-            text={localize('We’ll review your documents and notify you of its status within 1 to 3 days.')}
+            message={localize('Your documents were submitted successfully')}
+            text={getDescription()}
             icon={<Icon icon='IcDocsSubmit' size={128} />}
             className='poi-poa-submitted'
         >
-            {should_show_svg_msg ? (
-                <SVGRoutingData />
-            ) : (
-                <Button has_effect text={localize('OK')} onClick={onClickOK} primary />
-            )}
+            <Button has_effect text={localize('Ok')} onClick={onSubmit} primary />
         </IconMessageContent>
     );
 };
-export default PoiPoaSubmitted;
+export default PoiPoaDocsSubmitted;

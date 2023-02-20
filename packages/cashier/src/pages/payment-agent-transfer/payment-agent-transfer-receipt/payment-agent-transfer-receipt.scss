@@ -56,7 +56,9 @@
 
             &-button {
                 margin: 0;
-                max-width: 18rem;
+                width: auto;
+                min-width: 18.9rem;
+                max-width: 23.4rem;
 
                 &:first-child {
                     margin-right: 0.4rem;
@@ -86,12 +88,12 @@
                 }
                 &__form-submit-button {
                     &:first-child {
-                        margin-right: 0.4rem;
-                        width: auto;
+                        margin: 0.4rem;
+                        width: 100%;
                     }
                     &:last-child {
-                        margin-left: 0.4rem;
-                        max-width: 16rem;
+                        width: 100%;
+                        margin: 0.4rem;
                         padding: 0;
                     }
                 }

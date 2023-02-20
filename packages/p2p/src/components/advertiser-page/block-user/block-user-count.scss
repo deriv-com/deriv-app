@@ -1,0 +1,13 @@
+.block-user-count {
+    width: fit-content;
+    margin: auto 0.5rem;
+
+    &__container {
+        display: flex;
+        align-items: center;
+
+        &--icon {
+            margin-right: 0.4rem;
+        }
+    }
+}

@@ -1,81 +1,134 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader, Loading } from '@deriv/components';
+import {
+    Button,
+    DesktopWrapper,
+    Icon,
+    Loading,
+    MobileDialog,
+    MobileWrapper,
+    Modal,
+    Text,
+    UILoader,
+} from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from 'Stores/index';
-import { PoiPoaSubmitted } from '@deriv/account';
-import { connect } from 'Stores/connect';
-import { WS, getIdentityStatusInfo } from '@deriv/shared';
-import { AccountStatusResponse, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import RootStore from '../Stores/index';
+import { PoiPoaDocsSubmitted } from '@deriv/account';
+import { connect } from '../Stores/connect';
+import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
+import { AccountStatusResponse } from '@deriv/api-types';
+import { TCFDDbviOnboardingProps } from './props.types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 
-type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
-    market_type?: 'financial' | 'gaming';
-};
-type TVerificationModalProps = {
-    disableApp: () => void;
-    enableApp: () => void;
-    is_cfd_verification_modal_visible: boolean;
-    toggleCFDVerificationModal: () => void;
-    account_type: {
-        type: string;
-        category: string;
-    };
-    mt5_login_list: TExtendedDetailsOfEachMT5Loginid[];
-    toggleJurisdictionModal: () => void;
-    jurisdiction_selected_shortcode: string;
-    is_eu: boolean;
-};
+const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
+    <div className='da-icon-with-message'>
+        <Icon icon={'IcPoaLock'} size={128} />
+        <Text className='da-icon-with-message__text' as='p' size={isMobile() ? 'xs' : 's'} weight='bold'>
+            {localize('Switch to your real account to submit your documents')}
+        </Text>
+        <Button
+            has_effect
+            text={localize('Ok')}
+            onClick={() => {
+                onClickOk();
+            }}
+            className='da-icon-with-message__button'
+            primary
+        />
+    </div>
+);
 
-const CFDDbViOnBoarding = ({
+const CFDDbviOnboarding = ({
+    account_status,
+    context,
     disableApp,
     enableApp,
+    fetchAccountSettings,
+    has_created_account_for_selected_jurisdiction,
+    has_submitted_cfd_personal_details,
     is_cfd_verification_modal_visible,
-    toggleCFDVerificationModal,
-    account_type,
-    mt5_login_list,
-    toggleJurisdictionModal,
+    is_virtual,
     jurisdiction_selected_shortcode,
-    is_eu,
-}: TVerificationModalProps) => {
+    openPasswordModal,
+    toggleCFDVerificationModal,
+    updateAccountStatus,
+    updateMT5Status,
+}: TCFDDbviOnboardingProps) => {
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
-    const handleOpenJurisditionModal = () => {
-        toggleCFDVerificationModal();
-        toggleJurisdictionModal();
-    };
+
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
-            setIsLoading(false);
+
             if (get_account_status?.authentication) {
-                const identity_status = get_account_status?.authentication?.identity?.status;
-                const document_status = get_account_status?.authentication?.document?.status;
-                const { need_poi_for_vanuatu } = getIdentityStatusInfo(get_account_status);
-                if (jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
-                    setShowSubmittedModal(false);
-                } else if (
-                    (identity_status === 'pending' || identity_status === 'verified') &&
-                    (document_status === 'pending' || document_status === 'verified')
-                ) {
-                    setShowSubmittedModal(true);
-                } else {
-                    setShowSubmittedModal(false);
-                }
+                const { poi_acknowledged_for_vanuatu_maltainvest, poi_acknowledged_for_bvi_labuan, poa_acknowledged } =
+                    getAuthenticationStatusInfo(get_account_status);
+                if (jurisdiction_selected_shortcode === 'vanuatu') {
+                    setShowSubmittedModal(
+                        poi_acknowledged_for_vanuatu_maltainvest &&
+                            poa_acknowledged &&
+                            has_submitted_cfd_personal_details
+                    );
+                } else if (jurisdiction_selected_shortcode === 'maltainvest') {
+                    setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
+                } else
+                    setShowSubmittedModal(
+                        poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details
+                    );
             }
+
+            setIsLoading(false);
         });
+        setIsLoading(false);
     };
+
     React.useEffect(() => {
         if (is_cfd_verification_modal_visible) {
-            getAccountStatusFromAPI();
             setIsLoading(true);
-            setShowSubmittedModal(false);
+            getAccountStatusFromAPI();
+            fetchAccountSettings();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
 
-    return is_loading ? (
-        <Loading />
-    ) : (
+    const getModalContent = () => {
+        if (is_loading) {
+            return <Loading is_fullscreen={false} />;
+        } else if (is_virtual) {
+            return <SwitchToRealAccountMessage onClickOk={toggleCFDVerificationModal} />;
+        }
+        return showSubmittedModal ? (
+            <PoiPoaDocsSubmitted
+                onClickOK={toggleCFDVerificationModal}
+                updateAccountStatus={updateAccountStatus}
+                account_status={account_status}
+                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
+                openPasswordModal={openPasswordModal}
+                context={context}
+            />
+        ) : (
+            <CFDFinancialStpRealAccountSignup
+                onFinish={() => {
+                    updateMT5Status();
+                    if (has_created_account_for_selected_jurisdiction) {
+                        setShowSubmittedModal(true);
+                    } else {
+                        toggleCFDVerificationModal();
+                        openPasswordModal();
+                    }
+                }}
+                context={context}
+            />
+        );
+    };
+
+    const getModalTitle = () =>
+        has_created_account_for_selected_jurisdiction
+            ? localize('Submit your proof of identity and address')
+            : localize('Add a real MT5 account');
+
+    return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
                 <Modal
@@ -83,67 +136,47 @@ const CFDDbViOnBoarding = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_cfd_verification_modal_visible}
-                    title={localize('Submit your proof of identity and address')}
+                    title={getModalTitle()}
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
+                    context={context}
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
-                    {showSubmittedModal ? (
-                        <PoiPoaSubmitted
-                            onClickOK={toggleCFDVerificationModal}
-                            account_type={account_type}
-                            mt5_login_list={mt5_login_list}
-                            onClickYes={handleOpenJurisditionModal}
-                            is_eu={is_eu}
-                        />
-                    ) : (
-                        <CFDFinancialStpRealAccountSignup
-                            onFinish={() => {
-                                setShowSubmittedModal(true);
-                            }}
-                        />
-                    )}
+                    {getModalContent()}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
-                    title={localize('Submit your proof of identity and address')}
+                    title={getModalTitle()}
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}
+                    context={context}
                 >
-                    {showSubmittedModal ? (
-                        <PoiPoaSubmitted
-                            onClickOK={toggleCFDVerificationModal}
-                            account_type={account_type}
-                            mt5_login_list={mt5_login_list}
-                            onClickYes={handleOpenJurisditionModal}
-                            is_eu={is_eu}
-                        />
-                    ) : (
-                        <CFDFinancialStpRealAccountSignup
-                            onFinish={() => {
-                                setShowSubmittedModal(true);
-                            }}
-                        />
-                    )}
+                    {getModalContent()}
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>
     );
 };
 
-export default connect(({ client, modules, ui }: RootStore) => ({
+export default connect(({ client, modules: { cfd }, ui }: RootStore) => ({
+    account_status: client.account_status,
+    account_type: cfd.account_type,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    is_cfd_verification_modal_visible: modules.cfd.is_cfd_verification_modal_visible,
-    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
-    account_type: modules.cfd.account_type,
+    fetchAccountSettings: client.fetchAccountSettings,
+    has_created_account_for_selected_jurisdiction: cfd.has_created_account_for_selected_jurisdiction,
+    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
+    is_cfd_verification_modal_visible: cfd.is_cfd_verification_modal_visible,
+    is_virtual: client.is_virtual,
+    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     mt5_login_list: client.mt5_login_list,
-    toggleJurisdictionModal: modules.cfd.toggleJurisdictionModal,
-    jurisdiction_selected_shortcode: modules.cfd.jurisdiction_selected_shortcode,
-    is_eu: client.is_eu,
-}))(CFDDbViOnBoarding);
+    openPasswordModal: cfd.enableCFDPasswordModal,
+    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
+    updateAccountStatus: client.updateAccountStatus,
+    updateMT5Status: client.updateMT5Status,
+}))(CFDDbviOnboarding);

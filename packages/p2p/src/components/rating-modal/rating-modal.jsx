@@ -9,14 +9,13 @@ import RecommendUser from '../recommend-user';
 const RatingModal = ({
     is_buy_order_for_user,
     is_rating_modal_open,
-    is_user_rated_previously,
+    is_user_recommended_previously,
     onClickClearRecommendation,
     onClickDone,
     onClickNotRecommended,
     onClickRecommended,
     onClickSkip,
     onClickStar,
-    previous_recommendation,
     rating_value,
 }) => {
     return (
@@ -45,11 +44,10 @@ const RatingModal = ({
                 {rating_value > 0 && (
                     <RecommendUser
                         is_buy_order_for_user={is_buy_order_for_user}
-                        is_user_rated_previously={is_user_rated_previously}
+                        is_user_recommended_previously={is_user_recommended_previously}
                         onClickClearRecommendation={onClickClearRecommendation}
                         onClickNotRecommended={onClickNotRecommended}
                         onClickRecommended={onClickRecommended}
-                        previous_recommendation={previous_recommendation}
                     />
                 )}
             </Modal.Body>
@@ -71,14 +69,13 @@ const RatingModal = ({
 RatingModal.propTypes = {
     is_buy_order_for_user: PropTypes.bool,
     is_rating_modal_open: PropTypes.bool,
-    is_user_rated_previously: PropTypes.number,
+    is_user_recommended_previously: PropTypes.number,
     onClickClearRecommendation: PropTypes.func,
     onClickDone: PropTypes.func,
     onClickNotRecommended: PropTypes.func,
     onClickRecommended: PropTypes.func,
     onClickSkip: PropTypes.func,
     onClickStar: PropTypes.func,
-    previous_recommendation: PropTypes.number,
     rating_value: PropTypes.number,
 };
 

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import {
     Icon,
@@ -24,11 +23,11 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { FormikErrors } from 'formik';
-import { connect } from 'Stores/connect';
-import CFDStore from 'Stores/Modules/CFD/cfd-store';
+import { connect } from '../Stores/connect';
+import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
 import InvestorPasswordManager from './investor-password-manager';
-import RootStore from 'Stores/index';
+import RootStore from '../Stores/index';
 import {
     TCountdownComponent,
     TCFDPasswordReset,
@@ -67,6 +66,7 @@ const CFDPasswordReset = ({
     account_type,
     account_group,
     server,
+    context,
     password_type,
 }: TCFDPasswordReset) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState<boolean>(false);
@@ -156,6 +156,7 @@ const CFDPasswordManagerTabContent = ({
     setPasswordType,
     multi_step_ref,
     platform,
+    context,
     onChangeActiveTabIndex,
     account_group,
 }: TCFDPasswordManagerTabContent) => {
@@ -296,9 +297,8 @@ const CFDPasswordManagerModal = ({
     disableApp,
     is_visible,
     platform,
-    is_eu,
+    context,
     selected_login,
-    selected_account,
     toggleModal,
     selected_account_type,
     selected_account_group,
@@ -312,21 +312,10 @@ const CFDPasswordManagerModal = ({
 
     if (!selected_login) return null;
 
-    const getTitle = (i: number) => {
-        if (i === 0) {
-            return localize('Manage {{platform}} password', {
-                platform: getCFDPlatformLabel(platform),
-            });
-        }
-        return selected_account_group === 'real'
-            ? localize('Manage {{platform}} Real {{account_title}} account password', {
-                  platform: getCFDPlatformLabel(platform),
-                  account_title: is_eu ? 'CFDs' : selected_account,
-              })
-            : localize('Manage {{platform}} Demo {{account_title}} account password', {
-                  platform: getCFDPlatformLabel(platform),
-                  account_title: is_eu ? 'CFDs' : selected_account,
-              });
+    const getTitle = () => {
+        return localize('Manage {{platform}} password', {
+            platform: getCFDPlatformLabel(platform),
+        });
     };
 
     const getHeader = (i: number) => {
@@ -352,6 +341,7 @@ const CFDPasswordManagerModal = ({
                     setPasswordType={setPasswordType}
                     multi_step_ref={multi_step_ref}
                     platform={platform}
+                    context={context}
                     onChangeActiveTabIndex={onChangeActiveTabIndex}
                     account_group={selected_account_group}
                 />
@@ -361,6 +351,7 @@ const CFDPasswordManagerModal = ({
             component: (
                 <CFDPasswordReset
                     server={selected_server}
+                    context={context}
                     sendVerifyEmail={sendVerifyEmail}
                     account_type={selected_account_type}
                     account_group={selected_account_group}
@@ -378,7 +369,7 @@ const CFDPasswordManagerModal = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_visible}
-                    title={getTitle(index)}
+                    title={getTitle()}
                     toggleModal={toggleModal}
                     height='688px'
                     width='904px'
@@ -399,21 +390,6 @@ const CFDPasswordManagerModal = ({
             </MobileWrapper>
         </React.Suspense>
     );
-};
-
-CFDPasswordManagerModal.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    email: PropTypes.string,
-    is_visible: PropTypes.bool,
-    selected_account: PropTypes.string,
-    selected_account_type: PropTypes.string,
-    selected_account_group: PropTypes.string,
-    selected_server: PropTypes.string,
-    selected_login: PropTypes.string,
-    sendVerifyEmail: PropTypes.func,
-    toggleModal: PropTypes.func,
-    platform: PropTypes.string,
 };
 
 export default connect(({ modules: { cfd }, client, ui }: RootStore) => ({

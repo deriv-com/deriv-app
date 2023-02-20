@@ -7,8 +7,8 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TExistingData, TTradingPlatformAccounts } from './props.types';
-import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
+import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
+import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -24,6 +24,10 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
+type TCurrentList = DetailsOfEachMT5Loginid & {
+    enabled: number;
+};
+
 type TCFDRealAccountDisplayProps = {
     has_real_account: boolean;
     is_accounts_switcher_on: boolean;
@@ -34,6 +38,7 @@ type TCFDRealAccountDisplayProps = {
     is_loading?: boolean;
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
+    isDxtradeAllCardVisible: (account_category: string) => boolean;
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
@@ -43,11 +48,12 @@ type TCFDRealAccountDisplayProps = {
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
-    platform: string;
+    platform: TCFDPlatform;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid | TTradingPlatformAccounts }
+        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
     ) => boolean;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
+    current_list: Record<string, TCurrentList>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
     toggleMT5TradeModal: (is_accounts_switcher_on?: boolean) => void;
@@ -56,6 +62,10 @@ type TCFDRealAccountDisplayProps = {
     account_status?: object;
     openDerivRealAccountNeededModal: () => void;
     should_enable_add_button?: boolean;
+    setIsAcuityModalOpen: (value: boolean) => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
+    show_eu_related_content: boolean;
 };
 
 const CFDRealAccountDisplay = ({
@@ -67,6 +77,7 @@ const CFDRealAccountDisplay = ({
     is_virtual,
     isSyntheticCardVisible,
     isFinancialCardVisible,
+    isDxtradeAllCardVisible,
     onSelectAccount,
     realSyntheticAccountsExistingData,
     realFinancialAccountsExistingData,
@@ -83,6 +94,10 @@ const CFDRealAccountDisplay = ({
     residence,
     openDerivRealAccountNeededModal,
     should_enable_add_button,
+    setIsAcuityModalOpen,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
+    show_eu_related_content,
 }: TCFDRealAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -106,7 +121,7 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: TExistingData) => {
+    const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
         if (platform === 'dxtrade') {
             return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
                 category: account.account_type as keyof TOpenAccountTransferMeta,
@@ -146,10 +161,18 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
-        const acc = Object.keys(current_list).some(key => key.startsWith(`${platform}.real.${acc_type}`))
+    const existing_accounts_data = (acc_type: 'synthetic' | 'financial' | 'all') => {
+        // We need to check enabled property for DXTRADE accounts only.
+        const account_key =
+            acc_type === 'all' ? `${platform}.real.${platform}@${acc_type}` : `${platform}.real.${acc_type}`;
+        // TODO: This condition should be removed after separating the DXTRADE and MT5 component.
+        const should_be_enabled = (list_item: TCurrentList) =>
+            platform === 'dxtrade' ? list_item.enabled === 1 : true;
+        const acc = Object.keys(current_list).some(
+            key => key.startsWith(account_key) && should_be_enabled(current_list[key])
+        )
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
+                  .filter(key => key.startsWith(account_key))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
@@ -165,7 +188,7 @@ const CFDRealAccountDisplay = ({
         <CFDAccountCard
             key='real.synthetic'
             has_cfd_account_error={has_cfd_account_error}
-            title={localize('Synthetic')}
+            title={platform === 'mt5' ? localize('Derived') : localize('Synthetic')}
             has_real_account={has_real_account}
             is_accounts_switcher_on={is_accounts_switcher_on}
             is_disabled={isMT5AccountCardDisabled('synthetic')}
@@ -181,7 +204,11 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')}
+            descriptor={
+                platform === 'mt5'
+                    ? localize('Trade CFDs on our synthetics, baskets, and derived FX.')
+                    : localize('Trade CFDs on our synthetic indices that simulate real-world market movements.')
+            }
             specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
@@ -195,7 +222,7 @@ const CFDRealAccountDisplay = ({
             key='real.financial'
             has_real_account={has_real_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
-            title={is_eu_user ? localize('CFDs') : localize('Financial')}
+            title={show_eu_related_content ? localize('CFDs') : localize('Financial')}
             type={{
                 category: 'real',
                 type: 'financial',
@@ -207,7 +234,7 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
+            descriptor={general_messages.getFinancialAccountDescriptor(platform, show_eu_related_content)}
             specs={financial_specs}
             is_accounts_switcher_on={is_accounts_switcher_on}
             is_eu={is_eu_user}
@@ -216,10 +243,43 @@ const CFDRealAccountDisplay = ({
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
             toggleMT5TradeModal={toggleMT5TradeModal}
+            setIsAcuityModalOpen={setIsAcuityModalOpen}
+            real_account_creation_unlock_date={real_account_creation_unlock_date}
+            setShouldShowCooldownModal={setShouldShowCooldownModal}
         />
     );
 
-    const items = [synthetic_account_items, financial_account].filter(Boolean);
+    const derivx_all_account = platform === 'dxtrade' && isDxtradeAllCardVisible('real') && (
+        <CFDAccountCard
+            commission_message={localize('No commission')}
+            descriptor={localize(
+                'Trade CFDs on forex, derived indices, cryptocurrencies, and commodities with high leverage.'
+            )}
+            existing_accounts_data={existing_accounts_data('all')}
+            has_real_account={has_real_account}
+            is_accounts_switcher_on={is_accounts_switcher_on}
+            is_disabled={has_cfd_account_error || standpoint.malta}
+            is_eu={is_eu_user}
+            is_logged_in={is_logged_in}
+            is_virtual={is_virtual}
+            key='cfd'
+            onClickFund={onClickFundReal}
+            onPasswordManager={openPasswordManager}
+            onSelectAccount={() => onSelectRealAccount('all')}
+            platform={platform}
+            specs={specifications.dxtrade.real_all_specs}
+            title={localize('Deriv X')}
+            toggleAccountsDialog={toggleAccountsDialog}
+            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            type={{
+                category: 'real',
+                type: 'all',
+                platform,
+            }}
+        />
+    );
+
+    const items = [synthetic_account_items, financial_account, derivx_all_account].filter(Boolean);
 
     return (
         <div data-testid='dt_cfd_real_accounts_display' className={classNames('cfd-real-accounts-display')}>

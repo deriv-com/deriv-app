@@ -1,5 +1,7 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
+export type TCFDPlatform = 'dxtrade' | 'mt5';
+
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
@@ -23,6 +25,16 @@ export type TType = {
     platform: string;
 };
 
+export type TCFDDashboardContainer = {
+    platform: TCFDPlatform;
+    active_index: number;
+    is_dark_mode_on: boolean;
+    dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
+};
+
 export type TCFDAccountCardActionProps = {
     button_label?: string | JSX.Element;
     handleClickSwitchAccount: () => void;
@@ -35,6 +47,8 @@ export type TCFDAccountCardActionProps = {
     type: TType;
     platform: string;
     title: string;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 export type TTradingPlatformAvailableAccount = {
@@ -50,7 +64,7 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
     sub_account_type: string;
 };
 
@@ -96,6 +110,15 @@ export type TCFDAccountCard = {
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
     setMT5TradeAccount: (arg: any) => void;
+    toggleCFDVerificationModal: () => void;
+    setJurisdictionSelectedShortcode: (shortcode: string) => void;
+    setAccountType: (account_type: { category: string; type?: string }) => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
+    updateAccountStatus: () => void;
+    real_account_creation_unlock_date: string;
+    setShouldShowCooldownModal: (value: boolean) => void;
+    setAppstorePlatform: (value: string) => void;
+    show_eu_related_content: boolean;
 };
 
 export type TTradingPlatformAccounts = {
@@ -127,7 +150,7 @@ export type TTradingPlatformAccounts = {
     /**
      * Landing company shortcode of the DXTrade account.
      */
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'samoa' | 'svg' | 'vanuatu';
+    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
     /**
      * Login of DXTrade account.
      */

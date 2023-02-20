@@ -1,34 +1,52 @@
 import React from 'react';
-import AccountTransferNoAccount from '../account-transfer-no-account';
 import { fireEvent, render, screen } from '@testing-library/react';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import AccountTransferNoAccount from '../account-transfer-no-account';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferNoAccount />', () => {
-    it('should show "Please create another Deriv, DMT5, or Deriv X account." message and "Create account" button', () => {
-        render(<AccountTransferNoAccount is_dxtrade_allowed />);
+    let mockRootStore;
+    beforeEach(() => {
+        mockRootStore = {
+            client: {
+                is_dxtrade_allowed: false,
+            },
+            ui: {
+                toggleAccountsDialog: jest.fn(),
+            },
+            traders_hub: { openModal: jest.fn(), closeModal: jest.fn() },
+        };
+    });
 
-        expect(screen.getByText('Please create another Deriv, DMT5, or Deriv X account.')).toBeInTheDocument();
+    const renderAccountTransferNoAccount = () => {
+        render(<AccountTransferNoAccount />, {
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+        });
+    };
+
+    it('should show "Please create another Deriv, Deriv MT5, or Deriv X account." message and "Create account" button', () => {
+        mockRootStore.client.is_dxtrade_allowed = true;
+
+        renderAccountTransferNoAccount();
+
+        expect(screen.getByText('Please create another Deriv, Deriv MT5, or Deriv X account.')).toBeInTheDocument();
         expect(screen.getByText('Create account')).toBeInTheDocument();
     });
 
-    it('should show "Please create another Deriv or DMT5 account." message and "Create account" button', () => {
-        render(<AccountTransferNoAccount is_dxtrade_allowed={false} />);
+    it('should show "Please create another Deriv or Deriv MT5 account." message and "Create account" button', () => {
+        renderAccountTransferNoAccount();
 
-        expect(screen.getByText('Please create another Deriv or DMT5 account.')).toBeInTheDocument();
+        expect(screen.getByText('Please create another Deriv or Deriv MT5 account.')).toBeInTheDocument();
         expect(screen.getByText('Create account')).toBeInTheDocument();
     });
 
     it('should trigger onClick callback, when the "Create account" button was clicked', () => {
-        const toggleAccountsDialog = jest.fn();
-        render(<AccountTransferNoAccount is_dxtrade_allowed toggleAccountsDialog={toggleAccountsDialog} />);
+        mockRootStore.client.is_dxtrade_allowed = true;
+
+        renderAccountTransferNoAccount();
+
         const create_acc_btn = screen.getByText('Create account');
         fireEvent.click(create_acc_btn);
 
-        expect(toggleAccountsDialog).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.ui.toggleAccountsDialog).toHaveBeenCalledTimes(1);
     });
 });

@@ -67,6 +67,12 @@
             color: var(--text-general);
             max-width: 100%;
         }
+        &--hide-top-placeholder {
+            transform: translate(0, -1.8rem) scale(0.75);
+            color: var(--text-general);
+            max-width: 100%;
+            display: none;
+        }
         &--disabled {
             color: var(--text-disabled);
         }

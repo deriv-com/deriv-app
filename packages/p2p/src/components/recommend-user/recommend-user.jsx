@@ -5,18 +5,17 @@ import { Localize } from 'Components/i18next';
 
 const RecommendUser = ({
     is_buy_order_for_user,
-    is_user_rated_previously,
+    is_user_recommended_previously,
     onClickClearRecommendation,
     onClickNotRecommended,
     onClickRecommended,
-    previous_recommendation,
 }) => {
     const [is_no_selected, setIsNoSelected] = React.useState(false);
     const [is_yes_selected, setIsYesSelected] = React.useState(false);
 
     React.useEffect(() => {
-        if (is_user_rated_previously === 0 || is_user_rated_previously === 1) {
-            if (previous_recommendation) {
+        if (is_user_recommended_previously !== null) {
+            if (is_user_recommended_previously) {
                 setIsYesSelected(true);
                 onClickRecommended();
             } else {
@@ -93,11 +92,10 @@ const RecommendUser = ({
 
 RecommendUser.propTypes = {
     is_buy_order_for_user: PropTypes.bool,
-    is_user_rated_previously: PropTypes.number,
+    is_user_recommended_previously: PropTypes.number,
     onClickClearRecommendation: PropTypes.func,
     onClickNotRecommended: PropTypes.func,
     onClickRecommended: PropTypes.func,
-    previous_recommendation: PropTypes.number,
 };
 
 export default RecommendUser;

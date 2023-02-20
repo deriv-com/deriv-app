@@ -37,6 +37,15 @@ const FilterModal = () => {
         buy_sell_store.setSelectedPaymentMethodText([]);
     };
 
+    const onBackdropClick = () => {
+        buy_sell_store.setShowFilterPaymentMethods(false);
+        buy_sell_store.setIsFilterModalOpen(false);
+        my_profile_store.setSearchTerm('');
+        if (selected_methods_text.length && !buy_sell_store.selected_payment_method_value.length) {
+            onClickClear();
+        }
+    };
+
     React.useEffect(() => {
         buy_sell_store.setShowFilterPaymentMethods(false);
         my_profile_store.getPaymentMethodsList();
@@ -49,7 +58,7 @@ const FilterModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const FilterModalResult = () => {
+    const FilterModalResult = observer(() => {
         if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
         else if (my_profile_store.search_term) {
             if (!my_profile_store.search_results || my_profile_store.search_results.length > 0) {
@@ -77,7 +86,7 @@ const FilterModal = () => {
                 />
             );
         });
-    };
+    });
 
     return (
         <Modal
@@ -86,7 +95,7 @@ const FilterModal = () => {
             height={'56rem'}
             title={<FilterModalHeader />}
             is_open={buy_sell_store.is_filter_modal_open}
-            toggleModal={() => buy_sell_store.setIsFilterModalOpen(false)}
+            toggleModal={onBackdropClick}
             width='44rem'
         >
             <Modal.Body>

@@ -585,9 +585,9 @@ const AccountSwitcher = props => {
         : default_total_assets_message;
 
     const can_manage_account =
-        !canUpgrade() &&
-        canOpenMulti() &&
-        (!props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency));
+        !props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency);
+    const can_manage_account_virtual = props.is_virtual && can_manage_account;
+    const can_manage_account_multi = !canUpgrade() && canOpenMulti() && can_manage_account;
 
     const have_more_accounts = type =>
         getSortedAccountList(props.account_list, props.accounts).filter(
@@ -598,7 +598,7 @@ const AccountSwitcher = props => {
         <div className='acc-switcher__list-wrapper'>
             {vrtc_loginid && (
                 <AccountWrapper
-                    header={localize('Deriv Accounts')}
+                    header={localize('Deriv account')}
                     is_visible={is_deriv_demo_visible}
                     toggleVisibility={() => {
                         toggleVisibility('demo_deriv');
@@ -767,7 +767,7 @@ const AccountSwitcher = props => {
         <div className='acc-switcher__list-wrapper'>
             {vrtc_loginid && (
                 <AccountWrapper
-                    header={localize('Deriv Account')}
+                    header={localize('Deriv account')}
                     is_visible={is_deriv_demo_visible}
                     toggleVisibility={() => {
                         toggleVisibility('demo_deriv');
@@ -805,7 +805,7 @@ const AccountSwitcher = props => {
         <div ref={scroll_ref} className='acc-switcher__list-wrapper'>
             <React.Fragment>
                 <AccountWrapper
-                    header={localize('Deriv Accounts')}
+                    header={localize(`Deriv ${filtered_real_accounts.length > 1 ? 'accounts' : 'account'}`)}
                     is_visible={is_deriv_real_visible}
                     toggleVisibility={() => {
                         toggleVisibility('real_deriv');
@@ -851,9 +851,9 @@ const AccountSwitcher = props => {
                                     if (props.real_account_creation_unlock_date) {
                                         closeAccountsDialog();
                                         props.setShouldShowCooldownModal(true);
-                                    } else {
-                                        props.openRealAccountSignup(account);
-                                    }
+                                    } else if (can_manage_account_multi || can_manage_account_virtual)
+                                        props.openRealAccountSignup('manage');
+                                    else props.openRealAccountSignup(account);
                                 }}
                                 className='acc-switcher__new-account-btn'
                                 secondary
@@ -863,7 +863,7 @@ const AccountSwitcher = props => {
                             </Button>
                         </div>
                     ))}
-                    {can_manage_account && (
+                    {can_manage_account_multi && (
                         <Button
                             className='acc-switcher__btn'
                             secondary
@@ -1056,7 +1056,7 @@ const AccountSwitcher = props => {
                             className='acc-switcher__title'
                             header={
                                 props.is_low_risk
-                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'Accounts' : 'Account'}`)
+                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                                     : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                             }
                             is_visible={is_non_eu_regulator_visible}
@@ -1110,7 +1110,8 @@ const AccountSwitcher = props => {
                                                 if (props.real_account_creation_unlock_date) {
                                                     closeAccountsDialog();
                                                     props.setShouldShowCooldownModal(true);
-                                                } else if (can_manage_account) props.openRealAccountSignup('manage');
+                                                } else if (can_manage_account_multi || can_manage_account_virtual)
+                                                    props.openRealAccountSignup('manage');
                                                 else props.openRealAccountSignup(account);
                                             }}
                                             className='acc-switcher__new-account-btn'
@@ -1129,7 +1130,7 @@ const AccountSwitcher = props => {
                     <AccountWrapper
                         header={
                             props.is_low_risk
-                                ? localize(`EU Deriv ${have_more_accounts('MF') ? 'Accounts' : 'Account'}`)
+                                ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                                 : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                         }
                         is_visible={is_eu_regulator_visible}
@@ -1270,7 +1271,7 @@ const AccountSwitcher = props => {
                     'acc-switcher__footer--traders-hub': props.is_pre_appstore,
                 })}
             >
-                {props.is_pre_appstore && isRealAccountTab && can_manage_account && (
+                {props.is_pre_appstore && isRealAccountTab && can_manage_account_multi && (
                     <Button
                         className={classNames('acc-switcher__btn', {
                             'acc-switcher__btn--traders_hub': props.is_pre_appstore,

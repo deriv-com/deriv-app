@@ -9,18 +9,18 @@ type TRuleOptions = {
 
 type TRule = string | Array<string | TRuleOptions>;
 
+type TValidatorOptions = {
+    input: { [key: string]: string | Array<string> };
+    rules: TInitPreBuildDVRs;
+    store: any;
+};
+
 const template = (string: string, content: string | Array<string>) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
         to_replace = [content];
     }
     return string.replace(/\[_(\d+)]/g, (s, index) => to_replace[+index - 1]);
-};
-
-type TValidatorOptions = {
-    input: { [key: string]: string | Array<string> };
-    rules: TInitPreBuildDVRs;
-    store: any;
 };
 
 class Validator {
@@ -47,7 +47,9 @@ class Validator {
      * @param {object} rule
      */
     addFailure(attribute: string, rule: { name: string; options: TOptions & { message: string } }) {
-        let message = rule.options.message || getPreBuildDVRs()[rule.name].message();
+        let message =
+            rule.options.message ||
+            (getPreBuildDVRs() as unknown as { [key: string]: { message: () => string } })[rule.name].message();
         if (rule.name === 'length') {
             message = template(message, [
                 rule.options.min === rule.options.max
@@ -72,7 +74,7 @@ class Validator {
                 return;
             }
 
-            this.rules[attribute].forEach((rule: TRule) => {
+            (this.rules as unknown as { [key: string]: Array<TRule> })[attribute].forEach((rule: TRule) => {
                 const ruleObject = Validator.getRuleObject(rule);
 
                 if (!ruleObject.validator && typeof ruleObject.validator !== 'function') {
@@ -125,7 +127,20 @@ class Validator {
             name: rule_object_name,
             options: rule_object_options,
             validator:
-                rule_object_name === 'custom' ? rule_object_options.func : getPreBuildDVRs()[rule_object_name].func,
+                rule_object_name === 'custom'
+                    ? rule_object_options.func
+                    : (
+                          getPreBuildDVRs() as unknown as {
+                              [key: string]: {
+                                  func: (
+                                      value: string | number,
+                                      options?: TOptions,
+                                      store?: any,
+                                      inputs?: any
+                                  ) => boolean;
+                              };
+                          }
+                      )[rule_object_name].func,
         };
     }
 }

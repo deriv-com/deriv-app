@@ -5,12 +5,12 @@ type TRuleOptions = {
     func: (value: string | number, options?: TOptions, store?: any, inputs?: any) => boolean;
     condition: (store: any) => boolean;
     message: string;
-};
+} & TOptions;
 
 type TRule = string | Array<string | TRuleOptions>;
 
 type TValidatorOptions = {
-    input: { [key: string]: string | Array<string> };
+    input: { [key: string]: string };
     rules: TInitPreBuildDVRs;
     store: any;
 };
@@ -24,7 +24,7 @@ const template = (string: string, content: string | Array<string>) => {
 };
 
 class Validator {
-    input: { [key: string]: string | Array<string> };
+    input: { [key: string]: string };
     rules: TInitPreBuildDVRs;
     store: any;
     errors: Error;
@@ -46,7 +46,7 @@ class Validator {
      * @param {string} attribute
      * @param {object} rule
      */
-    addFailure(attribute: string, rule: { name: string; options: TOptions & { message: string } }) {
+    addFailure(attribute: string, rule: { name: string; options: TRuleOptions }) {
         let message =
             rule.options.message ||
             (getPreBuildDVRs() as unknown as { [key: string]: { message: () => string } })[rule.name].message();
@@ -134,7 +134,7 @@ class Validator {
                               [key: string]: {
                                   func: (
                                       value: string | number,
-                                      options?: TOptions,
+                                      options?: TRuleOptions,
                                       store?: any,
                                       inputs?: any
                                   ) => boolean;

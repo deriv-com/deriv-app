@@ -25,7 +25,7 @@ import {
 } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
-export type TAddressDetails = {
+type TAddressDetails = {
     states_list: TLocationList[];
     getCurrentStep?: () => number;
     onSave: (current_step: number, values: FormikValues) => void;

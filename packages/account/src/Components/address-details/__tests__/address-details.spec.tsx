@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import AddressDetails, { TAddressDetails } from '../address-details';
+import AddressDetails from '../address-details';
 import { isDesktop, isMobile, PlatformContext, TLocationList } from '@deriv/shared';
 import { FormikProps, FormikValues } from 'formik';
 
@@ -33,9 +33,9 @@ describe('<AddressDetails/>', () => {
     const verification_info =
         'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.';
 
-    let modal_root_el: any;
+    let modal_root_el: HTMLDivElement;
 
-    const mock_props: TAddressDetails = {
+    const mock_props: React.ComponentProps<typeof AddressDetails> = {
         fetchStatesList: jest.fn(() => Promise.resolve([])),
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),

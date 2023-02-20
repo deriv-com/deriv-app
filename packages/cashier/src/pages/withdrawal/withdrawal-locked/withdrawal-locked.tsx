@@ -4,13 +4,13 @@ import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
+import CashierLocked from '../../../components/cashier-locked';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TItem = {
     content: string;
     status: string;
-    onClick: () => void;
+    onClick: VoidFunction;
 };
 
 const WithdrawalLocked = observer(() => {

@@ -3,9 +3,9 @@ import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TAccount } from 'Types';
-import { getAccountText } from 'Utils/utility';
-import RecentTransaction from 'Components/recent-transaction';
+import { TAccount } from '../../../types';
+import { getAccountText } from '../../../utils/utility';
+import RecentTransaction from '../../../components/recent-transaction';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-withdraw-receipt.scss';
 
@@ -28,7 +28,7 @@ const Status = () => {
     );
 };
 
-const AcountInformation = ({ account }: { account: TAccount }) => {
+const AccountInformation = ({ account }: { account: TAccount }) => {
     return (
         <div className='crypto-withdraw-receipt__account-info'>
             <div className='crypto-withdraw-receipt__account-info-detail'>
@@ -109,7 +109,7 @@ const CryptoWithdrawReceipt = observer(() => {
         setIsCryptoTransactionsVisible,
     } = transaction_history;
 
-    const { blockchain_address, resetWithrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
+    const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -118,7 +118,7 @@ const CryptoWithdrawReceipt = observer(() => {
     React.useEffect(() => {
         return () => {
             setIsWithdrawConfirmed(false);
-            resetWithrawForm();
+            resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, tab_index]);
@@ -153,7 +153,7 @@ const CryptoWithdrawReceipt = observer(() => {
                     />
                 </Text>
                 {isMobile() && <Status />}
-                <AcountInformation account={account} />
+                <AccountInformation account={account} />
                 <Icon className='crypto-withdraw-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} />
             </div>

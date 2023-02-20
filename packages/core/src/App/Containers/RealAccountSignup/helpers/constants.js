@@ -35,7 +35,7 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
 
     switch (landing_company_shortcode) {
         case 'svg':
-            return localize('Deriv account');
+            return localize('Options & Multipliers');
         case 'iom':
             if (country_standpoint.is_united_kingdom) {
                 return localize('Deriv Gaming');
@@ -51,15 +51,7 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
             }
             return localize('Derived');
         case 'maltainvest':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_france ||
-                country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu
-            ) {
-                return localize('Multipliers');
-            }
-            return localize('Deriv Financial');
+            return localize('Multipliers');
         default:
             return localize('Deriv');
     }

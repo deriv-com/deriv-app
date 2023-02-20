@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore, TWebSocket } from '../types';
 
 export default class DepositStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -10,9 +10,6 @@ export default class DepositStore {
             error: observable,
             onMountDeposit: action.bound,
         });
-
-        this.root_store = root_store;
-        this.WS = WS;
     }
 
     container = Constants.containers.deposit;

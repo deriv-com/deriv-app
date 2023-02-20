@@ -7,17 +7,25 @@ import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 
-const NoBalance = observer(({ history }: RouteComponentProps) => {
+type TNoBalanceProps = RouteComponentProps & {
+    onClickDeposit?: () => void;
+};
+
+const NoBalance = observer(({ history, onClickDeposit }: TNoBalanceProps) => {
     const { client } = useStore();
     const { currency } = client;
     const { general_store } = useCashierStore();
     const { setCashierTabIndex: setTabIndex } = general_store;
     const is_deposit_locked = useDepositLocked();
 
-    const onClickDeposit = () => {
-        // index of deposit tab in the cashier modal is 0
-        setTabIndex(0);
-        history.push(routes.cashier_deposit);
+    const onClickDepositHandler = () => {
+        if (onClickDeposit) {
+            onClickDeposit();
+        } else {
+            // index of deposit tab in the cashier modal is 0
+            setTabIndex(0);
+            history.push(routes.cashier_deposit);
+        }
     };
 
     return (
@@ -35,10 +43,11 @@ const NoBalance = observer(({ history }: RouteComponentProps) => {
                         <Localize i18n_default_text='Please make a deposit to use this feature.' />
                     </Text>
                     <Button
+                        style={{ marginTop: '2rem' }}
                         className='cashier__no-balance-button'
                         has_effect
                         text={localize('Deposit now')}
-                        onClick={onClickDeposit}
+                        onClick={onClickDepositHandler}
                         primary
                         large
                     />

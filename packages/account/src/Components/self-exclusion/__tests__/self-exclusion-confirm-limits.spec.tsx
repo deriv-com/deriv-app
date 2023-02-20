@@ -5,7 +5,7 @@ import SelfExclusionConfirmLimits from '../self-exclusion-confirm-limits';
 import SelfExclusionContext from '../self-exclusion-context';
 import { FormikValues } from 'formik';
 
-const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as any;
+const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
 
 describe('<SelfExclusionConfirmLimits />', () => {
     let mock_context = {};
@@ -57,7 +57,7 @@ describe('<SelfExclusionConfirmLimits />', () => {
 
     it('Should trigger click on the button', () => {
         const mockBackToReview = (mock_context as FormikValues).backToReview;
-        const mockHandleSubmit = mockUseFormikContext().handleSubmit;
+        const mockHandleSubmit = mockUseFormikContext().handleSubmit as jest.Mock;
 
         render(
             <SelfExclusionContext.Provider value={mock_context}>

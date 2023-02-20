@@ -8,7 +8,7 @@ import SelfExclusionFooter from '../self-exclusion-footer';
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
 
-const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as any;
+const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
 
 describe('<SelfExclusionFooter />', () => {
     let mock_context = {};

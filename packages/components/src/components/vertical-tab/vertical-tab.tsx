@@ -14,7 +14,7 @@ type TSetSelectedIndex = {
     current_path: string;
     list: TItem[];
     is_routed?: boolean;
-    selected_index?: number | TItem | undefined;
+    selected_index?: number | TItem;
     setCurrTabIndex: (index: number) => void;
     setVerticalTabIndex?: (index: number) => void;
 };

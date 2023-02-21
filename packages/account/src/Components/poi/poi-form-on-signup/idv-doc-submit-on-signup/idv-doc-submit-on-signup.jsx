@@ -15,7 +15,13 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
-import { getDocumentData, getRegex, isSequentialNumber, isRecurringNumberRegex } from '../../idv-document-submit/utils';
+import {
+    getDocumentData,
+    getRegex,
+    isSequentialNumber,
+    isRecurringNumberRegex,
+    preventEmptyClipboardPast,
+} from '../../idv-document-submit/utils';
 import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
@@ -125,13 +131,6 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
 
     const getExampleFormat = example_format => {
         return example_format ? localize('Example: ') + example_format : '';
-    };
-
-    const handleInputPaste = e => {
-        const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
-        if (clipboardData.length === 0) {
-            e.preventDefault();
-        }
     };
 
     return (
@@ -305,7 +304,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
-                                                                    onPaste={e => handleInputPaste(e)}
+                                                                    onPaste={e => preventEmptyClipboardPast(e)}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
                                                                     onKeyUp={e => {

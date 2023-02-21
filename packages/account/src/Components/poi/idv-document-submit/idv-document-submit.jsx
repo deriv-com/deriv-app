@@ -6,7 +6,13 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { isSequentialNumber, isRecurringNumberRegex, getDocumentData, getRegex } from './utils';
+import {
+    isSequentialNumber,
+    isRecurringNumberRegex,
+    getDocumentData,
+    getRegex,
+    preventEmptyClipboardPast,
+} from './utils';
 import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -79,13 +85,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
 
     const getExampleFormat = example_format => {
         return example_format ? localize('Example: ') + example_format : '';
-    };
-
-    const handleInputPaste = e => {
-        const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
-        if (clipboardData.length === 0) {
-            e.preventDefault();
-        }
     };
 
     const validateFields = values => {
@@ -248,7 +247,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onPaste={e => handleInputPaste(e)}
+                                            onPaste={e => preventEmptyClipboardPast(e)}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {

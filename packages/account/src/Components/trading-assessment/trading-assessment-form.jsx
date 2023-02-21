@@ -15,6 +15,7 @@ const TradingAssessmentForm = ({
     onCancel,
     should_move_to_next,
     setSubSectionIndex,
+    is_independent_section,
 }) => {
     const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
@@ -25,6 +26,9 @@ const TradingAssessmentForm = ({
 
     const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
     const last_question_index = assessment_questions.length - 1;
+    const should_display_previous_button = is_independent_section
+        ? current_question_details.current_question_index !== 0
+        : true;
 
     React.useEffect(() => {
         setCurrentQuestionDetails(prevState => {
@@ -36,7 +40,9 @@ const TradingAssessmentForm = ({
                     : assessment_questions[prevState.current_question_index],
             };
         });
-        setSubSectionIndex(stored_items);
+        if (typeof setSubSectionIndex === 'function') {
+            setSubSectionIndex(stored_items);
+        }
         setFormData(form_value);
     }, []);
 
@@ -55,7 +61,10 @@ const TradingAssessmentForm = ({
                 setCurrentQuestionDetails(prev_state_question => {
                     const next_state_question_index = prev_state_question.current_question_index + 1;
                     localStorage.setItem('current_question_index', next_state_question_index);
-                    setSubSectionIndex(next_state_question_index);
+                    // Sub section form progress is optional
+                    if (typeof setSubSectionIndex === 'function') {
+                        setSubSectionIndex(next_state_question_index);
+                    }
                     return {
                         current_question_index: next_state_question_index,
                         current_question: assessment_questions[next_state_question_index],
@@ -71,7 +80,9 @@ const TradingAssessmentForm = ({
             setCurrentQuestionDetails(prev_state_question => {
                 const prev_state_question_index = prev_state_question.current_question_index - 1;
                 localStorage.setItem('current_question_index', prev_state_question_index);
-                setSubSectionIndex(prev_state_question_index);
+                if (typeof setSubSectionIndex === 'function') {
+                    setSubSectionIndex(prev_state_question_index);
+                }
                 return {
                     current_question_index: prev_state_question_index,
                     current_question: assessment_questions[prev_state_question_index],
@@ -129,15 +140,17 @@ const TradingAssessmentForm = ({
                                     className='trading-assessment__existing_btn '
                                 >
                                     <Button.Group className='trading-assessment__btn-group'>
-                                        <Button
-                                            has_effect
-                                            onClick={displayPreviousPage}
-                                            text={localize('Previous')}
-                                            type='button'
-                                            secondary
-                                            large
-                                            className='trading-assessment__btn-group--btn'
-                                        />
+                                        {should_display_previous_button && (
+                                            <Button
+                                                has_effect
+                                                onClick={displayPreviousPage}
+                                                text={localize('Previous')}
+                                                type='button'
+                                                secondary
+                                                large
+                                                className='trading-assessment__btn-group--btn'
+                                            />
+                                        )}
                                         <Button
                                             has_effect
                                             is_disabled={!is_next_button_enabled}

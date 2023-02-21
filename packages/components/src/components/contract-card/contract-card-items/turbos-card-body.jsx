@@ -20,11 +20,12 @@ const TurbosCardBody = ({
     getCardLabels,
     getContractById,
     is_sold,
+    is_turbos,
+    is_open_positions,
     onMouseLeave,
     removeToast,
     setCurrentFocus,
     status,
-    is_mobile,
     progress_slider_mobile_el,
 }) => {
     const total_profit = getTotalProfit(contract_info);
@@ -32,12 +33,25 @@ const TurbosCardBody = ({
         contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const { BARRIER_LEVEL, BUY_PRICE, CURRENT_PRICE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS, PAYOUT, PROFIT_LOSS } =
-        getCardLabels();
-
+    const {
+        BARRIER_LEVEL,
+        BUY_PRICE,
+        CURRENT_PRICE,
+        STAKE,
+        TAKE_PROFIT,
+        TOTAL_PROFIT_LOSS,
+        PAYOUT,
+        PROFIT_LOSS,
+        POTENTIAL_PROFIT_LOSS,
+    } = getCardLabels();
     return (
         <React.Fragment>
-            <div className={is_mobile ? 'dc-contract-card-items-wrapper--mobile' : 'dc-contract-card-items-wrapper'}>
+            <div
+                className={classNames('dc-contract-card-items-wrapper', {
+                    'dc-contract-card--turbos': is_turbos,
+                    'dc-contract-card--turbos-open-positions': is_open_positions && is_turbos,
+                })}
+            >
                 <ContractCardItem
                     className='dc-contract-card__stake'
                     header={is_sold ? PROFIT_LOSS : STAKE}
@@ -53,50 +67,108 @@ const TurbosCardBody = ({
                 <ContractCardItem
                     header={is_sold ? BUY_PRICE : BARRIER_LEVEL}
                     is_crypto={isCryptocurrency(currency)}
-                    className='dc-contract-card__buy-price'
+                    className={is_open_positions ? 'dc-contract-card__barrier-level' : 'dc-contract-card__buy-price'}
                 >
                     <Money amount={is_sold ? entry_spot : barrier} currency={currency} />
                 </ContractCardItem>
 
-                {is_sold ? (
-                    <ContractCardItem header={BARRIER_LEVEL} className='dc-contract-card__barrier-level'>
-                        <Money amount={barrier} currency={currency} />
-                    </ContractCardItem>
-                ) : (
-                    <div className='dc-contract-card__limit-order-info'>
-                        <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
-                            {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
-                            {is_valid_to_sell && (
-                                <ToggleCardDialog
-                                    addToast={addToast}
-                                    connectWithContractUpdate={connectWithContractUpdate}
-                                    contract_id={contract_info.contract_id}
-                                    current_focus={current_focus}
-                                    error_message_alignment={error_message_alignment}
-                                    getCardLabels={getCardLabels}
-                                    getContractById={getContractById}
-                                    is_turbos
-                                    onMouseLeave={onMouseLeave}
-                                    removeToast={removeToast}
-                                    setCurrentFocus={setCurrentFocus}
-                                    status={status}
-                                />
-                            )}
-                        </ContractCardItem>
-                    </div>
-                )}
-                <MobileWrapper>
-                    <div className='dc-contract-card__status'>
+                {!is_open_positions && (
+                    <>
                         {is_sold ? (
-                            <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={+profit > 0} />
+                            <ContractCardItem header={BARRIER_LEVEL} className='dc-contract-card__barrier-level'>
+                                <Money amount={barrier} currency={currency} />
+                            </ContractCardItem>
                         ) : (
-                            progress_slider_mobile_el
+                            <div className='dc-contract-card__limit-order-info'>
+                                <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
+                                    {take_profit ? (
+                                        <Money amount={take_profit} currency={currency} />
+                                    ) : (
+                                        <strong>-</strong>
+                                    )}
+                                    {is_valid_to_sell && (
+                                        <ToggleCardDialog
+                                            addToast={addToast}
+                                            connectWithContractUpdate={connectWithContractUpdate}
+                                            contract_id={contract_info.contract_id}
+                                            current_focus={current_focus}
+                                            error_message_alignment={error_message_alignment}
+                                            getCardLabels={getCardLabels}
+                                            getContractById={getContractById}
+                                            is_turbos
+                                            onMouseLeave={onMouseLeave}
+                                            removeToast={removeToast}
+                                            setCurrentFocus={setCurrentFocus}
+                                            status={status}
+                                        />
+                                    )}
+                                </ContractCardItem>
+                            </div>
                         )}
-                    </div>
-                </MobileWrapper>
+                        <MobileWrapper>
+                            <div className='dc-contract-card__status'>
+                                {is_sold ? (
+                                    <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={+profit > 0} />
+                                ) : (
+                                    progress_slider_mobile_el
+                                )}
+                            </div>
+                        </MobileWrapper>
+                    </>
+                )}
+                {is_open_positions && (
+                    <>
+                        {!is_sold && (
+                            <ContractCardItem
+                                header={POTENTIAL_PROFIT_LOSS}
+                                is_crypto={isCryptocurrency(currency)}
+                                is_loss={+total_profit < 0}
+                                is_won={+total_profit > 0}
+                                className='dc-contract-card__buy-price'
+                            >
+                                <div
+                                    className={classNames({
+                                        'dc-contract-card__buy-price--positive': total_profit > 0,
+                                        'dc-contract-card__buy-price--negative': total_profit < 0,
+                                    })}
+                                >
+                                    <Money amount={total_profit} currency={currency} />
+                                </div>
+                                <div
+                                    className={classNames('dc-contract-card__indicative--movement', {
+                                        'dc-contract-card__indicative--movement-complete': is_sold,
+                                    })}
+                                >
+                                    {total_profit > 0 && <Icon icon='IcProfit' />}
+                                    {total_profit < 0 && <Icon icon='IcLoss' />}
+                                </div>
+                            </ContractCardItem>
+                        )}
+                        <div className='dc-contract-card__limit-order-info'>
+                            <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
+                                {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                                {is_valid_to_sell && (
+                                    <ToggleCardDialog
+                                        addToast={addToast}
+                                        connectWithContractUpdate={connectWithContractUpdate}
+                                        contract_id={contract_info.contract_id}
+                                        current_focus={current_focus}
+                                        error_message_alignment={error_message_alignment}
+                                        getCardLabels={getCardLabels}
+                                        getContractById={getContractById}
+                                        is_turbos
+                                        onMouseLeave={onMouseLeave}
+                                        removeToast={removeToast}
+                                        setCurrentFocus={setCurrentFocus}
+                                        status={status}
+                                    />
+                                )}
+                            </ContractCardItem>
+                        </div>
+                    </>
+                )}
             </div>
-
-            {!is_sold && (
+            {!is_sold && !is_open_positions && (
                 <ContractCardItem
                     className='dc-contract-card-item__total-profit-loss'
                     header={TOTAL_PROFIT_LOSS}
@@ -130,7 +202,10 @@ TurbosCardBody.propTypes = {
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_sold: PropTypes.bool,
+    is_turbos: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    is_open_positions: PropTypes.bool,
+    is_positions: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
     progress_slider_mobile_el: PropTypes.node,

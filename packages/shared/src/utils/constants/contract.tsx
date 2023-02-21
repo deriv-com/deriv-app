@@ -199,6 +199,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: localize('Buy price:'),
     POTENTIAL_PAYOUT: localize('Payout limit:'),
     TICK: localize('Tick '),
+    TICKS: localize('Ticks '),
     WON: localize('Won'),
     LOST: localize('Lost'),
     DAYS: localize('days'),

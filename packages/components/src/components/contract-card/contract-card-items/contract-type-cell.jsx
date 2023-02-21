@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import IconTradeTypes from '../../icon-trade-types';
 
-const ContractTypeCell = ({ displayed_trade_param, getContractTypeDisplay, is_high_low, type }) => (
+const ContractTypeCell = ({ displayed_trade_param, getContractTypeDisplay, is_high_low, type, is_open_positions }) => (
     <div className='dc-contract-type'>
         <div className='dc-contract-type__type-wrapper'>
             <IconTradeTypes
@@ -12,9 +12,11 @@ const ContractTypeCell = ({ displayed_trade_param, getContractTypeDisplay, is_hi
             />
         </div>
         <div className='dc-contract-type__type-label'>
-            <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
-            {displayed_trade_param && (
-                <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
+            {!is_open_positions && displayed_trade_param && (
+                <React.Fragment>
+                    <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
+                    <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
+                </React.Fragment>
             )}
         </div>
     </div>
@@ -25,6 +27,7 @@ ContractTypeCell.propTypes = {
     getContractTypeDisplay: PropTypes.func,
     is_high_low: PropTypes.bool,
     type: PropTypes.string,
+    is_open_positions: PropTypes.bool,
 };
 
 export default ContractTypeCell;

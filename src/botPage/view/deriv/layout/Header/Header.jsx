@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { isMobile, isDesktop, parseQueryString } from '../../../../../common/utils/tools';
 import PlatformDropdown from './components/platform-dropdown.jsx';
 import { isLoggedIn, getActiveToken } from '../../utils';
-import { getTokenList, removeAllTokens, syncWithDerivApp } from '../../../../../common/utils/storageManager';
+import { getTokenList, removeAllTokens, syncWithDerivApp , set as setStorage } from '../../../../../common/utils/storageManager';
 import {
     updateIsLogged,
     resetClient,
@@ -68,7 +68,6 @@ const Header = () => {
         const token_list = getTokenList();
         const active_storage_token = getActiveToken(token_list);
         const landing_company = active_storage_token?.loginInfo.landing_company_name;
-
         dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
 
         if (!active_storage_token) {
@@ -79,6 +78,8 @@ const Header = () => {
         if (active_storage_token) {
             api.authorize(active_storage_token.token)
                 .then(account => {
+                    const active_loginid = account.authorize.loginid
+                    setStorage('active_loginid', active_loginid);
                     if (account?.error?.code) return;
                     dispatch(updateActiveToken(active_storage_token.token));
                     dispatch(updateActiveAccount(account.authorize));

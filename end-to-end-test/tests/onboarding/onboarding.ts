@@ -113,8 +113,8 @@ export default class OnboardingFlow {
         await this.signupPage.locator('input[name=email]#dm-email-input').isVisible();
         await this.signupPage.locator('input[name=email]#dm-email-input').type(this.email);
         process.env.email = this.email;
-        await this.signupPage.waitForSelector('text=I agree to the');
-        await this.signupPage.click('text=I agree to the');
+        await this.signupPage.locator('//*[@id="gatsby-focus-wrapper"]/main/section/form/div/label/div');
+        await this.signupPage.locator('//*[@id="gatsby-focus-wrapper"]/main/section/form/div/label/div').click();
         await this.signupPage.waitForSelector('#dm-new-signup');
         await this.signupPage.click('#dm-new-signup');
         const browser = await chromium.launch();

@@ -38,6 +38,7 @@ import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
+const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -409,13 +410,11 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const { trading_hub } = this.account_settings;
-                const lang_from_url = window.location.search.slice(-2);
+                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
-                if (lang_from_url) {
-                    this.setPreferredLanguage(lang_from_url);
-                    localStorage.setItem(LANGUAGE_KEY, lang_from_url);
-                }
+                this.setPreferredLanguage(lang_from_url);
+                LocalStore.set(LANGUAGE_KEY, lang_from_url);
             }
         );
         // TODO: Remove this after setting trading_hub enabled for all users
@@ -1553,7 +1552,6 @@ export default class ClientStore extends BaseStore {
 
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
-            console.log('handleNotFoundLoginId', 'client-store.js', authorize_response?.error);
             await this.logout();
             this.root_store.common.setError(true, {
                 header: authorize_response.error.message,
@@ -1825,7 +1823,6 @@ export default class ClientStore extends BaseStore {
             message: localize('Could not switch to default account.'),
             type: 'danger',
         });
-        console.log('handleNotFoundLoginId', 'client-store.js');
         // request a logout
         this.logout();
     }
@@ -2014,7 +2011,6 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
-        console.log('onUnmount', 'client-store.js');
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 

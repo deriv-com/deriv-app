@@ -849,7 +849,8 @@ const AccountSwitcher = props => {
                             </Button>
                         </div>
                     ))}
-                    {(can_manage_account_multi || !props.has_active_real_account) && (
+                    {(can_manage_account_multi ||
+                        (!props.has_active_real_account && filtered_remaining_real_accounts?.length === 0)) && (
                         <Button
                             className='acc-switcher__btn'
                             secondary

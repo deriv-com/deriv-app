@@ -9,26 +9,24 @@ const WarningCloseCreateRealAccountModal = ({
     is_closing_create_real_account_modal,
     setIsClosingCreateRealAccountModal,
     closeRealAccountSignup,
-}) => {
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <WarningMessageModal
-                    is_closing_create_real_account_modal={is_closing_create_real_account_modal}
-                    setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
-                    closeRealAccountSignup={closeRealAccountSignup}
-                />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <WarningMessageModal
-                    is_closing_create_real_account_modal={is_closing_create_real_account_modal}
-                    setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
-                    closeRealAccountSignup={closeRealAccountSignup}
-                />
-            </MobileWrapper>
-        </React.Fragment>
-    );
-};
+}) => (
+    <React.Fragment>
+        <DesktopWrapper>
+            <WarningMessageModal
+                is_closing_create_real_account_modal={is_closing_create_real_account_modal}
+                setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
+                closeRealAccountSignup={closeRealAccountSignup}
+            />
+        </DesktopWrapper>
+        <MobileWrapper>
+            <WarningMessageModal
+                is_closing_create_real_account_modal={is_closing_create_real_account_modal}
+                setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
+                closeRealAccountSignup={closeRealAccountSignup}
+            />
+        </MobileWrapper>
+    </React.Fragment>
+);
 
 export default connect(({ ui }) => ({
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,

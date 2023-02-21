@@ -1,9 +1,9 @@
-.warning-close-create-real-account-modal {
+.close-real-acc-modal {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 2.4rem;
-    width: 440px;
+    width: 44rem;
     @include mobile {
         width: unset;
     }

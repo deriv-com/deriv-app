@@ -27,7 +27,7 @@ export const init = (fncTimeUpdated?: VoidFunction) => {
     }
 };
 
-export const timeCounter = (response: { error: any; time: number }) => {
+export const timeCounter = (response: { error: unknown; time: number }) => {
     if (response.error) return;
 
     if (!clock_started) {
@@ -51,9 +51,8 @@ export const timeCounter = (response: { error: any; time: number }) => {
         }
     };
     updateTime();
-    if (pending.resolve) {
-        pending.resolve();
-    }
+    pending.resolve?.();
+
     update_time_interval = setInterval(updateTime, 1000);
 };
 

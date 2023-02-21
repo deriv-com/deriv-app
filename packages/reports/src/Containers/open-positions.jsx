@@ -351,7 +351,6 @@ const OpenPositions = ({
     const accumulator_rates = [localize('All rates'), '1%', '2%', '3%', '4%', '5%'];
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
-    const is_options_selected = contract_type_value === contract_types[0].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
     const contract_types_list = contract_types.map(({ text }) => ({ text, value: text }));
     const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
@@ -459,32 +458,23 @@ const OpenPositions = ({
     };
 
     const getOpenPositionsTable = () => {
-        if (is_options_selected)
-            return (
-                <OpenPositionsTable
-                    is_empty={active_positions_filtered.length === 0}
-                    className='open-positions'
-                    columns={columns}
-                    {...shared_props}
-                    row_size={isMobile() ? 5 : 63}
-                />
-            );
-        if (is_accumulator_selected)
-            return (
-                <OpenPositionsTable
-                    className='open-positions-accumulator open-positions'
-                    columns={columns}
-                    is_empty={active_positions_filtered.length === 0}
-                    row_size={isMobile() ? 3 : 68}
-                    {...shared_props}
-                />
-            );
+        let classname = 'open-positions';
+        let row_size = isMobile() ? 5 : 63;
+
+        if (is_accumulator_selected) {
+            classname = 'open-positions-accumulator open-positions';
+            row_size = isMobile() ? 3 : 68;
+        } else if (is_multiplier_selected) {
+            classname = 'open-positions-multiplier open-positions';
+            row_size = isMobile() ? 3 : 68;
+        }
+
         return (
             <OpenPositionsTable
-                className='open-positions-multiplier open-positions'
+                className={classname}
                 columns={columns}
-                row_size={isMobile() ? 3 : 68}
                 is_empty={active_positions_filtered.length === 0}
+                row_size={row_size}
                 {...shared_props}
             />
         );

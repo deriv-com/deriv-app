@@ -100,14 +100,13 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             setInputDisable(false);
         }
 
-        if (document_number === document_type.example_format) {
-            errors.document_number = localize('Please enter a valid ID number different from example.');
-        }
-
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (validation_is_enabled && (is_recurring_number || is_sequential_number)) {
+        } else if (
+            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
+            document_number === document_type.example_format
+        ) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);

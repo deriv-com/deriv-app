@@ -47,12 +47,21 @@ export type TStandPoint = {
 
 export type TCategotyTypes = Record<TAccountCategory, boolean>;
 
+export type TJurisdictionData = Record<
+    'jurisdiction',
+    'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta' | 'seychelles' | undefined
+>;
+
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
     landing_company_short?: string;
     short_code_and_region?: string;
     mt5_acc_auth_status?: string | null;
-    selected_mt5_jurisdiction?: string;
+    selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
+        TJurisdictionData & {
+            platform?: string;
+        };
+
     openFailedVerificationModal?: (from_account: string) => void;
 };
 

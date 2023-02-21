@@ -586,15 +586,13 @@ const AccountSwitcher = props => {
 
     const can_manage_account =
         !props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency);
-    const can_manage_account_virtual = props.is_virtual && can_manage_account;
+    const can_manage_account_virtual = props.is_virtual && can_manage_account && props.has_active_real_account;
     const can_manage_account_multi = !canUpgrade() && canOpenMulti() && can_manage_account;
 
     const have_more_accounts = type =>
         getSortedAccountList(props.account_list, props.accounts).filter(
             account => !account.is_virtual && account.loginid.startsWith(type)
         ).length > 1;
-
-    const has_cr_account = props.account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
 
     const default_demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
@@ -1094,40 +1092,39 @@ const AccountSwitcher = props => {
                                         );
                                     })}
                             </div>
-                            {!has_cr_account &&
-                                getRemainingRealAccounts()
-                                    .filter(account => account === 'svg')
-                                    .map((account, index) => (
-                                        <div key={index} className='acc-switcher__new-account'>
-                                            <Icon icon='IcDeriv' size={24} />
-                                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                                {getAccountTitle(
-                                                    account,
-                                                    { account_residence: props.client_residence },
-                                                    props.country_standpoint
-                                                )}
-                                            </Text>
-                                            <Button
-                                                id='dt_core_account-switcher_add-new-account'
-                                                onClick={() => {
-                                                    if (props.real_account_creation_unlock_date) {
-                                                        closeAccountsDialog();
-                                                        props.setShouldShowCooldownModal(true);
-                                                    } else if (
-                                                        (can_manage_account_multi || can_manage_account_virtual) &&
-                                                        props.has_any_real_account
-                                                    )
-                                                        props.openRealAccountSignup('manage');
-                                                    else props.openRealAccountSignup(account);
-                                                }}
-                                                className='acc-switcher__new-account-btn'
-                                                secondary
-                                                small
-                                            >
-                                                {localize('Add')}
-                                            </Button>
-                                        </div>
-                                    ))}
+                            {getRemainingRealAccounts()
+                                .filter(account => account === 'svg')
+                                .map((account, index) => (
+                                    <div key={index} className='acc-switcher__new-account'>
+                                        <Icon icon='IcDeriv' size={24} />
+                                        <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                            {getAccountTitle(
+                                                account,
+                                                { account_residence: props.client_residence },
+                                                props.country_standpoint
+                                            )}
+                                        </Text>
+                                        <Button
+                                            id='dt_core_account-switcher_add-new-account'
+                                            onClick={() => {
+                                                if (props.real_account_creation_unlock_date) {
+                                                    closeAccountsDialog();
+                                                    props.setShouldShowCooldownModal(true);
+                                                } else if (
+                                                    (can_manage_account_multi || can_manage_account_virtual) &&
+                                                    props.has_any_real_account
+                                                )
+                                                    props.openRealAccountSignup('manage');
+                                                else props.openRealAccountSignup(account);
+                                            }}
+                                            className='acc-switcher__new-account-btn'
+                                            secondary
+                                            small
+                                        >
+                                            {localize('Add')}
+                                        </Button>
+                                    </div>
+                                ))}
                         </AccountWrapper>
                         <div className='acc-switcher__separator' />
                     </React.Fragment>
@@ -1277,7 +1274,7 @@ const AccountSwitcher = props => {
                     'acc-switcher__footer--traders-hub': props.is_pre_appstore,
                 })}
             >
-                {props.is_pre_appstore && isRealAccountTab && props.has_active_real_account && !props.is_virtual && (
+                {props.is_pre_appstore && isRealAccountTab && can_manage_account_multi && (
                     <Button
                         className={classNames('acc-switcher__btn', {
                             'acc-switcher__btn--traders_hub': props.is_pre_appstore,

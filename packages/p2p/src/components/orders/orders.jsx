@@ -6,6 +6,7 @@ import OrderDetails from 'Components/order-details/order-details.jsx';
 import { useStores } from 'Stores';
 import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
+import { isMobile } from '@deriv/shared';
 
 const Orders = observer(() => {
     const { order_store } = useStores();
@@ -42,7 +43,7 @@ const Orders = observer(() => {
     }, []);
 
     if (order_store.is_order_details_loading) {
-        return <Loading is_fullscreen />;
+        return <Loading is_fullscreen={isMobile()} />;
     }
 
     if (order_store.order_information) {

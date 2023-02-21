@@ -75,6 +75,7 @@ const OrderRow = ({ row: order }) => {
 
     const onRowClick = () => {
         if (should_show_order_details.current) {
+            order_store.setIsOrderDetailsLoading(true);
             return order_store.setOrderId(order.id);
         }
 

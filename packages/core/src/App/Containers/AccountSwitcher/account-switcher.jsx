@@ -586,7 +586,7 @@ const AccountSwitcher = props => {
 
     const can_manage_account =
         !props.show_eu_related_content || (props.show_eu_related_content && props.can_change_fiat_currency);
-    const can_manage_account_virtual = props.is_virtual && can_manage_account;
+    const can_manage_account_virtual = props.is_virtual && can_manage_account && props.has_active_real_account;
     const can_manage_account_multi = !canUpgrade() && canOpenMulti() && can_manage_account;
 
     const have_more_accounts = type =>

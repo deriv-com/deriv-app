@@ -59,6 +59,10 @@
         align-items: center;
         justify-content: center;
         width: 100%;
+
+        @include mobile {
+            gap: 2.4rem;
+        }
     }
     &__title {
         margin: auto;

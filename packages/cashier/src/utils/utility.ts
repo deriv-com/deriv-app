@@ -39,4 +39,4 @@ const getNormalizedPaymentMethod = (
     return is_for_icon ? normalized_payment_method : normalized_payment_method || payment_method;
 };
 
-export { getAccountText, getNormalizedPaymentMethod, isEuCountry, PromiseClass };
+export { getAccountText, getNormalizedPaymentMethod, PromiseClass };

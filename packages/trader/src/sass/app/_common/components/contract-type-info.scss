@@ -21,6 +21,10 @@
         @media screen and (min-height: 821px) {
             min-height: 535px;
         }
+        @include mobile {
+            min-height: calc(100vh - 140px);
+            padding: 0;
+        }
     }
     &__content {
         overflow: hidden;

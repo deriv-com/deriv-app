@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { usePrevious } from '../../hooks';
+import Icon from '../icon/icon';
 import { TItem } from './vertical-tab-header';
 
 type TSideNotes = {
@@ -19,8 +20,18 @@ type TContent = {
     selected: TItem;
 };
 
+export type TAction_bar = {
+    component?: typeof React.Component;
+    onClick?: () => void;
+    icon: string;
+    title?: string;
+};
+
 type TVerticalTabContentContainer = TContent & {
+    action_bar?: TAction_bar[];
+    action_bar_classname?: string;
     className?: string;
+    id?: string;
     is_floating?: boolean;
     tab_container_classname?: string;
 };
@@ -96,7 +107,10 @@ const Content = ({ is_routed, items, selected }: TContent) => {
 };
 
 const VerticalTabContentContainer = ({
+    action_bar,
+    action_bar_classname,
     className,
+    id,
     is_floating,
     is_routed,
     items,
@@ -110,6 +124,29 @@ const VerticalTabContentContainer = ({
                 [`dc-vertical-tab__content--${className}`]: className,
             })}
         >
+            {!is_floating && action_bar && (
+                <div
+                    className={classNames('dc-vertical-tab__action-bar', {
+                        [action_bar_classname as string]: !!action_bar_classname,
+                    })}
+                >
+                    {action_bar.map(({ component, icon, onClick }, idx) => {
+                        const Component = component;
+                        return Component ? (
+                            <Component key={idx} />
+                        ) : (
+                            <div
+                                id={`dt_${id}_close_icon`}
+                                className='dc-vertical-tab__action-bar-wrapper'
+                                key={idx}
+                                onClick={onClick}
+                            >
+                                <Icon className='dc-vertical-tab__action-bar--icon' icon={icon} />
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
             <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
                 <ContentWrapper has_side_note={selected.has_side_note}>
                     <Content is_routed={is_routed} items={items} selected={selected} />

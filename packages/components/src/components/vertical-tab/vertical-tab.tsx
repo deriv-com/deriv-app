@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { matchRoute } from '@deriv/shared';
-import VerticalTabContentContainer from './vertical-tab-content-container';
+import VerticalTabContentContainer, { TAction_bar } from './vertical-tab-content-container';
 import VerticalTabHeader, { TItem } from './vertical-tab-header';
 import VerticalTabHeaderGroup from './vertical-tab-header-group';
 import VerticalTabHeaders from './vertical-tab-headers';
@@ -20,6 +20,8 @@ type TSetSelectedIndex = {
 };
 
 type TVerticalTab = {
+    action_bar?: TAction_bar[];
+    action_bar_classname?: string;
     className?: string;
     current_path: string;
     extra_content?: React.ReactNode | React.ReactNode[];
@@ -70,6 +72,8 @@ const setSelectedIndex = ({
 };
 
 const VerticalTab = ({
+    action_bar,
+    action_bar_classname,
     className,
     current_path,
     extra_content,
@@ -163,6 +167,8 @@ const VerticalTab = ({
                 </div>
             )}
             <VerticalTabContentContainer
+                action_bar={action_bar}
+                action_bar_classname={action_bar_classname}
                 className={className}
                 is_floating={is_floating}
                 items={list}

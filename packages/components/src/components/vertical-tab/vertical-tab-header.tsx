@@ -11,7 +11,7 @@ export type THeaderIcon = {
 };
 
 export type THeader = {
-    text?: string;
+    text: string;
     path?: string;
 };
 
@@ -65,7 +65,7 @@ const VerticalTabHeader = ({
     selected,
     selectedKey = 'label',
 }: React.PropsWithChildren<TVerticalTabHeader>) => {
-    const label = item.label || item.title || item.getTitle?.();
+    const label = item.label || item.title || item.getTitle?.() || '';
     const is_active = selected && selected[selectedKey as keyof TItem] === item[selectedKey as keyof TItem];
     const handleClick = () => onChange(item);
     const id = `dc_${getKebabCase(label)}_link`;
@@ -102,12 +102,10 @@ const VerticalTabHeader = ({
             })}
             onClick={handleClick}
         >
-            <>
-                <HeaderIcon icon={item.icon} is_active={is_active} />
-                <Header text={label} />
-                {children}
-                {item.component}
-            </>
+            <HeaderIcon icon={item.icon} is_active={is_active} />
+            <Header text={label} />
+            {children}
+            <>{item.component}</>
         </div>
     );
 };

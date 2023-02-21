@@ -1,6 +1,7 @@
 import React from 'react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
+import Icon from 'Components/icon';
 import VerticalTab from 'Components/vertical-tab/vertical-tab';
 import 'Components/vertical-tab/vertical-tab.scss';
 import Wrapper from '../shared/wrapper';
@@ -18,6 +19,37 @@ const TextComponent = props => (
         {props.children}
     </div>
 );
+
+const action_bar_items = [
+    {
+        onClick: () => {
+            /* TODO document why this method 'onClick' is empty */
+        },
+        icon: 'IcCross',
+        title: 'Close',
+    },
+    {
+        component: () => (
+            <div
+                style={{
+                    color: 'var(--text-prominent)',
+                    fontSize: '14px',
+                }}
+            >
+                Lorem ipsum dolor sit amet
+            </div>
+        ),
+        title: 'Test',
+    },
+    {
+        component: () => (
+            <div style={{ marginRight: '8px' }}>
+                <Icon icon='IcInfoBlue' />
+            </div>
+        ),
+        title: '',
+    },
+];
 
 const list = [
     {
@@ -66,6 +98,7 @@ stories.add(
                 <div className='vertical-tabs-component'>
                     <VerticalTab
                         header_title='Header'
+                        action_bar={action_bar_items}
                         current_path='/'
                         is_routed={false}
                         is_full_width={boolean('full screen', true)}

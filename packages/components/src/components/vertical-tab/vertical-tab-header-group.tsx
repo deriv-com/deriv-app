@@ -41,7 +41,7 @@ const VerticalTabHeaderGroup = ({
         onToggle(true);
     }, [show_items, onToggle]);
 
-    const label = group.getTitle ? group.getTitle() : group.label || group.title;
+    const label = group.getTitle ? group.getTitle() : group.label || group.title || '';
     const handleClick = () => {
         if (!group.subitems) {
             onChange(group);

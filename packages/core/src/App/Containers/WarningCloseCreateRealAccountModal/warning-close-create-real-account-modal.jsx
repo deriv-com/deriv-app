@@ -9,6 +9,7 @@ const WarningCloseCreateRealAccountModal = ({
     is_closing_create_real_account_modal,
     setIsClosingCreateRealAccountModal,
     closeRealAccountSignup,
+    routing_history,
 }) => (
     <React.Fragment>
         <DesktopWrapper>
@@ -16,6 +17,7 @@ const WarningCloseCreateRealAccountModal = ({
                 is_closing_create_real_account_modal={is_closing_create_real_account_modal}
                 setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
                 closeRealAccountSignup={closeRealAccountSignup}
+                routing_history={routing_history}
             />
         </DesktopWrapper>
         <MobileWrapper>
@@ -23,13 +25,15 @@ const WarningCloseCreateRealAccountModal = ({
                 is_closing_create_real_account_modal={is_closing_create_real_account_modal}
                 setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
                 closeRealAccountSignup={closeRealAccountSignup}
+                routing_history={routing_history}
             />
         </MobileWrapper>
     </React.Fragment>
 );
 
-export default connect(({ ui }) => ({
+export default connect(({ ui, common }) => ({
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     setIsClosingCreateRealAccountModal: ui.setIsClosingCreateRealAccountModal,
     closeRealAccountSignup: ui.closeRealAccountSignup,
+    routing_history: common.app_routing_history,
 }))(withRouter(WarningCloseCreateRealAccountModal));

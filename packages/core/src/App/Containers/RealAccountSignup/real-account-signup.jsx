@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -114,7 +114,6 @@ const RealAccountSignup = ({
     real_account_signup_target,
     realAccountSignup,
     replaceCashierMenuOnclick,
-    routing_history,
     setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled,
     setIsClosingCreateRealAccountModal,
@@ -375,13 +374,6 @@ const RealAccountSignup = ({
             localStorage.removeItem('real_account_signup_wizard');
         }
 
-        if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
-            window.location = routes.smarttrader;
-        }
-
-        if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
-            window.location = routes.binarybot;
-        }
         if (!is_closing_create_real_account_modal) {
             setIsClosingCreateRealAccountModal(true);
         }
@@ -626,7 +618,7 @@ const RealAccountSignup = ({
     );
 };
 
-export default connect(({ ui, client, common, traders_hub, modules }) => ({
+export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
@@ -648,7 +640,6 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
-    routing_history: common.app_routing_history,
     setCFDScore: client.setCFDScore,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,

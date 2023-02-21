@@ -2,18 +2,12 @@ import { TOptions, getPreBuildDVRs, TInitPreBuildDVRs } from '../validation/decl
 import Error from './errors';
 
 type TRuleOptions = {
-    func: (value: string | number, options?: TOptions, store?: any, inputs?: any) => boolean;
-    condition: (store: any) => boolean;
+    func: (value: string | number, options?: TOptions, store?: unknown, inputs?: unknown) => boolean;
+    condition: (store: unknown) => boolean;
     message: string;
 } & TOptions;
 
 type TRule = string | Array<string | TRuleOptions>;
-
-type TValidatorOptions = {
-    input: { [key: string]: string };
-    rules: TInitPreBuildDVRs;
-    store: any;
-};
 
 const template = (string: string, content: string | Array<string>) => {
     let to_replace = content;
@@ -26,11 +20,11 @@ const template = (string: string, content: string | Array<string>) => {
 class Validator {
     input: { [key: string]: any };
     rules: Partial<TInitPreBuildDVRs>;
-    store: any;
+    store: unknown;
     errors: Error;
     error_count: number;
 
-    constructor(input: { [key: string]: any }, rules: Partial<TInitPreBuildDVRs>, store: any) {
+    constructor(input: { [key: string]: unknown }, rules: Partial<TInitPreBuildDVRs>, store: unknown) {
         this.input = input;
         this.rules = rules;
         this.store = store;
@@ -134,8 +128,8 @@ class Validator {
                                   func: (
                                       value: string | number,
                                       options?: TRuleOptions,
-                                      store?: any,
-                                      inputs?: any
+                                      store?: unknown,
+                                      inputs?: unknown
                                   ) => boolean;
                               };
                           }

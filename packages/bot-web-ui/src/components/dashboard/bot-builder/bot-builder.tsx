@@ -37,7 +37,7 @@ const BotBuilder = ({
     }, []);
 
     React.useEffect(() => {
-        blocksCoordinate();
+        if (active_tab === 1) blocksCoordinate();
     }, [active_tab]);
 
     return (

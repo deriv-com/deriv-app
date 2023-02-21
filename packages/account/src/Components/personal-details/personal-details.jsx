@@ -387,8 +387,8 @@ const PersonalDetails = ({
                                                                 type='text'
                                                                 label={
                                                                     is_mf
-                                                                        ? localize('Citizenship*')
-                                                                        : localize('Citizenship')
+                                                                        ? localize('Nationality*')
+                                                                        : localize('Nationality')
                                                                 }
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
@@ -408,7 +408,7 @@ const PersonalDetails = ({
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
                                                             <SelectNative
-                                                                placeholder={localize('Citizenship')}
+                                                                placeholder={localize('Nationality')}
                                                                 name={field.name}
                                                                 disabled={
                                                                     (props.value.citizen && is_fully_authenticated) ||
@@ -418,8 +418,8 @@ const PersonalDetails = ({
                                                                 }
                                                                 label={
                                                                     is_mf
-                                                                        ? localize('Citizenship*')
-                                                                        : localize('Citizenship')
+                                                                        ? localize('Nationality*')
+                                                                        : localize('Nationality')
                                                                 }
                                                                 list_items={residence_list}
                                                                 value={values.citizen}

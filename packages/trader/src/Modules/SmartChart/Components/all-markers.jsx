@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 // Things to do before touching this file :P
 // 1- Please read https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts

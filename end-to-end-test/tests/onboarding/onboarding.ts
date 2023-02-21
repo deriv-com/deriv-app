@@ -127,7 +127,9 @@ export default class OnboardingFlow {
         });
         await mailPage.goto(`https://${process.env.ENDPOINT!}/events`);
         let hrefs = await mailPage.evaluate(() => {
-            return Array.from(document.links).map(item => item.href);
+            return Array.from(document.links)
+                .filter(item => item.href.endsWith('_account_opening_new.html'))
+                .map(item => item.href);
         });
         hrefs = hrefs.slice().reverse();
         // TODO need to find a better approach instead of this

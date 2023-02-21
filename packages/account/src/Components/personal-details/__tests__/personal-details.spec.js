@@ -76,7 +76,7 @@ const runCommonFormfieldsTests = () => {
     ).toBeInTheDocument();
 
     expect(screen.getByText('Place of birth')).toBeInTheDocument();
-    expect(screen.getByText('Citizenship')).toBeInTheDocument();
+    expect(screen.getByText('Nationality')).toBeInTheDocument();
     expect(screen.getByText('Tax residence')).toBeInTheDocument();
 
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');

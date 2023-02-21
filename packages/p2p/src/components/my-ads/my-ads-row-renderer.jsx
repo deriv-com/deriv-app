@@ -12,7 +12,7 @@ import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
-const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
+const MyAdsRowRenderer = observer(({ row: advert }) => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
 
     const {
@@ -62,13 +62,17 @@ const MyAdsRowRenderer = observer(({ row: advert, setAdvert }) => {
     };
     const onClickAdd = () => {
         if (general_store.is_listed && !general_store.is_barred) {
-            setAdvert(advert);
             my_ads_store.showQuickAddModal(advert);
         }
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id, rate_type);
-    const onClickSwitchAd = () => !general_store.is_barred && my_ads_store.setIsSwitchModalOpen(true, id);
+    const onClickSwitchAd = () => {
+        if (!general_store.is_barred) {
+            general_store.showModal({ key: 'MyAdsFloatingRateSwitchModal', props: {} });
+            my_ads_store.onToggleSwitchModal(id);
+        }
+    };
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 

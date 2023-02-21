@@ -182,6 +182,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     setShouldShowCooldownModal: (value: boolean) => void;
     show_eu_related_content: boolean;
     is_pre_appstore: boolean;
+    is_user_exception: boolean;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -439,6 +440,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         setShouldShowCooldownModal,
         show_eu_related_content,
         is_pre_appstore,
+        is_user_exception,
     } = props;
 
     const should_show_missing_real_account =
@@ -464,10 +466,11 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         ? is_suspended_dxtrade_demo_server || has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
         : is_suspended_dxtrade_real_server || has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
 
-    const has_cfd_account_error =
-        platform === CFD_PLATFORMS.MT5
-            ? has_mt5_account_error
-            : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
+    const has_cfd_account_error = is_user_exception
+        ? false
+        : platform === CFD_PLATFORMS.MT5
+        ? has_mt5_account_error
+        : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
 
     const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
@@ -802,5 +805,6 @@ export default withRouter(
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
         show_eu_related_content: traders_hub.show_eu_related_content,
         is_pre_appstore: client.is_pre_appstore,
+        is_user_exception: client.account_settings.dxtrade_user_exception,
     }))(CFDDashboard)
 );

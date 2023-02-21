@@ -361,10 +361,6 @@ const RealAccountSignup = ({
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
     const closeModal = e => {
-        if (!is_closing_create_real_account_modal) {
-            setIsClosingCreateRealAccountModal(true);
-            return;
-        }
         replaceCashierMenuOnclick();
         // Do not close modal on external link and popover click event
         if (
@@ -378,7 +374,6 @@ const RealAccountSignup = ({
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
-        closeRealAccountSignup();
 
         if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
             window.location = routes.smarttrader;
@@ -386,6 +381,9 @@ const RealAccountSignup = ({
 
         if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
             window.location = routes.binarybot;
+        }
+        if (!is_closing_create_real_account_modal) {
+            setIsClosingCreateRealAccountModal(true);
         }
     };
 

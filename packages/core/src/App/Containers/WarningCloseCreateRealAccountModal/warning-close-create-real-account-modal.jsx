@@ -24,8 +24,8 @@ const WarningMessageModal = ({ setIsClosingCreateRealAccountModal, closeRealAcco
                 cancel_label={localize('Close this window')}
                 onClick={() => setIsClosingCreateRealAccountModal(false)}
                 onCancel={() => {
-                    closeRealAccountSignup();
                     setIsClosingCreateRealAccountModal(false);
+                    closeRealAccountSignup();
                 }}
             />
         </div>
@@ -57,6 +57,7 @@ const WarningCloseCreateRealAccountModal = ({
                     id='warning_close_create_real_account'
                     portalId='modal_root_absolute'
                     is_open={is_closing_create_real_account_modal}
+                    has_close_icon={false}
                 >
                     <WarningMessageModal
                         setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}

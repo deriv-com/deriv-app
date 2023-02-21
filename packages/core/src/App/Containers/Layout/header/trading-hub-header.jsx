@@ -160,9 +160,6 @@ const TradingHubHeader = ({
 
                 <div className='platform-switcher'>
                     <DerivBrandLogo className='trading-hub-header__logo' />
-                    <Text as='h1' styles={{ lineHeight: '2.4rem' }} weight='bold'>
-                        derivTrader
-                    </Text>
                 </div>
 
                 <DesktopWrapper>

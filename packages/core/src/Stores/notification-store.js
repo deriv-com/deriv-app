@@ -105,7 +105,7 @@ export default class NotificationStore extends BaseStore {
                     Object.keys(root_store.client.landing_companies).length > 0 &&
                     root_store.modules?.cashier?.general_store?.is_p2p_visible
                 )
-                    await debouncedGetP2pCompletedOrders();
+                    setTimeout(() => debouncedGetP2pCompletedOrders(), 1000);
 
                 if (
                     !root_store.client.is_logged_in ||

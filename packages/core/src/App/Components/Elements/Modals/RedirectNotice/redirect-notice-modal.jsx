@@ -53,18 +53,20 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
     }, [is_logged_in, is_eu]);
 
     return ReactDOM.createPortal(
-        <Dialog
-            className='redirect-notice'
-            is_visible={dialog_status}
-            title='Redirect notice'
-            cancel_button_text={localize('Cancel')}
-            confirm_button_text={localize('Proceed')}
-            onCancel={onCancelDialog}
-            onConfirm={onConfirmDialog}
-            dismissable={onCancelDialog}
-        >
-            {localize('You are being redirected to an external website.')}
-        </Dialog>,
+        dialog_status ? (
+            <Dialog
+                className='redirect-notice'
+                is_visible={dialog_status}
+                title='Redirect notice'
+                cancel_button_text={localize('Cancel')}
+                confirm_button_text={localize('Proceed')}
+                onCancel={onCancelDialog}
+                onConfirm={onConfirmDialog}
+                dismissable={onCancelDialog}
+            >
+                {localize('You are being redirected to an external website.')}
+            </Dialog>
+        ) : null,
         document.getElementById(portal_id)
     );
 };

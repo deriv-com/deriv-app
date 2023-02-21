@@ -38,7 +38,6 @@ const TradingAssessmentNewUser = ({
             form_value={value}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
-            is_header_navigation
             setSubSectionIndex={setSubSectionIndex}
         />
     );

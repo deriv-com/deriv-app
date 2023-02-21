@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Modal, Text, Icon, FormSubmitButton } from '@deriv/components';
+import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
@@ -13,7 +13,6 @@ const TradingAssessmentForm = ({
     form_value,
     onSubmit,
     onCancel,
-    is_header_navigation,
     should_move_to_next,
     setSubSectionIndex,
 }) => {
@@ -78,6 +77,8 @@ const TradingAssessmentForm = ({
                     current_question: assessment_questions[prev_state_question_index],
                 };
             });
+        } else {
+            onCancel(form_data);
         }
     };
 
@@ -87,10 +88,6 @@ const TradingAssessmentForm = ({
         setFormData(prev_form => ({ ...prev_form, [form_control]: e.target.value }));
     };
 
-    const hideElement = condition => {
-        return condition ? { visibility: 'hidden' } : {};
-    };
-
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
 
     return (
@@ -98,42 +95,6 @@ const TradingAssessmentForm = ({
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
-            <section className='trading-assessment__header'>
-                <div className='trading-assessment__header--background'>
-                    <Button
-                        onClick={displayPreviousPage}
-                        transparent
-                        style={hideElement(
-                            !is_header_navigation || current_question_details.current_question_index === 0
-                        )}
-                        type='button'
-                    >
-                        <Icon icon='IcChevronLeft' color='black' />
-                    </Button>
-                    <Text as='h1' color='prominent' weight='bold' size='xs'>
-                        {current_question_details.current_question_index + 1} {localize('of')}{' '}
-                        {assessment_questions.length}
-                    </Text>
-                    <Button
-                        onClick={displayNextPage}
-                        transparent
-                        is_disabled={!is_next_button_enabled}
-                        className={classNames({ 'disable-pointer': !is_next_button_enabled })}
-                        style={hideElement(
-                            !is_header_navigation ||
-                                current_question_details.current_question_index === last_question_index
-                        )}
-                        type='button'
-                    >
-                        <Icon
-                            icon='IcChevronRight'
-                            color={is_next_button_enabled ? 'black' : 'secondary'}
-                            className={classNames({ highlight: is_next_button_enabled })}
-                        />
-                    </Button>
-                </div>
-                <div className='trading-assessment__header--arrow-down' />
-            </section>
             <section className='trading-assessment__form'>
                 <Formik initialValues={{ ...form_value }}>
                     {({ setFieldValue, values }) => {
@@ -167,48 +128,32 @@ const TradingAssessmentForm = ({
                                     is_bypassed={isMobile()}
                                     className='trading-assessment__existing_btn '
                                 >
-                                    {is_header_navigation ? (
-                                        <FormSubmitButton
-                                            cancel_label={localize('Previous')}
-                                            has_cancel
-                                            is_disabled={!isAssessmentCompleted(values)}
-                                            is_absolute={isMobile()}
-                                            label={localize('Next')}
-                                            onCancel={() => onCancel(values)}
+                                    <Button.Group className='trading-assessment__btn-group'>
+                                        <Button
+                                            has_effect
+                                            onClick={displayPreviousPage}
+                                            text={localize('Previous')}
                                             type='button'
-                                            onClick={() => onSubmit(values)}
+                                            secondary
+                                            large
+                                            className='trading-assessment__btn-group--btn'
                                         />
-                                    ) : (
-                                        <Button.Group className='trading-assessment__btn-group'>
-                                            {current_question_details.current_question_index !== 0 && (
-                                                <Button
-                                                    has_effect
-                                                    onClick={displayPreviousPage}
-                                                    text={localize('Previous')}
-                                                    type='button'
-                                                    secondary
-                                                    large
-                                                    className='trading-assessment__btn-group--btn'
-                                                />
-                                            )}
-                                            <Button
-                                                has_effect
-                                                is_disabled={!is_next_button_enabled}
-                                                onClick={() =>
-                                                    isAssessmentCompleted(values) &&
-                                                    stored_items === last_question_index
-                                                        ? onSubmit(values)
-                                                        : displayNextPage()
-                                                }
-                                                type='button'
-                                                text={localize('Next')}
-                                                large
-                                                primary
-                                                className='trading-assessment__btn-group--btn'
-                                                name='Next'
-                                            />
-                                        </Button.Group>
-                                    )}
+                                        <Button
+                                            has_effect
+                                            is_disabled={!is_next_button_enabled}
+                                            onClick={() =>
+                                                isAssessmentCompleted(values) && stored_items === last_question_index
+                                                    ? onSubmit(values)
+                                                    : displayNextPage()
+                                            }
+                                            type='button'
+                                            text={localize('Next')}
+                                            large
+                                            primary
+                                            className='trading-assessment__btn-group--btn'
+                                            name='Next'
+                                        />
+                                    </Button.Group>
                                 </Modal.Footer>
                             </Form>
                         );

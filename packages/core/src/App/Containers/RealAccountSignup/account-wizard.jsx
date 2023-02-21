@@ -24,6 +24,7 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
                         <FormProgress steps={items} current_step={step} sub_section_index={sub_section_index} />
                     </DesktopWrapper>
                     <MobileWrapper>
+                        <FormProgress steps={items} current_step={step} sub_section_index={sub_section_index} />
                         <div className='account-wizard__header-steps'>
                             <Text
                                 as='h4'

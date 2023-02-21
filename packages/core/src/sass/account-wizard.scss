@@ -170,7 +170,7 @@
         }
     }
     @include mobile {
-        grid-template-rows: 5rem minmax(10rem, 1fr);
+        grid-template-rows: 1fr auto;
         overflow: hidden;
 
         &--set-currency {
@@ -505,10 +505,6 @@
             .trading-assessment__side-note {
                 padding: 2.2rem 1.6rem;
             }
-
-            .trading-assessment__header {
-                margin-top: unset;
-            }
         }
     }
 
@@ -522,36 +518,6 @@
 
         @include mobile() {
             padding: 0 1.6rem;
-        }
-    }
-
-    &__header {
-        margin-top: 2.4rem;
-        padding: 0 7rem;
-
-        @include mobile() {
-            padding: 0 1.6rem;
-        }
-        position: relative;
-        &--background {
-            background-color: var(--general-active);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        &--arrow-down {
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 16px solid var(--general-active);
-            position: relative;
-            left: 49%;
-        }
-
-        &--content_position {
-            justify-content: center !important;
         }
     }
 
@@ -654,7 +620,7 @@
 
     &__btn-group {
         @include mobile() {
-            position: absolute;
+            position: fixed;
             bottom: 0;
             padding: 1.6rem;
             border-top: 2px solid var(--general-disabled);

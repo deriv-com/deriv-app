@@ -373,6 +373,7 @@ export default class GeneralStore extends BaseStore {
                         key: 'floating-to-fixed-ad-deactivated',
                         platform: 'P2P',
                         type: 'p2p_ad_type_changed',
+                        has_close_dialog_icon: true,
                     });
                 } else {
                     this.props.addNotificationMessage({
@@ -388,6 +389,7 @@ export default class GeneralStore extends BaseStore {
                         key: 'floating-to-fixed-ad-enabled',
                         platform: 'P2P',
                         type: 'p2p_ad_type_changed',
+                        has_close_dialog_icon: true,
                     });
                 }
             } else {
@@ -399,6 +401,7 @@ export default class GeneralStore extends BaseStore {
                     key: 'fixed-to-floating-ad-deactivated',
                     platform: 'P2P',
                     type: 'p2p_ad_type_changed',
+                    has_close_dialog_icon: true,
                 });
             }
         }

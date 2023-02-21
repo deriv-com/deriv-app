@@ -16,6 +16,10 @@
 
         &--label {
             font-size: var(--text-size-s);
+
+            @include mobile {
+                font-size: var(--text-size-xs);
+            }
         }
     }
 }

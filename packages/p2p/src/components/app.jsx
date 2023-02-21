@@ -11,7 +11,6 @@ import { setLanguage } from './i18next';
 import { ad_type } from 'Constants/floating-rate';
 import './app.scss';
 import IntroducingFloatingRatesModal from 'Components/introducing-floating-rates-modal/';
-import { DesktopWrapper } from '@deriv/components';
 
 const App = props => {
     const { general_store, floating_rate_store, order_store } = useStores();
@@ -98,9 +97,7 @@ const App = props => {
 
     return (
         <main className={classNames('p2p-cashier', className)}>
-            <DesktopWrapper>
-                {floating_rate_store.rate_type === ad_type.FLOAT && <IntroducingFloatingRatesModal />}
-            </DesktopWrapper>
+            {floating_rate_store.rate_type === ad_type.FLOAT && <IntroducingFloatingRatesModal />}
             <Notifications />
             <AppContent />
         </main>

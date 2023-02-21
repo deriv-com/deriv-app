@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Checkbox, Modal, Text } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
-import { getUrlBase } from '@deriv/shared';
+import { getUrlBase, isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 
 const IntroducingFloatingRatesModal = () => {
@@ -29,7 +29,7 @@ const IntroducingFloatingRatesModal = () => {
 
     return (
         <Modal
-            width='540px'
+            width={isMobile() ? '340px' : '540px'}
             is_open={is_open}
             title={<Localize i18n_default_text='Introducing floating rates' />}
             toggleModal={closeModal}
@@ -39,19 +39,19 @@ const IntroducingFloatingRatesModal = () => {
                     className='introducing-floating-rates-modal__image'
                     src={getUrlBase('/public/images/common/dp2p_introduction.png')}
                 />
-                <Text as='p' line_height='l'>
+                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
                     <Localize i18n_default_text='Volatile exchange rates can be difficult to manage when you have open ads and orders.' />
                 </Text>
-                <Text as='p' line_height='l'>
+                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
                     <Localize i18n_default_text="From now on, use floating rates for all your ads; you won't have to worry about the market moving too far away from your price anymore." />
                 </Text>
-                <Text as='p' line_height='l'>
+                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
                     <Localize
                         i18n_default_text='Remember to set floating rates for your existing ads. Fixed-rate ads will be deactivated on {{end_date}}.'
                         values={{ end_date: floating_rate_store.fixed_rate_adverts_end_date }}
                     />
                 </Text>
-                <Text as='p' line_height='l'>
+                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
                     <Localize i18n_default_text='This is a new feature, so if you have any feedback, please let us know.' />
                 </Text>
                 <Checkbox

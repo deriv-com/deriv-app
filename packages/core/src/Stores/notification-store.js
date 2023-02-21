@@ -1,4 +1,4 @@
-// import debounce from 'lodash.debounce';
+import debounce from 'lodash.debounce';
 import { StaticUrl } from '@deriv/components';
 import {
     daysSince,
@@ -79,7 +79,7 @@ export default class NotificationStore extends BaseStore {
             getP2pCompletedOrders: action.bound,
         });
 
-        // const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
+        const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
 
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
@@ -106,8 +106,7 @@ export default class NotificationStore extends BaseStore {
                     Object.keys(root_store.client.landing_companies).length > 0 &&
                     root_store.modules?.cashier?.general_store?.is_p2p_visible
                 ) {
-                    console.log('=> getP2pCompletedOrders');
-                    await this.getP2pCompletedOrders();
+                    await debouncedGetP2pCompletedOrders();
                 }
 
                 if (
@@ -1486,12 +1485,11 @@ export default class NotificationStore extends BaseStore {
     };
 
     async getP2pCompletedOrders() {
-        await WS.authorized.send?.({ p2p_order_list: 1, active: 0 }).then(response => {
-            if (!response?.error) {
-                const { p2p_order_list } = response;
+        console.log('=> getP2pCompletedOrders', WS);
+        const response = await WS.authorized.send?.({ p2p_order_list: 1, active: 0 });
 
-                this.p2p_completed_orders = p2p_order_list?.list || [];
-            }
-        });
+        if (!response?.error) {
+            this.p2p_completed_orders = response.p2p_order_list?.list || [];
+        }
     }
 }

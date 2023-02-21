@@ -1234,7 +1234,7 @@ export default class ClientStore extends BaseStore {
 
     responsePayoutCurrencies(response) {
         const list = response?.payout_currencies || response;
-        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
+        this.currencies_list = buildCurrenciesList(Array.isArray(list) ? list : []);
         this.selectCurrency('');
     }
 

@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce';
+// import debounce from 'lodash.debounce';
 import { StaticUrl } from '@deriv/components';
 import {
     daysSince,
@@ -79,7 +79,7 @@ export default class NotificationStore extends BaseStore {
             getP2pCompletedOrders: action.bound,
         });
 
-        const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
+        // const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
 
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
@@ -105,7 +105,7 @@ export default class NotificationStore extends BaseStore {
                     Object.keys(root_store.client.landing_companies).length > 0 &&
                     root_store.modules?.cashier?.general_store?.is_p2p_visible
                 )
-                    setTimeout(() => debouncedGetP2pCompletedOrders(), 1000);
+                    await this.getP2pCompletedOrders();
 
                 if (
                     !root_store.client.is_logged_in ||

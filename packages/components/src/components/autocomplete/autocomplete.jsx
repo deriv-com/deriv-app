@@ -29,7 +29,9 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
             ? item.toLowerCase().includes(val)
             : item.text
                   .normalize('NFD')
-                  .replace(/[^a-z]/i, '')
+                  .split('')
+                  .filter(char => /^[a-z ]*$/i.test(char))
+                  .join('')
                   .toLowerCase()
                   .includes(val) || item.text.toLowerCase().includes(val)
     );

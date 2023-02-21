@@ -89,7 +89,7 @@ const PersonalDetails = ({
     onSubmitEnabledChange,
     selected_step_ref,
     closeRealAccountSignup,
-    has_any_real_account,
+    has_real_account,
     ...props
 }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -268,7 +268,7 @@ const PersonalDetails = ({
                                                 hint={getFieldHint(localize('first name'))}
                                                 disabled={
                                                     disabled_items.includes('first_name') ||
-                                                    (props.value?.first_name && has_any_real_account)
+                                                    (props.value?.first_name && has_real_account)
                                                 }
                                                 placeholder={localize('John')}
                                                 data-testid='first_name'
@@ -282,7 +282,7 @@ const PersonalDetails = ({
                                                 hint={getFieldHint(localize('last name'))}
                                                 disabled={
                                                     disabled_items.includes('last_name') ||
-                                                    (props.value?.last_name && has_any_real_account)
+                                                    (props.value?.last_name && has_real_account)
                                                 }
                                                 placeholder={localize('Doe')}
                                                 data-testid='last_name'
@@ -301,7 +301,7 @@ const PersonalDetails = ({
                                                 hint={getFieldHint(localize('date of birth'))}
                                                 disabled={
                                                     disabled_items.includes('date_of_birth') ||
-                                                    (props.value?.date_of_birth && has_any_real_account)
+                                                    (props.value?.date_of_birth && has_real_account)
                                                 }
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_appstore ? '' : 'modal_root'}
@@ -318,8 +318,7 @@ const PersonalDetails = ({
                                                                 disabled={
                                                                     (!!props.value.place_of_birth &&
                                                                         disabled_items.includes('place_of_birth')) ||
-                                                                    (props.value?.place_of_birth &&
-                                                                        has_any_real_account)
+                                                                    (props.value?.place_of_birth && has_real_account)
                                                                 }
                                                                 data-lpignore='true'
                                                                 autoComplete='off' // prevent chrome autocomplete
@@ -349,8 +348,7 @@ const PersonalDetails = ({
                                                                 disabled={
                                                                     (!!props.value.place_of_birth &&
                                                                         disabled_items.includes('place_of_birth')) ||
-                                                                    (props.value?.place_of_birth &&
-                                                                        has_any_real_account)
+                                                                    (props.value?.place_of_birth && has_real_account)
                                                                 }
                                                                 label={
                                                                     is_mf
@@ -400,7 +398,7 @@ const PersonalDetails = ({
                                                                     (props.value.citizen && is_fully_authenticated) ||
                                                                     (!!props.value.citizen &&
                                                                         disabled_items.includes('citizen')) ||
-                                                                    (props.value?.citizen && has_any_real_account)
+                                                                    (props.value?.citizen && has_real_account)
                                                                 }
                                                                 list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
@@ -419,7 +417,7 @@ const PersonalDetails = ({
                                                                     (props.value.citizen && is_fully_authenticated) ||
                                                                     (!!props.value.citizen &&
                                                                         disabled_items.includes('citizen')) ||
-                                                                    (props.value?.citizen && has_any_real_account)
+                                                                    (props.value?.citizen && has_real_account)
                                                                 }
                                                                 label={
                                                                     is_mf
@@ -460,7 +458,7 @@ const PersonalDetails = ({
                                                 disabled={
                                                     disabled_items.includes('phone') ||
                                                     (props.value?.phone &&
-                                                        has_any_real_account &&
+                                                        has_real_account &&
                                                         validPhone(props.value?.phone) &&
                                                         props.value?.phone?.length >= 9 &&
                                                         props.value?.phone?.length <= 35)
@@ -571,7 +569,7 @@ const PersonalDetails = ({
                                                             disabled={
                                                                 disabled_items.includes('tax_identification_number') ||
                                                                 (props.value?.tax_identification_number &&
-                                                                    has_any_real_account)
+                                                                    has_real_account)
                                                             }
                                                         />
                                                         <div

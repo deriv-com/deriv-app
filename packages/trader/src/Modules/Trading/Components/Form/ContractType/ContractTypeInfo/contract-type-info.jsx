@@ -17,7 +17,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 </div>
                 <ThemedScrollbars
                     className='contract-type-info__scrollbars'
-                    height={!isMobile() ? '300px' : ''}
+                    height={isMobile() ? '' : '300px'}
                     autohide={false}
                 >
                     <div className='contract-type-info__content'>

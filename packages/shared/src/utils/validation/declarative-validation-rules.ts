@@ -5,7 +5,7 @@ import { TFormErrorMessagesTypes } from './form-error-messages-types';
 
 export type TOptions = {
     min?: number;
-    max?: number;
+    max?: number | string;
     type?: string;
     decimals?: string | number;
     regex?: RegExp;

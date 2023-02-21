@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { List , AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
+import { List, AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableRow from './table-row.jsx';

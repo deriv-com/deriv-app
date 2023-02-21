@@ -1,4 +1,4 @@
-import { Formik, Field } from 'formik';
+import { Formik, Field, FormikProps, FormikValues } from 'formik';
 import React from 'react';
 import {
     Modal,
@@ -15,13 +15,67 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import {
+    isDesktop,
+    isMobile,
+    getLocation,
+    makeCancellablePromise,
+    PlatformContext,
+    TLocationList,
+} from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
-const InputField = props => {
+type TAddressDetails = {
+    states_list: TLocationList[];
+    getCurrentStep?: () => number;
+    onSave: (current_step: number, values: FormikValues) => void;
+    onCancel: (current_step: number, goToPreviousStep: () => void) => void;
+    goToNextStep: () => void;
+    goToPreviousStep: () => void;
+    validate: (values: FormikValues) => FormikValues;
+    onSubmit: (
+        current_step: number | null,
+        values: FormikValues,
+        action: (isSubmitting: boolean) => void,
+        next_step: () => void
+    ) => void;
+    is_svg: boolean;
+    is_mf?: boolean;
+    is_gb_residence: boolean | string;
+    onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
+    selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
+    fetchStatesList: () => Promise<unknown>;
+    value: FormikValues;
+};
+
+type TPlatformContext = {
+    is_appstore: boolean;
+};
+
+type TFormValidation = {
+    warnings: { [key: string]: string };
+    errors: { [key: string]: string };
+};
+
+type TInputField = {
+    name: string;
+    required?: boolean | string;
+    label: string;
+    maxLength?: number | string;
+    placeholder: string;
+    onChange?: (e: any) => void;
+    disabled?: string;
+};
+
+type TAutoComplete = {
+    value: boolean;
+    text: string;
+};
+
+const InputField = (props: TInputField) => {
     return (
         <Field name={props.name}>
-            {({ field, form: { errors, touched } }) => (
+            {({ field, form: { errors, touched } }: FormikValues) => (
                 <React.Fragment>
                     <Input
                         type='text'
@@ -52,8 +106,8 @@ const AddressDetails = ({
     onSubmitEnabledChange,
     selected_step_ref,
     ...props
-}) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+}: TAddressDetails) => {
+    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
@@ -72,13 +126,13 @@ const AddressDetails = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const is_submit_disabled_ref = React.useRef(true);
+    const is_submit_disabled_ref = React.useRef<boolean | undefined>(true);
 
-    const isSubmitDisabled = errors => {
-        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
+    const isSubmitDisabled = (errors?: { [key: string]: string } | FormikValues) => {
+        return selected_step_ref?.current?.isSubmitting || (errors && Object.keys(errors).length > 0);
     };
 
-    const checkSubmitStatus = errors => {
+    const checkSubmitStatus = (errors?: { [key: string]: string }) => {
         const is_submit_disabled = isSubmitDisabled(errors);
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
@@ -87,14 +141,14 @@ const AddressDetails = ({
         }
     };
 
-    const handleCancel = values => {
-        const current_step = getCurrentStep() - 1;
+    const handleCancel = (values: FormikValues) => {
+        const current_step = (getCurrentStep?.() || 1) - 1;
         onSave(current_step, values);
         onCancel(current_step, goToPreviousStep);
     };
 
-    const handleValidate = values => {
-        const { errors } = splitValidationResultTypes(validate(values));
+    const handleValidate = (values: FormikValues) => {
+        const { errors }: Partial<TFormValidation> = splitValidationResultTypes(validate(values));
         checkSubmitStatus(errors);
         return errors;
     };
@@ -111,12 +165,12 @@ const AddressDetails = ({
                         ? getLocation(states_list, address_state_to_display, 'value')
                         : getLocation(states_list, values.address_state, 'value');
                 }
-                onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
+                onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }) => (
+            {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }: FormikValues) => (
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
-                    {({ setRef, height }) => (
+                    {({ setRef, height }: { setRef: (instance: HTMLFormElement) => void; height: number | string }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
                             <Div100vhContainer
                                 className='details-form'
@@ -140,7 +194,7 @@ const AddressDetails = ({
                                 <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                     {is_appstore && (
                                         <div className='details-form__sub-header'>
-                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() ? 'center' : ''}>
                                                 {localize(
                                                     'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
                                                 )}
@@ -190,7 +244,7 @@ const AddressDetails = ({
                                         )}
                                         {states_list?.length > 0 ? (
                                             <Field name='address_state'>
-                                                {({ field }) => (
+                                                {({ field }: FormikValues) => (
                                                     <>
                                                         <DesktopWrapper>
                                                             <Autocomplete
@@ -203,7 +257,7 @@ const AddressDetails = ({
                                                                 type='text'
                                                                 label={localize('State/Province')}
                                                                 list_items={states_list}
-                                                                onItemSelection={({ value, text }) => {
+                                                                onItemSelection={({ value, text }: TAutoComplete) => {
                                                                     setFieldValue(
                                                                         'address_state',
                                                                         value ? text : '',
@@ -222,7 +276,7 @@ const AddressDetails = ({
                                                                 value={address_state_to_display || values.address_state}
                                                                 list_items={states_list}
                                                                 use_text={true}
-                                                                onChange={e => {
+                                                                onChange={(e: { target: { value: string } }) => {
                                                                     setFieldValue(
                                                                         'address_state',
                                                                         e.target.value,

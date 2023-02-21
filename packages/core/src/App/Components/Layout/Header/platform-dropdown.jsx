@@ -36,7 +36,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
                   href={platform.href}
                   className='platform-dropdown__list-platform'
               >
-                  <PlatformBox platform={platform} />
+                  <PlatformBox platform={platform} is_dark_mode={is_dark_mode} />
               </a>
           )
         : null;

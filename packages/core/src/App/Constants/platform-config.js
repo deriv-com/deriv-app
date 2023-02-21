@@ -36,7 +36,7 @@ const platform_config = [
         title: () => getPlatformSettings('smarttrader').name,
         name: getPlatformSettings('smarttrader').name,
         description: () => localize('Trade the world’s markets with our popular user-friendly platform.'),
-        link_to: routes.smarttrader,
+        href: routes.smarttrader,
     },
     {
         icon: getPlatformSettings('bbot').icon,
@@ -46,7 +46,7 @@ const platform_config = [
             localize(
                 'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.'
             ),
-        link_to: routes.binarybot,
+        href: routes.binarybot,
     },
 ];
 

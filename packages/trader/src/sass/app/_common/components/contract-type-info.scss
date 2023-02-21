@@ -124,5 +124,10 @@
     }
     &__button {
         margin-top: 2.4rem;
+        @include mobile {
+            width: 27.2rem;
+            padding: 1.5rem 0;
+            align-self: center;
+        }
     }
 }

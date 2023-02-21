@@ -19,7 +19,7 @@ const BlockUserEmpty = () => {
                         width={128}
                     />
                     <Text className='block-user-empty__text' line_height='m' size='s' weight='bold'>
-                        <Localize i18n_default_text='No users to show here.' />
+                        <Localize i18n_default_text='No one to show here' />
                     </Text>
                 </div>
             </DesktopWrapper>
@@ -38,7 +38,7 @@ const BlockUserEmpty = () => {
                         width={128}
                     />
                     <Text className='block-user-empty__text' line_height='m' size='s' weight='bold'>
-                        <Localize i18n_default_text='No users to show here.' />
+                        <Localize i18n_default_text='No one to show here' />
                     </Text>
                 </MobileFullPageModal>
             </MobileWrapper>

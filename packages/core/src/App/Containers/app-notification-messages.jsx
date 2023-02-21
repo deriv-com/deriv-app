@@ -136,7 +136,7 @@ const AppNotificationMessages = ({
                   'svg_needs_poa',
                   'svg_needs_poi',
                   'svg_poi_expired',
-              ].includes(message.key) || ['p2p_completed_order', 'p2p_ad_type_changed'].includes(message.type)
+              ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
         const is_only_for_p2p_notification =
@@ -147,9 +147,7 @@ const AppNotificationMessages = ({
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
     const filtered_excluded_notifications = notifications.filter(message =>
-        message.key.includes('svg')
-            ? message
-            : excluded_notifications.includes(message.key) || excluded_notifications.includes(message.type)
+        message.key.includes('svg') ? message : excluded_notifications.includes(message.key)
     );
     const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
 

@@ -62,7 +62,7 @@ export const getCashierValidations = cashier_arr => {
 };
 
 export const excluded_notifications = isMobile()
-    ? ['contract_sold', 'p2p_completed_order', 'p2p_ad_type_changed']
+    ? ['contract_sold']
     : [
           'you_are_offline',
           'password_changed',
@@ -75,6 +75,4 @@ export const excluded_notifications = isMobile()
           'svg_needs_poa',
           'svg_needs_poi',
           'svg_poi_expired',
-          'p2p_completed_order',
-          'p2p_ad_type_changed',
       ];

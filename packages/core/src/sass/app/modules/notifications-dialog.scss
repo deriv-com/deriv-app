@@ -203,11 +203,6 @@
             margin-bottom: 4px;
             position: relative;
 
-            &--closable {
-                display: grid;
-                grid-template-columns: 90% auto;
-            }
-
             &-icon {
                 position: absolute;
                 left: -26px;
@@ -215,12 +210,6 @@
                 height: 16px;
                 width: 16px;
                 pointer-events: none;
-            }
-
-            &-close-icon {
-                height: 16px;
-                margin-left: auto;
-                width: 16px;
             }
         }
         &__message {

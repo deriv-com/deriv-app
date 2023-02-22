@@ -10,6 +10,8 @@ type TFilterDropdown = {
     handleFilterChange: (e: string) => void;
     initial_filter: string;
     initial_selected_filter: string;
+    label: string;
+    hide_top_placeholder: boolean;
 };
 
 const FilterDropdown = ({
@@ -18,6 +20,8 @@ const FilterDropdown = ({
     filter_list,
     handleFilterChange,
     initial_selected_filter,
+    label,
+    hide_top_placeholder,
 }: TFilterDropdown) => {
     const [selected_filter, setSelectedFilter] = React.useState(initial_selected_filter ?? filter_list?.[0]?.value);
 
@@ -38,8 +42,8 @@ const FilterDropdown = ({
                 suffix_icon='IcFilter'
                 should_show_empty_option={false}
                 onChange={onChange}
-                label={''}
-                hide_top_placeholder={false}
+                label={label}
+                hide_top_placeholder={hide_top_placeholder}
             />
         );
     }

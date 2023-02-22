@@ -1110,7 +1110,10 @@ const AccountSwitcher = props => {
                                                 if (props.real_account_creation_unlock_date) {
                                                     closeAccountsDialog();
                                                     props.setShouldShowCooldownModal(true);
-                                                } else if (can_manage_account_multi || can_manage_account_virtual)
+                                                } else if (
+                                                    (can_manage_account_multi || can_manage_account_virtual) &&
+                                                    props.has_any_real_account
+                                                )
                                                     props.openRealAccountSignup('manage');
                                                 else props.openRealAccountSignup(account);
                                             }}

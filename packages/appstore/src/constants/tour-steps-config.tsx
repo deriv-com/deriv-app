@@ -1,16 +1,18 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
-import { Text, Button } from '@deriv/components';
+import { Text, SpanButton } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 
 export const tour_step_config: Step[] = [
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Switch accounts')}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Switch accounts')}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
         target: '.toggle-account-type__button',
@@ -19,10 +21,12 @@ export const tour_step_config: Step[] = [
     },
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Trading hub tour')}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Trading hub tour')}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: (
             <Text as='p'>
@@ -40,10 +44,12 @@ export const tour_step_config: Step[] = [
 export const eu_tour_step_config: Step[] = [
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Switch accounts')}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Switch accounts')}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
         target: '.toggle-account-type__button',
@@ -113,7 +119,7 @@ export const tour_styles_dark_mode: Styles = {
 };
 
 export const tour_step_locale: Locale = {
-    back: <Button has_effect text={localize('Repeat tour')} secondary medium />,
+    back: <SpanButton has_effect text={localize('Repeat tour')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

@@ -1,6 +1,6 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
-import { Text, Button, Icon } from '@deriv/components';
+import { Text, SpanButton, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 import { isMobile } from '@deriv/shared';
@@ -8,10 +8,12 @@ import { isMobile } from '@deriv/shared';
 export const tour_step_config: Step[] = [
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Switch accounts')}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Switch accounts')}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
         target: '.account-type-dropdown--parent',
@@ -20,10 +22,12 @@ export const tour_step_config: Step[] = [
     },
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Choice of regulation')}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Choice of regulation')}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: (
             <Text as='p'>
@@ -44,10 +48,12 @@ export const tour_step_config: Step[] = [
     },
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize(`Trader's hub tour`)}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize(`Trader's hub tour`)}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
 
@@ -60,10 +66,12 @@ export const tour_step_config: Step[] = [
 export const high_risk_tour_step_config: Step[] = [
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Switch accounts')}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Switch accounts')}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: <Text as='p'>{localize('You can switch between real and demo accounts.')}</Text>,
         target: '.account-type-dropdown--parent',
@@ -72,10 +80,12 @@ export const high_risk_tour_step_config: Step[] = [
     },
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize(`Trader's hub tour`)}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize(`Trader's hub tour`)}
+                </Text>
                 <div className='toggle-account-type__divider' />
-            </Text>
+            </React.Fragment>
         ),
         content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
 
@@ -132,7 +142,7 @@ export const tour_styles_dark_mode: Styles = {
 };
 
 export const tour_step_locale: Locale = {
-    back: <Button has_effect text={localize('Back')} secondary medium />,
+    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
@@ -140,7 +150,7 @@ export const tour_step_locale: Locale = {
 };
 
 export const high_risk_tour_step_locale: Locale = {
-    back: <Button has_effect text={localize('Back')} secondary medium />,
+    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

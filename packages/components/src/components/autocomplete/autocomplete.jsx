@@ -6,6 +6,7 @@ import Icon from '../icon';
 import Input from '../input';
 import DropdownList from '../dropdown-list';
 import { useBlockScroll } from '../../hooks/use-blockscroll';
+import { getEnglishCharacters } from '../../../utils/helper';
 
 const KEY_CODE = {
     ENTER: 13,
@@ -27,13 +28,7 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
     return list.filter(item =>
         is_string_array
             ? item.toLowerCase().includes(val)
-            : item.text
-                  .normalize('NFD')
-                  .split('')
-                  .filter(char => /^[a-z ]*$/i.test(char))
-                  .join('')
-                  .toLowerCase()
-                  .includes(val) || item.text.toLowerCase().includes(val)
+            : getEnglishCharacters(item.text).toLowerCase().includes(val) || item.text.toLowerCase().includes(val)
     );
 };
 const Autocomplete = React.memo(props => {

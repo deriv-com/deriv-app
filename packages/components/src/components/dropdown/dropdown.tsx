@@ -184,7 +184,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
                     role='list'
                     ref={list_ref}
                 >
-                    <ThemedScrollbars height={`${list_dimensions[1]}px` || '200px'}>
+                    <ThemedScrollbars height={list_dimensions[1] || '200px'}>
                         {Array.isArray(list) ? (
                             <Items
                                 onKeyPressed={onKeyPressed}
@@ -315,7 +315,7 @@ const Dropdown = ({
     }, [is_list_visible]);
 
     const handleSelect = (item: TListItem) => {
-        if (item.value !== value && onChange) onChange({ target: { name: name || '', value: item.value } });
+        if (item.value !== value) onChange?.({ target: { name: name || '', value: item.value } });
 
         handleVisibility();
     };
@@ -323,6 +323,7 @@ const Dropdown = ({
     const handleVisibility = () => {
         if (typeof onClick === 'function') {
             onClick();
+
             return;
         }
 

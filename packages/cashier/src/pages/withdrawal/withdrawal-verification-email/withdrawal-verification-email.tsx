@@ -4,10 +4,10 @@ import { useVerifyEmail } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { isCryptocurrency } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import RecentTransaction from 'Components/recent-transaction';
-import EmailVerificationEmptyState from 'Components/email-verification-empty-state';
-import EmptyState from 'Components/empty-state';
-import Error from 'Components/error';
+import RecentTransaction from '../../../components/recent-transaction';
+import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
+import EmptyState from '../../../components/empty-state';
+import Error from '../../../components/error';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 const WithdrawalVerificationEmail = observer(() => {

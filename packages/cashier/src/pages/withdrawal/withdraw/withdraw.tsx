@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore, observer } from '@deriv/stores';
-import { Real } from 'Components/cashier-container';
+import { Real } from '../../../components/cashier-container';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 const Withdraw = observer(() => {

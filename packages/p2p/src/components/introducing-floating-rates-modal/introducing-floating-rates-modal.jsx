@@ -14,10 +14,6 @@ const IntroducingFloatingRatesModal = () => {
         return show_introduce_fr_notf ?? true;
     });
 
-    const closeModal = () => {
-        setIsOpen(false);
-    };
-
     const onCheckboxChange = () => {
         const p2p_settings = general_store.getLocalStorageSettings();
         should_not_show_modal_again.current = !should_not_show_modal_again.current;
@@ -33,7 +29,7 @@ const IntroducingFloatingRatesModal = () => {
             height={isMobile() ? 'fit-content' : 'auto'}
             is_open={is_open}
             title={<Localize i18n_default_text='Introducing floating rates' />}
-            toggleModal={closeModal}
+            toggleModal={() => setIsOpen(false)}
             width={isMobile() ? '340px' : '540px'}
         >
             <Modal.Body className='introducing-floating-rates-modal'>
@@ -69,7 +65,7 @@ const IntroducingFloatingRatesModal = () => {
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button large primary onClick={closeModal}>
+                <Button large primary onClick={() => setIsOpen(false)}>
                     <Localize i18n_default_text='Ok' />
                 </Button>
             </Modal.Footer>

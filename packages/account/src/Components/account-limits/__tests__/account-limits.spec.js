@@ -179,7 +179,7 @@ describe('<AccountLimits/>', () => {
         expect(screen.queryByText('/account limits/i')).not.toBeInTheDocument();
     });
 
-    it('should render Trading limits - Item table and its contents properly', () => {
+    it('should render Trading limits table and its contents properly', () => {
         render(<AccountLimits {...props} />);
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
 
@@ -221,7 +221,7 @@ describe('<AccountLimits/>', () => {
         expect(formatMoney).toHaveBeenCalledWith(props.currency, account_balance, true);
     });
 
-    it('should render Trading limits - Item table and its contents properly', () => {
+    it('should render Trading limits table and its contents properly', () => {
         render(<AccountLimits {...props} />);
         expect(screen.queryByTestId('trading_daily_turnover_table')).toBeInTheDocument();
         expect(

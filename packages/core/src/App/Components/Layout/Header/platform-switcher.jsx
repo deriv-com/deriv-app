@@ -62,12 +62,8 @@ const PlatformSwitcher = ({
             >
                 <Icon
                     className='platform-switcher__icon'
-                    icon={
-                        is_dark_mode
-                            ? `${getPlatformInformation(app_routing_history).icon}Dark`
-                            : getPlatformInformation(app_routing_history).icon
-                    }
-                    alt={getPlatformInformation(app_routing_history).header}
+                    icon={getPlatformInformation(app_routing_history).icon}
+                    custom_color={is_dark_mode ? '#fff' : '#414652'}
                     size={120}
                 />
                 <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />

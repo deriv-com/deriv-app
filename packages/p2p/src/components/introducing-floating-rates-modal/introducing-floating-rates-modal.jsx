@@ -29,29 +29,31 @@ const IntroducingFloatingRatesModal = () => {
 
     return (
         <Modal
-            width={isMobile() ? '340px' : '540px'}
+            className='introducing-floating-rates-modal'
+            height={isMobile() ? 'fit-content' : 'auto'}
             is_open={is_open}
             title={<Localize i18n_default_text='Introducing floating rates' />}
             toggleModal={closeModal}
+            width={isMobile() ? '340px' : '540px'}
         >
-            <Modal.Body>
+            <Modal.Body className='introducing-floating-rates-modal'>
                 <img
                     className='introducing-floating-rates-modal__image'
                     src={getUrlBase('/public/images/common/dp2p_introduction.png')}
                 />
-                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
+                <Text as='p' line_height='l' size={isMobile() ? 'xxs' : 's'}>
                     <Localize i18n_default_text='Volatile exchange rates can be difficult to manage when you have open ads and orders.' />
                 </Text>
-                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
+                <Text as='p' line_height='l' size={isMobile() ? 'xxs' : 's'}>
                     <Localize i18n_default_text="From now on, use floating rates for all your ads; you won't have to worry about the market moving too far away from your price anymore." />
                 </Text>
-                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
+                <Text as='p' line_height='l' size={isMobile() ? 'xxs' : 's'}>
                     <Localize
                         i18n_default_text='Remember to set floating rates for your existing ads. Fixed-rate ads will be deactivated on {{end_date}}.'
                         values={{ end_date: floating_rate_store.fixed_rate_adverts_end_date }}
                     />
                 </Text>
-                <Text as='p' line_height='l' size={isMobile() ? 'xs' : 's'}>
+                <Text as='p' line_height='l' size={isMobile() ? 'xxs' : 's'}>
                     <Localize i18n_default_text='This is a new feature, so if you have any feedback, please let us know.' />
                 </Text>
                 <Checkbox

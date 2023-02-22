@@ -20,7 +20,7 @@ import {
     getRegex,
     isSequentialNumber,
     isRecurringNumberRegex,
-    preventEmptyClipboardPast,
+    preventEmptyClipboardPaste,
 } from '../../idv-document-submit/utils';
 import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
@@ -304,7 +304,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
-                                                                    onPaste={e => preventEmptyClipboardPast(e)}
+                                                                    onPaste={preventEmptyClipboardPaste}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
                                                                     onKeyUp={e => {

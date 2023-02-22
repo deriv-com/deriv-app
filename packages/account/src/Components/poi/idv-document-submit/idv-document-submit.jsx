@@ -11,7 +11,7 @@ import {
     isRecurringNumberRegex,
     getDocumentData,
     getRegex,
-    preventEmptyClipboardPast,
+    preventEmptyClipboardPaste,
 } from './utils';
 import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
@@ -247,7 +247,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onPaste={e => preventEmptyClipboardPast(e)}
+                                            onPaste={preventEmptyClipboardPaste}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {

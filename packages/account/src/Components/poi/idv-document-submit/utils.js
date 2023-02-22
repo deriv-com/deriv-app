@@ -51,7 +51,7 @@ export const getDocumentData = (country_code, document_type) => {
 
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);
 
-export const preventEmptyClipboardPast = e => {
+export const preventEmptyClipboardPaste = e => {
     const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
     if (clipboardData.length === 0) {
         e.preventDefault();

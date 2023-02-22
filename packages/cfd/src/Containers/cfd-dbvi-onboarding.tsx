@@ -100,6 +100,7 @@ const CFDDbviOnboarding = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_cfd_verification_modal_visible]);
+
     const getModalContent = () => {
         if (is_loading) {
             return <Loading is_fullscreen={false} />;

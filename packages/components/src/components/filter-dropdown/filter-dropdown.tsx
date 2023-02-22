@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { isMobile } from '@deriv/shared';
 import Dropdown from '../dropdown/index.js';
-import SelectNative from '../select-native';
+import SelectNative from '../select-native/select-native';
 
 type TFilterDropdown = {
     dropdown_className: string;
@@ -21,13 +21,13 @@ const FilterDropdown = ({
 }: TFilterDropdown) => {
     const [selected_filter, setSelectedFilter] = React.useState(initial_selected_filter ?? filter_list?.[0]?.value);
 
-    function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedFilter(event.target.value);
 
         if (typeof handleFilterChange === 'function') {
             handleFilterChange(event.target.value);
         }
-    }
+    };
     // Todo once they change this component
     if (isMobile()) {
         return (

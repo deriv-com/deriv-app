@@ -599,8 +599,8 @@ const AccountSwitcher = props => {
 
     const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(props.mt5_status_server?.demo);
     const is_suspended_mt5_real_server = getIsSuspendedMt5Server(props.mt5_status_server?.real);
-    const is_suspended_dxtrade_demo_server = !!props.dxtrade_status_server.demo;
-    const is_suspended_dxtrade_real_server = !!props.dxtrade_status_server.real;
+    const is_suspended_dxtrade_demo_server = !!props.dxtrade_status_server?.demo;
+    const is_suspended_dxtrade_real_server = !!props.dxtrade_status_server?.real;
 
     const default_demo_accounts = (
         <div className='acc-switcher__list-wrapper'>

@@ -42,8 +42,6 @@ const AccountSwitcher = props => {
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
-    const [exchanged_rate_demo, setExchangedRateDemo] = React.useState(1);
-    const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
     const [is_eu_regulator_visible, setEuRegulatorVisible] = React.useState(true);
     const [filtered_real_accounts, setFilteredRealAccounts] = React.useState([]);
@@ -62,9 +60,6 @@ const AccountSwitcher = props => {
 
     const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
     const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
-    const cfd_demo_currency =
-        props.mt5_login_list.find(account => isDemo(account))?.currency ||
-        props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
 
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
@@ -82,12 +77,6 @@ const AccountSwitcher = props => {
         };
         if (cfd_real_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
-        }
-        if (vrtc_currency !== account_total_balance_currency) {
-            getCurrentExchangeRate(vrtc_currency, setExchangedRateDemo);
-        }
-        if (cfd_demo_currency !== account_total_balance_currency) {
-            getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo);
         }
         if (props.is_low_risk || props.is_high_risk) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
@@ -454,13 +443,10 @@ const AccountSwitcher = props => {
 
     const getTotalDemoAssets = () => {
         const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
-        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, exchanged_rate_cfd_demo);
-        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, exchanged_rate_cfd_demo);
+        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, 1);
+        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, 1);
 
-        const total =
-            (vrtc_currency !== account_total_balance_currency ? vrtc_balance * exchanged_rate_demo : vrtc_balance) +
-            mt5_demo_total.balance +
-            dxtrade_demo_total.balance;
+        const total = vrtc_balance + mt5_demo_total.balance + dxtrade_demo_total.balance;
 
         return props.is_pre_appstore ? vrtc_balance : total;
     };
@@ -863,14 +849,18 @@ const AccountSwitcher = props => {
                             </Button>
                         </div>
                     ))}
-                    {can_manage_account_multi && (
+                    {(can_manage_account_multi ||
+                        (!props.has_active_real_account && filtered_remaining_real_accounts?.length === 0)) && (
                         <Button
                             className='acc-switcher__btn'
                             secondary
                             onClick={
                                 props.has_any_real_account && !hasSetCurrency()
                                     ? setAccountCurrency
-                                    : () => props.openRealAccountSignup('manage')
+                                    : () =>
+                                          props.has_active_real_account
+                                              ? props.openRealAccountSignup('manage')
+                                              : props.openRealAccountSignup()
                             }
                         >
                             {props.has_fiat && props.available_crypto_currencies?.length === 0
@@ -1253,9 +1243,9 @@ const AccountSwitcher = props => {
                 </Text>
                 <Text size='xs' color='prominent' className='acc-switcher__balance'>
                     <Money
-                        currency={account_total_balance_currency}
+                        currency={isRealAccountTab ? account_total_balance_currency : vrtc_currency}
                         amount={formatMoney(
-                            account_total_balance_currency,
+                            isRealAccountTab ? account_total_balance_currency : vrtc_currency,
                             isRealAccountTab ? getTotalRealAssets() : getTotalDemoAssets(),
                             true
                         )}

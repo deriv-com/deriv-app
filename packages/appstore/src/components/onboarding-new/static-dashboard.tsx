@@ -318,7 +318,7 @@ const StaticDashboard = ({
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon='DerivGo'
-                                            name='DerivGO'
+                                            name='Deriv GO'
                                             description='Trade on the go with our mobile app.'
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}

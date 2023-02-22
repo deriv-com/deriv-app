@@ -8,6 +8,7 @@ import {
     Button,
     FormSubmitErrorMessage,
     Input,
+    Icon,
     DesktopWrapper,
     Dropdown,
     Loading,
@@ -105,6 +106,7 @@ export const PersonalDetailsForm = ({
     is_mf,
     is_uk,
     is_svg,
+    is_verified,
     is_virtual,
     residence_list,
     states_list,
@@ -1143,7 +1145,7 @@ export const PersonalDetailsForm = ({
                                     )}
                                 </React.Fragment>
                                 {!!current_landing_company?.support_professional_client && (
-                                    <>
+                                    <React.Fragment>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
                                             <FormSubHeader title={localize('Professional Client')} />
@@ -1166,35 +1168,59 @@ export const PersonalDetailsForm = ({
                                                             <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
                                                         </Text>
                                                     </div>
-                                                    <Checkbox
-                                                        name='request_professional_status'
-                                                        value={values.request_professional_status}
-                                                        onChange={() => {
-                                                            setFieldValue(
-                                                                'request_professional_status',
-                                                                !values.request_professional_status
-                                                            );
-                                                            setFieldTouched('request_professional_status', true, true);
-                                                        }}
-                                                        label={localize(
-                                                            'I would like to be treated as a professional client.'
-                                                        )}
-                                                        id='request_professional_status'
-                                                        defaultChecked={!!values.request_professional_status}
-                                                        disabled={
-                                                            is_virtual ||
-                                                            !!form_initial_values.request_professional_status
-                                                        }
-                                                        greyDisabled
-                                                        className={classNames({
-                                                            'dc-checkbox-blue': is_appstore,
-                                                        })}
-                                                    />
+                                                    {is_verified ? (
+                                                        <Checkbox
+                                                            name='request_professional_status'
+                                                            value={values.request_professional_status}
+                                                            onChange={() => {
+                                                                setFieldValue(
+                                                                    'request_professional_status',
+                                                                    !values.request_professional_status
+                                                                );
+                                                                setFieldTouched(
+                                                                    'request_professional_status',
+                                                                    true,
+                                                                    true
+                                                                );
+                                                            }}
+                                                            label={localize(
+                                                                'I would like to be treated as a professional client.'
+                                                            )}
+                                                            id='request_professional_status'
+                                                            defaultChecked={!!values.request_professional_status}
+                                                            disabled={
+                                                                is_virtual ||
+                                                                !!form_initial_values.request_professional_status
+                                                            }
+                                                            greyDisabled
+                                                            className={classNames({
+                                                                'dc-checkbox-blue': is_appstore,
+                                                            })}
+                                                        />
+                                                    ) : (
+                                                        <div className='account-form__authentication-message'>
+                                                            <Icon height={20} width={30} icon='IcInfoBlue' />
+                                                            <Text as='p' size='xs'>
+                                                                <Localize
+                                                                    i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
+                                                                    components={[
+                                                                        <a
+                                                                            key={0}
+                                                                            className='link link--red'
+                                                                            rel='noopener noreferrer'
+                                                                            target='_blank'
+                                                                            href={'/account/proof-of-address'}
+                                                                        />,
+                                                                    ]}
+                                                                />
+                                                            </Text>
+                                                        </div>
+                                                    )}
                                                 </fieldset>
                                             </FormBodySection>
                                         </div>
                                         <div className='account-form__divider' />
-                                    </>
+                                    </React.Fragment>
                                 )}
                                 <FormSubHeader title={localize('Email preference')} />
                                 <FormBodySection
@@ -1321,4 +1347,5 @@ export default connect(({ client, notifications, ui }) => ({
     Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
+    is_verified: client.is_verified,
 }))(withRouter(PersonalDetailsForm));

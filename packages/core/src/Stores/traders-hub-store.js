@@ -110,10 +110,14 @@ export default class TradersHubStore extends BaseStore {
             totalBalance: computed,
         });
 
-        const debouncedGetAvailablePlatformsAndCFDAccounts = debounce(() => {
-            this.getAvailablePlatforms();
-            this.getAvailableCFDAccounts();
-        }, 1000);
+        const debouncedGetAvailablePlatformsAndCFDAccounts = debounce(
+            () => {
+                this.getAvailablePlatforms();
+                this.getAvailableCFDAccounts();
+            },
+            1000,
+            { leading: true }
+        );
 
         reaction(
             () => [

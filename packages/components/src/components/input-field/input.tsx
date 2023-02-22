@@ -116,7 +116,7 @@ const Input = ({
             ) : null}
             <input
                 autoComplete={is_autocomplete_disabled ? 'off' : undefined}
-                checked={!!checked} // TODO: Verify this
+                checked={!!checked}
                 className={classNames(className)}
                 data-for={`error_tooltip_${name}`}
                 data-hj-whitelist={is_hj_whitelisted}

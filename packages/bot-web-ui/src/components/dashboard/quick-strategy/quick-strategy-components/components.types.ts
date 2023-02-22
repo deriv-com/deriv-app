@@ -30,26 +30,28 @@ import { TCommonInputsProperties } from './data/common-input-properties';
 
 export type TQuickStrategyForm = {
     active_index: number;
-    createStrategy: TCreateStrategy;
     duration_unit_dropdown: TDurationUnitDropdown;
     types_strategies_dropdown: TTypeStrategiesDropdown;
     initial_values: TQuickStrategyFormValues;
-    getSizeDesc: TGetSizeDesc;
     is_onscreen_keyboard_active: boolean;
     is_stop_button_visible: boolean;
-    onChangeDropdownItem: TOnChangeDropdownItem;
-    onChangeInputValue: TOnChangeInputValue;
-    onHideDropdownList: TOnHideDropdownList;
-    onScrollStopDropdownList: TOnScrollStopDropdownList;
     symbol_dropdown: TSymbolDropdown;
     trade_type_dropdown: TTradeTypeDropdown;
     selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;
     selected_duration_unit: TDurationOptions;
-    setCurrentFocus: TSetCurrentFocus;
     selected_type_strategy: TTypeStrategy;
     description: string;
+    is_dialog_open: boolean;
+    createStrategy: TCreateStrategy;
+    getSizeDesc: TGetSizeDesc;
+    onChangeDropdownItem: TOnChangeDropdownItem;
+    onChangeInputValue: TOnChangeInputValue;
+    onHideDropdownList: TOnHideDropdownList;
+    onScrollStopDropdownList: TOnScrollStopDropdownList;
+    setCurrentFocus: TSetCurrentFocus;
     setActiveTab: (active_tab: number) => void;
+    toggleStopBotDialog: () => void;
 };
 
 export type TQuickStrategyFields = {
@@ -77,9 +79,11 @@ export type TQuickStrategyFooter = {
     is_onscreen_keyboard_active: boolean;
     is_submit_enabled: boolean;
     is_stop_button_visible: boolean;
+    is_dialog_open: boolean;
     setFieldValue: TSetFieldValue;
     submitForm: FormikProps<TFormValues>['submitForm'];
     setActiveTab: (active_tab: number) => void;
+    toggleStopBotDialog: () => void;
 };
 
 export type TDropdownLists = Record<TDropdownItems, TDropdowns>;

@@ -95,7 +95,7 @@ const Content = ({ is_routed, items, selected }: TContent) => {
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item!.label} className='item-id' setSideNotes={addToNotesQueue} />
+                <TabContent key={selected_item?.label} className='item-id' setSideNotes={addToNotesQueue} />
             )}
             {selected.has_side_note && (
                 // for components that have side note, even if no note is passed currently,

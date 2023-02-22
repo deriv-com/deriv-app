@@ -1616,6 +1616,11 @@ export default class ClientStore extends BaseStore {
             if (!this.is_virtual) {
                 this.setPrevRealAccountLoginid(this.loginid);
             }
+            const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+
+            if (!no_cr_account && this.is_low_risk) {
+                this.switchAccount(this.virtual_account_loginid);
+            }
         }
 
         this.selectCurrency('');

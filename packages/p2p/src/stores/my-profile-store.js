@@ -16,6 +16,7 @@ export default class MyProfileStore extends BaseStore {
     error_message = '';
     form_error = '';
     full_name = '';
+    has_more_items_to_load = false;
     is_block_user_table_loading = false;
     is_button_loading = false;
     is_cancel_add_payment_method_modal_open = false;
@@ -25,6 +26,7 @@ export default class MyProfileStore extends BaseStore {
     is_filter_modal_open = false;
     is_loading = false;
     is_submit_success = false;
+    is_trade_partners_list_empty = false;
     payment_method_value = undefined;
     payment_methods_list = [];
     payment_method_to_delete = {};
@@ -60,6 +62,7 @@ export default class MyProfileStore extends BaseStore {
             error_message: observable,
             form_error: observable,
             full_name: observable,
+            has_more_items_to_load: observable,
             is_block_user_table_loading: observable,
             is_button_loading: observable,
             is_cancel_add_payment_method_modal_open: observable,
@@ -69,6 +72,7 @@ export default class MyProfileStore extends BaseStore {
             is_filter_modal_open: observable,
             is_loading: observable,
             is_submit_success: observable,
+            is_trade_partners_list_empty: observable,
             payment_method_value: observable,
             payment_methods_list: observable,
             payment_method_to_delete: observable,
@@ -128,6 +132,7 @@ export default class MyProfileStore extends BaseStore {
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
+            setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
             setIsCancelAddPaymentMethodModalOpen: action.bound,
             setIsCancelEditPaymentMethodModalOpen: action.bound,
@@ -136,6 +141,7 @@ export default class MyProfileStore extends BaseStore {
             setIsFilterModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsSubmitSuccess: action.bound,
+            setIsTradePartnersListEmpty: action.bound,
             setPaymentMethodValue: action.bound,
             setPaymentMethodsList: action.bound,
             setPaymentMethodToDelete: action.bound,
@@ -270,14 +276,7 @@ export default class MyProfileStore extends BaseStore {
      * @returns {Array} Returns the entire trade partners list or filtered list of searched trade partners
      */
     get rendered_trade_partners_list() {
-        if (this.search_term) {
-            return this.selected_sort_value === 'all_users'
-                ? this.search_results
-                : this.search_results.filter(partner => partner.is_blocked === 1);
-        }
-        return this.selected_sort_value === 'all_users'
-            ? this.trade_partners_list
-            : this.trade_partners_list.filter(partner => partner.is_blocked === 1);
+        return this.search_term ? this.search_results : this.trade_partners_list;
     }
 
     get trade_partner_dropdown_list() {
@@ -444,7 +443,7 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    getTradePartnersList(is_initial_load = false) {
+    getTradePartnersList({ startIndex }, is_initial_load = false) {
         const { general_store } = this.root_store;
 
         if (is_initial_load) this.setIsBlockUserTableLoading(true);
@@ -453,13 +452,36 @@ export default class MyProfileStore extends BaseStore {
             p2p_advertiser_list: 1,
             trade_partners: 1,
             ...(this.search_term ? { advertiser_name: this.search_term } : {}),
+            ...(this.selected_sort_value === 'blocked_users' ? { is_blocked: 1 } : {}),
+            offset: startIndex,
+            limit: general_store.list_item_limit,
         }).then(response => {
             if (response) {
                 if (!response.error) {
                     const { list } = response.p2p_advertiser_list;
+                    const is_first_page = startIndex === 0;
 
-                    if (this.search_term) this.setSearchResults(list);
-                    else this.setTradePartnersList(list);
+                    this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+
+                    let filtered_list, partners_list;
+
+                    if (this.search_term) {
+                        filtered_list = list.filter(
+                            partner => !this.search_results.find(({ id }) => partner.id === id)
+                        );
+                        partners_list = is_first_page ? list : [...this.search_results, ...filtered_list];
+
+                        this.setSearchResults(partners_list);
+                    } else {
+                        filtered_list = list.filter(
+                            partner => !this.trade_partners_list.find(({ id }) => partner.id === id)
+                        );
+                        partners_list = is_first_page ? list : [...this.trade_partners_list, ...filtered_list];
+
+                        this.setTradePartnersList(partners_list);
+                    }
+
+                    this.setIsTradePartnersListEmpty(list.length === 0 && !this.search_term);
                 } else {
                     general_store.setBlockUnblockUserError(response.error.message);
                 }
@@ -470,7 +492,7 @@ export default class MyProfileStore extends BaseStore {
 
     handleChange(e) {
         this.setSelectedSortValue(e.target.value);
-        this.getTradePartnersList(true);
+        this.getTradePartnersList({ startIndex: 0 }, true);
 
         if (isMobile()) {
             this.setIsFilterModalOpen(false);
@@ -519,7 +541,8 @@ export default class MyProfileStore extends BaseStore {
      */
     getSearchedTradePartners() {
         if (this.search_term) {
-            this.getTradePartnersList(true);
+            this.setTradePartnersList([]);
+            this.getTradePartnersList({ startIndex: 0 }, true);
         }
     }
 
@@ -545,7 +568,8 @@ export default class MyProfileStore extends BaseStore {
         if (this.search_term) {
             this.setSearchTerm('');
             this.setSearchResults([]);
-            this.getTradePartnersList(true);
+            this.setTradePartnersList([]);
+            this.getTradePartnersList({ startIndex: 0 }, true);
         }
     }
 
@@ -574,7 +598,7 @@ export default class MyProfileStore extends BaseStore {
         clearTimeout(delay);
         general_store.setIsBlockUserModalOpen(false);
         general_store.blockUnblockUser(!this.selected_trade_partner.is_blocked, this.selected_trade_partner.id);
-        const delay = setTimeout(() => this.getTradePartnersList(), 250);
+        const delay = setTimeout(() => this.getTradePartnersList({ startIndex: 0 }, true), 250);
     }
 
     showAddPaymentMethodForm() {
@@ -716,6 +740,10 @@ export default class MyProfileStore extends BaseStore {
         this.full_name = full_name;
     }
 
+    setHasMoreItemsToLoad(has_more_items_to_load) {
+        this.has_more_items_to_load = has_more_items_to_load;
+    }
+
     setIsBlockUserTableLoading(is_block_user_table_loading) {
         this.is_block_user_table_loading = is_block_user_table_loading;
     }
@@ -746,6 +774,10 @@ export default class MyProfileStore extends BaseStore {
 
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
+    }
+
+    setIsTradePartnersListEmpty(is_trade_partners_list_empty) {
+        this.is_trade_partners_list_empty = is_trade_partners_list_empty;
     }
 
     setPaymentMethodValue(payment_method_value) {

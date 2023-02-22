@@ -37,7 +37,7 @@ const BlockUserList = observer(() => {
 
     return (
         <div className='block-user-list'>
-            {my_profile_store.trade_partners_list.length > 0 && (
+            {!my_profile_store.is_trade_partners_list_empty && (
                 <React.Fragment>
                     <Text className='block-user-list__text' size='xs'>
                         {localize(

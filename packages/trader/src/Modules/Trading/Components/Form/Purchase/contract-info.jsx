@@ -1,25 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text, Modal } from '@deriv/components';
+import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis, isMobile } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
-
-const PayoutHintModal = ({ is_open, onClose, type }) => (
-    <Modal small is_open={is_open} is_vertical_centered toggleModal={onClose} title={localize('Payout per point')}>
-        <Text size='xxs' as='p' className='payout-hint'>
-            <Localize
-                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
-                components={[<strong key={0} />]}
-                values={{
-                    trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
-                    title: type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-                }}
-            />
-        </Text>
-    </Modal>
-);
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
     <div className='strike--value-container'>
@@ -57,8 +42,6 @@ const ContractInfo = ({
     type,
 }) => {
     const localized_basis = getLocalizedBasis();
-
-    const [is_open_hint, setIsOpenHint] = React.useState(false);
 
     const stakeOrPayout = () => {
         switch (basis) {
@@ -153,23 +136,33 @@ const ContractInfo = ({
                                             is_vanilla={is_vanilla}
                                         />
                                     </div>
-                                    <Icon
-                                        icon='IcInfoOutline'
-                                        id={`dt_purchase_${type.toLowerCase()}_info`}
-                                        color='disabled'
-                                        onClick={() => setIsOpenHint(true)}
-                                    />
-                                    <PayoutHintModal
-                                        onClose={() => setIsOpenHint(false)}
-                                        type={type}
-                                        is_open={is_open_hint}
+                                    <Popover
+                                        alignment='left'
+                                        classNameBubble='trade-container__price-info-modal--vanilla'
+                                        classNameWrapper='trade-container__price-info-modal-wrapper'
+                                        icon='info'
+                                        id='dt_vanilla-stake__tooltip'
+                                        zIndex={9999}
+                                        message={
+                                            <Localize
+                                                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
+                                                components={[<strong key={0} />]}
+                                                values={{
+                                                    trade_type:
+                                                        type === 'VANILLALONGCALL'
+                                                            ? localize('above')
+                                                            : localize('below'),
+                                                    title:
+                                                        type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                                                }}
+                                            />
+                                        }
                                     />
                                 </div>
                             </div>
                         </MobileWrapper>
                     </React.Fragment>
                 ) : (
-                    !is_multiplier &&
                     obj_contract_basis && (
                         <React.Fragment>
                             <div
@@ -178,21 +171,6 @@ const ContractInfo = ({
                                 })}
                             >
                                 {basis_text}
-                                {is_vanilla && (
-                                    <MobileWrapper>
-                                        <Icon
-                                            icon='IcInfoOutline'
-                                            id={`dt_purchase_${type.toLowerCase()}_info`}
-                                            color='disabled'
-                                            onClick={() => setIsOpenHint(true)}
-                                        />
-                                        <PayoutHintModal
-                                            onClose={() => setIsOpenHint(false)}
-                                            type={type}
-                                            is_open={is_open_hint}
-                                        />
-                                    </MobileWrapper>
-                                )}
                             </div>
                             <DesktopWrapper>
                                 <ValueMovement

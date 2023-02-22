@@ -312,9 +312,18 @@
             }
         }
     }
-    &__price-info-currency {
-        @include mobile {
-            font-size: 0.9rem;
+    &__price-info {
+        &-currency {
+            @include mobile {
+                font-size: 0.9rem;
+            }
+        }
+        &-modal {
+            @include mobile {
+                &--vanilla {
+                    max-width: 33rem;
+                }
+            }
         }
     }
     &__barriers {

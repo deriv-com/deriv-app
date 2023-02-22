@@ -719,8 +719,6 @@ export default class AccountTransferStore {
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency || ''),
-                min: 0,
-                max: 0,
             });
             if (!is_ok) {
                 setConverterToError(message);

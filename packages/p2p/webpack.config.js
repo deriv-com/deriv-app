@@ -8,15 +8,19 @@ const path = require('path');
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
-module.exports = function () {
+module.exports = function (env) {
+    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
+
     return {
         entry: {
             index: path.resolve(__dirname, 'src/components', 'app.jsx'),
         },
         mode: is_release ? 'production' : 'development',
         output: {
-            path: path.resolve(__dirname, 'lib'),
-            filename: 'index.js',
+            chunkFilename: 'p2p/js/p2p.[name].[contenthash].js',
+            path: path.resolve(__dirname, 'dist'),
+            publicPath: base,
+            filename: 'p2p/js/[name].js',
             libraryExport: 'default',
             library: '@deriv/p2p',
             libraryTarget: 'umd',
@@ -116,8 +120,14 @@ module.exports = function () {
             ],
         },
         plugins: [
-            ...(is_publishing ? [new MiniCssExtractPlugin({ filename: 'main.css' })] : []),
-            // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
+            ...(is_publishing
+                ? [
+                      new MiniCssExtractPlugin({
+                          filename: 'p2p/css/[name].css',
+                          chunkFilename: 'p2p/css/[name].[contenthash].css',
+                      }),
+                  ]
+                : []),
         ],
         optimization: {
             minimize: is_release,

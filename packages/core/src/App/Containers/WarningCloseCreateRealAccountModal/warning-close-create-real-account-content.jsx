@@ -36,7 +36,7 @@ const WarningMessageModal = ({
                 </Text>
                 <div className='close-real-acc-modal__content-wrapper'>
                     <Text size='xs' as='p' align='left' className='close-real-acc-modal__content'>
-                        {localize('If you leave close this window, you will lose any information you have entered.')}
+                        {localize('If you close this window, you will lose any information you have entered.')}
                     </Text>
                 </div>
                 <FormSubmitButton

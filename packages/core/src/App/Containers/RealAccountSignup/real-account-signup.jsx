@@ -124,6 +124,7 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
+    is_low_risk,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -260,7 +261,11 @@ const RealAccountSignup = ({
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
+            if (
+                show_eu_related_content &&
+                !(is_pre_appstore && is_low_risk) &&
+                getActiveModalIndex() === modal_pages_indices.add_or_manage_account
+            ) {
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -656,4 +661,5 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    is_low_risk: client.is_low_risk,
 }))(withRouter(RealAccountSignup));

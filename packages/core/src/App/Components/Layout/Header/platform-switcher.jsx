@@ -64,8 +64,8 @@ const PlatformSwitcher = ({
                     className='platform-switcher__icon'
                     icon={
                         is_dark_mode
-                            ? getPlatformInformation(app_routing_history).icon
-                            : `${getPlatformInformation(app_routing_history).icon}Dark`
+                            ? `${getPlatformInformation(app_routing_history).icon}Dark`
+                            : getPlatformInformation(app_routing_history).icon
                     }
                     alt={getPlatformInformation(app_routing_history).header}
                     size={120}

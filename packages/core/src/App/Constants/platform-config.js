@@ -40,7 +40,7 @@ const platform_config = [
     },
     {
         icon: getPlatformSettings('bbot').icon,
-        title: () => getPlatformSettings('bbotDark').name,
+        title: () => getPlatformSettings('bbot').name,
         name: getPlatformSettings('bbot').name,
         description: () =>
             localize(

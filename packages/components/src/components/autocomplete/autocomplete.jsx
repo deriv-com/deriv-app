@@ -16,6 +16,9 @@ const KEY_CODE = {
     KEYUP: 38,
 };
 
+const getNormalizedValue = (item, value) =>
+    getEnglishCharacters(item).toLowerCase().includes(value) || item.toLowerCase().includes(value);
+
 const getFilteredItems = (val, list, should_filter_by_char) => {
     const is_string_array = list.length && typeof list[0] === 'string';
 
@@ -25,11 +28,7 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
         );
     }
 
-    return list.filter(item =>
-        is_string_array
-            ? getEnglishCharacters(item).toLowerCase().includes(val)
-            : getEnglishCharacters(item.text).toLowerCase().includes(val) || item.text.toLowerCase().includes(val)
-    );
+    return list.filter(item => (is_string_array ? getNormalizedValue(item) : getNormalizedValue(item.text)));
 };
 const Autocomplete = React.memo(props => {
     const {

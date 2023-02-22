@@ -15,17 +15,17 @@ import WithdrawStore from './withdraw-store';
 export default class CashierStore {
     constructor({ root_store, WS }) {
         this.account_prompt_dialog = new AccountPromptDialogStore(root_store);
-        this.account_transfer = new AccountTransferStore({ root_store, WS });
-        this.crypto_fiat_converter = new CryptoFiatConverterStore({ root_store, WS });
+        this.account_transfer = new AccountTransferStore(WS, root_store);
+        this.crypto_fiat_converter = new CryptoFiatConverterStore(WS, root_store);
         this.deposit = new DepositStore(WS, root_store);
         this.error_dialog = new ErrorDialogStore();
         this.error = new ErrorStore();
-        this.general_store = new GeneralStore({ root_store, WS });
+        this.general_store = new GeneralStore(WS, root_store);
         this.iframe = new IframeStore(root_store);
-        this.onramp = new OnRampStore({ root_store, WS });
+        this.onramp = new OnRampStore(WS, root_store);
         this.payment_agent = new PaymentAgentStore({ root_store, WS });
         this.payment_agent_transfer = new PaymentAgentTransferStore({ root_store, WS });
-        this.transaction_history = new TransactionHistoryStore({ root_store, WS });
-        this.withdraw = new WithdrawStore({ root_store, WS });
+        this.transaction_history = new TransactionHistoryStore(WS, root_store);
+        this.withdraw = new WithdrawStore(WS, root_store);
     }
 }

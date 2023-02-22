@@ -1,18 +1,8 @@
 import { action, makeObservable, observable } from 'mobx';
 import { getPropertyValue } from '@deriv/shared';
-import { TServerError } from 'Types';
+import { TServerError } from '../types';
 
 export default class ErrorStore {
-    message = '';
-    code = '';
-    fields = '';
-    is_show_full_page = false;
-    onClickButton: VoidFunction | null = null;
-    is_ask_uk_funds_protection = false;
-    is_self_exclusion_max_turnover_set = false;
-    is_ask_authentication = false;
-    is_ask_financial_risk_approval = false;
-
     constructor() {
         makeObservable(this, {
             message: observable,
@@ -33,6 +23,16 @@ export default class ErrorStore {
             setIsAskFinancialRiskApproval: action.bound,
         });
     }
+
+    message = '';
+    code = '';
+    fields = '';
+    is_show_full_page = false;
+    onClickButton: VoidFunction | null = null;
+    is_ask_uk_funds_protection = false;
+    is_self_exclusion_max_turnover_set = false;
+    is_ask_authentication = false;
+    is_ask_financial_risk_approval = false;
 
     setErrorMessage(error: TServerError, onClickButton?: VoidFunction | null, is_show_full_page?: boolean): void {
         // for errors that need to show a button, reset the form

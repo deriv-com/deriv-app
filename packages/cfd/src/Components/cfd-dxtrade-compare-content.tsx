@@ -80,7 +80,7 @@ type TFilterAvailableAccounts = (
     landing_companies: TLandingCompany,
     table: TAccountsDescription[],
     is_logged_in: boolean,
-    show_eu_related: boolean,
+    is_eu_client: boolean,
     platform: string,
     is_australian: boolean
 ) => Array<{ [key: string]: string | React.ReactNode | undefined }>;
@@ -103,7 +103,7 @@ type TCompareAccountsReusedProps = {
 };
 
 type TCompareAccountsDataParams = TCompareAccountsReusedProps & {
-    show_eu_related: boolean;
+    is_eu_client: boolean;
     residence: string;
 };
 
@@ -112,7 +112,7 @@ type TCFDCompareAccountHintProps = TCompareAccountsReusedProps & {
 };
 
 type TModalContentProps = TCompareAccountsReusedProps & {
-    show_eu_related: boolean;
+    is_eu_client: boolean;
     residence: string;
     is_eu: boolean;
 };
@@ -261,7 +261,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
     landing_companies,
     table,
     is_logged_in,
-    show_eu_related,
+    is_eu_client,
     platform
 ) => {
     let footnote_number = 0;
@@ -291,7 +291,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
 const compareAccountsData = ({
     landing_companies,
     is_logged_in,
-    show_eu_related,
+    is_eu_client,
     platform,
     residence,
     is_uk,
@@ -301,7 +301,7 @@ const compareAccountsData = ({
         landing_companies,
         getAccounts({ landing_companies, platform, is_logged_in, is_uk }),
         is_logged_in,
-        show_eu_related,
+        is_eu_client,
         platform,
         is_australian
     );
@@ -409,7 +409,7 @@ const CfdDxtradeCompareContent = ({
     landing_companies,
     is_logged_in,
     platform,
-    show_eu_related,
+    is_eu_client,
     residence,
     is_uk,
 }: TModalContentProps) => {
@@ -417,7 +417,7 @@ const CfdDxtradeCompareContent = ({
     const [template_columns, updateColumnsStyle] = React.useState('1fr 1.5fr');
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_uk }));
+        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, is_eu_client, residence, is_uk }));
         updateColumnsStyle('1fr 1.5fr');
     }, [
         landing_companies?.mt_financial_company,
@@ -426,11 +426,11 @@ const CfdDxtradeCompareContent = ({
         is_uk,
         landing_companies,
         platform,
-        show_eu_related,
+        is_eu_client,
         residence,
     ]);
 
-    const show_risk_message = !show_eu_related;
+    const show_risk_message = !is_eu_client;
 
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>

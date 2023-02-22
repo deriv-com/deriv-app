@@ -149,7 +149,7 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
-
+    const style = 'trading-hub-header__logo';
     return (
         <header className='trading-hub-header'>
             <div className='trading-hub-header__menu-left'>
@@ -160,11 +160,7 @@ const TradingHubHeader = ({
                 </MobileWrapper>
 
                 <div className='platform-switcher'>
-                    {is_dark_mode ? (
-                        <DerivBrandLogo className='trading-hub-header__logo' />
-                    ) : (
-                        <DerivBrandLogoDark className='trading-hub-header__logo' />
-                    )}
+                    {is_dark_mode ? <DerivBrandLogo className={style} /> : <DerivBrandLogoDark className={style} />}
                 </div>
 
                 <DesktopWrapper>

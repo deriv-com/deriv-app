@@ -137,6 +137,7 @@ export const loadExternalScript = (src, async = true, defer = true) =>
         script.src = src;
         script.async = async;
         script.defer = defer;
+        script.crossorigin = 'anonymous';
         script.onerror = reject;
 
         function handleLoad() {

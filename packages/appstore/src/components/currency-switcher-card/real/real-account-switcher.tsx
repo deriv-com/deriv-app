@@ -8,8 +8,7 @@ import './real-account-switcher.scss';
 const AccountNeedsVerification = observer(() => {
     const { client, traders_hub } = useStore();
     const { account_list, loginid } = client;
-    const { openModal, openFailedVerificationModal, multipliers_account_status, is_currency_switcher_disabled_for_mf } =
-        traders_hub;
+    const { openModal, openFailedVerificationModal, multipliers_account_status } = traders_hub;
     const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
     const icon = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).icon;
 
@@ -22,12 +21,7 @@ const AccountNeedsVerification = observer(() => {
                 </Text>
             }
             icon={icon}
-            onClick={() => {
-                if (is_currency_switcher_disabled_for_mf) {
-                    return null;
-                }
-                return openModal('currency_selection');
-            }}
+            onClick={() => openModal('currency_selection')}
         >
             <StatusBadge
                 account_status={multipliers_account_status}

@@ -1,5 +1,5 @@
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { formatDate, isEnded } from '@deriv/shared';
+import { formatDate, isEnded, isBot } from '@deriv/shared';
 import { log_types } from '@deriv/bot-skeleton';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
@@ -213,13 +213,17 @@ export default class TransactionsStore {
         const { ws, core } = this.root_store;
         const positions = core.portfolio.positions;
 
-        ws.authorized.subscribeProposalOpenContract(contract_id, response => {
-            this.is_called_proposal_open_contract = true;
-            if (!response.error) {
-                const { proposal_open_contract } = response;
-                this.updateResultsCompletedContract(proposal_open_contract);
-            }
-        });
+        // TODO: the idea is to remove the POC calls completely
+        // but adding this check to prevent making POC calls only for bot as of no
+        if (!isBot()) {
+            ws.authorized.subscribeProposalOpenContract(contract_id, response => {
+                this.is_called_proposal_open_contract = true;
+                if (!response.error) {
+                    const { proposal_open_contract } = response;
+                    this.updateResultsCompletedContract(proposal_open_contract);
+                }
+            });
+        }
 
         if (!this.is_called_proposal_open_contract) {
             if (!this.elements.length) {

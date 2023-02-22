@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce';
 import { action, makeObservable, observable, reaction, computed, runInAction } from 'mobx';
 import {
     available_traders_hub_cfd_accounts,
@@ -109,6 +110,11 @@ export default class TradersHubStore extends BaseStore {
             totalBalance: computed,
         });
 
+        const debouncedGetAvailablePlatformsAndCFDAccounts = debounce(() => {
+            this.getAvailablePlatforms();
+            this.getAvailableCFDAccounts();
+        }, 1000);
+
         reaction(
             () => [
                 this.selected_account_type,
@@ -120,8 +126,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.modules?.cfd?.current_list,
             ],
             () => {
-                this.getAvailablePlatforms();
-                this.getAvailableCFDAccounts();
+                debouncedGetAvailablePlatformsAndCFDAccounts();
             }
         );
 

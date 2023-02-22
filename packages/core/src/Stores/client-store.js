@@ -38,6 +38,7 @@ import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
+const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -409,13 +410,11 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const { trading_hub } = this.account_settings;
-                const lang_from_url = window.location.search.slice(-2);
+                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
-                if (lang_from_url) {
-                    this.setPreferredLanguage(lang_from_url);
-                    localStorage.setItem(LANGUAGE_KEY, lang_from_url);
-                }
+                this.setPreferredLanguage(lang_from_url);
+                LocalStore.set(LANGUAGE_KEY, lang_from_url);
             }
         );
         // TODO: Remove this after setting trading_hub enabled for all users
@@ -532,7 +531,9 @@ export default class ClientStore extends BaseStore {
             return [];
         };
 
-        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.landing_companies || !this.root_store.ui) {
+            return [];
+        }
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
@@ -540,7 +541,9 @@ export default class ClientStore extends BaseStore {
             ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
             this.current_landing_company
         ) {
-            return this.current_landing_company.legal_allowed_currencies;
+            return this.is_pre_appstore
+                ? getDefaultAllowedCurrencies()
+                : this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
@@ -2510,8 +2513,14 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         const { gaming_company, financial_company } = this.landing_companies;
+
+        // This is a conditional check for countries like Australia/Norway which fulfil one of these following conditions.
+        const restricted_countries =
+            financial_company?.shortcode === 'svg' ||
+            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
+
         const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
-        return high_risk_landing_company || this.account_status.risk_classification === 'high';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
     get is_low_risk() {

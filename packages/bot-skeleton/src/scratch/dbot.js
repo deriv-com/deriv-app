@@ -21,7 +21,7 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
+    async initWorkspace(public_path, store, api_helpers_store, is_mobile, api_call = true) {
         const recent_files = await getSavedWorkspaces();
 
         return new Promise((resolve, reject) => {
@@ -93,7 +93,9 @@ class DBot {
                 window.dispatchEvent(new Event('resize'));
                 window.addEventListener('dragover', DBot.handleDragOver);
                 window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
-                api_base.init();
+                if (api_call) {
+                    api_base.init();
+                }
                 // disable overflow
                 el_scratch_div.parentNode.style.overflow = 'hidden';
                 resolve();

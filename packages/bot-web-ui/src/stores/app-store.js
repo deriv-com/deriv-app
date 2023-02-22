@@ -8,6 +8,7 @@ export default class AppStore {
         makeObservable(this, {
             onMount: action.bound,
             onUnmount: action.bound,
+            reinitializeWorkspace: action.bound,
             onBeforeUnload: action.bound,
             registerReloadOnLanguageChange: action.bound,
             registerCurrencyReaction: action.bound,
@@ -24,16 +25,22 @@ export default class AppStore {
         this.api_helpers_store = null;
     }
 
+    reinitializeWorkspace(api_call) {
+        const { blockly_store } = this.root_store;
+        const api_helpers = api_call ? this.api_helpers_store : null;
+        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, api_helpers, api_call).then(() => {
+            blockly_store.setContainerSize();
+            blockly_store.setLoading(false);
+        });
+    }
+
     onMount() {
         const { blockly_store, core } = this.root_store;
         const { client, common } = core;
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.setLoading(true);
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store).then(() => {
-            blockly_store.setContainerSize();
-            blockly_store.setLoading(false);
-        });
+        this.reinitializeWorkspace(true);
         this.registerReloadOnLanguageChange(this);
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);

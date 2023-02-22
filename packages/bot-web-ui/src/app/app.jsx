@@ -25,7 +25,7 @@ const App = ({ passthrough }) => {
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { showDigitalOptionsMaltainvestError } = app;
-    const dbot_theme_mode = useDarkMode(root_store);
+    const dbot_theme_mode = useDarkMode(root_store, 'app');
     const { is_dark_mode } = dbot_theme_mode;
 
     React.useEffect(() => {

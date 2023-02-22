@@ -10,6 +10,8 @@ import SaveModal from 'Components/save-modal';
 import WorkspaceWrapper from './workspace-wrapper';
 import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 import TourSlider from '../tour-slider';
+import { setColors } from '../../../../../bot-skeleton/src/scratch/hooks/colours';
+import { DBot } from '@deriv/bot-skeleton';
 
 type TBotBuilder = {
     app: AppStore;
@@ -32,17 +34,30 @@ const BotBuilder = ({
     is_preview_on_popup,
     is_dark_mode_on,
     selected_strategy_id,
-    loadFileFromRecent,
     previewRecentStrategy,
 }: TBotBuilder) => {
     const [is_tour_running] = React.useState<boolean>(true);
-    const { onMount, onUnmount } = app;
-
+    const { onMount, onUnmount, reinitializeWorkspace } = app;
+    const el_ref = React.useRef<HTMLInputElement | null>(null);
     React.useEffect(() => {
         setTimeout(() => {
             previewRecentStrategy(selected_strategy_id);
         }, 0); // made this async to give it a split second delay
-    }, [is_dark_mode_on]);
+        if (active_tab === 1) {
+            setColors(is_dark_mode_on);
+            reinitializeWorkspace(false);
+            const elements = document.getElementsByClassName('injectionDiv');
+            if (elements.length > 0) {
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+            setTimeout(() => {
+                previewRecentStrategy(selected_strategy_id);
+            }, 100); // made this async to give it a split second delay
+            //stop the bot when we switch theme becuase we have to load only one file to the interpreter
+            DBot.terminateBot();
+            DBot.terminateConnection();
+        }
+    }, [is_dark_mode_on, active_tab]);
 
     React.useEffect(() => {
         onMount();
@@ -60,6 +75,7 @@ const BotBuilder = ({
                 {is_preview_on_popup ? null : (
                     <div
                         id='scratch_div'
+                        ref={el_ref}
                         style={{
                             width: 'calc(100vw - 3.2rem)',
                             height: 'var(--bot-content-height)',

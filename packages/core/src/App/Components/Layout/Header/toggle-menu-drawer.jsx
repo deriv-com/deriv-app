@@ -409,13 +409,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             <React.Fragment>
                                 {is_logged_in && is_trading_hub_category ? (
                                     <MobileDrawer.SubHeader
-                                        className={classNames({
+                                        className={classNames('header__menu--trading-hub', {
                                             'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                         })}
                                     >
                                         <Button
-                                            className={`header__menu--exit-trading-hub ${
-                                                is_dark_mode ? 'header__menu--exit-trading-hub--dark' : ''
+                                            className={`header__menu--explore-exit-trading-hub ${
+                                                is_dark_mode ? 'header__menu--explore-exit-trading-hub--dark' : ''
                                             }`}
                                             type='button'
                                             large
@@ -426,7 +426,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     {localize("Exit Trader's hub")}
                                                 </Text>
                                                 <Icon
-                                                    className='header__menu--exit-trading-hub-beta-icon'
+                                                    className='header__menu--trading-hub-beta-icon'
                                                     icon='IcAppstoreTradingHubBeta'
                                                     size={30}
                                                 />
@@ -464,8 +464,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     {is_logged_in && !is_trading_hub_category && (
                                         <MobileDrawer.Item className='header__menu--trading-hub'>
                                             <Button
-                                                className={`header__menu--explore-trading-hub ${
-                                                    is_dark_mode ? 'header__menu--explore-trading-hub--dark' : ''
+                                                className={`header__menu--explore-exit-trading-hub ${
+                                                    is_dark_mode ? 'header__menu--explore-exit-trading-hub--dark' : ''
                                                 }`}
                                                 type='button'
                                                 large
@@ -476,7 +476,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                         {localize("Exit Trader's hub")}
                                                     </Text>
                                                     <Icon
-                                                        className='header__menu--exit-trading-hub-beta-icon'
+                                                        className='header__menu--trading-hub-beta-icon'
                                                         icon='IcAppstoreTradingHubBeta'
                                                         size={30}
                                                     />
@@ -633,8 +633,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     />
                                     <MobileDrawer.Item className='header__menu--trading-hub'>
                                         <Button
-                                            className={`header__menu--explore-trading-hub ${
-                                                is_dark_mode ? 'header__menu--explore-trading-hub--dark' : ''
+                                            className={`header__menu--explore-exit-trading-hub ${
+                                                is_dark_mode ? 'header__menu--explore-exit-trading-hub--dark' : ''
                                             }`}
                                             type='button'
                                             large

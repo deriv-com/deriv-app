@@ -48,10 +48,14 @@ const IntroducingFloatingRatesModal = () => {
                     <Localize i18n_default_text="From now on, use floating rates for all your ads; you won't have to worry about the market moving too far away from your price anymore." />
                 </Text>
                 <Text as='p' line_height='l' size={isMobile() ? 'xxs' : 's'}>
-                    <Localize
-                        i18n_default_text='Remember to set floating rates for your existing ads. Fixed-rate ads will be deactivated on {{end_date}}.'
-                        values={{ end_date: floating_rate_store.fixed_rate_adverts_end_date }}
-                    />
+                    {!floating_rate_store.reached_target_date ? (
+                        <Localize
+                            i18n_default_text='Remember to set floating rates for your existing ads. Fixed-rate ads will be deactivated on {{end_date}}.'
+                            values={{ end_date: floating_rate_store.fixed_rate_adverts_end_date }}
+                        />
+                    ) : (
+                        <Localize i18n_default_text='Remember to set floating rates for your existing ads. Fixed-rate ads is already deactivated.' />
+                    )}
                 </Text>
                 <Text as='p' line_height='l' size={isMobile() ? 'xxs' : 's'}>
                     <Localize i18n_default_text='This is a new feature, so if you have any feedback, please let us know.' />

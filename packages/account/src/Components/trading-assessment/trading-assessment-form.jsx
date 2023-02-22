@@ -40,7 +40,7 @@ const TradingAssessmentForm = ({
                     : assessment_questions[prevState.current_question_index],
             };
         });
-        if (typeof setSubSectionIndex === 'function') {
+        if (!is_independent_section) {
             setSubSectionIndex(stored_items);
         }
         setFormData(form_value);
@@ -61,8 +61,8 @@ const TradingAssessmentForm = ({
                 setCurrentQuestionDetails(prev_state_question => {
                     const next_state_question_index = prev_state_question.current_question_index + 1;
                     localStorage.setItem('current_question_index', next_state_question_index);
-                    // Sub section form progress is optional
-                    if (typeof setSubSectionIndex === 'function') {
+                    // Sub section form progress is not required when the section is independent
+                    if (!is_independent_section) {
                         setSubSectionIndex(next_state_question_index);
                     }
                     return {
@@ -80,7 +80,7 @@ const TradingAssessmentForm = ({
             setCurrentQuestionDetails(prev_state_question => {
                 const prev_state_question_index = prev_state_question.current_question_index - 1;
                 localStorage.setItem('current_question_index', prev_state_question_index);
-                if (typeof setSubSectionIndex === 'function') {
+                if (!is_independent_section) {
                     setSubSectionIndex(prev_state_question_index);
                 }
                 return {

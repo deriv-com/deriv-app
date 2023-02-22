@@ -198,7 +198,7 @@ const Step1 = ({ show_label = false }) => (
             <ul>
                 <li>
                     <Localize
-                        i18n_default_text='First, set <0>Market</0> to Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index.'
+                        i18n_default_text='First, set <0>Market</0> to Derived > Continuous Indices > Volatility 100 (1s) Index.'
                         components={[<strong key={0} />]}
                     />
                 </li>
@@ -240,7 +240,7 @@ const Step1A = () => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='<0>Stake: USD</0> 10 (min: 0.35 - max: 50000)'
+                        i18n_default_text='<0>Stake: AUD</0> 10 (min: 0.35 - max: 50000)'
                         components={[<strong key={0} />]}
                     />
                 </li>

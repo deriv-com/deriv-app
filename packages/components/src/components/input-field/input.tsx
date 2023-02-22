@@ -1,23 +1,59 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { getCurrencyDisplayCode } from '@deriv/shared';
+import { TChangeEvent } from './input-field';
+
+type TInputProps = {
+    ariaLabel: string;
+    changeValue: (e: TChangeEvent, callback?: (evt: TChangeEvent) => void) => void;
+    checked?: number | string;
+    className?: string;
+    classNameDynamicSuffix?: string;
+    classNameInlinePrefix?: string;
+    current_focus: string;
+    data_testid?: string;
+    data_tip?: string;
+    data_value?: number | string;
+    display_value: number | string;
+    fractional_digits: number;
+    has_error?: boolean;
+    id?: string;
+    inline_prefix?: string;
+    inputmode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
+    is_autocomplete_disabled: boolean;
+    is_disabled?: string;
+    is_hj_whitelisted: boolean;
+    is_incrementable: boolean;
+    is_read_only: boolean;
+    max_length: number;
+    name: string;
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    onClick?: React.MouseEventHandler<HTMLInputElement>;
+    onClickInputWrapper?: React.MouseEventHandler<HTMLDivElement>;
+    onKeyPressed: React.KeyboardEventHandler<HTMLInputElement>;
+    placeholder?: string;
+    required?: boolean;
+    setCurrentFocus: (name: string | null) => void;
+    type: string;
+    value?: number | string;
+};
 
 const Input = ({
     ariaLabel,
     changeValue,
     checked,
     className,
-    classNameInlinePrefix,
     classNameDynamicSuffix,
+    classNameInlinePrefix,
     current_focus,
-    data_value,
+    data_testid,
     data_tip,
+    data_value,
     display_value,
     fractional_digits,
     id,
-    inputmode,
     inline_prefix,
+    inputmode,
     is_autocomplete_disabled,
     is_disabled,
     is_hj_whitelisted,
@@ -32,16 +68,15 @@ const Input = ({
     required,
     setCurrentFocus,
     type,
-    data_testid,
-}) => {
-    const ref = React.useRef();
+}: TInputProps) => {
+    const ref = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
         if (current_focus === name) {
             ref?.current?.focus();
         }
     }, [current_focus, name]);
 
-    const onBlurHandler = e => {
+    const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
         setCurrentFocus(null);
         if (onBlur) {
             onBlur(e);
@@ -49,7 +84,7 @@ const Input = ({
     };
     const onFocus = () => setCurrentFocus(name);
 
-    const onChange = e => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         /**
          * fix for Safari
          * we have to keep track of the current cursor position, update the value in store,
@@ -59,7 +94,7 @@ const Input = ({
         if (navigator.userAgent.indexOf('Safari') !== -1 && type !== 'checkbox') {
             const cursor = e.target.selectionStart;
             changeValue(e, evt => {
-                evt.target.selectionEnd = cursor; // reset the cursor position in callback
+                (evt as React.ChangeEvent<HTMLInputElement>).target.selectionEnd = cursor; // reset the cursor position in callback
             });
         } else {
             changeValue(e);
@@ -68,7 +103,7 @@ const Input = ({
 
     return (
         <div className={classNameDynamicSuffix}>
-            {!!inline_prefix && (
+            {inline_prefix ? (
                 <div className={classNameInlinePrefix}>
                     <span
                         className={classNames(classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '', {
@@ -78,17 +113,17 @@ const Input = ({
                         {inline_prefix === 'UST' ? getCurrencyDisplayCode(inline_prefix) : inline_prefix}
                     </span>
                 </div>
-            )}
+            ) : null}
             <input
                 autoComplete={is_autocomplete_disabled ? 'off' : undefined}
-                checked={checked}
+                checked={!!checked} // TODO: Verify this
                 className={classNames(className)}
                 data-for={`error_tooltip_${name}`}
                 data-hj-whitelist={is_hj_whitelisted}
                 data-tip={data_tip}
                 data-testid={data_testid}
                 data-value={data_value}
-                disabled={is_disabled}
+                disabled={!!is_disabled}
                 id={id}
                 maxLength={fractional_digits ? max_length + fractional_digits + 1 : max_length}
                 name={name}
@@ -109,39 +144,6 @@ const Input = ({
             />
         </div>
     );
-};
-
-Input.propTypes = {
-    ariaLabel: PropTypes.string,
-    changeValue: PropTypes.func,
-    checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    className: PropTypes.string,
-    classNameInlinePrefix: PropTypes.string,
-    classNameDynamicSuffix: PropTypes.string,
-    current_focus: PropTypes.string,
-    data_testid: PropTypes.string,
-    data_tip: PropTypes.string,
-    data_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    display_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    fractional_digits: PropTypes.number,
-    id: PropTypes.string,
-    inline_prefix: PropTypes.string,
-    is_autocomplete_disabled: PropTypes.bool,
-    is_disabled: PropTypes.string,
-    is_hj_whitelisted: PropTypes.bool,
-    is_incrementable: PropTypes.bool,
-    is_read_only: PropTypes.bool,
-    max_length: PropTypes.number,
-    name: PropTypes.string,
-    onBlur: PropTypes.func,
-    onClick: PropTypes.func,
-    onKeyPressed: PropTypes.func,
-    placeholder: PropTypes.string,
-    required: PropTypes.bool,
-    setCurrentFocus: PropTypes.func,
-    type: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    inputmode: PropTypes.string,
 };
 
 export default Input;

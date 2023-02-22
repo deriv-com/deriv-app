@@ -100,6 +100,7 @@ const mock = (): TRootStore => {
                         is_withdrawal_suspended: 0,
                     },
                 },
+                p2p_status: 'none',
                 prompt_client_to_authenticate: 0,
                 risk_classification: 'low',
                 status: [
@@ -149,6 +150,8 @@ const mock = (): TRootStore => {
             residence: '',
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
+            sent_verify_emails_data: {},
+            setSentVerifyEmailsData: jest.fn(),
             standpoint: {
                 iom: '',
             },

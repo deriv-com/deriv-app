@@ -175,13 +175,14 @@ type TClientStore = {
     is_crypto: boolean;
 };
 
-type TSentVerifyEmailsData = Record<
-    TEmailVerificationType,
-    | {
-          last_time_sent_seconds: number;
-          sent_count: number;
-      }
-    | undefined
+type TSentVerifyEmailsData = Partial<
+    Record<
+        TEmailVerificationType,
+        {
+            last_time_sent_seconds: number;
+            sent_count: number;
+        }
+    >
 >;
 
 type TCommonStoreError = {

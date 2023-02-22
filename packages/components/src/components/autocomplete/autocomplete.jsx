@@ -27,7 +27,7 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
 
     return list.filter(item =>
         is_string_array
-            ? item.toLowerCase().includes(val)
+            ? getEnglishCharacters(item).toLowerCase().includes(val)
             : getEnglishCharacters(item.text).toLowerCase().includes(val) || item.text.toLowerCase().includes(val)
     );
 };

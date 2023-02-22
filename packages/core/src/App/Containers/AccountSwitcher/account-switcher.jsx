@@ -580,6 +580,8 @@ const AccountSwitcher = props => {
             account => !account.is_virtual && account.loginid.startsWith(type)
         ).length > 1;
 
+    const has_cr_account = props.account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
+
     const default_demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
             {vrtc_loginid && (
@@ -1082,39 +1084,40 @@ const AccountSwitcher = props => {
                                         );
                                     })}
                             </div>
-                            {getRemainingRealAccounts()
-                                .filter(account => account === 'svg')
-                                .map((account, index) => (
-                                    <div key={index} className='acc-switcher__new-account'>
-                                        <Icon icon='IcDeriv' size={24} />
-                                        <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {getAccountTitle(
-                                                account,
-                                                { account_residence: props.client_residence },
-                                                props.country_standpoint
-                                            )}
-                                        </Text>
-                                        <Button
-                                            id='dt_core_account-switcher_add-new-account'
-                                            onClick={() => {
-                                                if (props.real_account_creation_unlock_date) {
-                                                    closeAccountsDialog();
-                                                    props.setShouldShowCooldownModal(true);
-                                                } else if (
-                                                    (can_manage_account_multi || can_manage_account_virtual) &&
-                                                    props.has_any_real_account
-                                                )
-                                                    props.openRealAccountSignup('manage');
-                                                else props.openRealAccountSignup(account);
-                                            }}
-                                            className='acc-switcher__new-account-btn'
-                                            secondary
-                                            small
-                                        >
-                                            {localize('Add')}
-                                        </Button>
-                                    </div>
-                                ))}
+                            {!has_cr_account &&
+                                getRemainingRealAccounts()
+                                    .filter(account => account === 'svg')
+                                    .map((account, index) => (
+                                        <div key={index} className='acc-switcher__new-account'>
+                                            <Icon icon='IcDeriv' size={24} />
+                                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                                {getAccountTitle(
+                                                    account,
+                                                    { account_residence: props.client_residence },
+                                                    props.country_standpoint
+                                                )}
+                                            </Text>
+                                            <Button
+                                                id='dt_core_account-switcher_add-new-account'
+                                                onClick={() => {
+                                                    if (props.real_account_creation_unlock_date) {
+                                                        closeAccountsDialog();
+                                                        props.setShouldShowCooldownModal(true);
+                                                    } else if (
+                                                        (can_manage_account_multi || can_manage_account_virtual) &&
+                                                        has_cr_account
+                                                    )
+                                                        props.openRealAccountSignup('manage');
+                                                    else props.openRealAccountSignup(account);
+                                                }}
+                                                className='acc-switcher__new-account-btn'
+                                                secondary
+                                                small
+                                            >
+                                                {localize('Add')}
+                                            </Button>
+                                        </div>
+                                    ))}
                         </AccountWrapper>
                         <div className='acc-switcher__separator' />
                     </React.Fragment>

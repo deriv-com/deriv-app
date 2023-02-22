@@ -77,6 +77,7 @@ const BinarySocketBase = (() => {
 
             if (client_store.is_logged_in) {
                 const authorize_token = client_store.getToken();
+                console.log(authorize_token, 'authorize_token')
                 deriv_api.authorize(authorize_token);
             }
 

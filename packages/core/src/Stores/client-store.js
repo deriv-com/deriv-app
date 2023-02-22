@@ -1768,6 +1768,7 @@ export default class ClientStore extends BaseStore {
      * @returns {string}
      */
     getToken(loginid = this.loginid) {
+        console.log('loginid', loginid);
         return this.getAccount(loginid).token;
     }
 

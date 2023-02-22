@@ -13,6 +13,7 @@ export const generateDerivApiInstance = () => {
 
 export const getLoginId = () => {
     const login_id = localStorage.getItem('active_loginid');
+    console.log(login_id);
     if (login_id && login_id !== 'null') return login_id;
     return null;
 };
@@ -21,6 +22,9 @@ export const getToken = () => {
     const active_loginid = getLoginId();
     const client_accounts = JSON.parse(localStorage.getItem('client.accounts')) || undefined;
     const active_account = (client_accounts && client_accounts[active_loginid]) || {};
+    console.log(active_loginid, 'active_loginid');
+    console.log(client_accounts, 'client_accounts');
+    console.log(active_account, 'active_account');
     return {
         token: active_account?.token || undefined,
         account_id: active_loginid || undefined,

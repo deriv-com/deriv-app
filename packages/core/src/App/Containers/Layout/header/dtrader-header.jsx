@@ -54,6 +54,8 @@ const DTraderHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     is_switching,
+    toggleReadyToDepositModal,
+    has_any_real_account,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -112,7 +114,12 @@ const DTraderHeader = ({
                         <TradersHubHomeButton />
                     </DesktopWrapper>
                     {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                    <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <MemoizedMenuLinks
+                        is_logged_in={is_logged_in}
+                        items={menu_items}
+                        toggleReadyToDepositModal={toggleReadyToDepositModal}
+                        has_any_real_account={has_any_real_account}
+                    />
                 </div>
 
                 <div
@@ -203,6 +210,8 @@ DTraderHeader.propTypes = {
     menu_items: PropTypes.array,
     is_pre_appstore: PropTypes.bool,
     is_switching: PropTypes.bool,
+    toggleReadyToDepositModal: PropTypes.func,
+    has_any_real_account: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
@@ -240,4 +249,6 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     toggleNotifications: notifications.toggleNotificationsModal,
     is_pre_appstore: client.is_pre_appstore,
     is_switching: client.is_switching,
+    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
+    has_any_real_account: client.has_any_real_account,
 }))(withRouter(DTraderHeader));

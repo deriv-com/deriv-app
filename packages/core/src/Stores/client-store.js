@@ -531,7 +531,9 @@ export default class ClientStore extends BaseStore {
             return [];
         };
 
-        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.landing_companies || !this.root_store.ui) {
+            return [];
+        }
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
@@ -539,7 +541,9 @@ export default class ClientStore extends BaseStore {
             ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
             this.current_landing_company
         ) {
-            return this.current_landing_company.legal_allowed_currencies;
+            return this.is_pre_appstore
+                ? getDefaultAllowedCurrencies()
+                : this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
@@ -2504,8 +2508,14 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         const { gaming_company, financial_company } = this.landing_companies;
+
+        // This is a conditional check for countries like Australia/Norway which fulfil one of these following conditions.
+        const restricted_countries =
+            financial_company?.shortcode === 'svg' ||
+            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
+
         const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
-        return high_risk_landing_company || this.account_status.risk_classification === 'high';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
     get is_low_risk() {

@@ -109,9 +109,7 @@ export default class FloatingRateStore extends BaseStore {
     }
 
     setIsMarketRateChanged(value) {
-        if (this.root_store.buy_sell_store.show_rate_change_popup) {
-            this.is_market_rate_changed = value;
-        }
+        this.is_market_rate_changed = value;
     }
 
     setOverrideExchangeRate(override_exchange_rate) {

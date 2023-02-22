@@ -9,6 +9,7 @@ import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ad_type } from 'Constants/floating-rate';
+import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import './app.scss';
 import IntroducingFloatingRatesModal from 'Components/introducing-floating-rates-modal/';
 
@@ -88,7 +89,7 @@ const App = props => {
             order_store.setVerificationCode(verification_code);
         }
         if (verification_action && verification_code) {
-            order_store.setIsLoadingModalOpen(true);
+            general_store.showModal({ key: 'LoadingModal', props: {} });
             order_store.verifyEmailVerificationCode(verification_action, verification_code);
         }
 
@@ -99,7 +100,10 @@ const App = props => {
         <main className={classNames('p2p-cashier', className)}>
             {floating_rate_store.rate_type === ad_type.FLOAT && <IntroducingFloatingRatesModal />}
             <Notifications />
-            <AppContent />
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+            </ModalManagerContextProvider>
         </main>
     );
 };

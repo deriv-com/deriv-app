@@ -81,7 +81,7 @@ export const formatTime = (epoch: number | string, time_format = 'HH:mm:ss [GMT]
  * @param  {String} date   the date to calculate number of days from today
  * @return {Number} an integer of the number of days
  */
-export const daysFromTodayTo = (date?: string) => {
+export const daysFromTodayTo = (date?: string | moment.Moment) => {
     const diff = toMoment(date).startOf('day').diff(toMoment().startOf('day'), 'days');
     return !date || diff < 0 ? '' : diff;
 };

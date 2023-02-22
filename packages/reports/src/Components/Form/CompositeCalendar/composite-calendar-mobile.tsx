@@ -53,7 +53,10 @@ type TCompositeCalendarMobileProps = {
     input_date_range: TInputDateRange;
     current_focus: string;
     duration_list: Array<TInputDateRange>;
-    onChange: (value: { from: number | null; to: number; is_batch: boolean }, extra_data: { date_range: any }) => void;
+    onChange: (
+        value: { from: moment.Moment | null; to: moment.Moment; is_batch: boolean },
+        extra_data: { date_range: any }
+    ) => void;
     setCurrentFocus: (focus: string) => void;
     from: number;
     to: number;
@@ -82,11 +85,8 @@ const CompositeCalendarMobile = React.memo(
             const new_from = _selected_date_range.duration;
             onChange(
                 {
-                    from:
-                        is_today || new_from
-                            ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's').unix()
-                            : null,
-                    to: toMoment().endOf('day').unix(),
+                    from: is_today || new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's') : null,
+                    to: toMoment().endOf('day'),
                     is_batch: true,
                 },
                 {
@@ -99,7 +99,7 @@ const CompositeCalendarMobile = React.memo(
             const today = toMoment().format('DD MMM YYYY');
 
             const new_from = from_date || to_date || today;
-            const new_to = to || today;
+            const new_to = to_date || today;
 
             const new_date_range = Object.assign(selected_date_range, {
                 label: `${new_from} - ${new_to}`,
@@ -107,8 +107,8 @@ const CompositeCalendarMobile = React.memo(
 
             onChange(
                 {
-                    from: toMoment(new_from).startOf('day').add(1, 's').unix(),
-                    to: toMoment(new_to).endOf('day').unix(),
+                    from: toMoment(new_from).startOf('day').add(1, 's'),
+                    to: toMoment(new_to).endOf('day'),
                     is_batch: true,
                 },
                 {

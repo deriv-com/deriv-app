@@ -1,11 +1,46 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { getKebabCase } from '@deriv/shared';
 import Counter from '../counter';
 import Icon from '../icon/icon';
 
-const HeaderIcon = ({ icon, is_active }) => (
+export type THeaderIcon = {
+    icon: string;
+    is_active: boolean;
+};
+
+export type THeader = {
+    text: string;
+    path?: string;
+};
+
+export type TItem = {
+    component?: typeof React.Component;
+    count?: number;
+    default?: boolean;
+    getTitle?: () => string;
+    has_side_note?: boolean;
+    icon: string;
+    is_hidden?: boolean;
+    is_disabled?: boolean;
+    label?: string;
+    path?: string;
+    subitems?: number[];
+    title?: string;
+    value?: typeof React.Component;
+};
+type TVerticalTabHeader = {
+    className?: string;
+    is_floating?: boolean;
+    is_routed?: boolean;
+    item: TItem;
+    onChange: (item: TItem) => void;
+    selected: TItem;
+    selectedKey: string;
+};
+
+const HeaderIcon = ({ icon, is_active }: THeaderIcon) => (
     <Icon
         icon={icon}
         className={classNames('dc-vertical-tab__header__icon', {
@@ -14,7 +49,7 @@ const HeaderIcon = ({ icon, is_active }) => (
     />
 );
 
-const Header = ({ text, path }) => (
+const Header = ({ text, path }: THeader) => (
     <div className='dc-vertical-tab__header__link' id={path}>
         {text}
     </div>
@@ -29,9 +64,9 @@ const VerticalTabHeader = ({
     onChange,
     selected,
     selectedKey = 'label',
-}) => {
-    const label = item.label || item.title || item.getTitle?.();
-    const is_active = selected && selected[selectedKey] === item[selectedKey];
+}: React.PropsWithChildren<TVerticalTabHeader>) => {
+    const label = item.label || item.title || item.getTitle?.() || '';
+    const is_active = selected && selected[selectedKey as keyof TItem] === item[selectedKey as keyof TItem];
     const handleClick = () => onChange(item);
     const id = `dc_${getKebabCase(label)}_link`;
     const is_disabled = !!item.is_disabled;
@@ -70,7 +105,7 @@ const VerticalTabHeader = ({
             <HeaderIcon icon={item.icon} is_active={is_active} />
             <Header text={label} />
             {children}
-            {item.component}
+            <>{item.component}</>
         </div>
     );
 };

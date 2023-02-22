@@ -3,11 +3,43 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon/icon';
+import { TItem } from './vertical-tab-header';
 
-const SideNotes = ({ class_name, side_notes }) => {
+type TSideNotes = {
+    class_name?: string;
+    side_notes: React.ReactNode[] | null;
+};
+
+type TContentWrapper = {
+    has_side_note?: boolean;
+};
+
+type TContent = {
+    is_routed?: boolean;
+    items: TItem[];
+    selected: TItem;
+};
+
+export type TAction_bar = {
+    component?: typeof React.Component;
+    onClick?: () => void;
+    icon: string;
+    title?: string;
+};
+
+type TVerticalTabContentContainer = TContent & {
+    action_bar?: TAction_bar[];
+    action_bar_classname?: string;
+    className?: string;
+    id?: string;
+    is_floating?: boolean;
+    tab_container_classname?: string;
+};
+
+const SideNotes = ({ class_name, side_notes }: TSideNotes) => {
     return (
         <div
-            className={classNames('dc-vertical-tab__content-side-note', { [class_name]: !!side_notes })}
+            className={classNames('dc-vertical-tab__content-side-note', { [class_name as string]: !!side_notes })}
             data-testid='vertical_tab_side_note'
         >
             {side_notes?.map((note, i) => (
@@ -19,22 +51,22 @@ const SideNotes = ({ class_name, side_notes }) => {
     );
 };
 
-const ContentWrapper = ({ children, has_side_note }) => {
+const ContentWrapper = ({ children, has_side_note }: React.PropsWithChildren<TContentWrapper>) => {
     if (has_side_note) {
         return <div className='dc-vertical-tab__content-inner'>{children}</div>;
     }
-    return children;
+    return children as JSX.Element;
 };
 
-const Content = ({ is_routed, items, selected }) => {
+const Content = ({ is_routed, items, selected }: TContent) => {
     const selected_item = items.find(item => item.label === selected.label);
     const previous_selected_item = usePrevious(selected_item);
-    const TabContent = selected_item.value;
-    const [side_notes, setSideNotes] = React.useState(null);
+    const TabContent = selected_item?.value as React.ElementType;
+    const [side_notes, setSideNotes] = React.useState<React.ReactNode[] | null>(null);
 
-    const notes_array = [];
+    const notes_array: React.ReactNode[][] = [];
 
-    const addToNotesQueue = React.useCallback(notes => {
+    const addToNotesQueue = React.useCallback((notes: React.ReactNode[]) => {
         notes_array.unshift(notes);
         setSideNotes(notes);
     }, []);
@@ -52,7 +84,7 @@ const Content = ({ is_routed, items, selected }) => {
             {is_routed ? (
                 <Switch>
                     {items.map(({ value, component, path, icon }, idx) => {
-                        const Component = value || component;
+                        const Component = (value as React.ElementType) || (component as React.ElementType);
                         return (
                             <Route
                                 key={idx}
@@ -63,12 +95,12 @@ const Content = ({ is_routed, items, selected }) => {
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item.label} className='item-id' setSideNotes={addToNotesQueue} />
+                <TabContent key={selected_item?.label} className='item-id' setSideNotes={addToNotesQueue} />
             )}
             {selected.has_side_note && (
                 // for components that have side note, even if no note is passed currently,
                 // we want to keep the column space for side note
-                <SideNotes selected_item={selected_item} side_notes={side_notes} />
+                <SideNotes side_notes={side_notes} />
             )}
         </React.Fragment>
     );
@@ -84,7 +116,7 @@ const VerticalTabContentContainer = ({
     items,
     selected,
     tab_container_classname,
-}) => {
+}: TVerticalTabContentContainer) => {
     return (
         <div
             className={classNames('dc-vertical-tab__content', {
@@ -95,12 +127,12 @@ const VerticalTabContentContainer = ({
             {!is_floating && action_bar && (
                 <div
                     className={classNames('dc-vertical-tab__action-bar', {
-                        [action_bar_classname]: !!action_bar_classname,
+                        [action_bar_classname as string]: !!action_bar_classname,
                     })}
                 >
                     {action_bar.map(({ component, icon, onClick }, idx) => {
                         const Component = component;
-                        return component ? (
+                        return Component ? (
                             <Component key={idx} />
                         ) : (
                             <div

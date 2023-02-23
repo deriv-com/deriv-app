@@ -16,8 +16,7 @@ const OrderDetailsTimer = observer(() => {
     };
 
     const { order_store } = useStores();
-    const { order_expiry_milliseconds, should_show_order_timer, verification_token_expiry } =
-        order_store.order_information;
+    const { order_expiry_milliseconds, should_show_order_timer } = order_store.order_information;
     const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);
 
@@ -33,7 +32,7 @@ const OrderDetailsTimer = observer(() => {
         interval.current = setInterval(countDownTimer, 1000);
         return () => clearInterval(interval.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [verification_token_expiry]);
+    }, [order_expiry_milliseconds]);
 
     if (should_show_order_timer) {
         return (

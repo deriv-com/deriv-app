@@ -18,7 +18,7 @@ const RealAccountCard = () => {
 
     const { accounts, loginid } = client;
     const { current_list } = modules.cfd;
-    const { openModal, is_eu_user, is_currency_switcher_disabled_for_mf } = traders_hub;
+    const { openModal, is_eu_user } = traders_hub;
     const { balance, currency } = accounts[loginid] || default_balance;
 
     const has_mf_mt5_account = Object.keys(current_list)
@@ -35,9 +35,7 @@ const RealAccountCard = () => {
             }
             icon={currency}
             onClick={() => {
-                if (is_currency_switcher_disabled_for_mf) {
-                    return null;
-                } else if (!is_eu_user && !has_mf_mt5_account) {
+                if (!is_eu_user && !has_mf_mt5_account) {
                     openModal('currency_selection');
                 }
                 return openModal('currency_selection');

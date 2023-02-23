@@ -64,7 +64,7 @@ const RealAccountSwitcher = () => {
     //dont show loader if user has no respective regional account
     if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
         return (
-            <div className='real-account-switcher__container loader'>
+            <div className='real-account-switcher__container content-loader'>
                 <CurrencySwitcherLoader />
             </div>
         );

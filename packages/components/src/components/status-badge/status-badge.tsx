@@ -8,11 +8,18 @@ import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import './status-badge.scss';
 
+type TSelectedMt5 = {
+    category: string;
+    type?: string;
+    jurisdiction: string;
+    platform?: string;
+};
+
 type TStatusBadge = {
     account_status: any;
     class_name?: string;
-    openFailedVerificationModal: (from_account: string) => void;
-    selected_account_type: string;
+    openFailedVerificationModal: (from_account: string | TSelectedMt5) => void;
+    selected_account_type: string | TSelectedMt5;
 };
 
 const StatusBadge = ({

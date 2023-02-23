@@ -24,7 +24,6 @@ import DTraderOnboarding from 'Assets/svgs/trading-platform/branding/onboarding/
 import BinaryBotOnboarding from 'Assets/svgs/trading-platform/branding/onboarding/ic-branding-binarybot-onboarding.svg';
 import DBotOnboarding from 'Assets/svgs/trading-platform/branding/onboarding/ic-branding-dbot-onboarding.svg';
 import DerivGoOnboarding from 'Assets/svgs/trading-platform/branding/onboarding/ic-branding-derivgo-onboarding.svg';
-import SmartTraderOnboarding from 'Assets/svgs/trading-platform/branding/onboarding/ic-branding-smarttrader-onboarding.svg';
 import { IconProps } from '../icon-types';
 
 export const PlatformIcons = {

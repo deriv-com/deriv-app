@@ -346,7 +346,7 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
             }
 
-            if (window.location.pathname === routes.cashier_deposit) {
+            if (window.location.pathname === routes.cashier_deposit && this.root_store.client.is_switching) {
                 this.addNotificationMessage(this.client_notifications.switched_to_real);
             }
 
@@ -1406,7 +1406,15 @@ export default class NotificationStore extends BaseStore {
             switched_to_real: {
                 key: 'switched_to_real',
                 header: localize('Switched to real account'),
-                message: <Localize i18n_default_text='To access the cashier, you are now in your non-EU US Dollar ' />,
+                message: (
+                    <Localize
+                        i18n_default_text='To access the cashier, you are now in your {{currency}} ({{loginid}}) account.'
+                        values={{
+                            loginid: this.root_store.client.loginid,
+                            currency: this.root_store.client.currency,
+                        }}
+                    />
+                ),
                 type: 'info',
             },
         };

@@ -156,7 +156,7 @@ const addressDetailsConfig = (
             disabled_items,
             is_mf,
         },
-        passthrough: ['residence_list', 'is_fully_authenticated'],
+        passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardAddress',
     };
 };

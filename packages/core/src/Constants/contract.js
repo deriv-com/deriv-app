@@ -217,6 +217,16 @@ export const getSupportedContracts = is_high_low => ({
         name: localize('No Touch'),
         position: 'bottom',
     },
+    TURBOSLONG: {
+        button_name: 'Buy',
+        name: 'Turbos',
+        position: 'top',
+    },
+    TURBOSSHORT: {
+        button_name: 'Buy',
+        name: 'Turbos',
+        position: 'bottom',
+    },
 });
 
 export const getContractConfig = is_high_low => ({
@@ -224,9 +234,9 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    // console.log(getContractConfig(is_high_low)[type]);
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type];
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
 export const getContractTypePosition = (type, is_high_low = false) =>

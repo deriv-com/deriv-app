@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Amount from 'Modules/Trading/Components/Form/TradeParams/amount.jsx';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
+import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector.jsx';
 import Duration from 'Modules/Trading/Components/Form/TradeParams/Duration';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import CancelDeal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/cancel-deal.jsx';
@@ -15,10 +16,12 @@ const TradeParams = ({ form_components, is_minimized }) => {
     const isVisible = component_key => {
         return form_components.includes(component_key);
     };
+
     return (
         <React.Fragment>
             {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
+            {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
             {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}

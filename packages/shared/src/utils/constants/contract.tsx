@@ -141,14 +141,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         trade_types: ['TURBOSLONG'],
         basis: ['stake'],
         barrier_count: 1,
-        components: ['barrier', 'take_profit'],
+        components: ['barrier_selector', 'take_profit'],
     },
     turbosshort: {
         title: localize('Short'),
         trade_types: ['TURBOSSHORT'],
         basis: ['stake'],
         barrier_count: 1,
-        components: ['barrier', 'take_profit'],
+        components: ['barrier_selector', 'take_profit'],
     },
 });
 
@@ -462,10 +462,9 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 the difference between these two functions is just the property they return. (name/position)
 */
 
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_trade_text = false) => {
-    return show_trade_text
-        ? (getContractConfig(is_high_low)[type] as TContractConfig).button_name
-        : getContractConfig(is_high_low)[type].name;
+export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type] as TContractConfig;
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>

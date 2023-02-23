@@ -278,9 +278,9 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false, show_trade_text = false) => {
+export const getContractTypeDisplay = (type, is_high_low = false, show_button_name = false) => {
     const contract_config = getContractConfig(is_high_low)[type];
-    return show_trade_text ? contract_config.button_name || contract_config.name : contract_config.name;
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
 export const getContractTypePosition = (type, is_high_low = false) =>

@@ -1,11 +1,11 @@
 import { BARRIER_COLORS } from '../../SmartChart/Constants/barriers';
 
-// Get Turbos barrier Line Color Based on the Contract Type
-export const getTurbosColor = type => {
+export const getHoveredColor = type => {
     switch (type) {
         case 'TURBOSSHORT':
             return BARRIER_COLORS.RED;
         case 'TURBOSLONG':
+            return BARRIER_COLORS.GREEN;
         default:
             return BARRIER_COLORS.GRAY;
     }

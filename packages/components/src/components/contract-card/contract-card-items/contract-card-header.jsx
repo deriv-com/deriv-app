@@ -2,15 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {
-    isHighLow,
-    getCurrentTick,
-    isBot,
-    getSubType,
-    isTurbosContract,
-    isMultiplierContract,
-    getTimePercentage,
-} from '@deriv/shared';
+import { isHighLow, getCurrentTick, isBot, getSubType, isTurbosContract, getTimePercentage } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -45,21 +37,18 @@ const ContractCardHeader = ({
 
     const contract_type_list_info = [
         {
-            value: 'Multiplier',
-            checkContractType: isMultiplierContract,
-            displayed_trade_text: `x${multiplier}`,
+            is_param_displayed: multiplier,
+            displayed_param: `x${multiplier}`,
         },
         {
-            value: 'Turbos',
-            checkContractType: isTurbosContract,
-            displayed_trade_text: getSubType(contract_type),
+            is_param_displayed: isTurbosContract(contract_type),
+            displayed_param: getSubType(contract_type),
         },
     ];
 
     const displayed_trade_param =
-        contract_type_list_info.find(contract_type_item_info =>
-            contract_type_item_info.checkContractType(contract_type)
-        )?.displayed_trade_text || '';
+        contract_type_list_info.find(contract_type_item_info => contract_type_item_info.is_param_displayed)
+            ?.displayed_param || '';
 
     return (
         <React.Fragment>

@@ -262,7 +262,6 @@ export default class ClientStore extends BaseStore {
             is_deposit_lock: computed,
             is_withdrawal_lock: computed,
             is_trading_experience_incomplete: computed,
-            is_verified: computed,
             authentication_status: computed,
             social_identity_provider: computed,
             is_from_restricted_country: computed,
@@ -764,13 +763,6 @@ export default class ClientStore extends BaseStore {
 
     get is_trading_experience_incomplete() {
         return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
-    }
-
-    get is_verified() {
-        return (
-            this.account_status?.authentication?.document?.status === 'verified' &&
-            this.account_status?.authentication?.identity?.status === 'verified'
-        );
     }
 
     get authentication_status() {

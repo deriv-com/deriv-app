@@ -444,12 +444,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__authentication-message {
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
             padding: 0.8rem;
             gap: 0.8rem;
             height: fit-content;
-            background: #377cfc29;
+            background: $color-blue-5;
             border-radius: 0.4rem;
 
             > p {

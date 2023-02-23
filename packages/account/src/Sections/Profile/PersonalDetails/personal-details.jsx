@@ -102,11 +102,11 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
 );
 
 export const PersonalDetailsForm = ({
+    authentication_status,
     is_eu,
     is_mf,
     is_uk,
     is_svg,
-    is_verified,
     is_virtual,
     residence_list,
     states_list,
@@ -546,6 +546,20 @@ export const PersonalDetailsForm = ({
         if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
         if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
+
+    const { document_status, identity_status } = authentication_status;
+    const is_verified = document_status === 'verified' && identity_status === 'verified';
+
+    const getRedirectionLink = () => {
+        if (document_status !== 'verified' && identity_status !== 'verified') {
+            return '/account/proof-of-identity';
+        } else if (document_status === 'verified' && identity_status !== 'verified') {
+            return '/account/proof-of-identity';
+        } else if (document_status !== 'verified' && identity_status === 'verified') {
+            return '/account/proof-of-address';
+        }
+        return null;
+    };
 
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
@@ -1209,7 +1223,7 @@ export const PersonalDetailsForm = ({
                                                                             className='link link--red'
                                                                             rel='noopener noreferrer'
                                                                             target='_blank'
-                                                                            href={'/account/proof-of-address'}
+                                                                            href={getRedirectionLink()}
                                                                         />,
                                                                     ]}
                                                                 />
@@ -1328,6 +1342,7 @@ PersonalDetailsForm.propTypes = {
 
 export default connect(({ client, notifications, ui }) => ({
     account_settings: client.account_settings,
+    authentication_status: client.authentication_status,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
     current_landing_company: client.current_landing_company,
@@ -1347,5 +1362,4 @@ export default connect(({ client, notifications, ui }) => ({
     Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
-    is_verified: client.is_verified,
 }))(withRouter(PersonalDetailsForm));

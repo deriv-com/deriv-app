@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
 import EmailVerificationModal from 'Components/email-verification-modal';
@@ -28,6 +28,9 @@ import './order-details.scss';
 
 const OrderDetails = observer(() => {
     const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const {
+        notifications: { removeNotificationByKey, removeNotificationMessage, setP2POrderProps },
+    } = useStore();
 
     const {
         account_currency,
@@ -94,7 +97,7 @@ const OrderDetails = observer(() => {
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
             order_store.setActiveOrder(null);
-            general_store.props.setP2POrderProps({
+            setP2POrderProps({
                 order_id: order_store.order_id,
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
                 setIsRatingModalOpen: order_store.setIsRatingModalOpen,
@@ -129,8 +132,8 @@ const OrderDetails = observer(() => {
                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                     onClickDone={() => {
                         order_store.setOrderRating(id);
-                        general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                        general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                        removeNotificationMessage({ key: `order-${id}` });
+                        removeNotificationByKey({ key: `order-${id}` });
                     }}
                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                     onClickRecommended={() => order_store.setIsRecommended(1)}
@@ -326,8 +329,8 @@ const OrderDetails = observer(() => {
                                     onClickClearRecommendation={() => order_store.setIsRecommended(null)}
                                     onClickDone={() => {
                                         order_store.setOrderRating(id);
-                                        general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                                        general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                                        removeNotificationMessage({ key: `order-${id}` });
+                                        removeNotificationByKey({ key: `order-${id}` });
                                     }}
                                     onClickNotRecommended={() => order_store.setIsRecommended(0)}
                                     onClickRecommended={() => order_store.setIsRecommended(1)}

@@ -294,7 +294,7 @@ const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldSho
                     width='456px'
                     is_open={should_show_popup}
                     title={generateModalTitle(formik_ref, my_profile_store, table_type, selected_ad)}
-                    portalId={general_store.props.modal_root_id}
+                    portalId='modal_root'
                     toggleModal={onCancel}
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}

@@ -1,15 +1,9 @@
 import React from 'react';
-import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, Text } from '@deriv/components';
+import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import {
-    RiskToleranceWarningModal,
-    TradingAssessmentForm,
-    TestWarningModal,
-    tradingAssessmentConfig,
-} from '@deriv/account';
+import { RiskToleranceWarningModal, TradingAssessmentForm, tradingAssessmentConfig } from '@deriv/account';
 import TradingExperienceModal from './trading-experience-modal.jsx';
-import { routes } from '@deriv/shared';
 
 const TradingAssessmentExistingUser = ({
     updateAccountStatus,
@@ -19,10 +13,10 @@ const TradingAssessmentExistingUser = ({
     setFinancialAndTradingAssessment,
     should_show_risk_warning_modal,
     setShouldShowRiskWarningModal,
-    should_show_risk_accept_modal,
     setShouldShowWarningModal,
     setShouldShowAssessmentCompleteModal,
     setIsTradingAssessmentForExistingUserEnabled,
+    setIsTradingAssessmentForNewUserEnabled,
 }) => {
     // Get the Trading assessment questions and initial_value
     const [form_values, setFormValue] = React.useState({});
@@ -58,15 +52,7 @@ const TradingAssessmentExistingUser = ({
             } else {
                 setShouldShowAssessmentCompleteModal(true);
             }
-        }
-    };
-
-    const handleAcceptAppropriatenessTestWarning = () => {
-        setShouldShowWarningModal(false);
-        if (window.location.href.includes(routes.trading_assessment)) {
-            setShouldShowAssessmentCompleteModal(false);
-        } else {
-            setShouldShowAssessmentCompleteModal(true);
+            setIsTradingAssessmentForNewUserEnabled(true);
         }
     };
 
@@ -91,35 +77,6 @@ const TradingAssessmentExistingUser = ({
                     />
                 }
                 has_icon
-            />
-        );
-    }
-    if (should_show_risk_accept_modal) {
-        return (
-            <TestWarningModal
-                show_risk_modal={should_show_risk_accept_modal}
-                body_content={
-                    <Text as='p' size='xs'>
-                        <Localize
-                            i18n_default_text='In providing our services to you, we are required to ask you for some information to assess if a given product or service is appropriate for you and whether you have the experience and knowledge to understand the risks involved.<0/><0/>'
-                            components={[<br key={0} />]}
-                        />
-                        <Localize
-                            i18n_default_text='Based on your answers, it looks like you have insufficient knowledge and experience in trading CFDs. CFD trading is risky and you could potentially lose all of your capital.<0/><0/>'
-                            components={[<br key={0} />]}
-                        />
-                        <Localize i18n_default_text='Please note that by clicking ‘OK’, you may be exposing yourself to risks. You may not have the knowledge or experience to properly assess or mitigate these risks, which may be significant, including the risk of losing the entire sum you have invested.' />
-                    </Text>
-                }
-                footer_content={
-                    <Button
-                        type='button'
-                        large
-                        text={localize('OK')}
-                        primary
-                        onClick={handleAcceptAppropriatenessTestWarning}
-                    />
-                }
             />
         );
     } else if (should_show_trade_assessment_form) {
@@ -169,7 +126,6 @@ export default connect(({ client, ui }) => ({
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
-    should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
     setShouldShowWarningModal: ui.setShouldShowWarningModal,
     should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
     setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
@@ -177,4 +133,5 @@ export default connect(({ client, ui }) => ({
     updateAccountStatus: client.updateAccountStatus,
     setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
     active_account_landing_company: client.landing_company_shortcode,
+    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
 }))(TradingAssessmentExistingUser);

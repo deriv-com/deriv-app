@@ -207,7 +207,7 @@ const personalDetailsConfig = (
             ],
             disabled_items,
         },
-        passthrough: ['residence_list', 'is_fully_authenticated'],
+        passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',
     };
 };

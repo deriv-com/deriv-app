@@ -1,5 +1,39 @@
 import { getUrlBase } from '@deriv/shared';
 
+const PATTERN_SIZE = 5;
+
+export const isRecurringNumberRegex = document_number => document_number.replace(/[.-]*/g, '').match(/([0-9])\1{4,}/g);
+
+const createDocumentPatterns = () => {
+    const ID_PATTERN = '0123456789';
+    const STEPS = 5; // Steps start at 0
+    const reverse_pattern = ID_PATTERN.split('').reverse().join('');
+    const pattern_array = [];
+
+    for (let step = 0; step < STEPS; step++) {
+        const pattern_end = PATTERN_SIZE + step;
+        pattern_array.push(ID_PATTERN.substring(step, pattern_end));
+
+        // Reverse version of the pattern, example: 9876543210
+        pattern_array.push(reverse_pattern.substring(step, pattern_end));
+    }
+
+    return pattern_array;
+};
+
+export const isSequentialNumber = document_number => {
+    const trimmed_document_number = document_number.replace(/[.-]*/g, '');
+    const pattern_results = [];
+
+    if (document_number.length >= PATTERN_SIZE) {
+        createDocumentPatterns().forEach(pattern => {
+            pattern_results.push(trimmed_document_number.includes(pattern));
+        });
+    }
+
+    return pattern_results.includes(true);
+};
+
 export const getRegex = target_regex => {
     const output_regex = regex.find(r => r.regex_string === target_regex);
     if (output_regex) {
@@ -138,6 +172,13 @@ const idv_document_data = {
             new_display_name: 'National ID (No Photo)',
             example_format: 'CM12345678PE1D',
             sample_image: '',
+        },
+    },
+    zw: {
+        national_id: {
+            new_display_name: 'National ID',
+            example_format: '081234567F53',
+            sample_image: getImageLocation('zw_national_identity_card.png'),
         },
     },
 };

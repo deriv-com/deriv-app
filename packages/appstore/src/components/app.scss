@@ -1,3 +1,30 @@
+.dashboard {
+    @include desktop {
+        height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    }
+    @include mobile {
+        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+    }
+}
+
+.dashboard-onboarding {
+    @include desktop {
+        height: inherit;
+    }
+    @include mobile {
+        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+    }
+}
+
 .dw-dashboard {
     height: 100%;
+}
+
+@keyframes triggerAnimation {
+    from {
+        transform: rotate(10deg);
+    }
+    to {
+        transform: rotate(-10deg);
+    }
 }

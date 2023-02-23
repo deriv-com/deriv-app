@@ -5,5 +5,4 @@ This action will automatically extract strings from the Deriv.app repo and uploa
 Required GitHub secrets:
 
 -   `NPM_ACCESS_TOKEN`: To allow for automatic publishing of new version of `@deriv/api-types`
--   `PERSONAL_ACCESS_TOKEN`: (GitHub PAT) To allow the action to authenticate with Git for git operations.
 -   `CROWDIN_API_TOKEN`: To allow us to download and upload new language files to and from Crowdin.

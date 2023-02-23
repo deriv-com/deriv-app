@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getBrandWebsiteName, getPlatformSettings, PlatformContext, isDesktop, isMobile } from '@deriv/shared';
-import AccountArticle from 'Components/article/article.jsx';
+import AccountArticle from 'Components/article';
 import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content.jsx';
 import SelfExclusionContext from './self-exclusion-context';
 

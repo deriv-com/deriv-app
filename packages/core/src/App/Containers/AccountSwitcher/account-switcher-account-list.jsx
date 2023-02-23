@@ -156,6 +156,7 @@ const AccountDisplay = ({
     shortcode,
     should_show_server_name,
 }) => {
+    const account_title = getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode });
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     const getServerName = React.useCallback(account => {
         if (account) {
@@ -186,7 +187,8 @@ const AccountDisplay = ({
         );
     return (
         <div>
-            {getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode })}
+            {/* TODO: Remove below condition once deriv x changes are completed */}
+            {platform === 'dxtrade' && account_title === localize('Derived') ? localize('Synthetic') : account_title}
             {server?.server_info?.geolocation &&
                 should_show_server_name &&
                 market_type === 'synthetic' &&

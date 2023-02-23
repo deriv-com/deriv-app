@@ -23,7 +23,7 @@ const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
         </Text>
         <Text as='p' align='center' className='cfd-change-password__description' size='xs'>
             {platform === CFD_PLATFORMS.MT5 ? (
-                <Localize i18n_default_text='Use this password to log in to your DMT5 accounts on the desktop, web, and mobile apps.' />
+                <Localize i18n_default_text='Use this password to log in to your Deriv MT5 accounts on the desktop, web, and mobile apps.' />
             ) : (
                 <Localize i18n_default_text='Use this password to log in to your Deriv X accounts on the web and mobile apps.' />
             )}
@@ -33,12 +33,7 @@ const ChangePassword = ({ platform, onConfirm }: TChangePassword) => (
             onClick={onConfirm}
         >
             <Text size='xs' weight='bold' color='colored-background'>
-                <Localize
-                    i18n_default_text='Change {{platform}} password'
-                    values={{
-                        platform: getCFDPlatformLabel(platform),
-                    }}
-                />
+                <Localize i18n_default_text='Change password' />
             </Text>
         </Button>
     </div>

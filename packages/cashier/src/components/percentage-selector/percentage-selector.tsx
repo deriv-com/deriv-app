@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TReactMouseEvent } from 'Types';
+import { TReactMouseEvent } from '../../types';
 
 type TPercentageSelectorProps = {
     amount: number;
@@ -120,7 +120,7 @@ const PercentageSelector = ({
             </div>
             <Text color='less-prominent' size='xxs' line_height='l' className='percentage-selector__text'>
                 <Localize
-                    i18n_default_text={`{{selected_percentage}}% of available balance ({{format_amount}} {{currency__display_code}})`}
+                    i18n_default_text='{{selected_percentage}}% of available balance ({{format_amount}} {{currency__display_code}})'
                     values={{ selected_percentage, format_amount, currency__display_code }}
                 />
             </Text>

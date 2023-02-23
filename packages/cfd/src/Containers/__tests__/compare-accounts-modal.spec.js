@@ -59,7 +59,7 @@ describe('CompareAccountsModal', () => {
     it('should render the CompareAccountsModal if the platform is dxtrade', async () => {
         render(<CompareAccountsModal {...mock_props} platform='dxtrade' />);
         await waitFor(() => {
-            expect(screen.getAllByText(/compare accounts/i)[0]).toBeInTheDocument();
+            expect(screen.getAllByText(/account information/i)[0]).toBeInTheDocument();
         });
         expect(screen.getAllByText(/maximum leverage/i)[0]).toBeInTheDocument();
     });
@@ -80,9 +80,9 @@ describe('CompareAccountsModal', () => {
             />
         );
         await waitFor(() => {
-            expect(screen.getAllByText(/compare accounts/i)[0]).toBeInTheDocument();
+            expect(screen.getAllByText(/account information/i)[0]).toBeInTheDocument();
         });
-        fireEvent.click(screen.getByText(/compare accounts/i));
+        fireEvent.click(screen.getByText(/account information/i));
         expect(mock_props.toggleCompareAccounts).toHaveBeenCalled();
     });
 });

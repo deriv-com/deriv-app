@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, computed, observable, runInAction, makeObservable, override } from 'mobx';
 import { toMoment, WS } from '@deriv/shared';
 
 import { formatStatementTransaction } from './Helpers/format-response';
@@ -10,39 +10,67 @@ const batch_size = 100; // request response limit
 const delay_on_scroll_time = 150; // fetch debounce delay on scroll
 
 export default class StatementStore extends BaseStore {
-    @observable data = [];
-    @observable is_loading = false;
-    @observable has_loaded_all = false;
-    @observable date_from = null;
-    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
-    @observable error = '';
-    @observable action_type = 'all';
-    @observable filtered_date_range;
+    data = [];
+    is_loading = false;
+    has_loaded_all = false;
+    date_from = null;
+    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+    error = '';
+    action_type = 'all';
+    filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
-    @observable client_loginid = '';
+    client_loginid = '';
 
-    @observable account_statistics = {};
+    account_statistics = {};
 
-    @computed
+    constructor({ root_store }) {
+        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
+        super({ root_store });
+
+        makeObservable(this, {
+            data: observable,
+            is_loading: observable,
+            has_loaded_all: observable,
+            date_from: observable,
+            date_to: observable,
+            error: observable,
+            action_type: observable,
+            filtered_date_range: observable,
+            client_loginid: observable,
+            account_statistics: observable,
+            is_empty: computed,
+            has_selected_date: computed,
+            clearTable: action.bound,
+            clearDateFilter: action.bound,
+            fetchNextBatch: action.bound,
+            statementHandler: action.bound,
+            handleDateChange: action.bound,
+            handleFilterChange: action.bound,
+            handleScroll: action.bound,
+            loadAccountStatistics: action.bound,
+            accountSwitcherListener: action.bound,
+            networkStatusChangeListener: action.bound,
+            onMount: action.bound,
+            onUnmount: override,
+        });
+    }
+
     get is_empty() {
         return !this.is_loading && this.data.length === 0;
     }
 
-    @computed
     get has_selected_date() {
         return !!(this.date_from || this.date_to);
     }
 
-    @action.bound
     clearTable() {
         this.data = [];
         this.has_loaded_all = false;
         this.is_loading = false;
     }
 
-    @action.bound
     clearDateFilter() {
         this.date_from = null;
         this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
@@ -56,7 +84,6 @@ export default class StatementStore extends BaseStore {
         return true;
     }
 
-    @action.bound
     async fetchNextBatch(should_load_partially = false) {
         if (!this.shouldFetchNextBatch(should_load_partially)) return;
         this.is_loading = true;
@@ -80,7 +107,6 @@ export default class StatementStore extends BaseStore {
         this.statementHandler(response, should_load_partially);
     }
 
-    @action.bound
     statementHandler(response, should_load_partially) {
         if ('error' in response) {
             this.error = response.error.message;
@@ -107,7 +133,6 @@ export default class StatementStore extends BaseStore {
         }
     }
 
-    @action.bound
     handleDateChange(date_values, { date_range } = {}) {
         this.filtered_date_range = date_range;
         this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);
@@ -116,7 +141,6 @@ export default class StatementStore extends BaseStore {
         this.fetchNextBatch();
     }
 
-    @action.bound
     handleFilterChange(filterValue = {}) {
         this.action_type = filterValue;
         this.clearTable();
@@ -129,7 +153,6 @@ export default class StatementStore extends BaseStore {
         }
     }, delay_on_scroll_time);
 
-    @action.bound
     handleScroll(event) {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
         const left_to_scroll = scrollHeight - (scrollTop + clientHeight);
@@ -137,7 +160,6 @@ export default class StatementStore extends BaseStore {
         this.fetchOnScroll(left_to_scroll);
     }
 
-    @action.bound
     async loadAccountStatistics() {
         this.account_statistics = {};
         const { client } = this.root_store;
@@ -155,7 +177,6 @@ export default class StatementStore extends BaseStore {
         }
     }
 
-    @action.bound
     accountSwitcherListener() {
         return new Promise(resolve => {
             this.clearTable();
@@ -165,12 +186,10 @@ export default class StatementStore extends BaseStore {
         });
     }
 
-    @action.bound
     networkStatusChangeListener(is_online) {
         this.is_loading = !is_online;
     }
 
-    @action.bound
     async onMount() {
         this.assertHasValidCache(
             this.client_loginid,
@@ -188,7 +207,6 @@ export default class StatementStore extends BaseStore {
 
     /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay
     as we change tab or click on any contract for later references as discussed with UI/UX and QA */
-    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');

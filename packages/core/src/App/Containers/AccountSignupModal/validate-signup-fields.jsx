@@ -39,7 +39,7 @@ const validateSignupFields = (values, residence_list) => {
             item => item.text.toLowerCase() === values.citizenship.toLowerCase()
         );
 
-        if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
+        if (index_of_selection === -1) {
             errors.citizenship = localize('Unfortunately, {{website_name}} is not available in your country.', {
                 website_name,
             });

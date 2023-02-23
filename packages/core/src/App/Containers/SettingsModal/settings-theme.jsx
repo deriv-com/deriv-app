@@ -1,22 +1,17 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isBot } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import DarkModeIcon from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
 import { connect } from 'Stores/connect';
 
-// TODO: [disable-dark-bot] Delete all `isBot()` conditional checks when DBot dark theme is ready
-
 const ThemeSelectSettings = ({ is_dark_mode, setDarkMode }) => {
     const darkOnClick = () => {
-        if (isBot()) return;
         setDarkMode(true);
     };
 
     const lightOnClick = () => {
-        if (isBot()) return;
         setDarkMode(false);
     };
 
@@ -30,33 +25,28 @@ const ThemeSelectSettings = ({ is_dark_mode, setDarkMode }) => {
                     <div id='dt_settings_dark_button' className='theme-select-settings__option'>
                         <DarkModeIcon
                             className={classNames('theme-select-settings__option__icon', {
-                                'theme-select-settings__option__icon--active': is_dark_mode && !isBot(),
-                                'theme-select-settings__option__icon--disabled': isBot(),
+                                'theme-select-settings__option__icon--active': is_dark_mode,
                             })}
                             onClick={darkOnClick}
                         />
                         <p
                             className={classNames('theme-select-settings__option__title', {
-                                'theme-select-settings__option__title--selected': is_dark_mode && !isBot(),
+                                'theme-select-settings__option__title--selected': is_dark_mode,
                             })}
                         >
-                            {isBot() ? (
-                                <Localize i18n_default_text='Dark (Coming soon to DBot)' />
-                            ) : (
-                                <Localize i18n_default_text='Dark' />
-                            )}
+                            {<Localize i18n_default_text='Dark' />}
                         </p>
                     </div>
                     <div id='dt_settings_light_button' className='theme-select-settings__option'>
                         <LightModeIcon
                             className={classNames('theme-select-settings__option__icon', {
-                                'theme-select-settings__option__icon--active': !is_dark_mode || isBot(),
+                                'theme-select-settings__option__icon--active': !is_dark_mode,
                             })}
                             onClick={lightOnClick}
                         />
                         <p
                             className={classNames('theme-select-settings__option__title', {
-                                'theme-select-settings__option__title--selected': !is_dark_mode || isBot(),
+                                'theme-select-settings__option__title--selected': !is_dark_mode,
                             })}
                         >
                             <Localize i18n_default_text='Light' />

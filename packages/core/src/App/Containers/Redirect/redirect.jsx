@@ -28,7 +28,6 @@ const Redirect = ({
     const code_param = url_params.get('code') || verification_code[action_param];
 
     setVerificationCode(code_param, action_param);
-
     setNewEmail(url_params.get('email'), action_param);
 
     switch (action_param) {
@@ -40,8 +39,14 @@ const Redirect = ({
                 //     search: url_query_string,
                 // });
                 // redirected_to_route = true;
+            } else {
+                history.push({
+                    pathname: routes.onboarding,
+                    search: url_query_string,
+                });
             }
             sessionStorage.removeItem('redirect_url');
+            redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
         }
@@ -51,6 +56,10 @@ const Redirect = ({
         }
         case 'request_email': {
             toggleResetEmailModal(true);
+            break;
+        }
+        case 'social_email_change': {
+            toggleResetPasswordModal(true);
             break;
         }
         case 'system_email_change': {
@@ -145,6 +154,14 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+        case 'p2p_order_confirm': {
+            history.push({
+                pathname: routes.cashier_p2p,
+                search: url_query_string,
+            });
+            redirected_to_route = true;
+            break;
+        }
 
         default:
             break;
@@ -162,6 +179,7 @@ const Redirect = ({
 
 Redirect.propTypes = {
     currency: PropTypes.string,
+    loginid: PropTypes.string,
     getServerTime: PropTypes.object,
     hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
@@ -179,6 +197,8 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
+        loginid: client.loginid,
+        is_eu: client.is_eu,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

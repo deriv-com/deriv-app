@@ -112,7 +112,7 @@ const TwoFactorAuthentication = ({
                     {localize('How to set up 2FA for your Deriv account')}
                 </Text>
                 <div>
-                    <Timeline className='two-factor__timeline'>
+                    <Timeline className='two-factor__timeline' line_height='xs'>
                         <Timeline.Item
                             item_title={
                                 <Localize

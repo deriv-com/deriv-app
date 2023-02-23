@@ -5,7 +5,7 @@
     flex-direction: column;
 
     &__advertiser-page-return {
-        margin: 0 0 2.4rem;
+        margin-top: unset;
 
         .dc-text {
             align-self: flex-start;
@@ -73,6 +73,10 @@
         }
     }
 
+    &__page-return {
+        margin: 2rem;
+    }
+
     &__table-header {
         display: grid;
         grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
@@ -112,12 +116,6 @@
 
     &__name {
         padding-right: 0.4rem;
-
-        &:hover {
-            color: var(--brand-red-coral);
-            text-decoration: underline;
-            text-decoration-color: var(--brand-red-coral);
-        }
     }
 
     &__button {

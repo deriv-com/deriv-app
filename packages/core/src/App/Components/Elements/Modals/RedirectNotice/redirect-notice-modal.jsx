@@ -19,7 +19,7 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
             !!destination.host &&
             !new RegExp(`^.*\\.${getCurrentProductionDomain() || 'binary\\.com'}$`).test(destination.host) && // destination host is not binary subdomain
             !new RegExp('^.*\\.binary\\.bot$').test(destination.host) && // destination host is not binary subdomain
-            !/www.(betonmarkets|xodds).com/.test(destination.host) && // destination host is not binary old domain
+            !/www\.(betonmarkets|xodds)\.com/.test(destination.host) && // destination host is not binary old domain
             !/deriv.(app|com)/.test(destination.host) && // destination host is not deriv
             window.location.host !== destination.host
         );
@@ -46,15 +46,11 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
 
     React.useEffect(() => {
         document.addEventListener('click', onClickExternalLink);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_logged_in, is_eu]);
-
-    React.useEffect(() => {
         return () => {
             document.removeEventListener('click', onClickExternalLink);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [is_logged_in, is_eu]);
 
     return ReactDOM.createPortal(
         dialog_status ? (

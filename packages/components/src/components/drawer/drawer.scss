@@ -52,6 +52,7 @@
         overflow: auto;
     }
     &__footer {
+        background-color: var(--general-main-2);
         border-top: 1px solid var(--general-section-1);
         line-height: 40px;
         font-weight: 700;
@@ -66,7 +67,7 @@
         position: absolute;
         width: $toggler-width;
         height: 100%;
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-5);
         cursor: pointer;
 
         @include mobile {

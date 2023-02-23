@@ -1,0 +1,83 @@
+.filter-modal {
+    &__column {
+        display: flex;
+        flex-direction: column;
+        @media (max-width: 450px) {
+            width: 80%;
+        }
+    }
+
+    &__select {
+        cursor: pointer;
+    }
+
+    &__arrow {
+        min-width: 1.8rem;
+        min-height: 1.8rem;
+    }
+
+    &__selected-payment-methods {
+        max-width: 350px;
+        max-height: 45px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        @media (max-width: 450px) {
+            max-width: 300px;
+        }
+        @media (max-width: 400px) {
+            max-width: 250px;
+        }
+    }
+
+    &__footer {
+        &-button {
+            display: flex;
+            width: 100%;
+        }
+    }
+
+    &__row {
+        align-items: center;
+        border-bottom: 2px solid var(--general-section-5);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-height: 8rem;
+        padding: 0 2.4rem;
+        @media (max-width: 375px) {
+            padding: 0 0 0 1.5rem;
+            justify-content: initial;
+        }
+    }
+
+    &__toggle-label {
+        margin: 0;
+    }
+
+    &__checkbox-container {
+        height: 36rem;
+    }
+}
+
+.dc-modal__container_payment-methods {
+    .dc-modal-header {
+        border-bottom: 2px solid var(--general-section-5);
+        height: 5.6rem;
+
+        &__title {
+            padding: 1.6rem 3.2rem;
+        }
+    }
+
+    .dc-modal-body {
+        padding: 0;
+        min-width: 33rem;
+    }
+
+    .dc-checkbox {
+        min-height: 4.9rem;
+        padding: 0 1.6rem;
+    }
+}

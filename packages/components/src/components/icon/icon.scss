@@ -34,7 +34,7 @@
         --fill-color3: #{$color-white};
     }
     &--black {
-        --fill-color1: #{$color-black-7};
+        --fill-color1: var(--icon-black-plus);
     }
     &--orange {
         --fill-color1: var(--status-warning);

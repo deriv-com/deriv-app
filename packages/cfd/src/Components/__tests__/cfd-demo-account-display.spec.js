@@ -52,7 +52,6 @@ describe('<CFDDemoAccountDisplay />', () => {
                 maltainvest: false,
                 svg: true,
             },
-            toggleMT5TradeModal: jest.fn(),
         };
     });
 
@@ -100,7 +99,7 @@ describe('<CFDDemoAccountDisplay />', () => {
 
     const checkAccountCardsRendering = tested_case => {
         const component_testid = 'dt_cfd_demo_accounts_display';
-        const first_account_card = 'Synthetic';
+        const first_account_card = 'Derived';
         const second_account_card = {
             eu: 'CFDs',
             non_eu: 'Financial',
@@ -125,7 +124,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         }
     };
 
-    it('should render Synthetic & Financial cards with enabled buttons on DMT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
+    it('should render Derived & Financial cards with enabled buttons on Deriv MT5 when non-EU, non-IoM, is_logged_in=true & has_maltainvest_account=false', () => {
         render(<CFDDemoAccountDisplay {...props} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -139,14 +138,14 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(props.onSelectAccount).toHaveBeenCalledWith({ type: 'financial', category: 'demo', platform: 'mt5' });
     });
 
-    it('should render Synthetic & Financial cards without "Add demo account" buttons on DMT5 when is_logged_in=false & is_eu_country=false', () => {
+    it('should render Derived & Financial cards without "Add demo account" buttons on Deriv MT5 when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDDemoAccountDisplay {...props} is_logged_in={false} />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add demo account" button on DMT5 when EU, is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
+    it('should render a CFDs card only with enabled "Add demo account" button on Deriv MT5 when EU, is_logged_in=true, standpoint.iom=true & has_maltainvest_account=false', () => {
         props.standpoint.iom = true;
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(<CFDDemoAccountDisplay {...props} is_eu />);
@@ -159,7 +158,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'demo CFDs');
     });
 
-    it('should render a CFDs card only without "Add demo account" button on DMT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
+    it('should render a CFDs card only without "Add demo account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(<CFDDemoAccountDisplay {...props} is_logged_in={false} is_eu_country />);
 
@@ -167,7 +166,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
     });
 
-    it('should render Synthetic & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
+    it('should render Derived & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
         render(<CFDDemoAccountDisplay {...props} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
@@ -189,46 +188,11 @@ describe('<CFDDemoAccountDisplay />', () => {
         });
     });
 
-    it('should render Synthetic & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
+    it('should render Derived & Financial cards without "Add demo account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDDemoAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />);
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add demo account/i }).length).toBe(0);
-    });
-
-    it('should render 1 open account with an enabled "Top up" ("Fund top up" for Deriv X) & "Trade" ("Trade on web terminal" in Deriv X) buttons', () => {
-        props.current_list['mt5.demo.financial@p01_ts02'] = mt5_demo_financial_account;
-        const { container, rerender } = render(<CFDDemoAccountDisplay {...props} />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.getAllByRole('button', { name: /add demo account/i }).length).toBe(1);
-        const dmt5_top_up_button = screen.getByRole('button', { name: /top up/i });
-        const dmt5_trade_button = screen.getByRole('button', { name: /trade/i });
-
-        fireEvent.click(dmt5_top_up_button);
-        expect(props.openAccountTransfer).toHaveBeenCalledWith(props.current_list['mt5.demo.financial@p01_ts02'], {
-            category: 'demo',
-            type: 'financial',
-        });
-        fireEvent.click(dmt5_trade_button);
-        expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
-
-        rerender(
-            <CFDDemoAccountDisplay
-                {...props}
-                platform='dxtrade'
-                current_list={{
-                    'dxtrade.demo.synthetic@synthetic': dxtrade_demo_synthetic_account,
-                }}
-            />
-        );
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
-        const dxtrade_fund_top_up_button = screen.getByRole('button', { name: /fund top up/i });
-        const dxtrade_trade_on_web_terminal_button = screen.getByRole('link', { name: /trade on web terminal/i });
-        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx-demo.deriv.com');
-
-        fireEvent.click(dxtrade_fund_top_up_button);
-        expect(props.openAccountTransfer).toHaveBeenCalledTimes(2);
     });
 
     it('should disable all "Add demo account" buttons when has_cfd_account_error=true', () => {

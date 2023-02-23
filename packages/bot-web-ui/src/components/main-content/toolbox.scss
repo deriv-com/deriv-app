@@ -47,15 +47,18 @@
         position: relative;
         font-weight: bold;
         font-size: 1.6em;
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-5);
         text-align: center;
+        color: var(--text-general);
     }
     &__item {
         display: flex;
         flex-direction: row;
+        color: var(--text-general);
 
         &:hover {
             background-color: var(--general-hover);
+            color: var(--text-prominent);
         }
     }
     &__category-arrow {
@@ -105,13 +108,13 @@
     }
     &__row {
         cursor: pointer;
-        border-top: 1px solid var(--general-section-1);
+        border-top: 1px solid var(--general-section-6);
 
         #{$toolbox}__category--selected {
             background-color: var(--general-active);
         }
         &:last-of-type {
-            border-bottom: 1px solid var(--general-section-1);
+            border-bottom: 1px solid var(--general-section-6);
         }
     }
     &__button.dc-btn {

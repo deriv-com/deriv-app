@@ -8,12 +8,24 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
+import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
-    const { balance, className, history, lang, Notifications, order_id, server_time, websocket_api, setOnRemount } =
-        props;
+    const {
+        balance,
+        className,
+        history,
+        lang,
+        Notifications,
+        order_id,
+        server_time,
+        verification_action,
+        verification_code,
+        websocket_api,
+        setOnRemount,
+    } = props;
 
     React.useEffect(() => {
         general_store.setAppProps(props);
@@ -56,6 +68,7 @@ const App = props => {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 
@@ -68,34 +81,43 @@ const App = props => {
         setLanguage(lang);
     }, [lang]);
 
+    React.useEffect(() => {
+        if (verification_code) {
+            // We need an extra state since we delete the code from the query params.
+            // Do not remove.
+            order_store.setVerificationCode(verification_code);
+        }
+        if (verification_action && verification_code) {
+            general_store.showModal({ key: 'LoadingModal', props: {} });
+            order_store.verifyEmailVerificationCode(verification_action, verification_code);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [verification_action, verification_code]);
+
     return (
         <main className={classNames('p2p-cashier', className)}>
             <Notifications />
-            <AppContent />
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+            </ModalManagerContextProvider>
         </main>
     );
 };
 
 App.propTypes = {
-    className: PropTypes.string,
-    client: PropTypes.shape({
-        currency: PropTypes.string.isRequired,
-        is_virtual: PropTypes.bool.isRequired,
-        local_currency_config: PropTypes.shape({
-            currency: PropTypes.string.isRequired,
-            decimal_places: PropTypes.number,
-        }).isRequired,
-        loginid: PropTypes.string.isRequired,
-        residence: PropTypes.string.isRequired,
-    }),
-    history: PropTypes.object,
     balance: PropTypes.string,
+    className: PropTypes.string,
+    history: PropTypes.object,
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,
     server_time: PropTypes.object,
     setNotificationCount: PropTypes.func,
     setOnRemount: PropTypes.func,
+    verification_action: PropTypes.string,
+    verification_code: PropTypes.string,
     websocket_api: PropTypes.object.isRequired,
 };
 

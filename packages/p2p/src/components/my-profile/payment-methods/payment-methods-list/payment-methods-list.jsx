@@ -10,7 +10,6 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import DeletePaymentMethodErrorModal from './delete-payment-method-error-modal.jsx';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import PaymentMethodCard from '../payment-method-card';
@@ -43,42 +42,39 @@ const PaymentMethodsList = () => {
                     >
                         <Localize i18n_default_text='Add new' />
                     </Button>
-                    <ThemedScrollbars className='payment-methods-list__list' height={'60vh'}>
-                        <div className='payment-methods-list__list-container'>
-                            {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
-                                (payment_methods_list_method, key) => {
-                                    const payment_methods_list =
-                                        my_profile_store.advertiser_payment_methods_list.filter(
-                                            payment_method =>
-                                                payment_method.method === payment_methods_list_method.method ||
-                                                (!independent_categories.includes(payment_method.method) &&
-                                                    payment_methods_list_method.method === 'e_wallet')
-                                        );
+                    <div className='payment-methods-list__list-container'>
+                        {sortPaymentMethodsListMethods([...my_profile_store.payment_methods_list_methods]).map(
+                            (payment_methods_list_method, key) => {
+                                const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
+                                    payment_method =>
+                                        payment_method.method === payment_methods_list_method.method ||
+                                        (!independent_categories.includes(payment_method.method) &&
+                                            payment_methods_list_method.method === 'e_wallet')
+                                );
 
-                                    return (
-                                        <React.Fragment key={key}>
-                                            <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
-                                                {`${payment_methods_list_method.display_name}s`}
-                                            </Text>
+                                return (
+                                    <React.Fragment key={key}>
+                                        <Text className='payment-methods-list__list-header' size='xs' weight='bold'>
+                                            {`${payment_methods_list_method.display_name}s`}
+                                        </Text>
 
-                                            <div className='payment-methods-list__list-body'>
-                                                {payment_methods_list.map(
-                                                    (each_payment_method, each_payment_method_key) => (
-                                                        <PaymentMethodCard
-                                                            key={each_payment_method_key}
-                                                            large={true}
-                                                            payment_method={each_payment_method}
-                                                            show_payment_method_name={false}
-                                                        />
-                                                    )
-                                                )}
-                                            </div>
-                                        </React.Fragment>
-                                    );
-                                }
-                            )}
-                        </div>
-                    </ThemedScrollbars>
+                                        <div className='payment-methods-list__list-body'>
+                                            {payment_methods_list.map(
+                                                (each_payment_method, each_payment_method_key) => (
+                                                    <PaymentMethodCard
+                                                        key={each_payment_method_key}
+                                                        large={true}
+                                                        payment_method={each_payment_method}
+                                                        show_payment_method_name={false}
+                                                    />
+                                                )
+                                            )}
+                                        </div>
+                                    </React.Fragment>
+                                );
+                            }
+                        )}
+                    </div>
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
@@ -141,25 +137,29 @@ const PaymentMethodsList = () => {
                     </div>
                 </MobileFullPageModal>
             </MobileWrapper>
-            <DeletePaymentMethodErrorModal />
             <Modal
                 is_open={my_profile_store.is_confirm_delete_modal_open}
                 small
                 has_close_icon={false}
                 onMount={() => general_store.setIsModalOpen(true)}
                 onUnmount={() => general_store.setIsModalOpen(false)}
-            >
-                <Modal.Body className='payment-methods-list__modal-wrapper'>
-                    <Text as='p' size='xs' color='prominent'>
+                title={
+                    <Text color='prominent' weight='bold'>
                         <Localize
                             i18n_default_text='Delete {{payment_method_name}}?'
                             values={{
                                 payment_method_name:
                                     my_profile_store?.payment_method_to_delete?.fields?.bank_name?.value ||
                                     my_profile_store?.payment_method_to_delete?.fields?.name?.value ||
-                                    my_profile_store?.payment_method_to_delete?.fields?.account?.value,
+                                    my_profile_store?.payment_method_to_delete?.display_name,
                             }}
                         />
+                    </Text>
+                }
+            >
+                <Modal.Body className='payment-methods-list__modal-wrapper'>
+                    <Text as='p' size='xs' color='prominent'>
+                        <Localize i18n_default_text='Are you sure you want to remove this payment method?' />
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>

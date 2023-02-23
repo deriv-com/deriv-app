@@ -1,0 +1,172 @@
+@mixin link-container-gaps {
+    padding: 1rem 0.5rem;
+    margin-right: 0.5rem;
+}
+
+#warning_scam_message_modal {
+    overflow: auto;
+}
+
+.warning-scam-message {
+    padding: 2.4rem 0;
+
+    @include mobile {
+        height: 80vh;
+        overflow: auto;
+    }
+
+    &--content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &__title {
+            display: flex;
+            flex-direction: column;
+            margin: 2.6rem 0 2.4rem;
+
+            @media screen and (max-width: 768px) {
+                width: 80%;
+            }
+
+            @media screen and (max-width: 430px) {
+                width: 90%;
+            }
+        }
+
+        &__info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: solid var(--general-hover);
+            border-radius: 0.5rem;
+            margin-top: 0.625rem;
+            padding: 1.6rem;
+            background-color: var(--general-section-1);
+            width: 90%;
+
+            &--title {
+                margin-bottom: 1.6rem;
+                display: flex;
+                width: 96%;
+            }
+
+            &--message {
+                display: flex;
+                width: 100%;
+                padding: 2.4rem 0.5rem;
+            }
+        }
+    }
+
+    &__checkbox-container {
+        display: flex;
+        width: 85%;
+        margin: 2.4rem 0;
+
+        &--checkbox {
+            margin-right: 1rem;
+        }
+    }
+
+    &__button {
+        @media screen and (max-width: 375px) {
+            padding: 1.2rem 0;
+        }
+    }
+
+    &__icon {
+        margin: 0.5rem 0.8rem 0.5rem 0.5rem;
+
+        &--cross {
+            height: 2.6rem;
+            width: 2.6rem;
+            margin: 0 0.8rem 0.5rem 0.5rem;
+
+            @include mobile {
+                height: 3.4rem;
+                width: 3.4rem;
+                margin: -0.3rem 0.8rem 0.5rem 0.5rem;
+            }
+
+            &-content {
+                height: 2.2rem;
+                width: 2.2rem;
+                margin: 0.2rem 0.8rem 0.5rem 0.5rem;
+
+                @include mobile {
+                    height: 3rem;
+                    width: 3rem;
+                    margin: -0.2rem 0.8rem 0.5rem 0.5rem;
+                }
+            }
+        }
+    }
+
+    &__small-text-message {
+        width: 96%;
+    }
+
+    &__website-icon {
+        margin: 0 0.5rem 0 0;
+    }
+
+    &__scam-message-icon {
+        height: 4rem;
+        margin: 2.4rem 0 2.6rem;
+    }
+
+    &__divider {
+        width: 97.5%;
+        border: 1px solid var(--general-hover);
+        margin-right: 0.7rem;
+        margin-bottom: 1.6rem;
+    }
+}
+
+.correct-link {
+    &__container {
+        display: flex;
+        width: 98%;
+        background-color: var(--transparent-correct-message);
+        @include link-container-gaps;
+    }
+
+    &__message-container {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    &__link-container {
+        background-color: var(--general-main-2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.8rem 0;
+        margin: 0.8rem 0.8rem 1.6rem 0;
+    }
+}
+
+.fake-link {
+    &__container {
+        display: flex;
+        background-color: var(--transparent-fake-message);
+        @include link-container-gaps;
+        margin-top: 1.6rem;
+    }
+
+    &__message-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__link-container {
+        background-color: var(--general-main-2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.8rem 0;
+        margin: 0.8rem 0.8rem 1.6rem 0;
+    }
+}

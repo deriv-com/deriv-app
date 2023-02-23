@@ -1,4 +1,7 @@
 import React from 'react';
+// TODO Remove this after smartcharts is replaced
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
@@ -83,7 +86,7 @@ export default connect(({ chart_store, common, ui }: RootStore) => ({
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
         language: common.current_language.toLowerCase(),
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
-        theme: 'light',
+        theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
     last_contract: {
         is_digit_contract: false,

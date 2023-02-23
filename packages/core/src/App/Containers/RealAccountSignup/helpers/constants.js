@@ -21,7 +21,7 @@ export const EXPERIAN = {
 /**
  * Return account title for the given landing company
  * - Example:
- * getAccountTitle('malta') => 'Real Synthetic'
+ * getAccountTitle('malta') => 'Real Derived'
  *
  * @param {string} landing_company_shortcode
  * @param {object} options
@@ -35,12 +35,12 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
 
     switch (landing_company_shortcode) {
         case 'svg':
-            return localize('Deriv account');
+            return localize('Options & Multipliers');
         case 'iom':
             if (country_standpoint.is_united_kingdom) {
                 return localize('Deriv Gaming');
             }
-            return localize('Deriv Synthetic');
+            return localize('Derived');
         case 'malta':
             if (
                 country_standpoint.is_united_kingdom ||
@@ -49,17 +49,9 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
             ) {
                 return localize('Options');
             }
-            return localize('Deriv Synthetic');
+            return localize('Derived');
         case 'maltainvest':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_france ||
-                country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu
-            ) {
-                return localize('Multipliers');
-            }
-            return localize('Deriv Financial');
+            return localize('Multipliers');
         default:
             return localize('Deriv');
     }

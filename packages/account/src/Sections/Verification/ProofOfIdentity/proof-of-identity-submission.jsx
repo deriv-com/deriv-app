@@ -27,10 +27,10 @@ const POISubmission = ({
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
-    const [selected_country, setSelectedCountry] = React.useState();
+    const [selected_country, setSelectedCountry] = React.useState({});
 
     const handleSelectionNext = () => {
-        if (selected_country) {
+        if (Object.keys(selected_country).length) {
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
@@ -155,6 +155,7 @@ const POISubmission = ({
                             country_code={selected_country.value}
                             is_from_external={is_from_external}
                             setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                            allow_poi_resubmission={allow_poi_resubmission}
                         />
                     );
                 default:
@@ -173,6 +174,14 @@ const POISubmission = ({
                     );
                 // This will be replaced in the next Manual Upload Project
                 case service_code.manual:
+                    return (
+                        <UploadComplete
+                            is_from_external={is_from_external}
+                            needs_poa={needs_poa}
+                            redirect_button={redirect_button}
+                            is_manual_upload
+                        />
+                    );
                 case service_code.onfido:
                     return (
                         <UploadComplete

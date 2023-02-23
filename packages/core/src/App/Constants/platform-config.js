@@ -21,14 +21,14 @@ const platform_config = [
         icon: getPlatformSettings('mt5').icon,
         title: () => getPlatformSettings('mt5').name,
         name: getPlatformSettings('mt5').name,
-        description: () => localize('Trade on Deriv MT5 (DMT5), the all-in-one FX and CFD trading platform.'),
+        description: () => localize('Trade on Deriv MT5, the all-in-one FX and CFD trading platform.'),
         link_to: routes.mt5,
     },
     {
         icon: getPlatformSettings('dxtrade').icon,
         title: () => getPlatformSettings('dxtrade').name,
         name: getPlatformSettings('dxtrade').name,
-        description: () => localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
+        description: () => localize('Trade CFDs on a customizable, easy-to-use trading platform.'),
         link_to: routes.dxtrade,
     },
     {

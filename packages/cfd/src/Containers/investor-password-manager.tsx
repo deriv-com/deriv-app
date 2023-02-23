@@ -48,7 +48,13 @@ const InvestorPasswordManager = ({
                 <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
             </Text>
             {error_message_investor && (
-                <Text as='p' color='loss-danger' size='xs' className='cfd-password-manager--error-message'>
+                <Text
+                    as='p'
+                    color='loss-danger'
+                    size='xs'
+                    className='cfd-password-manager--error-message'
+                    data-testid='dt_error_message_investor'
+                >
                     {error_message_investor}
                 </Text>
             )}

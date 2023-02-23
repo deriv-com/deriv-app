@@ -74,7 +74,7 @@ Blockly.BlockSvg.prototype.updateColour = function () {
     // deriv-bot: Update colours of input shapes to a fixed value of #FFF.
     this.inputList.forEach(input => {
         if (input.outlinePath) {
-            input.outlinePath.setAttribute('fill', '#fff');
+            input.outlinePath.setAttribute('fill', 'var(--state-normal)');
             input.outlinePath.setAttribute('stroke', '#6d7278');
             input.outlinePath.setAttribute('stroke-width', '0.3px');
         }

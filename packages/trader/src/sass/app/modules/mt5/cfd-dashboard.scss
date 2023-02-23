@@ -18,15 +18,16 @@
         display: grid;
         grid-template-columns: 32px 1fr;
         grid-gap: 0.8rem;
-        width: 12.7rem;
+        width: fit-content;
         align-items: center;
         height: 4rem;
-        border: 1px solid #a6a6a6;
+        border: 1px solid $color-grey-4;
 
         &-text {
             display: flex;
             flex-direction: column;
             padding: 0.4rem 0rem 0.4rem 0.2rem;
+            margin-right: 0.6rem;
         }
         &--icon {
             margin-left: 0.6rem;
@@ -1551,7 +1552,6 @@
     }
     .cfd-account__platform {
         font-style: italic;
-        white-space: nowrap;
     }
 }
 .cfd-personal-details-form-error {

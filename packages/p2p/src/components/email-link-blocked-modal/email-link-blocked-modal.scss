@@ -1,0 +1,9 @@
+.email-link-blocked-modal {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    &--text {
+        margin: 2.4rem 0;
+    }
+}

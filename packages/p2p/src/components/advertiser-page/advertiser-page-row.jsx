@@ -7,12 +7,14 @@ import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { generateEffectiveRate } from 'Utils/format-value';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './advertiser-page.scss';
 
-const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
+const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
     const { currency } = general_store.client;
     const {
+        effective_rate,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -21,6 +23,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
         rate_type,
         rate,
     } = advert;
+    const { showModal } = useModalManagerContext();
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
@@ -31,11 +34,14 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
         rate,
         local_currency,
         exchange_rate: floating_rate_store.exchange_rate,
+        market_rate: effective_rate,
     });
 
     const showAdForm = () => {
         buy_sell_store.setSelectedAdState(advert);
-        showAdPopup(advert);
+        showModal({
+            key: 'BuySellModal',
+        });
     };
 
     if (isMobile()) {
@@ -136,7 +142,6 @@ AdvertiserPageRow.displayName = 'AdvertiserPageRow';
 AdvertiserPageRow.propTypes = {
     advert: PropTypes.object,
     row: PropTypes.object,
-    showAdPopup: PropTypes.func,
 };
 
 export default observer(AdvertiserPageRow);

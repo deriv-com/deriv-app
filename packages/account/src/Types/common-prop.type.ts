@@ -20,10 +20,6 @@ export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;
 };
 
-export type TPlatformContext = {
-    is_appstore: boolean;
-};
-
 export type TCurrencyConfig = {
     fractional_digits: number;
     is_deposit_suspended: 0 | 1;
@@ -96,4 +92,19 @@ export type TBinaryRoutes = {
     is_pre_appstore: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+};
+
+export type TFile = {
+    path: string;
+    lastModified: number;
+    lastModifiedDate: Date;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
+};
+
+export type TPlatformContext = {
+    is_appstore?: boolean;
+    displayName?: string;
 };

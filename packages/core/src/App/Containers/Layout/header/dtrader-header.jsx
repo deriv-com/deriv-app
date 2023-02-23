@@ -56,6 +56,8 @@ const DTraderHeader = ({
     is_switching,
     toggleReadyToDepositModal,
     has_any_real_account,
+    account_list,
+    switchAccount,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -119,6 +121,10 @@ const DTraderHeader = ({
                         items={menu_items}
                         toggleReadyToDepositModal={toggleReadyToDepositModal}
                         has_any_real_account={has_any_real_account}
+                        is_pre_appstore={is_pre_appstore}
+                        is_virtual={is_virtual}
+                        account_list={account_list}
+                        switchAccount={switchAccount}
                     />
                 </div>
 
@@ -212,6 +218,8 @@ DTraderHeader.propTypes = {
     is_switching: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
+    account_list: PropTypes.array,
+    switchAccount: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, menu, modules, notifications }) => ({
@@ -251,4 +259,6 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_switching: client.is_switching,
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     has_any_real_account: client.has_any_real_account,
+    account_list: client.account_list,
+    switchAccount: client.switchAccount,
 }))(withRouter(DTraderHeader));

@@ -71,7 +71,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_payment_agent_visible } = payment_agent;
     const { resetLastLocation } = account_prompt_dialog;
     const { routeBackInApp, is_from_derivgo } = common;
-    const { is_cashier_visible: is_visible, toggleCashier } = ui;
+    const { is_cashier_visible: is_visible, toggleCashier, notification_messages_ui: Notifications } = ui;
     const { is_account_setting_loaded, is_logged_in, is_logging_in, is_pre_appstore } = client;
     const is_onramp_visible = useOnrampVisible();
 
@@ -143,6 +143,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
+            {Notifications && <Notifications />}
             <AccountPromptDialog />
             <ErrorDialog error={error} />
             <div className='cashier'>

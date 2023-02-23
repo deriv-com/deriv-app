@@ -346,6 +346,10 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
             }
 
+            if (window.location.pathname === routes.cashier_deposit) {
+                this.addNotificationMessage(this.client_notifications.switched_to_real);
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -1398,6 +1402,12 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Submit proof of identity'),
                 },
+            },
+            switched_to_real: {
+                key: 'switched_to_real',
+                header: localize('Switched to real account'),
+                message: <Localize i18n_default_text='To access the cashier, you are now in your non-EU US Dollar ' />,
+                type: 'info',
             },
         };
 

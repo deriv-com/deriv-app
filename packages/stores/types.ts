@@ -204,7 +204,7 @@ type TUiStore = {
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: JSX.Element | null;
+    notification_messages_ui: React.FC | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;

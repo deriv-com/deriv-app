@@ -75,4 +75,5 @@ export const excluded_notifications = isMobile()
           'svg_needs_poa',
           'svg_needs_poi',
           'svg_poi_expired',
+          'switched_to_real',
       ];

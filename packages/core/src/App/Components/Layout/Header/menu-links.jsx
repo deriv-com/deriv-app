@@ -27,32 +27,34 @@ const MenuItems = ({
             toggleReadyToDepositModal();
         }
     };
-    const test = account_list?.find(acc => acc.loginid?.[0]).loginid;
+    const first_login_id = account_list?.find(acc => acc.loginid?.[0]).loginid;
 
     const switchToRealAccount = () => {
         if (is_virtual) {
-            switchAccount(test);
+            switchAccount(first_login_id);
         }
         history.push(routes.cashier_deposit);
     };
 
-    const asd = () => {
-        if (is_virtual) {
+    const handleClickCashier = () => {
+        if (is_virtual && has_any_real_account) {
             switchToRealAccount();
         } else if (!has_any_real_account && is_virtual) {
             toggleModal();
         }
     };
 
+    const cashier_redirect = cashier_item && toggle_modal_routes && !has_any_real_account && is_virtual;
+
     return hide_menu_item ? null : (
         <BinaryLink
             id={id}
             key={icon}
-            to={link_to}
-            href={href}
+            to={!cashier_redirect ? link_to : null}
+            href={!cashier_redirect ? href : null}
             className='header__menu-link'
             active_class='header__menu-link--active'
-            onClick={asd}
+            onClick={handleClickCashier}
         >
             <Text size='m' line_height='xs' title={text()} className='header__menu-link-text'>
                 {icon}

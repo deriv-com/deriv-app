@@ -414,11 +414,14 @@ export default class BuySellStore extends BaseStore {
     }
 
     onLocalCurrencySelect(local_currency) {
+        const { floating_rate_store } = this.root_store;
         this.setSelectedLocalCurrency(local_currency);
         this.setLocalCurrency(local_currency);
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
+        floating_rate_store.previous_exchange_rate = null;
+        floating_rate_store.setIsMarketRateChanged(false);
     }
 
     registerIsListedReaction() {

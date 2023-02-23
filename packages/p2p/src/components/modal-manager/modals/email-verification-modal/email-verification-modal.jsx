@@ -89,6 +89,7 @@ const EmailVerificationModal = (
                         large
                         primary
                         onClick={() => {
+                            hideModal();
                             confirmOrderRequest(order_information.id);
                             setShouldShowReasonsIfNoEmail(false);
                         }}

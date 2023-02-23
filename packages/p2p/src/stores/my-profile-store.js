@@ -296,7 +296,7 @@ export default class MyProfileStore extends BaseStore {
             if (response) {
                 const { general_store, my_ads_store } = this.root_store;
 
-                if (general_store.modal.key === 'BlockUserModal') {
+                if (general_store.isCurrentModal('BlockUserModal')) {
                     general_store.hideModal();
                 }
                 this.setSelectedPaymentMethod('');
@@ -315,6 +315,10 @@ export default class MyProfileStore extends BaseStore {
                 } else {
                     this.setShouldShowAddPaymentMethodForm(false);
                     this.getAdvertiserPaymentMethods();
+
+                    if (general_store.isCurrentModal('CreateAdAddPaymentMethodModal')) {
+                        general_store.hideModal();
+                    }
                 }
 
                 setSubmitting(false);
@@ -362,6 +366,7 @@ export default class MyProfileStore extends BaseStore {
     }
 
     getPaymentMethodsList() {
+        const { buy_sell_store } = this.root_store;
         requestWS({
             p2p_payment_methods: 1,
         }).then(response => {
@@ -392,6 +397,7 @@ export default class MyProfileStore extends BaseStore {
                 }
                 this.root_store.buy_sell_store.setIsFilterModalLoading(false);
             }
+            buy_sell_store.setIsFilterModalLoading(false);
         });
     }
 
@@ -405,7 +411,7 @@ export default class MyProfileStore extends BaseStore {
             pm => pm[1].display_name === payment_method
         );
 
-        this.setPaymentMethodValue(method[0][0]);
+        this.setPaymentMethodValue(method[0]?.[0]);
         return this.payment_method_value;
     }
 
@@ -565,7 +571,7 @@ export default class MyProfileStore extends BaseStore {
 
         general_store.showModal({
             key: 'BlockUserModal',
-            props: { advertiser_name: advertiser.name },
+            props: { advertiser_name: advertiser.name, is_advertiser_blocked: advertiser.is_blocked },
         });
         this.setSelectedTradePartner(advertiser);
     }
@@ -586,7 +592,7 @@ export default class MyProfileStore extends BaseStore {
         const { general_store } = this.root_store;
 
         clearTimeout(delay);
-        if (general_store.modal.key === 'BlockUserModal') {
+        if (general_store.isCurrentModal('BlockUserModal')) {
             general_store.hideModal();
         }
         general_store.blockUnblockUser(!this.selected_trade_partner.is_blocked, this.selected_trade_partner.id);

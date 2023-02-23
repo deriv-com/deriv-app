@@ -3,11 +3,12 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
 import AccountTransferReceipt from '../account-transfer-receipt';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore;
+    const onClose = jest.fn();
     beforeEach(() => {
         mockRootStore = {
             client: {
@@ -44,6 +45,7 @@ describe('<AccountTransferReceipt />', () => {
                             value: 'CR90000400',
                         },
                         receipt: { amount_transferred: '100' },
+                        setShouldSwitchAccount: jest.fn(),
                     },
                 },
             },
@@ -52,11 +54,11 @@ describe('<AccountTransferReceipt />', () => {
 
     const history = createBrowserHistory();
     const renderAccountTransferReceipt = () =>
-        render(<AccountTransferReceipt />, {
+        render(<AccountTransferReceipt onClose={onClose} />, {
             wrapper: ({ children }) => (
-                <StoreProvider store={mockRootStore}>
+                <CashierProviders store={mockRootStore}>
                     <Router history={history}>{children}</Router>
-                </StoreProvider>
+                </CashierProviders>
             ),
         });
 

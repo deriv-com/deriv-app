@@ -231,7 +231,7 @@ export default class GeneralStore extends BaseStore {
                     }
                 } else {
                     this.setBlockUnblockUserError(response.error.message);
-                    if (!general_store.is_barred) {
+                    if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
                         general_store.showModal({
                             key: 'ErrorModal',
                             props: {
@@ -431,9 +431,8 @@ export default class GeneralStore extends BaseStore {
                     const server_time = this.props.server_time.get();
                     const blocked_until_moment = toMoment(blocked_until);
 
-                    this.user_blocked_timeout = setTimeout(() => {
-                        this.setUserBlockedUntil(null);
-                    }, blocked_until_moment.diff(server_time));
+                    // Need isAfter instead of setTimeout as setTimeout has a max delay of 24.8 days
+                    if (server_time.isAfter(blocked_until_moment)) this.setUserBlockedUntil(null);
                 }
             }
         );
@@ -843,6 +842,7 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
+            this.setIsRestricted(false);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

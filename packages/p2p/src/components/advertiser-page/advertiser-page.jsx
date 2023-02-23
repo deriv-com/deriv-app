@@ -22,7 +22,7 @@ import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { general_store, advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
-    const { showModal, useRegisterModalProps } = useModalManagerContext();
+    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -57,23 +57,26 @@ const AdvertiserPage = () => {
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
                 advertiser_page_store.onTabChange();
-                if (general_store.block_unblock_user_error)
+                if (general_store.block_unblock_user_error) {
                     showModal({
                         key: 'ErrorModal',
                         props: {
                             error_message: general_store.block_unblock_user_error,
                             error_modal_title: 'Unable to block advertiser',
                             has_close_icon: false,
-                            setIsErrorModalOpen: is_open => {
-                                if (!is_open) buy_sell_store.hideAdvertiserPage();
+                            onClose: () => {
+                                buy_sell_store.hideAdvertiserPage();
                                 if (general_store.active_index !== 0)
                                     my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                                 advertiser_page_store.onCancel();
                                 general_store.setBlockUnblockUserError('');
+                                hideModal();
                             },
                             width: isMobile() ? '90rem' : '40rem',
                         },
                     });
+                    general_store.setBlockUnblockUserError(null);
+                }
             },
             { fireImmediately: true }
         );

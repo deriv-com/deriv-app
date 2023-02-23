@@ -72,7 +72,7 @@ export const validNumber = (value: string, opts: TOptions) => {
         is_ok = false;
         const min_value = addComma(options.min);
         const max_value = addComma(options.max);
-        message = form_error_messages.betweenMinMax(min_value, max_value);
+        message = form_error_messages.betweenMinMax(min_value, max_value, options.decimals);
     } else if (
         options.type === 'float' &&
         options.decimals &&
@@ -83,11 +83,11 @@ export const validNumber = (value: string, opts: TOptions) => {
     } else if ('min' in options && +value < +options.min) {
         is_ok = false;
         const min_value = addComma(options.min);
-        message = form_error_messages.minNumber(min_value);
+        message = form_error_messages.minNumber(min_value, options.decimals);
     } else if ('max' in options && isMoreThanMax(+value, options)) {
         is_ok = false;
         const max_value = addComma(options.max);
-        message = form_error_messages.maxNumber(max_value);
+        message = form_error_messages.maxNumber(max_value, options.decimals);
     }
     return { is_ok, message };
 };

@@ -19,9 +19,9 @@ export type TFormErrorMessagesTypes = Record<
 > & {
     decimalPlaces: (decimals: TParameter) => string;
     value: (value: TParameter) => string;
-    betweenMinMax: (min_value: TParameter, max_value: TParameter) => string;
-    minNumber: (min_value: TParameter) => string;
-    maxNumber: (max_value: TParameter) => string;
+    betweenMinMax: (min_value: TParameter, max_value: TParameter, decimals?: TParameter) => string;
+    minNumber: (min_value: TParameter, decimals?: TParameter) => string;
+    maxNumber: (max_value: TParameter, decimals?: TParameter) => string;
     password_warnings: Record<
         | 'use_a_few_words'
         | 'no_need_for_mixed_chars'

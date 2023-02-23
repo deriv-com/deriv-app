@@ -48,7 +48,7 @@ const ExitTradersHubModal = ({
         const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();
 
-        if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+        if (content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.LOW_RISK_CR_NON_EU) {
             if (!cr_account) {
                 await switchAccount(account_list.find(acc => acc.loginid.startsWith('VRTC'))?.loginid);
             }

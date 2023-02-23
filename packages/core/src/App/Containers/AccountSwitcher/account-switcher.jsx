@@ -42,6 +42,7 @@ const AccountSwitcher = props => {
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
+    const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
     const [is_eu_regulator_visible, setEuRegulatorVisible] = React.useState(true);
     const [filtered_real_accounts, setFilteredRealAccounts] = React.useState([]);
@@ -60,6 +61,9 @@ const AccountSwitcher = props => {
 
     const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
     const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
+    const cfd_demo_currency =
+        props.mt5_login_list.find(account => isDemo(account))?.currency ||
+        props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
 
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
@@ -68,15 +72,18 @@ const AccountSwitcher = props => {
     }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
-        const getCurrentExchangeRate = (currency, setExchangeRate) => {
+        const getCurrentExchangeRate = (currency, setExchangeRate, base_currency = account_total_balance_currency) => {
             if (currency) {
-                props.getExchangeRate(currency, account_total_balance_currency).then(res => {
+                props.getExchangeRate(currency, base_currency).then(res => {
                     setExchangeRate(res);
                 });
             }
         };
         if (cfd_real_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
+        }
+        if (cfd_demo_currency !== vrtc_currency) {
+            getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo, vrtc_currency);
         }
         if (props.is_low_risk || props.is_high_risk) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
@@ -443,8 +450,8 @@ const AccountSwitcher = props => {
 
     const getTotalDemoAssets = () => {
         const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
-        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, 1);
-        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, 1);
+        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, exchanged_rate_cfd_demo);
+        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, exchanged_rate_cfd_demo);
 
         const total = vrtc_balance + mt5_demo_total.balance + dxtrade_demo_total.balance;
 

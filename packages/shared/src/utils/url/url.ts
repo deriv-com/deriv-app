@@ -133,8 +133,8 @@ export const setUrlLanguage = (lang: string) => {
 
 // TODO: cleanup options param usage
 // eslint-disable-next-line no-unused-vars
-export const getStaticUrl = (path = '', _options = {}, is_document = false) => {
-    const host = deriv_urls.DERIV_COM_PRODUCTION;
+export const getStaticUrl = (path = '', _options = {}, is_document = false, is_eu_url = false) => {
+    const host = is_eu_url ? deriv_urls.DERIV_COM_PRODUCTION_EU : deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
 
     if (lang && lang !== 'en') {
@@ -170,4 +170,10 @@ export const filterUrlQuery = (search_param: string, allowed_keys: string[]) => 
     const search_params = new URLSearchParams(search_param);
     const filtered_queries = [...search_params].filter(kvp => allowed_keys.includes(kvp[0]));
     return new URLSearchParams(filtered_queries || '').toString();
+};
+
+export const excludeParamsFromUrlQuery = (search_param: string, excluded_keys: string[]) => {
+    const search_params = new URLSearchParams(search_param);
+    const filtered_queries = [...search_params].filter(([key]) => !excluded_keys.includes(key));
+    return filtered_queries.length ? `?${new URLSearchParams(filtered_queries).toString()}` : '';
 };

@@ -1,47 +1,19 @@
-import * as React from 'react';
-// Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { useWS as useWSShared } from '@deriv/shared';
 import useWS from '../useWS';
-import { TSocketEndpointNames, TSocketRequestProps, TSocketResponse } from '../../types';
+import { TSocketResponse } from '../../types';
 
 jest.mock('@deriv/shared');
 
 const mockUseWSShared = useWSShared as jest.MockedFunction<typeof useWSShared>;
 
-const UseWSExample = <T extends TSocketEndpointNames>({
-    name,
-    request,
-}: {
-    name: T;
-    request?: TSocketRequestProps<T>;
-}) => {
-    const WS = useWS(name);
-
-    return (
-        <React.Fragment>
-            <p data-testid={'dt_is_loading'}>{WS.is_loading ? 'true' : 'false'}</p>
-            <p data-testid={'dt_error'}>{WS.error ? JSON.stringify(WS.error) : 'undefined'}</p>
-            <p data-testid={'dt_data'}>{WS.data ? JSON.stringify(WS.data) : 'undefined'}</p>
-            <button data-testid={'dt_send'} onClick={() => WS.send(request)}>
-                send
-            </button>
-        </React.Fragment>
-    );
-};
-
 describe('useWS', () => {
     test('should have initial error and data of undefined and is_loading of false', async () => {
-        render(<UseWSExample name={'ping'} />);
+        const { result } = renderHook(() => useWS('ping'));
 
-        const is_loading = screen.getByTestId('dt_is_loading');
-        const error = screen.getByTestId('dt_error');
-        const data = screen.getByTestId('dt_data');
-
-        expect(is_loading).toHaveTextContent('false');
-        expect(error).toHaveTextContent('undefined');
-        expect(data).toHaveTextContent('undefined');
+        expect(result.current.is_loading).toBe(false);
+        expect(result.current.error).toBe(undefined);
+        expect(result.current.data).toBe(undefined);
     });
 
     test('should call ping and get pong in response', async () => {
@@ -55,21 +27,21 @@ describe('useWS', () => {
             ),
         });
 
-        render(<UseWSExample name={'ping'} />);
+        const { result, waitForNextUpdate } = renderHook(() => useWS('ping'));
 
-        const is_loading = screen.getByTestId('dt_is_loading');
-        const error = screen.getByTestId('dt_error');
-        const data = screen.getByTestId('dt_data');
-        const send = screen.getByTestId('dt_send');
+        expect(result.current.is_loading).toBe(false);
+        expect(result.current.error).toBe(undefined);
+        expect(result.current.data).toBe(undefined);
 
-        expect(is_loading).toHaveTextContent('false');
-        expect(error).toHaveTextContent('undefined');
-        expect(data).toHaveTextContent('undefined');
-        userEvent.click(send);
-        await waitFor(() => expect(is_loading).toHaveTextContent('true'));
-        await waitFor(() => expect(data).toHaveTextContent('pong'));
-        await waitFor(() => expect(error).toHaveTextContent('undefined'));
-        await waitFor(() => expect(is_loading).toHaveTextContent('false'));
+        act(() => {
+            result.current.send();
+        });
+
+        expect(result.current.is_loading).toBe(true);
+        await waitForNextUpdate();
+        expect(result.current.data).toBe('pong');
+        expect(result.current.error).toBe(undefined);
+        expect(result.current.is_loading).toBe(false);
     });
 
     test('should call verify_email and get 1 in response', async () => {
@@ -83,23 +55,21 @@ describe('useWS', () => {
             ),
         });
 
-        render(
-            <UseWSExample name={'verify_email'} request={{ verify_email: 'test@test.com', type: 'reset_password' }} />
-        );
+        const { result, waitForNextUpdate } = renderHook(() => useWS('verify_email'));
 
-        const is_loading = screen.getByTestId('dt_is_loading');
-        const error = screen.getByTestId('dt_error');
-        const data = screen.getByTestId('dt_data');
-        const send = screen.getByTestId('dt_send');
+        expect(result.current.is_loading).toBe(false);
+        expect(result.current.error).toBe(undefined);
+        expect(result.current.data).toBe(undefined);
 
-        expect(is_loading).toHaveTextContent('false');
-        expect(error).toHaveTextContent('undefined');
-        expect(data).toHaveTextContent('undefined');
-        userEvent.click(send);
-        await waitFor(() => expect(is_loading).toHaveTextContent('true'));
-        await waitFor(() => expect(data).toHaveTextContent('1'));
-        await waitFor(() => expect(error).toHaveTextContent('undefined'));
-        await waitFor(() => expect(is_loading).toHaveTextContent('false'));
+        act(() => {
+            result.current.send({ verify_email: 'test@test.com', type: 'reset_password' });
+        });
+
+        expect(result.current.is_loading).toBe(true);
+        await waitForNextUpdate();
+        expect(result.current.data).toBe(1);
+        expect(result.current.error).toBe(undefined);
+        expect(result.current.is_loading).toBe(false);
     });
 
     test('should call cashier and get ASK_TNC_APPROVAL error code in response', async () => {
@@ -116,20 +86,20 @@ describe('useWS', () => {
             ),
         });
 
-        render(<UseWSExample name={'cashier'} request={{ cashier: 'deposit' }} />);
+        const { result, waitForNextUpdate } = renderHook(() => useWS('cashier'));
 
-        const is_loading = screen.getByTestId('dt_is_loading');
-        const error = screen.getByTestId('dt_error');
-        const data = screen.getByTestId('dt_data');
-        const send = screen.getByTestId('dt_send');
+        expect(result.current.is_loading).toBe(false);
+        expect(result.current.error).toBe(undefined);
+        expect(result.current.data).toBe(undefined);
 
-        expect(is_loading).toHaveTextContent('false');
-        expect(error).toHaveTextContent('undefined');
-        expect(data).toHaveTextContent('undefined');
-        userEvent.click(send);
-        await waitFor(() => expect(is_loading).toHaveTextContent('true'));
-        await waitFor(() => expect(data).toHaveTextContent('undefined'));
-        await waitFor(() => expect(error).toHaveTextContent('{"code":"ASK_TNC_APPROVAL","message":"Error message"}'));
-        await waitFor(() => expect(is_loading).toHaveTextContent('false'));
+        act(() => {
+            result.current.send({ cashier: 'deposit' });
+        });
+
+        expect(result.current.is_loading).toBe(true);
+        await waitForNextUpdate();
+        expect(result.current.data).toBe(undefined);
+        expect(result.current.error).toStrictEqual({ code: 'ASK_TNC_APPROVAL', message: 'Error message' });
+        expect(result.current.is_loading).toBe(false);
     });
 });

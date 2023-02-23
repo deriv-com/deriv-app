@@ -118,12 +118,6 @@
         display: none;
     }
 
-    @include tablet {
-        @media screen and (orientation: portrait) {
-            display: none;
-        }
-    }
-
     @include mobile {
         @media screen and (max-aspect-ratio: 13/9) {
             display: none;
@@ -138,7 +132,6 @@
     overflow: hidden;
     backface-visibility: hidden;
     background-color: var(--general-main-1);
-    z-index: 2;
 
     &--is-disabled:after {
         opacity: 1;

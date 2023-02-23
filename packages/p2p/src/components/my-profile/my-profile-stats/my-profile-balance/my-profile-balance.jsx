@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Money, Text } from '@deriv/components';
+import { Button, Icon, Modal, Money, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const MyProfileBalance = () => {
@@ -10,37 +10,42 @@ const MyProfileBalance = () => {
     const {
         client: { currency },
     } = useStore();
-    // const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
+    const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
 
     return (
         <div className='my-profile-balance'>
-            {/*
-            TODO: Uncomment when design is updated
-            <Modal has_close_icon={false} is_open={is_balance_tooltip_open} small title={localize('Deriv P2P Balance')}>
-                <Modal.Body>
-                    <Localize i18n_default_text='Deriv P2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)' />
+            <Modal
+                className='my-profile-balance__modal'
+                has_close_icon={false}
+                is_open={is_balance_tooltip_open}
+                small
+                title={localize('Deriv P2P Balance')}
+            >
+                <Modal.Body className='my-profile-balance__modal-body'>
+                    <Localize i18n_default_text='Deriv P2P balance = deposits that can’t be reversed' />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
                         has_effect
-                        text={localize('Ok')}
+                        text={localize('OK')}
                         onClick={() => setIsBalanceTooltipOpen(false)}
                         primary
                         large
                     />
                 </Modal.Footer>
-            </Modal> */}
+            </Modal>
             <div className='my-profile-balance--column'>
                 <div className='my-profile-balance--row'>
                     <Text color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
                         <Localize i18n_default_text='Available Deriv P2P balance' />
                     </Text>
-                    {/* <Icon
+                    <Icon
                         className='my-profile-balance--icon'
+                        color='disabled'
                         icon='IcInfoOutline'
                         onClick={() => setIsBalanceTooltipOpen(true)}
-                        size={16}
-                    /> */}
+                        size={isMobile() ? 12 : 16}
+                    />
                 </div>
                 <Text className='my-profile-balance__amount' color='prominent' line_height='m' size='m' weight='bold'>
                     <Money amount={general_store.advertiser_info.balance_available} currency={currency} show_currency />

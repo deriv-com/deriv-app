@@ -11,7 +11,7 @@ const PlatformBox = ({ platform: { icon, description }, is_dark_mode }) => (
         <div className='platform-dropdown__list-platform-background' />
 
         <div className='platform-switcher__dropdown'>
-            <Icon color={is_dark_mode ? '#fff' : '#414652'} icon={icon} height={42} width={150} />
+            <Icon icon={is_dark_mode ? icon : `${icon}Dark`} height={42} width={150} />
             <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
     </React.Fragment>
@@ -91,23 +91,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, i
 };
 
 PlatformDropdown.propTypes = {
-    app_routing_history: PropTypes.object,
-    closeDrawer: PropTypes.func,
-    platform_config: PropTypes.object,
-    is_pre_appstore: PropTypes.bool,
-    is_dark_mode: PropTypes.bool,
-};
-
-PlatformBox.propTypes = {
-    platform: PropTypes.object,
-    is_dark_mode: PropTypes.bool,
-};
-
-PlatformDropdownContent.propTypes = {
-    platform: PropTypes.object,
-    app_routing_history: PropTypes.object,
-    hide_dropdown_items: PropTypes.bool,
-    is_dark_modeL: PropTypes.bool,
+    platform_configs: PropTypes.array,
 };
 
 export { PlatformDropdown, PlatformBox };

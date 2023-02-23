@@ -52,7 +52,6 @@ export const PlatformIcons = {
     BinaryBotOnboarding,
     DBotOnboarding,
     DerivGoOnboarding,
-    SmartTraderOnboarding,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

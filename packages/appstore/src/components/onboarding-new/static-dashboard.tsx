@@ -296,7 +296,7 @@ const StaticDashboard = ({
                                     </div>
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
-                                            icon='SmartTraderOnboarding'
+                                            icon='SmartTrader'
                                             name='SmartTrader'
                                             description='Automate your trading, no coding needed.'
                                             availability='Non-EU'

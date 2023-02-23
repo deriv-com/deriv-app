@@ -1277,7 +1277,7 @@ const AccountSwitcher = props => {
                                 : () => props.openRealAccountSignup('manage')
                         }
                     >
-                        {localize('Manage account')}
+                        {localize('Manage accounts')}
                     </Button>
                 )}
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>

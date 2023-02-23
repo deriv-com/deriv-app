@@ -3,8 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { isMobile, isDesktop, parseQueryString } from '../../../../../common/utils/tools';
 import PlatformDropdown from './components/platform-dropdown.jsx';
-import { isLoggedIn, getActiveToken } from '../../utils';
-import { getTokenList, removeAllTokens, syncWithDerivApp , set as setStorage } from '../../../../../common/utils/storageManager';
+import { isLoggedIn, getActiveToken, updateTokenList } from '../../utils';
+import {
+    getTokenList,
+    removeAllTokens,
+    syncWithDerivApp,
+    set as setStorage,
+} from '../../../../../common/utils/storageManager';
 import {
     updateIsLogged,
     resetClient,
@@ -78,8 +83,9 @@ const Header = () => {
         if (active_storage_token) {
             api.authorize(active_storage_token.token)
                 .then(account => {
-                    const active_loginid = account.authorize.loginid
+                    const active_loginid = account.authorize.loginid;
                     setStorage('active_loginid', active_loginid);
+                    updateTokenList();
                     if (account?.error?.code) return;
                     dispatch(updateActiveToken(active_storage_token.token));
                     dispatch(updateActiveAccount(account.authorize));

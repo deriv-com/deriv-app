@@ -3,10 +3,10 @@ import { useStore, observer } from '@deriv/stores';
 import { useDepositLocked } from '@deriv/hooks';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const CashierLocked = observer(() => {
-    const is_deposit_locked = useDepositLocked();
-    const { client, modules } = useStore();
+    const { client } = useStore();
     const {
         account_status,
         accounts,
@@ -15,9 +15,9 @@ const CashierLocked = observer(() => {
         loginid,
         is_identity_verification_needed,
     } = client;
-    const { cashier } = modules;
-    const { general_store } = cashier;
+    const { general_store } = useCashierStore();
     const { is_cashier_locked, is_system_maintenance } = general_store;
+    const is_deposit_locked = useDepositLocked();
 
     const state = getMessage({
         cashier_validation: account_status.cashier_validation,

@@ -37,7 +37,7 @@ type TInputFieldProps = {
     inline_prefix?: string;
     inputmode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
     is_autocomplete_disabled: boolean;
-    is_disabled?: string;
+    is_disabled?: boolean;
     is_error_tooltip_hidden: boolean;
     is_float: boolean;
     is_hj_whitelisted: boolean;

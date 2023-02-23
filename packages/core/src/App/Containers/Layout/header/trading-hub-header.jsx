@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
-import { routes, ContentFlag } from '@deriv/shared';
+import { routes, ContentFlag, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -14,6 +14,7 @@ import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
+import AccountInfo from 'App/Components/Layout/Header/account-info';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -113,6 +114,35 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
         </div>
     );
 };
+
+const ShowAccountToggle = ({
+    acc_switcher_disabled_message,
+    account_type,
+    balance,
+    is_disabled,
+    is_eu,
+    is_virtual,
+    currency,
+    country_standpoint,
+    is_dialog_on,
+    toggleDialog,
+}) => {
+    return (
+        <AccountInfo
+            acc_switcher_disabled_message={acc_switcher_disabled_message}
+            account_type={account_type}
+            balance={balance}
+            is_disabled={is_disabled}
+            is_eu={is_eu}
+            is_virtual={is_virtual}
+            currency={currency}
+            country_standpoint={country_standpoint}
+            is_dialog_on={is_dialog_on}
+            toggleDialog={toggleDialog}
+        />
+    );
+};
+
 const MemoizedMenuLinks = React.memo(MenuLinks);
 const TradingHubHeader = ({
     content_flag,
@@ -137,6 +167,15 @@ const TradingHubHeader = ({
     toggleNotifications,
     toggleExitTradersHubModal,
     switchToCRAccount,
+    acc_switcher_disabled_message,
+    account_type,
+    balance,
+    is_acc_switcher_disabled,
+    is_virtual,
+    currency,
+    country_standpoint,
+    is_acc_switcher_on,
+    toggleAccountsDialog,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
@@ -208,6 +247,22 @@ const TradingHubHeader = ({
                                 <Icon icon='IcUserOutline' size={20} />
                             </BinaryLink>
                         </Popover>
+                        <div className='trading-hub-header__menu-right--items--account-toggle'>
+                            <ShowAccountToggle
+                                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                account_type={account_type}
+                                balance={
+                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                }
+                                is_disabled={is_acc_switcher_disabled}
+                                is_eu={is_eu}
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                country_standpoint={country_standpoint}
+                                is_dialog_on={is_acc_switcher_on}
+                                toggleDialog={toggleAccountsDialog}
+                            />
+                        </div>
                     </div>
                 </div>
                 <RealAccountSignup />
@@ -282,6 +337,15 @@ TradingHubHeader.propTypes = {
     toggleExitTradersHubModal: PropTypes.func,
     content_flag: PropTypes.string,
     switchToCRAccount: PropTypes.func,
+    acc_switcher_disabled_message: PropTypes.string,
+    account_type: PropTypes.string,
+    balance: PropTypes.any,
+    currency: PropTypes.any,
+    is_acc_switcher_disabled: PropTypes.any,
+    country_standpoint: PropTypes.object,
+    is_acc_switcher_on: PropTypes.any,
+    is_virtual: PropTypes.any,
+    toggleAccountsDialog: PropTypes.any,
 };
 
 export default connect(({ client, modules, notifications, ui, menu, traders_hub }) => ({
@@ -307,4 +371,13 @@ export default connect(({ client, modules, notifications, ui, menu, traders_hub 
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     content_flag: traders_hub.content_flag,
     switchToCRAccount: traders_hub.switchToCRAccount,
+    acc_switcher_disabled_message: ui.account_switcher_disabled_message,
+    account_type: client.account_type,
+    balance: client.balance,
+    currency: client.currency,
+    is_app_disabled: ui.is_app_disabled,
+    country_standpoint: client.country_standpoint,
+    is_acc_switcher_on: !!ui.is_accounts_switcher_on,
+    is_virtual: client.is_virtual,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(withRouter(TradingHubHeader));

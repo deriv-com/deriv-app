@@ -24,7 +24,7 @@ const TradingAssessmentForm = ({
     });
     const [form_data, setFormData] = React.useState({});
 
-    const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
+    const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
     const last_question_index = assessment_questions.length - 1;
     const should_display_previous_button = is_independent_section
         ? current_question_details.current_question_index !== 0

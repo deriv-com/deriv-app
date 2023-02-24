@@ -455,8 +455,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
     const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(mt5_status_server?.demo);
     const is_suspended_mt5_real_server = getIsSuspendedMt5Server(mt5_status_server?.real);
-    const is_suspended_dxtrade_demo_server = !!dxtrade_status_server.demo;
-    const is_suspended_dxtrade_real_server = !!dxtrade_status_server.real;
+    const is_suspended_dxtrade_demo_server = !!dxtrade_status_server?.demo;
+    const is_suspended_dxtrade_real_server = !!dxtrade_status_server?.real;
 
     const has_mt5_account_error = is_demo_tab
         ? is_suspended_mt5_demo_server || has_mt5_demo_account_error || mt5_disabled_signup_types.demo

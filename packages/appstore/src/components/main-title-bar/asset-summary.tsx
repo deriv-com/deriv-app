@@ -29,13 +29,11 @@ const AssetSummary = () => {
     React.useEffect(() => {
         const getCurrentExchangeRate = (
             currency: string,
-            setExchangeRate: {
-                (value: React.SetStateAction<number>): void;
-            },
+            setExchangeRate: React.Dispatch<React.SetStateAction<number>>,
             base_currency = platform_real_balance.currency
         ) => {
             if (currency) {
-                getExchangeRate(currency, base_currency).then((res: React.SetStateAction<number>) => {
+                getExchangeRate(currency, base_currency).then((res: number) => {
                     setExchangeRate(res);
                 });
             }

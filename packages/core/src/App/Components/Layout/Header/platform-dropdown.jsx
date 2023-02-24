@@ -6,12 +6,12 @@ import { routes, isDesktop, isMobile, getActivePlatform, getPlatformSettings } f
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
-const PlatformBox = ({ platform: { icon, description }, is_dark_mode }) => (
+const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>
         <div className='platform-dropdown__list-platform-background' />
 
         <div className='platform-switcher__dropdown'>
-            <Icon icon={is_dark_mode ? icon : `${icon}Dark`} height={42} width={150} />
+            <Icon icon={icon} height={42} width={150} />
             <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
     </React.Fragment>

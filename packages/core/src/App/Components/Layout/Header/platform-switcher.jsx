@@ -55,6 +55,7 @@ const PlatformSwitcher = ({
                 data-testid='dt_platform_switcher'
                 className={classNames(
                     'platform-switcher',
+                    { 'platform-switcher--dark-mode': is_dark_mode },
                     { 'platform-switcher--active': is_open },
                     { 'platform-switcher--is-mobile': isMobile() }
                 )}
@@ -62,14 +63,11 @@ const PlatformSwitcher = ({
             >
                 <Icon
                     className='platform-switcher__icon'
-                    icon={
-                        is_dark_mode
-                            ? getPlatformInformation(app_routing_history).icon
-                            : `${getPlatformInformation(app_routing_history).icon}Dark`
-                    }
+                    icon={getPlatformInformation(app_routing_history).icon}
                     alt={getPlatformInformation(app_routing_history).header}
                     size={120}
                 />
+
                 <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
             </div>
             <CSSTransition

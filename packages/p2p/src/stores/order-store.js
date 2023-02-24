@@ -13,6 +13,7 @@ export default class OrderStore {
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
             cancellation_limit: observable,
+            error_code: observable,
             error_message: observable,
             has_more_items_to_load: observable,
             is_email_link_blocked_modal_open: observable,
@@ -49,6 +50,7 @@ export default class OrderStore {
             setCancellationBlockDuration: action.bound,
             setCancellationCountPeriod: action.bound,
             setCancellationLimit: action.bound,
+            setErrorCode: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsEmailLinkBlockedModalOpen: action.bound,
@@ -88,6 +90,7 @@ export default class OrderStore {
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
     cancellation_limit = 0;
+    error_code = '';
     error_message = '';
     has_more_items_to_load = false;
     is_email_link_blocked_modal_open = false;
@@ -130,6 +133,7 @@ export default class OrderStore {
 
             if (response) {
                 if (response.error) {
+                    this.setErrorCode(response.error.code);
                     if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
                         this.root_store.general_store.showModal({ key: 'EmailVerificationModal', props: {} });
                     } else if (
@@ -520,6 +524,10 @@ export default class OrderStore {
 
     setData(data) {
         this.data = data;
+    }
+
+    setErrorCode(error_code) {
+        this.error_code = error_code;
     }
 
     setErrorMessage(error_message) {

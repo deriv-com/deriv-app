@@ -4,6 +4,7 @@ import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
+import { api_error_codes } from '../../constants/api-error-codes.js';
 import Chat from 'Components/orders/chat/chat.jsx';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
@@ -56,6 +57,7 @@ const OrderDetails = observer(() => {
         should_show_lost_funds_banner,
         should_show_order_footer,
         status_string,
+        verification_pending,
     } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
@@ -104,6 +106,18 @@ const OrderDetails = observer(() => {
             });
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (
+            verification_pending === 0 &&
+            !is_buy_order_for_user &&
+            status_string !== 'Expired' &&
+            order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+        )
+            showModal({ key: 'EmailLinkExpiredModal' });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [verification_pending]);
 
     React.useEffect(() => {
         if (completion_time) {

@@ -170,20 +170,30 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     get block_user_sort_list() {
         return [
+            // TODO: uncomment when BE returns trade partner count values
+            // {
+            //     text: localize('All ({{list_value}})', {
+            //         list_value: this.is_block_user_table_loading ? '...' : this.trade_partner_dropdown_list.length,
+            //     }),
+            //     value: 'all_users',
+            // },
+            // {
+            //     text: localize('Blocked ({{list_value}})', {
+            //         list_value: this.is_block_user_table_loading
+            //             ? '...'
+            //             : this.trade_partner_dropdown_list.filter(partner => partner.is_blocked === 1).length,
+            //     }),
+            //     value: 'blocked_users',
+            // },
             {
-                text: localize('All ({{list_value}})', {
-                    list_value: this.is_block_user_table_loading ? '...' : this.trade_partner_dropdown_list.length,
-                }),
+                text: localize('All'),
                 value: 'all_users',
             },
             {
-                text: localize('Blocked ({{list_value}})', {
-                    list_value: this.is_block_user_table_loading
-                        ? '...'
-                        : this.trade_partner_dropdown_list.filter(partner => partner.is_blocked === 1).length,
-                }),
+                text: localize('Blocked'),
                 value: 'blocked_users',
             },
         ];
@@ -489,7 +499,6 @@ export default class MyProfileStore extends BaseStore {
                     this.setIsTradePartnersListEmpty(list.length === 0 && !this.search_term);
                 } else {
                     general_store.setBlockUnblockUserError(response.error.message);
-
                 }
             }
             this.setIsBlockUserTableLoading(false);

@@ -73,7 +73,7 @@ const Routes = ({
     window.history.replaceState(
         {},
         document.title,
-        urlSetQuery({ lang: lang !== 'EN' ? lang : '', dark: is_dark_mode_on ? '1' : '' })
+        urlSetQuery({ lang: lang.replace('EN', ''), dark: Number(is_dark_mode_on) })
     );
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;

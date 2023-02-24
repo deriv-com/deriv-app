@@ -104,7 +104,7 @@ const useLiveChat = (has_cookie_account = false) => {
     useEffect(() => {
         onHistoryChange();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [window.location.search]);
+    }, [window.location.search, onHistoryChange]);
 
     useEffect(() => {
         history.listen(onHistoryChange);

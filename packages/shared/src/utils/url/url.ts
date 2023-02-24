@@ -43,18 +43,18 @@ export const urlForLanguage = (lang: string, url: string = window.location.href)
 export const urlSetQuery = (queryObj: TQueryObj, url: string = window.location.href) => {
     const current_url = new URL(url);
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const [key, value] of Object.entries(queryObj)) {
+    Object.entries(queryObj).forEach(element => {
+        const [key, value] = element;
         if (value) {
             current_url.searchParams.set(key, value);
         } else {
             current_url.searchParams.delete(key);
         }
-    }
+    });
 
     current_url.searchParams.sort();
 
-    return `${current_url}`;
+    return current_url.toString();
 };
 
 export const reset = () => {

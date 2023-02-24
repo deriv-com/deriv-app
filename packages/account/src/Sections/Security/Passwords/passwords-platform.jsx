@@ -54,7 +54,7 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                         </Text>
                         <div className='passwords-platform__content'>
                             <Popover alignment='bottom' message='Deriv MT5'>
-                                <Icon icon='IcBrandDmt5' size={32} />
+                                <Icon icon='IcRebrandingDmt5' size={32} />
                             </Popover>
                             <Button
                                 className='account__passwords-footer-btn'

@@ -41,7 +41,7 @@ const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: TDxtradeDeskto
             >
                 <Icon
                     className='cfd-dashboard__download-container-dxtrade-button-icon'
-                    icon='IcBrandDxtrade'
+                    icon='IcRebrandingDxtrade'
                     width={32}
                     height={32}
                 />

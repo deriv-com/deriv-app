@@ -244,6 +244,7 @@ const mock = (): TRootStore => {
             removeNotificationByKey: jest.fn(),
             removeNotificationMessage: jest.fn(),
             setP2POrderProps: jest.fn(),
+            showAccountSwitchToRealNotification: jest.fn(),
         },
         modules: {},
     };

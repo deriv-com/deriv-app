@@ -5,15 +5,7 @@ import { BinaryLink } from '../../Routes';
 import { routes } from '@deriv/shared';
 import { useHistory } from 'react-router';
 
-const MenuItems = ({
-    item,
-    hide_menu_item,
-    toggleReadyToDepositModal,
-    has_any_real_account,
-    is_virtual,
-    switchAccount,
-    account_list,
-}) => {
+const MenuItems = ({ item, hide_menu_item, toggleReadyToDepositModal, has_any_real_account, is_virtual }) => {
     const history = useHistory();
 
     const { id, link_to, href, text, image, logo, icon } = item;
@@ -27,20 +19,12 @@ const MenuItems = ({
             toggleReadyToDepositModal();
         }
     };
-    const first_login_id = account_list?.find(acc => acc.loginid?.[0]).loginid;
-
-    const switchToRealAccount = () => {
-        if (is_virtual) {
-            switchAccount(first_login_id);
-        }
-        history.push(routes.cashier_deposit);
-    };
 
     const handleClickCashier = () => {
-        if (is_virtual && has_any_real_account) {
-            switchToRealAccount();
-        } else if (!has_any_real_account && is_virtual) {
+        if (!has_any_real_account && is_virtual) {
             toggleModal();
+        } else {
+            history.push(routes.cashier_deposit);
         }
     };
 
@@ -77,8 +61,6 @@ const MenuLinks = ({
     toggleReadyToDepositModal,
     has_any_real_account,
     is_virtual,
-    account_list,
-    switchAccount,
 }) => (
     <React.Fragment>
         {!!items.length && (
@@ -96,8 +78,6 @@ const MenuLinks = ({
                                 toggleReadyToDepositModal={toggleReadyToDepositModal}
                                 has_any_real_account={has_any_real_account}
                                 is_virtual={is_virtual}
-                                account_list={account_list}
-                                switchAccount={switchAccount}
                             />
                         )
                     );
@@ -124,8 +104,6 @@ MenuLinks.propTypes = {
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    account_list: PropTypes.array,
-    switchAccount: PropTypes.func,
 };
 
 export { MenuLinks };

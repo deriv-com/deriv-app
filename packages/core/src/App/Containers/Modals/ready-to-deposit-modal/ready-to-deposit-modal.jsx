@@ -3,16 +3,9 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import './ready-to-deposit-modal.scss';
 
-const ReadyToDepositModal = ({
-    is_open,
-    onClose,
-    disableApp,
-    enableApp,
-    openRealAccountSignup,
-    is_eu_user,
-    is_pre_appstore,
-}) => {
+const ReadyToDepositModal = ({ is_open, onClose, disableApp, enableApp, openRealAccountSignup, is_eu_user }) => {
     const createAccount = () => {
         if (is_eu_user) {
             onClose();
@@ -25,7 +18,7 @@ const ReadyToDepositModal = ({
 
     return (
         <Dialog
-            className={is_pre_appstore && 'open-real-account-dialog'}
+            className='ready-to-deposit-dialog'
             title={localize('Ready to deposit and trade for real?')}
             confirm_button_text={localize('Add real account')}
             onConfirm={createAccount}

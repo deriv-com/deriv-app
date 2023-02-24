@@ -6,3 +6,4 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useOnrampVisible } from './useOnrampVisible';
+export { default as useSwitchToRealAccount } from './useSwitchToRealAccount';

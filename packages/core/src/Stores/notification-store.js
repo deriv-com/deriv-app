@@ -347,10 +347,6 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
             }
 
-            if (window.location.pathname === routes.cashier_deposit && this.root_store.client.is_switching) {
-                this.addNotificationMessage(this.client_notifications.switched_to_real);
-            }
-
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -687,10 +683,6 @@ export default class NotificationStore extends BaseStore {
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
-
-        const login_id = this.root_store.client.loginid;
-
-        const regulation = login_id.startsWith('CR') ? localize('non-EU') : localize('EU');
 
         const notifications = {
             acuity: {
@@ -1408,22 +1400,6 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Submit proof of identity'),
                 },
             },
-            switched_to_real: {
-                key: 'switched_to_real',
-                header: localize('Switched to real account'),
-                message: (
-                    <Localize
-                        i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
-                        values={{
-                            loginid: this.root_store.client.loginid,
-                            currency: this.root_store.client.currency,
-                            regulation,
-                        }}
-                    />
-                ),
-                type: 'info',
-                should_show_again: true,
-            },
         };
 
         this.client_notifications = notifications;
@@ -1497,6 +1473,23 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
+        });
+    };
+
+    showAccountSwitchToRealNotification = (loginid, currency) => {
+        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
+
+        this.addNotificationMessage({
+            key: 'switched_to_real',
+            header: localize('Switched to real account'),
+            message: (
+                <Localize
+                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
+                    values={{ loginid, currency, regulation }}
+                />
+            ),
+            type: 'info',
+            should_show_again: true,
         });
     };
 }

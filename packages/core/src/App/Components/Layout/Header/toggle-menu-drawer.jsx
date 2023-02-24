@@ -21,12 +21,12 @@ const MenuLink = observer(
         const { changeCurrentLanguage } = common;
         const deriv_static_url = getStaticUrl(link_to);
         const history = useHistory();
-        const { has_any_real_account, is_virtual, switchAccount, account_list } = client;
+        const { has_any_real_account, is_virtual } = client;
         const { toggleReadyToDepositModal } = ui;
 
         if (is_hidden) return null;
 
-        if (text === 'Deposit') {
+        if (text === 'Deposit' && is_virtual) {
             const toggle_modal_routes =
                 window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
 
@@ -35,21 +35,44 @@ const MenuLink = observer(
                     toggleReadyToDepositModal();
                 }
             };
-            const first_login_id = account_list?.find(acc => acc.loginid?.[0]).loginid;
-
-            const switchToRealAccount = () => {
-                if (is_virtual) {
-                    switchAccount(first_login_id);
-                }
-                history.push(routes.cashier_deposit);
-            };
 
             const handleClickCashier = () => {
                 if (is_virtual && has_any_real_account) {
-                    switchToRealAccount();
+                    history.push(routes.cashier_deposit);
                 } else if (!has_any_real_account && is_virtual) {
                     toggleModal();
                 }
+                onClickLink();
+            };
+            return (
+                <div
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                    })}
+                    onClick={handleClickCashier}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </div>
+            );
+        }
+
+        if ((text === 'Withdrawal' || text === 'Transfer') && !has_any_real_account && is_virtual) {
+            const toggle_modal_routes =
+                window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
+
+            const toggleModal = () => {
+                if (toggle_modal_routes && !has_any_real_account) {
+                    toggleReadyToDepositModal();
+                }
+            };
+
+            const handleClickCashier = () => {
+                if (!has_any_real_account && is_virtual) {
+                    toggleModal();
+                }
+                onClickLink();
             };
             return (
                 <div

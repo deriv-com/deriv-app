@@ -17,11 +17,53 @@ import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common } = useStore();
+        const { common, ui, client } = useStore();
         const { changeCurrentLanguage } = common;
         const deriv_static_url = getStaticUrl(link_to);
+        const history = useHistory();
+        const { has_any_real_account, is_virtual, switchAccount, account_list } = client;
+        const { toggleReadyToDepositModal } = ui;
 
         if (is_hidden) return null;
+
+        if (text === 'Deposit') {
+            const toggle_modal_routes =
+                window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
+
+            const toggleModal = () => {
+                if (toggle_modal_routes && !has_any_real_account) {
+                    toggleReadyToDepositModal();
+                }
+            };
+            const first_login_id = account_list?.find(acc => acc.loginid?.[0]).loginid;
+
+            const switchToRealAccount = () => {
+                if (is_virtual) {
+                    switchAccount(first_login_id);
+                }
+                history.push(routes.cashier_deposit);
+            };
+
+            const handleClickCashier = () => {
+                if (is_virtual && has_any_real_account) {
+                    switchToRealAccount();
+                } else if (!has_any_real_account && is_virtual) {
+                    toggleModal();
+                }
+            };
+            return (
+                <div
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                    })}
+                    onClick={handleClickCashier}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </div>
+            );
+        }
 
         if (is_language) {
             return (

@@ -1422,6 +1422,7 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'info',
+                should_show_again: true,
             },
         };
 

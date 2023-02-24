@@ -258,7 +258,7 @@ const RealAccountSignup = ({
 
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
-    const is_mf_active = loginid.startsWith('MF');
+    const is_mf_active = loginid?.startsWith('MF');
 
     const getModalHeight = () => {
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';

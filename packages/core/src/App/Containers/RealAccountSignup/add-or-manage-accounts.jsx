@@ -139,7 +139,7 @@ const AddOrManageAccounts = props => {
         );
     }
 
-    const is_mf_active = loginid.startsWith('MF');
+    const is_mf_active = loginid?.startsWith('MF');
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>

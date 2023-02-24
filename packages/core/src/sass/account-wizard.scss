@@ -514,7 +514,7 @@
 
     &__side-note {
         text-align: justify;
-        padding: 0 7rem;
+        padding: 0 10rem;
 
         @include mobile() {
             padding: 0 1.6rem;
@@ -536,8 +536,12 @@
 
         &--fields {
             display: flex;
-            justify-content: center;
-            padding: 0 7rem;
+            padding: 0 10rem;
+
+            @include desktop() {
+                justify-content: center;
+            }
+
             @include mobile() {
                 padding: 0 1.6rem;
             }
@@ -558,6 +562,9 @@
     }
 
     &__wrapper__question {
+        @include desktop() {
+            padding: 0 2rem;
+        }
         .dc-radio-group {
             gap: 1.6rem;
         }
@@ -573,6 +580,9 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+        @include desktop() {
+            padding: 0 3rem;
+        }
     }
 
     .disable-pointer {

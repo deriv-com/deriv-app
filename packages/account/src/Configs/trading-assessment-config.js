@@ -154,7 +154,7 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text: localize('In your understanding, CFD trading allows you to'),
+        question_text: localize('In your understanding, CFD trading allows you to:'),
         section: 'trading_knowledge',
         form_control: 'cfd_trading_definition',
         field_type: 'radio',
@@ -196,7 +196,7 @@ export const trading_assessment_questions = [
             { text: localize('Leverage guarantees profits.'), value: 'Leverage guarantees profits.' },
             {
                 text: localize(
-                    'Leverage lets you open large positions for a fraction of trade value, which may result in increased profit or loss.'
+                    'Leverage lets you open larger positions for a fraction of the trade’s value, which can lead to increased losses or increased profits.'
                 ),
                 value: "Leverage lets you open larger positions for a fraction of the trade's value.",
             },
@@ -233,18 +233,18 @@ export const trading_assessment_questions = [
         ],
     },
     {
-        question_text: localize('When are you required to pay an initial margin?'),
+        question_text: localize('When are you required to pay an initial Margin?'),
         section: 'trading_knowledge',
         form_control: 'required_initial_margin',
         field_type: 'radio',
         answer_options: [
             {
-                text: localize('When opening a leveraged CFD trade'),
+                text: localize('When opening a Leveraged CFD trade.'),
                 value: 'When opening a Leveraged CFD trade.',
             },
-            { text: localize('When trading multipliers'), value: 'When trading Multipliers.' },
+            { text: localize('When trading multipliers.'), value: 'When trading Multipliers.' },
             {
-                text: localize('When buying shares of a company'),
+                text: localize('When buying shares of a company.'),
                 value: 'When buying shares of a company.',
             },
             { text: localize('All of the above'), value: 'All of the above.' },

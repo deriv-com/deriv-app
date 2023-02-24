@@ -388,6 +388,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setIsPreAppStore: action.bound,
             setPrevAccountType: action.bound,
+            getToken: action.bound,
         });
 
         reaction(

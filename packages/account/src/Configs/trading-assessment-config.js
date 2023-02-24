@@ -1,7 +1,7 @@
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-export const trading_assessment_questions = [
+export const trading_assessment_questions = () => [
     {
         question_text: localize(
             'Do you understand that you could potentially lose 100% of the money you use to trade?'
@@ -299,10 +299,10 @@ const tradingAssessmentConfig = ({ real_account_signup_target, setSubSectionInde
     form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
     props: {
         validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
-        assessment_questions: trading_assessment_questions,
+        assessment_questions: trading_assessment_questions(),
         setSubSectionIndex,
     },
-    sub_step_count: trading_assessment_questions.length,
+    sub_step_count: trading_assessment_questions().length,
 });
 
 export default tradingAssessmentConfig;

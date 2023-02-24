@@ -286,3 +286,10 @@
         display: inline;
     }
 }
+
+//Vanilla specific styles
+.vanilla-trade-chart {
+    @include mobile {
+        height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
+    }
+}

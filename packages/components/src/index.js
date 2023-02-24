@@ -14,6 +14,7 @@ export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
 export { default as Button } from './components/button';
+export { default as SpanButton } from './components/span-button';
 export { default as ButtonLink } from './components/button-link';
 export { default as ButtonToggle } from './components/button-toggle';
 export { default as Calendar } from './components/calendar';

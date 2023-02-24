@@ -47,7 +47,11 @@ class GoogleDriveUtil {
             .then(() => this.initUrlIdentity())
             .catch(err => errLogger(err, translate('There was an error loading Google Identity API script.')));
         loadExternalScript(this.api_url_gdrive)
-            .then(() => gapi.load(this.auth_scope, async () => await gapi.client.load(...this.discovery_docs)))
+            .then(() =>
+                gapi.load(this.auth_scope, async () => {
+                    await gapi.client.load(...this.discovery_docs);
+                })
+            )
             .then(() => store.dispatch(setGdReady(true)))
             .catch(err => {
                 errLogger(err, translate('There was an error loading Google Drive API script.'));
@@ -77,7 +81,7 @@ class GoogleDriveUtil {
             client_id: GD_CONFIG.CLIENT_ID,
             callback: response => this.handleCredentialResponse(response),
             auto_select: true,
-            email: this.google_email ?? '',
+            email: this.google_email ? this.google_email : '',
         });
 
         google.accounts.id.prompt();
@@ -101,7 +105,7 @@ class GoogleDriveUtil {
 
     logout() {
         if (this.google_email) {
-            google.accounts.id.revoke(this.google_email, done => {
+            google.accounts.id.revoke(this.google_email, () => {
                 this.updateLoginStatus(false);
                 this.access_token = '';
                 store.dispatch(setGoogleEmail(''));
@@ -110,9 +114,8 @@ class GoogleDriveUtil {
     }
 
     listFiles = async () => {
-        let response;
         try {
-            response = await gapi.client.drive.files.list({
+            await gapi.client.drive.files.list({
                 pageSize: 10,
                 fields: 'files(id, name)',
             });
@@ -123,13 +126,6 @@ class GoogleDriveUtil {
                 err
             );
             globalObserver.emit('Error', error);
-            return;
-        }
-        const files = response.result.files;
-        if (!files || files.length == 0) {
-            const error = new TrackJSError('GoogleDrive', translate('No files found.'), err);
-            globalObserver.emit('Error', error);
-            return;
         }
     };
 
@@ -226,7 +222,7 @@ class GoogleDriveUtil {
 
                     if (folder) return resolve();
 
-                    gapi.client.drive.files
+                    return gapi.client.drive.files
                         .create({
                             resource: {
                                 name: this.bot_folder,
@@ -302,7 +298,6 @@ class GoogleDriveUtil {
                         globalObserver.emit('Error', error);
                         reject(error);
                     }
-                    return;
                 }
             };
 

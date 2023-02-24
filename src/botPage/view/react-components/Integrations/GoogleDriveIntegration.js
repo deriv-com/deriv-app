@@ -1,24 +1,22 @@
-/* global google */
-import React  from "react";
-import { useSelector } from "react-redux";
-import { translate } from "../../../../common/i18n";
-import google_drive_util from "../../../../common/integrations/GoogleDrive";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { translate } from '../../../../common/i18n';
+import google_drive_util from '../../../../common/integrations/GoogleDrive';
 
 const GoogleDriveIntegration = () => {
-  const { is_gd_logged_in, google_email } = useSelector((state) => state.client);
+    const { is_gd_logged_in, google_email } = useSelector(state => state.client);
     return (
         <div className='integration input-row last gd-popup'>
             <div className='left'>
                 <h2>Google Drive</h2>
                 <div className='description'>{translate('Save your blocks and strategies to Google Drive')}</div>
-                {is_gd_logged_in && google_email &&(
-                    <div className="integration-user">
-                        {`${translate('You are logged in as')} ${google_email}`}
-                    </div>
+                {is_gd_logged_in && google_email && (
+                    <div className='integration-user'>{`${translate('You are logged in as')} ${google_email}`}</div>
                 )}
             </div>
-            <div className="right">
-                <a id="signIn"
+            <div className='right'>
+                <a
+                    id='signIn'
                     onClick={() => google_drive_util.login()}
                     className={!is_gd_logged_in ? 'button' : 'button-disabled'}
                 >

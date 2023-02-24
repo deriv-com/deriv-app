@@ -657,6 +657,4 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    is_low_risk: client.is_low_risk,
-    loginid: client.loginid,
 }))(withRouter(RealAccountSignup));

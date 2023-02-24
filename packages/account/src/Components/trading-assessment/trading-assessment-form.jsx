@@ -17,7 +17,8 @@ const TradingAssessmentForm = ({
     setSubSectionIndex,
     is_independent_section,
 }) => {
-    const [is_next_button_enabled, setIsNextButtonEnabled] = React.useState(false);
+    const [is_section_filled, setIsSectionFilled] = React.useState(false);
+    const [should_inform_user, shouldInformUser] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
         current_question_index: 0,
         current_question: {},
@@ -29,6 +30,13 @@ const TradingAssessmentForm = ({
     const should_display_previous_button = is_independent_section
         ? current_question_details.current_question_index !== 0
         : true;
+
+    const verifyIfAllFieldsFilled = () => {
+        shouldInformUser(!is_section_filled);
+        setTimeout(() => {
+            shouldInformUser(false);
+        }, 500);
+    };
 
     React.useEffect(() => {
         setCurrentQuestionDetails(prevState => {
@@ -101,12 +109,20 @@ const TradingAssessmentForm = ({
 
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
 
+    const nextButtonHandler = values => {
+        verifyIfAllFieldsFilled();
+        if (is_section_filled) {
+            if (isAssessmentCompleted(values) && stored_items === last_question_index) onSubmit(values);
+            else displayNextPage();
+        }
+    };
+
     return (
         <div className={classNames('trading-assessment', class_name)}>
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
-            <section className='trading-assessment__form'>
+            <section className={'trading-assessment__form'}>
                 <Formik initialValues={{ ...form_value }}>
                     {({ setFieldValue, values }) => {
                         const { question_text, form_control, answer_options, questions } =
@@ -114,14 +130,18 @@ const TradingAssessmentForm = ({
 
                         return (
                             <Form className='trading-assessment__form--layout'>
-                                <div className='trading-assessment__form--fields'>
+                                <div
+                                    className={classNames('trading-assessment__form--fields', {
+                                        highlight: should_inform_user,
+                                    })}
+                                >
                                     {questions?.length ? (
                                         <TradingAssessmentDropdown
                                             item_list={questions}
                                             onChange={handleValueSelection}
                                             values={values}
                                             setFieldValue={setFieldValue}
-                                            setEnableNextSection={setIsNextButtonEnabled}
+                                            setEnableNextSection={setIsSectionFilled}
                                         />
                                     ) : (
                                         <TradingAssessmentRadioButton
@@ -130,7 +150,7 @@ const TradingAssessmentForm = ({
                                             onChange={e => handleValueSelection(e, form_control, setFieldValue, values)}
                                             values={values}
                                             form_control={form_control}
-                                            setEnableNextSection={setIsNextButtonEnabled}
+                                            setEnableNextSection={setIsSectionFilled}
                                         />
                                     )}
                                 </div>
@@ -153,12 +173,7 @@ const TradingAssessmentForm = ({
                                         )}
                                         <Button
                                             has_effect
-                                            is_disabled={!is_next_button_enabled}
-                                            onClick={() =>
-                                                isAssessmentCompleted(values) && stored_items === last_question_index
-                                                    ? onSubmit(values)
-                                                    : displayNextPage()
-                                            }
+                                            onClick={() => nextButtonHandler(values)}
                                             type='button'
                                             text={localize('Next')}
                                             large

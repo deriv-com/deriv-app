@@ -136,6 +136,7 @@ const AppNotificationMessages = ({
                   'svg_needs_poa',
                   'svg_needs_poi',
                   'svg_poi_expired',
+                  'switched_to_real',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
@@ -149,15 +150,22 @@ const AppNotificationMessages = ({
     const filtered_excluded_notifications = notifications.filter(message =>
         message.key.includes('svg') ? message : excluded_notifications.includes(message.key)
     );
-    const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
+    const notifications_sublist = () => {
+        if (window.location.pathname === routes.cashier_deposit) {
+            return filtered_excluded_notifications.filter(message =>
+                message.key.includes('switched_to_real') ? message : null
+            );
+        }
+        return filtered_excluded_notifications.slice(0, notifications_limit);
+    };
 
     if (!should_show_popups) return null;
 
-    return notifications_sublist.length ? (
+    return notifications_sublist().length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={notifications_sublist}
+                    notifications={notifications_sublist()}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}

@@ -284,6 +284,7 @@ export default class NotificationStore extends BaseStore {
         const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.acuity_mt5_download.key
         );
+
         let has_missing_required_field;
 
         if (is_logged_in) {
@@ -686,6 +687,10 @@ export default class NotificationStore extends BaseStore {
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
+
+        const login_id = this.root_store.client.loginid;
+
+        const regulation = login_id.startsWith('CR') ? localize('non-EU') : localize('EU');
 
         const notifications = {
             acuity: {
@@ -1408,10 +1413,11 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Switched to real account'),
                 message: (
                     <Localize
-                        i18n_default_text='To access the cashier, you are now in your {{currency}} ({{loginid}}) account.'
+                        i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
                         values={{
                             loginid: this.root_store.client.loginid,
                             currency: this.root_store.client.currency,
+                            regulation,
                         }}
                     />
                 ),

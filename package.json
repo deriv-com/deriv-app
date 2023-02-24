@@ -58,6 +58,7 @@
         "eslint-config-prettier": "^2.9.0",
         "eslint-plugin-import": "^2.8.0",
         "eslint-plugin-jsx-a11y": "^6.0.3",
+        "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-react": "^7.5.1",
         "file-saver": "^2.0.5",
         "gulp": "^4.0.2",
@@ -126,5 +127,5 @@
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "^4.4.2",
         "react-virtualized": "^9.22.3"
-      }
+    }
 }

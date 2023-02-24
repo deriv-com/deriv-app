@@ -14,22 +14,40 @@ const Load = ({ closeDialog, is_gd_logged_in }) => {
 
     const onChange = e => setLoadType(e.target.value);
 
-    const onSubmit = e => {
-        e.preventDefault();
+  const createFilePicker = () => {
+    google_drive_util
+    .createFilePicker()
+    .then(() => closeDialog())
+    .finally(() => isMounted() && setLoading(false));
+  }
+
+  const onSubmit = e => {
+    e.preventDefault();
 
         if (load_type === SAVE_LOAD_TYPE.google_drive) {
             setLoading(true);
 
-            google_drive_util
-                .createFilePicker()
-                .then(() => closeDialog())
-                .finally(() => isMounted() && setLoading(false));
-        } else {
-            // [TODO]: Refactor to use react
-            document.getElementById('files').click();
-            closeDialog();
-        }
-    };
+      if(!google_drive_util.access_token) {
+          google_drive_util.client.callback = (response) => {
+              google_drive_util.access_token = response.access_token;
+              createFilePicker() ;
+              isMounted() && setLoading(false);
+              closeDialog();
+          }
+          google_drive_util.client.requestAccessToken({prompt: "", hint: google_drive_util.google_email});
+      }
+      else {
+        createFilePicker() ;
+        isMounted() && setLoading(false);
+        closeDialog();
+      }
+   
+    } else {
+      // [TODO]: Refactor to use react
+      document.getElementById('files').click();
+      closeDialog();
+    }
+  };
 
     return (
         <form id='load-dialog' className='dialog-content' style={style.content} onSubmit={onSubmit}>

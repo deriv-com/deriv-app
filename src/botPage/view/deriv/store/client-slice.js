@@ -16,6 +16,7 @@ const initial_state = {
     is_logged: false,
     is_gd_logged_in: false,
     accounts: {},
+    google_email: ''
 };
 
 export const clientSlice = createSlice({
@@ -60,16 +61,55 @@ export const clientSlice = createSlice({
         setGdLoggedIn: (state, action) => {
             state.is_gd_logged_in = action.payload;
         },
+    resetClient: () => initial_state,
+    updateActiveAccount: (state, action) => {
+      state.active_account_name = action.payload.loginid;
+      state.account_list = [...action.payload.account_list];
+      state.is_virtual = !!action.payload.is_virtual;
+      state.currency = action.payload.currency;
+      state.balance = action.payload.balance;
     },
+    updateActiveToken: (state, action) => {
+      state.active_token = action.payload;
+    },
+    updateBalance: (state, action) => {
+      if (action.payload.loginid === state.active_account_name) {
+        state.balance = action.payload.balance;
+        state.currency = action.payload.currency;
+      }
+      if (action.payload.total?.deriv) {
+        state.total_deriv = action.payload.total.deriv;
+      }
+      if (action.payload.accounts) {
+        state.accounts = { ...action.payload.accounts };
+        return;
+      }
+      if (action.payload.loginid in current(state.accounts)) {
+        const account = state.accounts[action.payload.loginid];
+        account.balance = action.payload.balance;
+        state.account_balance = {
+          ...state.account_balance,
+          [action.payload.loginid]: account,
+        };
+      }
+    },
+    setGdLoggedIn: (state, action) => {
+      state.is_gd_logged_in = action.payload;
+    },
+    setGoogleEmail: (state, action) => {
+      state.google_email = action.payload
+    }
+  },
 });
 
 export const {
-    updateIsLogged,
-    resetClient,
-    updateActiveToken,
-    updateActiveAccount,
-    updateBalance,
-    setGdLoggedIn,
+  updateIsLogged,
+  resetClient,
+  updateActiveToken,
+  updateActiveAccount,
+  updateBalance,
+  setGdLoggedIn,
+  setGoogleEmail,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;

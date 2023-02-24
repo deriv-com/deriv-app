@@ -14,7 +14,7 @@ import {
     routes,
 } from '@deriv/shared';
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
@@ -80,7 +80,7 @@ export default class AccountTransferStore {
     is_mt5_transfer_in_progress = false;
     minimum_fee: string | null = null;
     receipt = {
-        amount_transferred: 0,
+        amount_transferred: '',
     };
     selected_from: TAccount = {};
     selected_to: TAccount = {};
@@ -512,7 +512,7 @@ export default class AccountTransferStore {
         this.is_mt5_transfer_in_progress = is_mt5_transfer_in_progress;
     }
 
-    setReceiptTransfer({ amount }: { amount: number }): void {
+    setReceiptTransfer({ amount }: { amount: string }): void {
         this.receipt = {
             amount_transferred: amount,
         };
@@ -616,7 +616,7 @@ export default class AccountTransferStore {
             }
             this.error.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: Number(formatMoney(currency || '', amount, true)) });
+            this.setReceiptTransfer({ amount: formatMoney(currency || '', amount, true) });
             transfer_between_accounts.accounts?.forEach(account => {
                 this.setBalanceByLoginId(account.loginid || '', account.balance || '');
                 if (account.loginid === this.selected_from.value) {
@@ -711,8 +711,6 @@ export default class AccountTransferStore {
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency || ''),
-                min: 0,
-                max: 0,
             });
             if (!is_ok) {
                 setConverterToError(message);

@@ -467,10 +467,17 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         : is_suspended_dxtrade_real_server || has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
 
     const has_cfd_account_error = is_user_exception
-        ? false
+        ? !is_user_exception
         : platform === CFD_PLATFORMS.MT5
         ? has_mt5_account_error
         : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
+
+    const has_cfd_real_account_dxtrade_error =
+        is_suspended_dxtrade_real_server || dxtrade_disabled_signup_types.real || !!dxtrade_accounts_list_error;
+    const has_cfd_demo_account_dxtrade_error =
+        is_suspended_dxtrade_demo_server || dxtrade_disabled_signup_types.demo || !!dxtrade_accounts_list_error;
+    const has_cfd_real_account_mt5_error = is_suspended_mt5_real_server || mt5_disabled_signup_types.real;
+    const has_cfd_demo_account_mt5_error = is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo;
 
     const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
@@ -559,10 +566,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_logged_in={is_logged_in}
                                                 has_cfd_account_error={
                                                     platform === CFD_PLATFORMS.MT5
-                                                        ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
-                                                        : is_suspended_dxtrade_real_server ||
-                                                          dxtrade_disabled_signup_types.real ||
-                                                          !!dxtrade_accounts_list_error
+                                                        ? has_cfd_real_account_mt5_error
+                                                        : is_user_exception
+                                                        ? !is_user_exception
+                                                        : has_cfd_real_account_dxtrade_error
                                                 }
                                                 current_list={current_list}
                                                 account_status={account_status}
@@ -600,9 +607,9 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                             <CFDDxtradeDemoAccountDisplay
                                                 is_logged_in={is_logged_in}
                                                 has_cfd_account_error={
-                                                    is_suspended_mt5_demo_server ||
-                                                    dxtrade_disabled_signup_types.demo ||
-                                                    !!dxtrade_accounts_list_error
+                                                    is_user_exception
+                                                        ? !is_user_exception
+                                                        : has_cfd_demo_account_dxtrade_error
                                                 }
                                                 standpoint={standpoint}
                                                 is_loading={is_loading}
@@ -620,9 +627,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
-                                                has_cfd_account_error={
-                                                    is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
-                                                }
+                                                has_cfd_account_error={has_cfd_demo_account_mt5_error}
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 standpoint={standpoint}
                                                 is_loading={is_loading}

@@ -588,6 +588,7 @@ const AccountSwitcher = props => {
     const is_suspended_dxtrade_demo_server = !!props.dxtrade_status_server?.demo;
     const is_suspended_dxtrade_real_server = !!props.dxtrade_status_server?.real;
     const has_cr_account = props.account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
+    const is_user_exception = props.account_settings.dxtrade_user_exception;
 
     const default_demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
@@ -744,9 +745,11 @@ const AccountSwitcher = props => {
                                         secondary
                                         small
                                         is_disabled={
-                                            props.dxtrade_disabled_signup_types.demo ||
-                                            !!props.dxtrade_accounts_list_error ||
-                                            is_suspended_dxtrade_demo_server
+                                            is_user_exception
+                                                ? !is_user_exception
+                                                : props.dxtrade_disabled_signup_types.demo ||
+                                                  !!props.dxtrade_accounts_list_error ||
+                                                  is_suspended_dxtrade_demo_server
                                         }
                                     >
                                         {localize('Add')}
@@ -1036,10 +1039,12 @@ const AccountSwitcher = props => {
                                             secondary
                                             small
                                             is_disabled={
-                                                props.dxtrade_disabled_signup_types.real ||
-                                                isRealDXTradeAddDisabled(account.type) ||
-                                                !!props.dxtrade_accounts_list_error ||
-                                                is_suspended_dxtrade_real_server
+                                                is_user_exception
+                                                    ? !is_user_exception
+                                                    : props.dxtrade_disabled_signup_types.real ||
+                                                      isRealDXTradeAddDisabled(account.type) ||
+                                                      !!props.dxtrade_accounts_list_error ||
+                                                      is_suspended_dxtrade_real_server
                                             }
                                         >
                                             {localize('Add')}

@@ -397,7 +397,7 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
 
-        // Only show financial account for clients from Australia
+        // Only show financial account for Australian/Norway clients
         if (!result && this.selected_region === 'Non-EU') {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['Financial'].some(region => region === account.name)
@@ -423,7 +423,7 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
 
-        // Not show DerivX for clients from Australia
+        // Not show DerivX for Australian/Norway clients
         if (!result && this.selected_region === 'Non-EU') return;
 
         this.available_dxtrade_accounts = this.available_cfd_accounts.filter(

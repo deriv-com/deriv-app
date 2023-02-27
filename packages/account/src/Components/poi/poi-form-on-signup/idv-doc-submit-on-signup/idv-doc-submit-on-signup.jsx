@@ -135,7 +135,17 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             validateOnChange
             validateOnBlur
         >
-            {({ errors, handleBlur, handleChange, handleSubmit, isValid, setFieldValue, touched, values }) => (
+            {({
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                setFieldValue,
+                touched,
+                values,
+            }) => (
                 <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef }) => (
                         <form ref={setRef} className='poi-form-on-signup' onSubmit={handleSubmit} noValidate>
@@ -289,8 +299,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     }
                                                                     disabled={is_input_disable}
                                                                     error={
-                                                                        touched.document_number &&
-                                                                        errors.document_number
+                                                                        (touched.document_number &&
+                                                                            errors.document_number) ||
+                                                                        errors.error_message
                                                                     }
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
@@ -353,7 +364,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
 
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={(!values.document_number && !values.document_type) || !isValid}
+                                    is_disabled={
+                                        (!values.document_number && !values.document_type) || !isValid || isSubmitting
+                                    }
                                     label={localize('Next')}
                                     is_absolute={isMobile()}
                                     has_cancel={has_previous}

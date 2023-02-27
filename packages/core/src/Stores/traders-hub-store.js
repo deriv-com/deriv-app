@@ -387,6 +387,9 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
+        const { active_accounts } = this.root_store.client;
+        const result = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
@@ -394,7 +397,8 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
 
-        if (this.no_CR_account) {
+        // Only show financial account for clients from Australia
+        if (!result && this.selected_region === 'Non-EU') {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['Financial'].some(region => region === account.name)
             );
@@ -407,6 +411,9 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableDxtradeAccounts() {
+        const { active_accounts } = this.root_store.client;
+        const result = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
                 account =>
@@ -416,7 +423,8 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
 
-        if (this.no_CR_account) return;
+        // Not show DerivX for clients from Australia
+        if (!result && this.selected_region === 'Non-EU') return;
 
         this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
             account => account.platform === CFD_PLATFORMS.DXTRADE

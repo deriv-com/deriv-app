@@ -131,7 +131,7 @@ const idv_document_data = {
     gh: {
         drivers_license: {
             new_display_name: '',
-            example_format: 'B1234567',
+            example_format: '12345678A1',
             sample_image: '',
         },
         national_id: {

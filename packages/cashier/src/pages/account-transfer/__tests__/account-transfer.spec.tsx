@@ -29,6 +29,28 @@ jest.mock('@deriv/hooks');
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
+const cashier_mock = {
+    general_store: {
+        setActiveTab: jest.fn(),
+    },
+    account_transfer: {
+        error: {},
+        setAccountTransferAmount: jest.fn(),
+        setIsTransferConfirm: jest.fn(),
+        onMountAccountTransfer: jest.fn(),
+        accounts_list: [],
+        has_no_account: false,
+        has_no_accounts_balance: false,
+        is_transfer_confirm: false,
+        is_transfer_locked: false,
+    },
+    crypto_fiat_converter: {},
+    transaction_history: {
+        onMount: jest.fn(),
+        is_crypto_transactions_visible: false,
+    },
+};
+
 describe('<AccountTransfer />', () => {
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
@@ -57,27 +79,7 @@ describe('<AccountTransfer />', () => {
                 ],
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
         renderAccountTransfer(mock_root_store as TRootStore);
@@ -97,27 +99,7 @@ describe('<AccountTransfer />', () => {
                 ],
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
 
@@ -141,27 +123,7 @@ describe('<AccountTransfer />', () => {
                 ],
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
 
@@ -190,27 +152,7 @@ describe('<AccountTransfer />', () => {
                 ],
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
 
@@ -231,24 +173,10 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
+                    ...cashier_mock,
                     account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
+                        ...cashier_mock.account_transfer,
                         is_transfer_locked: true,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
                     },
                 },
             },
@@ -271,24 +199,10 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
+                    ...cashier_mock,
                     account_transfer: {
+                        ...cashier_mock.account_transfer,
                         error: { message: 'error' },
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
                     },
                 },
             },
@@ -311,24 +225,10 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
+                    ...cashier_mock,
                     account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
+                        ...cashier_mock.account_transfer,
                         has_no_account: true,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
                     },
                 },
             },
@@ -351,24 +251,10 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
+                    ...cashier_mock,
                     account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
+                        ...cashier_mock.account_transfer,
                         has_no_accounts_balance: true,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
                     },
                 },
             },
@@ -399,24 +285,10 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
+                    ...cashier_mock,
                     account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
+                        ...cashier_mock.account_transfer,
                         is_transfer_confirm: true,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: false,
                     },
                 },
             },
@@ -439,21 +311,7 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    account_transfer: {
-                        error: {},
-                        setAccountTransferAmount: jest.fn(),
-                        setIsTransferConfirm: jest.fn(),
-                        onMountAccountTransfer: jest.fn(),
-                        accounts_list: [],
-                        has_no_account: false,
-                        has_no_accounts_balance: false,
-                        is_transfer_confirm: false,
-                        is_transfer_locked: false,
-                    },
-                    crypto_fiat_converter: {},
+                    ...cashier_mock,
                     transaction_history: {
                         onMount: jest.fn(),
                         is_crypto_transactions_visible: true,

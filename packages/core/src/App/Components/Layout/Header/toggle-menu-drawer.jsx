@@ -62,36 +62,6 @@ const MenuLink = observer(
             );
         }
 
-        // if ((text === 'Withdrawal' || text === 'Transfer') && !has_any_real_account && is_virtual) {
-        //     const toggle_modal_routes =
-        //         window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
-
-        //     const toggleModal = () => {
-        //         if (toggle_modal_routes && !has_any_real_account) {
-        //             toggleReadyToDepositModal();
-        //         }
-        //     };
-
-        //     const handleClickCashier = () => {
-        //         if (!has_any_real_account && is_virtual) {
-        //             toggleModal();
-        //         }
-        //         onClickLink();
-        //     };
-        //     return (
-        //         <div
-        //             className={classNames('header__menu-mobile-link', {
-        //                 'header__menu-mobile-link--disabled': is_disabled,
-        //             })}
-        //             onClick={handleClickCashier}
-        //         >
-        //             <Icon className='header__menu-mobile-link-icon' icon={icon} />
-        //             <span className='header__menu-mobile-link-text'>{text}</span>
-        //             {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-        //         </div>
-        //     );
-        // }
-
         if (is_language) {
             return (
                 <span

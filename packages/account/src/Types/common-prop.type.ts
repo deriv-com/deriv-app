@@ -22,6 +22,7 @@ export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
 
 export type TPlatformContext = {
     is_appstore: boolean;
+    displayName?: string;
 };
 
 export type TCurrencyConfig = {
@@ -96,4 +97,14 @@ export type TBinaryRoutes = {
     is_pre_appstore: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+};
+
+export type TFile = {
+    path: string;
+    lastModified: number;
+    lastModifiedDate: Date;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
 };

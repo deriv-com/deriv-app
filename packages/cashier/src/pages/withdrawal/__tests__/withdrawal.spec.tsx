@@ -34,6 +34,33 @@ jest.mock('@deriv/hooks', () => ({
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
+const cashier_mock = {
+    general_store: {
+        is_crypto: false,
+        setActiveTab: jest.fn(),
+    },
+    iframe: {
+        iframe_url: '',
+    },
+    transaction_history: {
+        is_crypto_transactions_visible: false,
+        onMount: jest.fn(),
+    },
+    withdraw: {
+        check10kLimit: jest.fn(),
+        is_10k_withdrawal_limit_reached: false,
+        is_withdraw_confirmed: false,
+        is_withdrawal_locked: false,
+        error: {
+            setErrorMessage: jest.fn(),
+        },
+        verification: {
+            error: {},
+        },
+        willMountWithdraw: jest.fn(),
+    },
+};
+
 describe('<Withdrawal />', () => {
     let setSideNotes: VoidFunction;
 
@@ -63,29 +90,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
+                    ...cashier_mock,
                     withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
+                        ...cashier_mock.withdraw,
                         is_withdrawal_locked: true,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -103,29 +111,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
+                    ...cashier_mock,
                     withdraw: {
-                        check10kLimit: jest.fn(),
+                        ...cashier_mock.withdraw,
                         is_10k_withdrawal_limit_reached: undefined,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -143,32 +132,7 @@ describe('<Withdrawal />', () => {
                 is_virtual: true,
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
         renderWithdrawal(mock_root_store as TRootStore);
@@ -183,32 +147,7 @@ describe('<Withdrawal />', () => {
                 currency: 'USD',
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
         mockUseCashierLocked.mockReturnValue(true);
@@ -225,29 +164,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
+                    ...cashier_mock,
                     withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
+                        ...cashier_mock.withdraw,
                         is_withdrawal_locked: true,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -269,32 +189,7 @@ describe('<Withdrawal />', () => {
                 currency: 'USD',
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
         renderWithdrawal(mock_root_store as TRootStore);
@@ -310,31 +205,14 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
+                    ...cashier_mock,
                     withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
+                        ...cashier_mock.withdraw,
                         error: {
                             is_show_full_page: true,
                             message: 'Error message',
                             setErrorMessage: jest.fn(),
                         },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -357,32 +235,7 @@ describe('<Withdrawal />', () => {
                 verification_code: { payment_withdraw: 'verification_code' },
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
         const { rerender } = renderWithdrawal(mock_root_store as TRootStore) as ReturnType<typeof render>;
@@ -403,29 +256,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
+                    ...cashier_mock,
                     general_store: {
                         is_crypto: true,
                         setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -443,29 +277,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
+                    ...cashier_mock,
                     withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
+                        ...cashier_mock.withdraw,
                         is_withdraw_confirmed: true,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -483,29 +298,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
+                    ...cashier_mock,
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                         onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -522,32 +318,7 @@ describe('<Withdrawal />', () => {
                 currency: 'USD',
             },
             modules: {
-                cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
-                    },
-                },
+                cashier: cashier_mock,
             },
         });
         renderWithdrawal(mock_root_store as TRootStore);
@@ -565,29 +336,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
+                    ...cashier_mock,
                     withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
+                        ...cashier_mock.withdraw,
                         is_withdrawal_locked: true,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },
@@ -607,30 +359,10 @@ describe('<Withdrawal />', () => {
             },
             modules: {
                 cashier: {
-                    general_store: {
-                        is_crypto: false,
-                        setActiveTab: jest.fn(),
-                    },
-                    iframe: {
-                        iframe_url: '',
-                    },
+                    ...cashier_mock,
                     transaction_history: {
+                        ...cashier_mock.transaction_history,
                         crypto_transactions: [{}],
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    withdraw: {
-                        check10kLimit: jest.fn(),
-                        is_10k_withdrawal_limit_reached: false,
-                        is_withdraw_confirmed: false,
-                        is_withdrawal_locked: false,
-                        error: {
-                            setErrorMessage: jest.fn(),
-                        },
-                        verification: {
-                            error: {},
-                        },
-                        willMountWithdraw: jest.fn(),
                     },
                 },
             },

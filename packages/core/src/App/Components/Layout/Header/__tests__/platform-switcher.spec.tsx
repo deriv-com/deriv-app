@@ -9,6 +9,16 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => true),
 }));
 
+const mock_connect_props = {
+    is_dark_mode: false,
+};
+
+jest.mock('Stores/connect.js', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
+}));
+
 const withRouter = <T extends object>(Component: React.ComponentType<T>) => {
     const history = createBrowserHistory();
     const WrapperComponent = <U extends object>(props: T & U) => (
@@ -51,5 +61,11 @@ describe('PlatformSwitcher component', () => {
         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
         const div_element = screen.getByTestId('dt_platform_switcher');
         expect(div_element).toHaveClass('platform-switcher--is-mobile');
+    });
+
+    it('should have "platform-switcher--dark-mode" class if "app_routing_history" is not an empty array and "is_dark_mode" is "false"', () => {
+        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
+        const div_element = screen.getByTestId('dt_platform_switcher');
+        expect(div_element).not.toHaveClass('platform-switcher--dark-mode');
     });
 });

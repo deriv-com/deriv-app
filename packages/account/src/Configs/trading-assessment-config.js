@@ -211,7 +211,7 @@ export const trading_assessment_questions = () => [
         field_type: 'radio',
         answer_options: [
             {
-                text: localize('Cancel your trade at any time within a specified time frame.'),
+                text: localize('Cancel your trade at any time within a specified timeframe.'),
                 value: 'Cancel your trade at any time within a chosen timeframe.',
             },
             {

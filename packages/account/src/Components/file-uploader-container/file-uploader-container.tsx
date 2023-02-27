@@ -1,10 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext, isDesktop, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FileUploader from './file-uploader.jsx';
+import FileUploader from './file-uploader';
+import { TFile, TPlatformContext } from 'Types';
+
+export type TFileUploaderContainer = {
+    is_description_enabled?: boolean;
+    getSocket: () => WebSocket;
+    onFileDrop: (file: TFile | undefined) => void;
+    onRef: (ref: React.RefObject<unknown> | undefined) => void;
+};
 
 const FileProperties = () => {
     const properties = [
@@ -37,8 +44,13 @@ const FileProperties = () => {
     );
 };
 
-const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+const FileUploaderContainer = ({
+    is_description_enabled = true,
+    getSocket,
+    onFileDrop,
+    onRef,
+}: TFileUploaderContainer) => {
+    const { is_appstore } = React.useContext<Partial<TPlatformContext>>(PlatformContext);
     const ref = React.useRef();
 
     const getSocketFunc = getSocket ?? WS.getSocket;
@@ -122,13 +134,6 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
             </div>
         </div>
     );
-};
-
-FileUploaderContainer.propTypes = {
-    is_description_enabled: PropTypes.bool,
-    getSocket: PropTypes.func,
-    onFileDrop: PropTypes.func,
-    onRef: PropTypes.func,
 };
 
 export default FileUploaderContainer;

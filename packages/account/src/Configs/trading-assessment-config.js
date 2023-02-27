@@ -154,7 +154,7 @@ export const trading_assessment_questions = () => [
         ],
     },
     {
-        question_text: localize('In your understanding, CFD trading allows you to:'),
+        question_text: localize('In your understanding, CFD trading allows you to'),
         section: 'trading_knowledge',
         form_control: 'cfd_trading_definition',
         field_type: 'radio',

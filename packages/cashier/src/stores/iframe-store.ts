@@ -83,7 +83,7 @@ export default class IframeStore {
         const { client, ui } = this.root_store;
 
         if (url) {
-            this.iframe_url = `${url}&theme=${ui.is_dark_mode_on ? 'dark' : 'light'}`;
+            this.iframe_url = `${url}&DarkMode=${ui.is_dark_mode_on ? 'on' : 'off'}`;
 
             const container = this.root_store.modules.cashier.general_store.active_container;
 

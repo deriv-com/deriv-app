@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { TChangeEvent } from './input-field';
+import { TChangeEvent, TInputMode } from './input-field';
 
 type TInputProps = {
     ariaLabel: string;
@@ -19,9 +19,9 @@ type TInputProps = {
     has_error?: boolean;
     id?: string;
     inline_prefix?: string;
-    inputmode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
+    inputmode?: TInputMode;
     is_autocomplete_disabled: boolean;
-    is_disabled?: string;
+    is_disabled?: boolean;
     is_hj_whitelisted: boolean;
     is_incrementable: boolean;
     is_read_only: boolean;

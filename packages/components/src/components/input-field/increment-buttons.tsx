@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../button';
 import Icon from '../icon';
+import { TButtonType } from './input-field';
 
 type IncrementButtonsProps = {
     decrementValue: (
@@ -16,7 +17,7 @@ type IncrementButtonsProps = {
     is_incrementable_on_long_press?: boolean;
     max_is_disabled: number | boolean;
     min_is_disabled: number | boolean;
-    type?: 'button' | 'submit' | 'reset';
+    type?: TButtonType;
 };
 
 const IncrementButtons = ({

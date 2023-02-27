@@ -7,6 +7,8 @@ import Tooltip from '../tooltip';
 import Text from '../text';
 
 export type TChangeEvent = { target: { name: string; value: number | string } };
+export type TInputMode = 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
+export type TButtonType = 'button' | 'submit' | 'reset';
 
 // ToDo: Refactor input_field
 // supports more than two different types of 'value' as a prop.
@@ -33,9 +35,9 @@ type TInputFieldProps = {
     helper?: string;
     icon?: React.ElementType;
     id?: string;
-    increment_button_type?: 'button' | 'submit' | 'reset';
+    increment_button_type?: TButtonType;
     inline_prefix?: string;
-    inputmode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
+    inputmode?: TInputMode;
     is_autocomplete_disabled: boolean;
     is_disabled?: boolean;
     is_error_tooltip_hidden: boolean;

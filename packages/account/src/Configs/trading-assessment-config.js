@@ -196,7 +196,7 @@ export const trading_assessment_questions = () => [
             { text: localize('Leverage guarantees profits.'), value: 'Leverage guarantees profits.' },
             {
                 text: localize(
-                    'Leverage lets you open larger positions for a fraction of the trade’s value, which can lead to increased profit or loss'
+                    'Leverage lets you open large positions for a fraction of trade value, which may result in increased profit or loss.'
                 ),
                 value: "Leverage lets you open larger positions for a fraction of the trade's value.",
             },

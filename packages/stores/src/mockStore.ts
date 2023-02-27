@@ -188,6 +188,7 @@ const mock = (): TRootStore => {
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
             is_crypto: false,
+            getToken: jest.fn(),
         },
         common: {
             error: {
@@ -240,7 +241,7 @@ const mock = (): TRootStore => {
             is_eu_user: false,
             no_CR_account: false,
             no_MF_account: false,
-            totalBalance: { balance: 0, currency: 'USD' },
+            total_balance: { balance: 0, currency: 'USD' },
             is_currency_switcher_disabled_for_mf: false,
             multipliers_account_status: null,
             openFailedVerificationModal: jest.fn(),
@@ -248,6 +249,7 @@ const mock = (): TRootStore => {
             selected_region: '',
             toggleRegulatorsCompareModal: jest.fn(),
             handleTabItemClick: jest.fn(),
+            switchAccount: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

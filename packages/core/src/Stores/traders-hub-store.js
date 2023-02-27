@@ -107,7 +107,7 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
-            totalBalance: computed,
+            total_balance: computed,
         });
 
         reaction(
@@ -793,7 +793,7 @@ export default class TradersHubStore extends BaseStore {
         openTopUpModal();
     }
 
-    get totalBalance() {
+    get total_balance() {
         if (this.selected_account_type === 'real') {
             return {
                 balance: this.platform_real_balance.balance + this.cfd_real_balance.balance,

@@ -1,6 +1,8 @@
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
+type TBalance = { balance: number; currency: string };
+
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
 type TAccountsList = {
@@ -170,6 +172,7 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    getToken: (loginid?: string) => string;
 };
 
 type TCommonStoreError = {
@@ -234,14 +237,14 @@ type TTradersHubStore = {
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
     selected_account_type: 'real' | 'demo';
-    platform_real_balance: { balance: number; currency: string };
-    cfd_demo_balance: { balance: number; currency: string };
-    platform_demo_balance: { balance: number; currency: string };
-    cfd_real_balance: { balance: number; currency: string };
+    platform_real_balance: TBalance;
+    cfd_demo_balance: TBalance;
+    platform_demo_balance: TBalance;
+    cfd_real_balance: TBalance;
     is_eu_user: boolean;
     no_CR_account: boolean;
     no_MF_account: boolean;
-    totalBalance: { balance: number; currency: string };
+    total_balance: TBalance;
     is_currency_switcher_disabled_for_mf: boolean;
     multipliers_account_status: 'need_verification' | 'failed' | 'pending' | null;
     openFailedVerificationModal: (selected_account_type: unknown) => void;
@@ -249,6 +252,7 @@ type TTradersHubStore = {
     selected_region: string;
     toggleRegulatorsCompareModal: () => void;
     handleTabItemClick: (index: number) => void;
+    switchAccount: (loginid: string) => Promise<void>;
 };
 
 export type TRootStore = {

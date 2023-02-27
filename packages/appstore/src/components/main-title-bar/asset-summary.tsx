@@ -8,7 +8,7 @@ import './asset-summary.scss';
 
 const AssetSummary = observer(() => {
     const { traders_hub } = useStore();
-    const { selected_account_type, is_eu_user, no_CR_account, no_MF_account, totalBalance } = traders_hub;
+    const { selected_account_type, is_eu_user, no_CR_account, no_MF_account, total_balance } = traders_hub;
     // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user));
 
@@ -30,8 +30,8 @@ const AssetSummary = observer(() => {
                     is_bubble_hover_enabled
                 >
                     <BalanceText
-                        currency={totalBalance.currency}
-                        balance={totalBalance.balance}
+                        currency={total_balance.currency}
+                        balance={total_balance.balance}
                         underline_style='dotted'
                     />
                 </Popover>

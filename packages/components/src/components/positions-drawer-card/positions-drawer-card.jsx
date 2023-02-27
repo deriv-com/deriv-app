@@ -26,6 +26,7 @@ const PositionsDrawerCard = ({
     is_sell_requested,
     is_unsupported,
     is_link_disabled,
+    measure,
     profit_loss,
     onClickCancel,
     onClickSell,
@@ -107,6 +108,7 @@ const PositionsDrawerCard = ({
             is_multiplier={is_multiplier}
             is_positions
             is_sell_requested={is_sell_requested}
+            measure={measure}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             onFooterEntered={onFooterEntered}
@@ -196,6 +198,7 @@ PositionsDrawerCard.propTypes = {
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    measure: PropTypes.func,
     onClickRemove: PropTypes.func,
     onClickSell: PropTypes.func,
     onClickCancel: PropTypes.func,

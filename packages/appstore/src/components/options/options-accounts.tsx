@@ -253,7 +253,7 @@ const OptionsAccounts = (props: TOptionsAccountsProps & RouteComponentProps) => 
                                         <AddOptions
                                             number_of_accounts={sortedAccountList.length}
                                             title={is_mf ? 'Manage account' : 'More Options accounts'}
-                                            description={'Including cryptocurrencies'}
+                                            description={localize('Including cryptocurrencies')}
                                             is_mf={is_mf}
                                         />
                                     </div>
@@ -268,7 +268,9 @@ const OptionsAccounts = (props: TOptionsAccountsProps & RouteComponentProps) => 
                                     appname={is_eu_account_title}
                                     disabled={false}
                                     onClickGet={() => ui.openRealAccountSignup()}
-                                    description={`Get a real ${is_eu_title} account, start trading and manage your funds.`}
+                                    description={localize(
+                                        `Get a real ${is_eu_title} account, start trading and manage your funds.`
+                                    )}
                                 />
                             </div>
                         )}
@@ -290,7 +292,7 @@ const OptionsAccounts = (props: TOptionsAccountsProps & RouteComponentProps) => 
                     footer={
                         <Modal.Footer has_separator style={{ position: 'fixed', bottom: '0px', width: '100%' }}>
                             <Button style={{ width: '100%' }} secondary onClick={() => setIsModalOpen(false)}>
-                                {'Back to trading hub'}
+                                {localize('Back to trading hub')}
                             </Button>
                         </Modal.Footer>
                     }

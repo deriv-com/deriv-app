@@ -52,6 +52,8 @@ export type TQuickStrategyForm = {
     setCurrentFocus: TSetCurrentFocus;
     setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
+    is_contract_dialog_open: boolean;
+    is_stop_bot_dialog_open: boolean;
 };
 
 export type TQuickStrategyFields = {
@@ -84,6 +86,8 @@ export type TQuickStrategyFooter = {
     submitForm: FormikProps<TFormValues>['submitForm'];
     setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
+    is_contract_dialog_open: boolean;
+    is_stop_bot_dialog_open: boolean;
 };
 
 export type TDropdownLists = Record<TDropdownItems, TDropdowns>;

@@ -17,6 +17,7 @@ const ContractCardSell = ({ contract_info, getCardLabels, is_sell_requested, onC
     return (
         should_show_sell && (
             <React.Fragment>
+                {is_valid_to_sell}
                 {is_valid_to_sell ? (
                     <Button
                         className={classNames('dc-btn--sell', {

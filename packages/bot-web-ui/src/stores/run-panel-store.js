@@ -12,6 +12,7 @@ export default class RunPanelStore {
         makeObservable(this, {
             active_index: observable,
             contract_stage: observable,
+            contract_resale_info: observable,
             dialog_options: observable,
             has_open_contract: observable,
             is_running: observable,
@@ -46,6 +47,7 @@ export default class RunPanelStore {
             onContractStatusEvent: action.bound,
             onClickSell: action.bound,
             onBotContractEvent: action.bound,
+            // contractResaleOffered: action.bound,
             onError: action.bound,
             showErrorMessage: action.bound,
             switchToJournal: action.bound,
@@ -78,7 +80,7 @@ export default class RunPanelStore {
     is_drawer_open = true;
     is_dialog_open = false;
     is_sell_requested = false;
-
+    contract_resale_info = [];
     run_id = '';
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
@@ -367,6 +369,7 @@ export default class RunPanelStore {
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
+        // observer.register('bot.contract', this.contractResaleOffered);
         observer.register('bot.contract', summary_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('Error', this.onError);
@@ -539,7 +542,14 @@ export default class RunPanelStore {
     clear = () => {
         observer.emit('statistics.clear');
     };
-
+    // contractResaleOffered(data){
+    //     console.log(data.is_valid_to_sell);
+    //     console.log(data.is_sold);
+    //     const { is_multiplier } = this.root_store.summary_card;
+    //     console.log(is_multiplier, "store multiplier")
+    //     this.contract_resale_info.push(data, is_multiplier);
+    //     console.log(this.contract_resale_info, 'this.contract_resale_info');
+    // }
     onBotContractEvent(data) {
         if (data?.is_sold) {
             this.is_sell_requested = false;

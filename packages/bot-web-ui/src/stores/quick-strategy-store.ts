@@ -53,6 +53,8 @@ export default class QuickStrategyStore {
             duration_unit_dropdown: observable,
             description: observable,
             is_dialog_open: observable,
+            is_contract_dialog_open: observable,
+            is_stop_bot_dialog_open: observable,
             initial_values: computed,
             types_strategies_dropdown: observable,
             onScrollStopDropdownList: action.bound,
@@ -103,6 +105,8 @@ export default class QuickStrategyStore {
     trade_type_dropdown: TTradeTypeDropdown = [];
     duration_unit_dropdown: TDurationUnitDropdown = [];
     is_dialog_open = false;
+    is_contract_dialog_open = false;
+    is_stop_bot_dialog_open = false;
 
     get initial_values() {
         const init = {
@@ -324,7 +328,6 @@ export default class QuickStrategyStore {
         const file_name = (strategies as TStrategies)?.[strategy_name as TKeysStrategies]?.label || localize('Unknown');
 
         const { derivWorkspace: workspace } = Blockly;
-
         load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
         if (button === 'run') {
@@ -606,5 +609,13 @@ export default class QuickStrategyStore {
 
     toggleStopBotDialog = (): void => {
         this.is_dialog_open = !this.is_dialog_open;
+    };
+
+    contractDialog = (): void => {
+        this.is_contract_dialog_open = !this.is_contract_dialog_open;
+    };
+
+    stopBotDialog = (): void => {
+        this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
     };
 }

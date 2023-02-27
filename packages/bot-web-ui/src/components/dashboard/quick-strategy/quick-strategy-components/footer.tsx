@@ -13,6 +13,8 @@ const QuickStrategyFooter = ({
     submitForm,
     setActiveTab,
     toggleStopBotDialog,
+    is_contract_dialog_open,
+    is_stop_bot_dialog_open,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
@@ -41,7 +43,6 @@ const QuickStrategyFooter = ({
                     type='button'
                     id='db-quick-strategy__button-edit'
                     text={localize('Create and edit')}
-                    is_disabled={!is_submit_enabled}
                     secondary
                     large
                     onClick={handleCreateEdit}
@@ -50,7 +51,6 @@ const QuickStrategyFooter = ({
                     type='button'
                     id='db-quick-strategy__button-run'
                     text={localize('Run')}
-                    is_disabled={!is_submit_enabled || is_stop_button_visible}
                     primary
                     large
                     onClick={handleRun}

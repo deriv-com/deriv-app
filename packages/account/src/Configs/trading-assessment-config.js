@@ -247,7 +247,7 @@ export const trading_assessment_questions = () => [
                 text: localize('When buying shares of a company.'),
                 value: 'When buying shares of a company.',
             },
-            { text: localize('All of the above'), value: 'All of the above.' },
+            { text: localize('All of the above.'), value: 'All of the above.' },
         ],
     },
 ];

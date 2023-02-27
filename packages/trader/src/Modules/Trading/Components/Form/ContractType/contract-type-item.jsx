@@ -12,7 +12,7 @@ const Item = ({ contract_types, handleInfoClick, handleSelect, name, value }) =>
             data-testid='dt_contract_item'
             key={idx}
             className={classNames('contract-type-item', {
-                'contract-type-item--selected': value === type.value,
+                'contract-type-item--selected': value === type.value || value.includes(type.value),
             })}
             name={name}
             value={type.value}

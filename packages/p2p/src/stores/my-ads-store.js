@@ -631,7 +631,6 @@ export default class MyAdsStore extends BaseStore {
             offer_amount: [
                 v => !!v,
                 v => !isNaN(v),
-                v => (values.type === buy_sell.SELL ? v <= general_store.advertiser_info.balance_available : !!v),
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
@@ -692,7 +691,6 @@ export default class MyAdsStore extends BaseStore {
         const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
-            localize('Max available amount is {{value}}', { value: general_store.advertiser_info.balance_available }),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),

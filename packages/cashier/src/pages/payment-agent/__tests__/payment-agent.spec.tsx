@@ -26,6 +26,18 @@ jest.mock('@deriv/hooks', () => ({
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
+const cashier_mock = {
+    general_store: {
+        setActiveTab: jest.fn(),
+    },
+    payment_agent: {
+        container: 'payment_agent',
+        is_withdraw: false,
+        active_tab_index: 0,
+        setActiveTabIndex: jest.fn(),
+    },
+};
+
 describe('<PaymentAgent />', () => {
     const renderPaymentAgent = (mock_root_store: TRootStore) => {
         return render(
@@ -42,19 +54,7 @@ describe('<PaymentAgent />', () => {
             client: {
                 is_virtual: false,
             },
-            modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    payment_agent: {
-                        container: 'payment_agent',
-                        is_withdraw: false,
-                        active_tab_index: 0,
-                        setActiveTabIndex: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderPaymentAgent(mock_root_store as TRootStore);
 
@@ -68,19 +68,7 @@ describe('<PaymentAgent />', () => {
                 is_virtual: false,
                 is_switching: true,
             },
-            modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    payment_agent: {
-                        container: 'payment_agent',
-                        is_withdraw: false,
-                        active_tab_index: 0,
-                        setActiveTabIndex: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderPaymentAgent(mock_root_store as TRootStore);
 
@@ -92,19 +80,7 @@ describe('<PaymentAgent />', () => {
             client: {
                 is_virtual: true,
             },
-            modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    payment_agent: {
-                        container: 'payment_agent',
-                        is_withdraw: false,
-                        active_tab_index: 0,
-                        setActiveTabIndex: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderPaymentAgent(mock_root_store as TRootStore);
 
@@ -118,19 +94,7 @@ describe('<PaymentAgent />', () => {
             client: {
                 is_virtual: false,
             },
-            modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    payment_agent: {
-                        container: 'payment_agent',
-                        is_withdraw: false,
-                        active_tab_index: 0,
-                        setActiveTabIndex: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         mockUseCashierLocked.mockReturnValue(true);
         renderPaymentAgent(mock_root_store as TRootStore);
@@ -143,19 +107,7 @@ describe('<PaymentAgent />', () => {
             client: {
                 is_virtual: false,
             },
-            modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    payment_agent: {
-                        container: 'payment_agent',
-                        is_withdraw: false,
-                        active_tab_index: 0,
-                        setActiveTabIndex: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         const { unmount } = renderPaymentAgent(mock_root_store as TRootStore);
 
@@ -169,19 +121,7 @@ describe('<PaymentAgent />', () => {
                 is_virtual: false,
                 verification_code: { payment_agent_withdraw: 'ABCdef' },
             },
-            modules: {
-                cashier: {
-                    general_store: {
-                        setActiveTab: jest.fn(),
-                    },
-                    payment_agent: {
-                        container: 'payment_agent',
-                        is_withdraw: false,
-                        active_tab_index: 0,
-                        setActiveTabIndex: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderPaymentAgent(mock_root_store as TRootStore);
 

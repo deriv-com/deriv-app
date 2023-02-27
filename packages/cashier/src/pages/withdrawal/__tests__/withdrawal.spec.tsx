@@ -131,9 +131,7 @@ describe('<Withdrawal />', () => {
                 currency: 'USD',
                 is_virtual: true,
             },
-            modules: {
-                cashier: cashier_mock,
-            },
+            modules: { cashier: cashier_mock },
         });
         renderWithdrawal(mock_root_store as TRootStore);
 
@@ -146,9 +144,7 @@ describe('<Withdrawal />', () => {
                 balance: '1000',
                 currency: 'USD',
             },
-            modules: {
-                cashier: cashier_mock,
-            },
+            modules: { cashier: cashier_mock },
         });
         mockUseCashierLocked.mockReturnValue(true);
         renderWithdrawal(mock_root_store as TRootStore);
@@ -188,9 +184,7 @@ describe('<Withdrawal />', () => {
                 balance: '0',
                 currency: 'USD',
             },
-            modules: {
-                cashier: cashier_mock,
-            },
+            modules: { cashier: cashier_mock },
         });
         renderWithdrawal(mock_root_store as TRootStore);
 
@@ -234,9 +228,7 @@ describe('<Withdrawal />', () => {
                 currency: 'USD',
                 verification_code: { payment_withdraw: 'verification_code' },
             },
-            modules: {
-                cashier: cashier_mock,
-            },
+            modules: { cashier: cashier_mock },
         });
         const { rerender } = renderWithdrawal(mock_root_store as TRootStore) as ReturnType<typeof render>;
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
@@ -317,9 +309,7 @@ describe('<Withdrawal />', () => {
                 balance: '1000',
                 currency: 'USD',
             },
-            modules: {
-                cashier: cashier_mock,
-            },
+            modules: { cashier: cashier_mock },
         });
         renderWithdrawal(mock_root_store as TRootStore);
 

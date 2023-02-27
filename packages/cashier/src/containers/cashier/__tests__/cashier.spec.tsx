@@ -62,6 +62,9 @@ describe('<Cashier />', () => {
                 is_logged_in: false,
                 is_logging_in: true,
             },
+            notifications: {
+                showAccountSwitchToRealNotification: jest.fn(),
+            },
             modules: {
                 cashier: {
                     withdraw: {
@@ -117,6 +120,9 @@ describe('<Cashier />', () => {
                 is_logging_in: true,
                 is_virtual: false,
                 is_crypto: true,
+            },
+            notifications: {
+                showAccountSwitchToRealNotification: jest.fn(),
             },
             modules: {
                 cashier: {
@@ -175,6 +181,9 @@ describe('<Cashier />', () => {
             ui: {
                 is_cashier_visible: true,
                 toggleCashier: jest.fn(),
+            },
+            notifications: {
+                showAccountSwitchToRealNotification: jest.fn(),
             },
             client: {
                 is_account_setting_loaded: true,
@@ -292,6 +301,9 @@ describe('<Cashier />', () => {
                 is_cashier_visible: true,
                 toggleCashier: jest.fn(),
             },
+            notifications: {
+                showAccountSwitchToRealNotification: jest.fn(),
+            },
             client: {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
@@ -349,6 +361,9 @@ describe('<Cashier />', () => {
                 is_cashier_visible: true,
                 toggleCashier: jest.fn(),
             },
+            notifications: {
+                showAccountSwitchToRealNotification: jest.fn(),
+            },
             client: {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
@@ -404,6 +419,9 @@ describe('<Cashier />', () => {
             ui: {
                 is_cashier_visible: true,
                 toggleCashier: jest.fn(),
+            },
+            notifications: {
+                showAccountSwitchToRealNotification: jest.fn(),
             },
             client: {
                 is_account_setting_loaded: true,

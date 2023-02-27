@@ -196,7 +196,7 @@ export const trading_assessment_questions = () => [
             { text: localize('Leverage guarantees profits.'), value: 'Leverage guarantees profits.' },
             {
                 text: localize(
-                    'Leverage lets you open larger positions for a fraction of the trade’s value, which can lead to increased losses or increased profits.'
+                    'Leverage lets you open larger positions for a fraction of the trade’s value, which can lead to increased profit or loss'
                 ),
                 value: "Leverage lets you open larger positions for a fraction of the trade's value.",
             },
@@ -233,13 +233,13 @@ export const trading_assessment_questions = () => [
         ],
     },
     {
-        question_text: localize('When are you required to pay an initial Margin?'),
+        question_text: localize('When are you required to pay an initial margin?'),
         section: 'trading_knowledge',
         form_control: 'required_initial_margin',
         field_type: 'radio',
         answer_options: [
             {
-                text: localize('When opening a Leveraged CFD trade.'),
+                text: localize('When opening a leveraged CFD trade.'),
                 value: 'When opening a Leveraged CFD trade.',
             },
             { text: localize('When trading multipliers.'), value: 'When trading Multipliers.' },

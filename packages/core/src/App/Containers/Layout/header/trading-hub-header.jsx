@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
 import { routes, ContentFlag, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -115,7 +115,7 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
     );
 };
 
-const ShowAccountToggle = ({
+const ShowAccountSwitcher = ({
     acc_switcher_disabled_message,
     account_type,
     balance,
@@ -177,6 +177,8 @@ const TradingHubHeader = ({
     is_acc_switcher_on,
     toggleAccountsDialog,
 }) => {
+    const { pathname } = useLocation();
+    const cashier_routes = pathname.startsWith(routes.cashier);
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
@@ -247,22 +249,24 @@ const TradingHubHeader = ({
                                 <Icon icon='IcUserOutline' size={20} />
                             </BinaryLink>
                         </Popover>
-                        <div className='trading-hub-header__menu-right--items--account-toggle'>
-                            <ShowAccountToggle
-                                acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                account_type={account_type}
-                                balance={
-                                    typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
-                                }
-                                is_disabled={is_acc_switcher_disabled}
-                                is_eu={is_eu}
-                                is_virtual={is_virtual}
-                                currency={currency}
-                                country_standpoint={country_standpoint}
-                                is_dialog_on={is_acc_switcher_on}
-                                toggleDialog={toggleAccountsDialog}
-                            />
-                        </div>
+                        {cashier_routes && (
+                            <div className='trading-hub-header__menu-right--items--account-toggle'>
+                                <ShowAccountSwitcher
+                                    acc_switcher_disabled_message={acc_switcher_disabled_message}
+                                    account_type={account_type}
+                                    balance={
+                                        typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
+                                    }
+                                    is_disabled={is_acc_switcher_disabled}
+                                    is_eu={is_eu}
+                                    is_virtual={is_virtual}
+                                    currency={currency}
+                                    country_standpoint={country_standpoint}
+                                    is_dialog_on={is_acc_switcher_on}
+                                    toggleDialog={toggleAccountsDialog}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <RealAccountSignup />

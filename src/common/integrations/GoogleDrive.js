@@ -57,7 +57,7 @@ class GoogleDriveUtil {
                 errLogger(err, translate('There was an error loading Google Drive API script.'));
             });
 
-        this.google_email = localStorage.getItem('google_email') ? localStorage.getItem('google_email') : null;
+        this.google_email = localStorage.getItem('google_email') || null;
     }
 
     handleCredentialResponse = response => {
@@ -81,21 +81,21 @@ class GoogleDriveUtil {
             client_id: GD_CONFIG.CLIENT_ID,
             callback: response => this.handleCredentialResponse(response),
             auto_select: true,
-            email: this.google_email ? this.google_email : '',
+            email: this.google_email || '',
         });
 
         google.accounts.id.prompt();
     };
 
     login = () => {
-        this.google_email = localStorage.getItem('google_email') ? localStorage.getItem('google_email') : null;
+        this.google_email = localStorage.getItem('google_email') || null;
         store.dispatch(setGoogleEmail(this.google_email));
         this.client.callback = response => {
             this.access_token = response.access_token;
             store.dispatch(setGdLoggedIn(true));
             google.accounts.id.prompt();
         };
-        this.requestAccessToken();
+        this.client.requestAccessToken({ prompt: '', hint: this.google_email || '' });
     };
 
     updateLoginStatus(is_logged_in) {
@@ -249,10 +249,6 @@ class GoogleDriveUtil {
                 });
         });
     }
-
-    requestAccessToken = () => {
-        if (!this.access_token) this.client.requestAccessToken({ prompt: '' });
-    };
 
     saveFile(options) {
         return new Promise((resolve, reject) => {

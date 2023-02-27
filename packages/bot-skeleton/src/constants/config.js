@@ -281,7 +281,7 @@ export const config = {
             index: 0,
             label: localize('Martingale'),
             description: localize(
-                'The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century. The strategy involves doubling the trade size every time a loss occurs, making up for all the previous losses.'
+                'The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'
             ),
         },
         dalembert: {

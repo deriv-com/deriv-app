@@ -34,7 +34,7 @@ const QuickStrategyFooter = ({
                 <Button
                     type='button'
                     id='db-quick-strategy__button-edit'
-                    text={localize('Create and edit')}
+                    text={localize('Edit')}
                     is_disabled={!is_submit_enabled}
                     secondary
                     large

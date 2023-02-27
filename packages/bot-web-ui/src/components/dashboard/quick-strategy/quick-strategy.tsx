@@ -19,7 +19,7 @@ const QuickStrategy = (props: TQuickStrategyProps) => {
                     className='quick-strategy__wrapper'
                     header={localize('Quick Strategy')}
                     onClickClose={loadDataStrategy}
-                    height_offset='80px'
+                    height_offset='8rem'
                 >
                     <QuickStrategyContainer {...props} />
                 </MobileFullPageModal>
@@ -29,7 +29,7 @@ const QuickStrategy = (props: TQuickStrategyProps) => {
                     className='modal--strategy'
                     is_open={is_strategy_modal_open}
                     toggleModal={loadDataStrategy}
-                    width={'540px'}
+                    width={'78rem'}
                 >
                     <div className='modal__content'>
                         <QuickStrategyContainer {...props} />

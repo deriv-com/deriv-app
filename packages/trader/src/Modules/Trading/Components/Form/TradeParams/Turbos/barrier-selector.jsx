@@ -4,6 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import BarriersList from './barriers-list.jsx';
 
@@ -47,6 +48,25 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
 
     return (
         <React.Fragment>
+            {isMobile() ? (
+                <div className='mobile-widget'>
+                    <div className='mobile-widget__spot'>{localize('Spot')}</div>
+                    <div className='mobile-widget__barriers-value'>{barrier_1}</div>
+                    <div className='mobile-widget__barrier'>{localize('Barrier')}</div>
+                </div>
+            ) : (
+                <Fieldset
+                    className='trade-container__fieldset trade-container__barriers'
+                    header={localize('Barrier')}
+                    is_center
+                    header_tooltip={header_tooltip_text}
+                >
+                    <div onClick={toggleBarriersTable} className='trade-container__barriers__wrapper'>
+                        <div className='trade-container__barriers-spot'>{localize('Spot')}</div>
+                        <div className='trade-container__barriers-value'>{barrier_1}</div>
+                    </div>
+                </Fieldset>
+            )}
             {is_barriers_table_expanded && (
                 <CSSTransition
                     appear
@@ -84,17 +104,6 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
                     </Fieldset>
                 </CSSTransition>
             )}
-            <Fieldset
-                className='trade-container__fieldset trade-container__barriers'
-                header={localize('Barrier')}
-                is_center
-                header_tooltip={header_tooltip_text}
-            >
-                <div onClick={toggleBarriersTable} className='trade-container__barriers__wrapper'>
-                    <div className='trade-container__barriers-spot'>{localize('Spot')}</div>
-                    <div className='trade-container__barriers-value'>{barrier_1}</div>
-                </div>
-            </Fieldset>
         </React.Fragment>
     );
 };

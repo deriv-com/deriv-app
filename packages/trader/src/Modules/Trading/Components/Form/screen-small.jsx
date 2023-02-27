@@ -10,6 +10,7 @@ import {
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import { MultiplierOptionsWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
+import BarrierSelector from './TradeParams/Turbos/barrier-selector.jsx';
 import RiskManagementInfo from '../Elements/Multiplier/risk-management-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
@@ -62,6 +63,7 @@ const CollapsibleTradeParams = ({
                     <BarrierMobile />
                 </div>
             )}
+            {isVisible('barrier_selector') && <BarrierSelector />}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
             {(is_multiplier || is_turbos) && (
@@ -69,11 +71,7 @@ const CollapsibleTradeParams = ({
                     <RiskManagementInfo />
                 </div>
             )}
-            {is_turbos && (
-                <div>
-                    <PayoutPerPoint />
-                </div>
-            )}
+            {is_turbos && <PayoutPerPoint />}
             <div
                 className={classNames('purchase-container', {
                     'purchase-container__turbos': is_turbos,

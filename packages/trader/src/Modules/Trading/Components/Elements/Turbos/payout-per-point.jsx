@@ -27,7 +27,7 @@ const PayoutPerPoint = ({ currency, proposal_info, contract_type }) => {
                     message={message}
                 />
             </div>
-            <Text size='xxs' weight='bold' className='payout-per-point__currency'>
+            <Text size='xs' weight='bold' className='payout-per-point__currency'>
                 <Money amount={stake} currency={currency} show_currency />
             </Text>
         </Fieldset>

@@ -272,6 +272,7 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
+
         return '740px'; // Account wizard modal
     };
 

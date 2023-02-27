@@ -81,7 +81,7 @@
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "^1.0.54",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-api": "^1.0.8",
+        "@deriv/deriv-api": "^1.0.11",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

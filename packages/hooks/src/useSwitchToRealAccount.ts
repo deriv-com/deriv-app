@@ -1,11 +1,15 @@
 import { useStore } from '@deriv/stores';
 import React from 'react';
+import { routes } from '@deriv/shared';
+import { useHistory } from 'react-router-dom';
 
 const useSwitchToRealAccount = () => {
-    const { client, notifications } = useStore();
+    const { client, notifications, ui } = useStore();
     const { account_list, has_active_real_account, is_virtual, is_pre_appstore, switchAccount, accounts, loginid } =
         client;
     const { showAccountSwitchToRealNotification } = notifications;
+    const { toggleReadyToDepositModal } = ui;
+    const history = useHistory();
 
     const switchToReal = React.useCallback(() => {
         if (is_pre_appstore && is_virtual && has_active_real_account) {
@@ -20,6 +24,9 @@ const useSwitchToRealAccount = () => {
                     showAccountSwitchToRealNotification(new_loginid, accounts[new_loginid].currency || 'USD');
                 }
             }
+        } else if (is_pre_appstore && is_virtual && !has_active_real_account) {
+            history.push(routes.traders_hub);
+            toggleReadyToDepositModal();
         }
     }, [
         accounts,
@@ -30,6 +37,8 @@ const useSwitchToRealAccount = () => {
         is_virtual,
         switchAccount,
         showAccountSwitchToRealNotification,
+        toggleReadyToDepositModal,
+        history,
     ]);
 
     return switchToReal;

@@ -213,6 +213,7 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleSetCurrencyModal: () => void;
+    toggleReadyToDepositModal: () => void;
 };
 
 type TMenuStore = {

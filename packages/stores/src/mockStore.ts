@@ -227,6 +227,7 @@ const mock = (): TRootStore => {
             setRealAccountSignupEnd: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
+            toggleReadyToDepositModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),

@@ -36,6 +36,20 @@ jest.mock('@deriv/hooks', () => ({
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
+const cashier_mock = {
+    payment_agent_transfer: {
+        error: {},
+        is_transfer_successful: false,
+        is_try_transfer_successful: false,
+        onMountPaymentAgentTransfer: jest.fn(),
+        resetPaymentAgentTransfer: jest.fn(),
+    },
+    general_store: {
+        is_loading: false,
+        setActiveTab: jest.fn(),
+    },
+};
+
 describe('<PaymentAgentTransfer />', () => {
     let modal_root_el: HTMLDivElement;
 
@@ -69,21 +83,7 @@ describe('<PaymentAgentTransfer />', () => {
                 balance: '100',
                 is_virtual: false,
             },
-            modules: {
-                cashier: {
-                    payment_agent_transfer: {
-                        error: {},
-                        is_transfer_successful: false,
-                        is_try_transfer_successful: false,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
-                    general_store: {
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
@@ -96,21 +96,7 @@ describe('<PaymentAgentTransfer />', () => {
                 balance: '100',
                 is_virtual: true,
             },
-            modules: {
-                cashier: {
-                    payment_agent_transfer: {
-                        error: {},
-                        is_transfer_successful: false,
-                        is_try_transfer_successful: false,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
-                    general_store: {
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
@@ -127,13 +113,7 @@ describe('<PaymentAgentTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    payment_agent_transfer: {
-                        error: {},
-                        is_transfer_successful: false,
-                        is_try_transfer_successful: false,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
+                    ...cashier_mock,
                     general_store: {
                         is_loading: true,
                         setActiveTab: jest.fn(),
@@ -152,21 +132,7 @@ describe('<PaymentAgentTransfer />', () => {
                 balance: '100',
                 is_virtual: false,
             },
-            modules: {
-                cashier: {
-                    payment_agent_transfer: {
-                        error: {},
-                        is_transfer_successful: false,
-                        is_try_transfer_successful: false,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
-                    general_store: {
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         mockUseCashierLocked.mockReturnValue(true);
         renderPaymentAgentTransfer(mock_root_store as TRootStore);
@@ -182,16 +148,10 @@ describe('<PaymentAgentTransfer />', () => {
             },
             modules: {
                 cashier: {
+                    ...cashier_mock,
                     payment_agent_transfer: {
+                        ...cashier_mock.payment_agent_transfer,
                         error: { is_show_full_page: true },
-                        is_transfer_successful: false,
-                        is_try_transfer_successful: false,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
-                    general_store: {
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
                     },
                 },
             },
@@ -207,21 +167,7 @@ describe('<PaymentAgentTransfer />', () => {
                 balance: '0',
                 is_virtual: false,
             },
-            modules: {
-                cashier: {
-                    payment_agent_transfer: {
-                        error: {},
-                        is_transfer_successful: false,
-                        is_try_transfer_successful: false,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
-                    general_store: {
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderPaymentAgentTransfer(mock_root_store as TRootStore);
 
@@ -236,16 +182,10 @@ describe('<PaymentAgentTransfer />', () => {
             },
             modules: {
                 cashier: {
+                    ...cashier_mock,
                     payment_agent_transfer: {
-                        error: {},
-                        is_transfer_successful: false,
+                        ...cashier_mock.payment_agent_transfer,
                         is_try_transfer_successful: true,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
-                    general_store: {
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
                     },
                 },
             },
@@ -263,16 +203,10 @@ describe('<PaymentAgentTransfer />', () => {
             },
             modules: {
                 cashier: {
+                    ...cashier_mock,
                     payment_agent_transfer: {
-                        error: {},
+                        ...cashier_mock.payment_agent_transfer,
                         is_transfer_successful: true,
-                        is_try_transfer_successful: false,
-                        onMountPaymentAgentTransfer: jest.fn(),
-                        resetPaymentAgentTransfer: jest.fn(),
-                    },
-                    general_store: {
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
                     },
                 },
             },

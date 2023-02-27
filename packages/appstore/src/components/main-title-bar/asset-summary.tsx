@@ -20,9 +20,15 @@ const AssetSummary = () => {
         no_CR_account,
         no_MF_account,
     } = traders_hub;
-    const { is_logging_in, is_switching } = client;
+    const { is_logging_in, is_switching, current_fiat_currency, has_fiat } = client;
     const { getExchangeRate } = common;
 
+    const crypto_is_first_and_has_fiat = has_fiat && current_fiat_currency !== platform_real_balance.currency;
+    const real_balance_currency_if_crypto_account_first = crypto_is_first_and_has_fiat
+        ? current_fiat_currency
+        : platform_real_balance.currency;
+
+    const [exchanged_rate_crypto_real, setExchangedRateCryptoReal] = React.useState(1);
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
     const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
 
@@ -30,7 +36,7 @@ const AssetSummary = () => {
         const getCurrentExchangeRate = (
             currency: string,
             setExchangeRate: React.Dispatch<React.SetStateAction<number>>,
-            base_currency = platform_real_balance.currency
+            base_currency = real_balance_currency_if_crypto_account_first
         ) => {
             if (currency) {
                 getExchangeRate(currency, base_currency).then((res: number) => {
@@ -39,7 +45,10 @@ const AssetSummary = () => {
             }
         };
 
-        if (cfd_real_balance.currency !== platform_real_balance.currency) {
+        if (crypto_is_first_and_has_fiat) {
+            getCurrentExchangeRate(platform_real_balance.currency, setExchangedRateCryptoReal);
+        }
+        if (cfd_real_balance.currency !== real_balance_currency_if_crypto_account_first) {
             getCurrentExchangeRate(cfd_real_balance.currency, setExchangedRateCfdReal);
         }
         if (cfd_demo_balance.currency !== platform_demo_balance.currency) {
@@ -48,16 +57,20 @@ const AssetSummary = () => {
     }, [
         cfd_demo_balance.currency,
         cfd_real_balance.currency,
+        crypto_is_first_and_has_fiat,
         getExchangeRate,
         platform_demo_balance.currency,
         platform_real_balance.currency,
+        real_balance_currency_if_crypto_account_first,
     ]);
 
     const getTotalBalance = () => {
         if (selected_account_type === 'real') {
             return {
-                balance: platform_real_balance.balance + cfd_real_balance.balance * exchanged_rate_cfd_real,
-                currency: platform_real_balance.currency,
+                balance:
+                    platform_real_balance.balance * exchanged_rate_crypto_real +
+                    cfd_real_balance.balance * exchanged_rate_cfd_real,
+                currency: real_balance_currency_if_crypto_account_first,
             };
         }
 

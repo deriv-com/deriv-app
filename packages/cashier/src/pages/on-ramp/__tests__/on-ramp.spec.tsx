@@ -40,6 +40,24 @@ jest.mock('@deriv/hooks', () => ({
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
+const cashier_mock = {
+    onramp: {
+        filtered_onramp_providers: [{ name: 'name' }],
+        is_onramp_modal_open: false,
+        onMountOnramp: jest.fn(),
+        onUnmountOnramp: jest.fn(),
+        resetPopup: jest.fn(),
+        setIsOnRampModalOpen: jest.fn(),
+        should_show_dialog: false,
+        onramp_popup_modal_title: 'Title of the onramp popup modal',
+    },
+    general_store: {
+        is_cashier_onboarding: false,
+        is_loading: false,
+        cashier_route_tab_index: 0,
+    },
+};
+
 describe('<OnRamp />', () => {
     let props: TOnRampProps;
 
@@ -89,20 +107,10 @@ describe('<OnRamp />', () => {
             },
             modules: {
                 cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
+                    ...cashier_mock,
                     general_store: {
-                        is_cashier_onboarding: false,
+                        ...cashier_mock.general_store,
                         is_loading: true,
-                        cashier_route_tab_index: 0,
                     },
                 },
             },
@@ -125,25 +133,7 @@ describe('<OnRamp />', () => {
                     },
                 ],
             },
-            modules: {
-                cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         mockUseCashierLocked.mockReturnValue(true);
         const { rerender } = renderOnRamp(mockRootStore as TRootStore) as ReturnType<typeof render>;
@@ -163,25 +153,7 @@ describe('<OnRamp />', () => {
                     },
                 ],
             },
-            modules: {
-                cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderOnRamp(mockRootStore as TRootStore);
         expect(screen.getByText('Select payment channel')).toBeInTheDocument();
@@ -203,20 +175,10 @@ describe('<OnRamp />', () => {
             },
             modules: {
                 cashier: {
+                    ...cashier_mock,
                     onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
+                        ...cashier_mock.onramp,
                         is_onramp_modal_open: true,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
                     },
                 },
             },
@@ -243,20 +205,10 @@ describe('<OnRamp />', () => {
             },
             modules: {
                 cashier: {
+                    ...cashier_mock,
                     onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
+                        ...cashier_mock.onramp,
                         is_onramp_modal_open: true,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
                     },
                 },
             },
@@ -278,25 +230,7 @@ describe('<OnRamp />', () => {
                     },
                 ],
             },
-            modules: {
-                cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderOnRamp(mockRootStore as TRootStore);
         expect(props.setSideNotes).toHaveBeenCalledTimes(1);
@@ -313,25 +247,7 @@ describe('<OnRamp />', () => {
                     },
                 ],
             },
-            modules: {
-                cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderOnRamp(mockRootStore as TRootStore);
         expect(screen.getByText('What is Fiat onramp?')).toBeInTheDocument();
@@ -349,25 +265,7 @@ describe('<OnRamp />', () => {
                     },
                 ],
             },
-            modules: {
-                cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderOnRamp(mockRootStore as TRootStore);
         const select = screen.getByTestId('dt_on_ramp_select_native');
@@ -401,25 +299,7 @@ describe('<OnRamp />', () => {
                     },
                 ],
             },
-            modules: {
-                cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
-                    },
-                },
-            },
+            modules: { cashier: cashier_mock },
         });
         renderOnRamp(mockRootStore as TRootStore);
         const select = screen.getByTestId('dt_on_ramp_select_native');

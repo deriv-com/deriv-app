@@ -6,7 +6,7 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { generatePlaceholderText } from 'Helpers/utils';
+import { generatePlaceholderText } from '../../../Helpers/utils';
 import {
     isSequentialNumber,
     isRecurringNumberRegex,

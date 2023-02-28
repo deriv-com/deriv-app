@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
-import { generatePlaceholderText } from 'Helpers/utils';
+import { generatePlaceholderText } from '../../../../Helpers/utils';
 import {
     Autocomplete,
     AutoHeightWrapper,

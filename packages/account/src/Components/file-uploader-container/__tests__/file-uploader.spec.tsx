@@ -52,7 +52,7 @@ describe('<FileUploader />', () => {
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
 
-        const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
+        const input: HTMLInputElement = screen.getByTestId('dt_file_upload_input');
         fireEvent.change(input, { target: { files: [file] } });
 
         await waitFor(() => {
@@ -105,7 +105,7 @@ describe('<FileUploader />', () => {
         render(<FileUploader {...props} />);
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
 
-        const input = screen.getByTestId('dt_file_upload_input') as HTMLInputElement;
+        const input: HTMLInputElement = screen.getByTestId('dt_file_upload_input');
         fireEvent.change(input, { target: { files: [file] } });
 
         await waitFor(() => {

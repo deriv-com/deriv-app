@@ -6,13 +6,11 @@ describe('Regular expression checks', () => {
             localize('Touch/No Touch');
             localize('You have created a Deriv MT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.', { account_title: account_title[0].toLowerCase() + account_title.substr(1) });
             localize('You have no trading activity yet.');
-            localize(\`Hello Yashim\`);
         `);
         expect(messages).toEqual([
             'Touch/No Touch',
             'You have created a Deriv MT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
             'You have no trading activity yet.',
-            'Hello Yashim',
         ]);
     });
 

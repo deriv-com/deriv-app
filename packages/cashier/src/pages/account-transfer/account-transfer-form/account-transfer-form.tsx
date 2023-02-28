@@ -21,6 +21,7 @@ import RecentTransaction from '../../../components/recent-transaction';
 import AccountTransferNote from './account-transfer-form-side-note';
 import SideNote from '../../../components/side-note';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -60,7 +61,7 @@ const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={!!account.balance && account.balance < 0}
+                    has_sign={Boolean(account.balance && account.balance < 0)}
                     show_currency
                 />
             </span>
@@ -83,7 +84,6 @@ const AccountTransferForm = observer(
         const {
             client,
             common: { is_from_derivgo },
-            modules: { cashier },
         } = useStore();
 
         const {
@@ -93,7 +93,7 @@ const AccountTransferForm = observer(
             is_pre_appstore,
             getLimits: onMount,
         } = client;
-        const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = cashier;
+        const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
 
         const {
             account_transfer_amount,

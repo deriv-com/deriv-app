@@ -309,7 +309,7 @@
         margin-bottom: 2.4rem;
 
         img {
-            width: 100%;
+            width: 90%;
         }
     }
 
@@ -344,6 +344,11 @@
                     height: 18.7rem;
                 } @else if ($i ==6) {
                     height: 4.4rem;
+                }
+            }
+            @if ($i ==5) {
+                img {
+                    width: 100%;
                 }
             }
         }

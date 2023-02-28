@@ -258,6 +258,7 @@ export default class ClientStore extends BaseStore {
             setCitizen: action.bound,
             is_mt5_password_not_set: computed,
             is_dxtrade_password_not_set: computed,
+            is_authenticated_with_idv_photoid: computed,
             is_financial_information_incomplete: computed,
             is_deposit_lock: computed,
             is_withdrawal_lock: computed,

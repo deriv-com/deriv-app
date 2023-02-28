@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
@@ -213,7 +213,12 @@ const CFDRealAccounts = ({
                                                             number_of_derived_accounts === index + 1) &&
                                                         account.platform !== CFD_PLATFORMS.DXTRADE && (
                                                             <AddDerived
-                                                                title={localize(`More ${account.name} accounts`)}
+                                                                title={
+                                                                    <Localize
+                                                                        i18n_default_text='More {{account.name}} accounts'
+                                                                        values={{ account_name }}
+                                                                    />
+                                                                }
                                                                 onClickHandler={() => {
                                                                     toggleJurisdictionModal();
                                                                     setAccountType({

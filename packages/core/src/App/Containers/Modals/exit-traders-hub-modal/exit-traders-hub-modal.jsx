@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import { connect } from 'Stores/connect';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
 import { isMobile, routes, ContentFlag } from '@deriv/shared';
@@ -11,8 +11,11 @@ const ExitTradersHubModal = ({
     is_exit_traders_hub_modal_visible,
     toggleExitTradersHubModal,
     setIsPreAppStore,
-    switchToCRAccount,
     content_flag,
+    switchAccount,
+    account_list,
+    active_accounts,
+    setIsLoggingIn,
 }) => {
     const history = useHistory();
 
@@ -40,14 +43,23 @@ const ExitTradersHubModal = ({
     };
 
     const onClickExitButton = async () => {
-        toggleExitTradersHubModal();
         setIsPreAppStore(false);
+        setIsLoggingIn(true);
+        const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+        toggleExitTradersHubModal();
+
         if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+            if (!cr_account) {
+                await switchAccount(account_list.find(acc => acc.loginid.startsWith('VRTC'))?.loginid);
+            }
             //if eu is currently selected , switch to non-eu on exiting tradershub
-            await switchToCRAccount();
+            await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
+
+        setIsLoggingIn(false);
         history.push(routes.root);
     };
+
     return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -88,5 +100,8 @@ export default connect(({ ui, client, traders_hub }) => ({
     is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     content_flag: traders_hub.content_flag,
-    switchToCRAccount: traders_hub.switchToCRAccount,
+    switchAccount: client.switchAccount,
+    account_list: client.account_list,
+    active_accounts: client.active_accounts,
+    setIsLoggingIn: client.setIsLoggingIn,
 }))(ExitTradersHubModal);

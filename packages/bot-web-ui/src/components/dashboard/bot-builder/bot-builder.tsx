@@ -11,6 +11,7 @@ import WorkspaceWrapper from './workspace-wrapper';
 import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 import TourSlider from '../tour-slider';
 import QuickStrategy from '../quick-strategy';
+import { blocksCoordinate } from '../../../../../bot-skeleton/src/scratch/hooks/block_svg';
 
 type TBotBuilder = {
     app: AppStore;
@@ -35,6 +36,10 @@ const BotBuilder = ({
         onMount();
         return () => onUnmount();
     }, []);
+
+    React.useEffect(() => {
+        if (active_tab === 1) blocksCoordinate();
+    }, [active_tab]);
 
     return (
         <>

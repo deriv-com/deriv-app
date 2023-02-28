@@ -168,6 +168,7 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     selected_type_strategy: TTypeStrategy;
     symbol_dropdown: TSymbolDropdown;
     trade_type_dropdown: TTradeTypeDropdown;
+    is_dialog_open: boolean;
     createStrategy: TCreateStrategy;
     getSizeDesc: TGetSizeDesc;
     onChangeDropdownItem: TOnChangeDropdownItem;
@@ -178,6 +179,7 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     loadDataStrategy: () => void;
     setCurrentFocus: TSetCurrentFocus;
     setActiveTab: (active_tab: number) => void;
+    toggleStopBotDialog: () => void;
 }>;
 
 export type TQSCache = {

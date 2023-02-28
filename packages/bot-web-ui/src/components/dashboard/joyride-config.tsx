@@ -117,7 +117,7 @@ export const DBOT_ONBOARDING = [
                 content={[localize('View the market price of your favourite assets.')]}
                 img={getImageLocation('ic-new-user-step-four.png')}
                 dashboard_tab_index={0}
-                step_index={3}
+                step_index={2}
             />
         ),
         ...joyride_props,
@@ -130,7 +130,7 @@ export const DBOT_ONBOARDING = [
                 content={[localize('Start with a video guide and the FAQs.')]}
                 img={getImageLocation('ic-new-user-step-five.png')}
                 dashboard_tab_index={0}
-                step_index={4}
+                step_index={3}
             />
         ),
         ...joyride_props,
@@ -142,7 +142,7 @@ export const DBOT_ONBOARDING = [
                 label={localize('Shortcuts')}
                 content={[localize('You can also use these shortcuts to import or build your bot.')]}
                 dashboard_tab_index={0}
-                step_index={5}
+                step_index={4}
             />
         ),
         placement: 'right',
@@ -156,7 +156,7 @@ export const DBOT_ONBOARDING = [
                 content={[localize("See your bot's performance in real-time.")]}
                 img={getImageLocation('ic-new-user-step-six.png')}
                 dashboard_tab_index={0}
-                step_index={6}
+                step_index={5}
             />
         ),
         placement: 'left',
@@ -170,7 +170,7 @@ export const DBOT_ONBOARDING = [
                 content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
                 img={getImageLocation('ic-new-user-step-seven.png')}
                 dashboard_tab_index={0}
-                step_index={7}
+                step_index={6}
             />
         ),
         locale: { last: localize('Next') },
@@ -198,7 +198,7 @@ const Step1 = ({ show_label = false }) => (
             <ul>
                 <li>
                     <Localize
-                        i18n_default_text='First, set <0>Market</0> to Synthetic Indices > Continuous Indices > Volatility 100 (1s) Index.'
+                        i18n_default_text='First, set <0>Market</0> to Derived > Continuous Indices > Volatility 100 (1s) Index.'
                         components={[<strong key={0} />]}
                     />
                 </li>
@@ -240,7 +240,7 @@ const Step1A = () => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='<0>Stake: USD</0> 10 (min: 0.35 - max: 50000)'
+                        i18n_default_text='<0>Stake: AUD</0> 10 (min: 0.35 - max: 50000)'
                         components={[<strong key={0} />]}
                     />
                 </li>
@@ -482,7 +482,7 @@ export const DBOT_ONBOARDING_MOBILE = [
         content: [
             <Localize
                 key='get-started=mobile'
-                i18n_default_text='Hi Hit <0>Start</0> for a quick tour to help you get started.'
+                i18n_default_text='Hi! Hit <0>Start</0> for a quick tour to help you get started.'
                 components={[<strong key={0} />]}
             />,
         ],
@@ -493,58 +493,46 @@ export const DBOT_ONBOARDING_MOBILE = [
         header: localize('Build from scratch'),
         img: getImageLocation('ic_onb_step_1.png'),
         content: [
-            localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
             localize(
-                'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
+                'Import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot, or choose from our pre-made Quick Strategies. '
             ),
         ],
         key: 2,
         step_key: 1,
     },
     {
-        header: localize('Start with a template'),
-        img: getImageLocation('ic_onb_step_2.png'),
-        content: [
-            localize(
-                'Load a template containing the Martingale, D’Alembert, or Oscar’s Grind strategy, and modify it as you wish.'
-            ),
-        ],
-        key: 3,
-        step_key: 2,
-    },
-    {
         header: localize('Monitor the market'),
         img: getImageLocation('ic_onb_step_3.png'),
         content: [localize('View the market price of your favourite assets.')],
-        key: 4,
-        step_key: 3,
+        key: 3,
+        step_key: 2,
     },
     {
         header: localize('Guides and FAQs to help you'),
         img: getImageLocation('ic_onb_step_4.png'),
         content: [localize('Start with a video guide and the FAQs.')],
-        key: 5,
-        step_key: 4,
+        key: 4,
+        step_key: 3,
     },
     {
         header: localize('Shortcuts'),
         img: getImageLocation('ic_onb_step_5.png'),
         content: [localize('You can also use these shortcuts to import or build your bot.')],
-        key: 6,
-        step_key: 5,
+        key: 5,
+        step_key: 4,
     },
     {
         header: localize('How is my bot doing?'),
         img: getImageLocation('ic_onb_step_6.png'),
         content: [localize("See your bot's performance in real-time.")],
-        key: 7,
-        step_key: 6,
+        key: 6,
+        step_key: 5,
     },
     {
         header: localize('Run or stop your bot'),
         img: getImageLocation('ic_onb_step_7.png'),
         content: [localize('Click Run when you want to start trading, and click Stop when you want to stop.')],
-        key: 8,
-        step_key: 7,
+        key: 7,
+        step_key: 6,
     },
 ];

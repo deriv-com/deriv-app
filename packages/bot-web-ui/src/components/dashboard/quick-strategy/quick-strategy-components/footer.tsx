@@ -8,9 +8,11 @@ const QuickStrategyFooter = ({
     is_onscreen_keyboard_active,
     is_submit_enabled,
     is_stop_button_visible,
+    is_dialog_open,
     setFieldValue,
     submitForm,
     setActiveTab,
+    toggleStopBotDialog,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
@@ -20,8 +22,12 @@ const QuickStrategyFooter = ({
 
     const handleRun = React.useCallback(() => {
         setActiveTab(1);
-        setFieldValue('button', 'run');
-        submitForm();
+        if (!is_dialog_open) {
+            toggleStopBotDialog();
+        } else {
+            setFieldValue('button', 'run');
+            submitForm();
+        }
     }, [is_submit_enabled]);
 
     return (

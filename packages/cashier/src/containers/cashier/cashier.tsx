@@ -11,13 +11,15 @@ import {
     VerticalTab,
     Loading,
 } from '@deriv/components';
+import { useOnrampVisible } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
-import { TCommonStore, TRoute, TUiStore } from '../../types';
-import './cashier.scss';
+import { TRootStore, TRoute } from '../../types';
+import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
+import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
     routes: TRoute[];
@@ -25,8 +27,8 @@ type TCashierProps = RouteComponentProps & {
     onMount: (should_remount?: boolean) => void;
     setAccountSwitchListener: () => void;
     setTabIndex: (index: number) => void;
-    routeBackInApp: TCommonStore['routeBackInApp'];
-    toggleCashier: TUiStore['toggleCashier'];
+    routeBackInApp: TRootStore['common']['routeBackInApp'];
+    toggleCashier: TRootStore['ui']['toggleCashier'];
     resetLastLocation: () => void;
     is_pre_appstore: boolean;
 };
@@ -42,18 +44,16 @@ type TCashierOptions = {
 };
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
-    const { common, ui, client, modules } = useStore();
-    const { cashier } = modules;
+    const { common, ui, client } = useStore();
     const {
         withdraw,
         general_store,
         account_transfer,
         transaction_history,
-        onramp,
         payment_agent_transfer,
         payment_agent,
         account_prompt_dialog,
-    } = cashier;
+    } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -67,13 +67,14 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = general_store;
     const { is_account_transfer_visible } = account_transfer;
     const { is_crypto_transactions_visible } = transaction_history;
-    const { is_onramp_tab_visible } = onramp;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
     const { resetLastLocation } = account_prompt_dialog;
     const { routeBackInApp, is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
     const { is_account_setting_loaded, is_logged_in, is_logging_in, is_pre_appstore } = client;
+    const is_onramp_visible = useOnrampVisible();
+
     React.useEffect(() => {
         toggleCashier();
         // we still need to populate the tabs shown on cashier
@@ -103,7 +104,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                 (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                (route.path !== routes.cashier_onramp || is_onramp_tab_visible) &&
+                (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {
                 options.push({

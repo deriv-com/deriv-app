@@ -8,23 +8,25 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
         trade_type_dropdown,
         active_index,
         description,
-        createStrategy,
         duration_unit_dropdown,
         types_strategies_dropdown,
-        getSizeDesc,
         initial_values,
         is_onscreen_keyboard_active,
         is_stop_button_visible,
+        selected_symbol,
+        selected_trade_type,
+        selected_duration_unit,
+        selected_type_strategy,
+        is_dialog_open,
+        createStrategy,
+        getSizeDesc,
         onChangeDropdownItem,
         onChangeInputValue,
         onHideDropdownList,
         onScrollStopDropdownList,
-        selected_symbol,
-        selected_trade_type,
         setCurrentFocus,
-        selected_duration_unit,
-        selected_type_strategy,
         setActiveTab,
+        toggleStopBotDialog,
     } = props;
 
     const symbol_dropdown_options = React.useMemo(
@@ -70,6 +72,8 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
             selected_type_strategy={selected_type_strategy}
             setCurrentFocus={setCurrentFocus}
             setActiveTab={setActiveTab}
+            toggleStopBotDialog={toggleStopBotDialog}
+            is_dialog_open={is_dialog_open}
         />
     );
 };

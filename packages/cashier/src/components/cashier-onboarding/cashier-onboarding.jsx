@@ -9,16 +9,11 @@ import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details.jsx';
 import CashierOnboardingSideNote from './cashier-onboarding-side-note.jsx';
 import SideNote from 'Components/side-note';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const CashierOnboarding = observer(({ setSideNotes }) => {
-    const {
-        client,
-        ui,
-        common,
-        modules: {
-            cashier: { general_store, payment_agent, account_prompt_dialog },
-        },
-    } = useStore();
+    const { client, ui, common } = useStore();
+    const { general_store, payment_agent, account_prompt_dialog } = useCashierStore();
     const {
         accounts,
         available_crypto_currencies,
@@ -31,6 +26,7 @@ const CashierOnboarding = observer(({ setSideNotes }) => {
     const {
         has_set_currency,
         onMountCashierOnboarding,
+        is_cashier_onboarding,
         setIsCashierOnboarding,
         setIsDeposit,
         setDepositTarget,
@@ -88,7 +84,7 @@ const CashierOnboarding = observer(({ setSideNotes }) => {
             setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={is_crypto} />]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_switching, accounts, is_landing_company_loaded]);
+    }, [is_switching, accounts, is_landing_company_loaded, is_cashier_onboarding]);
 
     const openRealAccount = target => {
         openRealAccountSignup('choose');

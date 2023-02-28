@@ -183,7 +183,7 @@ const RealAccountSignup = ({
                 <FinishedSetCurrency
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
-                    onCancel={closeModal}
+                    onCancel={closeSetCurrencySuccessModal}
                     onSubmit={closeModalThenOpenCashier}
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
@@ -200,7 +200,10 @@ const RealAccountSignup = ({
         },
         {
             body: local_props => (
-                <StatusDialogContainer currency={local_props.state_value.currency} closeModal={closeModal} />
+                <StatusDialogContainer
+                    currency={local_props.state_value.currency}
+                    closeModal={closeSetCurrencySuccessModal}
+                />
             ),
         },
         {
@@ -360,6 +363,10 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
+    const closeSetCurrencySuccessModal = () => {
+        closeRealAccountSignup();
+    };
+
     const closeModal = e => {
         replaceCashierMenuOnclick();
         // Do not close modal on external link and popover click event
@@ -375,12 +382,7 @@ const RealAccountSignup = ({
             localStorage.removeItem('real_account_signup_wizard');
         }
 
-        if (
-            modal_content[getActiveModalIndex()].action === 'signup' &&
-            e &&
-            e?.target.closest('.dc-icon') &&
-            !is_closing_create_real_account_modal
-        ) {
+        if (modal_content[getActiveModalIndex()].action === 'signup' && !is_closing_create_real_account_modal) {
             setIsClosingCreateRealAccountModal(true);
             return;
         }

@@ -88,9 +88,9 @@ const OptionsAccounts = (props: TOptionsAccountsProps & RouteComponentProps) => 
         return !!account.is_virtual && account.balance !== account_init_balance;
     };
 
-    const is_eu_title = is_eu ? 'Multipliers' : 'Options & Multipliers';
+    const is_eu_title = is_eu ? localize('Multipliers') : localize('Options & Multipliers');
 
-    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options and Multipliers account';
+    const is_eu_account_title = is_eu ? localize('Multipliers account') : localize('Options and Multipliers account');
     const is_mf = loginid?.startsWith('MF');
     return (
         <div className='options-accounts-container'>

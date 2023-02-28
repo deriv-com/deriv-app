@@ -5,7 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 import { isMobile } from '@deriv/shared';
 
-export const tour_step_config: Step[] = [
+export const getTourStepConfig = (): Step[] => [
     {
         title: (
             <React.Fragment>
@@ -63,7 +63,7 @@ export const tour_step_config: Step[] = [
     },
 ];
 
-export const high_risk_tour_step_config: Step[] = [
+export const getTourStepConfigHighRisk = (): Step[] => [
     {
         title: (
             <React.Fragment>
@@ -140,19 +140,18 @@ export const tour_styles_dark_mode: Styles = {
         fontWeight: 'bold',
     },
 };
-
-export const tour_step_locale: Locale = {
-    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
+export const getTourStepLocale = (): Locale => ({
+    back: <Button has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
     skip: localize('Skip'),
-};
+});
 
-export const high_risk_tour_step_locale: Locale = {
-    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
+export const getHighRiskTourStepLocale = (): Locale => ({
+    back: <Button has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
     skip: localize('Skip'),
-};
+});

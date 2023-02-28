@@ -414,7 +414,6 @@ export default class ClientStore extends BaseStore {
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
                 this.setPreferredLanguage(lang_from_url);
-                LocalStore.set(LANGUAGE_KEY, lang_from_url);
             }
         );
         // TODO: Remove this after setting trading_hub enabled for all users
@@ -1611,7 +1610,7 @@ export default class ClientStore extends BaseStore {
             });
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.history.replaceState({}, document.title, urlForLanguage(language));
+                window.history.replaceState({}, document.title, urlForLanguage(LocalStore.get(LANGUAGE_KEY)));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {
@@ -1636,7 +1635,14 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
+            if (account_settings.preferred_language !== LocalStore.get(LANGUAGE_KEY)) {
+                await WS.setSettings({
+                    set_settings: 1,
+                    preferred_language: LocalStore.get(LANGUAGE_KEY),
+                });
+            }
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
+
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {

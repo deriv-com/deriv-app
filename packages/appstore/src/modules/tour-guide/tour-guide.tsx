@@ -4,12 +4,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize, localize } from '@deriv/translations';
 import {
-    tour_step_config,
+    getTourStepConfig,
     tour_styles,
-    tour_step_locale,
+    getTourStepLocale,
     tour_styles_dark_mode,
-    high_risk_tour_step_config,
-    high_risk_tour_step_locale,
+    getTourStepConfigHighRisk,
+    getHighRiskTourStepLocale,
 } from 'Constants/tour-steps-config-new';
 import { useStores } from 'Stores/index';
 import { routes, ContentFlag } from '@deriv/shared';
@@ -30,6 +30,8 @@ const TourGuide = () => {
 
     const history = useHistory();
     const [joyride_index, setJoyrideIndex] = React.useState<number>(0);
+    const tour_step_locale = getTourStepLocale();
+    const high_risk_tour_step_locale = getHighRiskTourStepLocale();
 
     tour_step_locale.last = (
         <div
@@ -68,7 +70,7 @@ const TourGuide = () => {
         );
     }
 
-    if (tour_step_config.length === joyride_index + 1) {
+    if (getTourStepConfig().length === joyride_index + 1) {
         tour_step_locale.back = (
             <Button
                 has_effect
@@ -105,7 +107,7 @@ const TourGuide = () => {
             disableScrolling
             hideCloseButton
             disableCloseOnEsc
-            steps={low_risk ? tour_step_config : high_risk_tour_step_config}
+            steps={low_risk ? getTourStepConfig() : getTourStepConfigHighRisk()}
             styles={is_dark_mode_on ? tour_styles_dark_mode : tour_styles}
             locale={low_risk ? tour_step_locale : high_risk_tour_step_locale}
             floaterProps={{

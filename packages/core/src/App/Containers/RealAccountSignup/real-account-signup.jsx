@@ -363,7 +363,19 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
-    const closeSetCurrencySuccessModal = () => {
+    const closeSetCurrencySuccessModal = e => {
+        // Do not close modal on external link and popover click event
+        if (
+            e?.target.getAttribute('rel') === 'noopener noreferrer' ||
+            e?.target.closest('.redirect-notice') ||
+            e?.target.closest('.dc-popover__bubble')
+        ) {
+            return;
+        }
+        if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
+            sessionStorage.removeItem('post_real_account_signup');
+            localStorage.removeItem('real_account_signup_wizard');
+        }
         closeRealAccountSignup();
     };
 

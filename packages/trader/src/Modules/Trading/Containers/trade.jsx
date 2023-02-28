@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
@@ -52,6 +53,7 @@ const Trade = ({
     symbol,
     is_synthetics_available,
     is_synthetics_trading_market_available,
+    is_vanilla,
 }) => {
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -184,6 +186,7 @@ const Trade = ({
                                 is_chart_loading ||
                                 should_show_active_symbols_loading
                             }
+                            className={classNames({ 'vanilla-trade-chart': is_vanilla })}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <ChartTrade
@@ -244,6 +247,7 @@ export default connect(({ client, common, modules, ui }) => ({
     should_show_multipliers_onboarding: ui.should_show_multipliers_onboarding,
     onChange: modules.trade.onChange,
     setContractTypes: modules.trade.setContractTypes,
+    is_vanilla: modules.trade.is_vanilla,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------

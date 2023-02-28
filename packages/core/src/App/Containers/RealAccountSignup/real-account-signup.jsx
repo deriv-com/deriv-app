@@ -375,7 +375,12 @@ const RealAccountSignup = ({
             localStorage.removeItem('real_account_signup_wizard');
         }
 
-        if (modal_content[getActiveModalIndex()].action === 'signup' && e && !is_closing_create_real_account_modal) {
+        if (
+            modal_content[getActiveModalIndex()].action === 'signup' &&
+            e &&
+            e?.target.closest('.dc-icon') &&
+            !is_closing_create_real_account_modal
+        ) {
             setIsClosingCreateRealAccountModal(true);
             return;
         }

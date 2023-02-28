@@ -552,7 +552,7 @@
         }
 
         .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
-            max-width: unset;
+            max-width: 65rem;
             padding-bottom: 0.5rem;
             @include mobile() {
                 width: 90%;

@@ -99,7 +99,9 @@ type TClientStore = {
         };
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_status: GetAccountStatus & {
+        p2p_status?: string;
+    };
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;

@@ -26,6 +26,7 @@ import TourTriggrerDialog from './tour-trigger-dialog';
 import { getImageLocation } from '../../public-path';
 import TourSlider from './tour-slider';
 import BotNotification from './bot-notification';
+import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 
 type TDialogOptions = {
     title: string;
@@ -113,6 +114,16 @@ const Dashboard = ({
     };
 
     React.useEffect(() => {
+        if (active_tab === 1) {
+            if (is_drawer_open) {
+                initTrashCan(400);
+            } else {
+                initTrashCan(20);
+            }
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
+            }, 500);
+        }
         if (active_tab === 0 && has_file_loaded) {
             onEntered();
         }
@@ -132,7 +143,7 @@ const Dashboard = ({
         }
         tour_status = getTourSettings('onboard_tour_status');
         setTourStatus(tour_status);
-    }, [active_tab, handleJoyrideCallback, has_started_onboarding_tour, tour_status_ended, is_tour_dialog_visible]);
+    }, [active_tab, is_drawer_open, has_started_onboarding_tour, tour_status_ended, is_tour_dialog_visible]);
 
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');

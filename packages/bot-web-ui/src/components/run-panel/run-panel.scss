@@ -3,6 +3,7 @@
 **/
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .run-panel {
+    height: 0;
     &__container {
         height: var(--bot-content-height) !important;
         top: 10.4rem !important;

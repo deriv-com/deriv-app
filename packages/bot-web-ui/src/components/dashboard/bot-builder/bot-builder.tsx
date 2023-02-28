@@ -46,6 +46,7 @@ const BotBuilder = ({
                 className={classNames('bot-builder', {
                     'bot-builder--active': active_tab === 1 && !is_preview_on_popup,
                     'bot-builder--inactive': is_preview_on_popup,
+                    'bot-builder--tour-active': has_started_bot_builder_tour,
                 })}
             >
                 {is_preview_on_popup ? null : (

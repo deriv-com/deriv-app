@@ -11,7 +11,6 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
-import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-rebranding-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 
@@ -147,7 +146,6 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
-    const style = 'trading-hub-header__logo';
     return (
         <header className='trading-hub-header'>
             <div className='trading-hub-header__menu-left'>
@@ -158,7 +156,7 @@ const TradingHubHeader = ({
                 </MobileWrapper>
 
                 <div className='platform-switcher'>
-                    {is_dark_mode ? <DerivBrandLogo className={style} /> : <DerivBrandLogoDark className={style} />}
+                    <DerivBrandLogo className={'trading-hub-header__logo'} />
                 </div>
 
                 <DesktopWrapper>

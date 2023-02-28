@@ -13,19 +13,19 @@
     "platforms": {
         "trader": {
             "name": "DTrader",
-            "icon": "IcBrandDtrader"
+            "icon": "IcRebrandingDerivTrader"
         },
         "dbot": {
             "name": "DBot",
-            "icon": "IcBrandDbot"
+            "icon": "IcRebrandingDerivBot"
         },
         "mt5": {
             "name": "Deriv MT5",
-            "icon": "IcBrandDmt5"
+            "icon": "IcRebrandingDmt5"
         },
         "dxtrade": {
             "name": "Deriv X",
-            "icon": "IcBrandDxtrade"
+            "icon": "IcRebrandingDxtrade"
         },
         "derivez": {
             "name": "Deriv EZ",
@@ -33,11 +33,11 @@
         },
         "smarttrader": {
             "name": "SmartTrader",
-            "icon": "IcBrandSmarttrader"
+            "icon": "IcRebrandingSmartTrader"
         },
         "bbot": {
             "name": "Binary Bot",
-            "icon": "IcBrandBinarybot"
+            "icon": "IcRebrandingBinaryBot"
         },
         "go": {
             "name": "Deriv Go",

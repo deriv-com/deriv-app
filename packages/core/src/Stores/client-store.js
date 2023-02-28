@@ -1635,14 +1635,13 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            if (account_settings.preferred_language !== LocalStore.get(LANGUAGE_KEY)) {
+            if (account_settings?.preferred_language !== LocalStore.get(LANGUAGE_KEY)) {
                 await WS.setSettings({
                     set_settings: 1,
                     preferred_language: LocalStore.get(LANGUAGE_KEY),
                 });
             }
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
-
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {

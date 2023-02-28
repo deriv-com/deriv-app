@@ -10,7 +10,8 @@ const MenuItems = ({ item, hide_menu_item, toggleReadyToDepositModal, has_any_re
 
     const { id, link_to, href, text, image, logo, icon } = item;
 
-    const cashier_item = text() === 'Cashier';
+    const cashier_item = link_to === routes.cashier;
+
     const toggle_modal_routes =
         window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
 

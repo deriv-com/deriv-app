@@ -5,10 +5,11 @@
     "main": "src/index.ts",
     "dependencies": {
         "@deriv/api": "^1.0.0",
-        "@deriv/stores": "^1.0.0",
         "@deriv/shared": "^1.0.0",
-        "react": "^17.0.2",
-        "react-router-dom": "^5.2.0"
+        "@deriv/stores": "^1.0.0",
+        "history": "^5.0.0",
+        "react-router-dom": "^5.2.0",
+        "react": "^17.0.2"
     },
     "devDependencies": {
         "typescript": "^4.6.3",

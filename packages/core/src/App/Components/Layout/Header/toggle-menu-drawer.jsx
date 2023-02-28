@@ -24,13 +24,14 @@ const MenuLink = observer(
         const { has_any_real_account, is_virtual } = client;
         const { toggleReadyToDepositModal } = ui;
 
+        const cashier_link =
+            link_to === routes.cashier_deposit ||
+            link_to === routes.cashier_withdrawal ||
+            link_to === routes.cashier_acc_transfer;
+
         if (is_hidden) return null;
 
-        if (
-            (text === 'Deposit' || text === 'Withdrawal' || text === 'Transfer') &&
-            is_virtual &&
-            !has_any_real_account
-        ) {
+        if (cashier_link && is_virtual && !has_any_real_account) {
             const toggle_modal_routes =
                 window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
 

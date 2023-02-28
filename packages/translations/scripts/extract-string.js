@@ -2,7 +2,7 @@ const glob = require('glob');
 const path = require('path');
 const DOMParser = require('xmldom').DOMParser;
 
-const getRegexPattern = () => /(i18n_default_text={?|localize\()\s*(['`"])\s*(.*?)(?<!\\)\2\s*/gs;
+const getRegexPattern = () => /(i18n_default_text={?|localize\()\s*(['"])\s*(.*?)(?<!\\)\2\s*/gs;
 
 const getStringsFromInput = (input, i18n_marker = getRegexPattern()) => {
     const messages = [];

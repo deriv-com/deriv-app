@@ -1,6 +1,6 @@
 export const initTrashCan = (margin = 16, height = 36) => {
     /**
-     * Distance between trashcanand bottom edge of workspace.
+     * Distance between trashcan and bottom edge of workspace.
      * @type {number}
      * @private
      */

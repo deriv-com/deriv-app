@@ -1,7 +1,7 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
 import { Text, Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 
 export const tour_step_config: Step[] = [
@@ -26,9 +26,10 @@ export const tour_step_config: Step[] = [
         ),
         content: (
             <Text as='p'>
-                {localize(
-                    `Need help moving around?\n\nWe have a short turorial that might help. Hit Repeat tour to begin.`
-                )}
+                <Localize
+                    i18n_default_text='Need help moving around?<0></0>We have a short tutorial that might help. Hit Repeat tour to begin.'
+                    components={[<br key={0} />]}
+                />
             </Text>
         ),
 
@@ -58,7 +59,12 @@ export const eu_tour_step_config: Step[] = [
             </Text>
         ),
         content: (
-            <Text as='p'>{localize('Need help moving around?\n\nWe have a short turorial that might help.')}</Text>
+            <Text as='p'>
+                <Localize
+                    i18n_default_text='Need help moving around?<0></0>We have a short tutorial that might help. Hit Repeat tour to begin.'
+                    components={[<br key={0} />]}
+                />
+            </Text>
         ),
 
         target: '.trading-hub-header__tradinghub--onboarding--logo',

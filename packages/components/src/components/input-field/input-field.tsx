@@ -127,9 +127,12 @@ const InputField = ({
     const min_is_disabled = min_value && (+value <= +min_value || +local_value <= +min_value);
     let has_valid_length = true;
 
-    const changeValue = (e: TChangeEvent, callback?: (evt: TChangeEvent) => void) => {
+    const changeValue = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        callback?: (evt: React.ChangeEvent<HTMLInputElement>) => void
+    ) => {
         if (unit) {
-            e.target.value = e.target.value.toString().replace(unit, '').trim();
+            e.target.value = e.target.value.replace(unit, '').trim();
         }
 
         if (e.target.value === value && type !== 'checkbox') {
@@ -163,7 +166,7 @@ const InputField = ({
                         ? e.target.value
                         : e.target.value;
             } else if (!is_not_completed_number) {
-                e.target.value = value;
+                e.target.value = value.toString();
                 return;
             }
         }

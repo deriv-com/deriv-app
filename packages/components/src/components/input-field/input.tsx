@@ -1,11 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { TChangeEvent, TInputMode } from './input-field';
+import { TInputMode } from './input-field';
 
 type TInputProps = {
     ariaLabel: string;
-    changeValue: (e: TChangeEvent, callback?: (evt: TChangeEvent) => void) => void;
+    changeValue: (
+        e: React.ChangeEvent<HTMLInputElement>,
+        callback?: (evt: React.ChangeEvent<HTMLInputElement>) => void
+    ) => void;
     checked?: number | string;
     className?: string;
     classNameDynamicSuffix?: string;

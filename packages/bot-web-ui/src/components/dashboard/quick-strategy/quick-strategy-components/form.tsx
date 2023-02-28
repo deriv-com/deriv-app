@@ -22,6 +22,7 @@ const QuickStrategyForm = ({
     selected_duration_unit,
     selected_type_strategy,
     description,
+    is_dialog_open,
     createStrategy,
     onChangeDropdownItem,
     onChangeInputValue,
@@ -30,7 +31,7 @@ const QuickStrategyForm = ({
     setCurrentFocus,
     setActiveTab,
     toggleStopBotDialog,
-    is_dialog_open,
+    loadDataStrategy,
 }: TQuickStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
@@ -127,6 +128,7 @@ const QuickStrategyForm = ({
                             setActiveTab={setActiveTab}
                             toggleStopBotDialog={toggleStopBotDialog}
                             is_dialog_open={is_dialog_open}
+                            loadDataStrategy={loadDataStrategy}
                         />
                     </Form>
                 );

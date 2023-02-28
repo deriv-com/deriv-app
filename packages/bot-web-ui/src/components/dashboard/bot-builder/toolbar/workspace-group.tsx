@@ -3,8 +3,6 @@ import { localize } from '@deriv/translations';
 import ToolbarIcon from './toolbar-icon';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { Icon } from '@deriv/components';
-import ToolbarButton from './toolbar-button';
 
 type TWorkspaceGroup = {
     has_redo_stack: boolean;

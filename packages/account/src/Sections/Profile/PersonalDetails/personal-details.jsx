@@ -547,15 +547,24 @@ export const PersonalDetailsForm = ({
         if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
 
-    const { document_status, identity_status } = authentication_status;
-    const is_verified = document_status === 'verified' && identity_status === 'verified';
+    const is_verified =
+        authentication_status?.document_status === 'verified' && authentication_status?.identity_status === 'verified';
 
     const getRedirectionLink = () => {
-        if (document_status !== 'verified' && identity_status !== 'verified') {
+        if (
+            authentication_status?.document_status !== 'verified' &&
+            authentication_status?.identity_status !== 'verified'
+        ) {
             return '/account/proof-of-identity';
-        } else if (document_status === 'verified' && identity_status !== 'verified') {
+        } else if (
+            authentication_status?.document_status === 'verified' &&
+            authentication_status?.identity_status !== 'verified'
+        ) {
             return '/account/proof-of-identity';
-        } else if (document_status !== 'verified' && identity_status === 'verified') {
+        } else if (
+            authentication_status?.document_status !== 'verified' &&
+            authentication_status?.identity_status === 'verified'
+        ) {
             return '/account/proof-of-address';
         }
         return null;
@@ -1159,7 +1168,7 @@ export const PersonalDetailsForm = ({
                                     )}
                                 </React.Fragment>
                                 {!!current_landing_company?.support_professional_client && (
-                                    <React.Fragment>
+                                    <>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
                                             <FormSubHeader title={localize('Professional Client')} />
@@ -1234,7 +1243,7 @@ export const PersonalDetailsForm = ({
                                             </FormBodySection>
                                         </div>
                                         <div className='account-form__divider' />
-                                    </React.Fragment>
+                                    </>
                                 )}
                                 <FormSubHeader title={localize('Email preference')} />
                                 <FormBodySection
@@ -1317,6 +1326,7 @@ export const PersonalDetailsForm = ({
 };
 
 PersonalDetailsForm.propTypes = {
+    authentication_status: PropTypes.object,
     is_eu: PropTypes.bool,
     is_mf: PropTypes.bool,
     is_uk: PropTypes.bool,

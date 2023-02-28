@@ -115,9 +115,7 @@ const Dashboard = ({
 
     React.useEffect(() => {
         if (active_tab === 1) {
-            if (is_mobile) {
-                initTrashCan(-10);
-            } else if (is_drawer_open) {
+            if (is_drawer_open) {
                 initTrashCan(400);
             } else {
                 initTrashCan(20);

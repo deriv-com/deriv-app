@@ -259,6 +259,9 @@
         height: calc(100vh - 20rem);
         .blocklyTrash {
             transition: all 0.4s;
+            @include mobile {
+                display: none;
+            }
         }
     }
     &--tour-active {

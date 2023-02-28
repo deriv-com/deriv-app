@@ -42,6 +42,7 @@ const CFDRealAccounts = ({
               'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
           )
         : localize('Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.');
+
     const available_real_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',

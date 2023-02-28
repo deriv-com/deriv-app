@@ -30,6 +30,7 @@ type TAccountsList = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: number;
+    is_virtual: number;
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };

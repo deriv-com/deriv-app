@@ -113,7 +113,7 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
         </div>
     );
 };
-const MemoizedMenuLinks = React.memo(MenuLinks);
+
 const TradingHubHeader = ({
     content_flag,
     header_extension,
@@ -122,13 +122,10 @@ const TradingHubHeader = ({
     is_eu_country,
     is_eu,
     is_logged_in,
-    is_mobile,
     is_mt5_allowed,
     is_notifications_visible,
-    is_pre_appstore,
     is_route_modal_on,
     loginid,
-    menu_items,
     modal_data,
     notifications_count,
     platform,
@@ -139,7 +136,6 @@ const TradingHubHeader = ({
     toggleNotifications,
     toggleExitTradersHubModal,
     switchToCRAccount,
-    replaceCashierMenuOnclick,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
@@ -150,12 +146,6 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
-
-    React.useEffect(() => {
-        if (is_logged_in && menu_items) {
-            replaceCashierMenuOnclick();
-        }
-    }, []);
 
     return (
         <header
@@ -179,12 +169,7 @@ const TradingHubHeader = ({
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
-                <MemoizedMenuLinks
-                    is_logged_in={is_logged_in}
-                    is_mobile={is_mobile}
-                    items={menu_items}
-                    is_pre_appstore={is_pre_appstore}
-                />
+                <MenuLinks />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
@@ -277,18 +262,14 @@ TradingHubHeader.propTypes = {
     is_eu_country: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_logged_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_settings_modal_on: PropTypes.bool,
     loginid: PropTypes.string,
-    menu_items: PropTypes.array,
     modal_data: PropTypes.object,
     notifications_count: PropTypes.number,
     platform: PropTypes.string,
-    replaceCashierMenuOnclick: PropTypes.func,
     setIsPreAppStore: PropTypes.func,
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
@@ -300,7 +281,7 @@ TradingHubHeader.propTypes = {
     switchToCRAccount: PropTypes.func,
 };
 
-export default connect(({ client, common, modules, notifications, ui, menu, traders_hub }) => ({
+export default connect(({ client, common, modules, notifications, ui, traders_hub }) => ({
     header_extension: ui.header_extension,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
@@ -316,7 +297,6 @@ export default connect(({ client, common, modules, notifications, ui, menu, trad
     notifications_count: notifications.notifications.length,
     toggleNotifications: notifications.toggleNotificationsModal,
     loginid: client.loginid,
-    menu_items: menu.extensions,
     platform: common.platform,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,

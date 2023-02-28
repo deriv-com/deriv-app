@@ -58,7 +58,7 @@ export const eu_tour_step_config: Step[] = [
             </Text>
         ),
         content: (
-            <Text as='p'>{localize(`Need help moving around?\n\nWe have a short turorial that might help.`)}</Text>
+            <Text as='p'>{localize('Need help moving around?\n\nWe have a short turorial that might help.')}</Text>
         ),
 
         target: '.trading-hub-header__tradinghub--onboarding--logo',

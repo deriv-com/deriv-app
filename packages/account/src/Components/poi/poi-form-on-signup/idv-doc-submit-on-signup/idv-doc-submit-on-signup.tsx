@@ -1,5 +1,6 @@
-import { Formik, Field, FormikErrors, FormikValues, FormikHelpers, FormikProps } from 'formik';
 import React from 'react';
+import { useLocation } from 'react-router';
+import { Formik, Field, FormikValues, FormikHelpers, FormikErrors } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import {
     Autocomplete,
@@ -14,7 +15,14 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
-import { getDocumentData, getRegex } from '../../idv-document-submit/utils';
+import {
+    getDocumentData,
+    getRegex,
+    isSequentialNumber,
+    isRecurringNumberRegex,
+    preventEmptyClipboardPaste,
+} from '../../idv-document-submit/utils';
+import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 type TIdvDocSubmitOnSignup = {
@@ -37,12 +45,14 @@ export const IdvDocSubmitOnSignup = ({
     value,
     has_idv_error,
 }: TIdvDocSubmitOnSignup) => {
+    const location = useLocation();
+    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState<object[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [is_doc_selected, setDocSelected] = React.useState(false);
 
-    const document_data = citizen_data?.identity.services.idv.documents_supported;
+    const document_data = citizen_data.identity.services.idv.documents_supported;
     const {
         value: country_code,
         identity: {
@@ -91,6 +101,9 @@ export const IdvDocSubmitOnSignup = ({
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number } = values;
+        const is_sequential_number = isSequentialNumber(document_number);
+        const is_recurring_number = isRecurringNumberRegex(document_number);
+
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
@@ -100,6 +113,11 @@ export const IdvDocSubmitOnSignup = ({
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+        } else if (
+            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
+            document_number === document_type.example_format
+        ) {
+            errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
             if (!format_regex.test(document_number)) {
@@ -145,30 +163,11 @@ export const IdvDocSubmitOnSignup = ({
             validateOnChange
             validateOnBlur
         >
-            {({
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isValid,
-                setFieldValue,
-                touched,
-                values,
-            }: Pick<
-                FormikProps<FormikValues>,
-                | 'errors'
-                | 'handleBlur'
-                | 'handleChange'
-                | 'handleSubmit'
-                | 'isValid'
-                | 'setFieldValue'
-                | 'touched'
-                | 'values'
-            >) => (
+            {({ errors, handleBlur, handleChange, handleSubmit, isValid, setFieldValue, touched, values }) => (
                 <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
-                    {({ setRef }: { setRef: (instance: HTMLFormElement | null) => void }) => (
+                    {({ setRef }) => (
                         <form ref={setRef} className='poi-form-on-signup' onSubmit={handleSubmit} noValidate>
-                            <ThemedScrollbars height='calc(100vh - 80px)'>
+                            <ThemedScrollbars height='calc(100vh - 80px'>
                                 <div className='details-form'>
                                     <div className='poi-form-on-signup__fields'>
                                         <div className='proof-of-identity__container'>
@@ -280,9 +279,7 @@ export const IdvDocSubmitOnSignup = ({
                                                                             label={localize('Choose the document type')}
                                                                             list_items={document_list}
                                                                             value={values.document_type.text}
-                                                                            onChange={(
-                                                                                e: React.ChangeEvent<HTMLSelectElement>
-                                                                            ) => {
+                                                                            onChange={e => {
                                                                                 handleChange(e);
                                                                                 const selected_document:
                                                                                     | undefined
@@ -332,6 +329,7 @@ export const IdvDocSubmitOnSignup = ({
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
+                                                                    onPaste={preventEmptyClipboardPaste}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
                                                                     onKeyUp={(

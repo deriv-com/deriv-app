@@ -23,7 +23,7 @@ export default class MyProfileStore extends BaseStore {
     is_filter_modal_open = false;
     is_loading = false;
     is_submit_success = false;
-    is_trade_partners_list_empty = false;
+    is_trade_partners_list_empty = true;
     payment_method_value = undefined;
     payment_methods_list = [];
     payment_method_to_delete = {};
@@ -38,6 +38,7 @@ export default class MyProfileStore extends BaseStore {
     selected_trade_partner = {};
     should_hide_my_profile_tab = false;
     should_show_add_payment_method_form = false;
+    should_show_block_user_list_header = false;
     should_show_edit_payment_method_form = false;
     trade_partners_list = [];
 
@@ -80,6 +81,7 @@ export default class MyProfileStore extends BaseStore {
             selected_trade_partner: observable,
             should_hide_my_profile_tab: observable,
             should_show_add_payment_method_form: observable,
+            should_show_block_user_list_header: observable,
             should_show_edit_payment_method_form: observable,
             trade_partners_list: observable,
             advertiser_has_payment_methods: computed,
@@ -145,6 +147,7 @@ export default class MyProfileStore extends BaseStore {
             setSelectedTradePartner: action.bound,
             setShouldHideMyProfileTab: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
+            setShouldShowBlockUserListHeader: action.bound,
             setShouldShowEditPaymentMethodForm: action.bound,
             setTradePartnersList: action.bound,
         });
@@ -478,6 +481,10 @@ export default class MyProfileStore extends BaseStore {
 
                     this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
+                    this.setShouldShowBlockUserListHeader(
+                        this.is_trade_partners_list_empty && list.length === 0 && !this.search_term
+                    );
+
                     let filtered_list, partners_list;
 
                     if (this.search_term) {
@@ -495,8 +502,6 @@ export default class MyProfileStore extends BaseStore {
 
                         this.setTradePartnersList(partners_list);
                     }
-
-                    this.setIsTradePartnersListEmpty(list.length === 0 && !this.search_term);
                 } else {
                     general_store.setBlockUnblockUserError(response.error.message);
                 }
@@ -596,7 +601,7 @@ export default class MyProfileStore extends BaseStore {
 
         general_store.showModal({
             key: 'BlockUserModal',
-            props: { advertiser_name: advertiser.name, is_advertiser_blocked: advertiser.is_blocked },
+            props: { advertiser_name: advertiser.name, is_advertiser_blocked: !!advertiser.is_blocked },
         });
         this.setSelectedTradePartner(advertiser);
     }
@@ -847,6 +852,10 @@ export default class MyProfileStore extends BaseStore {
 
     setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {
         this.should_show_add_payment_method_form = should_show_add_payment_method_form;
+    }
+
+    setShouldShowBlockUserListHeader(should_show_block_user_list_header) {
+        this.should_show_block_user_list_header = should_show_block_user_list_header;
     }
 
     setShouldShowEditPaymentMethodForm(should_show_edit_payment_method_form) {

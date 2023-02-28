@@ -26,6 +26,14 @@ const BlockUserTable = () => {
             }
         );
 
+        reaction(
+            () => my_profile_store.trade_partners_list,
+            () => {
+                if (my_profile_store.trade_partners_list.length > 0 && my_profile_store.is_trade_partners_list_empty)
+                    my_profile_store.setIsTradePartnersListEmpty(false);
+            }
+        );
+
         return () => {
             my_profile_store.setTradePartnersList([]);
             my_profile_store.setSearchTerm('');

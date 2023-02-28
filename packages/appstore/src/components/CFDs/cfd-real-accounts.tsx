@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from '@deriv/translations';
-import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
+import { CFD_PLATFORMS, routes, getAccountListKey } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
@@ -9,11 +9,6 @@ import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountP
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
 import { useHistory } from 'react-router-dom';
-
-type TOpenAccountTransferMeta = {
-    category: string;
-    type?: string;
-};
 
 const CFDRealAccounts = ({
     isDerivedVisible,
@@ -69,6 +64,7 @@ const CFDRealAccounts = ({
             type: 'all',
         },
     ];
+
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
     const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 

@@ -177,7 +177,7 @@ export default class NotificationStore extends BaseStore {
 
                 if (
                     (notification.key && notification.key.includes('svg')) ||
-                    (!excluded_notifications && !excluded_notifications.includes(notification.key))
+                    (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
                 }
@@ -1437,7 +1437,7 @@ export default class NotificationStore extends BaseStore {
         this.notifications = notifications_array.filter(message =>
             message.key && message.key.includes('svg')
                 ? message
-                : !excluded_notifications && !excluded_notifications.includes(message.key)
+                : excluded_notifications && !excluded_notifications.includes(message.key)
         );
     }
 

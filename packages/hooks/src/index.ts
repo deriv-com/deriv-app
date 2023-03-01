@@ -6,4 +6,7 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useDocumentStatus } from './useDocumentStatus';
+export { default as useHasSetCurrency } from './useHasSetCurrency';
+export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
+export { default as useP2PNotificationCount } from './useP2PNotificationCount';
 export { default as useOnrampVisible } from './useOnrampVisible';

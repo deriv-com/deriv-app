@@ -130,11 +130,7 @@ const CryptoDeposit = observer(() => {
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
             <div className='crypto-deposit__header'>
-                <ArrowBack
-                    onClickHandler={() => {
-                        setIsDeposit(false);
-                    }}
-                />
+                <ArrowBack onClickHandler={() => setIsDeposit(false)} />
             </div>
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';
@@ -86,7 +86,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                     <Localize
                         i18n_default_text='{{amount}} {{currency}}'
                         values={{
-                            amount: formatMoney(selected_from.currency, receipt.amount_transferred, true),
+                            amount: receipt.amount_transferred,
                             currency: getCurrencyDisplayCode(selected_from.currency),
                         }}
                     />

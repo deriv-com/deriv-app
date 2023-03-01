@@ -290,7 +290,10 @@ export const trading_assessment_form_config = {
     },
 };
 
-const tradingAssessmentConfig = ({ real_account_signup_target }, TradingAssessmentNewUser) => {
+const tradingAssessmentConfig = (
+    { real_account_signup_target }: { real_account_signup_target: string },
+    TradingAssessmentNewUser: React.Component
+) => {
     return {
         header: {
             active_title: localize('Complete your trading assessment'),

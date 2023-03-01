@@ -1,25 +1,22 @@
 import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
-import { TSchema } from 'Types';
-
-type TUpgradeInfo = {
-    type: string;
-    can_upgrade: boolean;
-    can_upgrade_to: string;
-    can_open_multi: boolean;
-};
+import { TSchema, TUpgradeInfo } from 'Types';
+import { GetSettings } from '@deriv/api-types';
 
 type TAddressDetailsConfigProps = {
     upgrade_info: TUpgradeInfo;
     real_account_signup_target: string;
     residence: string;
-    account_settings: any;
+    account_settings: GetSettings;
 };
 
-const address_details_config: ({ account_settings, is_svg }: { account_settings: any; is_svg: boolean }) => TSchema = ({
+const address_details_config: ({
     account_settings,
     is_svg,
-}) => {
+}: {
+    account_settings: GetSettings;
+    is_svg: boolean;
+}) => TSchema = ({ account_settings, is_svg }) => {
     const is_gb = account_settings.country_code === 'gb';
     if (!account_settings) {
         return {};
@@ -196,7 +193,7 @@ const transformForResidence = (rules: TSchema, residence: string) => {
     return rules;
 };
 
-const transformConfig = (config: TSchema, { real_account_signup_target }: { real_account_signup_target: string }) => {
+const transformConfig = (config: TSchema, real_account_signup_target: string) => {
     // Remove required rule for svg clients
     if (!real_account_signup_target || real_account_signup_target === 'svg') {
         config.address_state.rules?.shift();

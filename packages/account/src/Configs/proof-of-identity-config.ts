@@ -1,6 +1,10 @@
+import { GetSettings } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 
-const proofOfIdentityConfig = ({ account_settings }, ProofOfIdentityForm) => {
+const proofOfIdentityConfig = (
+    { account_settings }: { account_settings: GetSettings },
+    ProofOfIdentityForm: React.Component
+) => {
     return {
         header: {
             active_title: localize('Identity information'),

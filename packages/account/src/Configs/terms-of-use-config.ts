@@ -1,7 +1,8 @@
 import { isDesktop, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TSchema } from 'Types';
 
-const terms_of_use_config = {
+const terms_of_use_config: TSchema = {
     agreed_tos: {
         supported_in: ['svg', 'iom'],
         default_value: false,
@@ -12,7 +13,11 @@ const terms_of_use_config = {
     },
 };
 
-const termsOfUseConfig = ({ real_account_signup_target }, TermsOfUse, is_appstore = false) => {
+const termsOfUseConfig = (
+    { real_account_signup_target }: { real_account_signup_target: string },
+    TermsOfUse: React.Component,
+    is_appstore = false
+) => {
     const active_title = is_appstore ? localize('Our terms of use') : localize('Terms of use');
     return {
         header: {

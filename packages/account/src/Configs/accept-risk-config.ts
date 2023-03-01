@@ -1,6 +1,7 @@
 import { getDefaultFields } from '@deriv/shared';
+import { TSchema } from 'Types';
 
-const accept_risk_config: any = {
+const accept_risk_config: TSchema = {
     accept_risk: {
         supported_in: ['maltainvest'],
         default_value: 1,

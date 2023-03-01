@@ -2,10 +2,10 @@ import fromEntries from 'object.fromentries';
 import { getPreBuildDVRs, TInitPreBuildDVRs, TOptions } from './declarative-validation-rules';
 
 type TConfig = {
-    default_value: string;
+    default_value: string | boolean | number;
     supported_in: string[];
-    rules: Array<(TOptions & string)[]>;
-    values: Record<string, string | boolean>;
+    rules?: Array<(TOptions & string)[]>;
+    values?: Record<string, string | boolean>;
 };
 type TSchema = { [key: string]: TConfig };
 

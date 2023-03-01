@@ -53,7 +53,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (selected_item && selected_item.value !== value) {
             onChange({ target: { name, value: selected_item.value } });
         }
-    }, [selected_item, onChange, name, value]);
+    }, [selected_item, onChange, name]);
 
     const handleInfoClick = clicked_item => {
         setInfoDialogVisibility(!is_info_dialog_open);

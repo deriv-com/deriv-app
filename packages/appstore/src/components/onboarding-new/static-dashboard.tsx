@@ -98,7 +98,7 @@ const StaticDashboard = ({
     }, [index]);
 
     const is_eu_title = eu_user ? localize('Multipliers') : localize('Options & Multipliers');
-    const is_eu_account_title = eu_user ? 'Multipliers account' : 'Deriv account';
+    const is_eu_account_title = eu_user ? localize('Multipliers account') : localize('Deriv account');
     const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
@@ -438,7 +438,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
-                                    appname='Derived'
+                                    appname={localize('Derived')}
                                     description={localize(
                                         'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
                                     )}
@@ -457,7 +457,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname='CFDs'
+                                    appname={localize('CFDs')}
                                     description={localize(
                                         'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
                                     )}
@@ -475,7 +475,7 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname='Financial'
+                                    appname={localize('Financial')}
                                     description={localize(
                                         'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
                                     )}
@@ -524,7 +524,7 @@ const StaticDashboard = ({
                             <StaticCFDAccountManager
                                 type='all'
                                 platform='dxtrade'
-                                appname='Deriv X'
+                                appname={localize('Deriv X')}
                                 description={localize(
                                     'Trade CFDs on Deriv X with financial markets and our Derived indices.'
                                 )}

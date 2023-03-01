@@ -112,7 +112,6 @@ const RealAccountSignup = ({
     is_real_acc_signup_on,
     real_account_signup_target,
     realAccountSignup,
-    replaceCashierMenuOnclick,
     routing_history,
     setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled,
@@ -291,7 +290,6 @@ const RealAccountSignup = ({
     };
 
     const closeModalThenOpenCashier = () => {
-        replaceCashierMenuOnclick();
         closeRealAccountSignup();
         history.push(routes.cashier_deposit);
     };
@@ -360,7 +358,6 @@ const RealAccountSignup = ({
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
     const closeModal = e => {
-        replaceCashierMenuOnclick();
         // Do not close modal on external link and popover click event
         if (
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
@@ -643,7 +640,6 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     routing_history: common.app_routing_history,
     setCFDScore: client.setCFDScore,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,

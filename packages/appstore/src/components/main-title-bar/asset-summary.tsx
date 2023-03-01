@@ -17,25 +17,23 @@ const AssetSummary = observer(() => {
 
     return (
         <div className='asset-summary'>
-            <React.Fragment>
-                {!isMobile() ? (
-                    <Text align='right' size='xs' line_height='s'>
-                        {localize('Total assets')}
-                    </Text>
-                ) : null}
-                <Popover
-                    alignment={isMobile() ? 'top' : 'left'}
-                    message={localize('Total assets in all your accounts')}
-                    zIndex={9999}
-                    is_bubble_hover_enabled
-                >
-                    <BalanceText
-                        currency={total_balance.currency}
-                        balance={total_balance.balance}
-                        underline_style='dotted'
-                    />
-                </Popover>
-            </React.Fragment>
+            {!isMobile() ? (
+                <Text align='right' size='xs' line_height='s'>
+                    {localize('Total assets')}
+                </Text>
+            ) : null}
+            <Popover
+                alignment={isMobile() ? 'top' : 'left'}
+                message={localize('Total assets in all your accounts')}
+                zIndex={9999}
+                is_bubble_hover_enabled
+            >
+                <BalanceText
+                    currency={total_balance.currency}
+                    balance={total_balance.balance}
+                    underline_style='dotted'
+                />
+            </Popover>
         </div>
     );
 });

@@ -186,7 +186,9 @@ const StaticDashboard = ({
                                         type='synthetic'
                                         platform='mt5'
                                         appname={has_account ? 'Derived SVG' : 'Derived'}
-                                        description='Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
+                                        description={localize(
+                                            'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
+                                        )}
                                         loginid={loginid}
                                         currency={currency}
                                         has_account={has_account}

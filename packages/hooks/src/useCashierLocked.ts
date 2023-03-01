@@ -4,8 +4,7 @@ const useCashierLocked = () => {
     const { client } = useStore();
     const { account_status } = client;
 
-    const is_cashier_locked =
-        account_status.status.some(status => status === 'cashier_locked');
+    const is_cashier_locked = account_status.status.some(status => status === 'cashier_locked');
 
     return is_cashier_locked;
 };

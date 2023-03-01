@@ -1,11 +1,11 @@
 import React from 'react';
-import { StoreProvider, TStores, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useIsSystemMaintenance from '../useIsSystemMaintenance';
 
 describe('useIsSystemMaintenance', () => {
     test('should be false if there is no system_maintenance status', () => {
-        const mock_root_store = mockStore({
+        const mock = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -13,7 +13,7 @@ describe('useIsSystemMaintenance', () => {
             },
         });
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_root_store as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useIsSystemMaintenance(), { wrapper });
 
@@ -21,13 +21,13 @@ describe('useIsSystemMaintenance', () => {
     });
 
     test('should be true if account_status is undefined', () => {
-        const mock_root_store = mockStore({
+        const mock = mockStore({
             client: {
                 account_status: undefined,
             },
         });
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_root_store as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useIsSystemMaintenance(), { wrapper });
 
@@ -35,7 +35,7 @@ describe('useIsSystemMaintenance', () => {
     });
 
     test('should be true if there is system_maintenance status', () => {
-        const mock_root_store = mockStore({
+        const mock = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['system_maintenance'],
@@ -43,7 +43,7 @@ describe('useIsSystemMaintenance', () => {
             },
         });
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_root_store as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useIsSystemMaintenance(), { wrapper });
 

@@ -3,9 +3,10 @@ import classNames from 'classnames';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-receipt.scss';
 
 type TSwitch = {
@@ -19,19 +20,12 @@ type TAccountTransferReceipt = {
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
-    const {
-        ui,
-        common,
-        client,
-        modules: {
-            cashier: { account_transfer },
-        },
-    } = useStore();
-
+    const { ui, common, client } = useStore();
+    const { account_transfer } = useCashierStore();
     const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;
     const { is_pre_appstore, loginid, switchAccount } = client;
-    const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccout } = account_transfer;
+    const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
     const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
 
@@ -70,7 +64,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         } else {
             // if the account transferred to is a Deriv MT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
-            setShouldSwitchAccout();
+            setShouldSwitchAccount();
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
@@ -92,7 +86,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                     <Localize
                         i18n_default_text='{{amount}} {{currency}}'
                         values={{
-                            amount: formatMoney(selected_from.currency, receipt.amount_transferred, true),
+                            amount: receipt.amount_transferred,
                             currency: getCurrencyDisplayCode(selected_from.currency),
                         }}
                     />

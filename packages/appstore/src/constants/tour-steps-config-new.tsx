@@ -3,8 +3,9 @@ import React from 'react';
 import { Text, Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
+import { isMobile } from '@deriv/shared';
 
-export const tour_step_config: Step[] = [
+export const getTourStepConfig = (): Step[] => [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
@@ -20,14 +21,14 @@ export const tour_step_config: Step[] = [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Non-EU and EU regulations')}
+                {localize('Choice of regulation')}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
         content: (
             <Text as='p'>
                 <Localize
-                    i18n_default_text='You can create real accounts with non-EU and EU regulations. Click the <0><0/> icon to learn more about these accounts.'
+                    i18n_default_text='You can create real accounts under EU or non-EU regulation. Click the <0><0/> icon to learn more about these accounts.'
                     components={[
                         <Text key={0}>
                             <Icon icon='IcInfoOutline' />
@@ -37,26 +38,25 @@ export const tour_step_config: Step[] = [
             </Text>
         ),
 
-        target: '.regulators-switcher__container',
+        target: isMobile() ? '.main-title-bar-mobile--regulator' : '.regulators-switcher__container',
         disableBeacon: true,
         disableOverlayClose: true,
     },
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize(`Trader's hub tour`)}
+                {localize("Trader's hub tour")}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
-        content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
-
+        content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,
     },
 ];
 
-export const high_risk_tour_step_config: Step[] = [
+export const getTourStepConfigHighRisk = (): Step[] => [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
@@ -72,12 +72,11 @@ export const high_risk_tour_step_config: Step[] = [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize(`Trader's hub tour`)}
+                {localize("Trader's hub tour")}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
-        content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
-
+        content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,
@@ -129,19 +128,18 @@ export const tour_styles_dark_mode: Styles = {
         fontWeight: 'bold',
     },
 };
-
-export const tour_step_locale: Locale = {
+export const getTourStepLocale = (): Locale => ({
     back: <Button has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
     skip: localize('Skip'),
-};
+});
 
-export const high_risk_tour_step_locale: Locale = {
+export const getHighRiskTourStepLocale = (): Locale => ({
     back: <Button has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
     skip: localize('Skip'),
-};
+});

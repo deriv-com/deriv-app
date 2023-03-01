@@ -408,7 +408,9 @@ export default class TradersHubStore extends BaseStore {
         }
 
         if (this.restricted_countries_filter_content) {
-            this.available_mt5_accounts = this.available_cfd_accounts.filter(account => account.name === 'Financial');
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account => account.market_type === 'financial'
+            );
             return;
         }
 

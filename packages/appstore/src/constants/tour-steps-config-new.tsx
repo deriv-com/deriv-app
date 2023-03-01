@@ -5,7 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 import { isMobile } from '@deriv/shared';
 
-export const tour_step_config: Step[] = [
+export const getTourStepConfig = (): Step[] => [
     {
         title: (
             <React.Fragment>
@@ -50,20 +50,19 @@ export const tour_step_config: Step[] = [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize(`Trader's hub tour`)}
+                    {localize("Trader's hub tour")}
                 </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
-        content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
-
+        content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,
     },
 ];
 
-export const high_risk_tour_step_config: Step[] = [
+export const getTourStepConfigHighRisk = (): Step[] => [
     {
         title: (
             <React.Fragment>
@@ -82,13 +81,12 @@ export const high_risk_tour_step_config: Step[] = [
         title: (
             <React.Fragment>
                 <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize(`Trader's hub tour`)}
+                    {localize("Trader's hub tour")}
+                    <div className='toggle-account-type__divider' />
                 </Text>
-                <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
-        content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
-
+        content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,
@@ -140,19 +138,18 @@ export const tour_styles_dark_mode: Styles = {
         fontWeight: 'bold',
     },
 };
-
-export const tour_step_locale: Locale = {
+export const getTourStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
     skip: localize('Skip'),
-};
+});
 
-export const high_risk_tour_step_locale: Locale = {
+export const getHighRiskTourStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
     skip: localize('Skip'),
-};
+});

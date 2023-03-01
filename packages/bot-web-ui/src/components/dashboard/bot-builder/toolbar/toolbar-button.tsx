@@ -6,7 +6,7 @@ type TToolbarButton = {
     button_id: string;
     button_classname: string;
     buttonOnClick: () => void;
-    icon: React.ReactElement;
+    icon?: React.ReactElement;
     button_text: string;
 };
 

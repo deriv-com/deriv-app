@@ -60,7 +60,6 @@ const Toolbox = ({
                     button_id='db-toolbar__get-started-button'
                     button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
                     buttonOnClick={loadDataStrategy}
-                    icon={<Icon icon='IcPuzzle' color='active' />}
                     button_text={localize('Quick strategies')}
                 />
                 <div id='gtm-toolbox' className='db-toolbox__content'>

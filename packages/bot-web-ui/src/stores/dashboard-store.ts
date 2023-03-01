@@ -260,7 +260,7 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
-        if (step === 8) {
+        if (step === 7) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
         }

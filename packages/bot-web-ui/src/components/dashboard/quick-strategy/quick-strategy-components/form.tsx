@@ -10,25 +10,27 @@ import { TQuickStrategyFormValues } from '../quick-strategy.types';
 import { TQuickStrategyForm } from './components.types';
 
 const QuickStrategyForm = ({
-    createStrategy,
     duration_unit_dropdown,
     types_strategies_dropdown,
     initial_values,
     is_onscreen_keyboard_active,
     is_stop_button_visible,
-    onChangeDropdownItem,
-    onChangeInputValue,
-    onHideDropdownList,
-    onScrollStopDropdownList,
     symbol_dropdown,
     trade_type_dropdown,
     selected_symbol,
     selected_trade_type,
     selected_duration_unit,
-    setCurrentFocus,
     selected_type_strategy,
     description,
+    createStrategy,
+    onChangeDropdownItem,
+    onChangeInputValue,
+    onHideDropdownList,
+    onScrollStopDropdownList,
+    setCurrentFocus,
     setActiveTab,
+    toggleStopBotDialog,
+    is_dialog_open,
 }: TQuickStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
@@ -128,6 +130,8 @@ const QuickStrategyForm = ({
                             setFieldValue={setFieldValue}
                             submitForm={submitForm}
                             setActiveTab={setActiveTab}
+                            toggleStopBotDialog={toggleStopBotDialog}
+                            is_dialog_open={is_dialog_open}
                         />
                     </Form>
                 );

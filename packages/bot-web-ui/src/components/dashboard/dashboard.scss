@@ -255,6 +255,21 @@
     width: calc(100vw - 4.6rem);
     height: var(--tab-content-height);
 
+    .injectionDiv {
+        height: calc(100vh - 20rem);
+        .blocklyTrash {
+            transition: all 0.4s;
+            @include mobile {
+                display: none;
+            }
+        }
+    }
+    &--tour-active {
+        .blocklyTrash {
+            display: none;
+        }
+    }
+
     &--active {
         z-index: 1;
     }
@@ -297,7 +312,7 @@
         margin-bottom: 2.4rem;
 
         img {
-            width: 100%;
+            width: 90%;
         }
     }
 
@@ -332,6 +347,11 @@
                     height: 18.7rem;
                 } @else if ($i ==6) {
                     height: 4.4rem;
+                }
+            }
+            @if ($i ==5) {
+                img {
+                    width: 100%;
                 }
             }
         }

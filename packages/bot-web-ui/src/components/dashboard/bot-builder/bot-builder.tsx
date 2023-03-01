@@ -12,6 +12,7 @@ import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 import TourSlider from '../tour-slider';
 import { setColors } from '../../../../../bot-skeleton/src/scratch/hooks/colours';
 import { DBot } from '@deriv/bot-skeleton';
+import { blocksCoordinate } from '../../../../../bot-skeleton/src/scratch/hooks/block_svg';
 
 type TBotBuilder = {
     app: AppStore;
@@ -64,12 +65,17 @@ const BotBuilder = ({
         return () => onUnmount();
     }, []);
 
+    React.useEffect(() => {
+        if (active_tab === 1) blocksCoordinate();
+    }, [active_tab]);
+
     return (
         <>
             <div
                 className={classNames('bot-builder', {
                     'bot-builder--active': active_tab === 1 && !is_preview_on_popup,
                     'bot-builder--inactive': is_preview_on_popup,
+                    'bot-builder--tour-active': has_started_bot_builder_tour,
                 })}
             >
                 {is_preview_on_popup ? null : (

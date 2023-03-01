@@ -61,7 +61,7 @@ const TourTriggrerDialog = ({
     const getTourHeaders = (tour_check: boolean, tab_id: number) => {
         let text;
         if (!tour_check) {
-            if (tab_id === 1) text = localize("Let's build a Bot!");
+            if (tab_id === 1) text = localize(is_mobile ? 'Bot Builder guide' : "Let's build a Bot!");
             else text = localize('Get started on DBot');
         } else if (tab_id === 1) text = localize('Congratulations');
         else text = localize('Want to retake the tour?');
@@ -80,15 +80,22 @@ const TourTriggrerDialog = ({
                             <div className='dc-dialog__content__description__text'>
                                 <Localize
                                     key={0}
-                                    i18n_default_text={'Here’s a quick guide on how to use DBot on the go.'}
+                                    i18n_default_text={
+                                        is_mobile
+                                            ? 'Here’s a quick guide on how to use DBot on the go.'
+                                            : 'Learn how to build your bot from scratch using a simple strategy.'
+                                    }
                                 />
                             </div>
                             <div className='dc-dialog__content__description__text'>
                                 <Localize
                                     key={0}
                                     i18n_default_text={
-                                        'You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
+                                        is_mobile
+                                            ? 'You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
+                                            : 'Hit the <0>Start</0> button to begin and follow the tutorial.'
                                     }
+                                    components={[<strong key={0} />]}
                                 />
                             </div>
                             <div className='dc-dialog__content__description__text'>

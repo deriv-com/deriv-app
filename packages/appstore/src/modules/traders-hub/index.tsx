@@ -15,7 +15,8 @@ import classNames from 'classnames';
 import './traders-hub.scss';
 
 const TradersHub = () => {
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client, ui } = useStores();
+    const { notification_messages_ui: Notifications } = ui;
     const { is_landing_company_loaded, is_logged_in } = client;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
@@ -79,6 +80,7 @@ const TradersHub = () => {
                 height_offset='50px'
                 is_disabled={isDesktop()}
             >
+                <Notifications />
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
                     <DesktopWrapper>

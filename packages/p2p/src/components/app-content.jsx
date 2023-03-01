@@ -29,7 +29,7 @@ const AppContent = () => {
         return <NicknameForm />;
     }
 
-    if (general_store.props.should_show_verification) {
+    if (/verification/.test(location.hash)) {
         return <Verification should_wrap />;
     }
 

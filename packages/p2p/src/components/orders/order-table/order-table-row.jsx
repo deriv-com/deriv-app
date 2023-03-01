@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { secondsToTimer } from 'Utils/date-time';
@@ -34,6 +34,11 @@ const OrderRow = ({ row: order }) => {
         };
     };
     const { general_store, order_store, sendbird_store } = useStores();
+    const {
+        notifications: { removeNotificationByKey, removeNotificationMessage },
+        client: { loginid },
+    } = useStore();
+
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const should_show_order_details = React.useRef(true);
@@ -86,9 +91,8 @@ const OrderRow = ({ row: order }) => {
             const { distance, label } = getTimeLeft(order_expiry_milliseconds);
 
             if (distance < 0) {
-                const { client, props } = general_store;
                 setRemainingTime(label);
-                setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
+                setOrderState(createExtendedOrderDetails(order.order_details, loginid, general_store.server_time));
                 clearInterval(interval.current);
                 setIsTimerVisible(false);
             } else {
@@ -113,8 +117,8 @@ const OrderRow = ({ row: order }) => {
                     setShouldShowRatingModal(false);
                     should_show_order_details.current = true;
                     order_store.setRatingValue(0);
-                    general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                    general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                    removeNotificationMessage({ key: `order-${id}` });
+                    removeNotificationByKey({ key: `order-${id}` });
                     order_store.setIsLoading(true);
                     order_store.setOrders([]);
                     order_store.loadMoreOrders({ startIndex: 0 });

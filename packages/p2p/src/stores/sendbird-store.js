@@ -187,7 +187,7 @@ export default class SendbirdStore extends BaseStore {
         const custom_type = '';
 
         this.active_chat_channel.getPreviousMessagesByTimestamp(
-            timestamp || this.root_store.general_store.props.server_time.get().utc().valueOf(),
+            timestamp || this.root_store.general_store.server_time.get().utc().valueOf(),
             is_inclusive_of_timestamp,
             result_size,
             reverse_results,
@@ -212,7 +212,7 @@ export default class SendbirdStore extends BaseStore {
             requestWS({ service: 'sendbird', service_token: 1 }).then(service_token_response => {
                 if (service_token_response.error) return;
 
-                const { server_time } = this.root_store.general_store.props;
+                const { server_time } = this.root_store.general_store;
                 const { service_token } = service_token_response;
 
                 this.setChatInfo({
@@ -385,7 +385,7 @@ export default class SendbirdStore extends BaseStore {
 
         // Add a placeholder message with a pending indicator
         const placeholder_msg_options = {
-            created_at: this.root_store.general_store.props.server_time.get().utc(),
+            created_at: this.root_store.general_store.server_time.get().utc(),
             chat_channel_url: this.active_chat_channel.url,
             message,
             id: msg_identifier,

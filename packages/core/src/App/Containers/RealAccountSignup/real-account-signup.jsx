@@ -106,7 +106,6 @@ const RealAccountSignup = ({
     history,
     is_belgium_residence,
     show_eu_related_content,
-    is_closing_create_real_account_modal,
     is_from_restricted_country,
     is_isle_of_man_residence,
     is_pre_appstore,
@@ -380,6 +379,7 @@ const RealAccountSignup = ({
     };
 
     const closeModal = e => {
+        // e.nativeEvent.preventDefault();
         replaceCashierMenuOnclick();
         // Do not close modal on external link and popover click event
         if (
@@ -394,11 +394,10 @@ const RealAccountSignup = ({
             localStorage.removeItem('real_account_signup_wizard');
         }
 
-        if (modal_content[getActiveModalIndex()].action === 'signup' && !is_closing_create_real_account_modal) {
+        if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);
             return;
         }
-
         closeRealAccountSignup();
     };
 
@@ -654,7 +653,6 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     has_fiat: client.has_fiat,
     has_real_account: client.has_active_real_account,
-    is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required

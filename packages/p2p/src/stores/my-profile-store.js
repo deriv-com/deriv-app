@@ -470,7 +470,8 @@ export default class MyProfileStore extends BaseStore {
                         key: 'ErrorModal',
                         props: {
                             error_message: response.error.message,
-                            error_modal_title: 'Unable to block advertiser',
+                            error_modal_button_text: localize('Got it'),
+                            error_modal_title: 'Permission Denied',
                             has_close_icon: false,
                             width: isMobile() ? '90rem' : '40rem',
                         },

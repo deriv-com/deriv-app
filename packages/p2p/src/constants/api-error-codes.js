@@ -4,6 +4,7 @@ export const api_error_codes = Object.freeze({
     DUPLICATE_ADVERT: 'DuplicateAdvert',
     EXCESSIVE_VERIFICATION_FAILURES: 'ExcessiveVerificationFailures',
     EXCESSIVE_VERIFICATION_REQUESTS: 'ExcessiveVerificationRequests',
+    INVALID_ADVERTISER_ID: 'InvalidAdvertiserID',
     INVALID_VERIFICATION_TOKEN: 'InvalidVerificationToken',
     ORDER_EMAIL_VERIFICATION_REQUIRED: 'OrderEmailVerificationRequired',
     ORDER_CREATE_FAIL_CLIENT_BALANCE: 'OrderCreateFailClientBalance',

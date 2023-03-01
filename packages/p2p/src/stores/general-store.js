@@ -8,7 +8,7 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from '../constants/api-error-codes';
+import { api_error_codes } from 'Constants/api-error-codes';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -22,6 +22,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    error_code = '';
     feature_level = null;
     formik_ref = null;
     inactive_notification_count = 0;
@@ -77,6 +78,7 @@ export default class GeneralStore extends BaseStore {
             balance: observable,
             feature_level: observable,
             formik_ref: observable,
+            error_code: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
@@ -133,6 +135,7 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
             setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
+            setErrorCode: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
             setSavedFormState: action.bound,
@@ -230,7 +233,10 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
-                    this.setBlockUnblockUserError(response.error.message);
+                    const { code, message } = response.error;
+                    this.setErrorCode(code);
+                    this.setBlockUnblockUserError(message);
+
                     if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
                         general_store.showModal({
                             key: 'ErrorModal',
@@ -633,6 +639,10 @@ export default class GeneralStore extends BaseStore {
 
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
+    }
+
+    setErrorCode(error_code) {
+        this.error_code = error_code;
     }
 
     setFeatureLevel(feature_level) {

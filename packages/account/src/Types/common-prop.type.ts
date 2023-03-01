@@ -58,18 +58,6 @@ export type TRealAccount = {
     error_code: number;
 };
 
-export type TApiContext = {
-    api_tokens: NonNullable<TToken[]> | undefined;
-    deleteToken: (token: string) => Promise<void>;
-    footer_ref: Element | DocumentFragment | undefined;
-    overlay_ref:
-        | ((...args: unknown[]) => unknown)
-        | InferProps<{
-              current: Requireable<unknown>;
-          }>;
-    toggleOverlay: () => void;
-};
-
 export type TPopoverAlignment = 'top' | 'right' | 'bottom' | 'left';
 
 export type TRoute = {
@@ -97,3 +85,19 @@ export type TBinaryRoutes = {
     is_logged_in: boolean;
     is_logging_in: boolean;
 };
+
+type TOptions = {
+    min?: number;
+    max?: number;
+    type?: string;
+    decimals?: string | number;
+    regex?: RegExp;
+};
+
+type TConfig = {
+    default_value: string;
+    supported_in: string[];
+    rules: Array<(TOptions & string)[]>;
+    values: Record<string, string | boolean>;
+};
+export type TSchema = { [key: string]: TConfig };

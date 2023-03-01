@@ -1,7 +1,25 @@
 import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
+import { TSchema } from 'Types';
 
-const address_details_config = ({ account_settings, is_svg }) => {
+type TUpgradeInfo = {
+    type: string;
+    can_upgrade: boolean;
+    can_upgrade_to: string;
+    can_open_multi: boolean;
+};
+
+type TAddressDetailsConfigProps = {
+    upgrade_info: TUpgradeInfo;
+    real_account_signup_target: string;
+    residence: string;
+    account_settings: any;
+};
+
+const address_details_config: ({ account_settings, is_svg }: { account_settings: any; is_svg: boolean }) => TSchema = ({
+    account_settings,
+    is_svg,
+}) => {
     const is_gb = account_settings.country_code === 'gb';
     if (!account_settings) {
         return {};
@@ -131,9 +149,9 @@ const address_details_config = ({ account_settings, is_svg }) => {
 };
 
 const addressDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence, account_settings },
-    AddressDetails,
-    is_appstore = false
+    { upgrade_info, real_account_signup_target, residence, account_settings }: TAddressDetailsConfigProps,
+    AddressDetails: React.Component,
+    is_appstore: boolean
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
@@ -166,22 +184,22 @@ const addressDetailsConfig = (
  * @param {string} residence - Client's residence
  * @return {object} rules - Transformed rules
  */
-const transformForResidence = (rules, residence) => {
+const transformForResidence = (rules: TSchema, residence: string) => {
     // Isle of Man Clients do not need to fill out state since API states_list is empty.
     if (residence === 'im') {
-        rules.address_state.rules.shift();
+        rules.address_state.rules?.shift();
     }
     // GB residence are required to fill in the post code.
     if (/^(im|gb)$/.test(residence)) {
-        rules.address_postcode.rules.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
+        rules.address_postcode.rules?.splice(0, 0, ['req', localize('Postal/ZIP code is required')]);
     }
     return rules;
 };
 
-const transformConfig = (config, { real_account_signup_target }) => {
+const transformConfig = (config: TSchema, { real_account_signup_target }: { real_account_signup_target: string }) => {
     // Remove required rule for svg clients
     if (!real_account_signup_target || real_account_signup_target === 'svg') {
-        config.address_state.rules.shift();
+        config.address_state.rules?.shift();
     }
 
     return config;

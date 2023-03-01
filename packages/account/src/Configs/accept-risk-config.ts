@@ -1,13 +1,16 @@
 import { getDefaultFields } from '@deriv/shared';
 
-const accept_risk_config = {
+const accept_risk_config: any = {
     accept_risk: {
         supported_in: ['maltainvest'],
         default_value: 1,
     },
 };
 
-const acceptRiskConfig = ({ real_account_signup_target }, AcceptRiskForm) => {
+const acceptRiskConfig = (
+    { real_account_signup_target }: { real_account_signup_target: string },
+    AcceptRiskForm: React.Component
+) => {
     return {
         header: {},
         body: AcceptRiskForm,

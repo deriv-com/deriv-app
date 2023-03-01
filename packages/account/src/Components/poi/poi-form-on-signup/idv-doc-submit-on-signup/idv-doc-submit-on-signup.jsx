@@ -32,7 +32,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [selected_doc, setDocSelected] = React.useState(null);
+    const [selected_doc, setSelectedDoc] = React.useState(null);
 
     const document_data = citizen_data.identity.services.idv.documents_supported;
     const {
@@ -224,7 +224,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                             'No results found' ||
                                                                                         !item.text
                                                                                     ) {
-                                                                                        setDocSelected(null);
+                                                                                        setSelectedDoc(null);
                                                                                         resetDocumentItemSelected(
                                                                                             setFieldValue
                                                                                         );
@@ -234,7 +234,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                             item,
                                                                                             true
                                                                                         );
-                                                                                        setDocSelected(item.id);
+                                                                                        setSelectedDoc(item.id);
                                                                                         if (has_visual_sample) {
                                                                                             setDocumentImage(
                                                                                                 item.sample_image || ''
@@ -263,7 +263,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                     e.target.value
                                                                                 );
                                                                                 if (selected_document) {
-                                                                                    setDocSelected(
+                                                                                    setSelectedDoc(
                                                                                         selected_document.id
                                                                                     );
                                                                                     setFieldValue(

@@ -25,7 +25,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [selected_doc, setDocSelected] = React.useState(null);
+    const [selected_doc, setSelectedDoc] = React.useState(null);
 
     const document_data = selected_country.identity.services.idv.documents_supported;
 
@@ -189,11 +189,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
                                                             if (item.text === 'No results found' || !item.text) {
-                                                                setDocSelected(null);
+                                                                setSelectedDoc(null);
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             } else {
                                                                 setFieldValue('document_type', item, true);
-                                                                setDocSelected(item.id);
+                                                                setSelectedDoc(item.id);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
                                                                 }
@@ -216,7 +216,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                         handleChange(e);
                                                         const selected_document = getDocument(e.target.value);
                                                         if (selected_document) {
-                                                            setDocSelected(selected_document.id);
+                                                            setSelectedDoc(selected_document.id);
                                                             setFieldValue('document_type', selected_document, true);
                                                             if (has_visual_sample) {
                                                                 setDocumentImage(selected_document.sample_image);

@@ -140,11 +140,12 @@ class GoogleDriveUtil {
                 const picker = new google.picker.PickerBuilder();
                 picker
                     .setOrigin(`${window.location.protocol}//${window.location.host}`)
+                    .setDeveloperKey(this.api_key)
+                    .setAppId(this.app_id)
+                    .setOAuthToken(this.access_token)
                     .setTitle(translate(title))
                     .addView(view)
                     .setLocale(getPickerLanguage())
-                    .setOAuthToken(this.access_token)
-                    .setDeveloperKey(this.api_key)
                     .setCallback(pickerCallback)
                     .build()
                     .setVisible(true);

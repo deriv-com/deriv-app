@@ -30,6 +30,7 @@ type TAccountsList = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: number;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
 };
 

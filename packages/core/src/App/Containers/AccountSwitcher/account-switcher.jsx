@@ -473,6 +473,15 @@ const AccountSwitcher = props => {
         total +=
             props.obj_total_balance.amount_dxtrade > 0 ? props.obj_total_balance.amount_dxtrade : dxtrade_total.balance;
 
+        // subtract  MF account balance from total for DIEL accounts outside of traders hub
+        if (
+            !props.is_pre_appstore &&
+            !props.no_MF_account &&
+            !props.no_CR_account &&
+            props.obj_total_balance.amount_real_MF > 0
+        )
+            total -= +props.obj_total_balance.amount_real_MF;
+
         return props.is_pre_appstore ? traders_hub_total : total;
     };
 
@@ -1364,6 +1373,8 @@ AccountSwitcher.propTypes = {
     real_account_creation_unlock_date: PropTypes.number,
     setShouldShowCooldownModal: PropTypes.func,
     content_flag: PropTypes.string,
+    no_CR_account: PropTypes.bool,
+    no_MF_account: PropTypes.bool,
 };
 
 const account_switcher = withRouter(
@@ -1430,6 +1441,8 @@ const account_switcher = withRouter(
         trading_platform_available_accounts: client.trading_platform_available_accounts,
         show_eu_related_content: traders_hub.show_eu_related_content,
         content_flag: traders_hub.content_flag,
+        no_CR_account: traders_hub.no_CR_account,
+        no_MF_account: traders_hub.no_MF_account,
     }))(AccountSwitcher)
 );
 

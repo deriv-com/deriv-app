@@ -104,6 +104,7 @@ export default class ClientStore extends BaseStore {
     dxtrade_disabled_signup_types = { real: false, demo: false };
     statement = [];
     obj_total_balance = {
+        amount_real_MF: undefined,
         amount_real: undefined,
         amount_mt5: undefined,
         amount_dxtrade: undefined,
@@ -1940,27 +1941,20 @@ export default class ClientStore extends BaseStore {
             const total_mt5 = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.MT5]);
             const total_dxtrade = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.DXTRADE]);
 
-            const { no_CR_account, no_MF_account } = this.root_store.traders_hub;
-
-            // define real amount
-            let total_real_amount = +total_real.amount;
-
-            // exclude MF account balance
-            if (!this.is_pre_appstore && !no_MF_account && !no_CR_account) {
-                let amount = 0;
-                Object.keys(obj_balance?.accounts).forEach(key => {
-                    if (key.startsWith('MF')) {
-                        amount += Number(obj_balance?.accounts[key].converted_amount);
-                    }
-                });
-                total_real_amount = +total_real.amount - amount;
-            }
+            // define MT real amount
+            let amount_real_MF = 0;
+            Object.keys(obj_balance?.accounts).forEach(key => {
+                if (key.startsWith('MF')) {
+                    amount_real_MF += Number(obj_balance?.accounts[key].converted_amount);
+                }
+            });
 
             // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
             const has_mt5 = !isEmptyObject(total_mt5);
             const has_dxtrade = !isEmptyObject(total_dxtrade);
             this.obj_total_balance = {
-                amount_real: total_real_amount,
+                amount_real_MF,
+                amount_real: +total_real.amount,
                 amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
                 amount_dxtrade: has_dxtrade ? +total_dxtrade.amount : this.obj_total_balance.amount_dxtrade,
                 currency: total_real.currency,

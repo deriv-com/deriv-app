@@ -1,0 +1,15 @@
+.real {
+    &__loader {
+        width: 100%;
+        height: 80vh;
+    }
+
+    &__header {
+        width: 100%;
+        margin-bottom: 1.6rem;
+
+        @include mobile {
+            margin-top: 1.6rem;
+        }
+    }
+}

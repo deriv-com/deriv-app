@@ -35,6 +35,7 @@ export default class DepositStore {
 
         this.error.setErrorMessage({ code: '', message: '' }, null, false);
         setContainerHeight(0);
+        setLoading(true);
 
         if (!is_session_timeout) {
             checkIframeLoaded();

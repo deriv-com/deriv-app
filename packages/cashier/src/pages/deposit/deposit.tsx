@@ -40,6 +40,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         onMount: recentTransactionOnMount,
     } = transaction_history;
     const {
+        cashier_route_tab_index: tab_index,
         is_cashier_locked,
         is_cashier_onboarding,
         is_crypto,
@@ -48,7 +49,6 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_system_maintenance,
         setActiveTab,
         setIsDeposit,
-        cashier_route_tab_index: tab_index,
     } = general_store;
     const is_deposit_locked = useDepositLocked();
 
@@ -56,6 +56,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
 
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
+
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -72,6 +73,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setActiveTab, onMount, container, error.setErrorMessage]);
+
     React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
             if (is_switching || is_deposit) setSideNotes(null);
@@ -138,8 +140,12 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                 <Real
                     iframe_height={iframe_height}
                     iframe_url={iframe_url}
+                    is_deposit
+                    is_eu={is_eu}
                     is_loading={is_loading}
                     clearIframe={clearIframe}
+                    setIsDeposit={setIsDeposit}
+                    onMountDeposit={onMount}
                 />
             </>
         );

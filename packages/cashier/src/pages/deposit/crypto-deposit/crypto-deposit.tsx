@@ -5,6 +5,7 @@ import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deri
 import { useStore, observer } from '@deriv/stores';
 import QRCode from 'qrcode.react';
 import RecentTransaction from '../../../components/recent-transaction';
+import ArrowBack from '../../../components/arrow-back';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-deposit.scss';
 
@@ -128,6 +129,13 @@ const CryptoDeposit = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
+            <div className='crypto-deposit__header'>
+                <ArrowBack
+                    onClickHandler={() => {
+                        setIsDeposit(false);
+                    }}
+                />
+            </div>
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text

@@ -6,6 +6,16 @@
             max-width: none;
         }
     }
+
+    &__header {
+        width: 100%;
+        margin-bottom: 1.6rem;
+
+        @include mobile {
+            margin-top: 1.6rem;
+        }
+    }
+
     &__transaction-wrapper {
         display: flex;
         flex-direction: column;

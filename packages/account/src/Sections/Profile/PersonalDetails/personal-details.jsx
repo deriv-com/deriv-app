@@ -547,24 +547,18 @@ export const PersonalDetailsForm = ({
         if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
 
-    const is_verified =
-        authentication_status?.document_status === 'verified' && authentication_status?.identity_status === 'verified';
+    const is_poa_verified = authentication_status?.document_status === 'verified';
+    const is_poi_verified = authentication_status?.identity_status === 'verified';
 
+    const is_account_verified = is_poa_verified && is_poi_verified;
+
+    //Generate Redirection Link to user based on verifiction status
     const getRedirectionLink = () => {
-        if (
-            authentication_status?.document_status !== 'verified' &&
-            authentication_status?.identity_status !== 'verified'
-        ) {
+        if (!is_account_verified) {
             return '/account/proof-of-identity';
-        } else if (
-            authentication_status?.document_status === 'verified' &&
-            authentication_status?.identity_status !== 'verified'
-        ) {
+        } else if (!is_poi_verified) {
             return '/account/proof-of-identity';
-        } else if (
-            authentication_status?.document_status !== 'verified' &&
-            authentication_status?.identity_status === 'verified'
-        ) {
+        } else if (!is_poa_verified) {
             return '/account/proof-of-address';
         }
         return null;
@@ -1191,7 +1185,7 @@ export const PersonalDetailsForm = ({
                                                             <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
                                                         </Text>
                                                     </div>
-                                                    {is_verified ? (
+                                                    {is_account_verified ? (
                                                         <Checkbox
                                                             name='request_professional_status'
                                                             value={values.request_professional_status}

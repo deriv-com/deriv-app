@@ -204,6 +204,7 @@ type TUiStore = {
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
     is_mobile: boolean;
+    sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
@@ -213,6 +214,7 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleSetCurrencyModal: () => void;
+    setSubSectionIndex: (index: number) => void;
 };
 
 type TMenuStore = {

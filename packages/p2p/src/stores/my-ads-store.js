@@ -227,12 +227,19 @@ export default class MyAdsStore extends BaseStore {
                         this.setApiErrorCode(response.error.code);
                         this.setApiErrorMessage(response.error.message);
                         setSubmitting(false);
-                    } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
+                    } else if (
+                        should_not_show_auto_archive_message !== 'true' &&
+                        this.adverts_archive_period &&
+                        !response.p2p_advert_create?.visibility_status?.includes('advertiser_balance')
+                    ) {
                         this.setAdvertDetails(response.p2p_advert_create);
                         this.setIsAdCreatedModalVisible(true);
                     } else if (!this.is_ad_created_modal_visible) {
                         if (!response.p2p_advert_create.is_visible) {
                             this.setAdvertDetails(response.p2p_advert_create);
+                        }
+                        if (this.advert_details?.visibility_status?.includes('advertiser_balance')) {
+                            this.root_store.general_store.showModal({ key: 'AdExceedsBalanceModal', props: {} });
                         }
                         if (this.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
                             this.root_store.general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });

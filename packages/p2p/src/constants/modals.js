@@ -112,4 +112,7 @@ export const modals = {
     RecommendedModal: React.lazy(() =>
         import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
     ),
+    AdExceedsBalanceModal: React.lazy(() =>
+        import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/ad-exceeds-balance-modal')
+    ),
 };

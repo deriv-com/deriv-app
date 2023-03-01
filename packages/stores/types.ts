@@ -229,7 +229,6 @@ type TNotificationStore = {
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
-    toggleReadyToDepositModal: () => void;
 };
 
 type TTradersHubStore = {

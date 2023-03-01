@@ -120,11 +120,11 @@ const InputField = ({
     unit,
     value,
 }: TInputFieldProps) => {
-    const [local_value, setLocalValue] = React.useState('');
+    const [local_value, setLocalValue] = React.useState<string>();
     const Icon = icon as React.ElementType;
     const has_error = error_messages && !!error_messages.length;
-    const max_is_disabled = max_value && (+value >= +max_value || +local_value >= +max_value);
-    const min_is_disabled = min_value && (+value <= +min_value || +local_value <= +min_value);
+    const max_is_disabled = max_value && (+value >= +max_value || Number(local_value) >= +max_value);
+    const min_is_disabled = min_value && (+value <= +min_value || Number(local_value) <= +min_value);
     let has_valid_length = true;
 
     const changeValue = (

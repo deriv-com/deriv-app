@@ -1,6 +1,11 @@
 import React from 'react';
 
 export const modals = {
+    AdExceedsBalanceModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "ad-exceeds-balance-modal" */ 'Components/modal-manager/modals/ad-exceeds-balance-modal'
+        )
+    ),
     AdExceedsDailyLimitModal: React.lazy(() =>
         import(
             /* webpackChunkName: "ad-exceeds-daily-limit-modal" */ 'Components/modal-manager/modals/ad-exceeds-daily-limit-modal'
@@ -111,8 +116,5 @@ export const modals = {
     ),
     RecommendedModal: React.lazy(() =>
         import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
-    ),
-    AdExceedsBalanceModal: React.lazy(() =>
-        import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/ad-exceeds-balance-modal')
     ),
 };

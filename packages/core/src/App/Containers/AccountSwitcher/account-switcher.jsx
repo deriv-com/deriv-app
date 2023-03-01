@@ -1307,18 +1307,6 @@ const AccountSwitcher = props => {
             </Text>
             <div className='acc-switcher__separator' />
 
-            {/* {props.is_pre_appstore && isRealAccountTab && props.has_any_real_account && (
-                <>
-                    <div className='acc-switcher__traders-hub'>
-                        <BinaryLink className='acc-switcher__traders-hub--link' to={routes.traders_hub}>
-                            <Text size='xs' align='center' className='acc-switcher__traders-hub--text'>
-                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's hub" />
-                            </Text>
-                        </BinaryLink>
-                    </div>
-                    <div className='acc-switcher__separator' />
-                </>
-            )} */}
             <TradersHubRedirect />
 
             <div

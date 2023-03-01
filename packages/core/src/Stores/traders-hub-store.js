@@ -117,6 +117,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
+                this.restricted_countries_filter_content,
                 this.root_store.modules?.cfd?.current_list,
             ],
             () => {
@@ -302,11 +303,11 @@ export default class TradersHubStore extends BaseStore {
         const { landing_companies } = this.root_store.client;
         const { financial_company, gaming_company } = landing_companies;
         const restricted_countries =
-            financial_company?.shortcode === 'svg' ||
-            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
-        const restricted_flags = [ContentFlag.HIGH_RISK_CR];
+            financial_company?.shortcode === 'svg' &&
+            gaming_company?.shortcode !== 'maltainvest' &&
+            gaming_company?.shortcode !== 'svg';
 
-        return restricted_countries || restricted_flags.includes(this.content_flag);
+        return restricted_countries;
     }
 
     getAvailablePlatforms() {
@@ -405,7 +406,7 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
-        // Only show financial account for Australian/Norway clients
+
         if (this.restricted_countries_filter_content) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account => account.name === 'Financial');
             return;
@@ -425,8 +426,11 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
-        // Not show DerivX for Australian/Norway clients
-        if (this.restricted_countries_filter_content) return;
+
+        if (this.restricted_countries_filter_content) {
+            this.available_dxtrade_accounts = [];
+            return;
+        }
 
         this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
             account => account.platform === CFD_PLATFORMS.DXTRADE

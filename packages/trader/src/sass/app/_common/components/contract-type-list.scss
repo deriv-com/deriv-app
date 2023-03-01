@@ -34,16 +34,11 @@
 
     &:hover {
         background-color: var(--state-hover);
-
-        .contract-type-item__icon {
-            display: block;
-        }
     }
     &__title {
         padding-left: 1.6rem;
     }
     &__icon {
-        display: none;
         margin-left: auto;
 
         /* postcss-bem-linter: ignore */

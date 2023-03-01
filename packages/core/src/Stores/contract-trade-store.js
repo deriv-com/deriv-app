@@ -7,6 +7,9 @@ import {
     switch_to_tick_chart,
     isCallPut,
     getContractTypesConfig,
+    isAccumulatorContract,
+    extractInfoFromShortcode,
+    getAccumulatorBarriers,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -22,28 +25,20 @@ export default class ContractTradeStore extends BaseStore {
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
     chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
-    // Accumulators data:
-    accumulators_high_barrier = '';
-    accumulators_low_barrier = '';
-    current_symbol_spot = null;
-    current_symbol_spot_time = null;
-    previous_symbol_spot_time = null;
+    // Accumulator barriers data:
+    accumulator_barriers_data = {};
 
     constructor(root_store) {
         super({ root_store });
 
         makeObservable(this, {
-            accumulators_high_barrier: observable,
-            accumulators_low_barrier: observable,
-            current_symbol_spot: observable,
-            current_symbol_spot_time: observable,
+            accumulator_barriers_data: observable.ref,
             contracts: observable.shallow,
             has_error: observable,
             error_message: observable,
             granularity: observable,
             chart_type: observable,
-            updateAccumulatorSpots: action.bound,
-            updateAccumulatorBarriers: action.bound,
+            updateAccumulatorBarriersAndSpots: action.bound,
             updateChartType: action.bound,
             updateGranularity: action.bound,
             markers_array: computed,
@@ -55,7 +50,6 @@ export default class ContractTradeStore extends BaseStore {
             last_contract: computed,
             clearError: action.bound,
             getContractById: action.bound,
-            previous_symbol_spot_time: observable,
             should_highlight_current_spot: computed,
         });
 
@@ -67,14 +61,52 @@ export default class ContractTradeStore extends BaseStore {
     // ----- Actions -----
     // -------------------
 
-    updateAccumulatorSpots({ current_symbol_spot, current_symbol_spot_time, previous_symbol_spot_time }) {
-        this.previous_symbol_spot_time = previous_symbol_spot_time;
-        this.current_symbol_spot = current_symbol_spot;
-        this.current_symbol_spot_time = current_symbol_spot_time;
-    }
-    updateAccumulatorBarriers({ high_barrier, low_barrier }) {
-        this.accumulators_high_barrier = high_barrier?.toString();
-        this.accumulators_low_barrier = low_barrier?.toString();
+    updateAccumulatorBarriersAndSpots({
+        previous_spot,
+        previous_spot_time,
+        current_spot,
+        current_spot_time,
+        pip_size,
+        symbol,
+        tick_size_barrier,
+        current_symbol,
+    }) {
+        const { shortcode } =
+            this.root_store.portfolio.active_positions.find(
+                ({ type, contract_info: _contract_info }) =>
+                    isAccumulatorContract(type) && _contract_info.underlying === current_symbol
+            )?.contract_info || {};
+
+        const updateAccumulatorBarriers = new_tick_size_barrier => {
+            const { high_barrier: accumulators_high_barrier, low_barrier: accumulators_low_barrier } =
+                getAccumulatorBarriers(new_tick_size_barrier, previous_spot, pip_size);
+            this.accumulator_barriers_data = {
+                ...this.accumulator_barriers_data,
+                [symbol]: {
+                    ...this.accumulator_barriers_data[symbol],
+                    accumulators_high_barrier,
+                    accumulators_low_barrier,
+                    current_spot,
+                    current_spot_time,
+                    previous_spot,
+                    previous_spot_time,
+                },
+            };
+        };
+
+        if (previous_spot && pip_size) {
+            if (shortcode) {
+                // has an ongoing ACCU contract
+                const result = extractInfoFromShortcode(shortcode);
+                const contract_tick_size_barrier = +result.tick_size_barrier;
+                if (contract_tick_size_barrier) {
+                    updateAccumulatorBarriers(contract_tick_size_barrier);
+                }
+            } else {
+                // has no open ACCU contracts
+                updateAccumulatorBarriers(tick_size_barrier);
+            }
+        }
     }
 
     updateChartType(type) {
@@ -136,18 +168,20 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get should_highlight_current_spot() {
+        const { symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { accumulators_high_barrier, accumulators_low_barrier, current_spot } =
+            this.accumulator_barriers_data[symbol] || {};
         return !!(
-            this.current_symbol_spot &&
-            this.accumulators_high_barrier &&
-            this.accumulators_low_barrier &&
-            (this.current_symbol_spot > this.accumulators_high_barrier ||
-                this.current_symbol_spot < this.accumulators_low_barrier)
+            current_spot &&
+            accumulators_high_barrier &&
+            accumulators_low_barrier &&
+            (current_spot > accumulators_high_barrier || current_spot < accumulators_low_barrier)
         );
     }
 
     get markers_array() {
         let markers = [];
-        const { contract_type: trade_type } = JSON.parse(localStorage.getItem('trade_store')) || {};
+        const { contract_type: trade_type, symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
         markers = this.applicable_contracts()
             .map(c => c.marker)
             .filter(m => m)
@@ -155,15 +189,17 @@ export default class ContractTradeStore extends BaseStore {
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
         }
-        if (trade_type === 'accumulator' && this.previous_symbol_spot_time) {
+        const { accumulators_high_barrier, accumulators_low_barrier, previous_spot_time } =
+            this.accumulator_barriers_data[symbol] || {};
+        if (trade_type === 'accumulator' && previous_spot_time && accumulators_high_barrier) {
             markers.push({
                 type: 'TickContract',
                 contract_info: {
                     is_accumulators_trade_without_contract: this.last_contract.contract_info?.status !== 'open',
                 },
                 key: 'accumulators_barriers_without_contract',
-                price_array: [this.accumulators_high_barrier, this.accumulators_low_barrier],
-                epoch_array: [this.previous_symbol_spot_time],
+                price_array: [accumulators_high_barrier, accumulators_low_barrier],
+                epoch_array: [previous_spot_time],
             });
         }
         return markers;

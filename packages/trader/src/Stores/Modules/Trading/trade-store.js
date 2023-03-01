@@ -4,7 +4,6 @@ import {
     cloneObject,
     extractInfoFromShortcode,
     getMinPayout,
-    getAccumulatorBarriers,
     getPlatformSettings,
     getPropertyValue,
     isCryptocurrency,
@@ -23,7 +22,6 @@ import {
     getBarrierPipSize,
     isBarrierSupported,
     removeBarrier,
-    isAccumulatorContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -337,6 +335,7 @@ export default class TradeStore extends BaseStore {
                     this.expiry_date = date;
                 }
                 this.setDefaultGrowthRate();
+                this.tick_size_barrier = 0;
             }
         );
         reaction(
@@ -1099,6 +1098,17 @@ export default class TradeStore extends BaseStore {
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier = tick_size_barrier;
+            const accumulator_barriers_data =
+                this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
+            if (!accumulator_barriers_data.accumulators_high_barrier) {
+                this.root_store.contract_trade.updateAccumulatorBarriersAndSpots({
+                    ...accumulator_barriers_data,
+                    pip_size: this.pip_size,
+                    symbol: this.symbol,
+                    current_symbol: this.symbol,
+                    tick_size_barrier,
+                });
+            }
         }
 
         if (!this.main_barrier || this.main_barrier?.shade) {
@@ -1355,68 +1365,43 @@ export default class TradeStore extends BaseStore {
         };
     }
 
-    updateAccumulatorBarriersAndSpots({
-        previous_spot,
-        previous_spot_time,
-        current_spot,
-        current_spot_time,
-        spot_pip_size,
-    }) {
-        const { shortcode } =
-            this.root_store.portfolio.active_positions.find(
-                ({ type, contract_info: _contract_info }) =>
-                    isAccumulatorContract(type) && _contract_info.underlying === this.symbol
-            )?.contract_info || {};
-        // update barriers:
-        if (shortcode) {
-            // has an ongoing ACCU contract
-            const result = extractInfoFromShortcode(shortcode);
-            const contract_tick_size_barrier = +result.tick_size_barrier;
-            if (previous_spot && contract_tick_size_barrier && spot_pip_size) {
-                this.root_store.contract_trade.updateAccumulatorBarriers(
-                    getAccumulatorBarriers(contract_tick_size_barrier, previous_spot, spot_pip_size)
-                );
-            }
-        } else if (previous_spot && this.tick_size_barrier && spot_pip_size) {
-            // has no open ACCU contracts
-            this.root_store.contract_trade.updateAccumulatorBarriers(
-                getAccumulatorBarriers(this.tick_size_barrier, previous_spot, spot_pip_size)
-            );
-        }
-        // save spots:
-        this.root_store.contract_trade.updateAccumulatorSpots({
-            current_symbol_spot: current_spot,
-            current_symbol_spot_time: current_spot_time,
-            previous_symbol_spot_time: previous_spot_time,
-        });
-    }
-
     // ---------- WS ----------
     wsSubscribe = (req, callback) => {
         const accumulator_ticks_interceptor = (...args) => {
             callback(...args);
+            let accumulator_barriers_data = {
+                current_symbol: this.symbol,
+                tick_size_barrier: this.tick_size_barrier,
+            };
             if ('tick' in args[0]) {
-                const { current_symbol_spot, current_symbol_spot_time } = this.root_store.contract_trade;
-                const tick = args[0].tick;
-                this.updateAccumulatorBarriersAndSpots({
-                    previous_spot: current_symbol_spot,
-                    previous_spot_time: current_symbol_spot_time,
-                    current_spot: tick.quote,
-                    current_spot_time: tick.epoch,
-                    spot_pip_size: tick.pip_size,
-                });
+                const { current_spot, current_spot_time } =
+                    this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
+                const { epoch, pip_size, quote, symbol } = args[0].tick;
+                accumulator_barriers_data = {
+                    ...accumulator_barriers_data,
+                    previous_spot: current_spot,
+                    previous_spot_time: current_spot_time,
+                    current_spot: quote,
+                    current_spot_time: epoch,
+                    pip_size,
+                    symbol,
+                };
             } else if ('history' in args[0]) {
                 const { prices, times } = args[0].history;
-                const previous_symbol_spot = prices[prices.length - 2];
-                const pip_size = args[0].pip_size;
-                this.updateAccumulatorBarriersAndSpots({
-                    previous_spot: previous_symbol_spot,
+                const symbol = args[0].echo_req.ticks_history;
+                accumulator_barriers_data = {
+                    ...accumulator_barriers_data,
+                    previous_spot: prices[prices.length - 2],
                     previous_spot_time: times[times.length - 2],
                     current_spot: prices[prices.length - 1],
                     current_spot_time: times[times.length - 1],
-                    spot_pip_size: pip_size,
-                });
+                    pip_size: args[0].pip_size,
+                    symbol,
+                };
+            } else {
+                return;
             }
+            this.root_store.contract_trade.updateAccumulatorBarriersAndSpots(accumulator_barriers_data);
         };
         const passthrough_callback = this.is_accumulator ? accumulator_ticks_interceptor : callback;
         if (req.subscribe === 1) {

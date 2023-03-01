@@ -250,6 +250,8 @@ const mock = (): TRootStore => {
             toggleRegulatorsCompareModal: jest.fn(),
             handleTabItemClick: jest.fn(),
             switchAccount: jest.fn(),
+            exchanged_rate_cfd_demo: 1,
+            exchanged_rate_cfd_real: 1,
         },
         menu: {
             attach: jest.fn(),

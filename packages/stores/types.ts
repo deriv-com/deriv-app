@@ -234,6 +234,7 @@ type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
+    restricted_countries_filter_content: boolean;
 };
 
 export type TRootStore = {

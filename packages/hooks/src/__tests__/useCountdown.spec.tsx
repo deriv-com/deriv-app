@@ -120,9 +120,9 @@ describe('useCountdown', () => {
     });
 
     test('should count down from 3 to 0 after start is called and stop the counter at 1', async () => {
-        const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: 3 }));
+        const { result, waitForNextUpdate } = renderHook(() => useCountdown({ from: 4 }));
 
-        expect(result.current.count).toBe(3);
+        expect(result.current.count).toBe(4);
         expect(result.current.is_running).toBe(false);
 
         act(() => {
@@ -130,6 +130,8 @@ describe('useCountdown', () => {
         });
 
         expect(result.current.is_running).toBe(true);
+        await waitForNextUpdate();
+        expect(result.current.count).toBe(3);
         await waitForNextUpdate();
         expect(result.current.count).toBe(2);
         await waitForNextUpdate();
@@ -139,7 +141,7 @@ describe('useCountdown', () => {
             result.current.stop();
         });
 
-        expect(result.current.count).toBe(3);
+        expect(result.current.count).toBe(4);
         expect(result.current.is_running).toBe(false);
     });
 });

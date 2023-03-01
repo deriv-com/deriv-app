@@ -106,6 +106,7 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
+            restricted_countries_filter_content: computed,
         });
 
         reaction(
@@ -297,6 +298,17 @@ export default class TradersHubStore extends BaseStore {
         return eu_related.includes(this.content_flag);
     }
 
+    get restricted_countries_filter_content() {
+        const { landing_companies } = this.root_store.client;
+        const { financial_company, gaming_company } = landing_companies;
+        const restricted_countries =
+            financial_company?.shortcode === 'svg' ||
+            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
+        const restricted_flags = [ContentFlag.HIGH_RISK_CR];
+
+        return restricted_countries || restricted_flags.includes(this.content_flag);
+    }
+
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
         if (this.is_eu_user && !this.is_demo_low_risk) {
@@ -387,21 +399,15 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
-        const { active_accounts } = this.root_store.client;
-        const result = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
-
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
             );
             return;
         }
-
         // Only show financial account for Australian/Norway clients
-        if (!result && this.selected_region === 'Non-EU') {
-            this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
-                ['Financial'].some(region => region === account.name)
-            );
+        if (this.restricted_countries_filter_content) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(account => account.name === 'Financial');
             return;
         }
 
@@ -411,9 +417,6 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableDxtradeAccounts() {
-        const { active_accounts } = this.root_store.client;
-        const result = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
-
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
                 account =>
@@ -422,9 +425,8 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
-
         // Not show DerivX for Australian/Norway clients
-        if (!result && this.selected_region === 'Non-EU') return;
+        if (this.restricted_countries_filter_content) return;
 
         this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
             account => account.platform === CFD_PLATFORMS.DXTRADE
@@ -443,7 +445,6 @@ export default class TradersHubStore extends BaseStore {
         const existing_accounts = current_list_keys
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
-
                 if (platform === CFD_PLATFORMS.MT5 && !this.is_eu_user && !maltainvest_account) {
                     return key.startsWith(`${platform}.${selected_account_type}.${market_type}`);
                 }

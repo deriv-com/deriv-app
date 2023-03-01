@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce';
 import { StaticUrl } from '@deriv/components';
 import {
     daysSince,
@@ -38,6 +39,7 @@ export default class NotificationStore extends BaseStore {
     client_notifications = {};
     should_show_popups = true;
     p2p_order_props = {};
+    p2p_completed_orders = null;
 
     constructor(root_store) {
         super({ root_store });
@@ -73,7 +75,11 @@ export default class NotificationStore extends BaseStore {
             toggleNotificationsModal: action.bound,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
+            p2p_completed_orders: observable,
+            getP2pCompletedOrders: action.bound,
         });
+
+        const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
 
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
@@ -95,10 +101,13 @@ export default class NotificationStore extends BaseStore {
             async () => {
                 if (
                     root_store.client.is_logged_in &&
+                    !root_store.client.is_virtual &&
                     Object.keys(root_store.client.account_status).length > 0 &&
-                    Object.keys(root_store.client.landing_companies).length > 0
-                )
-                    await root_store.modules?.cashier?.general_store?.getP2pCompletedOrders();
+                    Object.keys(root_store.client.landing_companies).length > 0 &&
+                    root_store.modules?.cashier?.general_store?.is_p2p_visible
+                ) {
+                    await debouncedGetP2pCompletedOrders();
+                }
 
                 if (
                     !root_store.client.is_logged_in ||
@@ -271,7 +280,7 @@ export default class NotificationStore extends BaseStore {
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
         } = this.root_store.client;
-        const { is_p2p_visible, p2p_completed_orders } = this.root_store.modules.cashier.general_store;
+        const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
@@ -481,7 +490,7 @@ export default class NotificationStore extends BaseStore {
                 if (is_p2p_visible) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
 
-                    p2p_completed_orders?.map(order => {
+                    this.p2p_completed_orders?.map(order => {
                         const {
                             advertiser_details,
                             client_details,
@@ -1474,4 +1483,12 @@ export default class NotificationStore extends BaseStore {
             platform: 'Account',
         });
     };
+
+    async getP2pCompletedOrders() {
+        const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
+
+        if (!response?.error) {
+            this.p2p_completed_orders = response.p2p_order_list?.list || [];
+        }
+    }
 }

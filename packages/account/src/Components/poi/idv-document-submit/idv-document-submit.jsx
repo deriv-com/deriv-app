@@ -6,7 +6,13 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { isSequentialNumber, isRecurringNumberRegex, getDocumentData, getRegex } from './utils';
+import {
+    isSequentialNumber,
+    isRecurringNumberRegex,
+    getDocumentData,
+    getRegex,
+    preventEmptyClipboardPaste,
+} from './utils';
 import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -96,7 +102,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (validation_is_enabled && (is_recurring_number || is_sequential_number)) {
+        } else if (
+            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
+            document_number === document_type.example_format
+        ) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
@@ -238,7 +247,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onPaste={e => e.preventDefault()}
+                                            onPaste={preventEmptyClipboardPaste}
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {

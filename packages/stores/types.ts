@@ -254,6 +254,8 @@ type TTradersHubStore = {
     toggleRegulatorsCompareModal: () => void;
     handleTabItemClick: (index: number) => void;
     switchAccount: (loginid: string) => Promise<void>;
+    exchanged_rate_cfd_real: number;
+    exchanged_rate_cfd_demo: number;
 };
 
 export type TRootStore = {

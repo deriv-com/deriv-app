@@ -40,6 +40,8 @@ export default class TradersHubStore extends BaseStore {
     };
     is_account_transfer_modal_open = false;
     selected_account = {};
+    exchanged_rate_cfd_real = 1;
+    exchanged_rate_cfd_demo = 1;
 
     constructor(root_store) {
         super({ root_store });
@@ -107,6 +109,8 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
+            exchanged_rate_cfd_real: observable,
+            exchanged_rate_cfd_demo: observable,
             total_balance: computed,
         });
 
@@ -170,6 +174,44 @@ export default class TradersHubStore extends BaseStore {
             ],
             async () => {
                 await this.updatePlatformBalance();
+            }
+        );
+
+        reaction(
+            () => [this.cfd_real_balance.currency, this.platform_real_balance.currency],
+            async () => {
+                const { getExchangeRate } = this.root_store.common;
+
+                if (
+                    this.cfd_real_balance.currency &&
+                    this.cfd_real_balance.currency !== this.platform_real_balance.currency
+                ) {
+                    const response = await getExchangeRate(
+                        this.cfd_real_balance.currency,
+                        this.platform_real_balance.currency
+                    );
+
+                    this.exchanged_rate_cfd_real = response;
+                }
+            }
+        );
+
+        reaction(
+            () => [this.cfd_demo_balance.currency, this.platform_demo_balance.currency],
+            async () => {
+                const { getExchangeRate } = this.root_store.common;
+
+                if (
+                    this.cfd_demo_balance.currency &&
+                    this.cfd_demo_balance.currency !== this.platform_demo_balance.currency
+                ) {
+                    const response = await getExchangeRate(
+                        this.cfd_demo_balance.currency,
+                        this.platform_demo_balance.currency
+                    );
+
+                    this.exchanged_rate_cfd_demo = response;
+                }
             }
         );
     }
@@ -796,13 +838,14 @@ export default class TradersHubStore extends BaseStore {
     get total_balance() {
         if (this.selected_account_type === 'real') {
             return {
-                balance: this.platform_real_balance.balance + this.cfd_real_balance.balance,
+                balance:
+                    this.platform_real_balance.balance + this.cfd_real_balance.balance * this.exchanged_rate_cfd_real,
                 currency: this.platform_real_balance.currency,
             };
         }
 
         return {
-            balance: this.platform_demo_balance.balance + this.cfd_demo_balance.balance,
+            balance: this.platform_demo_balance.balance + this.cfd_demo_balance.balance * this.exchanged_rate_cfd_demo,
             currency: this.platform_demo_balance.currency,
         };
     }

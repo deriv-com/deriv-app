@@ -3,7 +3,10 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    margin-bottom: 1rem;
+
+    &--overflow {
+        margin-bottom: 1rem;
+    }
 
     &__hint {
         margin-left: 1.2rem;

@@ -154,6 +154,14 @@ const PersonalDetails = ({
             />
         );
     };
+
+    const isStringOverflow = () => {
+        const myDiv = document.querySelector('.dc-input--hint');
+        const myParagraph = myDiv?.querySelector('.dc-text');
+        const myString = myParagraph?.textContent;
+        return String(myString).length > 70;
+    };
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -266,6 +274,7 @@ const PersonalDetails = ({
                                                         : localize('First name')
                                                 }
                                                 hint={getFieldHint(localize('first name'))}
+                                                overflow={isStringOverflow()}
                                                 disabled={
                                                     disabled_items.includes('first_name') ||
                                                     (props.value?.first_name && has_real_account)
@@ -280,6 +289,7 @@ const PersonalDetails = ({
                                                 required={is_svg || is_appstore}
                                                 label={getLastNameLabel()}
                                                 hint={getFieldHint(localize('last name'))}
+                                                overflow={isStringOverflow()}
                                                 disabled={
                                                     disabled_items.includes('last_name') ||
                                                     (props.value?.last_name && has_real_account)
@@ -299,6 +309,7 @@ const PersonalDetails = ({
                                                         : localize('Date of birth')
                                                 }
                                                 hint={getFieldHint(localize('date of birth'))}
+                                                overflow={isStringOverflow()}
                                                 disabled={
                                                     disabled_items.includes('date_of_birth') ||
                                                     (props.value?.date_of_birth && has_real_account)

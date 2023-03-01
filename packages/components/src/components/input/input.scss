@@ -5,8 +5,12 @@
     border: 1px solid var(--border-normal);
     display: flex;
     align-items: center;
-    margin-bottom: 3.5rem;
+    margin-bottom: 3.2rem;
     line-height: 1.43;
+
+    &--overflow {
+        margin-bottom: 3.5rem;
+    }
 
     &:hover:not(.dc-input--disabled) {
         border-color: var(--border-hover);

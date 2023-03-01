@@ -38,20 +38,20 @@
     &--real,
     &--real:focus,
     &--real:hover {
-        border: 1px solid var(--status-info);
+        border: 1px solid var(--status-success) !important;
         width: 87%;
         & > .dc-text {
-            color: var(--status-info);
+            color: var(--status-success) !important;
         }
     }
 
     &--demo,
     &--demo:focus,
     &--demo:hover {
-        border: 1px solid var(--status-success);
+        border: 1px solid var(--status-info) !important;
         width: 90%;
         & > .dc-text {
-            color: var(--status-success);
+            color: var(--status-info) !important;
             padding-left: 0.8em;
         }
     }
@@ -61,11 +61,11 @@
             transform: none !important;
         }
         &--real {
-            --fill-color1: var(--status-info) !important;
+            --fill-color1: var(--status-success) !important;
             right: 1.8rem;
         }
         &--demo {
-            --fill-color1: var(--status-success) !important;
+            --fill-color1: var(--status-info) !important;
             right: 1.5rem;
         }
     }

@@ -261,6 +261,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
+        const { sendbird_store } = this.root_store;
         if (isMountedFn()) {
             setSubmitting(true);
         }
@@ -272,6 +273,7 @@ export default class BuySellStore extends BaseStore {
             advert_id: this.advert.id,
             amount: values.amount,
             payment_method_ids: this.payment_method_ids,
+            subscribe: 1,
             ...(values.payment_info && this.is_sell_advert ? { payment_info: values.payment_info } : {}),
             // Validate extra information for sell adverts.
             ...(this.is_sell_advert
@@ -293,6 +295,7 @@ export default class BuySellStore extends BaseStore {
             this.form_props.setErrorMessage(null);
             this.root_store.general_store.hideModal();
             this.root_store.floating_rate_store.setIsMarketRateChanged(false);
+            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
             const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
             this.form_props.handleConfirm(response.p2p_order_info);
             this.form_props.handleClose();

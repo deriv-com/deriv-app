@@ -71,6 +71,7 @@ export default class SendbirdStore extends BaseStore {
         this.chat_messages.push(chat_message);
     }
 
+    // TODO: remove when access chat_channel_url from p2p_order_create is activated in BO
     createChatForNewOrder(id) {
         if (!this.chat_channel_url) {
             // If order_information doesn't have chat_channel_url this is a new order

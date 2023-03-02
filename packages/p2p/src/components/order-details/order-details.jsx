@@ -85,6 +85,7 @@ const OrderDetails = observer(() => {
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
 
+        // TODO: remove condition check once access chat_channel_url from p2p_order_create is activated in BO
         if (order_channel_url) {
             sendbird_store.setChatChannelUrl(order_channel_url);
         } else {

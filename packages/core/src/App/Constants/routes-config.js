@@ -81,7 +81,7 @@ const getModules = () => {
                 {
                     path: routes.profit,
                     component: Reports,
-                    getTitle: () => localize('Profit table'),
+                    getTitle: () => localize('Trade table'),
                     icon_component: 'IcProfitTable',
                 },
                 {

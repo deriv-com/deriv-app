@@ -136,6 +136,7 @@ const TradingHubHeader = ({
     toggleNotifications,
     toggleExitTradersHubModal,
     switchToCRAccount,
+    replaceCashierMenuOnclick,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
@@ -146,6 +147,10 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
+
+    React.useEffect(() => {
+        if (is_logged_in) replaceCashierMenuOnclick();
+    }, [is_logged_in, replaceCashierMenuOnclick]);
 
     return (
         <header className='trading-hub-header'>

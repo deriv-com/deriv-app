@@ -1,3 +1,3 @@
-import ReadyToDepositModal from './ready-to-deposit-modal.jsx';
+import ReadyToDepositModal from './ready-to-deposit-modal';
 
 export default ReadyToDepositModal;

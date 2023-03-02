@@ -150,7 +150,7 @@ const AppNotificationMessages = ({
     const filtered_excluded_notifications = notifications.filter(message =>
         message.key.includes('svg') ? message : excluded_notifications.includes(message.key)
     );
-    const notificationsSublist = () => {
+    const getNotificationSublist = () => {
         if (window.location.pathname === routes.cashier_deposit) {
             return filtered_excluded_notifications.filter(message =>
                 message.key.includes('switched_to_real') ? message : null
@@ -161,11 +161,11 @@ const AppNotificationMessages = ({
 
     if (!should_show_popups) return null;
 
-    return notificationsSublist().length ? (
+    return getNotificationSublist().length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={notificationsSublist()}
+                    notifications={getNotificationSublist()}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}

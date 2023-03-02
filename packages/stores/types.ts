@@ -216,6 +216,7 @@ type TUiStore = {
     toggleSetCurrencyModal: () => void;
     setSubSectionIndex: (index: number) => void;
     toggleReadyToDepositModal: () => void;
+    is_ready_to_deposit_modal_visible: boolean;
 };
 
 type TMenuStore = {
@@ -237,6 +238,7 @@ type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
+    is_eu_user: boolean;
 };
 
 export type TRootStore = {

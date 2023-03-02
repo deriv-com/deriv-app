@@ -129,7 +129,6 @@ const TradingHubHeader = ({
     menu_items,
     modal_data,
     notifications_count,
-    replaceCashierMenuOnclick,
     setIsOnboardingVisited,
     setIsPreAppStore,
     should_show_exit_traders_modal,
@@ -165,7 +164,6 @@ const TradingHubHeader = ({
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
-                {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                 <MemoizedMenuLinks
                     is_logged_in={is_logged_in}
                     is_mobile={is_mobile}

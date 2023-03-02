@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
-import { platform_config, mf_platform_config } from 'Constants/platform-config';
+import { getAppstorePlatforms, getMFAppstorePlatforms } from 'Constants/platform-config';
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
 import {
@@ -245,7 +245,7 @@ const TradingHub: React.FC = () => {
                         <CFDAccounts account_type={tab_account_type} />
                         <Divider horizontal className='trading-hub_body--divider' />
                         <OptionsAccounts
-                            platformlauncherprops={is_eu ? mf_platform_config : platform_config}
+                            platformlauncherprops={is_eu ? getMFAppstorePlatforms() : getAppstorePlatforms()}
                             accountType={tab_account_type}
                         />
                     </DesktopWrapper>
@@ -262,7 +262,7 @@ const TradingHub: React.FC = () => {
                         {platform_type === 'cfd' && <CFDAccounts account_type={tab_account_type} />}
                         {platform_type === 'options' && (
                             <OptionsAccounts
-                                platformlauncherprops={is_eu ? mf_platform_config : platform_config}
+                                platformlauncherprops={is_eu ? getMFAppstorePlatforms() : getAppstorePlatforms()}
                                 accountType={tab_account_type}
                             />
                         )}

@@ -202,6 +202,7 @@ const mock = (): TRootStore => {
                 redirectOnClick: jest.fn(),
                 setError: jest.fn(),
             },
+            current_language: 'EN',
             is_from_derivgo: false,
             has_error: false,
             platform: '',

@@ -31,7 +31,7 @@ export interface MfPlatformConfig extends PlatformConfig {
     app_title: string;
 }
 
-export const platform_config: PlatformConfig[] = [
+export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
         app_desc: localize('Options and multipliers trading platform.'),
@@ -63,7 +63,7 @@ export const platform_config: PlatformConfig[] = [
     },
 ];
 
-export const mf_platform_config: MfPlatformConfig[] = [
+export const getMFAppstorePlatforms = (): MfPlatformConfig[] => [
     {
         app_icon: getPlatformSettingsAppstore('trader').icon,
         app_title: getPlatformSettingsAppstore('trader').name,

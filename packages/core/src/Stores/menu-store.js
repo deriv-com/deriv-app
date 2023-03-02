@@ -31,13 +31,16 @@ export default class MenuStore extends BaseStore {
         if (!(menu instanceof Object)) {
             throw new TypeError('Menu is not an instance of object.');
         }
-        this.extensions.push(menu);
+        this.extensions = [...this.extensions, menu];
     }
 
     update(menu, index) {
-        if (this.extensions[index]) {
-            this.extensions[index] = menu;
-        }
+        this.extensions = this.extensions?.map((ext, idx) => {
+            if (idx === index) {
+                return menu;
+            }
+            return ext;
+        });
     }
 
     detach(menu) {

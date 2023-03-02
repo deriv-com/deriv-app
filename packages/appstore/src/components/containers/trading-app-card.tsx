@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StatusBadge } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { platform_config, mf_platform_config, BrandConfig } from 'Constants/platform-config';
+import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig } from 'Constants/platform-config';
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
@@ -32,7 +32,8 @@ const TradingAppCard = ({
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
-    const app_platform = !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? platform_config : mf_platform_config;
+    const app_platform =
+        !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? getAppstorePlatforms() : getMFAppstorePlatforms();
 
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,

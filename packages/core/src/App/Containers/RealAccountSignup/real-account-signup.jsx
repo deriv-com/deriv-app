@@ -112,7 +112,6 @@ const RealAccountSignup = ({
     is_real_acc_signup_on,
     real_account_signup_target,
     realAccountSignup,
-    replaceCashierMenuOnclick,
     routing_history,
     setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled,
@@ -124,7 +123,6 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
-    is_low_risk,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -261,11 +259,7 @@ const RealAccountSignup = ({
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (
-                show_eu_related_content &&
-                !(is_pre_appstore && is_low_risk) &&
-                getActiveModalIndex() === modal_pages_indices.add_or_manage_account
-            ) {
+            if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -277,6 +271,7 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
+
         return '740px'; // Account wizard modal
     };
 
@@ -295,7 +290,6 @@ const RealAccountSignup = ({
     };
 
     const closeModalThenOpenCashier = () => {
-        replaceCashierMenuOnclick();
         closeRealAccountSignup();
         history.push(routes.cashier_deposit);
     };
@@ -364,7 +358,6 @@ const RealAccountSignup = ({
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
     const closeModal = e => {
-        replaceCashierMenuOnclick();
         // Do not close modal on external link and popover click event
         if (
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
@@ -647,7 +640,6 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     routing_history: common.app_routing_history,
     setCFDScore: client.setCFDScore,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
@@ -661,5 +653,4 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    is_low_risk: client.is_low_risk,
 }))(withRouter(RealAccountSignup));

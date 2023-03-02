@@ -62,10 +62,4 @@ const lightMode = () => {
         colourTertiary: '#6d7278',
     };
 };
-export const setColors = is_dark_mode => {
-    if (is_dark_mode) {
-        darkMode();
-    } else {
-        lightMode();
-    }
-};
+export const setColors = is_dark_mode => (is_dark_mode ? darkMode() : lightMode());

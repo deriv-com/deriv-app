@@ -1137,6 +1137,19 @@
     margin: 2.4rem;
     align-items: center;
     gap: 0.8rem;
+    &__maintenance {
+        display: flex;
+        padding-top: 1rem;
+        align-items: center;
+
+        &-icon {
+            padding-right: 0.5rem;
+        }
+
+        &-text {
+            color: var(--text-less-prominent);
+        }
+    }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-less-prominent);

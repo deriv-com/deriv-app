@@ -1223,6 +1223,7 @@ const AccountSwitcher = props => {
                     props.switchAccount(first_real_login_id);
                 }
                 history.push(routes.traders_hub);
+                props.setTogglePlatformType('cfd');
             };
 
             return (
@@ -1407,6 +1408,7 @@ AccountSwitcher.propTypes = {
     setShouldShowCooldownModal: PropTypes.func,
     content_flag: PropTypes.string,
     virtual_account_loginid: PropTypes.string,
+    setTogglePlatformType: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -1475,6 +1477,7 @@ const account_switcher = withRouter(
         content_flag: traders_hub.content_flag,
         has_any_real_account: client.has_any_real_account,
         virtual_account_loginid: client.virtual_account_loginid,
+        setTogglePlatformType: traders_hub.setTogglePlatformType,
     }))(AccountSwitcher)
 );
 

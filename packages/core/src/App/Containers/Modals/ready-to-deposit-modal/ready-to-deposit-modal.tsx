@@ -16,13 +16,8 @@ const ReadyToDepositModal = observer(() => {
     } = ui;
 
     const createAccount = () => {
-        if (is_eu_user) {
-            onClose();
-            openRealAccountSignup('maltainvest');
-        } else {
-            onClose();
-            openRealAccountSignup('');
-        }
+        onClose();
+        return is_eu_user ? openRealAccountSignup('maltainvest') : openRealAccountSignup('');
     };
 
     return (

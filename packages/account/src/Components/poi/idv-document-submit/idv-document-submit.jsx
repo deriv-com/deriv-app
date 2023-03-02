@@ -11,7 +11,7 @@ import {
     getDocumentData,
     getRegex,
     preventEmptyClipboardPaste,
-    isIDVTestingMode,
+    isIDVWhitelistDocumentNumber,
 } from './utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -89,7 +89,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         const { document_type, document_number } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
-        const is_idv_testing_mode = isIDVTestingMode(country_code, document_type.id, document_number);
+        const is_idv_whitelist_document_number = isIDVWhitelistDocumentNumber(
+            country_code,
+            document_type.id,
+            document_number
+        );
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -101,7 +105,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
         } else if (
-            (!is_idv_testing_mode && (is_recurring_number || is_sequential_number)) ||
+            (!is_idv_whitelist_document_number && (is_recurring_number || is_sequential_number)) ||
             document_number === document_type.example_format
         ) {
             errors.document_number = localize('Please enter a valid ID number.');

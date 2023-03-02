@@ -34,7 +34,7 @@ export const isSequentialNumber = document_number => {
     return pattern_results.includes(true);
 };
 
-export const isIDVTestingMode = (country, document_type, document_number) =>
+export const isIDVWhitelistDocumentNumber = (country, document_type, document_number) =>
     (idv_test_document_whitelist.has(country) &&
         idv_test_document_whitelist.get(country)[document_type] === document_number &&
         getPlatformFromUrl().is_test_link) ||

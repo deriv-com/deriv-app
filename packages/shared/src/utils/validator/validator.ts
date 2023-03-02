@@ -39,8 +39,9 @@ class Validator {
      * @param {string} attribute
      * @param {object} rule
      */
-    addFailure(attribute: string, rule: { name: string; options: TRuleOptions }) {
+    addFailure(attribute: string, rule: { name: string; options: TRuleOptions }, error_message?: string) {
         let message =
+            error_message ||
             rule.options.message ||
             (getPreBuildDVRs() as unknown as { [key: string]: { message: () => string } })[rule.name].message();
         if (rule.name === 'length') {
@@ -82,15 +83,14 @@ class Validator {
                     return;
                 }
 
-                const is_valid = ruleObject.validator(
-                    this.input[attribute],
-                    ruleObject.options,
-                    this.store,
-                    this.input
-                );
-
-                if (!is_valid) {
+                const result = ruleObject.validator(this.input[attribute], ruleObject.options, this.store, this.input);
+                if (typeof result === 'boolean' && !result) {
                     this.addFailure(attribute, ruleObject);
+                } else {
+                    const { is_ok, message } = result as { is_ok: boolean; message: string };
+                    if (!is_ok) {
+                        this.addFailure(attribute, ruleObject, message);
+                    }
                 }
             });
         });
@@ -130,7 +130,7 @@ class Validator {
                                       options?: TRuleOptions,
                                       store?: unknown,
                                       inputs?: unknown
-                                  ) => boolean;
+                                  ) => boolean | { is_ok: boolean; message: string };
                               };
                           }
                       )[rule_object_name].func,

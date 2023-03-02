@@ -1227,7 +1227,7 @@ const AccountSwitcher = props => {
             };
 
             return (
-                <>
+                <React.Fragment>
                     <div className='acc-switcher__traders-hub'>
                         <BinaryLink onClick={handleRedirect} className='acc-switcher__traders-hub--link'>
                             <Text size='xs' align='center' className='acc-switcher__traders-hub--text'>
@@ -1236,7 +1236,7 @@ const AccountSwitcher = props => {
                         </BinaryLink>
                     </div>
                     <div className='acc-switcher__separator' />
-                </>
+                </React.Fragment>
             );
         };
 

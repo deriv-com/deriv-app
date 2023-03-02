@@ -154,7 +154,6 @@ const PersonalDetails = ({
             />
         );
     };
-
     return (
         <Formik
             innerRef={selected_step_ref}

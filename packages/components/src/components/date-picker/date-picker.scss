@@ -4,10 +4,6 @@
     display: inline-block;
     width: 100%;
 
-    &--overflow {
-        margin-bottom: 1rem;
-    }
-
     &__hint {
         margin-left: 1.2rem;
         position: absolute;
@@ -53,7 +49,7 @@
         }
     }
     .dc-icon {
-        top: 25%;
+        top: 22%;
 
         &:not(.dc-icon--disabled) {
             cursor: pointer;

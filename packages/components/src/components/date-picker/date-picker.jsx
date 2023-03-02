@@ -1,4 +1,3 @@
-import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { addDays, daysFromTodayTo, toMoment, convertDateFormat, getPosition, isMobile } from '@deriv/shared';
@@ -28,7 +27,6 @@ const DatePicker = React.memo(props => {
         onBlur,
         onChange,
         onFocus,
-        overflow,
         portal_id,
         placeholder,
         required,
@@ -210,11 +208,7 @@ const DatePicker = React.memo(props => {
                 />
             </MobileWrapper>
             <DesktopWrapper>
-                <div
-                    id={id}
-                    className={ClassNames('dc-datepicker', { 'dc-datepicker--overflow': overflow })}
-                    data-value={getInputValue()}
-                >
+                <div id={id} className='dc-datepicker' data-value={getInputValue()}>
                     <div ref={datepicker_ref}>
                         <Input
                             {...common_props}

@@ -30,7 +30,6 @@ type TInputProps = {
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    overflow?: React.ReactNode;
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement;
@@ -66,7 +65,6 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
             label,
             leading_icon,
             max_characters,
-            overflow,
             trailing_icon,
             warn,
             data_testId,
@@ -102,7 +100,6 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                         'dc-input--disabled': disabled,
                         'dc-input--error': error,
                         'dc-input--hint': hint,
-                        'dc-input--overflow': overflow,
                         'dc-input--bottom-label-active': bottom_label,
                     })}
                 >

@@ -491,12 +491,11 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                {props.account_type.category === 'real' && (
+                                {props.account_type.category === 'real' && props.platform !== CFD_PLATFORMS.DXTRADE && (
                                     <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(props.platform),
-                                            platform_name: props.platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
                                             account: !props.show_eu_related_content ? props.account_title : '',
                                             jurisdiction_shortcode: !props.show_eu_related_content
                                                 ? getFormattedJurisdictionCode(props.jurisdiction_selected_shortcode)
@@ -511,6 +510,14 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                             platform: getCFDPlatformLabel(props.platform),
                                             platform_name: props.platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
                                             account: props.account_title,
+                                        }}
+                                    />
+                                )}
+                                {props.account_type.category === 'real' && props.platform === CFD_PLATFORMS.DXTRADE && (
+                                    <Localize
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} Real account.'
+                                        values={{
+                                            platform: getCFDPlatformLabel(props.platform),
                                         }}
                                     />
                                 )}

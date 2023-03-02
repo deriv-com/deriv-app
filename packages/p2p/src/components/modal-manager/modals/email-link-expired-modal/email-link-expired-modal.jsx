@@ -9,6 +9,11 @@ const EmailLinkExpiredModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { confirmOrderRequest, order_information } = order_store;
 
+    const onClickHandler = () => {
+        hideModal();
+        confirmOrderRequest(order_information.id);
+    };
+
     return (
         <Modal
             className='email-link-expired-modal'
@@ -25,14 +30,7 @@ const EmailLinkExpiredModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer className='email-link-expired-modal--footer'>
-                <Button
-                    large
-                    primary
-                    onClick={() => {
-                        hideModal();
-                        confirmOrderRequest(order_information.id);
-                    }}
-                >
+                <Button large primary onClick={onClickHandler}>
                     <Localize i18n_default_text='Get new link' />
                 </Button>
             </Modal.Footer>

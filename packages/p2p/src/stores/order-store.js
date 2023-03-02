@@ -16,7 +16,6 @@ export default class OrderStore {
             error_code: observable,
             error_message: observable,
             has_more_items_to_load: observable,
-            is_email_link_blocked_modal_open: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
             is_rating_modal_open: observable,
@@ -53,7 +52,6 @@ export default class OrderStore {
             setErrorCode: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
-            setIsEmailLinkBlockedModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
@@ -93,7 +91,6 @@ export default class OrderStore {
     error_code = '';
     error_message = '';
     has_more_items_to_load = false;
-    is_email_link_blocked_modal_open = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
     is_rating_modal_open = false;
@@ -124,33 +121,43 @@ export default class OrderStore {
     }
 
     confirmOrderRequest(id, is_buy_order_for_user) {
-        const { general_store, order_details_store } = this.root_store;
+        const { general_store, order_details_store, order_store } = this.root_store;
         requestWS({
             p2p_order_confirm: 1,
             id,
         }).then(response => {
-            this.root_store.general_store.hideModal();
+            general_store.hideModal();
 
             if (response) {
                 if (response.error) {
-                    this.setErrorCode(response.error.code);
-                    if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
-                        this.root_store.general_store.showModal({ key: 'EmailVerificationModal', props: {} });
+                    const { code, message } = response.error;
+
+                    this.setErrorCode(code);
+
+                    if (code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
+                        general_store.showModal({ key: 'EmailVerificationModal', props: {} });
                     } else if (
-                        response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
-                        response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+                        code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
+                        code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        this.root_store.general_store.showModal({
+                        this.setVerificationLinkErrorMessage(message);
+                        general_store.showModal({
                             key: 'InvalidVerificationLinkModal',
-                            props: { error_message: response.error.message, order_id: id },
+                            props: { error_message: message, order_id: id },
                         });
-                    } else if (response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
+                    } else if (
+                        code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
+                        !order_store?.order_information.is_buy_order_for_user
+                    ) {
+                        this.setVerificationLinkErrorMessage(message);
+                        general_store.showModal({
+                            key: 'EmailLinkBlockedModal',
+                            props: {
+                                email_link_blocked_modal_error_message: order_store.verification_link_error_message,
+                            },
+                        });
                     } else {
-                        order_details_store.setErrorMessage(response.error.message);
+                        order_details_store.setErrorMessage(message);
                     }
                 } else if (!is_buy_order_for_user) {
                     general_store.showModal({
@@ -463,6 +470,7 @@ export default class OrderStore {
     }
 
     verifyEmailVerificationCode(verification_action, verification_code) {
+        const { general_store, order_store } = this.root_store;
         const order_id = this.order_id;
 
         if (verification_action === 'p2p_order_confirm' && verification_code) {
@@ -472,33 +480,42 @@ export default class OrderStore {
                 verification_code,
                 dry_run: 1,
             }).then(response => {
-                this.root_store.general_store.hideModal();
+                general_store.hideModal();
                 if (response) {
+                    const { code, message } = response?.error;
+
                     if (!response.error) {
                         clearTimeout(wait);
                         const wait = setTimeout(
-                            () => this.root_store.general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
+                            () => general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
                             650
                         );
                     } else if (
-                        response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
-                        response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+                        code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
+                        code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
                         clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
+                        this.setVerificationLinkErrorMessage(message);
                         const wait = setTimeout(() => {
-                            this.root_store.general_store.showModal({
+                            general_store.showModal({
                                 key: 'InvalidVerificationLinkModal',
-                                props: { error_message: response.error.message, order_id },
+                                props: { error_message: message, order_id },
                             });
                         }, 750);
-                    } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.root_store.general_store.isCurrentModal('InvalidVerificationLinkModal')) {
-                            this.root_store.general_store.hideModal();
+                    } else if (
+                        code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
+                        !order_store?.order_information.is_buy_order_for_user
+                    ) {
+                        if (general_store.isCurrentModal('InvalidVerificationLinkModal')) {
+                            general_store.hideModal();
                         }
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
+                        this.setVerificationLinkErrorMessage(message);
+                        general_store.showModal({
+                            key: 'EmailLinkBlockedModal',
+                            props: {
+                                email_link_blocked_modal_error_message: order_store.verification_link_error_message,
+                            },
+                        });
                     }
                     localStorage.removeItem('verification_code.p2p_order_confirm');
                 }
@@ -540,10 +557,6 @@ export default class OrderStore {
 
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
-    }
-
-    setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
-        this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
     }
 
     setIsLoading(is_loading) {

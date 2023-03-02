@@ -18,7 +18,6 @@ import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx'
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
-import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import 'Components/order-details/order-details.scss';
@@ -172,15 +171,6 @@ const OrderDetails = observer(() => {
                         is_warn
                     />
                 </div>
-            )}
-            {!is_buy_order_for_user && (
-                <React.Fragment>
-                    <EmailLinkBlockedModal
-                        email_link_blocked_modal_error_message={order_store.verification_link_error_message}
-                        is_email_link_blocked_modal_open={order_store.is_email_link_blocked_modal_open}
-                        setIsEmailLinkBlockedModalOpen={order_store.setIsEmailLinkBlockedModalOpen}
-                    />
-                </React.Fragment>
             )}
             <div className='order-details'>
                 <div className='order-details-card'>

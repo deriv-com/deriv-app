@@ -1,35 +1,42 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import {
-    Div100vhContainer,
-    VerticalTab,
     DesktopWrapper,
-    MobileWrapper,
+    Div100vhContainer,
     FadeWrapper,
+    Loading,
+    MobileWrapper,
     PageOverlay,
     SelectNative,
-    Loading,
+    VerticalTab,
 } from '@deriv/components';
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { TRoute } from '../Types';
 import 'Sass/app/modules/reports.scss';
 
-const Reports = ({
-    history,
-    is_logged_in,
-    is_logging_in,
-    is_from_derivgo,
-    is_visible,
-    location,
-    routeBackInApp,
-    routes,
-    setTabIndex,
-    setVisibilityRealityCheck,
-    tab_index,
-    toggleReports,
-}) => {
+type TList = {
+    value: React.ComponentType | typeof Redirect;
+    default?: boolean;
+    label: string;
+    icon?: string;
+    path?: string;
+};
+
+type TReports = {
+    history: RouteComponentProps['history'];
+    location: RouteComponentProps['location'];
+    routes: TRoute[];
+};
+
+const Reports = observer(({ history, location, routes }: TReports) => {
+    const { client, common, ui } = useStore();
+
+    const { is_logged_in, is_logging_in, setVisibilityRealityCheck } = client;
+    const { is_from_derivgo, routeBackInApp } = common;
+    const { is_reports_visible, setReportsTabIndex, reports_route_tab_index, toggleReports } = ui;
+
     React.useEffect(() => {
         toggleReports(true);
         return () => {
@@ -41,10 +48,10 @@ const Reports = ({
 
     const onClickClose = () => routeBackInApp(history);
 
-    const handleRouteChange = e => history.push(e.target.value);
+    const handleRouteChange = (e: React.ChangeEvent<HTMLSelectElement>) => history.push(e.target.value);
 
     const menu_options = () => {
-        const options = [];
+        const options: TList[] = [];
 
         routes.forEach(route => {
             options.push({
@@ -65,20 +72,17 @@ const Reports = ({
         return <Loading is_fullscreen />;
     }
     return (
-        <FadeWrapper is_visible={is_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
+        <FadeWrapper is_visible={is_reports_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
             <div className='reports'>
                 <PageOverlay header={localize('Reports')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
-                            alignment='center'
-                            id='report'
                             is_floating
-                            classNameHeader='reports__tab-header'
                             current_path={location.pathname}
                             is_routed
                             is_full_width
-                            setVerticalTabIndex={setTabIndex}
-                            vertical_tab_index={selected_route.default ? 0 : tab_index}
+                            setVerticalTabIndex={setReportsTabIndex}
+                            vertical_tab_index={selected_route.default ? 0 : reports_route_tab_index}
                             list={menu_options()}
                         />
                     </DesktopWrapper>
@@ -88,14 +92,16 @@ const Reports = ({
                                 className='reports__route-selection'
                                 list_items={menu_options().map(option => ({
                                     text: option.label,
-                                    value: option.path,
+                                    value: option.path ?? '',
                                 }))}
-                                value={selected_route.path}
+                                value={selected_route.path ?? ''}
                                 should_show_empty_option={false}
                                 onChange={handleRouteChange}
+                                label={''}
+                                hide_top_placeholder={false}
                             />
-                            {selected_route && (
-                                <selected_route.component component_icon={selected_route.icon_component} />
+                            {selected_route?.component && (
+                                <selected_route.component icon_component={selected_route.icon_component} />
                             )}
                         </Div100vhContainer>
                     </MobileWrapper>
@@ -103,31 +109,6 @@ const Reports = ({
             </div>
         </FadeWrapper>
     );
-};
+});
 
-Reports.propTypes = {
-    history: PropTypes.object,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    location: PropTypes.object,
-    routeBackInApp: PropTypes.func,
-    routes: PropTypes.arrayOf(PropTypes.object),
-    setTabIndex: PropTypes.func,
-    setVisibilityRealityCheck: PropTypes.func,
-    tab_index: PropTypes.number,
-    toggleReports: PropTypes.func,
-};
-
-export default connect(({ client, common, ui }) => ({
-    is_logged_in: client.is_logged_in,
-    is_logging_in: client.is_logging_in,
-    is_from_derivgo: common.is_from_derivgo,
-    is_visible: ui.is_reports_visible,
-    routeBackInApp: common.routeBackInApp,
-    setVisibilityRealityCheck: client.setVisibilityRealityCheck,
-    setTabIndex: ui.setReportsTabIndex,
-    tab_index: ui.reports_route_tab_index,
-    toggleReports: ui.toggleReports,
-}))(withRouter(Reports));
+export default Reports;

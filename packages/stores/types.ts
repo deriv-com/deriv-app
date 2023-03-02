@@ -154,6 +154,7 @@ type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
+    setVisibilityRealityCheck: (value: number) => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => void;
     switched: boolean;
@@ -213,21 +214,25 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
+    is_reports_visible: boolean;
     is_mobile: boolean;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setReportsTabIndex: (value: number) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     addToast: (obj: Record<string, string>) => void;
     removeToast: (name: string) => void;
+    reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
     toggleCancellationWarning: () => void;
     toggleUnsupportedContractModal: () => void;
     toggleSetCurrencyModal: () => void;
+    toggleReports: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

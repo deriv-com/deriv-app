@@ -1241,9 +1241,7 @@ const AccountSwitcher = props => {
         };
 
         if (props.is_pre_appstore) {
-            if (isRealAccountTab && props.has_any_real_account) {
-                return <TradersHubLink />;
-            } else if (isDemoAccountTab) {
+            if ((isRealAccountTab && props.has_any_real_account) || isDemoAccountTab) {
                 return <TradersHubLink />;
             }
         }

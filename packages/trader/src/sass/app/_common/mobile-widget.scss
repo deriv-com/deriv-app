@@ -10,18 +10,15 @@
     margin: 0 0 0.8rem;
     flex: 1;
 
-    &__amount,
-    &__barriers-value {
+    &__amount {
         @include typeface(--paragraph-center-bold-black);
         color: var(--text-prominent);
     }
-    &__duration,
-    &__spot {
+    &__duration {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-prominent);
     }
-    &__type,
-    &__barrier {
+    &__type {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-less-prominent);
     }

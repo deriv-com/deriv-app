@@ -8,7 +8,10 @@ import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.j
 import { getContractTypes } from '../../../../Helpers/contract-type';
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
-    const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
+    const contract_types = getContractTypes(list, item).filter(
+        i => i.value !== 'rise_fall_equal' && i.value !== 'turboslong'
+    );
+
     const cards = contract_types.map((type, idx) => {
         return (
             <div key={idx} className='contract-type-info__card'>
@@ -37,6 +40,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
             </div>
         );
     });
+
     return (
         <Carousel
             className='contract-type-info'

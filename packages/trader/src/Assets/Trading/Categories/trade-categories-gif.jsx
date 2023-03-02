@@ -59,7 +59,6 @@ const TradeCategoriesGIF = ({ category }) => {
         case 'touch':
             return <ImageTouch />;
         case 'turbosshort':
-            return <ImageTurbos />;
         case 'turboslong':
             return <ImageTurbos />;
         default:

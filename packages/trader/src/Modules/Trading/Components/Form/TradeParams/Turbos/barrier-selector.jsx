@@ -1,16 +1,51 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Localize, localize } from '@deriv/translations';
+import BarriersList from './barriers-list.jsx';
+import { Button, Icon, MobileDialog, Text, Popover } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import BarriersList from './barriers-list.jsx';
+import { isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 
 const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrier_choices }) => {
-    const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);
     const [is_barriers_table_expanded, setIsBarriersTableExpanded] = React.useState(false);
+    const [is_mobile_tooltip_visible, setIsMobileTooltipVisible] = React.useState(false);
+    const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);
+
+    const toggleMobileTooltip = () => setIsMobileTooltipVisible(!is_mobile_tooltip_visible);
+
+    const toggleBarriersTable = () => {
+        setIsMobileTooltipVisible(false);
+        setIsBarriersTableExpanded(!is_barriers_table_expanded);
+        setSelectedBarrier(barrier_1);
+    };
+
+    const onBarrierClick = barrier => {
+        setHoveredBarrier(null);
+        setSelectedBarrier(barrier);
+        if (!isMobile()) {
+            onChange({
+                target: {
+                    name: 'barrier_1',
+                    value: barrier,
+                },
+            });
+        }
+    };
+
+    const onButtonClick = () => {
+        onChange({
+            target: {
+                name: 'barrier_1',
+                value: selected_barrier,
+            },
+        });
+    };
+
+    React.useEffect(() => {
+        setSelectedBarrier(barrier_1);
+    }, [barrier_1]);
 
     const header_tooltip_text = (
         <React.Fragment>
@@ -27,46 +62,86 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
         </React.Fragment>
     );
 
-    const toggleBarriersTable = () => setIsBarriersTableExpanded(!is_barriers_table_expanded);
+    const barriers_header_mobile = (
+        <div className='trade-container__barriers-table__header-tooltip'>
+            <div>{localize('Barriers')}</div>
+            <Popover
+                alignment='bottom'
+                icon='info'
+                zIndex={9999}
+                message={header_tooltip_text}
+                is_open={is_mobile_tooltip_visible}
+                onClick={toggleMobileTooltip}
+            />
+        </div>
+    );
 
-    const onBarrierClick = barrier => {
-        setHoveredBarrier(null);
-        setSelectedBarrier(barrier);
-        onChange({
-            target: {
-                name: 'barrier_1',
-                value: barrier,
-            },
-        });
-    };
+    const barriers_footer_mobile = (
+        <div className='trade-container__barriers__footer'>
+            <Button
+                className='trade-container__barriers__footer__button'
+                type='submit'
+                data-testid='submit-button'
+                text={localize('Select barrier')}
+                large
+                primary
+                is_disabled={selected_barrier === barrier_1}
+                onClick={onButtonClick}
+            />
+        </div>
+    );
 
-    React.useEffect(() => {
-        if (barrier_1 !== selected_barrier) {
-            setSelectedBarrier(barrier_1);
-        }
-    }, [barrier_1, selected_barrier]);
-
-    return (
+    return isMobile() ? (
         <React.Fragment>
-            {isMobile() ? (
-                <div className='mobile-widget'>
-                    <div className='mobile-widget__spot'>{localize('Spot')}</div>
-                    <div className='mobile-widget__barriers-value'>{barrier_1}</div>
-                    <div className='mobile-widget__barrier'>{localize('Barrier')}</div>
+            <div className='mobile-widget' onClick={toggleBarriersTable}>
+                <Text size='xs' color='prominent' align='center'>
+                    {localize('Spot')}
+                </Text>
+                <Text size='xs' color='prominent' align='center' weight='bold'>
+                    {barrier_1}
+                </Text>
+                <Text size='xs' color='less-prominent' align='center'>
+                    {localize('Barrier')}
+                </Text>
+            </div>
+            <MobileDialog
+                title={barriers_header_mobile}
+                onClose={toggleBarriersTable}
+                has_content_scroll={true}
+                portal_element_id='modal_root'
+                wrapper_classname='contracts-modal-list'
+                visible={is_barriers_table_expanded}
+                footer={barriers_footer_mobile}
+                header_classname='trade-container__barriers-table__header'
+            >
+                <BarriersList
+                    base_classname='trade-container__barriers-table__item'
+                    active_item_classname='trade-container__barriers-table__item--selected'
+                    className='trade-container__barriers-table__list'
+                    list={turbos_barrier_choices}
+                    selected_item={selected_barrier}
+                    onClick={onBarrierClick}
+                    onHover={barrier => setHoveredBarrier(barrier)}
+                />
+            </MobileDialog>
+        </React.Fragment>
+    ) : (
+        <React.Fragment>
+            <Fieldset
+                className='trade-container__fieldset trade-container__barriers'
+                header={localize('Barrier')}
+                is_center
+                header_tooltip={header_tooltip_text}
+            >
+                <div onClick={toggleBarriersTable} className='trade-container__barriers__wrapper'>
+                    <Text size='xs' className='trade-container__barriers-spot'>
+                        {localize('Spot')}
+                    </Text>
+                    <Text size='xs' className='trade-container__barriers-value'>
+                        {barrier_1}
+                    </Text>
                 </div>
-            ) : (
-                <Fieldset
-                    className='trade-container__fieldset trade-container__barriers'
-                    header={localize('Barrier')}
-                    is_center
-                    header_tooltip={header_tooltip_text}
-                >
-                    <div onClick={toggleBarriersTable} className='trade-container__barriers__wrapper'>
-                        <div className='trade-container__barriers-spot'>{localize('Spot')}</div>
-                        <div className='trade-container__barriers-value'>{barrier_1}</div>
-                    </div>
-                </Fieldset>
-            )}
+            </Fieldset>
             {is_barriers_table_expanded && (
                 <CSSTransition
                     appear
@@ -89,24 +164,22 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
                                 <Icon icon='IcCross' />
                             </div>
                         </div>
-                        <div className='trade-container__barriers-table__text'>Distance to spot</div>
-                        <ThemedScrollbars>
-                            <BarriersList
-                                base_classname='trade-container__barriers-table__item'
-                                active_item_classname='trade-container__barriers-table__item--selected'
-                                className='trade-container__barriers-table__list'
-                                list={turbos_barrier_choices}
-                                selected_item={selected_barrier}
-                                onClick={onBarrierClick}
-                                onHover={barrier => setHoveredBarrier(barrier)}
-                            />
-                        </ThemedScrollbars>
+                        <BarriersList
+                            base_classname='trade-container__barriers-table__item'
+                            active_item_classname='trade-container__barriers-table__item--selected'
+                            className='trade-container__barriers-table__list'
+                            list={turbos_barrier_choices}
+                            selected_item={selected_barrier}
+                            onClick={onBarrierClick}
+                            onHover={barrier => setHoveredBarrier(barrier)}
+                        />
                     </Fieldset>
                 </CSSTransition>
             )}
         </React.Fragment>
     );
 };
+
 BarrierSelector.propTypes = {
     barrier_1: PropTypes.string,
     onChange: PropTypes.func,

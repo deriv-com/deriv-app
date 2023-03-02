@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { Text, ThemedScrollbars } from '@deriv/components';
 
 const BarriersList = ({ active_item_classname, base_classname, selected_item, className, list, onClick, onHover }) => {
     const onMouseEnter = barrier => {
@@ -12,7 +15,11 @@ const BarriersList = ({ active_item_classname, base_classname, selected_item, cl
         const genetated_class_name = `${base_classname} ${selected_item === barrier ? active_item_classname : ''}`;
 
         return (
-            <li
+            <Text
+                color='prominent'
+                line_height={isMobile() ? 'xl' : 'l'}
+                size={isMobile() ? 'xs' : 'xxs'}
+                as='li'
                 key={barrier}
                 id={barrier}
                 className={genetated_class_name}
@@ -21,11 +28,26 @@ const BarriersList = ({ active_item_classname, base_classname, selected_item, cl
                 onMouseLeave={() => onHover(null)}
             >
                 {barrier}
-            </li>
+            </Text>
         );
     });
 
-    return <ul className={className}>{barriers_list}</ul>;
+    return (
+        <React.Fragment>
+            <Text
+                size={isMobile() ? 's' : 'xxs'}
+                color='disabled'
+                line_height='l'
+                as='p'
+                className='trade-container__barriers-table__text'
+            >
+                {localize('Distance to spot')}
+            </Text>
+            <ThemedScrollbars height={isMobile() ? 'calc(100% - 5.5rem)' : null} autohide={false}>
+                <ul className={className}>{barriers_list}</ul>
+            </ThemedScrollbars>
+        </React.Fragment>
+    );
 };
 
 BarriersList.propTypes = {

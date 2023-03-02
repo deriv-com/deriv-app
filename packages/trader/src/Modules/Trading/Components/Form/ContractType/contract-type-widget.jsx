@@ -87,7 +87,10 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         const multipliers_category = list.filter(
             contract_category => contract_category.label === localize('Multipliers')
         );
-        const options_category = list.filter(contract_category => contract_category.label !== localize('Multipliers'));
+        const options_category = list.filter(
+            contract_category =>
+                contract_category.label !== localize('Multipliers') && contract_category.label !== localize('Turbos')
+        );
         const turbos_category = list.filter(contract_category => contract_category.label === localize('Turbos'));
 
         const categories = [];

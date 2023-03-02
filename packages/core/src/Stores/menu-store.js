@@ -17,7 +17,6 @@ export default class MenuStore extends BaseStore {
     ];
 
     constructor() {
-        // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
         super();
 
         makeObservable(this, {
@@ -44,6 +43,6 @@ export default class MenuStore extends BaseStore {
     }
 
     detach(menu) {
-        this.extensions = this.extensions.filter(extension => extension.id !== menu);
+        this.extensions = this.extensions?.filter(extension => extension.id !== menu);
     }
 }

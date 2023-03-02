@@ -281,24 +281,21 @@ TradingHubHeader.propTypes = {
     switchToCRAccount: PropTypes.func,
 };
 
-export default connect(({ client, common, modules, notifications, ui, traders_hub }) => ({
+export default connect(({ client, common, notifications, ui, traders_hub }) => ({
     header_extension: ui.header_extension,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
     is_eu_country: client.is_eu_country,
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
-    is_mobile: ui.is_mobile,
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
-    is_pre_appstore: client.is_pre_appstore,
     is_route_modal_on: ui.is_route_modal_on,
     modal_data: traders_hub.modal_data,
     notifications_count: notifications.notifications.length,
     toggleNotifications: notifications.toggleNotificationsModal,
     loginid: client.loginid,
     platform: common.platform,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,

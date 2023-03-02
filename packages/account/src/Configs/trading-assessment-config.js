@@ -1,7 +1,7 @@
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-export const trading_assessment_questions = [
+export const trading_assessment_questions = () => [
     {
         question_text: localize(
             'Do you understand that you could potentially lose 100% of the money you use to trade?'
@@ -211,7 +211,7 @@ export const trading_assessment_questions = [
         field_type: 'radio',
         answer_options: [
             {
-                text: localize('Cancel your trade at any time within a specified time frame.'),
+                text: localize('Cancel your trade at any time within a specified timeframe.'),
                 value: 'Cancel your trade at any time within a chosen timeframe.',
             },
             {
@@ -239,15 +239,15 @@ export const trading_assessment_questions = [
         field_type: 'radio',
         answer_options: [
             {
-                text: localize('When opening a leveraged CFD trade'),
+                text: localize('When opening a leveraged CFD trade.'),
                 value: 'When opening a Leveraged CFD trade.',
             },
-            { text: localize('When trading multipliers'), value: 'When trading Multipliers.' },
+            { text: localize('When trading multipliers.'), value: 'When trading Multipliers.' },
             {
-                text: localize('When buying shares of a company'),
+                text: localize('When buying shares of a company.'),
                 value: 'When buying shares of a company.',
             },
-            { text: localize('All of the above'), value: 'All of the above.' },
+            { text: localize('All of the above.'), value: 'All of the above.' },
         ],
     },
 ];
@@ -290,19 +290,19 @@ export const trading_assessment_form_config = {
     },
 };
 
-const tradingAssessmentConfig = ({ real_account_signup_target }, TradingAssessmentNewUser) => {
-    return {
-        header: {
-            active_title: localize('Complete your trading assessment'),
-            title: localize('Trading assessment'),
-        },
-        body: TradingAssessmentNewUser,
-        form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
-        props: {
-            validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
-            assessment_questions: trading_assessment_questions,
-        },
-    };
-};
+const tradingAssessmentConfig = ({ real_account_signup_target, setSubSectionIndex }, TradingAssessmentNewUser) => ({
+    header: {
+        active_title: localize('Complete your trading assessment'),
+        title: localize('Trading assessment'),
+    },
+    body: TradingAssessmentNewUser,
+    form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
+    props: {
+        validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
+        assessment_questions: trading_assessment_questions(),
+        setSubSectionIndex,
+    },
+    sub_step_count: trading_assessment_questions().length,
+});
 
 export default tradingAssessmentConfig;

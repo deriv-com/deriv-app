@@ -22,7 +22,9 @@ const BlockUser = () => {
             if (
                 general_store.block_unblock_user_error &&
                 general_store.active_index === 3 &&
-                !buy_sell_store.show_advertiser_page
+                !buy_sell_store.show_advertiser_page &&
+                general_store?.error_code !== api_error_codes.TEMPORARY_BAR &&
+                general_store?.error_code !== api_error_codes.PERMISSION_DENIED
             ) {
                 showModal({
                     key: 'ErrorModal',

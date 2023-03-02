@@ -465,17 +465,11 @@ export default class MyProfileStore extends BaseStore {
 
                     if (this.search_term) this.setSearchResults(list);
                     else this.setTradePartnersList(list);
-                } else if (!general_store.is_barred) {
-                    general_store.showModal({
-                        key: 'ErrorModal',
-                        props: {
-                            error_message: response.error.message,
-                            error_modal_button_text: localize('Got it'),
-                            error_modal_title: 'Permission Denied',
-                            has_close_icon: false,
-                            width: isMobile() ? '90rem' : '40rem',
-                        },
-                    });
+                } else {
+                    const { code, message } = response.error;
+
+                    general_store.setErrorCode(code);
+                    general_store.setBlockUnblockUserError(message);
                 }
             }
             this.setIsBlockUserTableLoading(false);

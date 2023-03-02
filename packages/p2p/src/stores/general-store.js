@@ -236,18 +236,6 @@ export default class GeneralStore extends BaseStore {
                     const { code, message } = response.error;
                     this.setErrorCode(code);
                     this.setBlockUnblockUserError(message);
-
-                    if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
-                        general_store.showModal({
-                            key: 'ErrorModal',
-                            props: {
-                                error_message: response.error.message,
-                                error_modal_title: 'Unable to block advertiser',
-                                has_close_icon: false,
-                                width: isMobile() ? '90rem' : '40rem',
-                            },
-                        });
-                    }
                 }
             }
             this.setIsBlockUnblockUserLoading(false);

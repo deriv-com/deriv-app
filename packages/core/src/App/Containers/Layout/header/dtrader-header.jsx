@@ -66,6 +66,12 @@ const DTraderHeader = ({
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
 
+    React.useEffect(() => {
+        if (menu_items && is_logged_in) {
+            replaceCashierMenuOnclick();
+        }
+    }, []);
+
     const onClickDeposit = () => history.push(routes.cashier_deposit);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
@@ -111,7 +117,6 @@ const DTraderHeader = ({
                     <DesktopWrapper>
                         <TradersHubHomeButton />
                     </DesktopWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
                     <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
 

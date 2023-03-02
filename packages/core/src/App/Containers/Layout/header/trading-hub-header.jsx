@@ -149,8 +149,10 @@ const TradingHubHeader = ({
     const history = useHistory();
 
     React.useEffect(() => {
-        if (is_logged_in) replaceCashierMenuOnclick();
-    }, [is_logged_in, replaceCashierMenuOnclick]);
+        if (is_logged_in && menu_items) {
+            replaceCashierMenuOnclick();
+        }
+    }, []);
 
     return (
         <header className='trading-hub-header'>

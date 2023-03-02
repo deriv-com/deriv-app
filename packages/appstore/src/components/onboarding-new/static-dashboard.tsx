@@ -260,7 +260,7 @@ const StaticDashboard = ({
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon='DTrader'
-                                        name='DTrader'
+                                        name='Deriv Trader'
                                         description='Multipliers trading platform.'
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
@@ -271,7 +271,7 @@ const StaticDashboard = ({
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon='DTrader'
-                                        name='DTrader'
+                                        name='Deriv Trader'
                                         description='Options and multipliers trading platform.'
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
@@ -286,7 +286,7 @@ const StaticDashboard = ({
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon='DBot'
-                                            name='DBot'
+                                            name='Deriv Bot'
                                             description='Automate your trading, no coding needed.'
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
@@ -318,7 +318,7 @@ const StaticDashboard = ({
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon='DerivGo'
-                                            name='DerivGo'
+                                            name='Deriv Go'
                                             description='Trade on the go with our mobile app.'
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}

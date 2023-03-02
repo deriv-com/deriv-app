@@ -167,6 +167,7 @@ export default class UIStore extends BaseStore {
     is_exit_traders_hub_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
+    sub_section_index = 0;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -225,6 +226,7 @@ export default class UIStore extends BaseStore {
             is_update_email_modal_visible: observable,
             is_reset_trading_password_modal_visible: observable,
             is_cfd_reset_password_modal_enabled: observable,
+            sub_section_index: observable,
             is_chart_countdown_visible: observable,
             is_chart_layout_default: observable,
             pwa_prompt_event: observable,
@@ -377,6 +379,7 @@ export default class UIStore extends BaseStore {
             setIsClosingCreateRealAccountModal: action.bound,
             setIsRealTabEnabled: action.bound,
             setCFDPasswordResetModal: action.bound,
+            setSubSectionIndex: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -883,5 +886,9 @@ export default class UIStore extends BaseStore {
 
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
+    }
+
+    setSubSectionIndex(index) {
+        this.sub_section_index = index;
     }
 }

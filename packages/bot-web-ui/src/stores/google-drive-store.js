@@ -74,6 +74,7 @@ export default class GoogleDriveStore {
             Promise.resolve();
         }
         google.accounts.oauth2.revoke(this.access_token);
+        this.is_authorised = !this.is_authorised;
         // localStorage.removeItem('google_email', google_email);
     }
 

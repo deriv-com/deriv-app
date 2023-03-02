@@ -292,6 +292,7 @@ const Chart = props => {
         end_epoch,
         granularity,
         has_alternative_source,
+        is_eu_country,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
@@ -346,6 +347,7 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
+            is_eu_country={is_eu_country}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -399,6 +401,7 @@ Chart.propTypes = {
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
+    is_eu_country: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -413,7 +416,7 @@ Chart.propTypes = {
     wsSubscribe: PropTypes.func,
 };
 
-const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
+const ChartTrade = connect(({ modules, ui, common, contract_trade, client }) => ({
     is_socket_opened: common.is_socket_opened,
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,
@@ -428,6 +431,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
+    is_eu_country: client.is_eu_country,
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,

@@ -45,12 +45,11 @@ export const getTourStepConfig = (): Step[] => [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize(`Trader's hub tour`)}
+                {localize("Trader's hub tour")}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
-        content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
-
+        content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,
@@ -73,12 +72,11 @@ export const getTourStepConfigHighRisk = (): Step[] => [
     {
         title: (
             <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize(`Trader's hub tour`)}
+                {localize("Trader's hub tour")}
                 <div className='toggle-account-type__divider' />
             </Text>
         ),
-        content: <Text as='p'>{localize(`Click here if you ever need to repeat this tour.`)}</Text>,
-
+        content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
         target: '.trading-hub-header__tradinghub--onboarding--logo',
         disableBeacon: true,
         disableOverlayClose: true,

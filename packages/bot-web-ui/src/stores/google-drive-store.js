@@ -16,11 +16,14 @@ export default class GoogleDriveStore {
         this.bot_folder_name = `Binary Bot - ${localize('Strategies')}`;
         this.google_auth = null;
         this.setKey();
+        this.client = null;
 
+        importExternal('https://accounts.google.com/gsi/client').then(() => this.initialiseClient());
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
 
     is_authorised = false;
+    access_token = '';
 
     setKey = () => {
         const { aid, cid, api } = config.gd;
@@ -29,55 +32,49 @@ export default class GoogleDriveStore {
         this.api_key = api;
     };
 
-    initialise() {
-        gapi.load('client:auth2:picker', {
-            callback: () => {
-                gapi.client
-                    .init({
-                        apiKey: this.api_key,
-                        clientId: this.client_id,
-                        scope: 'https://www.googleapis.com/auth/drive.file',
-                        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
-                    })
-                    .then(
-                        () => {
-                            this.google_auth = gapi.auth2.getAuthInstance();
-                            this.google_auth.isSignedIn.listen(is_signed_in => this.updateSigninStatus(is_signed_in));
-                            this.updateSigninStatus(this.google_auth.isSignedIn.get());
-                        },
-                        error => {
-                            // TODO
-                            console.warn(error); // eslint-disable-line
-                        }
-                    );
+    initialise = () => {
+        gapi.load('client:picker', () =>
+            gapi.client.load('https://www.googleapis.com/discovery/v1/apis/drive/v3/rest')
+        );
+    };
+
+    initialiseClient = () => {
+        this.client = google.accounts.oauth2.initTokenClient({
+            client_id: this.client_id,
+            scope: 'https://www.googleapis.com/auth/drive.file',
+            callback: response => {
+                this.access_token = response.access_token;
+                this.updateSigninStatus(true);
+                localStorage.setItem('google_access_token', response.access_token);
             },
-            onerror: console.warn, // eslint-disable-line
         });
-    }
+    };
 
     updateSigninStatus(is_signed_in) {
         this.is_authorised = is_signed_in;
+        // localStorage.setItem('google_email ', google_email);
     }
 
     signIn() {
         if (this.is_authorised) {
-            return Promise.resolve();
+            Promise.resolve();
         }
 
-        return this.google_auth.signIn({ prompt: 'select_account' }).catch(response => {
-            if (response.error === 'access_denied') {
-                // TODO
-                console.error('Please grant permission to view and manage Google Drive folders created with Deriv Bot'); // eslint-disable-line
-            }
-        });
+        // return this.google_auth.signIn({ prompt: 'select_account' }).catch(response => {
+        //     if (response.error === 'access_denied') {
+        //         // TODO
+        //         console.error('Please grant permission to view and manage Google Drive folders created with Deriv Bot'); // eslint-disable-line
+        //     }
+        // });
+        this.client.requestAccessToken();
     }
 
     signOut() {
         if (!this.is_authorised) {
-            return Promise.resolve();
+            Promise.resolve();
         }
-
-        return this.google_auth.signOut();
+        google.accounts.oauth2.revoke(this.access_token);
+        // localStorage.removeItem('google_email', google_email);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -203,7 +200,7 @@ export default class GoogleDriveStore {
             .setTitle(localize(title))
             .setLocale(this.getPickerLanguage())
             .setAppId(this.app_id)
-            .setOAuthToken(gapi.auth.getToken().access_token)
+            .setOAuthToken(this.access_token)
             .addView(docs_view)
             .setDeveloperKey(this.api_key)
             .setSize(1051, 650)

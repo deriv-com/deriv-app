@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
@@ -12,15 +11,13 @@ import {
     getDocumentData,
     getRegex,
     preventEmptyClipboardPaste,
+    isIDVTestingMode,
 } from './utils';
-import { useToggleValidation } from '../../hooks/useToggleValidation';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
-    const location = useLocation();
-    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -92,6 +89,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         const { document_type, document_number } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
+        const is_idv_testing_mode = isIDVTestingMode(country_code, document_type.id, document_number);
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -103,7 +101,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
         } else if (
-            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
+            (!is_idv_testing_mode && (is_recurring_number || is_sequential_number)) ||
             document_number === document_type.example_format
         ) {
             errors.document_number = localize('Please enter a valid ID number.');

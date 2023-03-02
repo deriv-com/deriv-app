@@ -20,8 +20,16 @@ const getPascalCase = str => {
 
 const getFileNameFromPath = path => path.match(/([^/]*)\/*$/)[1].replace('.svg', '');
 
+const getEnglishCharacters = input =>
+    input
+        .normalize('NFD')
+        .split('')
+        .filter(char => /^[a-z ]*$/i.test(char))
+        .join('');
+
 module.exports = {
     getPascalCase,
     getFileNameFromPath,
     getKebabCase,
+    getEnglishCharacters,
 };

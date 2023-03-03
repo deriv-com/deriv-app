@@ -12,6 +12,15 @@
     transition: opacity 0.3s;
     display: flex;
 
+    &--is-disabled:after {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    &--is-hidden {
+        display: none !important;
+    }
+
     @media screen and (max-width: 380px) {
         &__cashier-button {
             display: none;

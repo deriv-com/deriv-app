@@ -2,8 +2,15 @@ import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getUrlBase, getCFDAccountKey } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import {
+    CFD_PLATFORMS,
+    isMobile,
+    getCFDAccountDisplay,
+    getCFDPlatformLabel,
+    getUrlBase,
+    getCFDAccountKey,
+} from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
@@ -173,6 +180,16 @@ const DMT5TradeModal = ({
                                 toggleModal();
                             }}
                         />
+                    </div>
+                </div>
+                <div className='cfd-trade-modal__maintenance'>
+                    <Icon
+                        icon='IcAlertWarning'
+                        size={isMobile() ? 28 : 20}
+                        className='cfd-trade-modal__maintenance-icon'
+                    />
+                    <div className='cfd-trade-modal__maintenance-text'>
+                        <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                     </div>
                 </div>
             </div>

@@ -1969,8 +1969,11 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccountSettings(settings) {
-        this.account_settings = settings;
-        this.is_account_setting_loaded = true;
+        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
+        if (!is_equal_settings) {
+            this.account_settings = settings;
+            this.is_account_setting_loaded = true;
+        }
     }
 
     setAccountStatus(status) {

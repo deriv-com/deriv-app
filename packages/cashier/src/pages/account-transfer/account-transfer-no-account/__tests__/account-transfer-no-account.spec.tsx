@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { StoreProvider } from '@deriv/stores';
 import AccountTransferNoAccount from '../account-transfer-no-account';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore;
@@ -13,12 +13,13 @@ describe('<AccountTransferNoAccount />', () => {
             ui: {
                 toggleAccountsDialog: jest.fn(),
             },
+            traders_hub: { openModal: jest.fn(), closeModal: jest.fn() },
         };
     });
 
     const renderAccountTransferNoAccount = () => {
         render(<AccountTransferNoAccount />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
     };
 

@@ -13,7 +13,7 @@ type TFilterAvailableAccounts = (
     landing_companies: LandingCompany,
     table: TAccountsDescription[],
     is_logged_in: boolean,
-    show_eu_related: boolean,
+    is_eu_client: boolean,
     platform: string,
     is_australian: boolean
 ) => Array<{ [key: string]: string | React.ReactNode | undefined }>;
@@ -41,7 +41,7 @@ type TCompareAccountsReusedProps = {
 };
 
 type TCompareAccountsDataParams = TCompareAccountsReusedProps & {
-    show_eu_related: boolean;
+    is_eu_client: boolean;
     residence: string;
 };
 
@@ -50,7 +50,7 @@ type TCFDCompareAccountHintProps = TCompareAccountsReusedProps & {
 };
 
 type TModalContentProps = TCompareAccountsReusedProps & {
-    show_eu_related: boolean;
+    is_eu_client: boolean;
     residence: string;
     is_eu: boolean;
 };
@@ -385,7 +385,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
     landing_companies,
     table,
     is_logged_in,
-    show_eu_related,
+    is_eu_client,
     platform,
     is_australian
 ) => {
@@ -393,7 +393,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
         if (is_australian) {
             return financial_au;
         }
-        if (show_eu_related) {
+        if (is_eu_client) {
             return financial_eu;
         }
         return financial;
@@ -405,7 +405,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
         .map(({ attribute, mt5 = {}, dxtrade = {} }) => {
             const { synthetic, synthetic_eu, financial, financial_au, financial_eu, footnote } =
                 platform === CFD_PLATFORMS.MT5 ? mt5 : dxtrade;
-            const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
+            const synthetic_object = { synthetic: is_eu_client ? synthetic_eu : synthetic };
             const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
             const footnote_counter = footnote ? ++footnote_number : null;
 
@@ -438,7 +438,7 @@ const filterAvailableAccounts: TFilterAvailableAccounts = (
 const compareAccountsData = ({
     landing_companies,
     is_logged_in,
-    show_eu_related,
+    is_eu_client,
     platform,
     residence,
     is_uk,
@@ -448,7 +448,7 @@ const compareAccountsData = ({
         landing_companies,
         getAccounts({ landing_companies, platform, is_logged_in, is_uk }),
         is_logged_in,
-        show_eu_related,
+        is_eu_client,
         platform,
         is_australian
     );
@@ -557,7 +557,7 @@ const ModalContent = ({
     landing_companies,
     is_logged_in,
     platform,
-    show_eu_related,
+    is_eu_client,
     residence,
     is_eu,
     is_uk,
@@ -568,7 +568,7 @@ const ModalContent = ({
     );
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence, is_uk }));
+        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, is_eu_client, residence, is_uk }));
 
         if (is_logged_in && platform === CFD_PLATFORMS.MT5) {
             updateColumnsStyle(
@@ -590,11 +590,11 @@ const ModalContent = ({
         is_uk,
         landing_companies,
         platform,
-        show_eu_related,
+        is_eu_client,
         residence,
     ]);
 
-    const show_risk_message = platform === CFD_PLATFORMS.MT5 || !show_eu_related;
+    const show_risk_message = platform === CFD_PLATFORMS.MT5 || !is_eu_client;
     const financial_account_table_head_text = is_eu ? localize('CFDs') : localize('Financial');
 
     return (

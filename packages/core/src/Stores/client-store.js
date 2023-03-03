@@ -1,39 +1,44 @@
+import * as SocketCache from '_common/base/socket_cache';
+
 import {
+    CFD_PLATFORMS,
+    LocalStore,
+    State,
+    deriv_urls,
+    filterUrlQuery,
+    excludeParamsFromUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
     isDesktopOs,
     isEmptyObject,
-    LocalStore,
-    redirectToLogin,
-    setCurrencies,
-    State,
-    toMoment,
-    deriv_urls,
-    urlForLanguage,
-    filterUrlQuery,
-    CFD_PLATFORMS,
-    routes,
-    isTestLink,
-    isProduction,
     isLocal,
+    isProduction,
     isStaging,
+    isTestLink,
+    redirectToLogin,
+    routes,
+    setCurrencies,
+    toMoment,
+    urlForLanguage,
+    isCryptocurrency,
 } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
-import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when, makeObservable } from 'mobx';
-import moment from 'moment';
-import { requestLogout, WS } from 'Services';
-import BinarySocketGeneral from 'Services/socket-general';
-import BinarySocket from '_common/base/socket_base';
-import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
-import BaseStore from './base-store';
+import { WS, requestLogout } from 'Services';
+import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
-import { setDeviceDataCookie } from './Helpers/device';
+import { getLanguage, localize } from '@deriv/translations';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import BinarySocketGeneral from 'Services/socket-general';
+import Cookies from 'js-cookie';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
+import moment from 'moment';
+import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
+const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -71,6 +76,7 @@ export default class ClientStore extends BaseStore {
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
+    is_pre_appstore = false;
     has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
@@ -141,6 +147,7 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
+    prev_account_type = 'demo';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -156,6 +163,7 @@ export default class ClientStore extends BaseStore {
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
+            is_pre_appstore: observable,
             switch_broadcast: observable,
             initialized_broadcast: observable,
             currencies_list: observable,
@@ -202,6 +210,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
+            prev_account_type: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -233,6 +242,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
+            is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
             is_risky_client: computed,
@@ -286,7 +296,6 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
-            is_pre_appstore: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -363,6 +372,7 @@ export default class ClientStore extends BaseStore {
             getChangeableFields: action.bound,
             syncWithLegacyPlatforms: action.bound,
             is_high_risk: computed,
+            is_low_risk: computed,
             has_residence: computed,
             setVisibilityRealityCheck: action.bound,
             clearRealityCheckTimeout: action.bound,
@@ -376,8 +386,8 @@ export default class ClientStore extends BaseStore {
             updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            switchAccountHandlerForAppstore: action.bound,
             setIsPreAppStore: action.bound,
+            setPrevAccountType: action.bound,
         });
 
         reaction(
@@ -395,6 +405,40 @@ export default class ClientStore extends BaseStore {
                 this.setCookieAccount();
             }
         );
+
+        reaction(
+            () => [this.account_settings],
+            () => {
+                const { trading_hub } = this.account_settings;
+                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
+                this.is_pre_appstore = !!trading_hub;
+                localStorage.setItem('is_pre_appstore', !!trading_hub);
+                this.setPreferredLanguage(lang_from_url);
+                LocalStore.set(LANGUAGE_KEY, lang_from_url);
+            }
+        );
+        // TODO: Remove this after setting trading_hub enabled for all users
+
+        reaction(
+            () => [this.account_settings],
+            () => {
+                const { trading_hub } = this.account_settings;
+                const is_traders_hub = !!trading_hub;
+                if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
+                    window.location.href = routes.root;
+                } else if (
+                    this.is_pre_appstore &&
+                    window.location.pathname === routes.root &&
+                    is_traders_hub !== this.is_pre_appstore
+                ) {
+                    window.location.href = routes.traders_hub;
+                } else {
+                    return null;
+                }
+                return null;
+            }
+        );
+
         when(
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
@@ -487,7 +531,9 @@ export default class ClientStore extends BaseStore {
             return [];
         };
 
-        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.landing_companies || !this.root_store.ui) {
+            return [];
+        }
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
@@ -542,7 +588,7 @@ export default class ClientStore extends BaseStore {
 
     get has_fiat() {
         const values = Object.values(this.accounts).reduce((acc, item) => {
-            if (!item.is_virtual) {
+            if (!item.is_virtual && item.landing_company_shortcode === this.landing_company_shortcode) {
                 acc.push(item.currency);
             }
             return acc;
@@ -631,6 +677,10 @@ export default class ClientStore extends BaseStore {
         }
 
         return this.default_currency;
+    }
+
+    get is_crypto() {
+        return isCryptocurrency(this.currency);
     }
 
     get default_currency() {
@@ -794,11 +844,14 @@ export default class ClientStore extends BaseStore {
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
-        return financial_shortcode || gaming_shortcode || mt_gaming_shortcode
-            ? eu_shortcode_regex.test(financial_shortcode) ||
-                  eu_shortcode_regex.test(gaming_shortcode) ||
-                  eu_shortcode_regex.test(mt_gaming_shortcode)
-            : eu_excluded_regex.test(this.residence);
+        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
+        return (
+            is_current_mf || //is_currently logged in mf account via trdaershub
+            (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
+                ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
+                  eu_shortcode_regex.test(gaming_shortcode)
+                : eu_excluded_regex.test(this.residence))
+        );
     }
 
     get is_brazil() {
@@ -933,11 +986,6 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
-    get is_pre_appstore() {
-        const { trading_hub } = this.account_settings;
-        return !!trading_hub;
-    }
-
     getIsMarketTypeMatching = (account, market_type) =>
         market_type === 'synthetic'
             ? account.market_type === market_type || account.market_type === 'gaming'
@@ -961,7 +1009,11 @@ export default class ClientStore extends BaseStore {
             account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
         );
         const available_real_accounts_shortcodes = this.trading_platform_available_accounts
-            .filter(account => (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type)
+            .filter(
+                account =>
+                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
+                    account.shortcode !== 'maltainvest'
+            )
             .map(account => account.shortcode);
 
         return !!available_real_accounts_shortcodes.filter(shortcode =>
@@ -983,7 +1035,11 @@ export default class ClientStore extends BaseStore {
 
     isDxtradeAllowed = landing_companies => {
         // Stop showing DerivX for non-logged in EU users
-        if (!this.is_logged_in && this.is_eu_country) return false;
+        if (
+            (!this.is_logged_in && this.is_eu_country) ||
+            (this.is_logged_in && this.root_store.traders_hub.show_eu_related_content)
+        )
+            return false;
 
         if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
             return true;
@@ -1178,8 +1234,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responsePayoutCurrencies(response) {
-        const list = response.payout_currencies || response;
-        this.currencies_list = buildCurrenciesList(list);
+        const list = response?.payout_currencies || response;
+        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
         this.selectCurrency('');
     }
 
@@ -1460,6 +1516,21 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const unused_params = [
+            'type',
+            'acp',
+            'label',
+            'server',
+            'interface',
+            'cid',
+            'age',
+            'utm_source',
+            'first_name',
+            'second_name',
+            'email',
+            'phone',
+            '_filteredParams',
+        ];
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
@@ -1540,7 +1611,7 @@ export default class ClientStore extends BaseStore {
             });
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
+                window.history.replaceState({}, document.title, urlForLanguage(language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {
@@ -1582,6 +1653,23 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+
+        // delete search params if it's signup when signin completed
+        if (action_param === 'signup') {
+            const filteredQuery = filterUrlQuery(search, ['lang']);
+            history.replaceState(
+                null,
+                null,
+                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `?${filteredQuery}`)
+            );
+        }
+
+        history.replaceState(
+            null,
+            null,
+            window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
+        );
+
         return true;
     }
 
@@ -1607,8 +1695,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responseLandingCompany(response) {
-        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
+        this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
     }
@@ -2034,10 +2122,10 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
-            const is_pre_appstore = !!this.account_settings.trading_hub;
             const redirect_url = sessionStorage.getItem('redirect_url');
+            const local_pre_appstore = localStorage.getItem('is_pre_appstore');
             if (
-                is_pre_appstore === 'true' &&
+                local_pre_appstore === 'true' &&
                 redirect_url?.endsWith('/') &&
                 (isTestLink() || isProduction() || isLocal() || isStaging())
             ) {
@@ -2417,7 +2505,26 @@ export default class ClientStore extends BaseStore {
 
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
-        return this.account_status.risk_classification === 'high';
+        const { gaming_company, financial_company } = this.landing_companies;
+
+        // This is a conditional check for countries like Australia/Norway which fulfil one of these following conditions.
+        const restricted_countries =
+            financial_company?.shortcode === 'svg' ||
+            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
+
+        const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
+    }
+
+    get is_low_risk() {
+        const { gaming_company, financial_company } = this.landing_companies;
+        const low_risk_landing_company =
+            financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
+        return (
+            low_risk_landing_company ||
+            (this.upgradeable_landing_companies?.includes('svg') &&
+                this.upgradeable_landing_companies?.includes('maltainvest'))
+        );
     }
 
     get has_residence() {
@@ -2502,31 +2609,22 @@ export default class ClientStore extends BaseStore {
         this.prev_real_account_loginid = logind;
     };
 
-    async switchAccountHandlerForAppstore(tab_current_account_type) {
-        if (tab_current_account_type === 'demo' && this.hasAnyRealAccount()) {
-            if (this.prev_real_account_loginid) {
-                await this.switchAccount(this.prev_real_account_loginid);
-            } else {
-                await this.switchAccount(
-                    this.account_list.find(acc => acc.is_virtual === 0 && !acc.is_disabled).loginid
-                );
-            }
-        } else if (tab_current_account_type === 'real') {
-            this.setPrevRealAccountLoginid(this.loginid);
-            await this.switchAccount(this.virtual_account_loginid);
-        }
-    }
+    setPrevAccountType = acc_type => {
+        this.prev_account_type = acc_type;
+    };
 
     setIsPreAppStore(is_pre_appstore) {
         const trading_hub = is_pre_appstore ? 1 : 0;
-        WS.setSettings({
-            set_settings: 1,
-            trading_hub,
-        }).then(response => {
-            if (!response.error) {
-                this.account_settings = { ...this.account_settings, trading_hub };
-            }
-        });
+        try {
+            WS.setSettings({
+                set_settings: 1,
+                trading_hub,
+            });
+        } catch (error) {
+            return;
+        }
+        this.account_settings = { ...this.account_settings, trading_hub };
+        localStorage.setItem('is_pre_appstore', is_pre_appstore);
     }
 }
 /* eslint-enable */

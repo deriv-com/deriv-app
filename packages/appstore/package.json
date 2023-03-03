@@ -25,7 +25,8 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@deriv/account": "^1.0.0",
-        "@deriv/api-types": "^1.0.54",
+        "@deriv/api-types": "^1.0.11",
+        "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
         "@deriv/shared": "^1.0.0",
@@ -39,7 +40,8 @@
         "mobx-react-lite": "^3.4.0",
         "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
-        "react": "^16.14.0",
+        "react": "^17.0.2",
+        "react-content-loader": "^6.2.0",
         "react-router": "^5.2.0",
         "react-joyride": "^2.5.3",
         "react-router-dom": "^5.2.0"

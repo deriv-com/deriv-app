@@ -1,12 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { Text, Loading } from '@deriv/components';
+import { Loading, SearchBox, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import BlockUserDropdown from '../block-user-dropdown';
 import BlockUserTable from '../block-user-table';
 import BlockUserTableError from '../block-user-table/block-user-table-error';
-import SearchBox from 'Components/search-box';
 import debounce from 'lodash.debounce';
 import { localize } from 'Components/i18next';
 import './block-user-list.scss';

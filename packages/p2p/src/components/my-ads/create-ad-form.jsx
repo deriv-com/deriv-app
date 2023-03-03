@@ -19,9 +19,8 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
-import CreateAdErrorModal from './create-ad-error-modal.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
-import CreateAdAddPaymentMethodModal from './create-ad-add-payment-method-modal.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -39,6 +38,7 @@ const CreateAdForm = () => {
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
+    const { useRegisterModalProps } = useModalManagerContext();
 
     // eslint-disable-next-line no-shadow
     const handleSelectPaymentMethods = selected_methods => {
@@ -54,11 +54,19 @@ const CreateAdForm = () => {
             JSON.stringify(should_not_show_auto_archive_message_again.current)
         );
         my_ads_store.setIsAdCreatedModalVisible(false);
-        if (my_ads_store.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
-            my_ads_store.setIsAdExceedsDailyLimitModalOpen(true);
-        }
+        if (my_ads_store.advert_details?.visibility_status?.includes('advertiser_daily_limit'))
+            general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });
+
         my_ads_store.setShowAdForm(false);
     };
+
+    // when adding payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals
+    useRegisterModalProps({
+        key: 'CancelAddPaymentMethodModal',
+        props: {
+            should_hide_all_modals_on_cancel: true,
+        },
+    });
 
     React.useEffect(() => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
@@ -66,7 +74,9 @@ const CreateAdForm = () => {
         my_profile_store.getAdvertiserPaymentMethods();
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
-            () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
+            () => {
+                if (my_ads_store.api_error_message) general_store.showModal({ key: 'CreateAdErrorModal', props: {} });
+            }
         );
         // P2P configuration is not subscribable. Hence need to fetch it on demand
         general_store.setP2PConfig();
@@ -75,6 +85,7 @@ const CreateAdForm = () => {
             disposeApiErrorReaction();
             my_ads_store.setApiErrorMessage('');
             floating_rate_store.setApiErrorMessage('');
+            my_ads_store.setShowAdForm(false);
             buy_sell_store.setCreateSellAdFromNoAds(false);
         };
 
@@ -425,8 +436,6 @@ const CreateAdForm = () => {
                     );
                 }}
             </Formik>
-            <CreateAdErrorModal />
-            <CreateAdAddPaymentMethodModal />
             <Modal
                 className='p2p-my-ads__ad-created'
                 has_close_icon={false}

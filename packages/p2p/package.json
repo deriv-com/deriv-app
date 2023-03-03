@@ -2,7 +2,7 @@
     "name": "@deriv/p2p",
     "version": "0.7.3",
     "description": "p2p cashier",
-    "main": "lib/index.js",
+    "main": "dist/p2p/js/index.js",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -31,6 +31,7 @@
     "license": "ISC",
     "dependencies": {
         "@deriv/components": "^1.0.0",
+        "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

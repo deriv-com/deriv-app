@@ -1,16 +1,56 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
-import { Text, Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Text, SpanButton } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 
 export const tour_step_config: Step[] = [
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Switch accounts')}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Switch accounts')}
+                </Text>
                 <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
+        target: '.toggle-account-type__button',
+        disableBeacon: true,
+        placement: 'bottom-end',
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Trading hub tour')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p'>
+                <Localize
+                    i18n_default_text='Need help moving around?<0></0>We have a short tutorial that might help. Hit Repeat tour to begin.'
+                    components={[<br key={0} />]}
+                />
             </Text>
+        ),
+
+        target: '.trading-hub-header__tradinghub--onboarding--logo',
+        disableBeacon: true,
+    },
+];
+
+export const eu_tour_step_config: Step[] = [
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Switch accounts')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
         ),
         content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
         target: '.toggle-account-type__button',
@@ -26,39 +66,11 @@ export const tour_step_config: Step[] = [
         ),
         content: (
             <Text as='p'>
-                {localize(
-                    `Need help moving around?\n\nWe have a short turorial that might help. Hit Repeat tour to begin.`
-                )}
+                <Localize
+                    i18n_default_text='Need help moving around?<0></0>We have a short tutorial that might help. Hit Repeat tour to begin.'
+                    components={[<br key={0} />]}
+                />
             </Text>
-        ),
-
-        target: '.trading-hub-header__tradinghub--onboarding--logo',
-        disableBeacon: true,
-    },
-];
-
-export const eu_tour_step_config: Step[] = [
-    {
-        title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Switch accounts')}
-                <div className='toggle-account-type__divider' />
-            </Text>
-        ),
-        content: <Text as='p'>{localize('Switch between your demo and real accounts.')}</Text>,
-        target: '.toggle-account-type__button',
-        disableBeacon: true,
-        placement: 'bottom-end',
-    },
-    {
-        title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize('Trading hub tour')}
-                <div className='toggle-account-type__divider' />
-            </Text>
-        ),
-        content: (
-            <Text as='p'>{localize(`Need help moving around?\n\nWe have a short turorial that might help.`)}</Text>
         ),
 
         target: '.trading-hub-header__tradinghub--onboarding--logo',
@@ -113,7 +125,7 @@ export const tour_styles_dark_mode: Styles = {
 };
 
 export const tour_step_locale: Locale = {
-    back: <Button has_effect text={localize('Repeat tour')} secondary medium />,
+    back: <SpanButton has_effect text={localize('Repeat tour')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, HintBox, InfiniteDataList, Loading, Modal, Table, Text } from '@deriv/components';
+import { Button, HintBox, InfiniteDataList, Loading, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
@@ -9,12 +9,7 @@ import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import { generateErrorDialogTitle } from 'Utils/adverts';
-import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
-import MyAdsFloatingRateSwitchModal from './my-ads-floating-rate-switch-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
-import QuickAddModal from './quick-add-modal.jsx';
-import AdExceedsDailyLimitModal from './ad-exceeds-daily-limit-modal.jsx';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -59,8 +54,6 @@ const MyAdsTable = () => {
         client: { currency },
     } = useStore();
 
-    const [selected_advert, setSelectedAdvert] = React.useState(undefined);
-
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
@@ -84,7 +77,6 @@ const MyAdsTable = () => {
     if (my_ads_store.adverts.length) {
         return (
             <React.Fragment>
-                {selected_advert && <QuickAddModal advert={selected_advert} />}
                 {floating_rate_store.change_ad_alert && (
                     <div className='p2p-my-ads__warning'>
                         <HintBox
@@ -98,7 +90,6 @@ const MyAdsTable = () => {
                         />
                     </div>
                 )}
-                <AdExceedsDailyLimitModal />
                 <div className='p2p-my-ads__header'>
                     {isDesktop() && (
                         <Button
@@ -133,7 +124,7 @@ const MyAdsTable = () => {
                             items={my_ads_store.adverts}
                             keyMapperFn={item => item.id}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
-                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} setAdvert={setSelectedAdvert} />}
+                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
                         />
                     </Table.Body>
                 </Table>
@@ -150,52 +141,6 @@ const MyAdsTable = () => {
                         </Button>
                     </div>
                 )}
-                <MyAdsDeleteModal />
-                <MyAdsFloatingRateSwitchModal />
-                <Modal
-                    className='p2p-my-ads__modal-error'
-                    has_close_icon={false}
-                    is_open={Boolean(my_ads_store.activate_deactivate_error_message)}
-                    small
-                    title={generateErrorDialogTitle(my_ads_store.error_code)}
-                >
-                    <Modal.Body>
-                        <Text as='p' size='xs' color='prominent'>
-                            {my_ads_store.activate_deactivate_error_message}
-                        </Text>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            has_effect
-                            large
-                            onClick={() => my_ads_store.setActivateDeactivateErrorMessage('')}
-                            primary
-                            text={localize('Ok')}
-                        />
-                    </Modal.Footer>
-                </Modal>
-                <Modal
-                    className='p2p-my-ads__modal-error'
-                    has_close_icon={false}
-                    is_open={my_ads_store.is_quick_add_error_modal_open}
-                    small
-                    title={generateErrorDialogTitle(my_ads_store.error_code)}
-                >
-                    <Modal.Body>
-                        <Text as='p' size='xs' color='prominent'>
-                            {my_ads_store.update_payment_methods_error_message}
-                        </Text>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            has_effect
-                            large
-                            onClick={() => my_ads_store.setIsQuickAddErrorModalOpen(false)}
-                            primary
-                            text={localize('Ok')}
-                        />
-                    </Modal.Footer>
-                </Modal>
             </React.Fragment>
         );
     }

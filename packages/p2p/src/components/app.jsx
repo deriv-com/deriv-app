@@ -10,6 +10,7 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
+import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import './app.scss';
 
 const App = props => {
@@ -165,7 +166,7 @@ const App = props => {
             order_store.setVerificationCode(code_param);
         }
         if (action_param && code_param) {
-            order_store.setIsLoadingModalOpen(true);
+            general_store.showModal({ key: 'LoadingModal', props: {} });
             order_store.verifyEmailVerificationCode(action_param, code_param);
         }
 
@@ -179,7 +180,10 @@ const App = props => {
     return (
         <main className='p2p-cashier'>
             <Notifications />
-            <AppContent />
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+            </ModalManagerContextProvider>
         </main>
     );
 };

@@ -42,7 +42,7 @@ export default class GTMStore extends BaseStore {
 
             // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
             if (
-                /^(deriv-app\.binary.sx|app.deriv.com|staging-app.deriv.com|deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(
+                /^(deriv-app\.binary.sx|app\.deriv\.com|staging-app\.deriv\.com|deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(
                     domain
                 )
             ) {

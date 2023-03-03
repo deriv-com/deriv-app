@@ -54,9 +54,9 @@ describe('buildBarriersConfig', () => {
         expect(buildBarriersConfig(contract)).toEqual({
             count: 1,
             daily: {
-                low_barrier: 22,
-                barrier: 33,
-                high_barrier: 44,
+                low_barrier: '22',
+                barrier: '33',
+                high_barrier: '44',
             },
         });
     });
@@ -71,8 +71,8 @@ describe('buildBarriersConfig', () => {
         expect(buildBarriersConfig(contract)).toEqual({
             count: 1,
             daily: {
-                low_barrier: 22,
-                barrier: 33,
+                low_barrier: '22',
+                barrier: '33',
             },
         });
     });

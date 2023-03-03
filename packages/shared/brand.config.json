@@ -40,7 +40,8 @@
             "icon": "IcBrandBinarybot"
         },
         "go": {
-            "name": "Deriv Go"
+            "name": "Deriv GO",
+            "icon": ""
         }
     },
     "platforms_appstore": {
@@ -65,7 +66,7 @@
             "availability": "Non-EU"
         },
         "go": {
-            "name": "Deriv Go",
+            "name": "Deriv GO",
             "icon": "DerivGo",
             "availability": "Non-EU"
         }

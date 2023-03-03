@@ -29,10 +29,10 @@ const PlatformLauncher = ({
 
     const { is_eu } = client;
 
-    const is_eu_description = 'Multipliers trading platform.';
+    const is_eu_description = localize('Multipliers trading platform.');
 
     const app_description =
-        app_desc === 'Options and multipliers trading platform.' && is_eu ? is_eu_description : app_desc;
+        app_desc === localize('Options and multipliers trading platform.') && is_eu ? is_eu_description : app_desc;
 
     const TradeButton = (
         <Button primary className='platform-launcher__trade-button'>

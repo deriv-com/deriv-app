@@ -35,12 +35,7 @@ const populateData = form_data => {
     };
 };
 
-const TradingAssessment = ({
-    is_virtual,
-    setFinancialAndTradingAssessment,
-    // setShouldShowWarningModal,
-    // should_show_risk_accept_modal,
-}) => {
+const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => {
     const history = useHistory();
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
@@ -293,6 +288,4 @@ const TradingAssessment = ({
 export default connect(({ client }) => ({
     is_virtual: client.is_virtual,
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    updateAccountStatus: client.updateAccountStatus,
 }))(withRouter(TradingAssessment));

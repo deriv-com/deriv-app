@@ -94,6 +94,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
             document_type.id,
             document_number
         );
+        const is_document_number_invalid =
+            (!is_idv_whitelist_document_number && (is_recurring_number || is_sequential_number)) ||
+            document_number === document_type.example_format;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -104,10 +107,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (
-            (!is_idv_whitelist_document_number && (is_recurring_number || is_sequential_number)) ||
-            document_number === document_type.example_format
-        ) {
+        } else if (is_document_number_invalid) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);

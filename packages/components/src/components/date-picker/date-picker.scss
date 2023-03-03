@@ -73,6 +73,7 @@
     }
     .dc-icon {
         top: 22%;
+        // top: calc(0.5 * #{height});
 
         &:not(.dc-icon--disabled) {
             cursor: pointer;

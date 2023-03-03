@@ -23,6 +23,7 @@ export interface PlatformConfig {
     app_desc: string;
     link_to?: string;
     is_external?: boolean;
+    new_tab?: boolean;
 }
 
 export interface MfPlatformConfig extends PlatformConfig {
@@ -58,6 +59,7 @@ export const platform_config: PlatformConfig[] = [
         app_desc: localize('Trade on the go with our mobile app.'),
         link_to: getStaticUrl('/deriv-go'),
         is_external: true,
+        new_tab: true,
     },
 ];
 

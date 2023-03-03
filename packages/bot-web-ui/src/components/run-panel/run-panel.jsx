@@ -247,10 +247,10 @@ const RunPanel = ({
 
     return (
         <>
-            <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : undefined}>
+            <div className={is_mobile && is_drawer_open ? 'run-panel__container--mobile' : 'run-panel'}>
                 <Drawer
                     anchor='right'
-                    className={classNames(undefined, {
+                    className={classNames('run-panel', {
                         'run-panel__container': !is_mobile,
                         'run-panel__container--tour-active': !is_mobile && has_started_onboarding_tour,
                     })}

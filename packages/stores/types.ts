@@ -207,7 +207,7 @@ type TUiStore = {
     is_mobile: boolean;
     sub_section_index: number;
     notification_messages_ui: React.FC | null;
-    openRealAccountSignup: (value: string) => void;
+    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;

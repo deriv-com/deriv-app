@@ -4,6 +4,29 @@
     display: inline-block;
     width: 100%;
 
+    &__container {
+        display: flex;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS;
+        align-items: center;
+        &:hover:not(.dc-input--disabled) {
+            border-color: var(--border-hover);
+        }
+        &:focus-within {
+            border-color: var(--brand-secondary);
+
+            &:hover {
+                border-color: var(--brand-secondary);
+            }
+        }
+        &--error {
+            border-color: var(--brand-red-coral) !important;
+        }
+        &--disabled {
+            border-color: var(--general-disabled);
+        }
+    }
+
     &__hint {
         margin-left: 1.2rem;
         position: absolute;

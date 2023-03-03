@@ -23,7 +23,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
-    FileUploaderContainer: () => <div>FileUploaderContainer</div>,
+    PoaFileUploaderContainer: () => <div>PoaFileUploaderContainer</div>,
     FormSubHeader: jest.fn(props => <div>{props.title}</div>),
     PoaStatusCodes: jest.fn(() => {
         poa_status_codes.none;
@@ -154,7 +154,7 @@ describe('<CFDPOA />', () => {
         expect(screen.getByText('Town/City*')).toBeInTheDocument();
         expect(screen.getByText('State/Province')).toBeInTheDocument();
         expect(screen.getByText('Postal/ZIP code')).toBeInTheDocument();
-        expect(screen.getByText(/FileUploaderContainer/i)).toBeInTheDocument();
+        expect(screen.getByText(/PoaFileUploaderContainer/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Next/i })).toBeInTheDocument();
     });
 
@@ -214,7 +214,7 @@ describe('<CFDPOA />', () => {
     it('should render the fileuploader mock component', async () => {
         render(<CFDPOA {...props} />);
         expect(await screen.findByText(/Address information/i)).toBeInTheDocument();
-        expect(screen.getByText(/FileUploaderContainer/i)).toBeInTheDocument();
+        expect(screen.getByText(/PoaFileUploaderContainer/i)).toBeInTheDocument();
     });
 
     it('should render the error title if POA has failed', async () => {

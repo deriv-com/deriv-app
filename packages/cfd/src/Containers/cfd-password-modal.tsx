@@ -467,6 +467,15 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
         );
     }
 
+    const showJuristiction = () => {
+        if (!props.show_eu_related_content) {
+            return getFormattedJurisdictionCode(props.jurisdiction_selected_shortcode);
+        } else if (props.platform === CFD_PLATFORMS.DXTRADE) {
+            return '';
+        }
+        return 'CFDs';
+    };
+
     return (
         <Formik
             initialValues={{
@@ -491,15 +500,13 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
-                                {props.account_type.category === 'real' && props.platform !== CFD_PLATFORMS.DXTRADE && (
+                                {props.account_type.category === 'real' && (
                                     <Localize
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(props.platform),
                                             account: !props.show_eu_related_content ? props.account_title : '',
-                                            jurisdiction_shortcode: !props.show_eu_related_content
-                                                ? getFormattedJurisdictionCode(props.jurisdiction_selected_shortcode)
-                                                : 'CFDs',
+                                            jurisdiction_shortcode: showJuristiction(),
                                         }}
                                     />
                                 )}
@@ -510,14 +517,6 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                                             platform: getCFDPlatformLabel(props.platform),
                                             platform_name: props.platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
                                             account: props.account_title,
-                                        }}
-                                    />
-                                )}
-                                {props.account_type.category === 'real' && props.platform === CFD_PLATFORMS.DXTRADE && (
-                                    <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} Real account.'
-                                        values={{
-                                            platform: getCFDPlatformLabel(props.platform),
                                         }}
                                     />
                                 )}

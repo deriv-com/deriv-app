@@ -7,7 +7,6 @@ import Footer from './modal-footer';
 import Text from '../text/text';
 import Icon from '../icon/icon';
 import { useOnClickOutside } from '../../hooks';
-import Badge from '../../../../appstore/src/components/badge';
 
 interface IClickEvent extends MouseEvent {
     path?: HTMLElement[];
@@ -172,18 +171,17 @@ const ModalElement = ({
                         </Text>
                     )}
                     {title && (
-                        // <Text
-                        //     as='h3'
-                        //     color='prominent'
-                        //     weight='bold'
-                        //     styles={{ lineHeight: '2.4rem' }}
-                        //     className={classNames('dc-modal-header__title', {
-                        //         [`dc-modal-header__title--${className}`]: className,
-                        //     })}
-                        // >
-                        //     {title} HEY??? //title
-                        // </Text>
-                        <Badge />
+                        <Text
+                            as='h3'
+                            color='prominent'
+                            weight='bold'
+                            styles={{ lineHeight: '2.4rem' }}
+                            className={classNames('dc-modal-header__title', {
+                                [`dc-modal-header__title--${className}`]: className,
+                            })}
+                        >
+                            {title}
+                        </Text>
                     )}
                     {header && (
                         <div
@@ -191,7 +189,7 @@ const ModalElement = ({
                                 [`dc-modal-header__section--${className}`]: className,
                             })}
                         >
-                            {header}ß
+                            {header}
                         </div>
                     )}
                     {has_close_icon && (

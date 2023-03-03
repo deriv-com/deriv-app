@@ -1,0 +1,19 @@
+.dc-badge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #fff;
+    border-radius: 4px;
+    width: 69px;
+    height: 28px;
+
+    &--purple {
+        background: linear-gradient(180deg, #d36df7 0%, #8c3df1 100%);
+    }
+
+    &--green {
+        background: linear-gradient(180deg, #bce44a 0%, #16c165 100%);
+    }
+}

@@ -1,0 +1,38 @@
+.add-options--desktop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    height: 6rem;
+    width: 24rem;
+    border: 0.2rem dashed $color-red-7;
+    border-radius: $BORDER_RADIUS;
+    cursor: pointer;
+    &_title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & > span {
+            color: $color-red;
+            margin-left: 0.8rem;
+        }
+    }
+    &_description {
+        & > span {
+            color: var(--text-less-prominent);
+        }
+    }
+}
+
+.add-options--mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: $BORDER_RADIUS;
+    background-color: $color-red-7;
+    cursor: pointer;
+}

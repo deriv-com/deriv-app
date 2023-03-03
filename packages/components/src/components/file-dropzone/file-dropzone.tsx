@@ -21,7 +21,7 @@ type TFileDropzone = {
     className?: string;
     validation_error_message: ReactNode & ((open?: () => void) => ReactNode);
     max_size?: number;
-    value: Array<{ name: string }>;
+    value: Array<File & { file: Blob }>;
     message: ReactNode & ((open?: () => void) => ReactNode);
     filename_limit?: number;
     error_message: string;

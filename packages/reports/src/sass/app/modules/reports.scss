@@ -716,6 +716,13 @@ $side-padding: 1.2em;
         }
     }
 
+    &__contract-types-selector {
+        padding: 0 1.6rem;
+    }
+    &__contract-types-selector__container {
+        max-width: 22.4rem;
+    }
+
     &__content {
         width: fit-content;
         max-height: 100%;
@@ -817,9 +824,10 @@ $side-padding: 1.2em;
         /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
             minmax(110px, 0.7fr) minmax(130px, 0.8fr) minmax(100px, 1.1fr) minmax(90px, 1.1fr) minmax(90px, 1.1fr)
-            minmax(120px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
+            minmax(150px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
         width: 100%;
         grid-auto-rows: 100%;
+        padding-left: 0;
 
         &_wrapper {
             display: flex;

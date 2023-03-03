@@ -1,13 +1,32 @@
-import React, { createContext, PropsWithChildren, useContext } from 'react';
+import React, { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react';
 import { TRootStore } from '../types';
+import { CounterStore } from './stores';
 
-export const StoreContext = createContext<TRootStore | null>(null);
-
-export const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
-    return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
+export type TStores = TRootStore & {
+    counter: CounterStore;
 };
 
-export const useStore = () => {
+const StoreContext = createContext<TStores | null>(null);
+
+const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
+    const memoizedValue = useMemo(
+        () => ({
+            ...store,
+            counter: new CounterStore(),
+        }),
+        [store]
+    );
+
+    useEffect(() => {
+        return () => {
+            return memoizedValue.counter.unmount();
+        };
+    }, [memoizedValue]);
+
+    return <StoreContext.Provider value={memoizedValue}>{children}</StoreContext.Provider>;
+};
+
+const useStore = () => {
     const store = useContext(StoreContext);
 
     if (!store) {
@@ -16,3 +35,5 @@ export const useStore = () => {
 
     return store;
 };
+
+export { StoreProvider, useStore };

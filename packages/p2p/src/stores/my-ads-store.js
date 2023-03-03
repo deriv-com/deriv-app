@@ -18,6 +18,7 @@ export default class MyAdsStore extends BaseStore {
     api_error_message = '';
     api_table_error_message = '';
     available_balance = null;
+    current_method = { key: null, is_deleted: false };
     delete_error_message = '';
     edit_ad_form_error = '';
     error_message = '';
@@ -62,6 +63,7 @@ export default class MyAdsStore extends BaseStore {
             api_error_message: observable,
             api_table_error_message: observable,
             available_balance: observable,
+            current_method: observable,
             delete_error_message: observable,
             edit_ad_form_error: observable,
             error_message: observable,
@@ -116,6 +118,7 @@ export default class MyAdsStore extends BaseStore {
             setApiTableErrorMessage: action.bound,
             setAvailableBalance: action.bound,
             setApiErrorCode: action.bound,
+            setCurrentMethod: action.bound,
             setDeleteErrorMessage: action.bound,
             setEditAdFormError: action.bound,
             setErrorMessage: action.bound,
@@ -253,6 +256,8 @@ export default class MyAdsStore extends BaseStore {
                     } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
                         if (!response.p2p_advert_create.is_visible) {
                             this.setAdvertDetails(response.p2p_advert_create);
+                        }
+                        if (this.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
                             this.setIsAdExceedsDailyLimitModalOpen(true);
                         }
                         this.setShowAdForm(false);
@@ -512,6 +517,10 @@ export default class MyAdsStore extends BaseStore {
 
     setApiErrorCode(error_code) {
         this.error_code = error_code;
+    }
+
+    setCurrentMethod(current_method) {
+        this.current_method = current_method;
     }
 
     setDeleteErrorMessage(delete_error_message) {

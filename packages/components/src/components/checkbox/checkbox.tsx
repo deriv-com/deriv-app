@@ -10,7 +10,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'>
     disabled?: boolean;
     greyDisabled?: boolean;
     id?: string;
-    label: React.ReactElement;
+    label: string | React.ReactElement;
     onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;

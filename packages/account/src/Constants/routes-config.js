@@ -9,6 +9,7 @@ import {
     FinancialAssessment,
     ProofOfIdentity,
     ProofOfAddress,
+    ProofOfOwnership,
     ApiToken,
     TwoFactorAuthentication,
     SelfExclusion,
@@ -18,6 +19,7 @@ import {
     LoginHistory,
     AccountClosed,
     DeactivateAccount,
+    LanguageSettings,
 } from 'Sections';
 
 // Error Routes
@@ -54,6 +56,11 @@ const initRoutesConfig = ({ is_appstore }) => [
                         getTitle: () => localize('Personal details'),
                         default: true,
                     },
+                    {
+                        path: routes.languages,
+                        component: LanguageSettings,
+                        getTitle: () => localize('Languages'),
+                    },
                 ],
             },
             {
@@ -85,6 +92,11 @@ const initRoutesConfig = ({ is_appstore }) => [
                         path: routes.proof_of_address,
                         component: ProofOfAddress,
                         getTitle: () => localize('Proof of address'),
+                    },
+                    {
+                        path: routes.proof_of_ownership,
+                        component: ProofOfOwnership,
+                        getTitle: () => localize('Proof of ownership'),
                     },
                 ],
             },

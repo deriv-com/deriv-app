@@ -1,10 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
-import { StoreProvider } from '@deriv/stores';
-import { DeepPartial } from '@deriv/stores/types';
 import DepositLocked from '../deposit-locked';
-import { TRootStore } from '../../../../types';
+import { TRootStore } from 'Types';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('Components/cashier-locked', () => {
     const CashierLocked = () => (
@@ -45,7 +44,9 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -77,7 +78,9 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -101,7 +104,9 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -129,7 +134,9 @@ describe('<DepositLocked />', () => {
         };
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(

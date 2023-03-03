@@ -4,8 +4,8 @@ import { compareBigUnsignedInt } from '../string';
 import { TFormErrorMessagesTypes } from './form-error-messages-types';
 
 export type TOptions = {
-    min: number;
-    max: number;
+    min?: number;
+    max?: number;
     type?: string;
     decimals?: string | number;
     regex?: RegExp;
@@ -31,20 +31,22 @@ export const validEmail = (value: string) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.
 const validBarrier = (value: string) => /^[+-]?\d+\.?\d*$/.test(value);
 const validGeneral = (value: string) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value: string, options: TOptions) => options.regex?.test(value);
-const confirmRequired = (value: string) => value === 'true';
+const confirmRequired = (value: string) => !!value === true;
 const checkPOBox = (value: string) => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = (value: string) => value.trim().length === 8;
 
 let pre_build_dvrs: TInitPreBuildDVRs, form_error_messages: TFormErrorMessagesTypes;
 
 const isMoreThanMax = (value: number, options: TOptions) =>
-    options.type === 'float' ? +value > +options.max : compareBigUnsignedInt(value, options.max) === 1;
+    options.type === 'float' ? +value > +options.max! : compareBigUnsignedInt(value, options.max!) === 1;
 
 export const validNumber = (value: string, opts: TOptions) => {
     const options = cloneObject(opts);
     let message = null;
     if (options.allow_empty && value.length === 0) {
-        return true;
+        return {
+            is_ok: true,
+        };
     }
 
     let is_ok = true;
@@ -111,7 +113,10 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.letter_symbol,
     },
     number: {
-        func: (value: string, opts: TOptions) => validNumber(value, opts),
+        func: (...args: [string, TOptions, Record<string, string | boolean>]) => {
+            const [value, opts] = args;
+            return validNumber(value, opts);
+        },
         message: form_error_messages.number,
     },
     password: {

@@ -6,7 +6,7 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
-import { TObjectCFDAccount } from 'Containers/cfd-dashboard';
+import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
 type TStandPoint = {
     financial_company: string;
@@ -148,7 +148,7 @@ const CFDDemoAccountDisplay = ({
                         )
                     }
                     platform={platform}
-                    descriptor={localize('Trade CFDs on our synthetics, basket indices, and Derived FX.')}
+                    descriptor={localize('Trade CFDs on our synthetics, baskets, and derived FX.')}
                     specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
                     has_banner
                     toggleMT5TradeModal={toggleMT5TradeModal}

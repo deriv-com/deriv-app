@@ -2,11 +2,16 @@ import React from 'react';
 import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TRootStore, TCryptoTransactionDetails } from 'Types';
+import { useStore, observer } from '@deriv/stores';
+import { TCryptoTransactionDetails } from '../../types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
+import { useCashierStore } from '../../stores/useCashierStores';
+
+type TCryptoTransactionDetailsRow = {
+    row: TCryptoTransactionDetails;
+};
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -18,21 +23,13 @@ const getHeaders = () => [
     { text: localize('Action') },
 ];
 
-type TCryptoTransactionsHistoryProps = {
-    crypto_transactions: TCryptoTransactionDetails[];
-    currency: string;
-    is_loading: boolean;
-    setIsCryptoTransactionsVisible: (is_crypto_transactions_visible: boolean) => void;
-    setIsDeposit: (is_deposit: boolean) => void;
-};
+const CryptoTransactionsHistory = observer(() => {
+    const { client } = useStore();
+    const { transaction_history, general_store } = useCashierStore();
+    const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
+    const { setIsDeposit } = general_store;
+    const { currency } = client;
 
-const CryptoTransactionsHistory = ({
-    crypto_transactions,
-    currency,
-    is_loading,
-    setIsCryptoTransactionsVisible,
-    setIsDeposit,
-}: TCryptoTransactionsHistoryProps) => {
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);
     }, [setIsCryptoTransactionsVisible, currency]);
@@ -76,12 +73,12 @@ const CryptoTransactionsHistory = ({
                         )}
                         <Table.Body className='crypto-transactions-history__table-body'>
                             {is_loading ? (
-                                <Loading is_fullscreen />
+                                <Loading is_fullscreen={false} />
                             ) : (
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'
                                     data_source={crypto_transactions}
-                                    rowRenderer={(row_props: TCryptoTransactionDetails) => (
+                                    rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
                                         <CryptoTransactionsRenderer {...row_props} />
                                     )}
                                     keyMapper={(row: TCryptoTransactionDetails) => row.id}
@@ -100,12 +97,6 @@ const CryptoTransactionsHistory = ({
             </div>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ client, modules }: TRootStore) => ({
-    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
-    is_loading: modules.cashier.transaction_history.is_loading,
-    setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
-    setIsDeposit: modules.cashier.general_store.setIsDeposit,
-}))(CryptoTransactionsHistory);
+export default CryptoTransactionsHistory;

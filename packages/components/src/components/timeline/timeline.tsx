@@ -6,7 +6,7 @@ type TOval = {
     children: number;
 };
 type TItem = React.HTMLAttributes<HTMLDivElement> & { item_title: React.ReactNode };
-type TTimeline = React.HTMLAttributes<HTMLDivElement> & { disabled_items?: number[] };
+type TTimeline = React.HTMLAttributes<HTMLDivElement> & { disabled_items?: number[]; line_height?: string };
 
 const Oval = ({ children }: TOval) => {
     return (
@@ -18,7 +18,7 @@ const Oval = ({ children }: TOval) => {
     );
 };
 
-const Timeline = ({ children, disabled_items, ...props }: React.PropsWithChildren<TTimeline>) => {
+const Timeline = ({ children, disabled_items, line_height = 'xxl', ...props }: React.PropsWithChildren<TTimeline>) => {
     return (
         <div {...props}>
             {Array.isArray(children) &&
@@ -32,7 +32,13 @@ const Timeline = ({ children, disabled_items, ...props }: React.PropsWithChildre
                     >
                         <Oval>{idx + 1}</Oval>
                         <div className='dc-timeline__container'>
-                            <Text as='h2' color='prominent' size='xs' className='dc-timeline__title'>
+                            <Text
+                                as='h2'
+                                color='prominent'
+                                size='xs'
+                                className='dc-timeline__title'
+                                line_height={line_height}
+                            >
                                 {child.props.item_title}
                             </Text>
                             <div className='dc-timeline__content'>{child}</div>

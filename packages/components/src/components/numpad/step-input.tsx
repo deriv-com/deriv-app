@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isCryptocurrency } from '@deriv/shared';
-import Input from '../input/input.jsx';
+import Input from '../input/input';
 import Button from '../button/button';
 
 type TStepInput = {

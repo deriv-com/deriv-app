@@ -26,7 +26,7 @@ const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }) => {
                         height: '100%',
                     }}
                     mask='url(#circle)'
-                 />
+                />
             </svg>
         </div>
     );

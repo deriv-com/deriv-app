@@ -1,0 +1,20 @@
+.progress-bar {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    &-rectangle {
+        width: 2.5rem;
+        height: 0.8rem;
+        background-color: $color-red;
+        border-radius: 1rem;
+    }
+
+    &-circle {
+        width: 0.8rem;
+        height: 0.8rem;
+        margin: 0 0.4rem;
+        border-radius: 50%;
+        background-color: $color-grey;
+    }
+}

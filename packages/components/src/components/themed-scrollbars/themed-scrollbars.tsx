@@ -12,9 +12,10 @@ type TThemedScrollbars = {
     is_only_horizontal_overlay?: boolean;
     is_scrollbar_hidden?: boolean;
     onScroll?: UIEventHandler<HTMLDivElement>;
-    refSetter?: RefObject<HTMLDivElement> | null;
+    refSetter?: RefObject<HTMLDivElement & SVGSVGElement> | null;
     style?: React.CSSProperties;
     width?: string;
+    testId?: string;
 };
 
 const ThemedScrollbars = ({
@@ -27,18 +28,19 @@ const ThemedScrollbars = ({
     is_only_horizontal,
     is_only_horizontal_overlay,
     is_scrollbar_hidden,
+    testId = 'dt_themed_scrollbars',
     onScroll,
     refSetter = null,
     style = {},
     width,
 }: React.PropsWithChildren<TThemedScrollbars>) => {
-    const [hoverRef, isHovered] = useHover<HTMLDivElement>(refSetter, false);
+    const [hoverRef, isHovered] = useHover<HTMLDivElement & SVGSVGElement>(refSetter, false);
 
     if (is_bypassed) return children as JSX.Element;
 
     return (
         <div
-            data-testid='dt_themed_scrollbars'
+            data-testid={testId}
             ref={hoverRef}
             className={classNames('dc-themed-scrollbars', className, {
                 'dc-themed-scrollbars__autohide': autohide,

@@ -1,16 +1,25 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Icon, Button, Text } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './account-transfer-no-account.scss';
 
-const AccountTransferNoAccount = () => {
+type TAccountTransferNoAccount = {
+    openAccountSwitcherModal?: () => void;
+};
+
+const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccountTransferNoAccount) => {
     const {
-        client: { is_dxtrade_allowed },
+        client: { is_dxtrade_allowed, is_pre_appstore },
         ui: { toggleAccountsDialog },
+        traders_hub: { openModal, closeModal },
     } = useStore();
+
+    React.useEffect(() => {
+        closeModal();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className='cashier__wrapper cashier__no-balance'>
@@ -34,11 +43,22 @@ const AccountTransferNoAccount = () => {
                     />
                 )}
             </Text>
-            <Button className='account-transfer-no-account__button' primary large onClick={toggleAccountsDialog}>
+            <Button
+                className='account-transfer-no-account__button'
+                primary
+                large
+                onClick={() =>
+                    openAccountSwitcherModal
+                        ? openAccountSwitcherModal()
+                        : is_pre_appstore
+                        ? openModal('currency_selection')
+                        : toggleAccountsDialog()
+                }
+            >
                 <Localize i18n_default_text='Create account' />
             </Button>
         </div>
     );
-};
+});
 
-export default observer(AccountTransferNoAccount);
+export default AccountTransferNoAccount;

@@ -7,32 +7,32 @@ import Text from '../text';
 
 type TSendEmailTemplate = {
     className?: string;
-    live_chat?: React.ReactNode;
     lbl_no_receive: string;
+    live_chat?: React.ReactNode;
     onClickSendEmail: () => void;
     resend_timeout?: number;
     subtitle?: string;
     title: string;
-    txt_resend: string;
     txt_resend_in: string;
+    txt_resend: string;
 };
 
 const SendEmailTemplate = ({
     children,
     className,
-    live_chat,
     lbl_no_receive,
+    live_chat,
     onClickSendEmail,
     resend_timeout,
     subtitle,
     title,
-    txt_resend,
     txt_resend_in,
+    txt_resend,
 }: React.PropsWithChildren<TSendEmailTemplate>) => {
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
     const [resend_email_btn_text, setResendEmailBtnText] = React.useState(txt_resend);
-    const { is_appstore } = React.useContext<{ is_appstore?: boolean }>(PlatformContext);
+    const { is_appstore } = React.useContext<{ is_appstore: boolean }>(PlatformContext);
 
     const timeout_limit = resend_timeout || 60;
     let resend_interval: number;

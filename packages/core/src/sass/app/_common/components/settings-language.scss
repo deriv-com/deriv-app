@@ -1,13 +1,20 @@
 /** @define settings-language */
 .settings-language {
-    &__language-header {
-        margin-bottom: 16px;
+    @include mobile {
+        display: flex;
+        padding: 1.5rem 1.5rem 8rem;
     }
+
     &__language-container {
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-template-rows: repeat(5, auto);
-        grid-gap: 16px;
+        grid-gap: 1.6rem;
+        @include mobile {
+            grid-template-columns: repeat(2, minmax(100%, 1fr));
+            grid-gap: 0.3rem;
+            grid-template-rows: auto;
+        }
     }
     &__language {
         &-link {
@@ -18,6 +25,9 @@
             align-items: center;
             border-radius: $BORDER_RADIUS;
             padding: 16px;
+            @include mobile {
+                padding: 8px;
+            }
             text-decoration: none;
             background-color: var(--state-normal);
             cursor: pointer;
@@ -28,8 +38,14 @@
             }
         }
         &-flag {
-            width: 36px;
-            height: 24px;
+            width: 5rem;
+            height: 4rem;
+
+            @include mobile {
+                margin-top: 1rem;
+                width: 5rem;
+                height: 4rem;
+            }
         }
         &-name {
             @include typeface(--paragraph-left-normal-black);
@@ -40,6 +56,18 @@
                 font-weight: bold;
                 color: var(--text-prominent);
             }
+
+            @include mobile {
+                font-size: 1.4rem;
+            }
         }
+        &--radio-button {
+            display: none;
+        }
+    }
+}
+.account-form {
+    &--language-settings {
+        overflow: auto !important;
     }
 }

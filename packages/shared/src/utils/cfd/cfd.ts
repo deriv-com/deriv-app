@@ -1,5 +1,6 @@
 import { CFD_PLATFORMS } from '../platform';
 import { LandingCompany, GetAccountStatus, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { localize } from '@deriv/translations';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -19,7 +20,7 @@ const CFD_text: { [key: string]: string } = {
     financial_svg: 'Financial SVG',
 } as const;
 
-type TPlatform = 'dxtrade' | 'mt5';
+type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
 type TGetAccount = {
@@ -38,7 +39,7 @@ type TGetCFDAccountKey = TGetAccount & {
 // sub_account_type financial_stp only happens in "financial" market_type
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
     if (market_type === 'all') {
-        return 'dxtrade';
+        return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
     }
 
     if (market_type === 'gaming' || market_type === 'synthetic') {
@@ -126,6 +127,7 @@ export const getAccountTypeFields = ({ category, type }: TGetAccountTypeFields) 
 type TGetCFDAccountDisplay = TGetCFDAccountKey & {
     is_eu: boolean;
     is_mt5_trade_modal?: boolean;
+    is_transfer_form?: boolean;
 };
 
 export const getCFDAccountDisplay = ({
@@ -135,6 +137,7 @@ export const getCFDAccountDisplay = ({
     is_eu,
     shortcode,
     is_mt5_trade_modal,
+    is_transfer_form = false,
 }: TGetCFDAccountDisplay) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
@@ -147,7 +150,9 @@ export const getCFDAccountDisplay = ({
     const cfd_account_display = CFD_text_translated[cfd_account_key]();
 
     // TODO condition will be changed when card 74063 is merged
-    if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return 'Synthetic';
+    if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return localize('Synthetic');
+    if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
+    if (platform === CFD_PLATFORMS.DERIVEZ) return '';
 
     return cfd_account_display;
 };
@@ -204,6 +209,7 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: T
         if (type === 'financial') return !!landing_companies?.mt_financial_company?.financial;
         if (type === 'financial_stp') return !!landing_companies?.mt_financial_company?.financial_stp;
     } else if (platform === CFD_PLATFORMS.DXTRADE) {
+        if (type === 'all') return !!landing_companies?.dxtrade_all_company?.standard;
         if (type === 'gaming') return !!landing_companies?.dxtrade_gaming_company?.standard;
         if (type === 'financial') return !!landing_companies?.dxtrade_financial_company?.standard;
     }
@@ -231,54 +237,54 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
     const poi_not_submitted = poi_status === 'none';
     const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
 
-    //vanuatu
+    //vanuatu-maltainvest
 
-    const poi_verified_for_vanuatu = [onfido_status, manual_status].includes('verified');
-    const poi_acknowledged_for_vanuatu =
+    const poi_verified_for_vanuatu_maltainvest = [onfido_status, manual_status].includes('verified');
+    const poi_acknowledged_for_vanuatu_maltainvest =
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
 
-    const poi_pending_for_vanuatu =
+    const poi_pending_for_vanuatu_maltainvest =
         onfido_status &&
         manual_status &&
         [onfido_status, manual_status].includes('pending') &&
-        !poi_verified_for_vanuatu;
+        !poi_verified_for_vanuatu_maltainvest;
 
-    const need_poi_for_vanuatu = !poi_acknowledged_for_vanuatu;
-    const poi_not_submitted_for_vanuatu =
+    const need_poi_for_vanuatu_maltainvest = !poi_acknowledged_for_vanuatu_maltainvest;
+    const poi_not_submitted_for_vanuatu_maltainvest =
         onfido_status && manual_status && [onfido_status, manual_status].every(status => status === 'none');
-    const poi_resubmit_for_vanuatu =
-        !poi_pending_for_vanuatu && !poi_not_submitted_for_vanuatu && !poi_verified_for_vanuatu;
+    const poi_resubmit_for_vanuatu_maltainvest =
+        !poi_pending_for_vanuatu_maltainvest &&
+        !poi_not_submitted_for_vanuatu_maltainvest &&
+        !poi_verified_for_vanuatu_maltainvest;
 
-    const poi_poa_verified_for_vanuatu = poi_verified_for_vanuatu && poa_verified;
+    const poi_poa_verified_for_vanuatu_maltainvest = poi_verified_for_vanuatu_maltainvest && poa_verified;
 
-    //bvi-labuan-maltainvest
-    const poi_acknowledged_for_bvi_labuan_maltainvest =
+    //bvi-labuan
+    const poi_acknowledged_for_bvi_labuan =
         (idv_status && acknowledged_status.includes(idv_status)) ||
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
         (manual_status && acknowledged_status.includes(manual_status));
 
-    const need_poi_for_bvi_labuan_maltainvest = !poi_acknowledged_for_bvi_labuan_maltainvest;
-    const poi_not_submitted_for_bvi_labuan_maltainvest =
+    const need_poi_for_bvi_labuan = !poi_acknowledged_for_bvi_labuan;
+    const poi_not_submitted_for_bvi_labuan =
         idv_status &&
         onfido_status &&
         manual_status &&
         [idv_status, onfido_status, manual_status].every(status => status === 'none');
 
-    const poi_verified_for_bvi_labuan_maltainvest = [idv_status, onfido_status, manual_status].includes('verified');
+    const poi_verified_for_bvi_labuan = [idv_status, onfido_status, manual_status].includes('verified');
 
-    const poi_pending_for_bvi_labuan_maltainvest =
+    const poi_pending_for_bvi_labuan =
         idv_status &&
         onfido_status &&
         manual_status &&
         [idv_status, onfido_status, manual_status].includes('pending') &&
-        !poi_verified_for_bvi_labuan_maltainvest;
+        !poi_verified_for_bvi_labuan;
 
-    const poi_resubmit_for_bvi_labuan_maltainvest =
-        !poi_pending_for_bvi_labuan_maltainvest &&
-        !poi_not_submitted_for_bvi_labuan_maltainvest &&
-        !poi_verified_for_bvi_labuan_maltainvest;
-    const poi_poa_verified_for_bvi_labuan_maltainvest = poi_verified_for_bvi_labuan_maltainvest && poa_verified;
+    const poi_resubmit_for_bvi_labuan =
+        !poi_pending_for_bvi_labuan && !poi_not_submitted_for_bvi_labuan && !poi_verified_for_bvi_labuan;
+    const poi_poa_verified_for_bvi_labuan = poi_verified_for_bvi_labuan && poa_verified;
 
     return {
         poa_status,
@@ -287,26 +293,26 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
         onfido_status,
         manual_status,
         acknowledged_status,
-        poi_acknowledged_for_vanuatu,
-        poi_poa_verified_for_bvi_labuan_maltainvest,
+        poi_acknowledged_for_vanuatu_maltainvest,
+        poi_poa_verified_for_bvi_labuan,
         poa_acknowledged,
-        poi_poa_verified_for_vanuatu,
+        poi_poa_verified_for_vanuatu_maltainvest,
         need_poa_submission,
-        poi_verified_for_vanuatu,
-        poi_acknowledged_for_bvi_labuan_maltainvest,
-        poi_verified_for_bvi_labuan_maltainvest,
+        poi_verified_for_vanuatu_maltainvest,
+        poi_acknowledged_for_bvi_labuan,
+        poi_verified_for_bvi_labuan,
         poa_verified,
         poi_or_poa_not_submitted,
         need_poa_resubmission,
         poa_not_submitted,
         poi_not_submitted,
-        need_poi_for_vanuatu,
-        need_poi_for_bvi_labuan_maltainvest,
-        poi_not_submitted_for_vanuatu,
-        poi_pending_for_bvi_labuan_maltainvest,
-        poi_pending_for_vanuatu,
-        poi_resubmit_for_vanuatu,
-        poi_resubmit_for_bvi_labuan_maltainvest,
+        need_poi_for_vanuatu_maltainvest,
+        need_poi_for_bvi_labuan,
+        poi_not_submitted_for_vanuatu_maltainvest,
+        poi_pending_for_bvi_labuan,
+        poi_pending_for_vanuatu_maltainvest,
+        poi_resubmit_for_vanuatu_maltainvest,
+        poi_resubmit_for_bvi_labuan,
         poa_pending,
     };
 };

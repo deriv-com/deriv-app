@@ -502,9 +502,10 @@ const CFDPasswordForm = (props: TCFDPasswordFormProps) => {
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
                                 {props.account_type.category === 'real' && (
                                     <Localize
-                                        i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} {{jurisdiction_shortcode}} account.'
+                                        i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(props.platform),
+                                            platform_name: props.platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
                                             account: !props.show_eu_related_content ? props.account_title : '',
                                             jurisdiction_shortcode: showJuristiction(),
                                         }}

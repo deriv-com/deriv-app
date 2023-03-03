@@ -15,10 +15,10 @@ type TCardProps = {
     is_dialog_open: boolean;
     is_mobile: boolean;
     save_modal: SaveModalStore;
-    closeResetDialog: VoidFunction;
+    closeResetDialog: () => void;
     handleFileChange: (e: React.ChangeEvent, flag?: boolean) => boolean;
-    loadFileFromLocal: VoidFunction;
-    loadDataStrategy: VoidFunction;
+    loadFileFromLocal: () => void;
+    loadDataStrategy: () => void;
     setActiveTab: (active_tab: number) => void;
     setFileLoaded: (param: boolean) => void;
     setPreviewOnPopup: (show: boolean) => void;
@@ -29,7 +29,7 @@ type TCardProps = {
 type TCardArray = {
     icon: string;
     content: string;
-    method: VoidFunction;
+    method: () => void;
 };
 
 const Cards = ({

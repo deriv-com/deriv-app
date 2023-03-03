@@ -13,12 +13,12 @@ export interface IDashboardStore {
     has_started_bot_builder_tour: boolean;
     has_started_onboarding_tour: boolean;
     has_tour_ended: boolean;
-    initInfoPanel: VoidFunction;
+    initInfoPanel: () => void;
     is_dialog_open: boolean;
     is_file_supported: boolean;
     is_info_panel_visible: boolean;
     is_preview_on_popup: boolean;
-    onCloseDialog: VoidFunction;
+    onCloseDialog: () => void;
     onCloseTour: (param: Partial<string>) => void;
     onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
     setActiveTab: (active_tab: number) => void;

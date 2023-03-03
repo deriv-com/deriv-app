@@ -16,8 +16,9 @@ const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
     const [save_as_collection, setSaveAsCollection] = React.useState(false);
     const isMounted = useIsMounted();
 
-    const onChange = e => e.target.type === 'radio' ? setSaveType(e.target.value) : setSaveAsCollection(e.target.checked);
-   
+    const onChange = e =>
+        e.target.type === 'radio' ? setSaveType(e.target.value) : setSaveAsCollection(e.target.checked);
+
     const saveInGoogleDrive = () => {
         const xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         cleanBeforeExport(xml);
@@ -33,7 +34,7 @@ const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
             })
             .then(() => globalObserver.emit('ui.log.success', translate('Successfully uploaded to Google Drive')))
             .finally(() => isMounted() && setLoading(false));
-    }
+    };
     const onSubmit = e => {
         e.preventDefault();
 
@@ -43,17 +44,17 @@ const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
             return;
         }
         setLoading(true);
-        if(!google_drive_util.access_token) {
-            google_drive_util.client.callback = (response) => {
-                google_drive_util.access_token = response.access_token;
-                saveInGoogleDrive() ;
-            }
-            google_drive_util.client.requestAccessToken({prompt: "", hint: google_drive_util.google_email});
+        google_drive_util.client.callback = response => {
+            google_drive_util.access_token = response.access_token;
+            localStorage.setItem('access_token', response.access_token);
+            saveInGoogleDrive();
+        };
+        if (!google_drive_util.access_token) {
+            google_drive_util.client.requestAccessToken({ prompt: '' });
+        } else {
+            window.gapi.client.setToken({ access_token: google_drive_util.access_token });
+            saveInGoogleDrive();
         }
-        else {
-            saveInGoogleDrive() ;
-        }
-        
     };
 
     return (

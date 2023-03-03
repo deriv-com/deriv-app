@@ -1,9 +1,8 @@
 /* global google,gapi */
-import decodeJwtResponse from 'jwt-decode';
 import GD_CONFIG from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import store from '../../botPage/view/deriv/store';
-import { setGdLoggedIn, setGoogleEmail } from '../../botPage/view/deriv/store/client-slice';
+import { setGdLoggedIn } from '../../botPage/view/deriv/store/client-slice';
 import { setGdReady } from '../../botPage/view/deriv/store/ui-slice';
 import { TrackJSError } from '../../botPage/view/logger';
 import { getLanguage } from '../lang';
@@ -52,50 +51,50 @@ class GoogleDriveUtil {
                     await gapi.client.load(...this.discovery_docs);
                 })
             )
-            .then(() => store.dispatch(setGdReady(true)))
+            .then(() => {
+                store.dispatch(setGdReady(true));
+            })
             .catch(err => {
                 errLogger(err, translate('There was an error loading Google Drive API script.'));
             });
-
-        this.google_email = localStorage.getItem('google_email') || null;
     }
 
-    handleCredentialResponse = response => {
-        const response_payload = decodeJwtResponse(response.credential);
-        this.google_email = response_payload.email;
-        store.dispatch(setGoogleEmail(this.google_email));
-        localStorage.setItem('google_email', this.google_email);
-        this.updateLoginStatus(true);
-    };
-
     initUrlIdentity = () => {
+        this.access_token = localStorage.getItem('access_token') || null;
+        if (localStorage.getItem(this.access_token)) {
+            store.dispatch(setGdLoggedIn(true));
+            this.updateLoginStatus(true);
+        }
         this.client = google.accounts.oauth2.initTokenClient({
             client_id: GD_CONFIG.CLIENT_ID,
             scope: GD_CONFIG.SCOPE,
             callback: response => {
                 this.access_token = response.access_token;
+                localStorage.setItem('access_token', this.access_token);
+                store.dispatch(setGdLoggedIn(false));
+                this.updateLoginStatus(true);
             },
         });
-
-        google.accounts.id.initialize({
-            client_id: GD_CONFIG.CLIENT_ID,
-            callback: response => this.handleCredentialResponse(response),
-            auto_select: true,
-            email: this.google_email || '',
-        });
-
-        google.accounts.id.prompt();
     };
 
     login = () => {
-        this.google_email = localStorage.getItem('google_email') || null;
-        store.dispatch(setGoogleEmail(this.google_email));
+        gapi.client.setToken('');
         this.client.callback = response => {
             this.access_token = response.access_token;
-            store.dispatch(setGdLoggedIn(true));
-            google.accounts.id.prompt();
+            localStorage.setItem('access_token', this.access_token);
+            store.dispatch(setGdLoggedIn(false));
+            this.updateLoginStatus(true);
         };
-        this.client.requestAccessToken({ prompt: '', hint: this.google_email || '' });
+        this.client.requestAccessToken({ prompt: '' });
+    };
+
+    removeGdBackground = () => {
+        const picker_background = document.getElementsByClassName('picker-dialog-bg');
+        if (picker_background.length) {
+            for (let i = 0; i < picker_background.length; i++) {
+                picker_background[i].style.display = 'none';
+            }
+        }
     };
 
     updateLoginStatus(is_logged_in) {
@@ -103,15 +102,15 @@ class GoogleDriveUtil {
         this.is_authorized = is_logged_in;
     }
 
-    logout() {
-        if (this.google_email) {
-            google.accounts.id.revoke(this.google_email, () => {
-                this.updateLoginStatus(false);
-                this.access_token = '';
-                store.dispatch(setGoogleEmail(''));
-            });
+    logout = () => {
+        this.updateLoginStatus(false);
+        if (this.access_token) {
+            gapi.client.setToken('');
+            google.accounts.oauth2.revoke(this.access_token);
+            localStorage.removeItem('access_token');
         }
-    }
+        this.access_token = '';
+    };
 
     listFiles = async () => {
         try {
@@ -120,6 +119,15 @@ class GoogleDriveUtil {
                 fields: 'files(id, name)',
             });
         } catch (err) {
+            if (err?.status === 403) this.logout();
+            if (err?.status === 401) {
+                setTimeout(() => {
+                    const picker = document.getElementsByClassName('picker-dialog-content')[0];
+                    picker.parentNode.removeChild(picker);
+                }, 500);
+                this.client.requestAccessToken({ prompt: '' });
+            }
+
             const error = new TrackJSError(
                 'GoogleDrive',
                 translate('There was an error listing files from Google Drive'),
@@ -181,7 +189,8 @@ class GoogleDriveUtil {
                             }
                         })
                         .catch(err => {
-                            if (err.status && err.status === 401) this.logout();
+                            if (err.status && err.status === 403) this.logout();
+                            if (err.status && err.status === 401) this.client.requestAccessToken({ prompt: '' });
 
                             const error = new TrackJSError(
                                 'GoogleDrive',
@@ -189,7 +198,9 @@ class GoogleDriveUtil {
                                 err
                             );
 
-                            globalObserver.emit('Error', error);
+                            if (err.status && err.status !== 401) {
+                                globalObserver.emit('Error', error);
+                            }
                             reject(error);
                         });
                 }
@@ -233,7 +244,8 @@ class GoogleDriveUtil {
                         })
                         .then(resolve)
                         .catch(err => {
-                            if (err?.status === 401) this.logout();
+                            if (err?.status === 403) this.logout();
+                            if (err?.status === 401) this.client.requestAccessToken({ prompt: '' });
 
                             const error = new TrackJSError(
                                 'GoogleDrive',
@@ -245,6 +257,8 @@ class GoogleDriveUtil {
                         });
                 })
                 .catch(error => {
+                    if (error?.status === 403) this.logout();
+                    if (error?.status === 401) this.client.requestAccessToken({ prompt: '' });
                     globalObserver.emit('Error', error);
                     reject(error);
                 });
@@ -279,7 +293,8 @@ class GoogleDriveUtil {
                             resolve();
                             return;
                         }
-                        if (xhr.status === 401) this.logout();
+                        if (xhr.status === 403) this.logout();
+                        if (xhr.status === 401) this.client.requestAccessToken({ prompt: '' });
                         const error = new TrackJSError(
                             'GoogleDrive',
                             translate('There was an error processing your request'),

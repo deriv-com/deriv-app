@@ -31,17 +31,9 @@
         }
     }
 
-    &__header {
-        justify-content: center;
-
-        @include mobile {
-            text-align: center;
-        }
-
-        &-return-button {
-            position: absolute;
-            left: 1.2rem;
-        }
+    &__header-return-button {
+        position: absolute;
+        left: 1.2rem;
     }
 
     &__body {

@@ -173,7 +173,7 @@ const TradingAssessment = ({
                                 title={localize('Trading Experience')}
                                 subtitle={localize('All fields are required')}
                             />
-                            {trading_assessment_questions.map(item => {
+                            {trading_assessment_questions().map(item => {
                                 const form_control = item.form_control;
                                 if (item.field_type === 'radio') {
                                     return (
@@ -295,6 +295,4 @@ export default connect(({ client }) => ({
     setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     updateAccountStatus: client.updateAccountStatus,
-    // setShouldShowWarningModal: ui.setShouldShowWarningModal,
-    // should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
 }))(withRouter(TradingAssessment));

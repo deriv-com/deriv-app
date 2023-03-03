@@ -1608,9 +1608,13 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const preferred_language = authorize_response.authorize.preferred_language;
+            const preferred_language = authorize_response.authorize.preferred_language || DEFAULT_LANGUAGE;
             if (preferred_language !== 'EN' && preferred_language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.history.replaceState({}, document.title, urlForLanguage(preferred_language));
+                window.history.replaceState(
+                    {},
+                    document.title,
+                    urlForLanguage(LocalStore.get(LANGUAGE_KEY) || preferred_language)
+                );
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {

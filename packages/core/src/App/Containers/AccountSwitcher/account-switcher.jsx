@@ -1212,16 +1212,18 @@ const AccountSwitcher = props => {
     const real_account = props.is_pre_appstore ? traders_hub_real_accounts : default_real_accounts;
 
     const demo_accounts = props.is_pre_appstore ? traders_hub_demo_account : default_demo_accounts;
-    const first_real_login_id = props.account_list?.find(account => account.loginid?.[0]).loginid;
+
+    const first_real_login_id = props.account_list?.find(account => /^(CR|MF)/.test(account.loginid))?.loginid;
 
     const TradersHubRedirect = () => {
         const TradersHubLink = () => {
-            const handleRedirect = () => {
+            const handleRedirect = async () => {
                 if (!props.is_virtual && isDemoAccountTab) {
-                    props.switchAccount(props.virtual_account_loginid);
+                    await props.switchAccount(props.virtual_account_loginid);
                 } else if (props.is_virtual && isRealAccountTab) {
-                    props.switchAccount(first_real_login_id);
+                    await props.switchAccount(first_real_login_id);
                 }
+                props.toggleAccountsDialog(false);
                 history.push(routes.traders_hub);
                 props.setTogglePlatformType('cfd');
             };

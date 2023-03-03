@@ -10,7 +10,7 @@ describe('<SelfExclusionArticleContent />', () => {
     let mock_context = {};
     const descr_text = 'About trading limits and self-exclusion';
     const eu_item =
-        'When you set your limits or self-exclusion, they will be aggregated across all your account types in DTrader and DBot. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.';
+        'When you set your limits or self-exclusion, they will be aggregated across all your account types in Deriv Trader and Deriv Bot. For example, the losses made on both platforms will add up and be counted towards the loss limit you set.';
     const eu_uk_item =
         'These trading limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. If you live in the United Kingdom, Customer Support can only remove or weaken your trading limits after 24 hours of receiving the request. If you live in the Isle of Man, Customer Support can only remove or weaken your trading limits after your trading limit period has expired.';
     const not_app_settings_eu_descr =

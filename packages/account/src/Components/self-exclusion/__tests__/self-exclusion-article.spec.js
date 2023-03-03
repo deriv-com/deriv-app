@@ -23,7 +23,7 @@ describe('<SelfExclusionArticle />', () => {
     const eu_item =
         /these trading limits and self-exclusion help you control the amount of money and time you spend on deriv.com and exercise/i;
     const non_eu_item =
-        /these self-exclusion limits help you control the amount of money and time you spend trading on dtrader, dbot, smarttrader and binary bot on deriv. the limits you set here will help you exercise/i;
+        /these self-exclusion limits help you control the amount of money and time you spend trading on deriv trader, deriv bot, smarttrader and binary bot on deriv. the limits you set here will help you exercise/i;
 
     beforeEach(() => {
         mock_platform_context = {

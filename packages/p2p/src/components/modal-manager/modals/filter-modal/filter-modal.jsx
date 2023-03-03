@@ -151,7 +151,7 @@ const FilterModal = () => {
         <React.Fragment>
             <DesktopWrapper>
                 <Modal
-                    className={'payment-methods'}
+                    className='payment-methods'
                     has_close_icon
                     height={'56rem'}
                     title={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}

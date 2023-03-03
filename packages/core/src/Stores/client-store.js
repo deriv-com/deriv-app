@@ -541,9 +541,7 @@ export default class ClientStore extends BaseStore {
             ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
             this.current_landing_company
         ) {
-            return this.is_pre_appstore
-                ? getDefaultAllowedCurrencies()
-                : this.current_landing_company.legal_allowed_currencies;
+            return this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
@@ -1971,8 +1969,11 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccountSettings(settings) {
-        this.account_settings = settings;
-        this.is_account_setting_loaded = true;
+        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
+        if (!is_equal_settings) {
+            this.account_settings = settings;
+            this.is_account_setting_loaded = true;
+        }
     }
 
     setAccountStatus(status) {

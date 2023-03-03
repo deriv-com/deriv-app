@@ -1608,9 +1608,9 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = authorize_response.authorize.preferred_language;
-            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.history.replaceState({}, document.title, urlForLanguage(LocalStore.get(LANGUAGE_KEY)));
+            const preferred_language = authorize_response.authorize.preferred_language;
+            if (preferred_language !== 'EN' && preferred_language !== LocalStore.get(LANGUAGE_KEY)) {
+                window.history.replaceState({}, document.title, urlForLanguage(preferred_language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {
@@ -1635,13 +1635,18 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            if (account_settings?.preferred_language !== LocalStore.get(LANGUAGE_KEY)) {
+            const lang_to_render =
+                LocalStore.get(LANGUAGE_KEY) || account_settings?.preferred_language || DEFAULT_LANGUAGE;
+            if (lang_to_render !== account_settings?.preferred_language) {
                 await WS.setSettings({
                     set_settings: 1,
-                    preferred_language: LocalStore.get(LANGUAGE_KEY),
+                    preferred_language: lang_to_render,
                 });
             }
-            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
+            if (lang_to_render !== getLanguage()) {
+                window.location.replace(urlForLanguage(lang_to_render));
+            }
+            if (account_settings) this.setPreferredLanguage(lang_to_render);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (account_settings && !account_settings.residence) {

@@ -17,13 +17,12 @@ export default class GoogleDriveStore {
         this.google_auth = null;
         this.setKey();
         this.client = null;
-
+        this.access_token = localStorage.getItem('google_access_token') || '';
         importExternal('https://accounts.google.com/gsi/client').then(() => this.initialiseClient());
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
 
-    is_authorised = false;
-    access_token = '';
+    is_authorised = !!localStorage.getItem('google_access_token');
 
     setKey = () => {
         const { aid, cid, api } = config.gd;
@@ -52,30 +51,22 @@ export default class GoogleDriveStore {
 
     updateSigninStatus(is_signed_in) {
         this.is_authorised = is_signed_in;
-        // localStorage.setItem('google_email ', google_email);
     }
 
     signIn() {
-        if (this.is_authorised) {
-            Promise.resolve();
+        if (!this.is_authorised) {
+            this.client.requestAccessToken();
         }
-
-        // return this.google_auth.signIn({ prompt: 'select_account' }).catch(response => {
-        //     if (response.error === 'access_denied') {
-        //         // TODO
-        //         console.error('Please grant permission to view and manage Google Drive folders created with Deriv Bot'); // eslint-disable-line
-        //     }
-        // });
-        this.client.requestAccessToken();
     }
 
     signOut() {
-        if (!this.is_authorised) {
-            Promise.resolve();
+        if (this.access_token) {
+            gapi.client.setToken('');
+            google.accounts.oauth2.revoke(this.access_token);
+            localStorage.removeItem('google_access_token');
+            this.access_token = '';
         }
-        google.accounts.oauth2.revoke(this.access_token);
-        this.is_authorised = !this.is_authorised;
-        // localStorage.removeItem('google_email', google_email);
+        this.updateSigninStatus(false);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -91,9 +82,16 @@ export default class GoogleDriveStore {
     }
 
     async saveFile(options) {
-        await this.signIn();
-        await this.checkFolderExists();
-        await this.createSaveFilePicker('application/vnd.google-apps.folder', localize('Select a folder'), options);
+        try {
+            await this.signIn();
+            if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
+            await this.checkFolderExists();
+            await this.createSaveFilePicker('application/vnd.google-apps.folder', localize('Select a folder'), options);
+        } catch (err) {
+            if (err.status === 401) {
+                this.signOut();
+            }
+        }
     }
 
     async loadFile() {
@@ -145,7 +143,7 @@ export default class GoogleDriveStore {
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = 'json';
                     xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart');
-                    xhr.setRequestHeader('Authorization', `Bearer ${gapi.auth.getToken().access_token}`);
+                    xhr.setRequestHeader('Authorization', `Bearer ${this.access_token}`);
                     xhr.onload = () => {
                         if (xhr.status === 401) {
                             this.signOut();

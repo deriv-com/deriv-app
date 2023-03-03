@@ -9,6 +9,7 @@ import { localize, Localize } from '@deriv/translations';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
 import SideNote from 'Components/side-note';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-unlisted-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency }) => {
@@ -36,15 +37,9 @@ const validateWithdrawal = (values, { balance, currency }) => {
 };
 
 const PaymentAgentUnlistedWithdrawForm = observer(({ verification_code, setIsUnlistedWithdraw }) => {
-    const {
-        client,
-        modules: {
-            cashier: { payment_agent },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const { balance, currency } = client;
-
+    const { payment_agent } = useCashierStore();
     const { error, onMountPaymentAgentWithdraw: onMount, requestTryPaymentAgentWithdraw } = payment_agent;
 
     React.useEffect(() => {

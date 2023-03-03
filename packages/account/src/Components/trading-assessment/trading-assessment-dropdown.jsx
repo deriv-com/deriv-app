@@ -35,7 +35,7 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                                                 'trading-frequency--field':
                                                     question.form_control ===
                                                         'trading_frequency_financial_instruments' &&
-                                                    getLanguage() === 'FR',
+                                                    ['ID', 'FR'].includes(getLanguage()),
                                             }
                                         )}
                                         is_align_text_left

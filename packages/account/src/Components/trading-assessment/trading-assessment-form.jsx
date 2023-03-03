@@ -133,7 +133,7 @@ const TradingAssessmentForm = ({
                                 <div
                                     className={classNames('trading-assessment__form--fields', {
                                         highlight: should_inform_user,
-                                        'field-layout': getLanguage() === 'FR',
+                                        'field-layout': ['ID', 'FR'].includes(getLanguage()),
                                     })}
                                 >
                                     {questions?.length ? (

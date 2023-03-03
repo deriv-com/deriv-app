@@ -125,8 +125,10 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                             ref={ref}
                             data-testid={data_testId}
                             {...props}
-                            className={classNames('dc-input__field', field_className, {
+                            className={classNames('dc-input__field', className, {
                                 'dc-input__field--placeholder-visible': !label && props.placeholder,
+                                'dc-input__field--error': error,
+                                'dc-input__field--disabled': disabled,
                             })}
                             onFocus={props.onFocus}
                             onBlur={props.onBlur}

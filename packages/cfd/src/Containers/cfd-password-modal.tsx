@@ -489,10 +489,10 @@ const CFDPasswordForm = ({
     }
 
     const showJuristiction = () => {
-        if (!show_eu_related_content) {
-            return getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        } else if (platform === CFD_PLATFORMS.DXTRADE) {
+        if (platform === CFD_PLATFORMS.DXTRADE) {
             return '';
+        } else if (!show_eu_related_content) {
+            return getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
         }
         return 'CFDs';
     };

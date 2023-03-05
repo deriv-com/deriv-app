@@ -166,7 +166,7 @@ const AccountLimits = ({
                                 <thead>
                                     <tr>
                                         <AccountLimitsTableHeader>
-                                            <Localize i18n_default_text='Trading limits - Item' />
+                                            <Localize i18n_default_text='Trading limits' />
                                         </AccountLimitsTableHeader>
                                         <AccountLimitsTableHeader align='right'>
                                             <Localize i18n_default_text='Limit' />
@@ -240,7 +240,7 @@ const AccountLimits = ({
                                                 />
                                             )}
                                         >
-                                            <Localize i18n_default_text='Trading limits - Maximum daily turnover' />
+                                            <Localize i18n_default_text='Maximum daily turnover' />
                                         </AccountLimitsTableHeader>
                                         <AccountLimitsTableHeader align='right'>
                                             <Localize i18n_default_text='Limit' />

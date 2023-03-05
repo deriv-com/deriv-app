@@ -14,7 +14,7 @@ type TStaticUrl = React.HTMLAttributes<HTMLAnchorElement> & {
 };
 
 const StaticUrl = ({ href, is_document, is_eu_url = false, children, ...props }: TStaticUrl) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     const getHref = () => {
         setUrlLanguage(getLanguage());
         return getStaticUrl(href, { is_appstore }, is_document, is_eu_url);

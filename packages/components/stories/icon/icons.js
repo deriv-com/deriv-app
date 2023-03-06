@@ -688,6 +688,7 @@ export const icons =
         'IcRebrandingBinaryBot',
         'IcRebrandingDerivBot',
         'IcRebrandingDerivTrader',
+        'IcRebrandingDerivx',
         'IcRebrandingDmt5',
         'IcRebrandingDxtrade',
         'IcRebrandingMt5Logo',

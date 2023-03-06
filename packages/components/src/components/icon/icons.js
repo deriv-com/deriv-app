@@ -663,6 +663,7 @@ import './option/ic-option-up-down-asian.svg';
 import './rebranding/ic-rebranding-binary-bot.svg';
 import './rebranding/ic-rebranding-deriv-bot.svg';
 import './rebranding/ic-rebranding-deriv-trader.svg';
+import './rebranding/ic-rebranding-derivx.svg';
 import './rebranding/ic-rebranding-dmt5.svg';
 import './rebranding/ic-rebranding-dxtrade.svg';
 import './rebranding/ic-rebranding-mt5-logo.svg';

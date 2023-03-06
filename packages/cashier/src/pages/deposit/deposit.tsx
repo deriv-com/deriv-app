@@ -82,7 +82,11 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
                 if (side_notes.length > 0) {
-                    setSideNotes([<SideNote key={0}>{side_notes}</SideNote>]);
+                    setSideNotes([
+                        <SideNote has_title={false} key={0}>
+                            {side_notes}
+                        </SideNote>,
+                    ]);
                 }
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {

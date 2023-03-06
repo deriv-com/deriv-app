@@ -75,7 +75,7 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
-        "@deriv/api-types": "^1.0.11",
+        "@deriv/api-types": "^1.0.85",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.11",
         "@deriv/shared": "^1.0.0",

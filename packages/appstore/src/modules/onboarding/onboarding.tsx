@@ -93,7 +93,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
                 </div>
                 <Icon
                     icon='IcCross'
-                    custom_color='var(--general-main-1)'
+                    custom_color='var(--text-general)'
                     className='onboarding-header__cross-icon'
                     onClick={handleCloseButton}
                 />

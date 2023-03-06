@@ -75,7 +75,7 @@ const Numpad = ({
         if (onValueChange) onValueChange(val);
     };
 
-    const onSelect = (num: number | '.') => {
+    const onSelect = (num: number | string) => {
         switch (num) {
             // backspace
             case -1:

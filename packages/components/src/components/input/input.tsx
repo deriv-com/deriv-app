@@ -33,9 +33,10 @@ type TInputProps = {
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement;
-    type: string;
-    value?: string;
+    type?: string;
+    value?: string | number;
     warn?: string;
+    readOnly?: boolean;
 };
 
 type TInputWrapper = {

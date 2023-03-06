@@ -38,7 +38,7 @@ const CFDRealAccounts = ({
           )
         : localize('Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.');
 
-    const available_real_accounts: TStaticAccountProps[] = [
+    const getAvailableRealAccounts = (): TStaticAccountProps[] => [
         {
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
@@ -153,7 +153,7 @@ const CFDRealAccounts = ({
         <div className='cfd-real-account'>
             {!has_real_account && <AddOptionsAccount />}
             <div className='cfd-real-account__accounts'>
-                {available_real_accounts.map(
+                {getAvailableRealAccounts().map(
                     account =>
                         account.is_visible && (
                             <div className={`cfd-real-account__accounts--item ${account.name}`} key={account.name}>

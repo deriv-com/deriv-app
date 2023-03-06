@@ -16,7 +16,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
           )
         : localize('Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.');
 
-    const available_demo_accounts: TStaticAccountProps[] = [
+    const getAvailableDemoAccounts = (): TStaticAccountProps[] => [
         {
             name: 'Derived',
             description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
@@ -116,7 +116,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
     return (
         <div className='cfd-demo-account'>
             <div className='cfd-demo-account__accounts'>
-                {available_demo_accounts.map(account => {
+                {getAvailableDemoAccounts().map(account => {
                     const existing_demo_accounts = existingDemoAccounts(account.platform, account.type);
                     return (
                         account.is_visible && (

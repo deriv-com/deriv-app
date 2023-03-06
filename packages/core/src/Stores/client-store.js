@@ -27,7 +27,7 @@ import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -1184,7 +1184,6 @@ export default class ClientStore extends BaseStore {
 
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
-            const continent = landing_company_shortcode === 'svg' ? 'row' : 'eu';
             const client_information = {
                 loginid,
                 email,
@@ -1197,11 +1196,11 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
-            Cookies.set('continent', continent, { domain });
+            Cookies.set('region', getRegion(), { domain });
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('continent', { domain });
+            Cookies.remove('region', { domain });
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }

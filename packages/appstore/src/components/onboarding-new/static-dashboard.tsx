@@ -219,7 +219,7 @@ const StaticDashboard = ({
                                     actions={
                                         <Button
                                             secondary
-                                            className={classNames('', {
+                                            className={classNames('static-dashboard--deposit-button', {
                                                 'static-dashboard--deposit-button-animated':
                                                     is_onboarding_animated.topup,
                                                 'static-dashboard--deposit-button-blurry': is_blurry.topup,

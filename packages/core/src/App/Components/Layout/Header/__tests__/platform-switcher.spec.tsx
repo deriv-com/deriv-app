@@ -10,7 +10,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 const mock_connect_props = {
-    is_dark_mode: false,
+    is_dark_mode: true,
 };
 
 jest.mock('Stores/connect.js', () => ({
@@ -63,9 +63,9 @@ describe('PlatformSwitcher component', () => {
         expect(div_element).toHaveClass('platform-switcher--is-mobile');
     });
 
-    it('should have "platform-switcher--dark-mode" class if "app_routing_history" is not an empty array and "is_dark_mode" is "false"', () => {
-        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
+    it('should have "platform-switcher--dark-mode" class if "app_routing_history" is not an empty array and "is_dark_mode" is "true"', () => {
+        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} {...mock_connect_props} />);
         const div_element = screen.getByTestId('dt_platform_switcher');
-        expect(div_element).not.toHaveClass('platform-switcher--dark-mode');
+        expect(div_element).toHaveClass('platform-switcher--dark-mode');
     });
 });

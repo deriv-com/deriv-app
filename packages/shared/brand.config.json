@@ -33,7 +33,7 @@
         },
         "smarttrader": {
             "name": "SmartTrader",
-            "icon": "IcRebrandingSmartTrader"
+            "icon": "IcRebrandingSmarttrader"
         },
         "bbot": {
             "name": "Binary Bot",
@@ -57,7 +57,7 @@
         },
         "smarttrader": {
             "name": "SmartTrader",
-            "icon": "SmartTrader",
+            "icon": "IcRebrandingSmarttrader",
             "availability": "Non-EU"
         },
         "bbot": {

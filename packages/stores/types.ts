@@ -38,6 +38,8 @@ type TAccountsList = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: number;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    is_virtual: number;
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -216,6 +218,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_mobile: boolean;
+    sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
@@ -233,6 +236,7 @@ type TUiStore = {
     toggleUnsupportedContractModal: () => void;
     toggleSetCurrencyModal: () => void;
     toggleReports: (value: boolean) => void;
+    setSubSectionIndex: (index: number) => void;
 };
 
 type TPortfolioStore = {

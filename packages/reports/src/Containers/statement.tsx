@@ -113,6 +113,8 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
 const getRowAction = (row_obj: TFormatStatementTransaction) => {
     let action: TAction = {};
 
+    const statementws_href = urlFor('user/statementws', { legacy: true });
+
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         action =
             getSupportedContracts()[
@@ -132,7 +134,7 @@ const getRowAction = (row_obj: TFormatStatementTransaction) => {
                                       className='link link--orange'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={urlFor('user/statementws', { legacy: true })}
+                                      href={statementws_href}
                                   />,
                               ]}
                           />

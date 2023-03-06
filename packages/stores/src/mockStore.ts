@@ -101,6 +101,7 @@ const mock = (): TRootStore => {
                         is_withdrawal_suspended: 0,
                     },
                 },
+                p2p_status: 'none',
                 prompt_client_to_authenticate: 0,
                 risk_classification: 'low',
                 status: [
@@ -239,6 +240,8 @@ const mock = (): TRootStore => {
             toggleCancellationWarning: jest.fn(),
             toggleUnsupportedContractModal: jest.fn(),
             toggleReports: jest.fn(),
+            setSubSectionIndex: jest.fn(),
+            sub_section_index: 0,
         },
         traders_hub: {
             closeModal: jest.fn(),

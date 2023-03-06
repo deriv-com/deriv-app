@@ -385,8 +385,7 @@ export default class NotificationStore extends BaseStore {
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
-                const poo_required =
-                    needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() !== 'rejected';
+                const poo_required = ownership?.requests?.length > 0 && ownership?.status?.toLowerCase() !== 'rejected';
                 const poo_rejected =
                     needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() === 'rejected';
                 const svg_needs_poi_poa =

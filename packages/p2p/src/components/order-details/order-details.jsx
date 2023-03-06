@@ -23,7 +23,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
-    const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const { general_store, my_profile_store, order_store, sendbird_store, buy_sell_store } = useStores();
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const {
@@ -103,6 +103,7 @@ const OrderDetails = observer(() => {
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
                 setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
             });
+            buy_sell_store.unsubscribeCreateOrder();
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

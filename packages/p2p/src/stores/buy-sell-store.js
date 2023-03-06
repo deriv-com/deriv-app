@@ -4,7 +4,7 @@ import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { requestWS } from 'Utils/websocket';
+import { requestWS , subscribeWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
@@ -141,8 +141,11 @@ export default class BuySellStore extends BaseStore {
             validatePopup: action.bound,
             sort_list: computed,
             fetchAdvertiserAdverts: action.bound,
+            handleResponse: action.bound,
         });
     }
+
+    create_order_subscription = {};
 
     get account_currency() {
         return this.advert?.account_currency;
@@ -260,8 +263,26 @@ export default class BuySellStore extends BaseStore {
         this.setIsSortDropdownOpen(false);
     }
 
-    handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
+    handleResponse = async order => {
         const { sendbird_store } = this.root_store;
+        if (order.error) {
+            this.form_props.setErrorMessage(order.error.message);
+            this.setFormErrorCode(order.error.code);
+        } else {
+            this.form_props.setErrorMessage(null);
+            this.root_store.general_store.hideModal();
+            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
+            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
+            if (order?.p2p_order_create?.id) {
+                const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
+                this.form_props.handleConfirm(response?.p2p_order_info);
+            }
+            this.form_props.handleClose();
+            this.payment_method_ids = [];
+        }
+    };
+
+    handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
         if (isMountedFn()) {
             setSubmitting(true);
         }
@@ -273,7 +294,6 @@ export default class BuySellStore extends BaseStore {
             advert_id: this.advert.id,
             amount: values.amount,
             payment_method_ids: this.payment_method_ids,
-            subscribe: 1,
             ...(values.payment_info && this.is_sell_advert ? { payment_info: values.payment_info } : {}),
             // Validate extra information for sell adverts.
             ...(this.is_sell_advert
@@ -286,21 +306,7 @@ export default class BuySellStore extends BaseStore {
             payload.rate = values.rate;
         }
 
-        const order = await requestWS({ ...payload });
-
-        if (order.error) {
-            this.form_props.setErrorMessage(order.error.message);
-            this.setFormErrorCode(order.error.code);
-        } else {
-            this.form_props.setErrorMessage(null);
-            this.root_store.general_store.hideModal();
-            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
-            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
-            const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
-            this.form_props.handleConfirm(response.p2p_order_info);
-            this.form_props.handleClose();
-            this.payment_method_ids = [];
-        }
+        this.create_order_subscription = subscribeWS({ ...payload }, [this.handleResponse]);
 
         if (isMountedFn()) {
             setSubmitting(false);
@@ -723,4 +729,10 @@ export default class BuySellStore extends BaseStore {
 
         return () => disposeAdvertIntervalReaction();
     }
+
+    unsubscribeCreateOrder = () => {
+        if (this.create_order_subscription.unsubscribe) {
+            this.create_order_subscription.unsubscribe();
+        }
+    };
 }

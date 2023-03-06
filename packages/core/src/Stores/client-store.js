@@ -1184,7 +1184,7 @@ export default class ClientStore extends BaseStore {
 
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
-            const continent = landing_company_shortcode === 'svg' ? 'eu' : 'row';
+            const continent = landing_company_shortcode === 'svg' ? 'row' : 'eu';
             const client_information = {
                 loginid,
                 email,

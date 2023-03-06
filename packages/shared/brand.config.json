@@ -57,7 +57,7 @@
         },
         "smarttrader": {
             "name": "SmartTrader",
-            "icon": "IcRebrandingSmarttrader",
+            "icon": "SmartTrader",
             "availability": "Non-EU"
         },
         "bbot": {

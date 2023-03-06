@@ -41,9 +41,12 @@
             text-decoration: none;
         }
 
+        &--active,
+        &--blurry {
+            cursor: not-allowed;
+        }
         &--blurry {
             opacity: 0.2;
-            cursor: not-allowed;
         }
     }
     &--divider {

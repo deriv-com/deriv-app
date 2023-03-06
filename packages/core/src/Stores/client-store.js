@@ -1169,6 +1169,7 @@ export default class ClientStore extends BaseStore {
 
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1183,6 +1184,7 @@ export default class ClientStore extends BaseStore {
 
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
+            const continent = landing_company_shortcode === 'svg' ? 'eu' : 'row';
             const client_information = {
                 loginid,
                 email,
@@ -1195,9 +1197,11 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
+            Cookies.set('continent', continent, { domain });
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
+            Cookies.remove('continent', { domain });
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }

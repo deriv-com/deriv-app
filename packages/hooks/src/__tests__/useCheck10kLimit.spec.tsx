@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import type { TStores } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useCheck10kLimit from '../useCheck10kLimit';
 import useMaxWithdrawAmount from '../useMaxWithdrawAmount';
@@ -11,12 +10,13 @@ describe('useCheck10kLimit', () => {
     test('should be false if useMaxWithdrawAmount is undefined', async () => {
         (useMaxWithdrawAmount as jest.Mock).mockReturnValue('undefined');
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockStore({}) as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mockStore({})}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useCheck10kLimit(), { wrapper });
 
         expect(result.current).toBe(false);
     });
+
     test('should be false if useMaxWithdrawAmount is bigger than min_withdrawal', async () => {
         (useMaxWithdrawAmount as jest.Mock).mockReturnValue(100);
 
@@ -27,12 +27,13 @@ describe('useCheck10kLimit', () => {
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useCheck10kLimit(), { wrapper });
 
         expect(result.current).toBe(false);
     });
+
     test('should be true if useMaxWithdrawAmount is lower than min_withdrawal', async () => {
         (useMaxWithdrawAmount as jest.Mock).mockReturnValue(10);
 
@@ -43,7 +44,7 @@ describe('useCheck10kLimit', () => {
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useCheck10kLimit(), { wrapper });
 

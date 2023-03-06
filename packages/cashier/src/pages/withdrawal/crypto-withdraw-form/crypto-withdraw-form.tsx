@@ -77,7 +77,7 @@ const CryptoWithdrawForm = observer(() => {
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
-    const account_platform_icon = useAccountPlatformDetails()?.icon;
+    const account_platform_details = useAccountPlatformDetails();
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -109,7 +109,10 @@ const CryptoWithdrawForm = observer(() => {
         <div className='cashier__wrapper' data-testid='dt_crypto_withdraw_form'>
             {!isMobile() && <Header currency={currency} />}
             <div className={classNames({ 'crypto-withdraw-form__icon': isMobile() })}>
-                <Icon icon={`IcCurrency-${account_platform_icon?.toLowerCase()}`} size={isMobile() ? 64 : 128} />
+                <Icon
+                    icon={`IcCurrency-${account_platform_details?.icon?.toLowerCase()}`}
+                    size={isMobile() ? 64 : 128}
+                />
             </div>
             {isMobile() && <Header currency={currency} />}
             <Formik

@@ -253,7 +253,7 @@ export default class WithdrawStore {
         this.crypto_config = (await this.WS.cryptoConfig())?.crypto_config;
     }
 
-    setWithdrawPercentageSelectorResult(amount) {
+    setWithdrawPercentageSelectorResult(amount: number) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;

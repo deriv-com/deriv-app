@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import type { TStores } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useMaxWithdrawAmount from '../useMaxWithdrawAmount';
 
@@ -19,7 +18,7 @@ describe('useMaxWithdrawAmount', () => {
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useMaxWithdrawAmount(), { wrapper });
 

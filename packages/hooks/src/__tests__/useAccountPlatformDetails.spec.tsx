@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import type { TStores } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useAccountPlatformDetails from '../useAccountPlatformDetails';
 
@@ -27,7 +26,7 @@ describe('useAccountPlatformDetails', () => {
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useAccountPlatformDetails(), { wrapper });
 

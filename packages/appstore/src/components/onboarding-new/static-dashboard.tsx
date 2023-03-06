@@ -64,7 +64,7 @@ const StaticDashboard = ({
     loginid,
 }: TStaticDashboard) => {
     const { client, traders_hub } = useStores();
-    const { content_flag } = traders_hub;
+    const { content_flag, restricted_countries_filter_content } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 
     const [index, setIndex] = React.useState<number>(0);
@@ -254,7 +254,8 @@ const StaticDashboard = ({
 
                         <div
                             className={classNames('static-dashboard-wrapper__body--apps', {
-                                'static-dashboard-wrapper__body--apps--eu': is_eu_user,
+                                'static-dashboard-wrapper__body--apps--eu':
+                                    is_eu_user || restricted_countries_filter_content,
                                 'static-dashboard-wrapper__body--apps--with-gap': has_account,
                             })}
                         >
@@ -434,7 +435,7 @@ const StaticDashboard = ({
                         </div>
 
                         <div className='static-dashboard-wrapper__body'>
-                            {!is_eu_user && (
+                            {!is_eu_user && !restricted_countries_filter_content && (
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
@@ -501,7 +502,7 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
-                        {!is_eu_user && (
+                        {!is_eu_user && !restricted_countries_filter_content && (
                             <React.Fragment>
                                 <Divider />
                                 <div className='static-dashboard-wrapper__body--header'>
@@ -520,7 +521,7 @@ const StaticDashboard = ({
                                 </div>
                             </React.Fragment>
                         )}
-                        {!is_eu_user && (
+                        {!is_eu_user && !restricted_countries_filter_content && (
                             <StaticCFDAccountManager
                                 type='all'
                                 platform='dxtrade'

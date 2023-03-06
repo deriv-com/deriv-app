@@ -1,13 +1,15 @@
-import * as React from 'react';
-import countries from 'i18n-iso-countries';
 import * as Cookies from 'js-cookie';
-import { init } from 'onfido-sdk-ui';
+import * as React from 'react';
+
 import { Loading, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile, WS } from '@deriv/shared';
-import { getLanguage, Localize } from '@deriv/translations';
+import { Localize, getLanguage } from '@deriv/translations';
+import { WS, isMobile } from '@deriv/shared';
+
 import ErrorMessage from 'Components/error-component';
-import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
+import countries from 'i18n-iso-countries';
+import getOnfidoPhrases from 'Constants/onfido-phrases';
+import { init } from 'onfido-sdk-ui';
 
 const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, height, is_from_external }) => {
     const [api_error, setAPIError] = React.useState();
@@ -90,6 +92,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                                     : false,
                             },
                             hideCountrySelection: true,
+                            useLiveDocumentCapture: true,
                         },
                     },
                     'face',

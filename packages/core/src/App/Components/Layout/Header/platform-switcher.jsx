@@ -55,7 +55,6 @@ const PlatformSwitcher = ({
                 data-testid='dt_platform_switcher'
                 className={classNames(
                     'platform-switcher',
-                    { 'platform-switcher--dark-mode': is_dark_mode },
                     { 'platform-switcher--active': is_open },
                     { 'platform-switcher--is-mobile': isMobile() }
                 )}

@@ -10,9 +10,13 @@
         bottom: 2rem;
     }
 
+    &--deposit-button-blurry,
+    &--deposit-button-animated {
+        cursor: not-allowed;
+    }
+
     &--deposit-button-blurry {
         opacity: 0.2;
-        cursor: not-allowed;
     }
 
     &--deposit-button-animated {

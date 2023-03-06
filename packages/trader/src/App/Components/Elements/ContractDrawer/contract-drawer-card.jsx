@@ -38,7 +38,7 @@ const ContractDrawerCard = ({
 }) => {
     const [hover_ref, should_hide_closed_overlay] = useHover();
 
-    const { profit, underlying: symbol } = contract_info;
+    const { profit, validation_error } = contract_info;
     const is_sold = !!getEndTime(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
 
@@ -124,7 +124,7 @@ const ContractDrawerCard = ({
                             'contract-card__market-closed--hidden': isDesktop() && should_hide_closed_overlay,
                         })}
                     >
-                        <MarketClosedContractOverlay symbol={symbol} />
+                        <MarketClosedContractOverlay validation_error={validation_error} />
                     </div>
                 )}
                 {contract_el}

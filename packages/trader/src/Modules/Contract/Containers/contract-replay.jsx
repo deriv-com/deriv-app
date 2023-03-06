@@ -260,7 +260,7 @@ const Chart = props => {
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
             isStaticChart={false}
-            shouldFetchTradingTimes={!props.end_epoch}
+            shouldFetchTradingTimes={false}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}

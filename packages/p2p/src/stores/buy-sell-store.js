@@ -267,23 +267,24 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleResponse = async order => {
-        const { sendbird_store, order_store } = this.root_store;
+        const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
+        const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
         if (order.error) {
-            this.form_props.setErrorMessage(order.error.message);
+            setErrorMessage(order.error.message);
             this.setFormErrorCode(order.error.code);
         } else {
             if (order?.subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);
             }
-            this.form_props.setErrorMessage(null);
-            this.root_store.general_store.hideModal();
-            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
+            setErrorMessage(null);
+            general_store.hideModal();
+            floating_rate_store.setIsMarketRateChanged(false);
             sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
             if (order?.p2p_order_create?.id) {
                 const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
-                this.form_props.handleConfirm(response?.p2p_order_info);
+                handleConfirm(response?.p2p_order_info);
             }
-            this.form_props.handleClose();
+            handleClose();
             this.payment_method_ids = [];
         }
         if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {

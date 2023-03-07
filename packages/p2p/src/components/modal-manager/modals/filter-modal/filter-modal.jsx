@@ -103,7 +103,7 @@ const FilterModal = () => {
         onClickClear();
     };
 
-    const onClickApplyPaymentMethods = () => () => {
+    const onClickApplyPaymentMethods = () => {
         buy_sell_store.onClickApply(selected_methods, selected_methods_text);
         buy_sell_store.setShowFilterPaymentMethods(false);
     };

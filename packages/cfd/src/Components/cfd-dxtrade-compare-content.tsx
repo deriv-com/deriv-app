@@ -221,7 +221,7 @@ const getAccounts: TGetAccounts = ({ landing_companies, is_logged_in }) => {
             attribute: localize('Trading instruments'),
             dxtrade: {
                 derivx: localize(
-                    'Synthetics, FX majors (standard/micro lots), FX minors, basket indices, commodities, and cryptocurrencies'
+                    'Synthetics, Derived FX, FX majors (standard/micro lots), FX minors, basket indices, commodities, and cryptocurrencies'
                 ),
                 footnote: null,
             },

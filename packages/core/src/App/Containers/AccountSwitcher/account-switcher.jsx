@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, useHistory } from 'react-router';
 import {
     Button,
     DesktopWrapper,
@@ -30,6 +30,7 @@ import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Prel
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './helpers';
+import { BinaryLink } from 'App/Components/Routes';
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
@@ -42,6 +43,7 @@ const AccountSwitcher = props => {
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
     const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
+    const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
     const [is_eu_regulator_visible, setEuRegulatorVisible] = React.useState(true);
     const [filtered_real_accounts, setFilteredRealAccounts] = React.useState([]);
@@ -60,6 +62,11 @@ const AccountSwitcher = props => {
 
     const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
     const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
+    const cfd_demo_currency =
+        props.mt5_login_list.find(account => isDemo(account))?.currency ||
+        props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
+
+    const history = useHistory();
 
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
@@ -68,15 +75,18 @@ const AccountSwitcher = props => {
     }, [getMaxAccountsDisplayed]);
 
     React.useEffect(() => {
-        const getCurrentExchangeRate = (currency, setExchangeRate) => {
+        const getCurrentExchangeRate = (currency, setExchangeRate, base_currency = account_total_balance_currency) => {
             if (currency) {
-                props.getExchangeRate(currency, account_total_balance_currency).then(res => {
+                props.getExchangeRate(currency, base_currency).then(res => {
                     setExchangeRate(res);
                 });
             }
         };
         if (cfd_real_currency !== account_total_balance_currency) {
             getCurrentExchangeRate(cfd_real_currency, setExchangedRateCfdReal);
+        }
+        if (cfd_demo_currency !== vrtc_currency) {
+            getCurrentExchangeRate(cfd_demo_currency, setExchangedRateCfdDemo, vrtc_currency);
         }
         if (props.is_low_risk || props.is_high_risk) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
@@ -333,6 +343,7 @@ const AccountSwitcher = props => {
 
     // Real accounts is always the first tab index based on design
     const isRealAccountTab = active_tab_index === 0;
+    const isDemoAccountTab = active_tab_index === 1;
 
     const getDemoMT5 = () => {
         return getSortedCFDList(props.mt5_login_list).filter(isDemo);
@@ -443,8 +454,8 @@ const AccountSwitcher = props => {
 
     const getTotalDemoAssets = () => {
         const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
-        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, 1);
-        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, 1);
+        const mt5_demo_total = getTotalBalanceCfd(props.mt5_login_list, true, exchanged_rate_cfd_demo);
+        const dxtrade_demo_total = getTotalBalanceCfd(props.dxtrade_accounts_list, true, exchanged_rate_cfd_demo);
 
         const total = vrtc_balance + mt5_demo_total.balance + dxtrade_demo_total.balance;
 
@@ -1219,6 +1230,43 @@ const AccountSwitcher = props => {
 
     const demo_accounts = props.is_pre_appstore ? traders_hub_demo_account : default_demo_accounts;
 
+    const first_real_login_id = props.account_list?.find(account => /^(CR|MF)/.test(account.loginid))?.loginid;
+
+    const TradersHubRedirect = () => {
+        const TradersHubLink = () => {
+            const handleRedirect = async () => {
+                if (!props.is_virtual && isDemoAccountTab) {
+                    await props.switchAccount(props.virtual_account_loginid);
+                } else if (props.is_virtual && isRealAccountTab) {
+                    await props.switchAccount(first_real_login_id);
+                }
+                props.toggleAccountsDialog(false);
+                history.push(routes.traders_hub);
+                props.setTogglePlatformType('cfd');
+            };
+
+            return (
+                <React.Fragment>
+                    <div className='acc-switcher__traders-hub'>
+                        <BinaryLink onClick={handleRedirect} className='acc-switcher__traders-hub--link'>
+                            <Text size='xs' align='center' className='acc-switcher__traders-hub--text'>
+                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's hub" />
+                            </Text>
+                        </BinaryLink>
+                    </div>
+                    <div className='acc-switcher__separator' />
+                </React.Fragment>
+            );
+        };
+
+        if (props.is_pre_appstore) {
+            if ((isRealAccountTab && props.has_any_real_account) || isDemoAccountTab) {
+                return <TradersHubLink />;
+            }
+        }
+        return null;
+    };
+
     return (
         <div className='acc-switcher__list' ref={wrapper_ref}>
             <Tabs
@@ -1276,6 +1324,8 @@ const AccountSwitcher = props => {
                 {total_assets_message}
             </Text>
             <div className='acc-switcher__separator' />
+
+            <TradersHubRedirect />
 
             <div
                 className={classNames('acc-switcher__footer', {
@@ -1376,6 +1426,8 @@ AccountSwitcher.propTypes = {
     real_account_creation_unlock_date: PropTypes.number,
     setShouldShowCooldownModal: PropTypes.func,
     content_flag: PropTypes.string,
+    virtual_account_loginid: PropTypes.string,
+    setTogglePlatformType: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -1444,6 +1496,9 @@ const account_switcher = withRouter(
         trading_platform_available_accounts: client.trading_platform_available_accounts,
         show_eu_related_content: traders_hub.show_eu_related_content,
         content_flag: traders_hub.content_flag,
+        has_any_real_account: client.has_any_real_account,
+        virtual_account_loginid: client.virtual_account_loginid,
+        setTogglePlatformType: traders_hub.setTogglePlatformType,
     }))(AccountSwitcher)
 );
 

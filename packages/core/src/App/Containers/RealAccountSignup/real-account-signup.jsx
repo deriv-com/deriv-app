@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -113,9 +113,9 @@ const RealAccountSignup = ({
     real_account_signup_target,
     realAccountSignup,
     replaceCashierMenuOnclick,
-    routing_history,
     setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled,
+    setIsClosingCreateRealAccountModal,
     setParams,
     setShouldShowAppropriatenessWarningModal,
     setShouldShowRiskWarningModal,
@@ -124,7 +124,6 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
-    is_low_risk,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -183,7 +182,7 @@ const RealAccountSignup = ({
                 <FinishedSetCurrency
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
-                    onCancel={closeModal}
+                    onCancel={closeSetCurrencySuccessModal}
                     onSubmit={closeModalThenOpenCashier}
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
@@ -200,7 +199,10 @@ const RealAccountSignup = ({
         },
         {
             body: local_props => (
-                <StatusDialogContainer currency={local_props.state_value.currency} closeModal={closeModal} />
+                <StatusDialogContainer
+                    currency={local_props.state_value.currency}
+                    closeModal={closeSetCurrencySuccessModal}
+                />
             ),
         },
         {
@@ -261,11 +263,7 @@ const RealAccountSignup = ({
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (
-                show_eu_related_content &&
-                !(is_pre_appstore && is_low_risk) &&
-                getActiveModalIndex() === modal_pages_indices.add_or_manage_account
-            ) {
+            if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -277,6 +275,7 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
+
         return '740px'; // Account wizard modal
     };
 
@@ -363,8 +362,7 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
-    const closeModal = e => {
-        replaceCashierMenuOnclick();
+    const closeSetCurrencySuccessModal = e => {
         // Do not close modal on external link and popover click event
         if (
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
@@ -378,14 +376,29 @@ const RealAccountSignup = ({
             localStorage.removeItem('real_account_signup_wizard');
         }
         closeRealAccountSignup();
+    };
 
-        if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
-            window.location = routes.smarttrader;
+    const closeModal = e => {
+        // e.nativeEvent.preventDefault();
+        replaceCashierMenuOnclick();
+        // Do not close modal on external link and popover click event
+        if (
+            e?.target.getAttribute('rel') === 'noopener noreferrer' ||
+            e?.target.closest('.redirect-notice') ||
+            e?.target.closest('.dc-popover__bubble')
+        ) {
+            return;
+        }
+        if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
+            sessionStorage.removeItem('post_real_account_signup');
+            localStorage.removeItem('real_account_signup_wizard');
         }
 
-        if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
-            window.location = routes.binarybot;
+        if (modal_content[getActiveModalIndex()].action === 'signup') {
+            setIsClosingCreateRealAccountModal(true);
+            return;
         }
+        closeRealAccountSignup();
     };
 
     const onErrorConfirm = () => {
@@ -627,7 +640,7 @@ const RealAccountSignup = ({
     );
 };
 
-export default connect(({ ui, client, common, traders_hub, modules }) => ({
+export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
@@ -648,10 +661,10 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
     replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
-    routing_history: common.app_routing_history,
     setCFDScore: client.setCFDScore,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
+    setIsClosingCreateRealAccountModal: ui.setIsClosingCreateRealAccountModal,
     setParams: ui.setRealAccountSignupParams,
     setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
@@ -661,5 +674,4 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    is_low_risk: client.is_low_risk,
 }))(withRouter(RealAccountSignup));

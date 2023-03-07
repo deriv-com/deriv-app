@@ -62,7 +62,7 @@ export default class RunPanelStore {
             unregisterBotListeners: action.bound,
             clear: action.bound,
             preloadAudio: action.bound,
-            StopMyBot: action.bound,
+            stopMyBot: action.bound,
         });
 
         this.root_store = root_store;
@@ -266,7 +266,7 @@ export default class RunPanelStore {
         this.is_dialog_open = false;
     }
 
-    StopMyBot() {
+    stopMyBot() {
         const { summary_card, core, quick_strategy } = this.root_store;
         const { ui } = core;
         const { toggleStopBotDialog } = quick_strategy;

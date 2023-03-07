@@ -11,7 +11,7 @@ type TStopBotModal = {
     is_stop_bot_dialog_open: boolean;
     onOkButtonClick: () => void;
     toggleStopBotDialog: () => void;
-    StopMyBot: () => void;
+    stopMyBot: () => void;
 };
 
 const StopBotModalContent = ({
@@ -88,7 +88,7 @@ const StopBotModal = ({
     is_running,
     is_dialog_open,
     toggleStopBotDialog,
-    StopMyBot,
+    stopMyBot,
     is_contract_dialog_open,
     is_stop_bot_dialog_open,
 }: TStopBotModal) =>
@@ -103,7 +103,7 @@ const StopBotModal = ({
         >
             <StopBotModalContent
                 is_running={is_running}
-                onOkButtonClick={StopMyBot}
+                onOkButtonClick={stopMyBot}
                 toggleStopBotDialog={toggleStopBotDialog}
                 is_contract_dialog_open={is_contract_dialog_open}
                 is_stop_bot_dialog_open={is_stop_bot_dialog_open}
@@ -112,7 +112,7 @@ const StopBotModal = ({
     ) : (
         <StopBotModalContent
             is_running={is_running}
-            onOkButtonClick={StopMyBot}
+            onOkButtonClick={stopMyBot}
             toggleStopBotDialog={toggleStopBotDialog}
             is_contract_dialog_open={is_contract_dialog_open}
             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
@@ -125,6 +125,6 @@ export default connect(({ run_panel, toolbar, quick_strategy }: RootStore) => ({
     is_contract_dialog_open: quick_strategy.is_contract_dialog_open,
     is_stop_bot_dialog_open: quick_strategy.is_stop_bot_dialog_open,
     onOkButtonClick: run_panel.onOkButtonClick,
-    StopMyBot: run_panel.StopMyBot,
+    stopMyBot: run_panel.stopMyBot,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
 }))(StopBotModal);

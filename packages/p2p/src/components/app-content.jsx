@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
+import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
@@ -13,9 +14,32 @@ import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
 import Verification from './verification/verification.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const AppContent = () => {
+const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
+    const { showModal, hideModal } = useModalManagerContext();
+
+    React.useEffect(() => {
+        return reaction(
+            () => general_store.props.setP2POrderProps,
+            () => {
+                if (isAction(general_store.props.setP2POrderProps)) {
+                    general_store.props.setP2POrderProps({
+                        order_id,
+                        redirectToOrderDetails: general_store.redirectToOrderDetails,
+                        setIsRatingModalOpen: is_open => {
+                            if (is_open) {
+                                showModal({ key: 'RatingModal' });
+                            } else {
+                                hideModal();
+                            }
+                        },
+                    });
+                }
+            }
+        );
+    }, []);
 
     if (general_store.is_loading) {
         return <Loading is_fullscreen={false} />;

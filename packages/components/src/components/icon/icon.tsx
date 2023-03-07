@@ -21,6 +21,7 @@ const Icon = React.forwardRef(
             onTouchStart,
             size = 16,
             width,
+            desc,
         }: TIconProps,
         ref?: React.ForwardedRef<SVGSVGElement | null>
     ) => {
@@ -70,6 +71,7 @@ const Icon = React.forwardRef(
                         : undefined) as React.CSSProperties & { '--fill-color1': string }
                 }
             >
+                <desc>{desc}</desc>
                 <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
             </svg>
         );

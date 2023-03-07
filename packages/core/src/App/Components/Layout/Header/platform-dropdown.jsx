@@ -11,7 +11,7 @@ const PlatformBox = ({ platform: { icon, description } }) => (
         <div className='platform-dropdown__list-platform-background' />
 
         <div className='platform-switcher__dropdown' data-testid='dt_platform_box_icon'>
-            <Icon icon={icon} height={42} width={150} />
+            <Icon icon={icon} height={42} width={150} desc={icon} />
             <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
     </React.Fragment>

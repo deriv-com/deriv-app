@@ -1979,6 +1979,13 @@ export default class ClientStore extends BaseStore {
     setAccountSettings(settings) {
         const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
         if (!is_equal_settings) {
+            // delete all notifications key when set new account
+            const notification_messages = LocalStore.getObject('notification_messages');
+            if (this.loginid)
+                LocalStore.setObject('notification_messages', {
+                    ...notification_messages,
+                    [this.loginid]: [],
+                });
             this.account_settings = settings;
             this.is_account_setting_loaded = true;
         }

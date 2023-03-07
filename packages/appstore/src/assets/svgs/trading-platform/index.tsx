@@ -1,6 +1,7 @@
 import React from 'react';
 import BinaryBot from 'Assets/svgs/trading-platform/branding/ic-branding-binarybot-dashboard.svg';
 import BinaryBotBlue from 'Assets/svgs/trading-platform/ic-appstore-binarybot-blue.svg';
+import CFDs from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-cfds.svg';
 import DBot from 'Assets/svgs/trading-platform/branding/ic-branding-dbot-dashboard.svg';
 import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
 import Derived from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-derived-dashboard.svg';
@@ -15,16 +16,12 @@ import Financial from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-fin
 import Options from 'Assets/svgs/trading-platform/ic-appstore-options.svg';
 import SmartTrader from 'Assets/svgs/trading-platform/branding/ic-branding-smarttrader-dashboard.svg';
 import SmartTraderBlue from 'Assets/svgs/trading-platform/ic-appstore-smarttrader-blue.svg';
-import CFDs from 'Assets/svgs/trading-platform/ic-appstore-cfds.svg';
-import DBotRebranding from 'Assets/svgs/trading-platform/ic-brand-dbot.svg';
-import DerivGoRebranding from 'Assets/svgs/trading-platform/ic-brand-derivgo.svg';
-import MT5DerivedRebranding from 'Assets/svgs/trading-platform/ic-brand-mt5-derived.svg';
-import MT5FinancialRebranding from 'Assets/svgs/trading-platform/ic-brand-mt5-financial.svg';
 import { IconProps } from '../icon-types';
 
 export const PlatformIcons = {
     BinaryBot,
     BinaryBotBlue,
+    CFDs,
     DBot,
     Demo,
     Derived,
@@ -39,11 +36,6 @@ export const PlatformIcons = {
     Options,
     SmartTrader,
     SmartTraderBlue,
-    CFDs,
-    DBotRebranding,
-    DerivGoRebranding,
-    MT5DerivedRebranding,
-    MT5FinancialRebranding,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

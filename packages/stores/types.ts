@@ -79,6 +79,8 @@ type TNotification =
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
 
+type TAccountStatus = Omit<GetAccountStatus, 'status'> & { status?: string[] };
+
 type TClientStore = {
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
@@ -92,7 +94,7 @@ type TClientStore = {
         };
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;

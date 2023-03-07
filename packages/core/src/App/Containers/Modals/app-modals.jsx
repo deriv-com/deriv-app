@@ -117,38 +117,6 @@ const AppModals = ({
             break;
     }
 
-    if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
-    }
-
-    if (is_close_mx_mlt_account_modal_visible) {
-        ComponentToLoad = <CloseMxMltAccountModal />;
-    }
-
-    if (is_close_uk_account_modal_visible) {
-        ComponentToLoad = <CloseUKAccountModal />;
-    }
-
-    if (is_warning_scam_message_modal_visible) {
-        ComponentToLoad = <WarningScamMessageModal />;
-    }
-
-    if (is_closing_create_real_account_modal) {
-        ComponentToLoad = <WarningCloseCreateRealAccountModal />;
-    }
-
-    if (is_welcome_modal_visible) {
-        ComponentToLoad = <WelcomeModal />;
-    }
-
-    if (is_account_needed_modal_on) {
-        ComponentToLoad = <MT5AccountNeededModal />;
-    }
-
-    if (is_reality_check_visible) {
-        ComponentToLoad = <RealityCheckModal />;
-    }
-
     if (
         is_logged_in &&
         active_account_landing_company === 'maltainvest' &&
@@ -166,6 +134,8 @@ const AppModals = ({
         ComponentToLoad = <CloseUKAccountModal />;
     } else if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
+    } else if (is_closing_create_real_account_modal) {
+        ComponentToLoad = <WarningCloseCreateRealAccountModal />;
     } else if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     } else if (is_account_needed_modal_on) {

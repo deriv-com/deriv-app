@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, Icon, Text } from '@deriv/components';
+import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
+import { isEmptyObject } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PropTypes from 'prop-types';
@@ -49,7 +50,6 @@ const PaymentMethodCard = ({
                     custom_color='var(--brand-red-coral)'
                     size={32}
                 />
-
                 <Text align='center' color={disabled ? 'less-prominent' : 'prominent'} size='xs'>
                     {label || add_payment_method}
                 </Text>
@@ -86,6 +86,7 @@ const PaymentMethodCard = ({
                         is_align_text_left
                     />
                 )}
+                <Checkbox className='payment-method-card__checkbox' onChange={onClick} value={!isEmptyObject(style)} />
             </div>
             <div className='payment-method-card__body'>
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>

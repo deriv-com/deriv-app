@@ -10,6 +10,10 @@ export const currentLanguage = getLanguage();
 export const getURL = lang => urlForLanguage(lang);
 
 export const changeLanguage = (key, changeCurrentLanguage) => {
+    changeLanguageTranslation(key, () => {
+        changeCurrentLanguage(key);
+        BinarySocket.closeAndOpenNewConnection(key);
+    });
     const request = {
         set_settings: 1,
         preferred_language: key,
@@ -27,9 +31,5 @@ export const changeLanguage = (key, changeCurrentLanguage) => {
             new_url.searchParams.set('lang', key);
         }
         window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-        changeLanguageTranslation(key, () => {
-            changeCurrentLanguage(key);
-            BinarySocket.closeAndOpenNewConnection(key);
-        });
     });
 };

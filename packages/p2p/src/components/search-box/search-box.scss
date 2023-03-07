@@ -17,6 +17,12 @@
 
     &__field {
         margin-bottom: 0 !important;
+        text-indent: 2rem;
+        height: 4.2rem;
+
+        ::placeholder {
+            opacity: 0.5;
+        }
 
         .dc-input {
             justify-content: center;
@@ -36,9 +42,9 @@
 
             &__leading-icon {
                 cursor: pointer;
+                top: 32%;
                 margin-left: 0.8rem;
                 pointer-events: unset;
-                position: unset;
             }
         }
     }

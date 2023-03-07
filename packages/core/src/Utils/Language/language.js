@@ -10,15 +10,17 @@ export const currentLanguage = getLanguage();
 export const getURL = lang => urlForLanguage(lang);
 
 export const changeLanguage = (key, changeCurrentLanguage) => {
-    changeLanguageTranslation(key, () => {
-        changeCurrentLanguage(key);
-        BinarySocket.closeAndOpenNewConnection(key);
-    });
     const request = {
         set_settings: 1,
         preferred_language: key,
     };
+
     SocketCache.clear();
+
+    changeLanguageTranslation(key, () => {
+        changeCurrentLanguage(key);
+        BinarySocket.closeAndOpenNewConnection(key);
+    });
     if (key === 'EN') {
         window.localStorage.setItem('i18n_language', key);
     }

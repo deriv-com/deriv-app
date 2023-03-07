@@ -889,6 +889,7 @@ export default class GeneralStore extends BaseStore {
         p2p_settings[this.client.loginid] = user_settings;
 
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
+        window.dispatchEvent(new Event('storage'));
 
         this.setNotificationCount(notification_count);
         this.setActiveNotificationCount(active_notification_count);

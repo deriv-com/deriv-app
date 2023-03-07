@@ -5,6 +5,7 @@ import Icon from '../icon';
 import Input from '../input';
 import DropdownList, { TItem } from '../dropdown-list';
 import { useBlockScroll } from '../../hooks/use-blockscroll';
+import { getEnglishCharacters } from '../../../utils/helper';
 
 type TAutocompleteProps = React.HTMLAttributes<HTMLElement> & {
     autoComplete: string;
@@ -47,9 +48,10 @@ const getFilteredItems = (val: string, list: TItem[], should_filter_by_char = fa
             typeof item === 'string' ? matchStringByChar(item, val) : matchStringByChar(item.text || '', val)
         );
     }
-
     return list.filter(item =>
-        typeof item === 'string' ? item.toLowerCase().includes(val) : item.text?.toLowerCase().includes(val)
+        typeof item === 'string'
+            ? getEnglishCharacters(item).toLowerCase().includes(val) || item.toLowerCase().includes(val)
+            : getEnglishCharacters(item.text).toLowerCase().includes(val) || item?.text?.toLowerCase().includes(val)
     );
 };
 const Autocomplete = React.memo((props: TAutocompleteProps) => {

@@ -1,70 +1,71 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Icon, Counter } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
+import { observer, useStore } from '@deriv/stores';
+import { routes } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { useP2PNotificationCount } from '@deriv/hooks';
+import './menu-links.scss';
 
-const MenuItems = ({ item, hide_menu_item }) => {
-    const { id, link_to, href, text, image, logo, icon } = item;
-    return hide_menu_item ? null : (
+const MenuItems = ({ id, text, icon, link_to }) => {
+    return (
         <BinaryLink
             id={id}
             key={icon}
             to={link_to}
-            href={href}
             className='header__menu-link'
             active_class='header__menu-link--active'
         >
-            <Text size='m' line_height='xs' title={text()} className='header__menu-link-text'>
+            <Text size='m' line_height='xs' title={text} className='header__menu-link-text'>
                 {icon}
-                {text()}
-                {logo}
+                {text}
             </Text>
-            <span className='header__menu-link-text'>
-                {image}
-                {logo}
-            </span>
         </BinaryLink>
     );
 };
 
-const MenuLinks = ({ is_logged_in, is_mobile, items, is_pre_appstore }) => (
-    <React.Fragment>
-        {!!items.length && (
-            <div className='header__menu-links'>
-                {items.map(item => {
-                    return (
-                        is_logged_in && (
-                            <MenuItems
-                                key={`${item.icon}${item.id}`}
-                                item={item}
-                                hide_menu_item={
-                                    is_pre_appstore &&
-                                    (item?.link_to?.toLowerCase() === '/reports' ||
-                                        (item?.link_to?.toLowerCase() === '/cashier' && is_mobile))
-                                }
-                            />
-                        )
-                    );
-                })}
-            </div>
-        )}
-    </React.Fragment>
+const ReportTab = () => (
+    <MenuItems
+        id={'dt_reports_tab'}
+        icon={<Icon icon='IcReports' className='header__icon' />}
+        text={localize('Reports')}
+        link_to={routes.reports}
+    />
 );
 
-MenuLinks.propTypes = {
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            icon: PropTypes.shape({
-                className: PropTypes.string,
-            }),
-            is_logged_in: PropTypes.bool,
-            link_to: PropTypes.string,
-            text: PropTypes.func,
-        })
-    ),
-    is_mobile: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
-};
+const CashierTab = observer(() => {
+    const p2p_notification_count = useP2PNotificationCount();
+
+    return (
+        <MenuItems
+            id={'dt_cashier_tab'}
+            icon={
+                <>
+                    <Icon icon='IcCashier' className='header__icon' />
+                    {p2p_notification_count > 0 && (
+                        <Counter className='cashier__counter' count={p2p_notification_count} />
+                    )}
+                </>
+            }
+            text={localize('Cashier')}
+            link_to={routes.cashier}
+        />
+    );
+});
+
+const MenuLinks = observer(() => {
+    const { client, ui } = useStore();
+    const { is_logged_in, is_pre_appstore } = client;
+    const { is_mobile } = ui;
+
+    if (!is_logged_in) return <></>;
+
+    return (
+        <div className='header__menu-links'>
+            {!is_pre_appstore && <ReportTab />}
+            {!is_pre_appstore && !is_mobile && <CashierTab />}
+        </div>
+    );
+});
 
 export { MenuLinks };

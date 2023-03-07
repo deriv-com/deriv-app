@@ -85,12 +85,14 @@ const OrderDetails = observer(() => {
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
 
-        // TODO: remove condition check once access chat_channel_url from p2p_order_create is activated in BO
-        if (order_channel_url) {
-            sendbird_store.setChatChannelUrl(order_channel_url);
-        } else {
-            sendbird_store.createChatForNewOrder(order_store.order_id);
-        }
+        // TODO: remove condition check and settimeout once access chat_channel_url from p2p_order_create is activated in BO, since chat channel url response is always delayed
+        setTimeout(() => {
+            if (order_channel_url) {
+                sendbird_store.setChatChannelUrl(order_channel_url);
+            } else {
+                sendbird_store.createChatForNewOrder(order_store.order_id);
+            }
+        }, 1000);
 
         return () => {
             disposeListeners();

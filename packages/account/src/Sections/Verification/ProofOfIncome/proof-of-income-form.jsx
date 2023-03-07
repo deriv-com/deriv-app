@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Formik, Field } from 'formik';
 import {
     Autocomplete,
     Button,
@@ -10,11 +11,10 @@ import {
     Text,
     Timeline,
 } from '@deriv/components';
-import { Formik, Field } from 'formik';
-import FormSubHeader from 'Components/form-sub-header';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';

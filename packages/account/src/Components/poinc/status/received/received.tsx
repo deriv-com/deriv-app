@@ -1,6 +1,6 @@
+import React from 'react';
 import { Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import React from 'react';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const PoincReceived = () => (

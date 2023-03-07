@@ -1,6 +1,8 @@
 import { localize } from '@deriv/translations';
 
-export const income_status_codes = {
+export type TPoincStatusCodes = Readonly<Record<'none' | 'pending' | 'rejected' | 'verified' | 'locked', string>>;
+
+export const income_status_codes: TPoincStatusCodes = {
     none: 'none',
     pending: 'pending',
     rejected: 'rejected',
@@ -8,7 +10,9 @@ export const income_status_codes = {
     locked: 'locked',
 };
 
-export const poinc_documents_list = [
+type TPoincDocumentList = { text: string; value: string }[];
+
+export const poinc_documents_list: TPoincDocumentList = [
     { text: localize('Tax return'), value: 'tax_return' },
     { text: localize('Employment contract'), value: 'employment_contract' },
     { text: localize('Payslip'), value: 'payslip' },

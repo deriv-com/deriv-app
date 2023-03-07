@@ -3,6 +3,7 @@ export type TCoreStore = {
     common: Record<string, any>;
     ui: Record<string, any>;
     gtm: Record<string, any>;
+    notifications: Record<string, any>;
     rudderstack: Record<string, any>;
     pushwoosh: Record<string, any>;
 };
@@ -12,6 +13,7 @@ export default class RootStore {
     public common: Record<string, any>;
     public ui: Record<string, any>;
     public gtm: Record<string, any>;
+    public notifications: Record<string, any>;
     public rudderstack: Record<string, any>;
     public pushwoosh: Record<string, any>;
 
@@ -20,6 +22,7 @@ export default class RootStore {
         this.common = core_store.common;
         this.ui = core_store.ui;
         this.gtm = core_store.gtm;
+        this.notifications = core_store.notifications;
         this.rudderstack = core_store.rudderstack;
         this.pushwoosh = core_store.pushwoosh;
     }

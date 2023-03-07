@@ -59,7 +59,7 @@ module.exports = function (env) {
             'proof-of-identity-container-for-mt5':
                 'Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5',
             'proof-of-identity-form-on-signup': 'Components/poi/poi-form-on-signup',
-            'proof-of-income': 'Sections/Verification/ProofOfIncome/proof-of-income.jsx',
+            'proof-of-income': 'Sections/Verification/ProofOfIncome/proof-of-income',
             'reset-trading-password-modal': 'Components/reset-trading-password-modal',
             'risk-tolerance-warning-modal': 'Components/trading-assessment/risk-tolerance-warning-modal.jsx',
             'self-exclusion': 'Components/self-exclusion',

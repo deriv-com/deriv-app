@@ -34,6 +34,7 @@ export const routes = {
     financial_assessment: '/account/financial-assessment',
     history: '/settings/history',
     index: '/index',
+    languages: '/account/languages',
     limits: '/settings/limits',
     mt5: '/mt5',
     passwords: '/account/passwords',

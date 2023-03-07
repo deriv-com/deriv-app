@@ -2,8 +2,13 @@ import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
+import { TPoincStatusCodes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
-export const PoincUnverified = ({ onReSubmit }) => (
+type TPoincUnverified = {
+    onReSubmit: (status: keyof TPoincStatusCodes) => void;
+};
+
+export const PoincUnverified = ({ onReSubmit }: TPoincUnverified) => (
     <IconMessageContent
         message={localize('Income verification failed')}
         text={

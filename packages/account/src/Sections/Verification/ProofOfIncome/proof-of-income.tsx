@@ -1,12 +1,18 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { TPlatformContext } from 'Types';
+import { TCoreStore } from 'Stores/index';
 import DemoMessage from 'Components/demo-message';
-import ProofOfIncomeContainer from './proof-of-income-container.jsx';
+import ProofOfIncomeContainer from './proof-of-income-container';
 
-const ProofOfIncome = ({ is_virtual, is_switching, refreshNotifications }) => {
-    const { is_appstore } = React.useContext(PlatformContext);
+type TProofOfIncome = {
+    is_switching?: boolean;
+    is_virtual?: boolean;
+    refreshNotifications: () => void;
+};
+const ProofOfIncome = ({ is_virtual, is_switching, refreshNotifications }: TProofOfIncome) => {
+    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button />;
 
     return (
@@ -16,13 +22,7 @@ const ProofOfIncome = ({ is_virtual, is_switching, refreshNotifications }) => {
     );
 };
 
-ProofOfIncome.propTypes = {
-    is_switching: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    refreshNotifications: PropTypes.func,
-};
-
-export default connect(({ client, notifications }) => ({
+export default connect(({ client, notifications }: TCoreStore) => ({
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     refreshNotifications: notifications.refreshNotifications,

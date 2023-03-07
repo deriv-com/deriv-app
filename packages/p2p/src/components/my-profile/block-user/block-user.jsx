@@ -15,6 +15,15 @@ import './block-user.scss';
 const BlockUser = () => {
     const { general_store, buy_sell_store, my_profile_store } = useStores();
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+    const error_message = () => {
+        return my_profile_store.selected_trade_partner.is_blocked
+            ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
+                  name: my_profile_store.selected_trade_partner.name,
+              })
+            : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
+                  name: my_profile_store.selected_trade_partner.name,
+              });
+    };
 
     reaction(
         () => general_store.block_unblock_user_error,
@@ -31,9 +40,7 @@ const BlockUser = () => {
                     props: {
                         error_message:
                             general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                ? localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                                      name: my_profile_store.selected_trade_partner.name,
-                                  })
+                                ? error_message()
                                 : general_store.block_unblock_user_error,
                         error_modal_button_text: localize('Got it'),
                         error_modal_title:

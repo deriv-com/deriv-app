@@ -49,6 +49,15 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
+    const error_message = () => {
+        return !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert
+            ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
+                  name: advertiser_page_store.advertiser_details_name,
+              })
+            : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
+                  name: advertiser_page_store.advertiser_details_name,
+              });
+    };
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
@@ -64,9 +73,7 @@ const AdvertiserPage = () => {
                         props: {
                             error_message:
                                 general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                    ? localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                                          name: advertiser_page_store.advertiser_details_name,
-                                      })
+                                    ? error_message()
                                     : general_store.block_unblock_user_error,
                             error_modal_button_text: localize('Got it'),
                             error_modal_title:

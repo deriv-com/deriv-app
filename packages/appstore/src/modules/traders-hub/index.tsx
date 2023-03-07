@@ -72,6 +72,8 @@ const TradersHub = () => {
         );
     };
 
+    if (isMobile && !is_landing_company_loaded) return <ButtonToggleLoader />;
+
     return (
         <>
             <Div100vhContainer
@@ -91,7 +93,7 @@ const TradersHub = () => {
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        {is_landing_company_loaded ? (
+                        {is_landing_company_loaded && isMT5Allowed(landing_company) ? (
                             <ButtonToggle
                                 buttons_arr={platform_toggle_options}
                                 className='traders-hub__button-toggle'
@@ -101,11 +103,9 @@ const TradersHub = () => {
                                 onChange={platformTypeChange}
                                 value={selected_platform_type}
                             />
-                        ) : (
-                            <ButtonToggleLoader />
-                        )}
+                        ) : null}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
-                        {selected_platform_type === 'cfd' && isMT5Allowed(landing_company) && <CFDsListing />}
+                        {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

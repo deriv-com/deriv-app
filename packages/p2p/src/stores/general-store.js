@@ -213,7 +213,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
-        const { advertiser_page_store, general_store } = this.root_store;
+        const { advertiser_page_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -221,7 +221,7 @@ export default class GeneralStore extends BaseStore {
         }).then(response => {
             if (response) {
                 if (!response.error) {
-                    general_store.hideModal();
+                    this.hideModal();
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
 
@@ -863,10 +863,13 @@ export default class GeneralStore extends BaseStore {
             requestWS({ get_account_status: 1 }).then(account_response => {
                 if (!account_response.error) {
                     const { get_account_status } = account_response;
-                    const { authentication } = get_account_status;
+                    const { authentication, status } = get_account_status;
                     const { identity } = authentication;
 
-                    this.setPoiStatus(identity.status);
+                    if (status.includes('cashier_locked')) {
+                        this.setIsBlocked(true);
+                        this.hideModal();
+                    } else this.setPoiStatus(identity.status);
                 }
             });
         }

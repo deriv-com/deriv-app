@@ -100,6 +100,7 @@ const mock = (): TRootStore => {
                         is_withdrawal_suspended: 0,
                     },
                 },
+                p2p_status: 'none',
                 prompt_client_to_authenticate: 0,
                 risk_classification: 'low',
                 status: [
@@ -226,6 +227,8 @@ const mock = (): TRootStore => {
             setRealAccountSignupEnd: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
+            setSubSectionIndex: jest.fn(),
+            sub_section_index: 0,
         },
         traders_hub: {
             closeModal: jest.fn(),

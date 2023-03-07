@@ -144,6 +144,7 @@ export default class BuySellStore extends BaseStore {
             sort_list: computed,
             fetchAdvertiserAdverts: action.bound,
             handleResponse: action.bound,
+            setIsCreateOrderSubscribed: action.bound,
         });
     }
 

@@ -98,6 +98,21 @@ const FilterModal = () => {
         });
     };
 
+    const onClickReset = () => {
+        buy_sell_store.onClickReset();
+        onClickClear();
+    };
+
+    const onClickApplyPaymentMethods = () => () => {
+        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+        buy_sell_store.setShowFilterPaymentMethods(false);
+    };
+
+    const onClickApply = () => {
+        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+        hideModal();
+    };
+
     const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
     // if user has previously already selected some payment methods and clicked Apply
     const has_already_selected_payment_methods =
@@ -240,34 +255,17 @@ const FilterModal = () => {
                                     disabled={!has_selected_payment_methods}
                                     large
                                     primary
-                                    onClick={() => {
-                                        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
-                                        buy_sell_store.setShowFilterPaymentMethods(false);
-                                    }}
+                                    onClick={onClickApplyPaymentMethods}
                                 >
                                     {localize('Apply')}
                                 </Button>
                             </Button.Group>
                         ) : (
                             <Button.Group>
-                                <Button
-                                    large
-                                    secondary
-                                    onClick={() => {
-                                        buy_sell_store.onClickReset();
-                                        onClickClear();
-                                    }}
-                                >
+                                <Button large secondary onClick={onClickReset}>
                                     {localize('Reset')}
                                 </Button>
-                                <Button
-                                    large
-                                    primary
-                                    onClick={() => {
-                                        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
-                                        hideModal();
-                                    }}
-                                >
+                                <Button large primary onClick={onClickApply}>
                                     {localize('Apply')}
                                 </Button>
                             </Button.Group>
@@ -302,34 +300,17 @@ const FilterModal = () => {
                                             disabled={!has_selected_payment_methods}
                                             large
                                             primary
-                                            onClick={() => {
-                                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
-                                                buy_sell_store.setShowFilterPaymentMethods(false);
-                                            }}
+                                            onClick={onClickApplyPaymentMethods}
                                         >
                                             {localize('Apply')}
                                         </Button>
                                     </Button.Group>
                                 ) : (
                                     <Button.Group className='filter-modal__footer-button-group'>
-                                        <Button
-                                            large
-                                            secondary
-                                            onClick={() => {
-                                                buy_sell_store.onClickReset();
-                                                onClickClear();
-                                            }}
-                                        >
+                                        <Button large secondary onClick={onClickReset}>
                                             {localize('Reset')}
                                         </Button>
-                                        <Button
-                                            large
-                                            primary
-                                            onClick={() => {
-                                                buy_sell_store.onClickApply(selected_methods, selected_methods_text);
-                                                hideModal();
-                                            }}
-                                        >
+                                        <Button large primary onClick={onClickApply}>
                                             {localize('Apply')}
                                         </Button>
                                     </Button.Group>

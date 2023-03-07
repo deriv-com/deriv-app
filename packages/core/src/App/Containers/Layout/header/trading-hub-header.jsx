@@ -281,7 +281,7 @@ TradingHubHeader.propTypes = {
     switchToCRAccount: PropTypes.func,
 };
 
-export default connect(({ client, common, notifications, ui, menu, traders_hub }) => ({
+export default connect(({ client, common, notifications, ui, traders_hub }) => ({
     header_extension: ui.header_extension,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
@@ -295,7 +295,6 @@ export default connect(({ client, common, notifications, ui, menu, traders_hub }
     notifications_count: notifications.notifications.length,
     toggleNotifications: notifications.toggleNotificationsModal,
     loginid: client.loginid,
-    menu_items: menu.extensions,
     platform: common.platform,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,

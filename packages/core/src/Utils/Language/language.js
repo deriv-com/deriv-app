@@ -19,7 +19,6 @@ export const changeLanguage = (key, changeCurrentLanguage) => {
 
     changeLanguageTranslation(key, () => {
         changeCurrentLanguage(key);
-        BinarySocket.closeAndOpenNewConnection(key);
     });
     if (key === 'EN') {
         window.localStorage.setItem('i18n_language', key);
@@ -33,5 +32,6 @@ export const changeLanguage = (key, changeCurrentLanguage) => {
             new_url.searchParams.set('lang', key);
         }
         window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+        BinarySocket.closeAndOpenNewConnection(key);
     });
 };

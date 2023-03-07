@@ -68,7 +68,7 @@ const StaticTradingAppCard = ({
                         'static-trading-app-card__button--hidden': !has_applauncher_account,
                     })}
                 >
-                    {localize(`Trade`)}
+                    {localize('Trade')}
                 </Button>
             </div>
         </div>

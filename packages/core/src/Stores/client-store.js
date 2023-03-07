@@ -1738,6 +1738,7 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccounts(accounts) {
+        console.log(accounts, 'setAccounts')
         this.accounts = accounts;
     }
 
@@ -1979,6 +1980,7 @@ export default class ClientStore extends BaseStore {
 
     async updateAccountStatus() {
         const account_status_response = await WS.authorized.getAccountStatus();
+        console.log(account_status_response, 'console.log(account_status_response);');
         if (!account_status_response.error) {
             this.setAccountStatus(account_status_response.get_account_status);
         }
@@ -2003,7 +2005,7 @@ export default class ClientStore extends BaseStore {
         localStorage.removeItem('isNewAccount');
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
-
+        console.log(JSON.stringify(this.accounts))
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
@@ -2013,6 +2015,7 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
+        
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
@@ -2022,7 +2025,7 @@ export default class ClientStore extends BaseStore {
             this.root_store.rudderstack.reset();
             this.setLogout(true);
         }
-
+        console.log('logout', response);
         return response;
     }
 
@@ -2614,6 +2617,7 @@ export default class ClientStore extends BaseStore {
     };
 
     setIsPreAppStore(is_pre_appstore) {
+        console.log(is_pre_appstore, 'setIsPreAppStore');
         const trading_hub = is_pre_appstore ? 1 : 0;
         try {
             WS.setSettings({

@@ -10,8 +10,11 @@ import { useLocation } from 'react-router-dom';
 const Header = ({ is_logged_in, is_pre_appstore }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const { pathname } = useLocation();
-    const trading_hub_routes =
-        pathname === routes.traders_hub || pathname.startsWith(routes.cashier) || pathname.startsWith(routes.account);
+    const trading_hub_routes = 
+    pathname === routes.traders_hub 
+    || pathname.startsWith(routes.cashier)
+    || pathname.startsWith(routes.account)
+    || pathname.startsWith(routes.bot)
 
     if (is_appstore) {
         return <DashboardHeader />;

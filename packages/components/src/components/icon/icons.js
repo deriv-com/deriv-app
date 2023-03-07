@@ -52,7 +52,6 @@ import './appstore/ic-appstore-wallet-usd-light.svg';
 import './appstore/ic-appstore-wallet-usdc-light.svg';
 import './appstore/ic-appstore-wallet-usdt-light.svg';
 import './appstore/ic-appstore-warning.svg';
-import './brand/ic-brand-deriv-apps.svg';
 import './brand/ic-brand-deriv.svg';
 import './brand/ic-brand-derivgo.svg';
 import './brand/ic-brand-dmt5-financial-stp.svg';

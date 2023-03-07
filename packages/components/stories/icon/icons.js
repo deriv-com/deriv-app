@@ -57,7 +57,6 @@ export const icons =
         'IcAppstoreWarning',
     ],
     'brand': [
-        'IcBrandDerivApps',
         'IcBrandDeriv',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',

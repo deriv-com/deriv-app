@@ -210,7 +210,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_mobile: boolean;
     sub_section_index: number;
-    notification_messages_ui: JSX.Element | null;
+    notification_messages_ui: React.FC | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
@@ -238,7 +238,7 @@ type TNotificationStore = {
 
 type TTradersHubStore = {
     closeModal: () => void;
-    content_flag: any;
+    content_flag: '' | 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real';
     openModal: (modal_id: string, props?: any) => void;
     selected_account_type: 'real' | 'demo';
     platform_real_balance: TBalance;
@@ -256,9 +256,11 @@ type TTradersHubStore = {
     selected_region: string;
     toggleRegulatorsCompareModal: () => void;
     handleTabItemClick: (index: number) => void;
-    switchAccount: (loginid: string) => Promise<void>;
     exchanged_rate_cfd_real: number;
     exchanged_rate_cfd_demo: number;
+    is_tour_open: boolean;
+    setTogglePlatformType: (type: string) => void;
+    selected_platform_type: string;
 };
 
 export type TRootStore = {

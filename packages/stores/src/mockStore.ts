@@ -251,9 +251,11 @@ const mock = (): TRootStore => {
             selected_region: '',
             toggleRegulatorsCompareModal: jest.fn(),
             handleTabItemClick: jest.fn(),
-            switchAccount: jest.fn(),
             exchanged_rate_cfd_demo: 1,
             exchanged_rate_cfd_real: 1,
+            is_tour_open: false,
+            setTogglePlatformType: jest.fn(),
+            selected_platform_type: 'options',
         },
         menu: {
             attach: jest.fn(),

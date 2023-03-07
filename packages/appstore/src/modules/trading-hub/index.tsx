@@ -255,7 +255,7 @@ const TradingHub: React.FC = () => {
                             className='trading-hub_body--platform_type_toggle'
                             has_rounded_button
                             is_animated
-                            name='platforn_type'
+                            name='platform_type'
                             onChange={platformTypeChange}
                             value={platform_type}
                         />

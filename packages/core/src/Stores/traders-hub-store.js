@@ -1,9 +1,9 @@
+import debounce from 'lodash.debounce';
 import { action, makeObservable, observable, reaction, computed, runInAction } from 'mobx';
 import { getCFDAvailableAccount, CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms } from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
 import { isEuCountry } from '_common/utility';
-import BinarySocket from '_common/base/socket_base';
 import { getMultipliersAccountStatus } from './Helpers/client';
 
 export default class TradersHubStore extends BaseStore {
@@ -108,6 +108,15 @@ export default class TradersHubStore extends BaseStore {
             total_balance: computed,
         });
 
+        const debouncedGetAvailablePlatformsAndCFDAccounts = debounce(
+            () => {
+                this.getAvailablePlatforms();
+                this.getAvailableCFDAccounts();
+            },
+            1000,
+            { leading: true }
+        );
+
         reaction(
             () => [
                 this.selected_account_type,
@@ -119,8 +128,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.modules?.cfd?.current_list,
             ],
             () => {
-                this.getAvailablePlatforms();
-                this.getAvailableCFDAccounts();
+                debouncedGetAvailablePlatformsAndCFDAccounts();
             }
         );
 
@@ -210,37 +218,21 @@ export default class TradersHubStore extends BaseStore {
         );
     }
 
-    async switchAccount(loginid) {
-        if (!loginid) return;
-
-        const { setIsLoggingIn, getToken, resetLocalStorageValues } = this.root_store.client;
-
-        setIsLoggingIn(true);
-        this.root_store.client.is_switching = true;
-        this.authorize_count = (this.authorize_count || 0) + 1;
-        resetLocalStorageValues(loginid);
-
-        await BinarySocket.authorize(getToken());
-
-        setIsLoggingIn(false);
-        this.authorize_count--;
-
-        if (this.authorize_count === 0) {
-            runInAction(() => (this.root_store.client.is_switching = false));
-        }
-    }
-
     async setSwitchEU() {
-        const { account_list, loginid } = this.root_store.client;
+        const { account_list, switchAccount, loginid, setIsLoggingIn } = this.root_store.client;
 
         const mf_account = account_list.find(acc => acc.loginid?.startsWith('MF'))?.loginid;
         const cr_account = account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
 
         if (this.selected_region === 'EU' && !loginid?.startsWith('MF')) {
             // if active_loginid is already EU = do nothing
-            await this.switchAccount(mf_account);
+            await switchAccount(mf_account).then(() => {
+                setIsLoggingIn(false);
+            });
         } else if (this.selected_region === 'Non-EU' && !loginid?.startsWith('CR')) {
-            await this.switchAccount(cr_account);
+            await switchAccount(cr_account).then(() => {
+                setIsLoggingIn(false);
+            });
         }
     }
 

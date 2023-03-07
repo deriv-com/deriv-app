@@ -75,7 +75,6 @@ const AssetSummary = () => {
                         ? platform_real_balance.balance * exchanged_rate_crypto_real
                         : platform_real_balance.balance) +
                     cfd_real_balance.balance * exchanged_rate_cfd_real,
-                // currency: real_balance_currency_if_crypto_account_first,
                 currency: total_assets_currency,
             };
         }

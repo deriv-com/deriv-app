@@ -9,6 +9,21 @@ const LeavePageModal = ({ onLeavePage = () => {} }) => {
     const { buy_sell_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 
+    const onClickCancel = () => {
+        buy_sell_store.setShowFilterPaymentMethods(true);
+        hideModal({
+            should_restore_local_state: true,
+        });
+    }
+    
+    const onClickLeavePage = () => {
+        buy_sell_store.setShowFilterPaymentMethods(false);
+        onLeavePage();
+        hideModal({
+            should_restore_local_state: false,
+        });
+    }
+
     return (
         <Modal
             has_close_icon={false}
@@ -28,25 +43,14 @@ const LeavePageModal = ({ onLeavePage = () => {} }) => {
             <Modal.Footer>
                 <Button
                     large
-                    onClick={() => {
-                        buy_sell_store.setShowFilterPaymentMethods(true);
-                        hideModal({
-                            should_restore_local_state: true,
-                        });
-                    }}
+                    onClick={onClickCancel}
                     secondary
                 >
                     <Localize i18n_default_text='Cancel' />
                 </Button>
                 <Button
                     large
-                    onClick={() => {
-                        buy_sell_store.setShowFilterPaymentMethods(false);
-                        onLeavePage();
-                        hideModal({
-                            should_restore_local_state: false,
-                        });
-                    }}
+                    onClick={onClickLeavePage}
                     primary
                 >
                     <Localize i18n_default_text='Leave page' />

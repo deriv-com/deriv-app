@@ -103,6 +103,7 @@ const OrderDetails = observer(() => {
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
                 setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
             });
+            buy_sell_store.setIsCreateOrderSubscribed(false);
             buy_sell_store.unsubscribeCreateOrder();
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps

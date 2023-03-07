@@ -4,7 +4,7 @@ import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { requestWS , subscribeWS } from 'Utils/websocket';
+import { requestWS, subscribeWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
@@ -41,6 +41,7 @@ export default class BuySellStore extends BaseStore {
     submitForm = () => {};
     table_type = buy_sell.BUY;
     form_props = {};
+    is_create_order_subscribed = false;
 
     initial_values = {
         amount: this.advert?.min_order_amount_limit,
@@ -84,6 +85,7 @@ export default class BuySellStore extends BaseStore {
             submitForm: observable,
             table_type: observable,
             form_props: observable,
+            is_create_order_subscribed: observable,
             account_currency: computed,
             advert: computed,
             has_payment_info: computed,
@@ -264,11 +266,14 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleResponse = async order => {
-        const { sendbird_store } = this.root_store;
+        const { sendbird_store, order_store } = this.root_store;
         if (order.error) {
             this.form_props.setErrorMessage(order.error.message);
             this.setFormErrorCode(order.error.code);
         } else {
+            if (order?.subscription?.id && !this.is_create_order_subscribed) {
+                this.setIsCreateOrderSubscribed(true);
+            }
             this.form_props.setErrorMessage(null);
             this.root_store.general_store.hideModal();
             this.root_store.floating_rate_store.setIsMarketRateChanged(false);
@@ -279,6 +284,11 @@ export default class BuySellStore extends BaseStore {
             }
             this.form_props.handleClose();
             this.payment_method_ids = [];
+        }
+        if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
+            sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
+            order_store.setOrderDetails(order);
+            this.create_order_subscription.unsubscribe();
         }
     };
 
@@ -609,6 +619,10 @@ export default class BuySellStore extends BaseStore {
 
     setSubmitFormFn(submitFormFn) {
         this.submitForm = submitFormFn;
+    }
+
+    setIsCreateOrderSubscribed(is_create_order_subscribed) {
+        this.is_create_order_subscribed = is_create_order_subscribed;
     }
 
     showAdvertiserPage(selected_advert) {

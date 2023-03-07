@@ -280,11 +280,10 @@ export default class OrderStore {
         const { buy_sell_store } = this.root_store;
         this.unsubscribeFromCurrentOrder();
 
-        if (buy_sell_store.create_order_subscription.unsubscribe) {
-            buy_sell_store.create_order_subscription.unsubscribe();
-        }
         if (this.order_id) {
-            this.subscribeToCurrentOrder();
+            if (!buy_sell_store.is_create_order_subscribed) {
+                this.subscribeToCurrentOrder();
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { isMobile } from '@deriv/shared';
-import Dropdown from '../dropdown/index.js';
+import Dropdown from '../dropdown';
 import SelectNative from '../select-native/select-native';
 
 type TListItem = {

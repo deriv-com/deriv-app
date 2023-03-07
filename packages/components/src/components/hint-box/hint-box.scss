@@ -7,6 +7,25 @@
     padding: 8px;
     border-radius: $BORDER_RADIUS;
 
+    &--inline {
+        margin-top: 0.8rem;
+        padding: 0.8rem;
+        display: flex;
+        align-items: flex-start;
+        background: rgba(255, 173, 58, 0.16);
+        border-radius: 4px;
+        gap: 0.8rem;
+        line-height: 1.4rem;
+
+        &-message {
+            > p {
+                padding-bottom: 0 !important;
+            }
+        }
+        &-icon {
+            margin-right: 0;
+        }
+    }
     &--info {
         background-color: var(--transparent-info);
     }

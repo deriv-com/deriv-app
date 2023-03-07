@@ -8,7 +8,6 @@ import {
     Button,
     FormSubmitErrorMessage,
     Input,
-    Icon,
     DesktopWrapper,
     Dropdown,
     Loading,
@@ -17,6 +16,7 @@ import {
     DateOfBirthPicker,
     Text,
     useStateCallback,
+    HintBox,
 } from '@deriv/components';
 import {
     toMoment,
@@ -1215,23 +1215,29 @@ export const PersonalDetailsForm = ({
                                                             })}
                                                         />
                                                     ) : (
-                                                        <div className='account-form__authentication-message'>
-                                                            <Icon height={20} width={30} icon='IcInfoBlue' />
-                                                            <Text as='p' size='xs'>
-                                                                <Localize
-                                                                    i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
-                                                                    components={[
-                                                                        <a
-                                                                            key={0}
-                                                                            className='link link--red'
-                                                                            rel='noopener noreferrer'
-                                                                            target='_blank'
-                                                                            href={getRedirectionLink()}
-                                                                        />,
-                                                                    ]}
-                                                                />
-                                                            </Text>
-                                                        </div>
+                                                        <HintBox
+                                                            icon='IcInfoBlue'
+                                                            icon_height={20}
+                                                            icon_width={30}
+                                                            message={
+                                                                <Text as='p' size='xs'>
+                                                                    <Localize
+                                                                        i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
+                                                                        components={[
+                                                                            <a
+                                                                                key={0}
+                                                                                className='link link--red'
+                                                                                rel='noopener noreferrer'
+                                                                                target='_blank'
+                                                                                href={getRedirectionLink()}
+                                                                            />,
+                                                                        ]}
+                                                                    />
+                                                                </Text>
+                                                            }
+                                                            is_info
+                                                            is_inline
+                                                        />
                                                     )}
                                                 </fieldset>
                                             </FormBodySection>

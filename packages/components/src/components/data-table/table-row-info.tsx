@@ -1,9 +1,18 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ThemedScrollbars from '../themed-scrollbars';
+import { TTableRowItem } from '../types/common.types';
 
-const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height, measure }) => {
+type TTableRowIndex = {
+    replace: TTableRowItem | undefined;
+    is_footer: boolean;
+    cells: React.ReactElement;
+    className?: string;
+    is_dynamic_height: boolean;
+    measure?: () => void;
+};
+
+const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height, measure }: TTableRowIndex) => {
     const [show_details, setShowDetails] = React.useState(false);
 
     const toggleDetails = () => {
@@ -11,13 +20,11 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
             setShowDetails(!show_details);
         }
     };
-
     React.useEffect(() => {
         if (is_dynamic_height) {
             measure?.();
         }
     }, [show_details, is_dynamic_height, measure]);
-
     if (is_dynamic_height) {
         return (
             <div
@@ -42,18 +49,6 @@ const TableRowInfo = ({ replace, is_footer, cells, className, is_dynamic_height,
             )}
         </div>
     );
-};
-
-TableRowInfo.propTypes = {
-    cells: PropTypes.arrayOf(PropTypes.node),
-    className: PropTypes.string,
-    replace: PropTypes.shape({
-        component: PropTypes.object,
-        message: PropTypes.string,
-    }),
-    is_footer: PropTypes.bool,
-    is_dynamic_height: PropTypes.bool,
-    measure: PropTypes.func,
 };
 
 export default TableRowInfo;

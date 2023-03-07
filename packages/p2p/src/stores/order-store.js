@@ -482,40 +482,42 @@ export default class OrderStore {
             }).then(response => {
                 general_store.hideModal();
                 if (response) {
-                    const { code, message } = response?.error;
-
                     if (!response.error) {
                         clearTimeout(wait);
                         const wait = setTimeout(
                             () => general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
                             650
                         );
-                    } else if (
-                        code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
-                        code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
-                    ) {
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(message);
-                        const wait = setTimeout(() => {
+                    } else if (response.error) {
+                        const { code, message } = response?.error;
+
+                        if (
+                            code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
+                            code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+                        ) {
+                            clearTimeout(wait);
+                            this.setVerificationLinkErrorMessage(message);
+                            const wait = setTimeout(() => {
+                                general_store.showModal({
+                                    key: 'InvalidVerificationLinkModal',
+                                    props: { error_message: message, order_id },
+                                });
+                            }, 750);
+                        } else if (
+                            code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
+                            !order_store?.order_information.is_buy_order_for_user
+                        ) {
+                            if (general_store.isCurrentModal('InvalidVerificationLinkModal')) {
+                                general_store.hideModal();
+                            }
+                            this.setVerificationLinkErrorMessage(message);
                             general_store.showModal({
-                                key: 'InvalidVerificationLinkModal',
-                                props: { error_message: message, order_id },
+                                key: 'EmailLinkBlockedModal',
+                                props: {
+                                    email_link_blocked_modal_error_message: order_store.verification_link_error_message,
+                                },
                             });
-                        }, 750);
-                    } else if (
-                        code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
-                        !order_store?.order_information.is_buy_order_for_user
-                    ) {
-                        if (general_store.isCurrentModal('InvalidVerificationLinkModal')) {
-                            general_store.hideModal();
                         }
-                        this.setVerificationLinkErrorMessage(message);
-                        general_store.showModal({
-                            key: 'EmailLinkBlockedModal',
-                            props: {
-                                email_link_blocked_modal_error_message: order_store.verification_link_error_message,
-                            },
-                        });
                     }
                     localStorage.removeItem('verification_code.p2p_order_confirm');
                 }

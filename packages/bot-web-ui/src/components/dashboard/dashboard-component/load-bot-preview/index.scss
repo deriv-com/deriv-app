@@ -650,3 +650,9 @@
         }
     }
 }
+
+.toolbar {
+    &__dialog {
+        transition: none;
+    }
+}

@@ -62,6 +62,7 @@ export default class RunPanelStore {
             unregisterBotListeners: action.bound,
             clear: action.bound,
             preloadAudio: action.bound,
+            StopMyBot: action.bound,
         });
 
         this.root_store = root_store;
@@ -263,6 +264,18 @@ export default class RunPanelStore {
 
     onCloseDialog() {
         this.is_dialog_open = false;
+    }
+
+    StopMyBot() {
+        const { summary_card, core, quick_strategy } = this.root_store;
+        const { ui } = core;
+        const { toggleStopBotDialog } = quick_strategy;
+
+        ui.setPromptHandler(false);
+        this.dbot.terminateBot();
+        this.onCloseDialog();
+        summary_card.clear();
+        toggleStopBotDialog();
     }
 
     showStopMultiplierContractDialog() {

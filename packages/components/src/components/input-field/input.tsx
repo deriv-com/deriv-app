@@ -9,7 +9,7 @@ type TInputProps = {
         e: React.ChangeEvent<HTMLInputElement>,
         callback?: (evt: React.ChangeEvent<HTMLInputElement>) => void
     ) => void;
-    checked?: number | string;
+    checked?: boolean;
     className?: string;
     classNameDynamicSuffix?: string;
     classNameInlinePrefix?: string;
@@ -119,7 +119,7 @@ const Input = ({
             ) : null}
             <input
                 autoComplete={is_autocomplete_disabled ? 'off' : undefined}
-                checked={!!checked}
+                checked={checked}
                 className={classNames(className)}
                 data-for={`error_tooltip_${name}`}
                 data-hj-whitelist={is_hj_whitelisted}

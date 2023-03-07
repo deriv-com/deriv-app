@@ -15,7 +15,7 @@ export type TButtonType = 'button' | 'submit' | 'reset';
 // Quick Solution - Pass two different props to input field.
 type TInputFieldProps = {
     ariaLabel: string;
-    checked?: number | string;
+    checked?: boolean;
     className?: string;
     classNameDynamicSuffix?: string;
     classNameInlinePrefix?: string;

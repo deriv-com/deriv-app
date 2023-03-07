@@ -7,11 +7,11 @@ import DropdownList, { TItem } from '../dropdown-list';
 import { useBlockScroll } from '../../hooks/use-blockscroll';
 import { getEnglishCharacters } from '../../../utils/helper';
 
-type TAutocompleteProps = React.HTMLAttributes<HTMLElement> & {
+type TAutocompleteProps = {
     autoComplete: string;
     className: string;
     disabled?: boolean;
-    dropdown_offset: string | number;
+    dropdown_offset: string;
     error: string;
     has_updating_list: boolean;
     hide_list: boolean;

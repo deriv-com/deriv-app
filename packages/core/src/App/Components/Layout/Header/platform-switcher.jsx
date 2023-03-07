@@ -61,7 +61,7 @@ const PlatformSwitcher = ({
                 <Icon
                     className='platform-switcher__icon'
                     icon={getPlatformInformation(app_routing_history).icon}
-                    desc={getPlatformInformation(app_routing_history).header}
+                    description={getPlatformInformation(app_routing_history).header}
                     size={120}
                 />
 

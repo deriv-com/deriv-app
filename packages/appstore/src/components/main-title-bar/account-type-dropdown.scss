@@ -56,16 +56,13 @@
         }
     }
     &__icon {
-        &--real,
-        &--demo {
-            transform: none;
-        }
+        transform: none;
         &--real {
-            --fill-color1: var(--status-success);
+            --fill-color1: var(--status-info) !important;
             right: 1.8rem;
         }
         &--demo {
-            --fill-color1: var(--status-info);
+            --fill-color1: var(--status-success) !important;
             right: 1.5rem;
         }
     }

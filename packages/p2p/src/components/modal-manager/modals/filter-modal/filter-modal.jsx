@@ -21,6 +21,37 @@ import FilterModalNoResults from './filter-modal-no-results.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { isMobile } from '@deriv/shared';
 
+const FilterModalResult = observer(({ onChange, selected_methods }) => {
+    const { buy_sell_store, my_profile_store } = useStores();
+    if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
+    else if (my_profile_store.search_term) {
+        if (my_profile_store.search_results && my_profile_store.search_results.length > 0) {
+            return my_profile_store.search_results?.map((payment_method, key) => {
+                return (
+                    <Checkbox
+                        key={key}
+                        label={payment_method.text}
+                        onChange={() => onChange(payment_method)}
+                        value={selected_methods.includes(payment_method.value)}
+                    />
+                );
+            });
+        }
+        return <FilterModalNoResults text={my_profile_store.search_term} />;
+    }
+    return my_profile_store.payment_methods_list_items.map((payment_method, key) => {
+        return (
+            <Checkbox
+                name='checkbox'
+                key={key}
+                label={payment_method.text}
+                onChange={() => onChange(payment_method)}
+                value={selected_methods.includes(payment_method.value)}
+            />
+        );
+    });
+});
+
 const FilterModal = () => {
     const { buy_sell_store, my_profile_store } = useStores();
     const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
@@ -68,11 +99,17 @@ const FilterModal = () => {
     };
 
     const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
+    // if user has previously already selected some payment methods and clicked Apply
     const has_already_selected_payment_methods =
         buy_sell_store.selected_payment_method_value?.length &&
-        diff(selected_methods, buy_sell_store.selected_payment_method_value).length > 0;
+        (selected_methods.length !== buy_sell_store.selected_payment_method_value.length ||
+            diff(selected_methods, buy_sell_store.selected_payment_method_value).length > 0);
+    // if user is selecting payment methods for the first time and has selected some payment methods
     const has_recently_selected_payment_methods =
         buy_sell_store.selected_payment_method_value?.length === 0 && selected_methods.length > 0;
+    // if user has previously selected all payment methods
+    const has_selected_all_payment_methods =
+        buy_sell_store.selected_payment_method_value.length === my_profile_store.payment_methods_list.length;
     const has_selected_payment_methods = has_already_selected_payment_methods || has_recently_selected_payment_methods;
 
     React.useEffect(() => {
@@ -84,36 +121,6 @@ const FilterModal = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const FilterModalResult = observer(() => {
-        if (buy_sell_store.is_filter_modal_loading) return <Loading is_fullscreen={false} />;
-        else if (my_profile_store.search_term) {
-            if (my_profile_store.search_results && my_profile_store.search_results.length > 0) {
-                return my_profile_store.search_results?.map((payment_method, key) => {
-                    return (
-                        <Checkbox
-                            key={key}
-                            label={payment_method.text}
-                            onChange={() => onChange(payment_method)}
-                            value={selected_methods.includes(payment_method.value)}
-                        />
-                    );
-                });
-            }
-            return <FilterModalNoResults text={my_profile_store.search_term} />;
-        }
-        return my_profile_store.payment_methods_list_items.map((payment_method, key) => {
-            return (
-                <Checkbox
-                    name='checkbox'
-                    key={key}
-                    label={payment_method.text}
-                    onChange={() => onChange(payment_method)}
-                    value={selected_methods.includes(payment_method.value)}
-                />
-            );
-        });
-    });
 
     const pageHeaderReturnFn = () => {
         if (has_selected_payment_methods) {
@@ -165,7 +172,7 @@ const FilterModal = () => {
                                 <FilterModalSearch />
                                 <div className='filter-modal__checkbox-container'>
                                     <ThemedScrollbars is_scrollbar_hidden>
-                                        <FilterModalResult />
+                                        <FilterModalResult selected_methods={selected_methods} onChange={onChange} />
                                     </ThemedScrollbars>
                                 </div>
                             </React.Fragment>
@@ -221,7 +228,12 @@ const FilterModal = () => {
                     <Modal.Footer has_separator>
                         {buy_sell_store.show_filter_payment_methods ? (
                             <Button.Group>
-                                <Button disabled={!has_selected_payment_methods} large secondary onClick={onClickClear}>
+                                <Button
+                                    disabled={!has_selected_payment_methods && !has_selected_all_payment_methods}
+                                    large
+                                    secondary
+                                    onClick={onClickClear}
+                                >
                                     <Localize i18n_default_text='Clear' />
                                 </Button>
                                 <Button
@@ -277,7 +289,9 @@ const FilterModal = () => {
                                 {buy_sell_store.show_filter_payment_methods ? (
                                     <Button.Group className='filter-modal__footer-button-group'>
                                         <Button
-                                            disabled={!has_selected_payment_methods}
+                                            disabled={
+                                                !has_selected_payment_methods && !has_selected_all_payment_methods
+                                            }
                                             large
                                             secondary
                                             onClick={onClickClear}
@@ -329,7 +343,7 @@ const FilterModal = () => {
                             <FilterModalSearch />
                             <div className='filter-modal__checkbox-container'>
                                 <ThemedScrollbars is_scrollbar_hidden>
-                                    <FilterModalResult />
+                                    <FilterModalResult selected_methods={selected_methods} onChange={onChange} />
                                 </ThemedScrollbars>
                             </div>
                         </React.Fragment>

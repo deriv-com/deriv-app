@@ -5,7 +5,6 @@ import { Dropdown } from '@deriv/components';
 import { account_types } from 'Constants/platform-config';
 import { useStores } from 'Stores';
 import './account-type-dropdown.scss';
-import { Localize, localize } from '@deriv/translations';
 
 const AccountTypeDropdown = () => {
     const { traders_hub, client } = useStores();
@@ -16,12 +15,12 @@ const AccountTypeDropdown = () => {
         <div className={classNames('account-type-dropdown--parent')}>
             <Dropdown
                 classNameIcon={`account-type-dropdown__icon--${selected_account_type}`}
-                value={localize({ selected_account_type })}
+                value={selected_account_type}
                 classNameDisplay={classNames(
                     'account-type-dropdown',
                     `account-type-dropdown--${selected_account_type}`
                 )}
-                list={account_types}
+                list={account_types()}
                 onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);

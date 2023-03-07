@@ -9,16 +9,6 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => true),
 }));
 
-const mock_connect_props = {
-    is_dark_mode: false,
-};
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
-}));
-
 const withRouter = <T extends object>(Component: React.ComponentType<T>) => {
     const history = createBrowserHistory();
     const WrapperComponent = <U extends object>(props: T & U) => (

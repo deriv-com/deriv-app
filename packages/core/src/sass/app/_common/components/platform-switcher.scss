@@ -5,10 +5,6 @@
     transition: background-color 0.3s;
     cursor: pointer;
 
-    &--dark-mode {
-        color: #fff;
-    }
-
     &:not(&--is-mobile):hover {
         background-color: var(--general-hover);
     }

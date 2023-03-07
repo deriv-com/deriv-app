@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'Stores/connect';
 
 const PlatformSwitcher = ({
     toggleDrawer,
@@ -20,7 +19,6 @@ const PlatformSwitcher = ({
     is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
-    is_dark_mode,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
@@ -55,7 +53,6 @@ const PlatformSwitcher = ({
                 data-testid='dt_platform_switcher'
                 className={classNames(
                     'platform-switcher',
-                    { 'platform-switcher--dark-mode': is_dark_mode },
                     { 'platform-switcher--active': is_open },
                     { 'platform-switcher--is-mobile': isMobile() }
                 )}
@@ -85,7 +82,6 @@ const PlatformSwitcher = ({
                     closeDrawer={closeDrawer}
                     app_routing_history={app_routing_history}
                     is_pre_appstore={is_pre_appstore}
-                    is_dark_mode={is_dark_mode}
                 />
             </CSSTransition>
         </React.Fragment>
@@ -97,14 +93,9 @@ PlatformSwitcher.propTypes = {
     toggleDrawer: PropTypes.func,
     app_routing_history: PropTypes.array,
     is_pre_appstore: PropTypes.bool,
-    is_dark_mode: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
 };
 
-export default withRouter(
-    connect(({ ui }) => ({
-        is_dark_mode: ui.is_dark_mode_on,
-    }))(PlatformSwitcher)
-);
+export default withRouter(PlatformSwitcher);

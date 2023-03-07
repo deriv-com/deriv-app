@@ -17,7 +17,7 @@ const PlatformBox = ({ platform: { icon, description } }) => (
     </React.Fragment>
 );
 
-const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_items, is_dark_mode }) => {
+const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_items }) => {
     return !hide_dropdown_items
         ? (platform.link_to && (
               <BinaryLink
@@ -28,7 +28,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
                   className='platform-dropdown__list-platform'
                   isActive={() => getActivePlatform(app_routing_history) === platform.name}
               >
-                  <PlatformBox platform={platform} is_dark_mode={is_dark_mode} />
+                  <PlatformBox platform={platform} />
               </BinaryLink>
           )) || (
               <a
@@ -36,13 +36,13 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
                   href={platform.href}
                   className='platform-dropdown__list-platform'
               >
-                  <PlatformBox platform={platform} is_dark_mode={is_dark_mode} />
+                  <PlatformBox platform={platform} />
               </a>
           )
         : null;
 };
 
-const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, is_pre_appstore, is_dark_mode }) => {
+const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, is_pre_appstore }) => {
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
         return () => {
@@ -74,7 +74,6 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, i
                                 platform={platform}
                                 app_routing_history={app_routing_history}
                                 hide_dropdown_items={should_hide_dropdown_item}
-                                is_dark_mode={is_dark_mode}
                             />
                         </div>
                     );

@@ -3,10 +3,19 @@ import { isMobile } from '@deriv/shared';
 import Dropdown from '../dropdown/index.js';
 import SelectNative from '../select-native/select-native';
 
+type TListItem = {
+    text: string;
+    value: string;
+    disabled?: boolean;
+    nativepicker_text?: React.ReactNode;
+    group?: string;
+    id?: string;
+};
+
 type TFilterDropdown = {
     dropdown_className: string;
     dropdown_display_className: string;
-    filter_list: Array<any>;
+    filter_list: Array<TListItem>;
     handleFilterChange: (e: string) => void;
     initial_filter: string;
     initial_selected_filter: string;
@@ -32,7 +41,6 @@ const FilterDropdown = ({
             handleFilterChange(event.target.value);
         }
     };
-    // Todo once they change this component
     if (isMobile()) {
         return (
             <SelectNative

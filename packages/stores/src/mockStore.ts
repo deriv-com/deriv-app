@@ -209,6 +209,7 @@ const mock = (): TRootStore => {
             routeBackInApp: jest.fn(),
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
+            changeSelectedLanguage: jest.fn(),
             is_network_online: false,
         },
         ui: {

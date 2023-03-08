@@ -1,8 +1,20 @@
 import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
-import currency_selector_config from './currency-selector-schema';
+import { TSchema } from 'Types';
 
-const currencySelectorConfig = ({ real_account_signup_target }, CurrencySelector, is_appstore = false) => {
+const currency_selector_config: TSchema = {
+    currency: {
+        supported_in: ['maltainvest', 'malta', 'svg', 'iom'],
+        default_value: '',
+        rules: [['req', localize('Select an item')]],
+    },
+};
+
+const currencySelectorConfig = (
+    { real_account_signup_target }: { real_account_signup_target: string },
+    CurrencySelector: React.Component,
+    is_appstore: boolean
+) => {
     return {
         header: {
             active_title: is_appstore ? localize('Select wallet currency') : localize('Please choose your currency'),

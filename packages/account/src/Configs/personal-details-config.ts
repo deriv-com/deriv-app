@@ -1,7 +1,20 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TSchema, TUpgradeInfo, TResidenseList } from 'Types';
+import { GetSettings } from '@deriv/api-types';
 
-const personal_details_config = ({ residence_list, account_settings, is_appstore }) => {
+type PersonalDetailsConfig = {
+    upgrade_info: TUpgradeInfo;
+    real_account_signup_target: string;
+    residence_list: TResidenseList;
+    account_settings: GetSettings;
+};
+
+const personal_details_config: (props: {
+    residence_list: TResidenseList;
+    account_settings: GetSettings;
+    is_appstore: boolean;
+}) => [TSchema, string[]] | Record<string, never> = ({ residence_list, account_settings, is_appstore }) => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -12,7 +25,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
     const min_phone_number = 9;
     const max_phone_number = 35;
 
-    const config = {
+    const config: TSchema = {
         account_opening_reason: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
@@ -147,7 +160,8 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
     const getConfig = () => {
         if (is_appstore) {
             const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
-            return Object.keys(config).reduce((new_config, key) => {
+            // Record<string, unknown>takes up any object type
+            return Object.keys(config).reduce((new_config: Record<string, unknown>, key: string) => {
                 if (allowed_fields.includes(key)) {
                     new_config[key] = config[key];
                 }
@@ -161,9 +175,9 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
 };
 
 const personalDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence_list, account_settings },
-    PersonalDetails,
-    is_appstore = false
+    { upgrade_info, real_account_signup_target, residence_list, account_settings }: PersonalDetailsConfig,
+    PersonalDetails: React.Component,
+    is_appstore: boolean
 ) => {
     const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_appstore });
     return {
@@ -212,10 +226,10 @@ const personalDetailsConfig = (
     };
 };
 
-const transformConfig = (config, { real_account_signup_target }) => {
+const transformConfig = (config: TSchema, { real_account_signup_target }: { real_account_signup_target: string }) => {
     // Remove required rule for malta and iom
     if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
-        config.tax_residence.rules.shift();
+        config?.tax_residence?.rules?.shift();
     }
     return config;
 };

@@ -1,7 +1,13 @@
 import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
+import { TSchema } from 'Types';
 
-const financial_details_config = ({ financial_assessment }) => {
+type TFinancialDetailsConfig = {
+    real_account_signup_target: string;
+    financial_assessment: object;
+};
+
+const financial_details_config: (props: { financial_assessment: any }) => TSchema = ({ financial_assessment }) => {
     return {
         account_turnover: {
             supported_in: ['maltainvest'],
@@ -91,7 +97,10 @@ const financial_details_config = ({ financial_assessment }) => {
     };
 };
 
-const financialDetailsConfig = ({ real_account_signup_target, financial_assessment }, FinancialDetails) => {
+const financialDetailsConfig = (
+    { real_account_signup_target, financial_assessment }: TFinancialDetailsConfig,
+    FinancialDetails: React.Component
+) => {
     const config = financial_details_config({ financial_assessment });
 
     return {

@@ -124,6 +124,7 @@ export const PersonalDetailsForm = ({
     is_social_signup,
     updateAccountStatus,
     has_poa_address_mismatch,
+    is_language_changing,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -155,12 +156,15 @@ export const PersonalDetailsForm = ({
                 await WS.wait('get_settings');
 
                 fetchResidenceList();
+
                 if (has_residence) {
-                    setIsStateLoading(true, () => {
-                        fetchStatesList().then(() => {
-                            setIsStateLoading(false);
+                    if (!is_language_changing) {
+                        setIsStateLoading(true, () => {
+                            fetchStatesList().then(() => {
+                                setIsStateLoading(false);
+                            });
                         });
-                    });
+                    }
                 }
             };
             getSettings();
@@ -1346,9 +1350,10 @@ PersonalDetailsForm.propTypes = {
     is_social_signup: PropTypes.bool,
     updateAccountStatus: PropTypes.func,
     has_poa_address_mismatch: PropTypes.bool,
+    is_language_changing: PropTypes.bool,
 };
 
-export default connect(({ client, notifications, ui }) => ({
+export default connect(({ client, notifications, ui, common }) => ({
     account_settings: client.account_settings,
     authentication_status: client.authentication_status,
     has_residence: client.has_residence,
@@ -1370,4 +1375,5 @@ export default connect(({ client, notifications, ui }) => ({
     Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
+    is_language_changing: common.is_language_changing,
 }))(withRouter(PersonalDetailsForm));

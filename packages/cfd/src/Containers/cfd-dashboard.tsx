@@ -178,7 +178,6 @@ export type TCFDDashboardProps = RouteComponentProps & {
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
     show_eu_related_content: boolean;
-    is_pre_appstore: boolean;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -434,7 +433,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         real_account_creation_unlock_date,
         setShouldShowCooldownModal,
         show_eu_related_content,
-        is_pre_appstore,
     } = props;
 
     const should_show_missing_real_account =
@@ -465,7 +463,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
     const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
-    if ((platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE) && is_pre_appstore)
+    if (platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE)
         return <Redirect to={routes.traders_hub} />;
     if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
 
@@ -794,6 +792,5 @@ export default withRouter(
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
         show_eu_related_content: traders_hub.show_eu_related_content,
-        is_pre_appstore: client.is_pre_appstore,
     }))(CFDDashboard)
 );

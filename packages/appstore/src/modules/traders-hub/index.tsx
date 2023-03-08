@@ -17,7 +17,16 @@ import './traders-hub.scss';
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
     const { notification_messages_ui: Notifications } = ui;
-    const { is_landing_company_loaded, is_logged_in, is_switching, is_logging_in, is_account_setting_loaded } = client;
+    const {
+        is_landing_company_loaded,
+        is_logged_in,
+        is_switching,
+        is_logging_in,
+        is_account_setting_loaded,
+        isMT5Allowed,
+        landing_company,
+    } = client;
+
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
@@ -73,6 +82,8 @@ const TradersHub = () => {
         );
     };
 
+    if (isMobile && !is_landing_company_loaded) return <ButtonToggleLoader />;
+
     return (
         <>
             <Div100vhContainer
@@ -88,11 +99,11 @@ const TradersHub = () => {
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>
                             <OptionsAndMultipliersListing />
-                            <CFDsListing />
+                            {is_landing_company_loaded && isMT5Allowed(landing_company) && <CFDsListing />}
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        {is_landing_company_loaded ? (
+                        {is_landing_company_loaded && isMT5Allowed(landing_company) ? (
                             <ButtonToggle
                                 buttons_arr={platform_toggle_options}
                                 className='traders-hub__button-toggle'
@@ -102,9 +113,7 @@ const TradersHub = () => {
                                 onChange={platformTypeChange}
                                 value={selected_platform_type}
                             />
-                        ) : (
-                            <ButtonToggleLoader />
-                        )}
+                        ) : null}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
                         {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>

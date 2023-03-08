@@ -109,10 +109,6 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.general,
     },
     length: { func: validLength, message: '' }, // Message will be set in validLength function on initiation
-    letter_symbol: {
-        func: validLetterSymbol,
-        message: form_error_messages.letter_symbol,
-    },
     name: {
         func: validName,
         message: form_error_messages.name,

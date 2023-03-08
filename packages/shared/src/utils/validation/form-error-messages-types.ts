@@ -6,7 +6,6 @@ export type TFormErrorMessagesTypes = Record<
     | 'barrier'
     | 'email'
     | 'general'
-    | 'letter_symbol'
     | 'name'
     | 'password'
     | 'po_box'

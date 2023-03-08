@@ -52,9 +52,14 @@ const WarningScamMessageModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
 );
 
+const WarningCloseCreateRealAccountModal = React.lazy(() =>
+    import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
+);
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,
+    is_closing_create_real_account_modal,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -129,6 +134,8 @@ const AppModals = ({
         ComponentToLoad = <CloseUKAccountModal />;
     } else if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
+    } else if (is_closing_create_real_account_modal) {
+        ComponentToLoad = <WarningCloseCreateRealAccountModal />;
     } else if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     } else if (is_account_needed_modal_on) {
@@ -159,6 +166,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_acuity_modal_open: ui.is_acuity_modal_open,
+    is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,

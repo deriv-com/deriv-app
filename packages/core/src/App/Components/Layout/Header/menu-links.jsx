@@ -54,14 +54,15 @@ const CashierTab = observer(() => {
 });
 
 const MenuLinks = observer(() => {
-    const { client, ui } = useStore();
+    const { client, common, ui } = useStore();
     const { is_logged_in, is_pre_appstore } = client;
+    const { current_language } = common;
     const { is_mobile } = ui;
 
     if (!is_logged_in) return <></>;
 
     return (
-        <div className='header__menu-links'>
+        <div key={`menu-links__${current_language}`} className='header__menu-links'>
             {!is_pre_appstore && <ReportTab />}
             {!is_pre_appstore && !is_mobile && <CashierTab />}
         </div>

@@ -4,9 +4,9 @@ import { getAppstorePlatforms, getMFAppstorePlatforms } from 'Constants/platform
 import Joyride from 'react-joyride';
 import { useHistory } from 'react-router-dom';
 import {
-    Button,
     ButtonToggle,
     DesktopWrapper,
+    SpanButton,
     Div100vhContainer,
     Dropdown,
     Loading,
@@ -166,7 +166,7 @@ const TradingHub: React.FC = () => {
     );
 
     tour_step_locale.back = (
-        <Button
+        <SpanButton
             has_effect
             text={localize('Repeat tour')}
             secondary

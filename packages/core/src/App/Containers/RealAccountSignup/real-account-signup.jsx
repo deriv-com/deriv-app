@@ -377,7 +377,6 @@ const RealAccountSignup = ({
     };
 
     const closeModal = e => {
-        // e.nativeEvent.preventDefault();
         // Do not close modal on external link and popover click event
         if (
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||

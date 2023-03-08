@@ -96,6 +96,29 @@ export default class GoogleDriveStore {
 
     async loadFile() {
         await this.signIn();
+
+        if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
+        try {
+            await gapi.client.drive.files.list({
+                pageSize: 10,
+                fields: 'files(id, name)',
+            });
+        } catch (err) {
+            if (err?.status === 401) {
+                await this.signOut();
+                setTimeout(() => {
+                    const picker = document.getElementsByClassName('picker-dialog-content')[0];
+                    picker.parentNode.removeChild(picker);
+                    const pickerBackground = document.getElementsByClassName('picker-dialog-bg');
+                    if (pickerBackground.length) {
+                        for (let i = 0; i < pickerBackground.length; i++) {
+                            pickerBackground[i].style.display = 'none';
+                        }
+                    }
+                }, 500);
+            }
+        }
+
         const xml_doc = await this.createLoadFilePicker(
             ['text/xml', 'application/xml'],
             localize('Select a Deriv Bot Strategy')

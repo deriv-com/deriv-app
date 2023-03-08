@@ -1,14 +1,24 @@
-import PropTypes from 'prop-types';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { localize } from '@deriv/translations';
 import { compressImageFiles, readFiles, DOCUMENT_TYPE, PAGE_TYPE } from '@deriv/shared';
+import { TFile } from 'Types';
 
-const fileReadErrorMessage = filename => {
+type TDocumentSetting = {
+    documentType: keyof typeof DOCUMENT_TYPE;
+    pageType: keyof typeof PAGE_TYPE;
+    expirationDate: string;
+    documentId: string;
+    lifetimeValid: boolean;
+};
+
+type TProcessedFile = TFile & TDocumentSetting & { message: string };
+
+const fileReadErrorMessage = (filename: string) => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
 
-const uploadFile = (file, getSocket, settings) =>
-    new Promise((resolve, reject) => {
+const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentSetting) => {
+    return new Promise((resolve, reject) => {
         if (!file) {
             reject();
         }
@@ -18,9 +28,9 @@ const uploadFile = (file, getSocket, settings) =>
 
         let is_file_error = false;
 
-        compressImageFiles([file]).then(files_to_process => {
-            readFiles(files_to_process, fileReadErrorMessage, settings).then(processed_files => {
-                processed_files.forEach(item => {
+        compressImageFiles([file]).then((files_to_process: File[]) => {
+            readFiles(files_to_process, fileReadErrorMessage, settings).then((processed_files: TProcessedFile[]) => {
+                processed_files.forEach((item: TProcessedFile) => {
                     if (item.message) {
                         is_file_error = true;
                         reject(item);
@@ -36,17 +46,6 @@ const uploadFile = (file, getSocket, settings) =>
             });
         });
     });
-
-uploadFile.propTypes = {
-    file: PropTypes.element.isRequired,
-    getSocket: PropTypes.func.isRequired,
-    settings: PropTypes.shape({
-        documentType: PropTypes.oneOf(Object.values(DOCUMENT_TYPE)).isRequired,
-        pageType: PropTypes.oneOf(Object.values(PAGE_TYPE)),
-        expirationDate: PropTypes.string,
-        documentId: PropTypes.string,
-        lifetimeValid: PropTypes.bool,
-    }),
 };
 
 export default uploadFile;

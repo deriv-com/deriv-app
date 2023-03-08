@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-import FileUploaderContainer from '../file-uploader-container';
+import FileUploaderContainer, { TFileUploaderContainer } from '../file-uploader-container';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -26,7 +26,7 @@ describe('<FileUploaderContainer />', () => {
         jest.clearAllMocks();
     });
 
-    const props = {
+    const props: TFileUploaderContainer = {
         getSocket: jest.fn(),
         onFileDrop: jest.fn(),
         onRef: jest.fn(),
@@ -52,11 +52,7 @@ describe('<FileUploaderContainer />', () => {
     });
 
     it('should render FileUploaderContainer component if getSocket is not passed as prop', () => {
-        const new_props = {
-            onFileDrop: jest.fn(),
-            onRef: jest.fn(),
-        };
-        render(<FileUploaderContainer {...new_props} />);
+        render(<FileUploaderContainer {...props} />);
         expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();
     });
 
@@ -109,7 +105,7 @@ describe('<FileUploaderContainer />', () => {
             </PlatformContext.Provider>
         );
 
-        expect(screen.getAllByText('mockedIcon')).toHaveLength(1);
+        expect(screen.getByText('mockedIcon')).toBeInTheDocument();
         expect(screen.queryByText(file_size_msg)).not.toBeInTheDocument();
         expect(screen.queryByText(file_type_msg)).not.toBeInTheDocument();
         expect(screen.queryByText(file_time_msg)).not.toBeInTheDocument();
@@ -120,7 +116,7 @@ describe('<FileUploaderContainer />', () => {
     it('should call ref function on rendering the component', () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: true }}>
-                <FileUploaderContainer onRef={props.onRef} />
+                <FileUploaderContainer {...props} />
             </PlatformContext.Provider>
         );
 

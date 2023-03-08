@@ -12,6 +12,10 @@ import {
     getUrlSmartTrader,
     isDesktopOs,
     isEmptyObject,
+    isLocal,
+    isProduction,
+    isStaging,
+    isTestLink,
     redirectToLogin,
     routes,
     setCurrencies,
@@ -2108,8 +2112,13 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
-            window.history.replaceState({}, document.title, '/appstore/traders-hub');
+            const redirect_url = sessionStorage.getItem('redirect_url');
 
+            if (redirect_url?.endsWith('/') && (isTestLink() || isProduction() || isLocal() || isStaging())) {
+                window.history.replaceState({}, document.title, '/appstore/traders-hub');
+            } else {
+                window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            }
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;

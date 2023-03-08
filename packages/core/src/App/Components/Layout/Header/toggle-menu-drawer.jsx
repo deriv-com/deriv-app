@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
 import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
+import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -11,7 +11,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 
@@ -104,13 +104,7 @@ const MenuLink = observer(
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
     const { app_routing_history } = common;
-    const {
-        disableApp,
-        enableApp,
-        is_dark_mode_on: is_dark_mode,
-        setDarkMode: toggleTheme,
-        toggleExitTradersHubModal,
-    } = ui;
+    const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
     const {
         account_status,
         is_logged_in,
@@ -122,7 +116,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_pre_appstore,
-        setIsPreAppStore,
+
         is_eu,
     } = client;
     const { cashier } = modules;
@@ -130,7 +124,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_p2p_enabled } = general_store;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
-    const { content_flag, should_show_exit_traders_modal, switchToCRAccount, show_eu_related_content } = traders_hub;
+    const { show_eu_related_content } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
 
@@ -348,30 +342,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const { pathname: route } = useLocation();
 
-    const history = useHistory();
-
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
-
-    const tradingHubRedirect = async () => {
-        if (is_pre_appstore) {
-            if (should_show_exit_traders_modal) {
-                toggleDrawer();
-                toggleExitTradersHubModal();
-            } else {
-                setIsPreAppStore(false);
-                if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
-                    await switchToCRAccount();
-                }
-                toggleDrawer();
-                history.push(routes.root);
-            }
-        } else {
-            setIsPreAppStore(true);
-            toggleDrawer();
-            history.push(routes.traders_hub);
-        }
-    };
 
     return (
         <React.Fragment>
@@ -419,7 +391,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             }`}
                                             type='button'
                                             large
-                                            onClick={tradingHubRedirect}
                                         >
                                             <div className='header__menu--trading-hub-container'>
                                                 <Text className='header__menu--trading-hub-text' size='xs'>
@@ -470,7 +441,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 }`}
                                                 type='button'
                                                 large
-                                                onClick={tradingHubRedirect}
                                             >
                                                 <div className='header__menu--trading-hub-container'>
                                                     <Text className='header__menu--trading-hub-text' size='xs'>
@@ -639,7 +609,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             }`}
                                             type='button'
                                             large
-                                            onClick={tradingHubRedirect}
                                         >
                                             <div className='header__menu--trading-hub-container'>
                                                 <Text className='header__menu--trading-hub-text' size='xs'>

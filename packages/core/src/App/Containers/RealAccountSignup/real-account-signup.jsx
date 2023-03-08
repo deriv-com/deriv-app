@@ -54,10 +54,6 @@ const WizardHeading = ({
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
 
-    // if (is_pre_appstore) {
-    //     return <Localize i18n_default_text='Get an Options account' />;
-    // }
-
     switch (real_account_signup_target) {
         case 'malta':
             if (

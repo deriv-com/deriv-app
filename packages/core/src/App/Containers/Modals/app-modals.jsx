@@ -8,7 +8,6 @@ import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
-import ExitTradersHubModal from './exit-traders-hub-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 
 const AccountSignupModal = React.lazy(() =>
@@ -75,7 +74,6 @@ const AppModals = ({
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
-    is_exit_traders_hub_modal_visible,
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
 }) => {
@@ -148,8 +146,6 @@ const AppModals = ({
         ComponentToLoad = <CompletedAssessmentModal />;
     } else if (is_deriv_account_needed_modal_visible) {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
-    } else if (is_exit_traders_hub_modal_visible) {
-        ComponentToLoad = <ExitTradersHubModal />;
     } else if (should_show_risk_accept_modal) {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     }

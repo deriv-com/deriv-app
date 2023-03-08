@@ -11,6 +11,12 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+
+        & .data-list {
+            @include desktop {
+                height: 30.8rem;
+            }
+        }
     }
 
     &__text {

@@ -113,16 +113,15 @@ export default class CommonStore extends BaseStore {
     }
 
     changeSelectedLanguage = key => {
-        const request = {
-            set_settings: 1,
-            preferred_language: key,
-        };
         SocketCache.clear();
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-
-        WS.setSettings(request).then(() => {
+        changeLanguage(key, () => this.changeCurrentLanguage(key));
+        WS.setSettings({
+            set_settings: 1,
+            preferred_language: key,
+        }).then(() => {
             const new_url = new URL(window.location.href);
             if (key === 'EN') {
                 new_url.searchParams.delete('lang');
@@ -130,10 +129,7 @@ export default class CommonStore extends BaseStore {
                 new_url.searchParams.set('lang', key);
             }
             window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            changeLanguage(key, () => {
-                this.changeCurrentLanguage(key);
-                BinarySocket.closeAndOpenNewConnection(key);
-            });
+            BinarySocket.closeAndOpenNewConnection(key);
         });
     };
 

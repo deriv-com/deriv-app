@@ -10,16 +10,16 @@ export const currentLanguage = getLanguage();
 export const getURL = lang => urlForLanguage(lang);
 
 export const changeLanguage = (key, changeCurrentLanguage) => {
-    const request = {
-        set_settings: 1,
-        preferred_language: key,
-    };
     SocketCache.clear();
     if (key === 'EN') {
         window.localStorage.setItem('i18n_language', key);
     }
+    changeLanguageTranslation(key, () => changeCurrentLanguage(key));
 
-    WS.setSettings(request).then(() => {
+    WS.setSettings({
+        set_settings: 1,
+        preferred_language: key,
+    }).then(() => {
         const new_url = new URL(window.location.href);
         if (key === 'EN') {
             new_url.searchParams.delete('lang');
@@ -27,9 +27,6 @@ export const changeLanguage = (key, changeCurrentLanguage) => {
             new_url.searchParams.set('lang', key);
         }
         window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-        changeLanguageTranslation(key, () => {
-            changeCurrentLanguage(key);
-            BinarySocket.closeAndOpenNewConnection(key);
-        });
+        BinarySocket.closeAndOpenNewConnection(key);
     });
 };

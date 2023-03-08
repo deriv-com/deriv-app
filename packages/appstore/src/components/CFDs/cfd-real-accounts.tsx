@@ -5,50 +5,10 @@ import { CFD_PLATFORMS, routes, getAccountListKey } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
-import {
-    TCFDAccountsProps,
-    TPlatform,
-    TDetailsOfEachMT5Loginid,
-    TStaticAccountProps,
-    TRootStore,
-    TCFDPlatforms,
-} from 'Types';
+import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountProps, TRootStore } from 'Types';
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
 import { useHistory } from 'react-router-dom';
-
-const getAvailableRealAccounts = (
-    account_name: TCFDPlatforms,
-    account_desc: string,
-    isDerivedVisible: (platform: TPlatform) => boolean,
-    isFinancialVisible: (platform: TPlatform) => boolean,
-    has_cfd_account_error: (platform: TPlatform) => boolean
-): TStaticAccountProps[] => [
-    {
-        name: 'Derived',
-        description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
-        is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
-        disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
-        platform: CFD_PLATFORMS.MT5,
-        type: 'synthetic',
-    },
-    {
-        name: account_name,
-        description: account_desc,
-        is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
-        disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
-        platform: CFD_PLATFORMS.MT5,
-        type: 'financial',
-    },
-    {
-        name: 'Deriv X',
-        description: localize('Trade CFDs on Deriv X with financial markets and our Derived indices.'),
-        is_visible: isDerivedVisible(CFD_PLATFORMS.DXTRADE),
-        disabled: has_cfd_account_error(CFD_PLATFORMS.DXTRADE),
-        platform: CFD_PLATFORMS.DXTRADE,
-        type: 'all',
-    },
-];
 
 const CFDRealAccounts = ({
     isDerivedVisible,
@@ -77,6 +37,33 @@ const CFDRealAccounts = ({
               'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
           )
         : localize('Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.');
+
+    const available_real_accounts: TStaticAccountProps[] = [
+        {
+            name: 'Derived',
+            description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
+            is_visible: isDerivedVisible(CFD_PLATFORMS.MT5),
+            disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
+            platform: CFD_PLATFORMS.MT5,
+            type: 'synthetic',
+        },
+        {
+            name: account_name,
+            description: account_desc,
+            is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
+            disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
+            platform: CFD_PLATFORMS.MT5,
+            type: 'financial',
+        },
+        {
+            name: 'Deriv X',
+            description: localize('Trade CFDs on Deriv X with financial markets and our Derived indices.'),
+            is_visible: isDerivedVisible(CFD_PLATFORMS.DXTRADE),
+            disabled: has_cfd_account_error(CFD_PLATFORMS.DXTRADE),
+            platform: CFD_PLATFORMS.DXTRADE,
+            type: 'all',
+        },
+    ];
 
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
     const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
@@ -166,13 +153,7 @@ const CFDRealAccounts = ({
         <div className='cfd-real-account'>
             {!has_real_account && <AddOptionsAccount />}
             <div className='cfd-real-account__accounts'>
-                {getAvailableRealAccounts(
-                    account_name,
-                    account_desc,
-                    isDerivedVisible,
-                    isFinancialVisible,
-                    has_cfd_account_error
-                ).map(
+                {available_real_accounts.map(
                     account =>
                         account.is_visible && (
                             <div className={`cfd-real-account__accounts--item ${account.name}`} key={account.name}>

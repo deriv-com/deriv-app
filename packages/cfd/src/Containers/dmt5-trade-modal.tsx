@@ -267,8 +267,20 @@ const DMT5TradeModal = ({
                     </a>
                 </div>
             </div>
+            <Text
+                align='center'
+                as='div'
+                className='cfd-trade-modal__download-center-text'
+                size={isMobile() ? 'xxxs' : 'xxs'}
+                weight='bold'
+            >
+                {localize('Download Deriv MT5 on your phone to trade with the Deriv MT5 Derived account')}
+            </Text>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
+                    <a href={getPlatformMt5DownloadLink('ios')} target='_blank' rel='noopener noreferrer'>
+                        <Icon icon='IcInstallationApple' width={135} height={40} />
+                    </a>
                     <a href={getPlatformMt5DownloadLink('android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
@@ -276,12 +288,14 @@ const DMT5TradeModal = ({
                         <Icon icon='IcInstallationHuawei' width={135} height={40} />
                     </a>
                 </div>
-                <div className='cfd-trade-modal__download-center-options--qrcode'>
-                    <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
-                    <Text align='center' size='xxs'>
-                        {localize('Scan the QR code to download Deriv MT5.')}
-                    </Text>
-                </div>
+                {!isMobile() && (
+                    <div className='cfd-trade-modal__download-center-options--qrcode'>
+                        <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
+                        <Text align='center' size='xxs'>
+                            {localize('Scan the QR code to download Deriv MT5.')}
+                        </Text>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -78,7 +78,6 @@ const MT5TradeModal = ({
                     toggleModal={toggleModal}
                     should_header_stick_body={false}
                     width='600px'
-                    height={platform === 'mt5' ? '720px' : '500px'}
                     exit_classname='cfd-modal--custom-exit'
                 >
                     <CFDTradeModal />

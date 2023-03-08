@@ -50,7 +50,7 @@ const RegulatorSwitcher = () => {
                     })}
                 </div>
             ) : (
-                <div className='regulators-switcher__container loader'>
+                <div className='regulators-switcher__container content-loader'>
                     <RegulationsSwitcherLoader />
                 </div>
             )}

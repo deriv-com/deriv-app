@@ -36,18 +36,18 @@ type TRowRenderer = {
 type TDataTable = {
     className: string;
     content_loader: React.ElementType;
-    columns: any;
+    columns: TSource[];
     contract_id: number;
     getActionColumns: (params: { row_obj?: TSource; is_header?: boolean; is_footer: boolean }) => TTableRowItem[];
     getRowSize?: ((params: { index: number }) => number) | number;
     measure: () => void;
-    getRowAction?: (item: any) => TTableRowItem;
+    getRowAction?: (item: TSource) => TTableRowItem;
     onScroll: UIEventHandler<HTMLDivElement>;
     id: number;
     passthrough: (item: TSource) => boolean;
     autoHide?: boolean;
     footer: boolean;
-    preloaderCheck: (param: any) => boolean;
+    preloaderCheck: (param: TSource) => boolean;
     data_source: TSource[];
     keyMapper: (row: TSource) => number | string;
 };
@@ -139,6 +139,7 @@ const DataTable = ({
     }
     return (
         <div
+            data-testid='dt_data_table'
             className={classNames('table', {
                 [`${className}`]: className,
                 [`${className}__table`]: className,

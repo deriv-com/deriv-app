@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig } from 'Constants/platform-config';
@@ -39,6 +40,12 @@ const TradingAppCard = ({
         app_desc: description,
         link_to: '',
     };
+
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+        mt5_acc_auth_status,
+        openFailedVerificationModal,
+        selected_mt5_jurisdiction
+    );
 
     const openStaticPage = () => {
         if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
@@ -88,10 +95,10 @@ const TradingAppCard = ({
                     </Text>
                     {mt5_acc_auth_status && (
                         <StatusBadge
+                            className='trading-app-card__acc_status_badge'
                             account_status={mt5_acc_auth_status}
-                            class_name='trading-app-card__acc_status_badge'
-                            selected_account_type={selected_mt5_jurisdiction}
-                            openFailedVerificationModal={openFailedVerificationModal}
+                            icon={badge_icon}
+                            text={badge_text}
                         />
                     )}
                 </div>

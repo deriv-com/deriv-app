@@ -441,19 +441,22 @@ export default class GeneralStore extends BaseStore {
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
+            const is_authenticated = hasStatuses(['authenticated']);
             const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
+            const is_fa_not_complete = hasStatuses(['financial_assessment_not_complete']);
 
             if (error) {
                 this.setIsHighRisk(false);
                 this.setIsBlocked(false);
                 this.setIsP2pBlockedForPa(false);
+            } else if (get_account_status.p2p_status === 'perm_ban') {
+                this.setIsBlocked(true);
             } else if (get_account_status.risk_classification === 'high') {
-                const is_authenticated = hasStatuses(['authenticated']);
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
                 const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
                 const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
                 const is_not_fully_authenticated_and_fa_not_completed =
-                    is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
+                    is_not_fully_authenticated && is_fa_not_complete;
 
                 if (
                     is_authenticated &&
@@ -465,7 +468,9 @@ export default class GeneralStore extends BaseStore {
                     this.setIsBlocked(true);
                 }
 
-                this.setIsHighRisk(true);
+                if (!is_authenticated && !is_fa_not_complete) this.setIsBlocked(true);
+
+                if (is_fa_not_complete) this.setIsHighRisk(true);
             }
 
             if (is_blocked_for_pa) {

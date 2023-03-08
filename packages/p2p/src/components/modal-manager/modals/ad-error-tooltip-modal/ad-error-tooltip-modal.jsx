@@ -5,7 +5,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const AdExceedsBalanceModal = () => {
+const AdErrorTooltipModal = () => {
     const { my_ads_store, general_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 
@@ -29,4 +29,4 @@ const AdExceedsBalanceModal = () => {
     );
 };
 
-export default observer(AdExceedsBalanceModal);
+export default observer(AdErrorTooltipModal);

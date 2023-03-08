@@ -9,7 +9,7 @@ import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 
 const AssetSummary = () => {
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client, common } = useStores();
     const {
         selected_account_type,
         platform_real_balance,
@@ -21,17 +21,48 @@ const AssetSummary = () => {
         no_MF_account,
     } = traders_hub;
     const { is_logging_in, is_switching } = client;
+    const { getExchangeRate } = common;
+
+    const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
+    const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
+
+    React.useEffect(() => {
+        const getCurrentExchangeRate = (
+            currency: string,
+            setExchangeRate: React.Dispatch<React.SetStateAction<number>>,
+            base_currency = platform_real_balance.currency
+        ) => {
+            if (currency) {
+                getExchangeRate(currency, base_currency).then((res: number) => {
+                    setExchangeRate(res);
+                });
+            }
+        };
+
+        if (cfd_real_balance.currency !== platform_real_balance.currency) {
+            getCurrentExchangeRate(cfd_real_balance.currency, setExchangedRateCfdReal);
+        }
+        if (cfd_demo_balance.currency !== platform_demo_balance.currency) {
+            getCurrentExchangeRate(cfd_demo_balance.currency, setExchangedRateCfdDemo, platform_demo_balance.currency);
+        }
+    }, [
+        cfd_demo_balance.currency,
+        cfd_real_balance.currency,
+        getExchangeRate,
+        platform_demo_balance.currency,
+        platform_real_balance.currency,
+    ]);
 
     const getTotalBalance = () => {
         if (selected_account_type === 'real') {
             return {
-                balance: platform_real_balance.balance + cfd_real_balance.balance,
+                balance: platform_real_balance.balance + cfd_real_balance.balance * exchanged_rate_cfd_real,
                 currency: platform_real_balance.currency,
             };
         }
 
         return {
-            balance: platform_demo_balance.balance + cfd_demo_balance.balance,
+            balance: platform_demo_balance.balance + cfd_demo_balance.balance * exchanged_rate_cfd_demo,
             currency: platform_demo_balance.currency,
         };
     };

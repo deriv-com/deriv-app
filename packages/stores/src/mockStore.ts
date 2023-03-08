@@ -213,6 +213,7 @@ const mock = (): TRootStore => {
         ui: {
             current_focus: null,
             is_cashier_visible: false,
+            is_closing_create_real_account_modal: false,
             is_dark_mode_on: false,
             is_mobile: false,
             disableApp: jest.fn(),
@@ -224,6 +225,7 @@ const mock = (): TRootStore => {
             has_real_account_signup_ended: false,
             notification_messages_ui: null,
             openRealAccountSignup: jest.fn(),
+            setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),

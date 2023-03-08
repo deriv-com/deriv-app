@@ -30,6 +30,7 @@ type TAccountsList = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: number;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
 };
 
@@ -204,16 +205,20 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
+    is_closing_create_real_account_modal: boolean;
     is_mobile: boolean;
+    sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleSetCurrencyModal: () => void;
+    setSubSectionIndex: (index: number) => void;
 };
 
 type TMenuStore = {

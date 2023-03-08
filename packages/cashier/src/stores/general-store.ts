@@ -1,6 +1,5 @@
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
 import { isCryptocurrency, isEmptyObject, getPropertyValue, routes, ContentFlag } from '@deriv/shared';
-import type { P2PAdvertInfo } from '@deriv/api-types';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
@@ -18,7 +17,6 @@ export default class GeneralStore extends BaseStore {
             continueRoute: action.bound,
             deposit_target: observable,
             getAdvertizerError: action.bound,
-            getP2pCompletedOrders: action.bound,
             has_set_currency: observable,
             init: action.bound,
             is_cashier_locked: computed,
@@ -33,7 +31,6 @@ export default class GeneralStore extends BaseStore {
             onMountCommon: action.bound,
             onRemount: observable,
             p2p_advertiser_error: observable,
-            p2p_completed_orders: observable,
             p2p_notification_count: observable,
             p2p_unseen_notifications: computed,
             percentage: observable,
@@ -51,7 +48,6 @@ export default class GeneralStore extends BaseStore {
             setNotificationCount: action.bound,
             setOnRemount: action.bound,
             setP2pAdvertiserError: action.bound,
-            setP2pCompletedOrders: action.bound,
             setShouldShowAllAvailableCurrencies: action.bound,
             should_percentage_reset: observable,
             should_set_currency_modal_title_change: observable,
@@ -94,7 +90,6 @@ export default class GeneralStore extends BaseStore {
     is_populating_values = false;
     onRemount: VoidFunction = () => this;
     p2p_advertiser_error?: string = undefined;
-    p2p_completed_orders: P2PAdvertInfo[] | null = null;
     p2p_notification_count = 0;
     percentage = 0;
     payment_agent: PaymentAgentStore | null = null;
@@ -276,19 +271,6 @@ export default class GeneralStore extends BaseStore {
         const advertiser_error = this.p2p_advertiser_error;
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
         this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
-    }
-
-    setP2pCompletedOrders(p2p_completed_orders: P2PAdvertInfo[]): void {
-        this.p2p_completed_orders = p2p_completed_orders;
-    }
-
-    async getP2pCompletedOrders() {
-        await this.WS.authorized.send?.({ p2p_order_list: 1, active: 0 }).then(response => {
-            if (!response?.error) {
-                const { p2p_order_list } = response;
-                this.setP2pCompletedOrders(p2p_order_list?.list || []);
-            }
-        });
     }
 
     async onMountCommon(should_remount?: boolean) {

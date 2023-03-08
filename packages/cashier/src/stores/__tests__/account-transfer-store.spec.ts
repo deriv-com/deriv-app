@@ -196,23 +196,6 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('AccountTransferStore', () => {
-    it('account transfer tab should be visible', () => {
-        expect(account_transfer_store.is_account_transfer_visible).toBeTruthy();
-    });
-
-    it('account transfer tab should not be visible for "iom" clients', () => {
-        account_transfer_store.root_store.client.residence = 'im';
-
-        expect(account_transfer_store.is_account_transfer_visible).toBeFalsy();
-    });
-
-    it('account transfer tab should not be visible if landing_company_shortcode is equal to "malta" and the client has not maltainvest account ', () => {
-        account_transfer_store.root_store.client.landing_company_shortcode = 'malta';
-        account_transfer_store.root_store.client.has_maltainvest_account = false;
-
-        expect(account_transfer_store.is_account_transfer_visible).toBeFalsy();
-    });
-
     it('should not lock the transfer if there is no any account statuses', () => {
         account_transfer_store.root_store.client.account_status.status = [];
 

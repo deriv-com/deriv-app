@@ -11,7 +11,7 @@ import LanguageRadioButton from 'Components/language-settings';
 
 type TLanguageSettings = {
     current_language: string;
-    changeSelectedLanguage: (lang: string) => Promise<void>;
+    changeSelectedLanguage: (lang: string) => void;
     isCurrentLanguage: (lang: string) => boolean;
 };
 
@@ -24,7 +24,7 @@ const LanguageSettings = ({ changeSelectedLanguage, current_language, isCurrentL
             initialValues={initial_values}
             onSubmit={async values => {
                 const { language_code } = values;
-                await changeSelectedLanguage(language_code);
+                changeSelectedLanguage(language_code);
                 await i18n.changeLanguage?.(language_code);
             }}
         >

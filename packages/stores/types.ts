@@ -114,6 +114,7 @@ type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_pending_proof_of_ownership: boolean;
     is_pre_appstore: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;

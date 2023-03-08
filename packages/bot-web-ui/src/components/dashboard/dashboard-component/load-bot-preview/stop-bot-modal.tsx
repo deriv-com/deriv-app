@@ -12,6 +12,8 @@ type TStopBotModal = {
     onOkButtonClick: () => void;
     toggleStopBotDialog: () => void;
     stopMyBot: () => void;
+    closeMultiplierContract: () => void;
+    is_multiplier: boolean;
 };
 
 const StopBotModalContent = ({
@@ -20,10 +22,13 @@ const StopBotModalContent = ({
     toggleStopBotDialog,
     is_contract_dialog_open,
     is_stop_bot_dialog_open,
+    is_multiplier,
+    closeMultiplierContract,
 }: TStopBotModal) => {
-    const confirm_button_text = is_running ? localize('Stop my bot') : localize('Keep my contract');
-    const cancel_button_text = is_running ? localize('Back') : localize('Close my contract');
-    const title_text = is_running ? localize('Stop your current bot?') : localize('Keep your current contract?');
+    const confirm_button_text = is_running && is_multiplier ? localize('Keep my contract') : localize('Stop my bot');
+    const cancel_button_text = is_running && is_multiplier ? localize('Close my contract') : localize('Back');
+    const title_text =
+        is_running && is_multiplier ? localize('Keep your current contract?') : localize('Stop your current bot?');
     return (
         <React.Fragment>
             <Dialog
@@ -33,32 +38,12 @@ const StopBotModalContent = ({
                 confirm_button_text={confirm_button_text}
                 onConfirm={onOkButtonClick}
                 cancel_button_text={cancel_button_text}
-                onCancel={toggleStopBotDialog}
+                onCancel={closeMultiplierContract}
                 is_mobile_full_width={false}
                 className={'toolbar__dialog'}
                 has_close_icon
             >
-                {is_running ? (
-                    <>
-                        <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
-                            {localize(
-                                'Stopping the current bot will load the Quick Strategy you just created to the workspace.'
-                            )}
-                        </Text>
-                        <Text as='p' line_height='s' size='xs'>
-                            {localize(' Any open contracts can be viewed on the ')}
-                            <Text
-                                as='span'
-                                line_height='s'
-                                size='xs'
-                                styles={{ color: 'var(--button-primary-default)' }}
-                            >
-                                <strong>{localize('Reports')}</strong>
-                            </Text>
-                            {localize(' page.')}
-                        </Text>
-                    </>
-                ) : (
+                {is_running && is_multiplier ? (
                     <>
                         <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
                             {localize(
@@ -78,6 +63,26 @@ const StopBotModalContent = ({
                             {localize('The Quick Strategy you just created will be loaded to the workspace.')}
                         </Text>
                     </>
+                ) : (
+                    <>
+                        <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
+                            {localize(
+                                'Stopping the current bot will load the Quick Strategy you just created to the workspace.'
+                            )}
+                        </Text>
+                        <Text as='p' line_height='s' size='xs'>
+                            {localize(' Any open contracts can be viewed on the ')}
+                            <Text
+                                as='span'
+                                line_height='s'
+                                size='xs'
+                                styles={{ color: 'var(--button-primary-default)' }}
+                            >
+                                <strong>{localize('Reports')}</strong>
+                            </Text>
+                            {localize(' page.')}
+                        </Text>
+                    </>
                 )}
             </Dialog>
         </React.Fragment>
@@ -89,8 +94,10 @@ const StopBotModal = ({
     is_dialog_open,
     toggleStopBotDialog,
     stopMyBot,
+    closeMultiplierContract,
     is_contract_dialog_open,
     is_stop_bot_dialog_open,
+    is_multiplier,
 }: TStopBotModal) =>
     isMobile() ? (
         <MobileFullPageModal
@@ -107,6 +114,8 @@ const StopBotModal = ({
                 toggleStopBotDialog={toggleStopBotDialog}
                 is_contract_dialog_open={is_contract_dialog_open}
                 is_stop_bot_dialog_open={is_stop_bot_dialog_open}
+                is_multiplier={is_multiplier}
+                closeMultiplierContract={closeMultiplierContract}
             />
         </MobileFullPageModal>
     ) : (
@@ -116,15 +125,19 @@ const StopBotModal = ({
             toggleStopBotDialog={toggleStopBotDialog}
             is_contract_dialog_open={is_contract_dialog_open}
             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
+            is_multiplier={is_multiplier}
+            closeMultiplierContract={closeMultiplierContract}
         />
     );
 
-export default connect(({ run_panel, toolbar, quick_strategy }: RootStore) => ({
+export default connect(({ run_panel, toolbar, quick_strategy, summary_card }: RootStore) => ({
     is_dialog_open: quick_strategy.is_dialog_open,
     is_running: run_panel.is_running,
+    is_multiplier: summary_card.is_multiplier,
     is_contract_dialog_open: quick_strategy.is_contract_dialog_open,
     is_stop_bot_dialog_open: quick_strategy.is_stop_bot_dialog_open,
     onOkButtonClick: run_panel.onOkButtonClick,
     stopMyBot: run_panel.stopMyBot,
+    closeMultiplierContract: run_panel.closeMultiplierContract,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
 }))(StopBotModal);

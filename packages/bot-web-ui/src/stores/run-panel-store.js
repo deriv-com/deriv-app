@@ -63,6 +63,7 @@ export default class RunPanelStore {
             clear: action.bound,
             preloadAudio: action.bound,
             stopMyBot: action.bound,
+            closeMultiplierContract: action.bound,
         });
 
         this.root_store = root_store;
@@ -275,6 +276,16 @@ export default class RunPanelStore {
         this.dbot.terminateBot();
         this.onCloseDialog();
         summary_card.clear();
+        toggleStopBotDialog();
+    }
+
+    closeMultiplierContract() {
+        const { quick_strategy } = this.root_store;
+        const { toggleStopBotDialog } = quick_strategy;
+
+        this.onClickSell();
+        this.stopBot();
+        this.onCloseDialog();
         toggleStopBotDialog();
     }
 

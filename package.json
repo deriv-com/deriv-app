@@ -83,7 +83,7 @@
         "build:storybook": "cd packages/components && build-storybook --output-dir .out",
         "build:gh-pages": "f () { nx run-many --target=build projects=@deriv/components,@deriv/p2p && nx run-many --target=build --projects=@deriv/cashier,@deriv/account,@deriv/cfd,@deriv/reports && npm run build:local $1 ;}; f",
         "clean": "echo \"Remove $(git rev-parse --show-toplevel)/node_modules\" && lerna clean && rm -rf \"$(git rev-parse --show-toplevel)/node_modules\"",
-        "deploy": "f () { npm run build:travis && npm run build:local && lerna exec --scope @deriv/core -- npm run deploy $@ ;}; f",
+        "deploy": "f () { export NODE_ENV=staging && npm run build:all && lerna exec --scope @deriv/core -- npm run deploy $@ && export NODE_ENV= ;}; f",
         "deploy:clean": "f () { npm run build:travis && npm run build:local && lerna exec --scope @deriv/core -- npm run deploy:clean $@ ;}; f",
         "deploy:folder": "f () { export NODE_ENV=staging && npm run build:gh-pages $1 && lerna exec --scope @deriv/core -- npm run deploy:folder $@ && export NODE_ENV= ;}; f",
         "install:qa": "npm --prefix ./e2e_tests ci && echo \"IMPORTANT: copy .env.example to .env and update the values for development.\"",

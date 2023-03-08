@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
-import { routes, isDesktop, isMobile, getActivePlatform, getPlatformSettings } from '@deriv/shared';
+import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 
 import 'Sass/app/_common/components/platform-dropdown.scss';
@@ -49,7 +49,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history, hide_dropdown_
         : null;
 };
 
-const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, is_pre_appstore }) => {
+const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config }) => {
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
 
@@ -72,17 +72,9 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, i
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='156px' is_disabled={isDesktop()}>
                 {platform_config.map(platform => {
-                    const should_hide_dropdown_item =
-                        (platform.name === getPlatformSettings('mt5').name ||
-                            platform.name === getPlatformSettings('dxtrade').name) &&
-                        is_pre_appstore;
                     return (
                         <div key={platform.name} onClick={closeDrawer} ref={ref}>
-                            <PlatformDropdownContent
-                                platform={platform}
-                                app_routing_history={app_routing_history}
-                                hide_dropdown_items={should_hide_dropdown_item}
-                            />
+                            <PlatformDropdownContent platform={platform} app_routing_history={app_routing_history} />
                         </div>
                     );
                 })}

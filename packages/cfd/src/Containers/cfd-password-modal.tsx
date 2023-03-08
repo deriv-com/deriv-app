@@ -130,7 +130,6 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
-    is_pre_appstore: boolean;
     jurisdiction_selected_shortcode: string;
     platform: string;
     has_cfd_error: boolean;
@@ -586,7 +585,6 @@ const CFDPasswordModal = ({
     form_error,
     getAccountStatus,
     history,
-    is_pre_appstore,
     is_logged_in,
     context,
     is_cfd_password_modal_enabled,
@@ -950,5 +948,4 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     mt5_login_list: client.mt5_login_list,
     updateAccountStatus: client.updateAccountStatus,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(CFDPasswordModal));

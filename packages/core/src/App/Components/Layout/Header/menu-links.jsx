@@ -63,7 +63,7 @@ const MenuLinks = observer(() => {
     return (
         <div className='header__menu-links'>
             {!is_pre_appstore && <ReportTab />}
-            {!is_pre_appstore && !is_mobile && <CashierTab />}
+            {!is_mobile && <CashierTab />}
         </div>
     );
 });

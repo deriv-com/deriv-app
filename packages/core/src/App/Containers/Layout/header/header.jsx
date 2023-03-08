@@ -7,7 +7,7 @@ import DTraderHeader from './dtrader-header.jsx';
 import { connect } from 'Stores/connect';
 import { useLocation } from 'react-router-dom';
 
-const Header = ({ is_logged_in, is_pre_appstore }) => {
+const Header = ({ is_logged_in }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const { pathname } = useLocation();
     const trading_hub_routes =
@@ -15,7 +15,7 @@ const Header = ({ is_logged_in, is_pre_appstore }) => {
 
     if (is_appstore) {
         return <DashboardHeader />;
-    } else if (is_logged_in && is_pre_appstore) {
+    } else if (is_logged_in) {
         let result;
         if (trading_hub_routes) {
             result = <TradingHubHeader />;
@@ -28,11 +28,9 @@ const Header = ({ is_logged_in, is_pre_appstore }) => {
     } else if (pathname === routes.onboarding) {
         return null;
     }
-
     return <DefaultHeader />;
 };
 
 export default connect(({ client }) => ({
     is_logged_in: client.is_logged_in,
-    is_pre_appstore: client.is_pre_appstore,
 }))(Header);

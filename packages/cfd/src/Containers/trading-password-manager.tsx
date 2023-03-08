@@ -69,7 +69,7 @@ const PasswordReset = ({ email, platform, account_group }: TPasswordResetAndTrad
 
     return (
         <SendEmailTemplate
-            title={localize(`We've sent you an email`)}
+            title={localize("We've sent you an email")}
             subtitle={localize('Please click on the link in the email to change your {{platform}} password.', {
                 platform: getCFDPlatformLabel(platform),
             })}

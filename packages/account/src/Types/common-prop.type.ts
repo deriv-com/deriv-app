@@ -1,7 +1,5 @@
 /** Add types that are shared between components */
-
 import { Authorize } from '@deriv/api-types';
-import { Requireable, InferProps } from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -22,6 +20,7 @@ export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
 
 export type TPlatformContext = {
     is_appstore: boolean;
+    displayName?: string;
 };
 
 export type TCurrencyConfig = {
@@ -130,4 +129,14 @@ export type TResidenseList = {
     disabled: string;
     text: string;
     value: string;
+};
+
+export type TFile = {
+    path: string;
+    lastModified: number;
+    lastModifiedDate: Date;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
 };

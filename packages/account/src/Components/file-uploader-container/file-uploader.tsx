@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import DocumentUploader from '@binary-com/binary-document-uploader';
@@ -12,6 +11,11 @@ import {
     max_document_size,
     supported_filetypes,
 } from '@deriv/shared';
+import { TFile } from 'Types';
+
+type TFileObject = {
+    file: TFile;
+};
 
 const UploadMessage = () => {
     return (
@@ -23,22 +27,26 @@ const UploadMessage = () => {
         </React.Fragment>
     );
 };
-const fileReadErrorMessage = filename => {
+
+const fileReadErrorMessage = (filename: string) => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
 
-const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
+const FileUploader = React.forwardRef<
+    HTMLElement,
+    { onFileDrop: (file: TFile | undefined) => void; getSocket: () => WebSocket }
+>(({ onFileDrop, getSocket }, ref) => {
     const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
 
-    const handleAcceptedFiles = files => {
+    const handleAcceptedFiles = (files: TFileObject[]) => {
         if (files.length > 0) {
-            setDocumentFile({ files, error_message: null }, file => {
+            setDocumentFile({ files, error_message: null }, (file: TFile) => {
                 onFileDrop(file);
             });
         }
     };
 
-    const handleRejectedFiles = files => {
+    const handleRejectedFiles = (files: TFileObject[]) => {
         const is_file_too_large = files.length > 0 && files[0].file.size > max_document_size;
         const supported_files = files.filter(each_file => getSupportedFiles(each_file.file.name));
         const error_message =
@@ -46,11 +54,11 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                 ? localize('File size should be 8MB or less')
                 : localize('File uploaded is not supported');
 
-        setDocumentFile({ files, error_message }, file => onFileDrop(file));
+        setDocumentFile({ files, error_message }, (file: TFile) => onFileDrop(file));
     };
 
     const removeFile = () => {
-        setDocumentFile({ files: [], error_message: null }, file => onFileDrop(file));
+        setDocumentFile({ files: [], error_message: null }, (file: TFile) => onFileDrop(file));
     };
 
     const upload = () => {
@@ -77,7 +85,9 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                     }
 
                     // send files
-                    const uploader_promise = uploader.upload(processed_files[0]).then(api_response => api_response);
+                    const uploader_promise = uploader
+                        .upload(processed_files[0])
+                        .then((api_response: unknown) => api_response);
                     resolve(uploader_promise);
                 });
             });
@@ -121,10 +131,5 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
 });
 
 FileUploader.displayName = 'FileUploader';
-
-FileUploader.propTypes = {
-    onFileDrop: PropTypes.func,
-    getSocket: PropTypes.func,
-};
 
 export default FileUploader;

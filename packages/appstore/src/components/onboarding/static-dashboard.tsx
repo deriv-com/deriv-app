@@ -89,7 +89,9 @@ const StaticDashboard = ({
     }, [index]);
 
     const is_eu_title = is_eu_user ? localize('Multipliers') : localize('Options & Multipliers');
-    const is_eu_account_title = is_eu_user ? 'Multipliers account' : 'Options and Multipliers account';
+    const is_eu_account_title = is_eu_user
+        ? localize('Multipliers account')
+        : localize('Options and Multipliers account');
     const compare_accounts_title = is_eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
@@ -185,7 +187,7 @@ const StaticDashboard = ({
                                     <StaticCFDAccountManager
                                         type='synthetic'
                                         platform='mt5'
-                                        appname={has_account ? 'Derived SVG' : 'Derived'}
+                                        appname={has_account ? localize('Derived SVG') : localize('Derived')}
                                         description={localize(
                                             'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
                                         )}
@@ -222,8 +224,10 @@ const StaticDashboard = ({
                                     <StaticCFDAccountManager
                                         type='financial'
                                         platform='mt5'
-                                        appname={'CFDs'}
-                                        description='Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                                        appname={localize('CFDs')}
+                                        description={localize(
+                                            'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                                        )}
                                         loginid={loginid}
                                         currency={is_eu_user ? mf_currency : currency}
                                         has_account={has_account}
@@ -240,8 +244,10 @@ const StaticDashboard = ({
                                     <StaticCFDAccountManager
                                         type='financial'
                                         platform='mt5'
-                                        appname={has_account ? 'Financial BVI' : 'Financial'}
-                                        description='Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                        appname={has_account ? localize('Financial BVI') : localize('Financial')}
+                                        description={localize(
+                                            'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                        )}
                                         financial_amount={financial_amount}
                                         derived_amount={derived_amount}
                                         loginid={loginid}
@@ -278,8 +284,10 @@ const StaticDashboard = ({
                                     <StaticCFDAccountManager
                                         type='all'
                                         platform='dxtrade'
-                                        appname='Deriv X'
-                                        description='Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                        appname={localize('Deriv X')}
+                                        description={localize(
+                                            'Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                        )}
                                         loginid={loginid}
                                         currency={currency}
                                         has_account={has_account}

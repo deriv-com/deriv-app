@@ -40,13 +40,11 @@ export default class GeneralStore extends BaseStore {
     is_restricted = false;
     nickname = null;
     nickname_error = '';
-    notification_count = 0;
     order_table_type = order_list.ACTIVE;
     orders = [];
     parameters = null;
     payment_info = '';
     poi_status = null;
-    props = {};
     review_period;
     saved_form_state = null;
     should_show_real_name = false;
@@ -98,12 +96,10 @@ export default class GeneralStore extends BaseStore {
             is_restricted: observable,
             nickname: observable,
             nickname_error: observable,
-            notification_count: observable,
             order_table_type: observable,
             orders: observable,
             parameters: observable,
             poi_status: observable,
-            props: observable.ref,
             review_period: observable,
             saved_form_state: observable,
             should_show_real_name: observable,
@@ -136,7 +132,6 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserId: action.bound,
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
-            setAppProps: action.bound,
             setExternalStores: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
@@ -153,7 +148,6 @@ export default class GeneralStore extends BaseStore {
             setIsModalOpen: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
-            setNotificationCount: action.bound,
             setOrderTableType: action.bound,
             setP2PConfig: action.bound,
             setP2pOrderList: action.bound,
@@ -606,10 +600,6 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_sell_limit = advertiser_sell_limit;
     }
 
-    setAppProps(props) {
-        this.props = props;
-    }
-
     //TODO: Remove this when backend has fixed is_blocked flag issue
     setAdvertiserRelationsResponse(advertiser_relations_response) {
         this.advertiser_relations_response = advertiser_relations_response;
@@ -697,10 +687,6 @@ export default class GeneralStore extends BaseStore {
 
     setNicknameError(nickname_error) {
         this.nickname_error = nickname_error;
-    }
-
-    setNotificationCount(notification_count) {
-        this.notification_count = notification_count;
     }
 
     setOrderTableType(order_table_type) {
@@ -887,13 +873,8 @@ export default class GeneralStore extends BaseStore {
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
         window.dispatchEvent(new Event('storage'));
 
-        this.setNotificationCount(notification_count);
         this.setActiveNotificationCount(active_notification_count);
         this.setInactiveNotificationCount(inactive_notification_count);
-
-        if (typeof this.props?.setNotificationCount === 'function') {
-            this.props.setNotificationCount(notification_count);
-        }
     }
 
     validatePopup = values => {

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
+import { useP2PNotificationCount } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -19,13 +21,17 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
     const { showModal, hideModal } = useModalManagerContext();
+    const notification_count = useP2PNotificationCount();
+    const {
+        notifications: { setP2POrderProps },
+    } = useStore();
 
     React.useEffect(() => {
         return reaction(
-            () => general_store.props.setP2POrderProps,
+            () => setP2POrderProps,
             () => {
-                if (isAction(general_store.props.setP2POrderProps)) {
-                    general_store.props.setP2POrderProps({
+                if (isAction(setP2POrderProps)) {
+                    setP2POrderProps({
                         order_id,
                         redirectToOrderDetails: general_store.redirectToOrderDetails,
                         setIsRatingModalOpen: is_open => {
@@ -76,7 +82,7 @@ const AppContent = ({ order_id }) => {
                 <TemporarilyBarredHint />
                 <BuySell />
             </div>
-            <div count={general_store.notification_count} label={localize('Orders')}>
+            <div count={notification_count} label={localize('Orders')}>
                 <Orders />
             </div>
             <div label={localize('My ads')}>

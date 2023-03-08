@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
@@ -13,7 +12,7 @@ import { setLanguage } from './i18next';
 import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import './app.scss';
 
-const App = props => {
+const App = () => {
     const { notifications, client, ui, common, modules } = useStore();
     const { balance, is_logging_in } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
@@ -32,7 +31,6 @@ const App = props => {
     const [code_param, setCodeParam] = React.useState();
 
     React.useEffect(() => {
-        general_store.setAppProps(props);
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
@@ -186,18 +184,6 @@ const App = props => {
             </ModalManagerContextProvider>
         </main>
     );
-};
-
-App.propTypes = {
-    balance: PropTypes.string,
-    className: PropTypes.string,
-    history: PropTypes.object,
-    lang: PropTypes.string,
-    order_id: PropTypes.string,
-    server_time: PropTypes.object,
-    setNotificationCount: PropTypes.func,
-    setOnRemount: PropTypes.func,
-    websocket_api: PropTypes.object.isRequired,
 };
 
 export default observer(App);

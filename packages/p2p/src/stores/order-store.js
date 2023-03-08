@@ -557,12 +557,6 @@ export default class OrderStore {
 
     setOrderId(order_id) {
         this.order_id = order_id;
-
-        const { general_store } = this.root_store;
-
-        if (typeof general_store.props.setOrderId === 'function') {
-            general_store.props.setOrderId(order_id);
-        }
     }
 
     setOrderPaymentMethodDetails(order_payment_method_details) {

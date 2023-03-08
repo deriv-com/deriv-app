@@ -27,7 +27,7 @@ import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -1169,6 +1169,7 @@ export default class ClientStore extends BaseStore {
 
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1195,9 +1196,11 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
+            Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
+            Cookies.remove('region', { domain });
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }
@@ -1974,8 +1977,11 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccountSettings(settings) {
-        this.account_settings = settings;
-        this.is_account_setting_loaded = true;
+        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
+        if (!is_equal_settings) {
+            this.account_settings = settings;
+            this.is_account_setting_loaded = true;
+        }
     }
 
     setAccountStatus(status) {

@@ -35,7 +35,7 @@
         "eslint-plugin-react-hooks": "^4.2.0"
     },
     "dependencies": {
-        "@deriv/deriv-api": "^1.0.8",
+        "@deriv/deriv-api": "^1.0.11",
         "@deriv/indicators": "^1.0.0",
         "@deriv/js-interpreter": "^3.0.0",
         "@deriv/shared": "^1.0.0",
@@ -46,6 +46,8 @@
         "immutable": "^3.8.2",
         "localforage": "^1.9.0",
         "lz-string": "^1.4.4",
+        "mobx": "^6.6.1",
+        "mobx-react": "^7.5.1",
         "redux": "^4.0.1",
         "redux-thunk": "^2.2.0",
         "scratch-blocks": "0.1.0-prerelease.20200917235131",

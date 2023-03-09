@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// TODO: To be removed after refactor
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -11,17 +14,10 @@ import OptionsAccount from '../account';
 import AddOptions from '../add-options';
 import { getSortedAccountList } from '../../helpers';
 import AccountManager from '../account-manager';
-import { Icons } from 'Assets/svgs/wallet';
+import { PlatformConfig } from 'Constants/platform-config';
 
-type TPlatformLauncherPropsArray = {
-    app_icon: keyof typeof Icons;
-    app_title: string;
-    app_desc: string;
-    link_to?: string;
-    href?: string;
-}[];
 type TOptionsAccountsProps = {
-    platformlauncherprops: TPlatformLauncherPropsArray;
+    platformlauncherprops: PlatformConfig[];
     accountType: string;
 };
 
@@ -39,7 +35,7 @@ type TAccount = {
     token: string;
 };
 
-const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComponentProps> = props => {
+const OptionsAccounts = (props: TOptionsAccountsProps & RouteComponentProps) => {
     const { client, ui } = useStores();
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const {
@@ -92,9 +88,9 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
         return !!account.is_virtual && account.balance !== account_init_balance;
     };
 
-    const is_eu_title = is_eu ? 'Multipliers' : 'Options and Multipliers';
+    const is_eu_title = is_eu ? localize('Multipliers') : localize('Options & Multipliers');
 
-    const is_eu_account_title = is_eu ? 'Multipliers account' : 'Options and Multipliers account';
+    const is_eu_account_title = is_eu ? localize('Multipliers account') : localize('Options and Multipliers account');
     const is_mf = loginid?.startsWith('MF');
     return (
         <div className='options-accounts-container'>
@@ -257,7 +253,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                         <AddOptions
                                             number_of_accounts={sortedAccountList.length}
                                             title={is_mf ? 'Manage account' : 'More Options accounts'}
-                                            description={'Including cryptocurrencies'}
+                                            description={localize('Including cryptocurrencies')}
                                             is_mf={is_mf}
                                         />
                                     </div>
@@ -272,7 +268,9 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                                     appname={is_eu_account_title}
                                     disabled={false}
                                     onClickGet={() => ui.openRealAccountSignup()}
-                                    description={`Get a real ${is_eu_title} account, start trading and manage your funds.`}
+                                    description={localize(
+                                        `Get a real ${is_eu_title} account, start trading and manage your funds.`
+                                    )}
                                 />
                             </div>
                         )}
@@ -294,7 +292,7 @@ const OptionsAccounts: React.FunctionComponent<TOptionsAccountsProps & RouteComp
                     footer={
                         <Modal.Footer has_separator style={{ position: 'fixed', bottom: '0px', width: '100%' }}>
                             <Button style={{ width: '100%' }} secondary onClick={() => setIsModalOpen(false)}>
-                                {'Back to trading hub'}
+                                {localize('Back to trading hub')}
                             </Button>
                         </Modal.Footer>
                     }

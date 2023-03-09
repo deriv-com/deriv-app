@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Field, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-form.scss';
 
 const validateTransfer = (values, { balance, currency, transfer_limit }) => {
@@ -41,22 +41,15 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
 };
 
 const PaymentAgentTransferForm = observer(() => {
-    const {
-        client,
-        modules: {
-            cashier: { payment_agent_transfer: payment_agent_transfer_store },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const { balance, currency } = client;
-
+    const { payment_agent_transfer: payment_agent_transfer_store } = useCashierStore();
     const {
         confirm: { amount, description, client_id: transfer_to },
         error,
         requestTryPaymentAgentTransfer,
         transfer_limit,
     } = payment_agent_transfer_store;
-
     const { setErrorMessage } = error;
 
     const validateTransferPassthrough = values =>

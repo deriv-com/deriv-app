@@ -1,14 +1,8 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { StoreProvider } from '@deriv/stores';
 import CryptoWithdrawForm from '../crypto-withdraw-form';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<CryptoWithdrawForm />', () => {
     let mockRootStore;
@@ -38,6 +32,7 @@ describe('<CryptoWithdrawForm />', () => {
                         requestWithdraw: jest.fn(),
                         setBlockchainAddress: jest.fn(),
                         setWithdrawPercentageSelectorResult: jest.fn(),
+                        resetWithdrawForm: jest.fn(),
                     },
                 },
             },
@@ -46,9 +41,9 @@ describe('<CryptoWithdrawForm />', () => {
 
     const renderCryptoWithdrawForm = () => {
         return render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <CryptoWithdrawForm />
-            </StoreProvider>
+            </CashierProviders>
         );
     };
 

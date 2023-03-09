@@ -22,6 +22,7 @@
         transform: translateY(0);
         opacity: 1;
         pointer-events: auto;
+        z-index: 9;
     }
     &__header {
         position: sticky;

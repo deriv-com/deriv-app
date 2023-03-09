@@ -92,6 +92,13 @@ const isOptionsBlocked = country => blocked_options_countries.includes(country);
 const multipliers_only_countries = ['de', 'es', 'it', 'lu', 'gr', 'au', 'fr'];
 const isMultipliersOnly = country => multipliers_only_countries.includes(country);
 
+const getRegion = (landing_company_shortcode, residence) => {
+    if (landing_company_shortcode === 'virtual') {
+        return isEuCountry(residence) ? 'eu' : 'row';
+    }
+    return landing_company_shortcode === 'svg' ? 'row' : 'eu';
+};
+
 module.exports = {
     template,
     createElement,
@@ -101,4 +108,5 @@ module.exports = {
     isOptionsBlocked,
     isSyntheticsUnavailable,
     isMultipliersOnly,
+    getRegion,
 };

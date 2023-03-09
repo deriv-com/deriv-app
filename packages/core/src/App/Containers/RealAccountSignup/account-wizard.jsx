@@ -12,7 +12,7 @@ import AcceptRiskForm from './accept-risk-form.jsx';
 import { getItems } from './account-wizard-form';
 import 'Sass/details-form.scss';
 
-const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps }) => {
+const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {
     const step = getCurrentStep() - 1;
     const step_title = items[step].header ? items[step].header.title : '';
 
@@ -21,9 +21,10 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
             {(!has_real_account || has_target) && (
                 <React.Fragment>
                     <DesktopWrapper>
-                        <FormProgress steps={items} current_step={step} />
+                        <FormProgress steps={items} current_step={step} sub_section_index={sub_section_index} />
                     </DesktopWrapper>
                     <MobileWrapper>
+                        <FormProgress steps={items} current_step={step} sub_section_index={sub_section_index} />
                         <div className='account-wizard__header-steps'>
                             <Text
                                 as='h4'
@@ -333,6 +334,7 @@ const AccountWizard = props => {
                     has_currency={props.has_currency}
                     has_target={props.real_account_signup_target !== 'manage'}
                     setIsRiskWarningVisible={props.setIsRiskWarningVisible}
+                    sub_section_index={props.sub_section_index}
                 />
             );
         }
@@ -376,6 +378,8 @@ AccountWizard.propTypes = {
     residence: PropTypes.string,
     setIsRiskWarningVisible: PropTypes.func,
     setLoading: PropTypes.func,
+    setSubSectionIndex: PropTypes.func,
+    sub_section_index: PropTypes.number,
 };
 
 export default connect(({ client, notifications, ui, traders_hub }) => ({
@@ -402,4 +406,6 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
     states_list: client.states_list,
     upgrade_info: client.upgrade_info,
+    setSubSectionIndex: ui.setSubSectionIndex,
+    sub_section_index: ui.sub_section_index,
 }))(AccountWizard);

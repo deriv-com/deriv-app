@@ -5,7 +5,7 @@ import Icon from '../icon';
 
 type TSwipeableWrapper = {
     className?: string;
-    onChange: (prop?: number) => void;
+    onChange?: (prop?: number) => void;
     is_disabled?: boolean;
 } & SwipeableProps;
 
@@ -13,10 +13,10 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }: React.Pro
     const [active_index, setActiveIndex] = React.useState(0);
 
     React.useEffect(() => {
-        onChange(active_index);
+        onChange?.(active_index);
         return () => {
             // Makes an empty callback when unmounted so that we can reset
-            onChange();
+            onChange?.();
         };
     }, [active_index, onChange]);
 

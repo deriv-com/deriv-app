@@ -1216,6 +1216,7 @@ export default class TradeStore extends BaseStore {
             await this.loadActiveSymbols();
         }
         await this.setContractTypes();
+        this.is_trade_enabled = true;
         this.debouncedProposal();
     }
 

@@ -27,7 +27,7 @@ import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -849,7 +849,7 @@ export default class ClientStore extends BaseStore {
             is_current_mf || //is_currently logged in mf account via trdaershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
                 ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
-                  eu_shortcode_regex.test(gaming_shortcode)
+                eu_shortcode_regex.test(gaming_shortcode)
                 : eu_excluded_regex.test(this.residence))
         );
     }
@@ -1169,7 +1169,6 @@ export default class ClientStore extends BaseStore {
 
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
-
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1196,11 +1195,9 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
-            Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('region', { domain });
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }
@@ -1350,18 +1347,18 @@ export default class ClientStore extends BaseStore {
                 ...response,
                 ...(is_maltainvest_account
                     ? {
-                          new_account_maltainvest: {
-                              ...response.new_account_maltainvest,
-                              currency,
-                          },
-                      }
+                        new_account_maltainvest: {
+                            ...response.new_account_maltainvest,
+                            currency,
+                        },
+                    }
                     : {}),
                 ...(is_samoa_account
                     ? {
-                          new_account_samoa: {
-                              currency,
-                          },
-                      }
+                        new_account_samoa: {
+                            currency,
+                        },
+                    }
                     : {}),
             });
         }
@@ -1620,11 +1617,6 @@ export default class ClientStore extends BaseStore {
             if (!this.is_virtual) {
                 this.setPrevRealAccountLoginid(this.loginid);
             }
-            const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
-
-            if (!no_cr_account && this.is_low_risk) {
-                this.switchAccount(this.virtual_account_loginid);
-            }
         }
 
         this.selectCurrency('');
@@ -1746,6 +1738,7 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccounts(accounts) {
+        console.log(accounts, 'setAccounts')
         this.accounts = accounts;
     }
 
@@ -1977,11 +1970,8 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccountSettings(settings) {
-        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
-        if (!is_equal_settings) {
-            this.account_settings = settings;
-            this.is_account_setting_loaded = true;
-        }
+        this.account_settings = settings;
+        this.is_account_setting_loaded = true;
     }
 
     setAccountStatus(status) {
@@ -1990,6 +1980,7 @@ export default class ClientStore extends BaseStore {
 
     async updateAccountStatus() {
         const account_status_response = await WS.authorized.getAccountStatus();
+        console.log(account_status_response, 'console.log(account_status_response);');
         if (!account_status_response.error) {
             this.setAccountStatus(account_status_response.get_account_status);
         }
@@ -2014,7 +2005,7 @@ export default class ClientStore extends BaseStore {
         localStorage.removeItem('isNewAccount');
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
-
+        console.log(JSON.stringify(this.accounts))
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
@@ -2024,6 +2015,7 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
+
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
@@ -2033,7 +2025,7 @@ export default class ClientStore extends BaseStore {
             this.root_store.rudderstack.reset();
             this.setLogout(true);
         }
-
+        console.log('logout', response);
         return response;
     }
 
@@ -2625,6 +2617,7 @@ export default class ClientStore extends BaseStore {
     };
 
     setIsPreAppStore(is_pre_appstore) {
+        console.log(is_pre_appstore, 'setIsPreAppStore');
         const trading_hub = is_pre_appstore ? 1 : 0;
         try {
             WS.setSettings({

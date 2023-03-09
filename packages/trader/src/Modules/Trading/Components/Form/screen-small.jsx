@@ -19,6 +19,7 @@ import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import PayoutPerPoint from '../Elements/Turbos/payout-per-point.jsx';
+import TradeTypeTabs from './TradeParams/Turbos/trade-type-tabs.jsx';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -52,6 +53,7 @@ const CollapsibleTradeParams = ({
             <div className='trade-params__contract-type-container'>
                 <ContractType />
                 {is_multiplier && <MultiplierOptionsWidget />}
+                {isVisible('trade_type_tabs') && <TradeTypeTabs />}
             </div>
             {isVisible('last_digit') && (
                 <div collapsible='true'>

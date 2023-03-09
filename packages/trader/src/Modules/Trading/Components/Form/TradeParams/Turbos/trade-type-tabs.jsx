@@ -14,12 +14,13 @@ const TradeTypeTabs = ({ className, onChange, contract_type }) => {
     if (contract_type !== 'turbosshort' && contract_type !== 'turboslong') return null;
 
     return (
-        <div className={classNames('trade-container__trade-type-tabs', className)}>
+        <div className={classNames('trade-container__trade', 'trade-container__trade-type-tabs', className)}>
             <ButtonToggle
                 id='dt_advanced_duration_toggle'
                 buttons_arr={tab_list}
                 name='contract_type'
-                is_animated={true}
+                className='trade-container__trade-type-tabs--button'
+                is_animated
                 onChange={onChange}
                 value={tab_list.find(tab => tab.value === contract_type)?.value}
             />

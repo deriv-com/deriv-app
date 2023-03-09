@@ -285,6 +285,8 @@
     &__barriers {
         display: flex;
         flex-direction: column;
+        position: relative;
+        bottom: 0.1rem;
         &__footer {
             height: 8rem;
             padding: 1.6rem 0;
@@ -545,13 +547,26 @@
             align-self: flex-end;
         }
     }
-    &__trade-type-tabs {
-        border-radius: $BORDER_RADIUS;
-        padding: 0.8rem;
-        margin-bottom: 0.4rem;
-        background-color: var(--general-section-1);
-        border-color: var(--general-section-1);
-        color: var(--text-general);
+    &__trade {
+        position: relative;
+        top: 0.2rem;
+        &-type-tabs {
+            border-radius: $BORDER_RADIUS;
+            padding: 0.8rem;
+            background-color: var(--general-section-1);
+            border-color: var(--general-section-1);
+            color: var(--text-general);
+            @include mobile {
+                width: 50%;
+                padding: 0;
+                margin-bottom: 0rem;
+                margin-top: 0.6rem;
+                &--button {
+                    height: 4rem;
+                    bottom: 0.5rem;
+                }
+            }
+        }
     }
     &__deal-cancellation-popover {
         width: 28rem;

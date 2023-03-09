@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import BarriersList from './barriers-list.jsx';
+import TradeTypeTabs from './trade-type-tabs.jsx';
 import { Button, Icon, MobileDialog, Text, Popover } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { CSSTransition } from 'react-transition-group';
@@ -127,6 +128,7 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
         </React.Fragment>
     ) : (
         <React.Fragment>
+            <TradeTypeTabs />
             <Fieldset
                 className='trade-container__fieldset trade-container__barriers'
                 header={localize('Barrier')}

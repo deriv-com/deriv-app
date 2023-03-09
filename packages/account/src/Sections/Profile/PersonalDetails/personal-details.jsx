@@ -558,7 +558,7 @@ export const PersonalDetailsForm = ({
 
     //Generate Redirection Link to user based on verifiction status
     const getRedirectionLink = () => {
-        if (!is_account_verified && !is_poi_verified) {
+        if (!is_poi_verified) {
             return '/account/proof-of-identity';
         } else if (!is_poa_verified) {
             return '/account/proof-of-address';

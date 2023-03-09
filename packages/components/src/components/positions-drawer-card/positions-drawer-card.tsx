@@ -10,6 +10,7 @@ import {
     getContractTypeDisplay,
     getEndTime,
 } from '@deriv/shared';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import type { ContractUpdate } from '@deriv/api-types';
 import moment from 'moment';
 
@@ -21,10 +22,16 @@ type TToastConfig = {
     type?: string;
 };
 
+type TGetEndTime = Pick<
+    TContractInfo,
+    'is_expired' | 'sell_time' | 'status' | 'tick_count' | 'contract_type' | 'underlying' | 'contract_id'
+> &
+    Required<Pick<TContractInfo, 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
+
 type TPositionsDrawerCardProps = {
     addToast: (toast_config: TToastConfig) => void;
     className?: string;
-    contract_info: Parameters<typeof getEndTime>[0];
+    contract_info: TGetEndTime;
     contract_update: ContractUpdate;
     currency: string;
     current_focus: string;

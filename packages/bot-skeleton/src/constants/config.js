@@ -267,9 +267,9 @@ export const config = {
         [localize('Signal'), '2'],
     ],
     gd: {
-        cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
-        aid: 'derivbot-248506',
-        api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
+        cid: '523653777134-9uoolf9he3eb414sl5d2vnrut3j0k6v3.apps.googleusercontent.com',
+        aid: 'hale-carport-351204',
+        api: 'AIzaSyDro_8YQfchxbKg3c4fqEwqy6JwV-6QHFM',
         scope: 'https://www.googleapis.com/auth/drive.file',
         discovery_docs: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
     },

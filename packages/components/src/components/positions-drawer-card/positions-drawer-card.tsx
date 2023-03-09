@@ -29,7 +29,7 @@ type TPositionsDrawerCardProps = {
     currency: string;
     current_focus: string;
     display_name: string;
-    getContractById: (contract_id: string) => Record<string, unknown>;
+    getContractById: (contract_id: string) => Record<string, any>;
     is_mobile: boolean;
     is_sell_requested: boolean;
     is_unsupported: boolean;

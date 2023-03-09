@@ -488,9 +488,8 @@ const RealAccountSignup = ({
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={assessment_decline}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
-                handleToggle={() => setAssessmentDecline(!assessment_decline)}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the risk of losing your money. <0/><0/>
@@ -504,9 +503,8 @@ const RealAccountSignup = ({
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_warning_modal}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
-                handleToggle={() => setShouldShowRiskWarningModal(!should_show_risk_warning_modal)}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, kindly note that you would need to wait 24 hours before you can proceed further.'

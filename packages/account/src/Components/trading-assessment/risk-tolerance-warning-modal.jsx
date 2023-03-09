@@ -3,7 +3,7 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
-const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_text, body_content, handleToggle }) => {
+const RiskToleranceWarningModal = ({ show_risk_modal, handleAcceptRisk, title, button_text, body_content }) => {
     return (
         <Modal
             width='44rem'
@@ -11,7 +11,7 @@ const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_tex
             height={isMobile() ? '44rem' : '41rem'}
             is_open={show_risk_modal}
             className='center-risk-modal'
-            toggleModal={handleToggle}
+            toggleModal={handleAcceptRisk}
             has_close_icon={!isMobile()}
         >
             <Modal.Body>
@@ -27,7 +27,7 @@ const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_tex
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button type='button' large text={button_text || localize('OK')} primary onClick={onClick} />
+                <Button type='button' large text={button_text || localize('OK')} primary onClick={handleAcceptRisk} />
             </Modal.Footer>
         </Modal>
     );

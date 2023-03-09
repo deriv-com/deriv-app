@@ -130,6 +130,9 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
+    //warn user if they want to close create real account modal
+    is_closing_create_real_account_modal = false;
+
     // MT5 account needed modal
     is_account_needed_modal_on = false;
     account_needed_modal_props = {
@@ -164,6 +167,7 @@ export default class UIStore extends BaseStore {
     is_exit_traders_hub_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
+    sub_section_index = 0;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -222,6 +226,7 @@ export default class UIStore extends BaseStore {
             is_update_email_modal_visible: observable,
             is_reset_trading_password_modal_visible: observable,
             is_cfd_reset_password_modal_enabled: observable,
+            sub_section_index: observable,
             is_chart_countdown_visible: observable,
             is_chart_layout_default: observable,
             pwa_prompt_event: observable,
@@ -239,6 +244,7 @@ export default class UIStore extends BaseStore {
             duration_d: observable,
             purchase_states: observable,
             is_app_disabled: observable,
+            is_closing_create_real_account_modal: observable,
             is_route_modal_on: observable,
             is_real_acc_signup_on: observable,
             real_account_signup_target: observable,
@@ -370,8 +376,10 @@ export default class UIStore extends BaseStore {
             setShouldShowCooldownModal: action.bound,
             setShouldShowTradingAssessmentModal: action.bound,
             setShouldShowTradeAssessmentForm: action.bound,
+            setIsClosingCreateRealAccountModal: action.bound,
             setIsRealTabEnabled: action.bound,
             setCFDPasswordResetModal: action.bound,
+            setSubSectionIndex: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -396,6 +404,10 @@ export default class UIStore extends BaseStore {
             !this.has_read_scam_message &&
             !this.is_new_account
         );
+    }
+
+    setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
+        this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;
     }
 
     setIsRealTabEnabled(is_real_tab_enabled) {
@@ -874,5 +886,9 @@ export default class UIStore extends BaseStore {
 
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
+    }
+
+    setSubSectionIndex(index) {
+        this.sub_section_index = index;
     }
 }

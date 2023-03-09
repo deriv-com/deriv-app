@@ -9,21 +9,20 @@ type TStopBotModal = {
     is_dialog_open: boolean;
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
+    is_multiplier: boolean;
+    closeMultiplierContract: () => void;
     onOkButtonClick: () => void;
     toggleStopBotDialog: () => void;
     stopMyBot: () => void;
-    closeMultiplierContract: () => void;
-    is_multiplier: boolean;
 };
 
 const StopBotModalContent = ({
     is_running,
-    onOkButtonClick,
-    toggleStopBotDialog,
+    is_multiplier,
     is_contract_dialog_open,
     is_stop_bot_dialog_open,
-    is_multiplier,
     closeMultiplierContract,
+    onOkButtonClick,
 }: TStopBotModal) => {
     const confirm_button_text = is_running && is_multiplier ? localize('Keep my contract') : localize('Stop my bot');
     const cancel_button_text = is_running && is_multiplier ? localize('Close my contract') : localize('Back');
@@ -92,12 +91,12 @@ const StopBotModalContent = ({
 const StopBotModal = ({
     is_running,
     is_dialog_open,
-    toggleStopBotDialog,
-    stopMyBot,
-    closeMultiplierContract,
     is_contract_dialog_open,
     is_stop_bot_dialog_open,
     is_multiplier,
+    closeMultiplierContract,
+    stopMyBot,
+    toggleStopBotDialog,
 }: TStopBotModal) =>
     isMobile() ? (
         <MobileFullPageModal
@@ -136,8 +135,8 @@ export default connect(({ run_panel, toolbar, quick_strategy, summary_card }: Ro
     is_multiplier: summary_card.is_multiplier,
     is_contract_dialog_open: quick_strategy.is_contract_dialog_open,
     is_stop_bot_dialog_open: quick_strategy.is_stop_bot_dialog_open,
+    closeMultiplierContract: run_panel.closeMultiplierContract,
     onOkButtonClick: run_panel.onOkButtonClick,
     stopMyBot: run_panel.stopMyBot,
-    closeMultiplierContract: run_panel.closeMultiplierContract,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
 }))(StopBotModal);

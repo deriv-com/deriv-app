@@ -142,7 +142,7 @@ const AccountLimits = ({
         .sort((a: FormikValues, b: FormikValues) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
     const derived_ordered = synthetic_index
         ?.slice()
-        .sort((a: FormikValues, b: FormikValues) => (a.level < b.level ? 1 : -1));
+        .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));
 
     const context_value: TAccountLimitsContext = {
         currency,

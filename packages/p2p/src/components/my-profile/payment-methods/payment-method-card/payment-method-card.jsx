@@ -21,7 +21,7 @@ const PaymentMethodCard = ({
     small,
     style,
 }) => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const method = !is_add && payment_method?.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.display_name;
@@ -86,7 +86,17 @@ const PaymentMethodCard = ({
                         is_align_text_left
                     />
                 )}
-                <Checkbox className='payment-method-card__checkbox' onChange={onClick} value={!isEmptyObject(style)} />
+                {(general_store.active_index === 2 || general_store.active_index === 0) && (
+                    <Checkbox
+                        className='payment-method-card__checkbox'
+                        disabled={
+                            my_ads_store.payment_method_ids.length === 3 &&
+                            !my_ads_store.payment_method_ids.includes(payment_method.ID)
+                        }
+                        onChange={onClick}
+                        value={!isEmptyObject(style)}
+                    />
+                )}
             </div>
             <div className='payment-method-card__body'>
                 <Text color='prominent' size={large ? 'xs' : 'xxs'}>

@@ -44,6 +44,7 @@ const TurbosCardBody = ({
         PROFIT_LOSS,
         POTENTIAL_PROFIT_LOSS,
     } = getCardLabels();
+
     return (
         <React.Fragment>
             <div

@@ -14,7 +14,7 @@ const Header = ({ is_logged_in, is_pre_appstore }) => {
         pathname === routes.traders_hub
         || pathname.startsWith(routes.cashier)
         || pathname.startsWith(routes.account)
-        || pathname.startsWith(routes.bot)
+       
 
     console.log(pathname)
 

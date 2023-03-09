@@ -28,9 +28,9 @@
     }
 
     &__hint {
-        margin-left: 1.2rem;
+        margin-left: 1.3rem;
         position: absolute;
-        top: 4rem;
+        top: 4.1rem;
 
         &--relative {
             margin-left: 1.2rem;
@@ -44,7 +44,6 @@
             width: 100%;
             border-radius: $BORDER_RADIUS;
             box-sizing: border-box;
-            padding: 0 1.2rem;
             -webkit-appearance: none;
             -moz-appearance: none;
 
@@ -72,7 +71,8 @@
         }
     }
     .dc-icon {
-        top: 22%;
+        margin-bottom: 0.3rem;
+        margin-right: -0.2rem;
 
         &:not(.dc-icon--disabled) {
             cursor: pointer;
@@ -131,6 +131,9 @@
         }
     }
     @include mobile {
+        &--hint {
+            margin-bottom: 5rem;
+        }
         &__native {
             opacity: 0;
             width: 100%;
@@ -167,7 +170,7 @@
             transition: transform 0.25s linear;
             position: absolute;
             font-size: 1.4rem;
-            left: 1.2rem;
+            left: 1.3rem;
 
             &--has-value {
                 transform: translate3d(-14px, -20px, 0px) scale(0.7);
@@ -187,8 +190,8 @@
         &__error {
             display: flex;
             position: absolute;
-            top: 4.4rem;
-            left: 1.2rem;
+            top: 4.5rem;
+            left: 1.3rem;
         }
     }
 }

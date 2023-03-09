@@ -47,7 +47,7 @@ const Native = ({
             className={classNames('dc-input', {
                 'dc-input--disabled': disabled,
                 'dc-input--error': error,
-                'dc-input--hint': hint,
+                'dc-input--hint dc-datepicker--hint': hint,
             })}
         >
             <div

@@ -456,7 +456,10 @@
         }
     }
     &__header:not(:first-child) {
-        margin-top: 1.6rem;
+        margin-top: -1rem;
+        @include mobile {
+            margin-top: 1.6rem;
+        }
     }
     &__title {
         padding-right: 0.8rem;

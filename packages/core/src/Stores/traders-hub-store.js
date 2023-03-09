@@ -381,10 +381,19 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
+        const { gaming_company } = this.root_store.client.landing_companies;
+
+        const only_gaming_company = gaming_company?.shortcode === 'svg';
+
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
             );
+            return;
+        }
+
+        if (only_gaming_company) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(account => account.name === 'Derived');
             return;
         }
 

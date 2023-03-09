@@ -2,7 +2,14 @@ import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getCFDAccountKey, isMobile } from '@deriv/shared';
+import {
+    CFD_PLATFORMS,
+    getCFDAccountDisplay,
+    getCFDPlatformLabel,
+    getCFDAccountKey,
+    getPlatformSettings,
+    isMobile,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { QRCode } from 'react-qrcode';
@@ -256,7 +263,9 @@ const DerivXTradeModal = ({
                             style={{ height: 'auto', maxWidth: '100%', width: '80%' }}
                         />
                         <Text align='center' size='xxs'>
-                            {localize('Scan the QR code to download Deriv X.')}
+                            {localize('Scan the QR code to download {{ platform }}.', {
+                                platform: getPlatformSettings('dxtrade').name,
+                            })}
                         </Text>
                     </div>
                 )}

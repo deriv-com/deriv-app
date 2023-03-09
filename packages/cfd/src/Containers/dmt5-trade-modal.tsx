@@ -7,6 +7,7 @@ import {
     isMobile,
     getCFDAccountDisplay,
     getCFDPlatformLabel,
+    getPlatformSettings,
     getUrlBase,
     getCFDAccountKey,
 } from '@deriv/shared';
@@ -115,7 +116,7 @@ const DMT5TradeModal = ({
             shortcode: getCompanyShortcode(),
             is_mt5_trade_modal: true,
         });
-    const getAccountIcon = () => {
+    const getAccountTitle = () => {
         if (show_eu_related_content) return 'CFDs';
         else if (mt5_trade_account.market_type === 'synthetic') return 'Derived';
         return 'Financial';
@@ -123,7 +124,7 @@ const DMT5TradeModal = ({
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                <TradingPlatformIcon icon={getAccountIcon()} size={24} />
+                <TradingPlatformIcon icon={getAccountTitle()} size={24} />
                 <div className='cfd-trade-modal__desc'>
                     <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                         {getHeadingTitle()}
@@ -274,7 +275,13 @@ const DMT5TradeModal = ({
                 size={isMobile() ? 'xxxs' : 'xxs'}
                 weight='bold'
             >
-                {localize('Download Deriv MT5 on your phone to trade with the Deriv MT5 Derived account')}
+                {localize(
+                    'Download {{ platform }} on your phone to trade with the {{ platform }} {{ account }} account',
+                    {
+                        platform: getCFDPlatformLabel(CFD_PLATFORMS.MT5),
+                        account: getAccountTitle(),
+                    }
+                )}
             </Text>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
@@ -292,7 +299,9 @@ const DMT5TradeModal = ({
                     <div className='cfd-trade-modal__download-center-options--qrcode'>
                         <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
                         <Text align='center' size='xxs'>
-                            {localize('Scan the QR code to download Deriv MT5.')}
+                            {localize('Scan the QR code to download {{ platform }}.', {
+                                platform: getPlatformSettings('mt5').name,
+                            })}
                         </Text>
                     </div>
                 )}

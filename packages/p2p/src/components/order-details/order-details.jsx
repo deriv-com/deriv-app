@@ -92,7 +92,7 @@ const OrderDetails = observer(() => {
             } else {
                 sendbird_store.createChatForNewOrder(order_store.order_id);
             }
-        }, 1000);
+        }, 1250);
 
         return () => {
             disposeListeners();

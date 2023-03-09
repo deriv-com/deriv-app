@@ -290,7 +290,6 @@ export default class BuySellStore extends BaseStore {
         if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
             sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
             order_store.setOrderDetails(order);
-            this.create_order_subscription.unsubscribe();
         }
     };
 

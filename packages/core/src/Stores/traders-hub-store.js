@@ -1,11 +1,5 @@
 import { action, makeObservable, observable, reaction, computed, runInAction } from 'mobx';
-import {
-    available_traders_hub_cfd_accounts,
-    CFD_PLATFORMS,
-    ContentFlag,
-    formatMoney,
-    getAppstorePlatforms,
-} from '@deriv/shared';
+import { getCFDAvailableAccount, CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms } from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
 import { isEuCountry } from '_common/utility';
@@ -262,6 +256,9 @@ export default class TradersHubStore extends BaseStore {
         const { is_logged_in, landing_companies, residence } = this.root_store.client;
         const { financial_company, gaming_company } = landing_companies;
 
+        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
+        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
+
         if (!is_logged_in) return '';
         if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
             if (this.is_demo) return ContentFlag.EU_DEMO;
@@ -273,7 +270,10 @@ export default class TradersHubStore extends BaseStore {
         ) {
             if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
             return ContentFlag.LOW_RISK_CR_NON_EU;
-        } else if (financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg' && this.is_real) {
+        } else if (
+            ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') || restricted_countries) &&
+            this.is_real
+        ) {
             return ContentFlag.HIGH_RISK_CR;
         }
 
@@ -359,7 +359,7 @@ export default class TradersHubStore extends BaseStore {
                   );
 
         const all_available_accounts = [
-            ...available_traders_hub_cfd_accounts,
+            ...getCFDAvailableAccount(),
             {
                 name: !this.is_eu_user || this.is_demo_low_risk ? localize('Financial') : localize('CFDs'),
                 description: account_desc,

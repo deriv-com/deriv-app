@@ -116,7 +116,6 @@ const TotalAssets = ({ category }: TTotalAssets) => {
     };
 
     const currency = account_total_balance_currency;
-    const popover_text = localize('Total assets in all your accounts');
 
     return (
         <div className='total-assets'>
@@ -153,7 +152,7 @@ const TotalAssets = ({ category }: TTotalAssets) => {
                     icon='info'
                     disable_message_icon
                     is_bubble_hover_enabled
-                    message={popover_text}
+                    message={localize('Total assets in all your accounts')}
                     zIndex={9999}
                 />
             </div>

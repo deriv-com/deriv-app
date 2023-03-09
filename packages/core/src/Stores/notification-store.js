@@ -546,7 +546,6 @@ export default class NotificationStore extends BaseStore {
                 } else if (svg_poi_expired) {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
-            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {

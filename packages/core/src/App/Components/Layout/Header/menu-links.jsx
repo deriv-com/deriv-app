@@ -55,14 +55,15 @@ const CashierTab = observer(() => {
 
 const MenuLinks = observer(() => {
     const { client, ui } = useStore();
-    const { is_logged_in, is_pre_appstore } = client;
+    const { is_logged_in } = client;
     const { is_mobile } = ui;
+    const is_traders_hub = window.location.pathname === routes.traders_hub;
 
     if (!is_logged_in) return <></>;
 
     return (
         <div className='header__menu-links'>
-            {!is_pre_appstore && <ReportTab />}
+            {!is_traders_hub && <ReportTab />}
             {!is_mobile && <CashierTab />}
         </div>
     );

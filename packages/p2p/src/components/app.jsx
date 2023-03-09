@@ -9,6 +9,7 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
+import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import './app.scss';
 import Routes from './routes/routes.jsx';
 
@@ -69,11 +70,7 @@ const App = props => {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);
         }
-        general_store.props.setP2POrderProps({
-            order_id,
-            redirectToOrderDetails: general_store.redirectToOrderDetails,
-            setIsRatingModalOpen: order_store.setIsRatingModalOpen,
-        });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 
@@ -93,7 +90,7 @@ const App = props => {
             order_store.setVerificationCode(verification_code);
         }
         if (verification_action && verification_code) {
-            order_store.setIsLoadingModalOpen(true);
+            general_store.showModal({ key: 'LoadingModal', props: {} });
             order_store.verifyEmailVerificationCode(verification_action, verification_code);
         }
 
@@ -105,7 +102,10 @@ const App = props => {
             <Routes />
             <main className={classNames('p2p-cashier', className)}>
                 <Notifications />
-                <AppContent />
+                <ModalManagerContextProvider>
+                    <ModalManager />
+                    <AppContent order_id={order_id} />
+                </ModalManagerContextProvider>
             </main>
         </Router>
     );

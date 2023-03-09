@@ -25,22 +25,22 @@ export default class GoogleDriveStore {
     is_authorised = !!localStorage.getItem('google_access_token');
 
     setKey = () => {
-        const { aid, cid, api } = config.gd;
+        const { aid, cid, api, scope, discovery_docs } = config.gd;
         this.client_id = cid;
         this.app_id = aid;
         this.api_key = api;
+        this.scope = scope;
+        this.discovery_docs = discovery_docs;
     };
 
     initialise = () => {
-        gapi.load('client:picker', () =>
-            gapi.client.load('https://www.googleapis.com/discovery/v1/apis/drive/v3/rest')
-        );
+        gapi.load('client:picker', () => gapi.client.load(this.discovery_docs));
     };
 
     initialiseClient = () => {
         this.client = google.accounts.oauth2.initTokenClient({
             client_id: this.client_id,
-            scope: 'https://www.googleapis.com/auth/drive.file',
+            scope: this.scope,
             callback: response => {
                 this.access_token = response.access_token;
                 this.updateSigninStatus(true);

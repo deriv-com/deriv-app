@@ -78,14 +78,16 @@ class GoogleDriveUtil {
     };
 
     login = () => {
-        gapi.client.setToken('');
-        this.client.callback = response => {
-            this.access_token = response.access_token;
-            localStorage.setItem('access_token', this.access_token);
-            store.dispatch(setGdLoggedIn(false));
-            this.updateLoginStatus(true);
-        };
-        this.client.requestAccessToken({ prompt: '' });
+        if (!this.access_token) {
+            gapi.client.setToken('');
+            this.client.callback = response => {
+                this.access_token = response.access_token;
+                localStorage.setItem('access_token', this.access_token);
+                store.dispatch(setGdLoggedIn(false));
+                this.updateLoginStatus(true);
+            };
+            this.client.requestAccessToken({ prompt: '' });
+        }
     };
 
     removeGdBackground = () => {

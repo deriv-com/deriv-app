@@ -27,7 +27,6 @@ import {
 } from '../quick-strategy.types';
 import { TDataUniqInput } from './data/data-uniq-input-obj';
 import { TCommonInputsProperties } from './data/common-input-properties';
-import { bool } from 'prop-types';
 
 export type TQuickStrategyForm = {
     active_index: number;

@@ -28,7 +28,7 @@ interface ILoadModalStore {
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
     refreshStratagies: () => void;
-    refreshStratagiesr: () => void;
+    refreshStratagiesTheme: () => void;
     preview_workspace: () => void;
     handleFileChange: (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
@@ -75,7 +75,7 @@ export default class LoadModalStore implements ILoadModalStore {
             selected_strategy: computed,
             tab_name: computed,
             refreshStratagies: action.bound,
-            refreshStratagiesr: action.bound,
+            refreshStratagiesTheme: action.bound,
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
             loadFileFromLocal: action.bound,
@@ -197,7 +197,7 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-    refreshStratagiesr = (): void => {
+    refreshStratagiesTheme = (): void => {
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
     };
     loadFileFromRecent = (): void => {
@@ -345,7 +345,7 @@ export default class LoadModalStore implements ILoadModalStore {
         }
         const dark_mode = document.body.classList.contains('theme--dark');
         setColors(dark_mode);
-        this.refreshStratagiesr();
+        this.refreshStratagiesTheme();
         const {
             save_modal: { updateBotName },
         } = this.root_store;

@@ -16,7 +16,6 @@ type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
     getSaveType: (type: string) => string;
     index: number;
-    is_dark_mode_on: boolean;
     loadFileFromRecent: () => void;
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     previewRecentStrategy: (workspaceId: string) => void;
@@ -24,7 +23,6 @@ type TRecentWorkspace = {
     setActiveTab: (active_tab: number) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     toggleSaveModal: () => void;
-    refresh: () => void;
     workspace: { [key: string]: string };
 };
 
@@ -35,7 +33,6 @@ const RecentWorkspace = ({
     getSaveType,
     index,
     loadFileFromRecent,
-    refresh,
     onToggleDeleteDialog,
     previewRecentStrategy,
     selected_strategy_id,
@@ -43,7 +40,6 @@ const RecentWorkspace = ({
     setPreviewOnDialog,
     toggleSaveModal,
     workspace,
-    is_dark_mode_on,
 }: TRecentWorkspace) => {
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     const toggle_ref = React.useRef<HTMLDivElement>(null);
@@ -64,9 +60,6 @@ const RecentWorkspace = ({
         e.preventDefault();
         setDropdownVisibility(!is_dropdown_visible);
     };
-    React.useEffect(() => {
-        //refresh();
-    }, [is_dark_mode_on]);
 
     const viewRecentStrategy = (type: string) => {
         if (is_mobile && type === STRATEGY.PREVIEW_LIST) {
@@ -194,7 +187,7 @@ const RecentWorkspace = ({
     );
 };
 
-export default connect(({ load_modal, dashboard, save_modal, ui }: RootStore) => ({
+export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     active_tab: dashboard.active_tab,
     dashboard_strategies: load_modal.dashboard_strategies,
     getRecentFileIcon: load_modal.getRecentFileIcon,
@@ -203,9 +196,7 @@ export default connect(({ load_modal, dashboard, save_modal, ui }: RootStore) =>
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     previewRecentStrategy: load_modal.previewRecentStrategy,
     selected_strategy_id: load_modal.selected_strategy_id,
-    loadFile: load_modal.loadFile,
     setActiveTab: dashboard.setActiveTab,
     setPreviewOnDialog: dashboard.setPreviewOnDialog,
     toggleSaveModal: save_modal.toggleSaveModal,
-    is_dark_mode_on: ui.is_dark_mode_on,
 }))(RecentWorkspace);

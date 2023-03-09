@@ -34,7 +34,7 @@ const TradingAppCard = ({
 
     const app_platform = !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? platform_config : mf_platform_config;
 
-    const { app_desc, link_to, is_external } = app_platform.find(config => config.name === name) || {
+    const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
     };
@@ -100,6 +100,7 @@ const TradingAppCard = ({
                         link_to={link_to}
                         onAction={onAction}
                         is_external={is_external}
+                        new_tab={new_tab}
                         is_buttons_disabled={!!mt5_acc_auth_status}
                         is_real={is_real}
                     />

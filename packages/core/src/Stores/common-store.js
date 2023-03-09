@@ -117,7 +117,7 @@ export default class CommonStore extends BaseStore {
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-        changeLanguage(key, () => this.changeCurrentLanguage(key));
+
         WS.setSettings({
             set_settings: 1,
             preferred_language: key,
@@ -129,7 +129,10 @@ export default class CommonStore extends BaseStore {
                 new_url.searchParams.set('lang', key);
             }
             window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            BinarySocket.closeAndOpenNewConnection(key);
+            changeLanguage(key, () => {
+                this.changeCurrentLanguage(key);
+                BinarySocket.closeAndOpenNewConnection(key);
+            });
         });
     };
 

@@ -78,7 +78,7 @@ export default class TradersHubStore extends BaseStore {
             no_CR_account: computed,
             no_MF_account: computed,
             multipliers_account_status: computed,
-            restricted_countries: computed,
+            financial_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -382,7 +382,7 @@ export default class TradersHubStore extends BaseStore {
         this.setCombinedCFDMT5Accounts();
     }
 
-    get restricted_countries() {
+    get financial_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
         return gaming_company?.shortcode === 'svg' && !financial_company;
@@ -396,7 +396,7 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
 
-        if (this.restricted_countries) {
+        if (this.financial_restricted_countries) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(
                 account => account.market_type !== 'financial' && account.platform === CFD_PLATFORMS.MT5
             );

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { Icon, Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import RecommendedModal from './recommended-modal.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const RecommendedBy = ({ recommended_average, recommended_count }) => {
-    const [is_recommended_modal_open, setIsRecommendedModalOpen] = React.useState(false);
+    const { showModal } = useModalManagerContext();
+
     const getRecommendedMessage = () => {
         if (recommended_count) {
             if (recommended_count === 1) {
@@ -23,16 +24,21 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
 
     return (
         <React.Fragment>
-            <RecommendedModal
-                is_recommended_modal_open={is_recommended_modal_open}
-                message={getRecommendedMessage()}
-                setIsRecommendedModalOpen={setIsRecommendedModalOpen}
-            />
             <Popover
                 alignment='top'
                 className='recommended-by--container'
                 message={getRecommendedMessage()}
-                onClick={isMobile() ? () => setIsRecommendedModalOpen(true) : () => {}}
+                onClick={
+                    isMobile()
+                        ? () =>
+                              showModal({
+                                  key: 'RecommendedModal',
+                                  props: {
+                                      message: getRecommendedMessage(),
+                                  },
+                              })
+                        : () => {}
+                }
             >
                 <Icon
                     className='recommended-by--icon'

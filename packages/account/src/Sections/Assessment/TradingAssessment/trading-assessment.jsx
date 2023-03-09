@@ -112,6 +112,7 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => 
                 title={localize('Risk Tolerance Warning')}
                 button_text={localize('Yes, I understand the risk.')}
                 onClick={handleAcceptRisk}
+                handleToggle={() => setShouldShowWarningModal(!should_show_warning_modal)}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, you must confirm that you understand your capital is at risk.'

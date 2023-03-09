@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { formatDate, formatTime } from '@deriv/shared';
+import { formatDate, formatTime, isMobile } from '@deriv/shared';
 
 const CooldownWarningModal = ({
     should_show_cooldown_modal,
@@ -12,14 +12,16 @@ const CooldownWarningModal = ({
     const unblock_date = formatDate(real_account_creation_unlock_date, 'DD MMMM');
     const unblock_time = formatTime(real_account_creation_unlock_date, 'hh:mm [GMT]');
     const real_account_unblock_date = localize('{{unblock_date}} at {{unblock_time}}', { unblock_date, unblock_time });
+    const handleToggleModal = () => setShouldShowCooldownModal(!should_show_cooldown_modal);
 
     return (
         <Modal
             width='44rem'
             title={localize('Account creation paused for 24 hours')}
             is_open={should_show_cooldown_modal}
+            toggleModal={handleToggleModal}
             className='center-risk-modal'
-            has_close_icon={false}
+            has_close_icon={!isMobile()}
         >
             <Modal.Body>
                 <Icon icon='IcRedWarning' size={63} />

@@ -2,7 +2,15 @@ import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_text, body_content, has_icon }) => {
+const RiskToleranceWarningModal = ({
+    show_risk_modal,
+    onClick,
+    title,
+    button_text,
+    body_content,
+    has_icon,
+    handleToggle,
+}) => {
     return (
         <React.Fragment>
             <MobileWrapper>
@@ -23,11 +31,11 @@ const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_tex
             <DesktopWrapper>
                 <Modal
                     width='44rem'
-                    height={has_icon ? '44rem' : '37.4rem'}
                     title={title}
+                    height={has_icon ? '44rem' : '37.4rem'}
                     is_open={show_risk_modal}
-                    has_close_icon={false}
                     className='center-risk-modal'
+                    toggleModal={handleToggle}
                 >
                     <Modal.Body>
                         {has_icon && <Icon icon='IcRedWarning' size={63} />}

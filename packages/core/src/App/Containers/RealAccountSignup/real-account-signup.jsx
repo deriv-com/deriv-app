@@ -487,7 +487,6 @@ const RealAccountSignup = ({
     if (assessment_decline) {
         return (
             <RiskToleranceWarningModal
-                has_icon={false}
                 show_risk_modal={assessment_decline}
                 onClick={handleRiskAcceptance}
                 title={risk_warning_title}
@@ -504,7 +503,6 @@ const RealAccountSignup = ({
     } else if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
-                has_icon={true}
                 show_risk_modal={should_show_risk_warning_modal}
                 onClick={handleRiskAcceptance}
                 title={risk_warning_title}

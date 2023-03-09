@@ -107,7 +107,6 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => 
     if (should_accept_risk) {
         return (
             <RiskToleranceWarningModal
-                has_icon={true}
                 show_risk_modal
                 title={localize('Risk Tolerance Warning')}
                 button_text={localize('Yes, I understand the risk.')}

@@ -14,8 +14,8 @@
             "Sections/*": ["src/Sections/*"],
             "Stores/*": ["src/Stores/*"],
             "Types": ["src/Types"],
-            "@deriv/*": ["../*/src"],
+            "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src", "globals.d.ts", "../../utils.d.ts"]
+    "include": ["src", "globals.d.ts", "../../global.d.ts", "../../utils.d.ts"]
 }

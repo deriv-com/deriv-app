@@ -10,7 +10,6 @@ import {
     MT5TradeModal,
     CFDPasswordManagerModal,
     CompareAccountsModal,
-    TradeModal,
 } from '@deriv/cfd';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
@@ -149,15 +148,6 @@ const ModalManager = () => {
                 context={store}
                 current_list={current_list}
                 is_open={is_mt5_trade_modal_visible}
-                onPasswordManager={togglePasswordManagerModal}
-                toggleModal={toggleMT5TradeModal}
-                is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
-                is_demo={is_demo}
-            />
-            <TradeModal
-                context={store}
-                current_list={current_list}
-                is_open={true}
                 onPasswordManager={togglePasswordManagerModal}
                 toggleModal={toggleMT5TradeModal}
                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}

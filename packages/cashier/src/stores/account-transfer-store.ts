@@ -14,7 +14,7 @@ import {
     routes,
 } from '@deriv/shared';
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
@@ -41,7 +41,6 @@ export default class AccountTransferStore {
             should_switch_account: observable,
             transfer_fee: observable,
             transfer_limit: observable,
-            is_account_transfer_visible: computed,
             is_transfer_locked: computed,
             setBalanceByLoginId: action.bound,
             setBalanceSelectedFrom: action.bound,
@@ -81,7 +80,7 @@ export default class AccountTransferStore {
     is_mt5_transfer_in_progress = false;
     minimum_fee: string | null = null;
     receipt = {
-        amount_transferred: 0,
+        amount_transferred: '',
     };
     selected_from: TAccount = {};
     selected_to: TAccount = {};
@@ -89,13 +88,6 @@ export default class AccountTransferStore {
     should_switch_account = false;
     transfer_fee?: number | null = null;
     transfer_limit: { min?: string | null; max?: string | null } = {};
-
-    get is_account_transfer_visible() {
-        const { has_maltainvest_account, landing_company_shortcode, residence } = this.root_store.client;
-        // cashier Transfer account tab is hidden for iom clients
-        // check for residence to hide the tab before creating a real money account
-        return residence !== 'im' && (landing_company_shortcode !== 'malta' || has_maltainvest_account);
-    }
 
     get is_transfer_locked() {
         const {
@@ -520,7 +512,7 @@ export default class AccountTransferStore {
         this.is_mt5_transfer_in_progress = is_mt5_transfer_in_progress;
     }
 
-    setReceiptTransfer({ amount }: { amount: number }): void {
+    setReceiptTransfer({ amount }: { amount: string }): void {
         this.receipt = {
             amount_transferred: amount,
         };
@@ -624,7 +616,7 @@ export default class AccountTransferStore {
             }
             this.error.setErrorMessage(transfer_between_accounts.error);
         } else {
-            this.setReceiptTransfer({ amount: Number(formatMoney(currency || '', amount, true)) });
+            this.setReceiptTransfer({ amount: formatMoney(currency || '', amount, true) });
             transfer_between_accounts.accounts?.forEach(account => {
                 this.setBalanceByLoginId(account.loginid || '', account.balance || '');
                 if (account.loginid === this.selected_from.value) {
@@ -719,8 +711,6 @@ export default class AccountTransferStore {
             const { is_ok, message } = validNumber(converter_to_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency || ''),
-                min: 0,
-                max: 0,
             });
             if (!is_ok) {
                 setConverterToError(message);

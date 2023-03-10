@@ -11,6 +11,7 @@ import Notification, {
 } from '../Components/Elements/NotificationMessage';
 import 'Sass/app/_common/components/app-notification-message.scss';
 import classNames from 'classnames';
+import { useLocation } from 'react-router-dom';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -18,7 +19,6 @@ const Portal = ({ children }) =>
 const NotificationsContent = ({
     is_notification_loaded,
     style,
-    is_pre_appstore,
     notifications,
     removeNotificationMessage,
     markNotificationMessage,
@@ -41,11 +41,12 @@ const NotificationsContent = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window_location]);
+    const { pathname } = useLocation();
 
     return (
         <div
             className={classNames('notification-messages', {
-                'notification-messages--traders-hub': is_pre_appstore,
+                'notification-messages--traders-hub': pathname === routes.traders_hub,
             })}
             style={style}
         >
@@ -75,7 +76,6 @@ const NotificationsContent = ({
 const AppNotificationMessages = ({
     is_notification_loaded,
     is_mt5,
-    is_pre_appstore,
     marked_notifications,
     notification_messages,
     removeNotificationMessage,
@@ -166,7 +166,6 @@ const AppNotificationMessages = ({
                     has_iom_account={has_iom_account}
                     has_malta_account={has_malta_account}
                     is_logged_in={is_logged_in}
-                    is_pre_appstore={is_pre_appstore}
                 />
             </Portal>
         </div>
@@ -205,7 +204,6 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
     should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
-    is_pre_appstore: PropTypes.bool,
 };
 
 export default connect(({ client, notifications }) => ({
@@ -218,5 +216,4 @@ export default connect(({ client, notifications }) => ({
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
     should_show_popups: notifications.should_show_popups,
-    is_pre_appstore: client.is_pre_appstore,
 }))(AppNotificationMessages);

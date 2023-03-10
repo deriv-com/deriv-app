@@ -12,7 +12,6 @@ describe('<Virtual />', () => {
     beforeEach(() => {
         mockRootStore = {
             ui: { is_dark_mode_on: true, toggleAccountsDialog: jest.fn() },
-            client: { is_pre_appstore: true },
         };
     });
 

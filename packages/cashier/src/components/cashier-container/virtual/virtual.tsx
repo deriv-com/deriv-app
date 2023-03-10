@@ -10,7 +10,6 @@ import './virtual.scss';
 const Virtual = observer(() => {
     const {
         ui: { is_dark_mode_on, toggleAccountsDialog },
-        client: { is_pre_appstore },
     } = useStore();
     const history = useHistory();
 
@@ -46,12 +45,7 @@ const Virtual = observer(() => {
                                 key={1}
                                 className='virtual__account-switch-text'
                                 onClick={() => {
-                                    if (is_pre_appstore) {
-                                        history.push(routes.trade);
-                                        toggleAccountsDialog();
-                                    } else {
-                                        toggleAccountsDialog();
-                                    }
+                                    toggleAccountsDialog();
                                 }}
                             />,
                         ]}

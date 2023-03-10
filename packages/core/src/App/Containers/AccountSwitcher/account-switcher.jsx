@@ -188,6 +188,7 @@ const AccountSwitcher = props => {
             account => !account.is_virtual && account.loginid.startsWith(type)
         ).length > 1;
 
+    // all: 1 in mt5_status response means that server is suspended
     const has_cr_account = props.account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
 
     const demo_account = (

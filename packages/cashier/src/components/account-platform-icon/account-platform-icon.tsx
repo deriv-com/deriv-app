@@ -14,15 +14,22 @@ type TAccountPlatformIcon = {
 const AccountPlatformIcon = ({
     account,
     size,
+    icon_class_name,
     appstore_icon_class_name,
     appstoreIconOnClickHandler,
 }: TAccountPlatformIcon) => {
-    return (
+    return account.is_mt && account.platform_icon ? (
         <TradingPlatformIcon
             icon={account.platform_icon}
             size={size}
             className={appstore_icon_class_name}
             onClick={appstoreIconOnClickHandler}
+        />
+    ) : (
+        <Icon
+            icon={account.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
+            size={size}
+            className={icon_class_name}
         />
     );
 };

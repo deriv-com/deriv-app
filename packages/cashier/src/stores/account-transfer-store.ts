@@ -369,8 +369,6 @@ export default class AccountTransferStore {
         const arr_accounts: TTransferAccount | TAccount[] = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        const is_from_pre_appstore = !location.pathname.startsWith(routes.cashier);
-
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
@@ -426,9 +424,10 @@ export default class AccountTransferStore {
 
             const obj_values: TAccount = {
                 text:
-                    is_cfd && account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
-                        ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
-                        : account_text_display,
+                    is_cfd &&
+                    account.account_type === CFD_PLATFORMS.MT5 &&
+                    combined_cfd_mt5_account &&
+                    `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`,
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
@@ -438,9 +437,9 @@ export default class AccountTransferStore {
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
                     platform_icon:
-                        account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
-                            ? combined_cfd_mt5_account.icon
-                            : cfd_icon_display,
+                        account.account_type === CFD_PLATFORMS.MT5 &&
+                        combined_cfd_mt5_account &&
+                        combined_cfd_mt5_account.icon,
                     status: account?.status,
                     market_type: getCFDAccount({
                         market_type: account.market_type,
@@ -467,9 +466,11 @@ export default class AccountTransferStore {
 
                 const { account_id, login } = this.root_store.traders_hub?.selected_account;
 
+                const is_traders_hub = window.location.pathname === routes.traders_hub;
+
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account
-                if (!is_from_pre_appstore || [account_id, login].includes(account.loginid)) {
+                if (is_traders_hub || [account_id, login].includes(account.loginid)) {
                     this.setSelectedTo(obj_values);
                 }
             }

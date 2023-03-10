@@ -460,7 +460,6 @@
         }
     }
     &__header:not(:first-child) {
-        margin-top: -1rem;
         @include mobile {
             margin-top: 1.6rem;
         }

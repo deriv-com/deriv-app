@@ -38,7 +38,6 @@ const TurbosInfo = ({ className, currency, has_stop_loss, max_stake, min_stake }
 };
 
 TurbosInfo.propTypes = {
-    amount: PropTypes.number,
     className: PropTypes.string,
     currency: PropTypes.string,
     has_stop_loss: PropTypes.bool,
@@ -47,7 +46,6 @@ TurbosInfo.propTypes = {
 };
 
 export default connect(({ modules }) => ({
-    amount: modules.trade.amount,
     currency: modules.trade.currency,
     has_stop_loss: modules.trade.has_stop_loss,
     max_stake: modules.trade.max_stake,

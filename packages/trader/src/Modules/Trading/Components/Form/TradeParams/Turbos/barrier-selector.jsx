@@ -82,7 +82,6 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
             <Button
                 className='trade-container__barriers__footer__button'
                 type='submit'
-                data-testid='submit-button'
                 text={localize('Select barrier')}
                 large
                 primary
@@ -116,8 +115,8 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
                 header_classname='trade-container__barriers-table__header'
             >
                 <BarriersList
-                    base_classname='trade-container__barriers-table__item'
                     active_item_classname='trade-container__barriers-table__item--selected'
+                    base_classname='trade-container__barriers-table__item'
                     className='trade-container__barriers-table__list'
                     list={turbos_barrier_choices}
                     selected_item={selected_barrier}
@@ -139,7 +138,7 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
                     <Text size='xs' className='trade-container__barriers-spot'>
                         {localize('Spot')}
                     </Text>
-                    <Text size='xs' className='trade-container__barriers-value'>
+                    <Text size='xs' className='trade-container__barriers-value' data-testid='current_barrier'>
                         {barrier_1}
                     </Text>
                 </div>
@@ -167,8 +166,8 @@ const BarrierSelector = ({ barrier_1, onChange, setHoveredBarrier, turbos_barrie
                             </div>
                         </div>
                         <BarriersList
-                            base_classname='trade-container__barriers-table__item'
                             active_item_classname='trade-container__barriers-table__item--selected'
+                            base_classname='trade-container__barriers-table__item'
                             className='trade-container__barriers-table__list'
                             list={turbos_barrier_choices}
                             selected_item={selected_barrier}

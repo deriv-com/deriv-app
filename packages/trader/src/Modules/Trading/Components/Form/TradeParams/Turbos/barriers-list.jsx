@@ -22,6 +22,7 @@ const BarriersList = ({ active_item_classname, base_classname, selected_item, cl
                 as='li'
                 key={barrier}
                 id={barrier}
+                data-testid={barrier}
                 className={genetated_class_name}
                 onClick={() => onClick(barrier)}
                 onMouseEnter={() => onMouseEnter(barrier)}

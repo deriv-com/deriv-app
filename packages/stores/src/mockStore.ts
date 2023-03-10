@@ -176,6 +176,7 @@ const mock = (): TRootStore => {
             is_risky_client: false,
             logout: jest.fn(),
             should_allow_authentication: false,
+            should_allow_poinc_authentication: false,
             active_accounts: [],
             account_list: [],
             available_crypto_currencies: [],

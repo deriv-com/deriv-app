@@ -119,13 +119,6 @@ describe('GeneralStore', () => {
     //     expect(general_store.is_p2p_enabled).toBeTruthy();
     // });
 
-    it('should not show p2p in cashier onboarding if p2p_advertiser_error is equal to "RestrictedCountry"', () => {
-        general_store.setP2pAdvertiserError('RestrictedCountry');
-        general_store.showP2pInCashierOnboarding();
-
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
-    });
-
     it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has not account with USD currency', () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
         general_store.showP2pInCashierOnboarding();
@@ -262,45 +255,17 @@ describe('GeneralStore', () => {
     });
 
     it('should perform proper init invocation when is_logged_in is equal to true', async () => {
-        const spyGetAdvertizerError = jest.spyOn(general_store, 'getAdvertizerError');
         const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
         general_store.root_store.client.is_logged_in = true;
         general_store.init();
 
         await waitFor(() => {
-            expect(spyGetAdvertizerError).toHaveBeenCalledTimes(1);
+            expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
         });
-        expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
+
         // eslint-disable-next-line testing-library/await-async-utils
-        expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
+        expect(general_store.WS.wait).toHaveBeenCalledTimes(2);
         expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
-    });
-
-    it('should set advertiser error', async () => {
-        const spySetP2pAdvertiserError = jest.spyOn(general_store, 'setP2pAdvertiserError');
-        await general_store.getAdvertizerError();
-
-        expect(spySetP2pAdvertiserError).toHaveBeenCalledWith('advertiser_error');
-    });
-
-    it('should set p2p advertiser error', () => {
-        general_store.setP2pAdvertiserError('p2p_advertiser_error');
-
-        expect(general_store.p2p_advertiser_error).toBe('p2p_advertiser_error');
-    });
-
-    it('should set is_p2p_visible equal to false, if there is a "RestrictedCountry" p2p advertiser error', () => {
-        general_store.setP2pAdvertiserError('RestrictedCountry');
-        general_store.checkP2pStatus();
-
-        expect(general_store.is_p2p_visible).toBeFalsy();
-    });
-
-    it('should set is_p2p_visible equal to false, if there is a "RestrictedCurrency" p2p advertiser error', () => {
-        general_store.setP2pAdvertiserError('RestrictedCurrency');
-        general_store.checkP2pStatus();
-
-        expect(general_store.is_p2p_visible).toBeFalsy();
     });
 
     it('should set is_p2p_visible equal to false, if there is a virtual account', () => {

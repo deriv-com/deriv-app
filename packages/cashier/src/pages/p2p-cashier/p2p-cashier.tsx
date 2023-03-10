@@ -22,13 +22,23 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
     const { notifications, client, ui, common } = useStore();
     const {
         addNotificationMessage,
+        client_notifications,
         filterNotificationMessages,
         refreshNotifications,
         removeNotificationByKey,
         removeNotificationMessage,
         setP2POrderProps,
     } = notifications;
-    const { balance, currency, local_currency_config, loginid, is_logging_in, is_virtual, residence } = client;
+    const {
+        balance,
+        currency,
+        local_currency_config,
+        loginid,
+        is_logging_in,
+        is_virtual,
+        residence,
+        setP2pAdvertiserInfo,
+    } = client;
     const { notification_messages_ui: Notifications, is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
     const { platform } = common;
     const { general_store } = useCashierStore();
@@ -122,7 +132,8 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
         <P2P
             addNotificationMessage={addNotificationMessage}
             balance={balance}
-            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            client={{ currency, local_currency_config, is_virtual, residence, loginid, setP2pAdvertiserInfo }}
+            client_notifications={client_notifications}
             current_focus={current_focus}
             filterNotificationMessages={filterNotificationMessages}
             history={history}

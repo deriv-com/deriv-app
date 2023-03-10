@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { useAllPaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -15,7 +16,6 @@ const CRYPTO_CURRENCY_TYPE = 'crypto';
 const FIAT_CURRENCY_TYPE = 'fiat';
 
 const AddCurrency = ({
-    all_payment_agent_list,
     available_crypto_currencies,
     has_fiat,
     legal_allowed_currencies,
@@ -30,13 +30,15 @@ const AddCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
 
-    const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
-        legal_allowed_currencies,
-        all_payment_agent_list
-    );
+    const { data: all_payment_agent_list } = useAllPaymentAgentList();
 
-    const getReorderedCryptoCurrencies = () => {
-        const reorderCryptoCurrencies = reorderCurrencies(
+    const getReorderedCurrencies = React.useMemo(() => {
+        const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
+            legal_allowed_currencies,
+            all_payment_agent_list
+        );
+
+        const crypto = reorderCurrencies(
             allowed_currencies_payment_agent_availability?.filter(
                 currency =>
                     currency.type === CRYPTO_CURRENCY_TYPE &&
@@ -45,17 +47,19 @@ const AddCurrency = ({
             CRYPTO_CURRENCY_TYPE
         );
 
-        return reorderCryptoCurrencies;
-    };
-
-    const getReorderedFiatCurrencies = () =>
-        reorderCurrencies(
+        const fiat = reorderCurrencies(
             allowed_currencies_payment_agent_availability?.filter(
                 currency =>
                     currency.type === FIAT_CURRENCY_TYPE &&
                     !available_crypto_currencies.some(x => x.value === currency.value)
             )
         );
+
+        return {
+            crypto,
+            fiat,
+        };
+    }, [all_payment_agent_list, available_crypto_currencies, legal_allowed_currencies]);
 
     const onClickBack = () => {
         openRealAccountSignup('choose');
@@ -78,9 +82,9 @@ const AddCurrency = ({
                 <CurrencyRadioButtonGroup
                     id='crypto_currency'
                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                    item_count={getReorderedFiatCurrencies().length}
+                    item_count={getReorderedCurrencies.fiat.length}
                 >
-                    {getReorderedFiatCurrencies().map(currency => (
+                    {getReorderedCurrencies.fiat.map(currency => (
                         <Field
                             key={currency.value}
                             component={CurrencyRadioButton}
@@ -110,9 +114,9 @@ const AddCurrency = ({
                 <CurrencyRadioButtonGroup
                     id='crypto_currency'
                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                    item_count={getReorderedCryptoCurrencies().length}
+                    item_count={getReorderedCurrencies.crypto.length}
                 >
-                    {getReorderedCryptoCurrencies().map(currency => (
+                    {getReorderedCurrencies.crypto.map(currency => (
                         <Field
                             key={currency.value}
                             component={CurrencyRadioButton}

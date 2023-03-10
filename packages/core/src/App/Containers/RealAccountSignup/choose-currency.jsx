@@ -2,6 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Text, ThemedScrollbars } from '@deriv/components';
+import { useAllPaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { reorderCurrencies, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -13,7 +14,6 @@ const CRYPTO_CURRENCY_TYPE = 'crypto';
 
 const ChooseCurrency = ({
     account_list,
-    all_payment_agent_list,
     available_crypto_currencies,
     closeRealAccountSignup,
     continueRouteAfterChooseCrypto,
@@ -30,25 +30,27 @@ const ChooseCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
 
+    const { data: all_payment_agent_list } = useAllPaymentAgentList();
+
     React.useEffect(() => {
         return () => setShouldShowAllAvailableCurrencies(false);
     }, [setShouldShowAllAvailableCurrencies]);
 
-    const hasAllCryptos = () => {
-        return (
-            legal_allowed_currencies?.filter(
-                currency =>
-                    currency.type === CRYPTO_CURRENCY_TYPE && !account_list.some(x => x.title === currency.value)
-            ).length === 0
-        );
-    };
+    const getReorderedCryptoCurrencies = React.useMemo(() => {
+        const hasAllCryptos = () => {
+            return (
+                legal_allowed_currencies?.filter(
+                    currency =>
+                        currency.type === CRYPTO_CURRENCY_TYPE && !account_list.some(x => x.title === currency.value)
+                ).length === 0
+            );
+        };
 
-    const addNewCryptoAccount = () => {
-        openRealAccountSignup(deposit_target === routes.cashier_pa ? 'add_currency' : 'add_crypto');
-        setShouldShowCancel(true);
-    };
+        const addNewCryptoAccount = () => {
+            openRealAccountSignup(deposit_target === routes.cashier_pa ? 'add_currency' : 'add_crypto');
+            setShouldShowCancel(true);
+        };
 
-    const getReorderedCryptoCurrencies = () => {
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
             legal_allowed_currencies,
             all_payment_agent_list,
@@ -86,7 +88,17 @@ const ChooseCurrency = ({
         }
 
         return reorderCryptoCurrencies;
-    };
+    }, [
+        account_list,
+        all_payment_agent_list,
+        available_crypto_currencies,
+        deposit_target,
+        has_fiat,
+        legal_allowed_currencies,
+        should_show_all_available_currencies,
+        openRealAccountSignup,
+        setShouldShowCancel,
+    ]);
 
     const doSwitch = async value => {
         const target_account = account_list.filter(account => account.title === value);
@@ -126,9 +138,9 @@ const ChooseCurrency = ({
                         <CurrencyRadioButtonGroup
                             id='crypto_currency'
                             className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                            item_count={getReorderedCryptoCurrencies().length}
+                            item_count={getReorderedCryptoCurrencies.length}
                         >
-                            {getReorderedCryptoCurrencies().map(currency => (
+                            {getReorderedCryptoCurrencies.map(currency => (
                                 <Field
                                     key={currency.value}
                                     component={CurrencyRadioButton}

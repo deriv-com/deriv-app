@@ -22,7 +22,6 @@ export default class PaymentAgentStore {
             selected_bank: observable,
             supported_banks: observable,
             active_tab_index: observable,
-            all_payment_agent_list: observable,
             search_term: observable,
             has_payment_agent_search_warning: observable,
             setActiveTabIndex: action.bound,
@@ -51,8 +50,6 @@ export default class PaymentAgentStore {
             requestTryPaymentAgentWithdraw: action.bound,
             resetPaymentAgent: action.bound,
             onMountPaymentAgentList: action.bound,
-            setAllPaymentAgentList: action.bound,
-            is_payment_agent_visible_in_onboarding: computed,
             requestPaymentAgentWithdraw: action.bound,
         });
 
@@ -75,7 +72,6 @@ export default class PaymentAgentStore {
     selected_bank = 0;
     supported_banks = [];
     active_tab_index = 0;
-    all_payment_agent_list = [];
     search_term = '';
     has_payment_agent_search_warning = false;
 
@@ -368,19 +364,6 @@ export default class PaymentAgentStore {
         await this.getPaymentAgentList();
 
         setLoading(false);
-    }
-
-    async getAllPaymentAgentList() {
-        await this.WS.wait('get_settings');
-        return this.WS.allPaymentAgentList(this.root_store.client.residence);
-    }
-
-    setAllPaymentAgentList(list) {
-        this.all_payment_agent_list = list;
-    }
-
-    get is_payment_agent_visible_in_onboarding() {
-        return !!this.all_payment_agent_list?.paymentagent_list?.list?.length;
     }
 
     async requestPaymentAgentWithdraw({ loginid, currency, amount, verification_code }) {

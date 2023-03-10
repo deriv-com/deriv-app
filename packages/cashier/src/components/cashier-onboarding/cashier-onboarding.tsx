@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
+import { useIsPaymentAgentVisibleInOnboarding } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details';
@@ -17,7 +18,7 @@ type TCashierOnboardingProps = {
 
 const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) => {
     const { client, ui, common } = useStore();
-    const { general_store, payment_agent, account_prompt_dialog } = useCashierStore();
+    const { general_store, account_prompt_dialog } = useCashierStore();
     const {
         accounts,
         available_crypto_currencies,
@@ -45,7 +46,6 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         shouldNavigateAfterChooseCrypto,
         toggleSetCurrencyModal,
     } = ui;
-    const { is_payment_agent_visible_in_onboarding } = payment_agent;
     const { shouldNavigateAfterPrompt } = account_prompt_dialog;
 
     const history = useHistory();
@@ -64,6 +64,8 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
 
     const is_currency_banner_visible =
         (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
+
+    const is_payment_agent_visible_in_onboarding = useIsPaymentAgentVisibleInOnboarding();
 
     React.useEffect(() => {
         onMountCashierOnboarding();

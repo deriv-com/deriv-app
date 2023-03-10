@@ -102,6 +102,10 @@
             }
             &-body {
                 text-align: center;
+                padding: 2.4rem 2.4rem 0rem;
+                @include mobile {
+                    padding: 1.6rem 1.6rem 0rem;
+                }
                 .risk-acceptance__text {
                     margin-top: 2.4rem;
                 }

@@ -33,7 +33,8 @@ const MainTitleBar = () => {
                     {is_low_risk_cr_real_account && is_landing_company_loaded && <RegulatorSwitcher />}
                     <AssetSummary />
                 </div>
-                <Badge text='test' className='dc-badge--green' data_testid='badge' />
+                <Badge text='0.5 pips' className='dc-badge--green' data_testid='badge' />
+                <Badge text='1:1000' className='dc-badge--purple' data_testid='badge' />
             </DesktopWrapper>
             <MobileWrapper>
                 <Text weight='bold' className='main-title-bar__text'>

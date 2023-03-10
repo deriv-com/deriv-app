@@ -1,50 +1,23 @@
 .dc-badge {
-    background-color: 3px solid var(--fill-color1);
-    color: var(--fill-color1);
-    width: 53px;
-    height: 20px;
+    background: linear-gradient(180deg, var(--fill-color1) 0%, var(--fill-color2) 100%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 69px;
+    height: 28px;
     font-family: 'IBM Plex Sans';
-    padding: 8px;
     border-radius: 4px;
 
     --fill-color1: var(--text-general);
     --fill-color2: var(--text-less-prominent);
-    --fill-color3: var(--general-section-1);
-    --fill-color4: var(--badge-grey-background);
-    --fill-color5: var(--text-prominent);
 
-    &--disabled {
-        --fill-color1: var(--text-disabled);
-        --fill-color2: var(--text-disabled);
-    }
-    &--active {
-        --fill-color1: #{$color-white};
-        --fill-color2: #{$color-white};
-    }
     &--green {
-        --fill-color1: var(--text-profit-success);
-        --fill-color2: var(--text-profit-success);
-        --fill-color3: #{$color-white};
+        --fill-color1: #bce44a;
+        --fill-color2: #16c165;
     }
-    &--red {
-        --fill-color1: var(--text-loss-danger);
-        --fill-color2: var(--text-loss-danger);
-        --fill-color3: #{$color-white};
-    }
-    &--secondary {
-        --fill-color1: var(--text-less-prominent);
-        --fill-color2: var(--text-less-prominent);
-        --fill-color3: #{$color-white};
-    }
-    &--brand {
-        --fill-color1: var(--brand-red-coral);
-        --fill-color2: var(--brand-secondary);
-        --fill-color3: #{$color-white};
-    }
-    &--black {
-        --fill-color1: var(--badge-black-plus);
-    }
-    &--orange {
-        --fill-color1: var(--status-warning);
+    &--purple {
+        --fill-color1: #d36df7;
+        --fill-color2: #8c3df1;
     }
 }

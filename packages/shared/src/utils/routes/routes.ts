@@ -18,6 +18,7 @@ export const routes = {
     cashier_password: '/settings/cashier_password',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     cashier_p2p: '/cashier/p2p',
+    cashier_p2p_profile: '/cashier/p2p/profile',
     cashier_p2p_verification: '/cashier/p2p/verification',
     cashier_withdrawal: '/cashier/withdrawal',
     closing_account: '/account/closing-account',

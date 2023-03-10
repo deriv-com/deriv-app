@@ -32,5 +32,4 @@ export type TAccountsList = {
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
-    is_pre_appstore: boolean;
 };

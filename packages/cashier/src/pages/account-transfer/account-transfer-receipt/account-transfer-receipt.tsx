@@ -24,10 +24,10 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     const { account_transfer } = useCashierStore();
     const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;
-    const { is_pre_appstore, loginid, switchAccount } = client;
+    const { loginid, switchAccount } = client;
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
-    const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+    const is_from_pre_appstore = !location.pathname.startsWith(routes.cashier);
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
@@ -95,7 +95,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             <div className='account-transfer-receipt__crypto--details-wrapper'>
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
-                        <AccountPlatformIcon account={selected_from} is_pre_appstore={is_pre_appstore} size={32} />
+                        <AccountPlatformIcon account={selected_from} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
@@ -109,7 +109,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
                     <div className='crypto-transfer-to-details'>
-                        <AccountPlatformIcon account={selected_to} is_pre_appstore={is_pre_appstore} size={32} />
+                        <AccountPlatformIcon account={selected_to} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>

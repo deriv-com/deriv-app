@@ -44,10 +44,10 @@ const AccountTransfer = observer(
 
         const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
 
-        const { is_pre_appstore, is_switching, is_virtual } = client;
+        const { is_switching, is_virtual } = client;
 
         const [is_loading_status, setIsLoadingStatus] = React.useState(true);
-        const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+        const is_from_pre_appstore = !location.pathname.startsWith(routes.cashier);
 
         React.useEffect(() => {
             if (!is_crypto_transactions_visible) {

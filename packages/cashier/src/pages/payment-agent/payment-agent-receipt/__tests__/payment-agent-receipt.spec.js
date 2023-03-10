@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile, routes } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -47,9 +47,9 @@ describe('<PaymentAgentReceipt />', () => {
     const renderPaymentAgentReceipt = () => {
         return render(
             <Router history={history}>
-                <StoreProvider store={mockRootStore}>
+                <CashierProviders store={mockRootStore}>
                     <PaymentAgentReceipt />
-                </StoreProvider>
+                </CashierProviders>
             </Router>
         );
     };

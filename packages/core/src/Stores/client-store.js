@@ -6,6 +6,7 @@ import {
     State,
     deriv_urls,
     filterUrlQuery,
+    excludeParamsFromUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -20,12 +21,13 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
+    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -36,6 +38,7 @@ import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
+const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -239,6 +242,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
+            is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
             is_risky_client: computed,
@@ -406,8 +410,11 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const { trading_hub } = this.account_settings;
+                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
+                this.setPreferredLanguage(lang_from_url);
+                LocalStore.set(LANGUAGE_KEY, lang_from_url);
             }
         );
         // TODO: Remove this after setting trading_hub enabled for all users
@@ -417,7 +424,6 @@ export default class ClientStore extends BaseStore {
             () => {
                 const { trading_hub } = this.account_settings;
                 const is_traders_hub = !!trading_hub;
-
                 if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
                     window.location.href = routes.root;
                 } else if (
@@ -525,7 +531,9 @@ export default class ClientStore extends BaseStore {
             return [];
         };
 
-        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.landing_companies || !this.root_store.ui) {
+            return [];
+        }
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
@@ -669,6 +677,10 @@ export default class ClientStore extends BaseStore {
         }
 
         return this.default_currency;
+    }
+
+    get is_crypto() {
+        return isCryptocurrency(this.currency);
     }
 
     get default_currency() {
@@ -1157,6 +1169,7 @@ export default class ClientStore extends BaseStore {
 
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1183,9 +1196,11 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
+            Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
+            Cookies.remove('region', { domain });
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }
@@ -1222,8 +1237,8 @@ export default class ClientStore extends BaseStore {
     }
 
     responsePayoutCurrencies(response) {
-        const list = response.payout_currencies || response;
-        this.currencies_list = buildCurrenciesList(list);
+        const list = response?.payout_currencies || response;
+        this.currencies_list = buildCurrenciesList(Array.isArray(list) ? list : []);
         this.selectCurrency('');
     }
 
@@ -1504,6 +1519,21 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const unused_params = [
+            'type',
+            'acp',
+            'label',
+            'server',
+            'interface',
+            'cid',
+            'age',
+            'utm_source',
+            'first_name',
+            'second_name',
+            'email',
+            'phone',
+            '_filteredParams',
+        ];
 
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
@@ -1584,11 +1614,16 @@ export default class ClientStore extends BaseStore {
             });
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
-                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
+                window.history.replaceState({}, document.title, urlForLanguage(language));
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {
                 this.setPrevRealAccountLoginid(this.loginid);
+            }
+            const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+
+            if (!no_cr_account && this.is_low_risk) {
+                this.switchAccount(this.virtual_account_loginid);
             }
         }
 
@@ -1626,6 +1661,23 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+
+        // delete search params if it's signup when signin completed
+        if (action_param === 'signup') {
+            const filteredQuery = filterUrlQuery(search, ['lang']);
+            history.replaceState(
+                null,
+                null,
+                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `?${filteredQuery}`)
+            );
+        }
+
+        history.replaceState(
+            null,
+            null,
+            window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
+        );
+
         return true;
     }
 
@@ -1925,8 +1977,11 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccountSettings(settings) {
-        this.account_settings = settings;
-        this.is_account_setting_loaded = true;
+        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
+        if (!is_equal_settings) {
+            this.account_settings = settings;
+            this.is_account_setting_loaded = true;
+        }
     }
 
     setAccountStatus(status) {
@@ -2462,15 +2517,25 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         const { gaming_company, financial_company } = this.landing_companies;
+
+        // This is a conditional check for countries like Australia/Norway which fulfil one of these following conditions.
+        const restricted_countries =
+            financial_company?.shortcode === 'svg' ||
+            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
+
         const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
-        return high_risk_landing_company || this.account_status.risk_classification === 'high';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
     get is_low_risk() {
         const { gaming_company, financial_company } = this.landing_companies;
         const low_risk_landing_company =
             financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
-        return low_risk_landing_company || this.upgradeable_landing_companies?.includes('svg', 'maltainvest');
+        return (
+            low_risk_landing_company ||
+            (this.upgradeable_landing_companies?.includes('svg') &&
+                this.upgradeable_landing_companies?.includes('maltainvest'))
+        );
     }
 
     get has_residence() {

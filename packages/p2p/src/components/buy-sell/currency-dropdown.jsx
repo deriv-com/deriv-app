@@ -5,14 +5,15 @@ import { Dropdown, useOnClickOutside } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { CurrencySelector } from 'Components/buy-sell/currency-selector';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './currency-dropdown.scss';
 
 const CurrencyDropdown = () => {
     const [is_list_visible, setIsListVisible] = React.useState(false);
     const currency_selector_ref = React.useRef(null);
     const { buy_sell_store } = useStores();
-    const { local_currencies, onLocalCurrencySelect, selected_local_currency, setShouldShowCurrencySelectorModal } =
-        buy_sell_store;
+    const { local_currencies, onLocalCurrencySelect, selected_local_currency } = buy_sell_store;
+    const { showModal } = useModalManagerContext();
 
     useOnClickOutside(
         currency_selector_ref,
@@ -30,7 +31,7 @@ const CurrencyDropdown = () => {
                 })}
                 list={local_currencies}
                 onClick={() => {
-                    if (isMobile()) setShouldShowCurrencySelectorModal(true);
+                    if (isMobile()) showModal({ key: 'CurrencySelectorModal' });
                     else setIsListVisible(!is_list_visible);
                 }}
                 value={selected_local_currency}

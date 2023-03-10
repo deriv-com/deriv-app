@@ -9,6 +9,7 @@ import './main-title-bar.scss';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
+import Badge from 'Components/badge';
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
@@ -32,6 +33,7 @@ const MainTitleBar = () => {
                     {is_low_risk_cr_real_account && is_landing_company_loaded && <RegulatorSwitcher />}
                     <AssetSummary />
                 </div>
+                <Badge text='test' className='dc-badge--green' data_testid='badge' />
             </DesktopWrapper>
             <MobileWrapper>
                 <Text weight='bold' className='main-title-bar__text'>

@@ -45,8 +45,8 @@
                 grid-template-columns: 1.2fr 1fr;
                 &--turbos {
                     display: flex;
-                    flex-direction: row;
-                    border-bottom: none !important;
+                    justify-content: space-between;
+                    align-items: center;
                     &-sold {
                         padding-top: 1rem;
                     }
@@ -57,10 +57,7 @@
                             left: 5rem;
                             &--progress-bar {
                                 display: flex;
-                                flex-direction: row;
                                 justify-content: flex-end;
-                                position: relative;
-                                left: 11.5rem;
                             }
                         }
                     }
@@ -311,44 +308,38 @@
         }
     }
     &--turbos {
-        @include mobile {
-            background-color: var(--general-main-1);
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-areas:
-                'stake current-stake barrier-level'
-                'profit-loss limit-order-info';
-            flex: 1;
-            .dc-contract-card {
-                &__stake {
-                    grid-column: 1/1;
-                    grid-row: 1/1;
-                    padding: 0.8rem 0;
-                }
-                &__current-price {
-                    grid-column: 2/2;
-                    grid-row: 1/2;
-                    padding: 0.8rem 0;
-                }
-                &__buy-price {
-                    grid-column: 1/2;
-                    grid-row: 2/2;
-                }
-                &__barrier-level {
-                    grid-column: 2/2;
-                    grid-row: 2/2;
-                }
-                &__limit-order-info {
-                    grid-row: 2/2;
-                    grid-column: 2/2;
-                    position: relative;
-                }
-                &__status {
-                    align-self: center;
-                    justify-self: center;
-                    grid-row: 1/3;
-                    grid-column: 3/3;
-                }
+        .dc-contract-card {
+            &__stake {
+                grid-column: 1/1;
+                grid-row: 1/1;
+                padding: 0.8rem 0;
             }
+            &__current-price {
+                grid-column: 2/2;
+                grid-row: 1/2;
+                padding: 0.8rem 0;
+            }
+            &__buy-price {
+                grid-column: 1/2;
+                grid-row: 2/2;
+            }
+            &__barrier-level {
+                grid-column: 2/2;
+                grid-row: 2/2;
+            }
+            &__limit-order-info {
+                grid-row: 2/2;
+                grid-column: 2/2;
+            }
+            &__status {
+                align-self: center;
+                justify-self: center;
+                grid-row: 1/3;
+                grid-column: 3/3;
+            }
+        }
+        @include mobile {
+            grid-template-columns: 1fr 1fr 1fr;
             &-open-positions {
                 background-color: var(--general-section-1);
                 .dc-contract-card {

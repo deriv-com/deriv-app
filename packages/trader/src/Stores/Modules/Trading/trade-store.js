@@ -298,7 +298,13 @@ export default class TradeStore extends BaseStore {
 
         // Adds intercept to change min_max value of duration validation
         reaction(
-            () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],
+            () => [
+                this.contract_expiry_type,
+                this.duration_min_max,
+                this.duration_unit,
+                this.expiry_type,
+                this.root_store.common.is_language_changing,
+            ],
             () => {
                 this.changeDurationValidationRules();
             }

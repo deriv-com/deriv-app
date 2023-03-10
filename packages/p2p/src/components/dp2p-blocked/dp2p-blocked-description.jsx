@@ -15,7 +15,14 @@ const Dp2pBlockedDescription = () => {
         } else if (general_store.is_high_risk && !general_store.is_blocked) {
             return <Localize i18n_default_text='To enable this feature you must complete the following:' />;
         }
-        return <Localize i18n_default_text='Please use live chat to contact our Customer Support team for help.' />;
+        return (
+            <Localize
+                i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'
+                components={[
+                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
+                ]}
+            />
+        );
     };
 
     return (

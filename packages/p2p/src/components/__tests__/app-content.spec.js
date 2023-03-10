@@ -1,11 +1,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AppContent from '../app-content.jsx';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(),
+}));
+
+jest.mock('Components/modal-manager/modal-manager-context', () => ({
+    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
+    useModalManagerContext: jest.fn(),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -38,6 +44,10 @@ describe('<AppContent/>', () => {
     it('should load the Tab component when no error status are set', () => {
         useStores.mockImplementation(() => ({
             general_store: mocked_store_values,
+        }));
+        useModalManagerContext.mockImplementation(() => ({
+            showModal: () => {},
+            hideModal: () => {},
         }));
         render(<AppContent />);
 

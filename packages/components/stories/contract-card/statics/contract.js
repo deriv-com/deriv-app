@@ -71,7 +71,7 @@ export const getMarketNamesMap = () => ({
     OTC_GDAXI: 'Germany 40',
     OTC_HSI: 'Hong Kong 50',
     OTC_IBEX35: 'Spanish Index',
-    OTC_N225: 'Japan 25',
+    OTC_N225: 'Japan 225',
     OTC_NDX: 'US Tech 100',
     OTC_SPC: 'US 500',
     OTC_SSMI: 'Swiss 20',

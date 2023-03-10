@@ -5,7 +5,17 @@ import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import { useDepositLocked } from '@deriv/hooks';
 import NoBalance from '../no-balance';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../cashier-providers';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -42,7 +52,7 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 
@@ -57,7 +67,7 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 

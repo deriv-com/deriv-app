@@ -14,14 +14,14 @@ import RecentTransaction from '../../components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from '../../components/side-note';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
 const Deposit = observer(({ setSideNotes }: TDeposit) => {
-    const is_deposit_locked = useDepositLocked();
-    const { client, modules, traders_hub } = useStore();
+    const { client, traders_hub } = useStore();
     const {
         can_change_fiat_currency,
         currency,
@@ -30,8 +30,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_virtual,
         landing_company_shortcode,
     } = client;
-    const { cashier } = modules;
-    const { iframe, deposit, transaction_history, general_store } = cashier;
+    const { iframe, deposit, transaction_history, general_store } = useCashierStore();
     const { clearIframe, iframe_height, iframe_url } = iframe;
     const { container, error, onMountDeposit: onMount } = deposit;
     const { content_flag } = traders_hub;
@@ -51,6 +50,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         setIsDeposit,
         cashier_route_tab_index: tab_index,
     } = general_store;
+    const is_deposit_locked = useDepositLocked();
 
     const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
 
@@ -82,7 +82,11 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
                 if (side_notes.length > 0) {
-                    setSideNotes([<SideNote key={0}>{side_notes}</SideNote>]);
+                    setSideNotes([
+                        <SideNote has_title={false} key={0}>
+                            {side_notes}
+                        </SideNote>,
+                    ]);
                 }
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
@@ -94,7 +98,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions, is_cashier_onboarding, iframe_height]);
+    }, [currency, tab_index, crypto_transactions, crypto_transactions.length, is_cashier_onboarding, iframe_height]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;

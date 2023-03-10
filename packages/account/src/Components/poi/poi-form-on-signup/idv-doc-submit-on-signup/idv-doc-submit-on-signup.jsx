@@ -15,7 +15,13 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
-import { getDocumentData, getRegex, isSequentialNumber, isRecurringNumberRegex } from '../../idv-document-submit/utils';
+import {
+    getDocumentData,
+    getRegex,
+    isSequentialNumber,
+    isRecurringNumberRegex,
+    preventEmptyClipboardPaste,
+} from '../../idv-document-submit/utils';
 import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
@@ -79,10 +85,6 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
 
-        // QA can manually toggle this regex now through this feature flag.
-        // Otherwise it blocks their test suite.
-        const is_allowing_validation = validation_is_enabled;
-
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
@@ -92,7 +94,10 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_allowing_validation && (is_recurring_number || is_sequential_number)) {
+        } else if (
+            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
+            document_number === document_type.example_format
+        ) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
@@ -299,7 +304,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                     autoComplete='off'
                                                                     placeholder='Enter your document number'
                                                                     value={values.document_number}
-                                                                    onPaste={e => e.preventDefault()}
+                                                                    onPaste={preventEmptyClipboardPaste}
                                                                     onBlur={handleBlur}
                                                                     onChange={handleChange}
                                                                     onKeyUp={e => {

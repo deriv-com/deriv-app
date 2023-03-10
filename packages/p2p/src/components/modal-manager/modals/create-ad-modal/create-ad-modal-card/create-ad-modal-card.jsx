@@ -4,9 +4,9 @@ import { Button, Text, Icon } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import './ad-component.scss';
+import './create-ad-modal-card.scss';
 
-const AdComponent = ({ title, text, type }) => {
+const CreateAdModalCard = ({ title, text, type }) => {
     const { hideModal } = useModalManagerContext();
     const { my_ads_store } = useStores();
 
@@ -20,7 +20,7 @@ const AdComponent = ({ title, text, type }) => {
         <div className='ad-component'>
             <Icon icon={type === 'normal' ? 'IcCashierNormalAd' : 'IcCashierBlockAd'} width={48} height={48} />
             <div className='ad-component__title'>
-                <Text as='p' size='s' line_height='xxl' color='prominent' weight='bold'>
+                <Text as='p' line_height='xxl' color='prominent' weight='bold'>
                     {title}
                 </Text>
             </div>
@@ -36,4 +36,4 @@ const AdComponent = ({ title, text, type }) => {
     );
 };
 
-export default observer(AdComponent);
+export default observer(CreateAdModalCard);

@@ -7,7 +7,7 @@
     border: 0.1rem solid $color-grey-5;
     padding: 2.4rem;
     width: 18rem;
-    @media only screen and (max-width: 767px) {
+    @include mobile {
         flex-basis: 100%;
     }
 

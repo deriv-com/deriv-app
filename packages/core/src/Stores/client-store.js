@@ -146,6 +146,7 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
+    p2p_advertiser_info = {};
     prev_account_type = 'demo';
 
     constructor(root_store) {
@@ -208,6 +209,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
+            p2p_advertiser_info: observable,
             prev_account_type: observable,
             balance: computed,
             account_open_date: computed,
@@ -384,7 +386,7 @@ export default class ClientStore extends BaseStore {
             updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-
+            setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
         });
 
@@ -1306,7 +1308,7 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
-        const { document_number, document_type, ...required_form_values } = form_values;
+        const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
@@ -1627,6 +1629,8 @@ export default class ClientStore extends BaseStore {
 
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
+
+            await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1681,6 +1685,10 @@ export default class ClientStore extends BaseStore {
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+    }
+
+    setP2pAdvertiserInfo(response) {
+        this.p2p_advertiser_info = response.p2p_advertiser_info;
     }
 
     setStandpoint(landing_companies) {

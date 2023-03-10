@@ -15,7 +15,7 @@ import {
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { isEmptyObject, isMobile, toTitleCase, routes } from '@deriv/shared';
+import { isEmptyObject, isMobile, LocalStore, toTitleCase, routes } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
@@ -165,6 +165,7 @@ NotificationListWrapper.displayName = 'NotificationListWrapper';
 
 const NotificationsDialog = ({
     is_visible,
+    loginid,
     notifications,
     toggleDialog,
     removeNotificationMessage,
@@ -181,6 +182,11 @@ const NotificationsDialog = ({
     };
 
     const clearNotifications = () => {
+        const p2p_settings = LocalStore.getObject('p2p_settings');
+
+        p2p_settings[loginid].is_notifications_visible = false;
+        LocalStore.setObject('p2p_settings', p2p_settings);
+
         return notifications.map(item => {
             removeNotificationMessageByKey(item.key);
             removeNotificationMessage({
@@ -239,6 +245,7 @@ const NotificationsDialog = ({
 
 NotificationsDialog.propTypes = {
     is_visible: PropTypes.bool,
+    loginid: PropTypes.string,
     notifications: PropTypes.array,
     toggleDialog: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
@@ -247,8 +254,9 @@ NotificationsDialog.propTypes = {
     removeNotifications: PropTypes.func,
 };
 
-export default connect(({ common, notifications }) => ({
+export default connect(({ common, notifications, client }) => ({
     app_routing_history: common.app_routing_history,
+    loginid: client.loginid,
     notifications: notifications.notifications,
     removeNotificationByKey: notifications.removeNotificationByKey,
     removeNotificationMessage: notifications.removeNotificationMessage,

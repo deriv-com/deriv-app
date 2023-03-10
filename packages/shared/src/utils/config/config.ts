@@ -50,12 +50,12 @@ export const getAppId = () => {
     const config_app_id = window.localStorage.getItem('config.app_id');
     const current_domain = getCurrentProductionDomain() || '';
     const platform = window.localStorage.getItem('config.platform');
+    const config_route = window.localStorage.getItem('config.route');
+    const is_bot = config_route === 'bot';
 
-    const is_bot_route = window.localStorage?.getItem('config.route');
-    if (is_bot_route) window.localStorage?.removeItem('config.route');
-
+    if (is_bot) window.localStorage.removeItem('config.route');
     if (isBot()) {
-        window.localStorage?.setItem('config.route', 'bot');
+        window.localStorage.setItem('config.route', 'bot');
     }
 
     // Added platform at the top since this should take precedence over the config_app_id
@@ -68,18 +68,12 @@ export const getAppId = () => {
         app_id = user_app_id;
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
-        app_id =
-            isBot() || is_bot_route === 'bot'
-                ? 19112
-                : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16303; // it's being used in endpoint chrome extension - please do not remove
+        app_id = (isBot() || is_bot ? 19112 : domain_app_ids[current_domain as keyof typeof domain_app_ids]) || 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
     } else {
         window.localStorage.removeItem('config.default_app_id');
-        app_id =
-            (isBot() || is_bot_route === 'bot'
-                ? 19111
-                : domain_app_ids[current_domain as keyof typeof domain_app_ids]) || 16929;
+        app_id = (isBot() || is_bot ? 19111 : domain_app_ids[current_domain as keyof typeof domain_app_ids]) || 16929;
     }
 
     return app_id;

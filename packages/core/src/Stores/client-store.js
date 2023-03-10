@@ -76,7 +76,6 @@ export default class ClientStore extends BaseStore {
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
-    is_pre_appstore = false;
     has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
@@ -163,7 +162,6 @@ export default class ClientStore extends BaseStore {
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
-            is_pre_appstore: observable,
             switch_broadcast: observable,
             initialized_broadcast: observable,
             currencies_list: observable,
@@ -386,7 +384,7 @@ export default class ClientStore extends BaseStore {
             updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            setIsPreAppStore: action.bound,
+
             setPrevAccountType: action.bound,
         });
 
@@ -409,10 +407,7 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings],
             () => {
-                const { trading_hub } = this.account_settings;
                 const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
-                this.is_pre_appstore = !!trading_hub;
-                localStorage.setItem('is_pre_appstore', !!trading_hub);
                 this.setPreferredLanguage(lang_from_url);
                 LocalStore.set(LANGUAGE_KEY, lang_from_url);
             }
@@ -2598,19 +2593,5 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
-
-    setIsPreAppStore(is_pre_appstore) {
-        const trading_hub = is_pre_appstore ? 1 : 0;
-        try {
-            WS.setSettings({
-                set_settings: 1,
-                trading_hub,
-            });
-        } catch (error) {
-            return;
-        }
-        this.account_settings = { ...this.account_settings, trading_hub };
-        localStorage.setItem('is_pre_appstore', is_pre_appstore);
-    }
 }
 /* eslint-enable */

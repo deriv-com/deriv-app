@@ -4,6 +4,7 @@ import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
 import type { TRootStore, TWebSocket } from 'Types';
+import { ServerStatusResponse } from '@deriv/api-types';
 
 export default class GeneralStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -131,13 +132,14 @@ export default class GeneralStore extends BaseStore {
         return unseen_notifications.length;
     }
 
-    showP2pInCashierOnboarding(): void {
+    async showP2pInCashierOnboarding(): Promise<void> {
         const { account_list, is_virtual } = this.root_store.client;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const website_status: any = this.WS.wait('website_status');
+        const website_status: Promise<ServerStatusResponse> = this.WS.wait(
+            'website_status'
+        ) as unknown as Promise<ServerStatusResponse>;
 
-        const is_p2p_disabled = website_status?.website_status?.p2p_config?.disabled;
+        const is_p2p_disabled = (await website_status)?.website_status?.p2p_config?.disabled;
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
             account => !isCryptocurrency(account?.title as string) && account.title !== 'Real'
@@ -256,10 +258,11 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    checkP2pStatus(): void {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const website_status: any = this.WS.wait('website_status');
-        const is_p2p_disabled = website_status?.website_status?.p2p_config?.disabled;
+    async checkP2pStatus(): Promise<void> {
+        const website_status: Promise<ServerStatusResponse> = this.WS.wait(
+            'website_status'
+        ) as unknown as Promise<ServerStatusResponse>;
+        const is_p2p_disabled = (await website_status)?.website_status?.p2p_config?.disabled;
         this.setIsP2pVisible(!(is_p2p_disabled || this.root_store.client.is_virtual));
     }
 

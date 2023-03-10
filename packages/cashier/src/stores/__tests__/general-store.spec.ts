@@ -263,6 +263,7 @@ describe('GeneralStore', () => {
             expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
         });
 
+        // Don't remove eslint here as WS.wait is expected to be called 2 times from init and checkP2pStatus
         // eslint-disable-next-line testing-library/await-async-utils
         expect(general_store.WS.wait).toHaveBeenCalledTimes(2);
         expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);

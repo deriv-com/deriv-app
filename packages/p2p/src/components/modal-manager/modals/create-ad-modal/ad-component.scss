@@ -1,0 +1,28 @@
+.ad-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.6rem;
+    border: 0.1rem solid $color-grey-5;
+    padding: 2.4rem;
+    width: 18rem;
+    @media only screen and (max-width: 767px) {
+        flex-basis: 100%;
+    }
+
+    .dc-text {
+        text-align: center;
+    }
+
+    &__content {
+        display: flex;
+        margin: 0.8rem 0 2.4rem;
+    }
+    &__text {
+        .dc-text {
+            line-height: 1.8rem;
+            text-align: center;
+        }
+    }
+}

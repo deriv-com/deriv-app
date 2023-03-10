@@ -89,7 +89,7 @@ const MyAdsTable = () => {
                         <Button
                             is_disabled={general_store.is_barred}
                             large
-                            onClick={my_ads_store.onClickCreate}
+                            onClick={() => general_store.showModal({ key: 'CreateAdModal', props: {} })}
                             primary
                         >
                             {localize('Create new ad')}
@@ -128,7 +128,7 @@ const MyAdsTable = () => {
                             className='p2p-my-ads__create'
                             is_disabled={general_store.is_barred}
                             large
-                            onClick={my_ads_store.onClickCreate}
+                            onClick={() => general_store.showModal({ key: 'CreateAdModal', props: {} })}
                             primary
                         >
                             {localize('Create new ad')}
@@ -144,7 +144,7 @@ const MyAdsTable = () => {
             <Button
                 className='p2p-empty__button'
                 is_disabled={general_store.is_barred}
-                onClick={() => my_ads_store.onClickCreate()}
+                onClick={() => general_store.showModal({ key: 'CreateAdModal', props: {} })}
                 large
                 primary
             >

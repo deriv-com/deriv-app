@@ -40,6 +40,7 @@ export default class MyAdsStore extends BaseStore {
     update_payment_methods_error_message = '';
     required_ad_type;
     error_code = '';
+    ad_type_selected = '';
 
     payment_method_ids = [];
     payment_method_names = [];
@@ -78,6 +79,7 @@ export default class MyAdsStore extends BaseStore {
             update_payment_methods_error_message: observable,
             required_ad_type: observable,
             error_code: observable,
+            ad_type_selected: observable,
             selected_ad_type: computed,
             getAccountStatus: action.bound,
             getAdvertInfo: action.bound,
@@ -128,6 +130,7 @@ export default class MyAdsStore extends BaseStore {
             setUpdatePaymentMethodsErrorMessage: action.bound,
             validateCreateAdForm: action.bound,
             validateEditAdForm: action.bound,
+            setAdType: action.bound,
         });
     }
 
@@ -903,5 +906,9 @@ export default class MyAdsStore extends BaseStore {
 
         this.root_store.general_store.hideModal();
         this.onToggleSwitchModal(this.selected_ad_id);
+    }
+
+    setAdType(ad_type_selected) {
+        this.ad_type_selected = ad_type_selected;
     }
 }

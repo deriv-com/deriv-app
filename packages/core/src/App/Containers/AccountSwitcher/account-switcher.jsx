@@ -834,37 +834,38 @@ const AccountSwitcher = props => {
                             );
                         })}
                     </div>
-                    {filtered_remaining_real_accounts.map((account, index) => (
-                        <div key={index} className='acc-switcher__new-account'>
-                            <Icon icon='IcDeriv' size={24} />
-                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                {getAccountTitle(
-                                    account,
-                                    { account_residence: props.client_residence },
-                                    props.country_standpoint
-                                )}
-                            </Text>
-                            <Button
-                                id='dt_core_account-switcher_add-new-account'
-                                onClick={() => {
-                                    if (props.real_account_creation_unlock_date) {
-                                        closeAccountsDialog();
-                                        props.setShouldShowCooldownModal(true);
-                                    } else if (
-                                        (can_manage_account_multi || can_manage_account_virtual) &&
-                                        props.has_any_real_account
-                                    )
-                                        props.openRealAccountSignup('manage');
-                                    else props.openRealAccountSignup(account);
-                                }}
-                                className='acc-switcher__new-account-btn'
-                                secondary
-                                small
-                            >
-                                {localize('Add')}
-                            </Button>
-                        </div>
-                    ))}
+                    {!has_cr_account &&
+                        filtered_remaining_real_accounts.map((account, index) => (
+                            <div key={index} className='acc-switcher__new-account'>
+                                <Icon icon='IcDeriv' size={24} />
+                                <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                    {getAccountTitle(
+                                        account,
+                                        { account_residence: props.client_residence },
+                                        props.country_standpoint
+                                    )}
+                                </Text>
+                                <Button
+                                    id='dt_core_account-switcher_add-new-account'
+                                    onClick={() => {
+                                        if (props.real_account_creation_unlock_date) {
+                                            closeAccountsDialog();
+                                            props.setShouldShowCooldownModal(true);
+                                        } else if (
+                                            (can_manage_account_multi || can_manage_account_virtual) &&
+                                            props.has_any_real_account
+                                        )
+                                            props.openRealAccountSignup('manage');
+                                        else props.openRealAccountSignup(account);
+                                    }}
+                                    className='acc-switcher__new-account-btn'
+                                    secondary
+                                    small
+                                >
+                                    {localize('Add')}
+                                </Button>
+                            </div>
+                        ))}
                     {(can_manage_account_multi ||
                         (!props.has_active_real_account && filtered_remaining_real_accounts?.length === 0)) && (
                         <Button

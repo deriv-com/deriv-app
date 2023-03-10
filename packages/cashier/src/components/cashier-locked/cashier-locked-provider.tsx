@@ -99,16 +99,34 @@ const getMessage = ({
             return {
                 icon: 'IcCashierLocked',
                 title: localize('Cashier is locked'),
-                description: localize(
-                    'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
+                description: (
+                    <Localize
+                        i18n_default_text='Your cashier is currently locked. Please contact us via <0>live chat</0> to find out how to unlock it.'
+                        components={[
+                            <span
+                                key={0}
+                                className='link link--orange'
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                    />
                 ),
             };
         if (disabled_status)
             return {
                 icon: 'IcCashierLocked',
                 title: localize('Cashier is locked'),
-                description: localize(
-                    'Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'
+                description: (
+                    <Localize
+                        i18n_default_text='Your account is temporarily disabled. Please contact us via <0>live chat</0> to enable deposits and withdrawals again.'
+                        components={[
+                            <span
+                                key={0}
+                                className='link link--orange'
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                    />
                 ),
             };
         if (ask_currency)
@@ -257,18 +275,36 @@ const getMessage = ({
             return {
                 icon: 'IcCashierDepositLock',
                 title: localize('Deposits are locked'),
-                description: localize(
-                    'You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.',
-                    {
-                        exclude_until: formatDate(excluded_until, 'DD MMM, YYYY'),
-                    }
+                description: (
+                    <Localize
+                        i18n_default_text='You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via <0>live chat</0>.'
+                        values={{ exclude_until: formatDate(excluded_until, 'DD MMM, YYYY') }}
+                        components={[
+                            <span
+                                key={0}
+                                className='link link--orange'
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                    />
                 ),
             };
         if (unwelcome_status)
             return {
                 icon: 'IcCashierDepositLock',
                 title: localize('Deposits are locked'),
-                description: localize('Please contact us via live chat.'),
+                description: (
+                    <Localize
+                        i18n_default_text='Please contact us via <0>live chat</0>.'
+                        components={[
+                            <span
+                                key={0}
+                                className='link link--orange'
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                    />
+                ),
             };
     }
 
@@ -333,24 +369,51 @@ const getMessage = ({
             return {
                 icon: 'IcCashierWithdrawalLock',
                 title: localize('Withdrawals are locked'),
-                description: localize(
-                    'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
+                description: (
+                    <Localize
+                        i18n_default_text='Unfortunately, you can only make deposits. Please contact us via <0>live chat</0> to enable withdrawals.'
+                        components={[
+                            <span
+                                key={0}
+                                className='link link--orange'
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                    />
                 ),
             };
         if (withdrawal_locked_status)
             return {
                 icon: 'IcCashierWithdrawalLock',
                 title: localize('Withdrawals are locked'),
-                description: localize(
-                    'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
+                description: (
+                    <Localize
+                        i18n_default_text='Unfortunately, you can only make deposits. Please contact us via <0>live chat</0> to enable withdrawals.'
+                        components={[
+                            <span
+                                key={0}
+                                className='link link--orange'
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                    />
                 ),
             };
         if (only_pa_withdrawals_allowed_status)
             return {
                 icon: 'IcCashierWithdrawalLock',
                 title: localize('Withdrawals are locked'),
-                description: localize(
-                    'You can only make deposits. Please contact us via live chat for more information.'
+                description: (
+                    <Localize
+                        i18n_default_text='You can only make deposits. Please contact us via <0>live chat</0> for more information.'
+                        components={[
+                            <span
+                                key={0}
+                                className='link link--orange'
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                    />
                 ),
             };
         if (pa_commision_withdrawal_limit)
@@ -366,8 +429,13 @@ const getMessage = ({
     return {
         icon: 'IcCashierLocked',
         title: localize('Cashier is locked'),
-        description: localize(
-            'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
+        description: (
+            <Localize
+                i18n_default_text='Your cashier is currently locked. Please contact us via <0>live chat</0> to find out how to unlock it.'
+                components={[
+                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
+                ]}
+            />
         ),
     };
 };

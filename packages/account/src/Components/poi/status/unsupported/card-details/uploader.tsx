@@ -12,12 +12,7 @@ const DROPZONE_ERRORS = {
     'too-many-files': localize('Please select one file only'),
     GENERAL: localize('Sorry, an error occured. Please select another file.'),
 };
-type TDROPZONE_ERRORS = Readonly<{
-    'file-too-large': string;
-    'file-invalid-type': string;
-    'too-many-files': string;
-    GENERAL: string;
-}>;
+type TDROPZONE_ERRORS = Readonly<typeof DROPZONE_ERRORS>;
 
 type TUploader = {
     data: FormikValues;
@@ -29,11 +24,26 @@ type TUploader = {
     handleChange: (file: object | null, setFieldValue?: FormikProps<FormikValues>['setFieldValue']) => void;
 };
 
-const Message = ({ data, open }: FormikValues) => (
+type TMessage = {
+    data?: FormikValues;
+    open?: () => void;
+};
+
+type THandleRejectFiles = Array<{
+    file: File;
+    errors: [
+        {
+            message: string;
+            code: string;
+        }
+    ];
+}>;
+
+const Message = ({ data, open }: TMessage) => (
     <div className={`${ROOT_CLASS}__uploader-details`}>
-        <Icon className={`${ROOT_CLASS}__uploader-icon`} icon={data.icon} size={236} />
+        <Icon className={`${ROOT_CLASS}__uploader-icon`} icon={data?.icon} size={236} />
         <Text as='p' size='xs' color='general' align='center'>
-            {data.info}
+            {data?.info}
         </Text>
         <Button
             medium
@@ -45,7 +55,7 @@ const Message = ({ data, open }: FormikValues) => (
 );
 
 const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Partial<TUploader>) => {
-    const [background_url, setBackgroundUrl] = React.useState<string>();
+    const [background_url, setBackgroundUrl] = React.useState('');
 
     React.useEffect(() => {
         setBackgroundUrl(value?.file ? URL.createObjectURL(value?.file) : '');
@@ -92,9 +102,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
     }, [value]);
 
     const handleChange = (file?: object, setFieldValue?: FormikProps<FormikValues>['setFieldValue']) => {
-        if (onChange && typeof onChange === 'function') {
-            onChange(file);
-        }
+        onChange?.(file);
         setFieldValue?.(data?.name, file);
     };
 
@@ -103,7 +111,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
         handleChange(file, setFieldValue);
     };
 
-    const handleReject = (files: Array<{ errors?: [] }>, setFieldValue: () => void) => {
+    const handleReject = (files: THandleRejectFiles, setFieldValue: () => void) => {
         const errors = files[0].errors?.map((error: { code: string }) =>
             DROPZONE_ERRORS[error.code as keyof TDROPZONE_ERRORS]
                 ? DROPZONE_ERRORS[error.code as keyof TDROPZONE_ERRORS]
@@ -157,7 +165,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
                         }
                         multiple={false}
                         onDropAccepted={(files: object[]) => handleAccept(files, setFieldValue)}
-                        onDropRejected={(files: Array<object>) => handleReject(files, setFieldValue)}
+                        onDropRejected={(files: THandleRejectFiles) => handleReject(files, setFieldValue)}
                         validation_error_message={value?.errors?.length ? ValidationErrorMessage : undefined}
                         noClick
                         value={(image ? [image] : []) as unknown as React.ComponentProps<typeof FileDropzone>['value']}

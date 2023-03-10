@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromExternalPlatform, PlatformContext } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -31,12 +31,16 @@ const modal_pages_indices = {
     finished_add_currency: 8,
 };
 
-const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, country_standpoint }) => {
+const WizardHeading = ({
+    country_standpoint,
+    currency,
+    is_isle_of_man_residence,
+    is_pre_appstore,
+    real_account_signup_target,
+}) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
-
-    const { is_pre_appstore } = React.useContext(PlatformContext);
 
     if (!maltainvest_signup && !currency) {
         return <Localize i18n_default_text='Set a currency for your real account' />;
@@ -92,33 +96,33 @@ const RealAccountSignup = ({
     available_crypto_currencies,
     closeRealAccountSignup,
     continueRoute,
+    country_standpoint,
     currency,
+    deposit_real_account_signup_target,
     deposit_target,
+    fetchAccountSettings,
     has_fiat,
     has_real_account,
-    country_standpoint,
     history,
     is_belgium_residence,
+    show_eu_related_content,
     is_from_restricted_country,
     is_isle_of_man_residence,
-    is_eu,
+    is_pre_appstore,
     is_real_acc_signup_on,
     real_account_signup_target,
-    replaceCashierMenuOnclick,
-    routing_history,
+    realAccountSignup,
     setIsDeposit,
+    setIsTradingAssessmentForNewUserEnabled,
+    setIsClosingCreateRealAccountModal,
     setParams,
+    setShouldShowAppropriatenessWarningModal,
+    setShouldShowRiskWarningModal,
     should_show_all_available_currencies,
+    should_show_appropriateness_warning_modal,
+    should_show_risk_warning_modal,
     state_index,
     state_value,
-    deposit_real_account_signup_target,
-    realAccountSignup,
-    should_show_risk_warning_modal,
-    setShouldShowRiskWarningModal,
-    should_show_appropriateness_warning_modal,
-    setShouldShowAppropriatenessWarningModal,
-    fetchAccountSettings,
-    setIsTradingAssessmentForNewUserEnabled,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -177,7 +181,7 @@ const RealAccountSignup = ({
                 <FinishedSetCurrency
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
-                    onCancel={closeModal}
+                    onCancel={closeSetCurrencySuccessModal}
                     onSubmit={closeModalThenOpenCashier}
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
@@ -194,7 +198,10 @@ const RealAccountSignup = ({
         },
         {
             body: local_props => (
-                <StatusDialogContainer currency={local_props.state_value.currency} closeModal={closeModal} />
+                <StatusDialogContainer
+                    currency={local_props.state_value.currency}
+                    closeModal={closeSetCurrencySuccessModal}
+                />
             ),
         },
         {
@@ -255,7 +262,7 @@ const RealAccountSignup = ({
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (is_eu && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
+            if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -267,6 +274,7 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
+
         return '740px'; // Account wizard modal
     };
 
@@ -285,7 +293,6 @@ const RealAccountSignup = ({
     };
 
     const closeModalThenOpenCashier = () => {
-        replaceCashierMenuOnclick();
         closeRealAccountSignup();
         history.push(routes.cashier_deposit);
     };
@@ -353,8 +360,7 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
-    const closeModal = e => {
-        replaceCashierMenuOnclick();
+    const closeSetCurrencySuccessModal = e => {
         // Do not close modal on external link and popover click event
         if (
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
@@ -368,14 +374,27 @@ const RealAccountSignup = ({
             localStorage.removeItem('real_account_signup_wizard');
         }
         closeRealAccountSignup();
+    };
 
-        if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
-            window.location = routes.smarttrader;
+    const closeModal = e => {
+        // Do not close modal on external link and popover click event
+        if (
+            e?.target.getAttribute('rel') === 'noopener noreferrer' ||
+            e?.target.closest('.redirect-notice') ||
+            e?.target.closest('.dc-popover__bubble')
+        ) {
+            return;
+        }
+        if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
+            sessionStorage.removeItem('post_real_account_signup');
+            localStorage.removeItem('real_account_signup_wizard');
         }
 
-        if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
-            window.location = routes.binarybot;
+        if (modal_content[getActiveModalIndex()].action === 'signup') {
+            setIsClosingCreateRealAccountModal(true);
+            return;
         }
+        closeRealAccountSignup();
     };
 
     const onErrorConfirm = () => {
@@ -522,6 +541,7 @@ const RealAccountSignup = ({
             />
         );
     }
+
     return (
         <React.Fragment>
             {is_real_acc_signup_on && (
@@ -545,15 +565,16 @@ const RealAccountSignup = ({
                                 if (Title && ![finished_set_currency, status_dialog].includes(getActiveModalIndex())) {
                                     return (
                                         <Title
-                                            real_account_signup_target={real_account_signup_target}
-                                            currency={currency}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
-                                            is_belgium_residence={is_belgium_residence}
-                                            is_eu={is_eu}
-                                            has_fiat={has_fiat}
                                             available_crypto_currencies={available_crypto_currencies}
-                                            should_show_all_available_currencies={should_show_all_available_currencies}
                                             country_standpoint={country_standpoint}
+                                            currency={currency}
+                                            has_fiat={has_fiat}
+                                            is_belgium_residence={is_belgium_residence}
+                                            is_eu={show_eu_related_content}
+                                            is_isle_of_man_residence={is_isle_of_man_residence}
+                                            is_pre_appstore={is_pre_appstore}
+                                            real_account_signup_target={real_account_signup_target}
+                                            should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
                                     );
                                 }
@@ -562,7 +583,7 @@ const RealAccountSignup = ({
                             }}
                             toggleModal={closeModal}
                             height={getModalHeight()}
-                            width={!has_close_icon ? 'auto' : '904px'}
+                            width={!has_close_icon ? 'auto' : '955px'}
                             elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <ModalContent
@@ -575,7 +596,6 @@ const RealAccountSignup = ({
                             />
                         </Modal>
                     </DesktopWrapper>
-
                     <MobileWrapper>
                         <MobileDialog
                             portal_element_id='modal_root'
@@ -586,12 +606,13 @@ const RealAccountSignup = ({
                                 if (Title) {
                                     return (
                                         <Title
-                                            real_account_signup_target={real_account_signup_target}
-                                            currency={currency}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
-                                            is_belgium_residence={is_belgium_residence}
-                                            should_show_all_available_currencies={should_show_all_available_currencies}
                                             country_standpoint={country_standpoint}
+                                            currency={currency}
+                                            is_belgium_residence={is_belgium_residence}
+                                            is_isle_of_man_residence={is_isle_of_man_residence}
+                                            is_pre_appstore={is_pre_appstore}
+                                            real_account_signup_target={real_account_signup_target}
+                                            should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
                                     );
                                 }
@@ -615,37 +636,37 @@ const RealAccountSignup = ({
     );
 };
 
-export default connect(({ ui, client, common, modules }) => ({
+export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
+    cfd_score: client.cfd_score,
+    closeRealAccountSignup: ui.closeRealAccountSignup,
+    continueRoute: modules.cashier.general_store.continueRoute,
+    country_standpoint: client.country_standpoint,
+    currency: client.currency,
+    deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
+    deposit_target: modules.cashier.general_store.deposit_target,
+    fetchAccountSettings: client.fetchAccountSettings,
+    fetchFinancialAssessment: client.fetchFinancialAssessment,
     has_fiat: client.has_fiat,
     has_real_account: client.has_active_real_account,
-    continueRoute: modules.cashier.general_store.continueRoute,
-    currency: client.currency,
-    deposit_target: modules.cashier.general_store.deposit_target,
-    is_eu: client.is_eu,
-    country_standpoint: client.country_standpoint,
-    is_real_acc_signup_on: ui.is_real_acc_signup_on,
-    real_account_signup_target: ui.real_account_signup_target,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
-    closeRealAccountSignup: ui.closeRealAccountSignup,
-    setParams: ui.setRealAccountSignupParams,
+    is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
-    is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
-    setIsDeposit: modules.cashier.general_store.setIsDeposit,
-    should_show_all_available_currencies: modules.cashier.general_store.should_show_all_available_currencies,
-    state_value: ui.real_account_signup,
-    routing_history: common.app_routing_history,
-    deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
+    is_pre_appstore: client.is_pre_appstore,
+    is_real_acc_signup_on: ui.is_real_acc_signup_on,
+    real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
-    should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
-    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
-    should_show_appropriateness_warning_modal: ui.should_show_appropriateness_warning_modal,
-    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
-    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
-    fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
-    cfd_score: client.cfd_score,
-    fetchAccountSettings: client.fetchAccountSettings,
+    setIsDeposit: modules.cashier.general_store.setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
+    setIsClosingCreateRealAccountModal: ui.setIsClosingCreateRealAccountModal,
+    setParams: ui.setRealAccountSignupParams,
+    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
+    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
+    should_show_all_available_currencies: modules.cashier.general_store.should_show_all_available_currencies,
+    should_show_appropriateness_warning_modal: ui.should_show_appropriateness_warning_modal,
+    should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
+    state_value: ui.real_account_signup,
+    show_eu_related_content: traders_hub.show_eu_related_content,
 }))(withRouter(RealAccountSignup));

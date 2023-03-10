@@ -10,6 +10,6 @@ module.exports = {
         '^.+/es/^.+$': 'babel-jest',
         '^.+\\.(ts|tsx)?$': 'ts-jest',
     },
-    testRegex: ['__tests__', '.*.spec.js'],
+    testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',
     transformIgnorePatterns: ['/node_modules/(?!@enykeev/react-virtualized).+\\.js$'],
 };

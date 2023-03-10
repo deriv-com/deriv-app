@@ -1335,7 +1335,7 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
-        const { document_number, document_type, ...required_form_values } = form_values;
+        const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)

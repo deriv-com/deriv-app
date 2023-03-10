@@ -249,6 +249,16 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         }
     });
 
+    React.useEffect(() => {
+        if (window.location.hash === '#real') {
+            setActiveIndex(0);
+        }
+        if (window.location.hash === '#demo-all' || window.location.hash === '#demo') {
+            setActiveIndex(1);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.location.hash]);
+
     const openResetPassword = () => {
         if (!/reset-password/.test(props.location.hash)) {
             return;

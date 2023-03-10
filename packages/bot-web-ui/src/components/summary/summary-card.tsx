@@ -25,12 +25,13 @@ const SummaryCard = ({
     server_time,
     setCurrentFocus,
 }: TSummaryCardProps) => {
+    const is_cryptocurrency = contract_info?.underlying.startsWith('cry') || false;
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={!is_multiplier}
+            has_progress_slider={!is_multiplier || is_cryptocurrency}
             is_mobile={is_mobile}
             is_sold={is_contract_completed}
             server_time={server_time}

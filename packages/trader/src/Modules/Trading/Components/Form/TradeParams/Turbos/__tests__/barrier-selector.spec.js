@@ -29,42 +29,39 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('../trade-type-tabs', () => jest.fn(() => <div>Long</div>));
+jest.mock('../trade-type-tabs', () => jest.fn(() => <div>TradeTypeTabs</div>));
 
-describe('Barriers Selector', () => {
+describe('<BarrierSelector/>', () => {
+    const barriers_list_header = 'Barriers';
     let current_barrier;
     beforeEach(() => {
         render(<BarrierSelector {...mock_props} />);
         current_barrier = screen.getByTestId('current_barrier');
     });
+    it('should render properly with TradeTypeTabs and Barrier inside it', () => {
+        const trade_type_tabs = screen.getByText('TradeTypeTabs');
+        const barrier_title = screen.getByText('Barrier');
 
-    it('Barrier Selector component should have Trade Type Tabs inside it', () => {
-        const long_tab = screen.getByText('Long');
-
-        expect(long_tab).toBeInTheDocument();
+        expect(trade_type_tabs).toBeInTheDocument();
+        expect(barrier_title).toBeInTheDocument();
     });
-
-    it('The value of barrier_1 is chosen by default after first render', () => {
+    it('barrier_1 value is selected by default', () => {
         expect(screen.getByText(mock_props.barrier_1)).toBeInTheDocument();
     });
-
-    it('The barrier list is hidden/collapsed by default', () => {
-        expect(screen.queryByText('Distance to spot')).not.toBeInTheDocument();
+    it('barrier list should not be rendered by default', () => {
+        expect(screen.queryByText(barriers_list_header)).not.toBeInTheDocument();
     });
-
-    it('The barrier list is shown after cliking on current barrier', () => {
+    it('barrier list is displayed after clicking on the current barrier', () => {
         userEvent.click(current_barrier);
 
-        expect(screen.getByText('Distance to spot')).toBeInTheDocument();
+        expect(screen.getByText(barriers_list_header)).toBeInTheDocument();
     });
-
-    it('All the available barriers from turbos_barrier_choices should be rendered in barrier list (when it can be shown)', () => {
+    it('should render all available barrier values from turbos_barrier_choices in barrier list when it is expanded', () => {
         userEvent.click(current_barrier);
 
         mock_props.turbos_barrier_choices.forEach(barrier => expect(screen.getByTestId(barrier)).toBeInTheDocument());
     });
-
-    it('After user clicked on the one of barriers option, it should be shown as current barrier value for desktop', () => {
+    it('onChange should be called with the new barrier option when it is clicked', () => {
         userEvent.click(current_barrier);
         const cliked_barrier = screen.getByTestId(mock_props.turbos_barrier_choices[1]);
         userEvent.click(cliked_barrier);
@@ -76,12 +73,11 @@ describe('Barriers Selector', () => {
             },
         });
     });
-
-    it('After clicking on cross icon barrier list should be closed/collapsed', () => {
+    it('barrier list should not be rendered when cross icon is clicked', () => {
         userEvent.click(current_barrier);
         const icon_cross = screen.getByText('IcCross');
         userEvent.click(icon_cross);
 
-        expect(screen.queryByText('Distance to spot')).not.toBeInTheDocument();
+        expect(screen.queryByText(barriers_list_header)).not.toBeInTheDocument();
     });
 });

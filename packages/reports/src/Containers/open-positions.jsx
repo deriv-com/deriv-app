@@ -345,25 +345,19 @@ const OpenPositions = ({
     ...props
 }) => {
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    const [has_turbos_contract, setTurbosContract] = React.useState(
-        active_positions.some(p => isTurbosContract(p.contract_info?.contract_type))
-    );
-    const [contract_type_value, setContractTypeValue] = React.useState(is_multiplier ? 'Multipliers' : 'Options');
+    const [has_turbos_contract, setTurbosContract] = React.useState(false);
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
-        {
-            text: localize('Options'),
-            value: 'Options',
-        },
-        {
-            text: localize('Multipliers'),
-            value: 'Multipliers',
-        },
-        {
-            text: localize('Turbos'),
-            value: 'Turbos',
-        },
+        { text: localize('Options'), is_default: !is_multiplier && !is_turbos },
+        { text: localize('Multipliers'), is_default: is_multiplier },
+        { text: localize('Turbos'), is_default: is_turbos },
     ];
+    const [contract_type_value, setContractTypeValue] = React.useState(
+        contract_types.find(type => type.is_default)?.text || localize('Options')
+    );
+    const is_turbos_selected = contract_type_value === contract_types[2].text;
+    const is_multiplier_selected = contract_type_value === contract_types[1].text;
+    const contract_types_list = contract_types.map(({ text }) => ({ text, value: text }));
 
     React.useEffect(() => {
         /*
@@ -393,9 +387,6 @@ const OpenPositions = ({
     };
 
     if (error) return <p>{error}</p>;
-
-    const is_multiplier_selected = contract_type_value === 'Multipliers';
-    const is_turbos_selected = contract_type_value === 'Turbos';
 
     const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
@@ -501,7 +492,7 @@ const OpenPositions = ({
                             <Dropdown
                                 is_align_text_left
                                 name='contract_types'
-                                list={contract_types}
+                                list={contract_types_list}
                                 value={contract_type_value}
                                 onChange={handleChange}
                             />
@@ -510,10 +501,7 @@ const OpenPositions = ({
                     <MobileWrapper>
                         <SelectNative
                             className='open-positions__contract-types-selector'
-                            list_items={contract_types.map(option => ({
-                                text: option.text,
-                                value: option.value,
-                            }))}
+                            list_items={contract_types_list}
                             value={contract_type_value}
                             should_show_empty_option={false}
                             onChange={handleChange}

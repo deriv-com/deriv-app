@@ -9,7 +9,7 @@ const classname = 'trade-container__barriers-table__item';
 const mockClickCallback = jest.fn();
 const mockHoverCallback = jest.fn();
 
-describe('Barriers List component', () => {
+describe('<BarriersList/>', () => {
     beforeEach(() => {
         render(
             <BarriersList
@@ -23,32 +23,27 @@ describe('Barriers List component', () => {
             />
         );
     });
-
-    it('All of barriers options should be rendered', () => {
-        turbos_barrier_choices.forEach(barrier => expect(screen.getByTestId(`${barrier}`)).toBeInTheDocument());
+    it('all barrier options should be rendered', () => {
+        turbos_barrier_choices.forEach(barrier => expect(screen.getByTestId(barrier)).toBeInTheDocument());
     });
-
-    it('Selected barrier should have a proper className', () => {
+    it('selected barrier should have a proper className', () => {
         expect(screen.getByTestId(turbos_barrier_choices[0])).toHaveClass(`${classname} ${classname}--selected`);
     });
-
-    it('Not selected barriers options should have a proper className', () => {
-        expect(screen.getByTestId(turbos_barrier_choices[0])).toHaveClass(classname);
+    it('non-selected barrier option should have a proper className', () => {
+        expect(screen.getByTestId(turbos_barrier_choices[1])).toHaveClass(classname);
+        expect(screen.getByTestId(turbos_barrier_choices[1])).not.toHaveClass(`${classname} ${classname}--selected`);
     });
-
-    it('After clicking on second option clickHandler should be called', () => {
+    it('click handler should be called after clicking on the 2nd barrier option (33)', () => {
         userEvent.click(screen.getByTestId(turbos_barrier_choices[1]));
 
         expect(mockClickCallback).toHaveBeenCalled();
     });
-
-    it('After hover on third option hoverHandler should be called', () => {
+    it('hover handler should be called when the 3rd barrier option (40) is hovered', () => {
         userEvent.hover(screen.getByTestId(turbos_barrier_choices[2]));
 
         expect(mockHoverCallback).toHaveBeenCalled();
     });
-
-    it('After mouseLeave event on third option hoverHandler should be called with null', () => {
+    it('hover handler should be called with null when mouseLeave event fires on the 3rd barrier option (40)', () => {
         userEvent.unhover(screen.getByTestId(turbos_barrier_choices[2]));
 
         expect(mockHoverCallback).toHaveBeenCalledWith(null);

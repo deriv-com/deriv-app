@@ -85,6 +85,7 @@ export default class PortfolioStore extends BaseStore {
             updateLimitOrderBarriers: action,
             setContractType: action,
             is_multiplier: computed,
+            is_turbos: computed,
         });
 
         this.root_store = root_store;
@@ -578,5 +579,9 @@ export default class PortfolioStore extends BaseStore {
 
     get is_multiplier() {
         return this.contract_type === 'multiplier';
+    }
+
+    get is_turbos() {
+        return this.contract_type === 'turboslong' || this.contract_type === 'turbosshort';
     }
 }

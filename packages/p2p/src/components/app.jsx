@@ -13,6 +13,7 @@ import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
+    const [should_show_profile, setShouldShowProfile] = React.useState(false);
     const {
         balance,
         className,
@@ -36,6 +37,11 @@ const App = props => {
         if (/\/verification$/.test(history?.location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
             history.push(routes.cashier_p2p);
+        }
+
+        if (/\/profile$/.test(history?.location.pathname)) {
+            history.push(routes.cashier_p2p);
+            setShouldShowProfile(true);
         }
 
         ServerTime.init(server_time);
@@ -64,11 +70,14 @@ const App = props => {
     }, [lang]);
 
     React.useEffect(() => {
+        if (should_show_profile) general_store.redirectTo('my_profile');
+    }, [should_show_profile]);
+
+    React.useEffect(() => {
         if (order_id) {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 

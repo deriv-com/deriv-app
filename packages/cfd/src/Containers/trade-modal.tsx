@@ -260,7 +260,9 @@ const DerivXTradeModal = ({
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                <Icon icon='IcBrandDxtrade' size={24} />
+                {type === 'dxtrade' && <Icon icon='IcBrandDxtrade' size={24} />}
+                {type === 'derivEZ' && <Icon icon='IcBrandDxtrade' size={24} />}
+                {type === 'cTrader' && <Icon icon='IcBrandDxtrade' size={24} />}
                 <div className='cfd-trade-modal__desc'>
                     <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                         {getHeadingTitle()}

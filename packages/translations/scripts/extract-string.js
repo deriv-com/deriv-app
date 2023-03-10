@@ -1,6 +1,6 @@
 const glob = require('glob');
 const path = require('path');
-const DOMParser = require('xmldom').DOMParser;
+const DOMParser = require('@xmldom/xmldom').DOMParser;
 
 const getRegexPattern = () => /(i18n_default_text={?|localize\()\s*(['"])\s*(.*?)(?<!\\)\2\s*/gs;
 
@@ -37,8 +37,7 @@ const getStringsFromXmlFile = input => {
 const getTranslatableFiles = () => {
     const packages_with_translations = [
         'account',
-        // TODO: add appstore package once it's done and merged
-        // 'appstore',
+        'appstore',
         'cashier',
         'bot-web-ui',
         'core',

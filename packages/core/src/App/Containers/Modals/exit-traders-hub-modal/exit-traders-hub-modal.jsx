@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import { connect } from 'Stores/connect';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
 import { isMobile, routes, ContentFlag } from '@deriv/shared';
@@ -21,8 +21,9 @@ const ExitTradersHubModal = ({
 
     const exit_traders_hub_modal_content = (
         <Text size={isMobile() ? 'xxs' : 'xs'}>
-            {localize(`You won’t be able to see your EU account in the traditional view. The open positions in your EU
-        account will remain open. You can switch back to this view at any time.`)}
+            {localize(
+                "You won't be able to see your EU account in the traditional view. The open positions in your EU account will remain open. You can switch back to this view at any time."
+            )}
         </Text>
     );
 
@@ -48,15 +49,16 @@ const ExitTradersHubModal = ({
         const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();
 
-        if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+        if (content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.LOW_RISK_CR_NON_EU) {
             if (!cr_account) {
                 await switchAccount(account_list.find(acc => acc.loginid.startsWith('VRTC'))?.loginid);
             }
             //if eu is currently selected , switch to non-eu on exiting tradershub
             await switchAccount(account_list.find(acc => acc.loginid.startsWith('CR'))?.loginid);
         }
-        history.push(routes.root);
+
         setIsLoggingIn(false);
+        history.push(routes.root);
     };
 
     return (

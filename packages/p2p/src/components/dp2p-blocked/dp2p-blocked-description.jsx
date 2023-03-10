@@ -25,7 +25,12 @@ const Dp2pBlockedDescription = () => {
         );
     } else {
         blocked_description = (
-            <Localize i18n_default_text='Please use live chat to contact our Customer Support team for help.' />
+            <Localize
+                i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'
+                components={[
+                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
+                ]}
+            />
         );
     }
 

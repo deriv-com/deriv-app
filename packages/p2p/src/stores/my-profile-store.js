@@ -16,12 +16,14 @@ export default class MyProfileStore extends BaseStore {
     error_message = '';
     form_error = '';
     full_name = '';
+    has_more_items_to_load = false;
     is_block_user_table_loading = false;
     is_button_loading = false;
     is_confirm_delete_modal_open = false;
     is_filter_modal_open = false;
     is_loading = false;
     is_submit_success = false;
+    is_trade_partners_list_empty = true;
     payment_method_value = undefined;
     payment_methods_list = [];
     payment_method_to_delete = {};
@@ -36,6 +38,7 @@ export default class MyProfileStore extends BaseStore {
     selected_trade_partner = {};
     should_hide_my_profile_tab = false;
     should_show_add_payment_method_form = false;
+    should_show_block_user_list_header = false;
     should_show_edit_payment_method_form = false;
     trade_partners_list = [];
 
@@ -56,12 +59,14 @@ export default class MyProfileStore extends BaseStore {
             error_message: observable,
             form_error: observable,
             full_name: observable,
+            has_more_items_to_load: observable,
             is_block_user_table_loading: observable,
             is_button_loading: observable,
             is_confirm_delete_modal_open: observable,
             is_filter_modal_open: observable,
             is_loading: observable,
             is_submit_success: observable,
+            is_trade_partners_list_empty: observable,
             payment_method_value: observable,
             payment_methods_list: observable,
             payment_method_to_delete: observable,
@@ -76,6 +81,7 @@ export default class MyProfileStore extends BaseStore {
             selected_trade_partner: observable,
             should_hide_my_profile_tab: observable,
             should_show_add_payment_method_form: observable,
+            should_show_block_user_list_header: observable,
             should_show_edit_payment_method_form: observable,
             trade_partners_list: observable,
             advertiser_has_payment_methods: computed,
@@ -120,11 +126,13 @@ export default class MyProfileStore extends BaseStore {
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
+            setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
             setIsConfirmDeleteModalOpen: action.bound,
             setIsFilterModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsSubmitSuccess: action.bound,
+            setIsTradePartnersListEmpty: action.bound,
             setPaymentMethodValue: action.bound,
             setPaymentMethodsList: action.bound,
             setPaymentMethodToDelete: action.bound,
@@ -139,6 +147,7 @@ export default class MyProfileStore extends BaseStore {
             setSelectedTradePartner: action.bound,
             setShouldHideMyProfileTab: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
+            setShouldShowBlockUserListHeader: action.bound,
             setShouldShowEditPaymentMethodForm: action.bound,
             setTradePartnersList: action.bound,
         });
@@ -164,20 +173,30 @@ export default class MyProfileStore extends BaseStore {
         return list;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     get block_user_sort_list() {
         return [
+            // TODO: uncomment when BE returns trade partner count values
+            // {
+            //     text: localize('All ({{list_value}})', {
+            //         list_value: this.is_block_user_table_loading ? '...' : this.trade_partner_dropdown_list.length,
+            //     }),
+            //     value: 'all_users',
+            // },
+            // {
+            //     text: localize('Blocked ({{list_value}})', {
+            //         list_value: this.is_block_user_table_loading
+            //             ? '...'
+            //             : this.trade_partner_dropdown_list.filter(partner => partner.is_blocked === 1).length,
+            //     }),
+            //     value: 'blocked_users',
+            // },
             {
-                text: localize('All ({{list_value}})', {
-                    list_value: this.is_block_user_table_loading ? '...' : this.trade_partner_dropdown_list.length,
-                }),
+                text: localize('All'),
                 value: 'all_users',
             },
             {
-                text: localize('Blocked ({{list_value}})', {
-                    list_value: this.is_block_user_table_loading
-                        ? '...'
-                        : this.trade_partner_dropdown_list.filter(partner => partner.is_blocked === 1).length,
-                }),
+                text: localize('Blocked'),
                 value: 'blocked_users',
             },
         ];
@@ -258,14 +277,7 @@ export default class MyProfileStore extends BaseStore {
      * @returns {Array} Returns the entire trade partners list or filtered list of searched trade partners
      */
     get rendered_trade_partners_list() {
-        if (this.search_term) {
-            return this.selected_sort_value === 'all_users'
-                ? this.search_results
-                : this.search_results.filter(partner => partner.is_blocked === 1);
-        }
-        return this.selected_sort_value === 'all_users'
-            ? this.trade_partners_list
-            : this.trade_partners_list.filter(partner => partner.is_blocked === 1);
+        return this.search_term ? this.search_results : this.trade_partners_list;
     }
 
     get trade_partner_dropdown_list() {
@@ -449,7 +461,7 @@ export default class MyProfileStore extends BaseStore {
         });
     }
 
-    getTradePartnersList(is_initial_load = false) {
+    getTradePartnersList({ startIndex }, is_initial_load = false) {
         const { general_store } = this.root_store;
 
         if (is_initial_load) this.setIsBlockUserTableLoading(true);
@@ -458,23 +470,40 @@ export default class MyProfileStore extends BaseStore {
             p2p_advertiser_list: 1,
             trade_partners: 1,
             ...(this.search_term ? { advertiser_name: this.search_term } : {}),
+            ...(this.selected_sort_value === 'blocked_users' ? { is_blocked: 1 } : {}),
+            offset: startIndex,
+            limit: general_store.list_item_limit,
         }).then(response => {
             if (response) {
                 if (!response.error) {
                     const { list } = response.p2p_advertiser_list;
+                    const is_first_page = startIndex === 0;
 
-                    if (this.search_term) this.setSearchResults(list);
-                    else this.setTradePartnersList(list);
-                } else if (!general_store.is_barred) {
-                    general_store.showModal({
-                        key: 'ErrorModal',
-                        props: {
-                            error_message: response.error.message,
-                            error_modal_title: 'Unable to block advertiser',
-                            has_close_icon: false,
-                            width: isMobile() ? '90rem' : '40rem',
-                        },
-                    });
+                    this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+
+                    this.setShouldShowBlockUserListHeader(
+                        this.is_trade_partners_list_empty && list.length === 0 && !this.search_term
+                    );
+
+                    let filtered_list, partners_list;
+
+                    if (this.search_term) {
+                        filtered_list = list.filter(
+                            partner => !this.search_results.find(({ id }) => partner.id === id)
+                        );
+                        partners_list = is_first_page ? list : [...this.search_results, ...filtered_list];
+
+                        this.setSearchResults(partners_list);
+                    } else {
+                        filtered_list = list.filter(
+                            partner => !this.trade_partners_list.find(({ id }) => partner.id === id)
+                        );
+                        partners_list = is_first_page ? list : [...this.trade_partners_list, ...filtered_list];
+
+                        this.setTradePartnersList(partners_list);
+                    }
+                } else {
+                    general_store.setBlockUnblockUserError(response.error.message);
                 }
             }
             this.setIsBlockUserTableLoading(false);
@@ -483,7 +512,7 @@ export default class MyProfileStore extends BaseStore {
 
     handleChange(e) {
         this.setSelectedSortValue(e.target.value);
-        this.getTradePartnersList(true);
+        this.getTradePartnersList({ startIndex: 0 }, true);
 
         if (isMobile()) {
             this.setIsFilterModalOpen(false);
@@ -532,7 +561,8 @@ export default class MyProfileStore extends BaseStore {
      */
     getSearchedTradePartners() {
         if (this.search_term) {
-            this.getTradePartnersList(true);
+            this.setTradePartnersList([]);
+            this.getTradePartnersList({ startIndex: 0 }, true);
         }
     }
 
@@ -561,7 +591,8 @@ export default class MyProfileStore extends BaseStore {
         if (this.search_term) {
             this.setSearchTerm('');
             this.setSearchResults([]);
-            this.getTradePartnersList(true);
+            this.setTradePartnersList([]);
+            this.getTradePartnersList({ startIndex: 0 }, true);
         }
     }
 
@@ -570,7 +601,7 @@ export default class MyProfileStore extends BaseStore {
 
         general_store.showModal({
             key: 'BlockUserModal',
-            props: { advertiser_name: advertiser.name, is_advertiser_blocked: advertiser.is_blocked },
+            props: { advertiser_name: advertiser.name, is_advertiser_blocked: !!advertiser.is_blocked },
         });
         this.setSelectedTradePartner(advertiser);
     }
@@ -595,7 +626,7 @@ export default class MyProfileStore extends BaseStore {
             general_store.hideModal();
         }
         general_store.blockUnblockUser(!this.selected_trade_partner.is_blocked, this.selected_trade_partner.id);
-        const delay = setTimeout(() => this.getTradePartnersList(), 250);
+        const delay = setTimeout(() => this.getTradePartnersList({ startIndex: 0 }, true), 250);
     }
 
     showAddPaymentMethodForm() {
@@ -739,6 +770,10 @@ export default class MyProfileStore extends BaseStore {
         this.full_name = full_name;
     }
 
+    setHasMoreItemsToLoad(has_more_items_to_load) {
+        this.has_more_items_to_load = has_more_items_to_load;
+    }
+
     setIsBlockUserTableLoading(is_block_user_table_loading) {
         this.is_block_user_table_loading = is_block_user_table_loading;
     }
@@ -757,6 +792,10 @@ export default class MyProfileStore extends BaseStore {
 
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
+    }
+
+    setIsTradePartnersListEmpty(is_trade_partners_list_empty) {
+        this.is_trade_partners_list_empty = is_trade_partners_list_empty;
     }
 
     setPaymentMethodValue(payment_method_value) {
@@ -813,6 +852,10 @@ export default class MyProfileStore extends BaseStore {
 
     setShouldShowAddPaymentMethodForm(should_show_add_payment_method_form) {
         this.should_show_add_payment_method_form = should_show_add_payment_method_form;
+    }
+
+    setShouldShowBlockUserListHeader(should_show_block_user_list_header) {
+        this.should_show_block_user_list_header = should_show_block_user_list_header;
     }
 
     setShouldShowEditPaymentMethodForm(should_show_edit_payment_method_form) {

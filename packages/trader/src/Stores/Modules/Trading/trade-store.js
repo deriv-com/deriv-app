@@ -336,6 +336,7 @@ export default class TradeStore extends BaseStore {
                 }
                 this.setDefaultGrowthRate();
                 this.tick_size_barrier = 0;
+                this.root_store.contract_trade.clearAccumulatorBarriersData();
             }
         );
         reaction(
@@ -359,7 +360,7 @@ export default class TradeStore extends BaseStore {
             () => [this.contract_type],
             () => {
                 this.root_store.portfolio.setContractType(this.contract_type);
-                if (this.contract_type === 'multiplier' || this.contract_type === 'accumulator') {
+                if (this.is_multiplier || this.is_accumulator) {
                     // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                     Object.assign(this.validation_rules, getMultiplierValidationRules());
                 } else {
@@ -890,6 +891,33 @@ export default class TradeStore extends BaseStore {
         if (obj_new_values.contract_type && obj_new_values.contract_type === 'rise_fall' && !!this.is_equal) {
             obj_new_values.contract_type = 'rise_fall_equal';
         }
+        // when accumulator is selected, we need to change chart type to mountain and granularity to 0
+        // and we need to restore previous chart type and granularity when accumulator is unselected
+        const {
+            clearAccumulatorBarriersData,
+            prev_chart_type,
+            prev_granularity,
+            chart_type,
+            granularity,
+            savePreviousChartMode,
+            updateChartType,
+            updateGranularity,
+        } = this.root_store.contract_trade || {};
+        if (obj_new_values.contract_type === 'accumulator') {
+            clearAccumulatorBarriersData();
+            savePreviousChartMode(chart_type, granularity);
+            updateGranularity(0);
+            updateChartType('mountain');
+        } else if (
+            obj_new_values.contract_type &&
+            prev_chart_type &&
+            prev_granularity &&
+            prev_chart_type !== chart_type &&
+            prev_granularity !== granularity
+        ) {
+            updateGranularity(prev_granularity);
+            updateChartType(prev_chart_type);
+        }
 
         if (/\bduration\b/.test(Object.keys(obj_new_values))) {
             // TODO: fix this in input-field.jsx
@@ -1368,43 +1396,44 @@ export default class TradeStore extends BaseStore {
 
     // ---------- WS ----------
     wsSubscribe = (req, callback) => {
-        const accumulator_ticks_interceptor = (...args) => {
+        const passthrough_callback = (...args) => {
             callback(...args);
-            let accumulator_barriers_data = {
-                current_symbol: this.symbol,
-                tick_size_barrier: this.tick_size_barrier,
-            };
-            if ('tick' in args[0]) {
-                const { current_spot, current_spot_time } =
-                    this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
-                const { epoch, pip_size, quote, symbol } = args[0].tick;
-                accumulator_barriers_data = {
-                    ...accumulator_barriers_data,
-                    previous_spot: current_spot,
-                    previous_spot_time: current_spot_time,
-                    current_spot: quote,
-                    current_spot_time: epoch,
-                    pip_size,
-                    symbol,
+            if (this.is_accumulator) {
+                let accumulator_barriers_data = {
+                    current_symbol: this.symbol,
+                    tick_size_barrier: this.tick_size_barrier,
                 };
-            } else if ('history' in args[0]) {
-                const { prices, times } = args[0].history;
-                const symbol = args[0].echo_req.ticks_history;
-                accumulator_barriers_data = {
-                    ...accumulator_barriers_data,
-                    previous_spot: prices[prices.length - 2],
-                    previous_spot_time: times[times.length - 2],
-                    current_spot: prices[prices.length - 1],
-                    current_spot_time: times[times.length - 1],
-                    pip_size: args[0].pip_size,
-                    symbol,
-                };
-            } else {
-                return;
+                if ('tick' in args[0]) {
+                    const { current_spot, current_spot_time } =
+                        this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
+                    const { epoch, pip_size, quote, symbol } = args[0].tick;
+                    accumulator_barriers_data = {
+                        ...accumulator_barriers_data,
+                        previous_spot: current_spot,
+                        previous_spot_time: current_spot_time,
+                        current_spot: quote,
+                        current_spot_time: epoch,
+                        pip_size,
+                        symbol,
+                    };
+                } else if ('history' in args[0]) {
+                    const { prices, times } = args[0].history;
+                    const symbol = args[0].echo_req.ticks_history;
+                    accumulator_barriers_data = {
+                        ...accumulator_barriers_data,
+                        previous_spot: prices[prices.length - 2],
+                        previous_spot_time: times[times.length - 2],
+                        current_spot: prices[prices.length - 1],
+                        current_spot_time: times[times.length - 1],
+                        pip_size: args[0].pip_size,
+                        symbol,
+                    };
+                } else {
+                    return;
+                }
+                this.root_store.contract_trade.updateAccumulatorBarriersAndSpots(accumulator_barriers_data);
             }
-            this.root_store.contract_trade.updateAccumulatorBarriersAndSpots(accumulator_barriers_data);
         };
-        const passthrough_callback = this.is_accumulator ? accumulator_ticks_interceptor : callback;
         if (req.subscribe === 1) {
             const key = JSON.stringify(req);
             const subscriber = WS.subscribeTicksHistory(req, passthrough_callback);

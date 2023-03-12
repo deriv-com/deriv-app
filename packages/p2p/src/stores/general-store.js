@@ -70,6 +70,7 @@ export default class GeneralStore extends BaseStore {
             active_index: observable,
             active_notification_count: observable,
             advertiser_id: observable,
+            advertiser_info: observable,
             advertiser_buy_limit: observable,
             advertiser_sell_limit: observable,
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
@@ -163,6 +164,7 @@ export default class GeneralStore extends BaseStore {
             setUserBlockedCount: action.bound,
             setUserBlockedUntil: action.bound,
             setWebsocketInit: action.bound,
+            showDailyLimitIncreaseNotification: action.bound,
             toggleNicknamePopup: action.bound,
             updateAdvertiserInfo: action.bound,
             updateP2pNotifications: action.bound,
@@ -411,6 +413,19 @@ export default class GeneralStore extends BaseStore {
             platform: 'P2P',
             type: 'p2p_completed_order',
         });
+    }
+
+    showDailyLimitIncreaseNotification() {
+        const { upgradable_daily_limits } = this.advertiser_info;
+        const { max_daily_buy, max_daily_sell } = upgradable_daily_limits;
+
+        this.props.addNotificationMessage(
+            this.props.client_notifications.p2p_daily_limit_increase(
+                this.client.currency,
+                max_daily_buy,
+                max_daily_sell
+            )
+        );
     }
 
     handleTabClick(idx) {
@@ -825,6 +840,7 @@ export default class GeneralStore extends BaseStore {
             name,
             payment_info,
             show_name,
+            upgradable_daily_limits,
         } = response?.p2p_advertiser_info || {};
 
         if (!response.error) {
@@ -843,6 +859,8 @@ export default class GeneralStore extends BaseStore {
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
             this.setIsRestricted(false);
+
+            if (upgradable_daily_limits) this.showDailyLimitIncreaseNotification();
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

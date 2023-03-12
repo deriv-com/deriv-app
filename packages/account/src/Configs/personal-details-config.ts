@@ -1,20 +1,21 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TSchema, TUpgradeInfo, TResidenseList } from 'Types';
+import { TSchema, TResidenseList } from 'Types';
 import { GetSettings } from '@deriv/api-types';
 
-type PersonalDetailsConfig = {
-    upgrade_info: TUpgradeInfo;
+type TPersonalDetailsConfig = {
     real_account_signup_target: string;
     residence_list: TResidenseList;
     account_settings: GetSettings;
+    is_appstore: boolean;
 };
 
-const personal_details_config: (props: {
-    residence_list: TResidenseList;
-    account_settings: GetSettings;
-    is_appstore: boolean;
-}) => [TSchema, string[]] | Record<string, never> = ({ residence_list, account_settings, is_appstore }) => {
+const personal_details_config = ({
+    residence_list,
+    account_settings,
+    is_appstore,
+    real_account_signup_target,
+}: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -101,9 +102,10 @@ const personal_details_config: (props: {
             ],
         },
         tax_residence: {
-            default_value: account_settings.tax_residence
-                ? residence_list.find(item => item.value === account_settings.tax_residence)?.text
-                : '',
+            default_value:
+                real_account_signup_target === 'maltainvest'
+                    ? account_settings.residence
+                    : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
@@ -179,7 +181,12 @@ const personalDetailsConfig = (
     PersonalDetails: React.Component,
     is_appstore: boolean
 ) => {
-    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_appstore });
+    const [config, disabled_items] = personal_details_config({
+        residence_list,
+        account_settings,
+        is_appstore,
+        real_account_signup_target,
+    });
     return {
         header: {
             active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),

@@ -912,11 +912,11 @@ export default class TradeStore extends BaseStore {
             obj_new_values.contract_type &&
             prev_chart_type &&
             prev_granularity &&
-            prev_chart_type !== chart_type &&
-            prev_granularity !== granularity
+            (prev_chart_type !== chart_type || prev_granularity !== granularity)
         ) {
             updateGranularity(prev_granularity);
             updateChartType(prev_chart_type);
+            savePreviousChartMode('', null);
         }
 
         if (/\bduration\b/.test(Object.keys(obj_new_values))) {

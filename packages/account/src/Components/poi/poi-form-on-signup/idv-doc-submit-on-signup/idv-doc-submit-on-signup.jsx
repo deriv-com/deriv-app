@@ -16,10 +16,11 @@ import {
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
 import {
+    documentAdditionalError,
     getDocumentData,
     getRegex,
-    isSequentialNumber,
     isRecurringNumberRegex,
+    isSequentialNumber,
     preventEmptyClipboardPaste,
 } from '../../idv-document-submit/utils';
 import { useToggleValidation } from '../../../hooks/useToggleValidation';
@@ -53,7 +54,21 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+                const needs_additional_document = !!document_data[key].additional;
 
+                if (needs_additional_document) {
+                    return {
+                        id: key,
+                        text: new_display_name || display_name,
+                        additional: {
+                            display_name: document_data[key].additional?.display_name,
+                            format: document_data[key].additional?.format,
+                        },
+                        value: format,
+                        sample_image,
+                        example_format,
+                    };
+                }
                 return {
                     id: key,
                     text: new_display_name || display_name,
@@ -81,14 +96,22 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
 
     const validateFields = values => {
         const errors = {};
-        const { document_type, document_number } = values;
+        const { document_type, document_number, document_additional } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
+        const needs_additional_document = !!document_type.additional;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
             setInputDisable(false);
+        }
+
+        if (needs_additional_document) {
+            const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+            if (error_message)
+                errors.document_additional =
+                    localize(error_message) + getExampleFormat(document_type.additional?.example_format);
         }
 
         if (!document_number) {
@@ -123,6 +146,16 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             true
         );
         setDocumentImage('');
+    };
+
+    const onKeyUp = (e, document_name, values, setFieldValue) => {
+        const { example_format } =
+            document_name === 'document_number' ? values.document_type : values.document_type.additional;
+        const current_input = example_format.includes('-')
+            ? formatInput(example_format, current_input || e.target.value, '-')
+            : e.target.value;
+        setFieldValue(document_name, current_input, true);
+        validateFields(values);
     };
 
     const getDocument = text => {
@@ -287,46 +320,72 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                     <fieldset className='proof-of-identity__fieldset-input'>
                                                         <Field name='document_number'>
                                                             {({ field }) => (
-                                                                <Input
-                                                                    {...field}
-                                                                    name='document_number'
-                                                                    bottom_label={
-                                                                        values.document_type &&
-                                                                        getExampleFormat(
-                                                                            values.document_type.example_format
-                                                                        )
-                                                                    }
-                                                                    disabled={is_input_disable}
-                                                                    error={
-                                                                        touched.document_number &&
-                                                                        errors.document_number
-                                                                    }
-                                                                    autoComplete='off'
-                                                                    placeholder='Enter your document number'
-                                                                    value={values.document_number}
-                                                                    onPaste={preventEmptyClipboardPaste}
-                                                                    onBlur={handleBlur}
-                                                                    onChange={handleChange}
-                                                                    onKeyUp={e => {
-                                                                        const { example_format } = values.document_type;
-                                                                        const current_input = example_format?.includes(
-                                                                            '-'
-                                                                        )
-                                                                            ? formatInput(
-                                                                                  example_format,
-                                                                                  current_input || e.target.value,
-                                                                                  '-'
-                                                                              )
-                                                                            : e.target.value;
-                                                                        setFieldValue(
-                                                                            'document_number',
-                                                                            current_input,
-                                                                            true
-                                                                        );
-                                                                        validateFields(values);
-                                                                    }}
-                                                                    required
-                                                                />
+                                                                <React.Fragment>
+                                                                    <Input
+                                                                        {...field}
+                                                                        name='document_number'
+                                                                        bottom_label={
+                                                                            values.document_type &&
+                                                                            getExampleFormat(
+                                                                                values.document_type.example_format
+                                                                            )
+                                                                        }
+                                                                        disabled={is_input_disable}
+                                                                        error={
+                                                                            touched.document_number &&
+                                                                            errors.document_number
+                                                                        }
+                                                                        autoComplete='off'
+                                                                        placeholder='Enter your document number'
+                                                                        value={values.document_number}
+                                                                        onPaste={preventEmptyClipboardPaste}
+                                                                        onBlur={handleBlur}
+                                                                        onChange={handleChange}
+                                                                        onKeyUp={e =>
+                                                                            onKeyUp(
+                                                                                e,
+                                                                                'document_number',
+                                                                                values,
+                                                                                setFieldValue
+                                                                            )
+                                                                        }
+                                                                        required
+                                                                    />
+                                                                    {values.document_type.additional?.display_name && (
+                                                                        <Input
+                                                                            {...field}
+                                                                            name='document_additional'
+                                                                            bottom_label={
+                                                                                values.document_type.additional &&
+                                                                                getExampleFormat(
+                                                                                    values.document_type.additional
+                                                                                        ?.example_format
+                                                                                )
+                                                                            }
+                                                                            disabled={is_input_disable}
+                                                                            error={
+                                                                                (touched.document_additional &&
+                                                                                    errors.document_additional) ||
+                                                                                errors.error_message
+                                                                            }
+                                                                            autoComplete='off'
+                                                                            placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                                            value={values.document_additional}
+                                                                            onPaste={preventEmptyClipboardPaste}
+                                                                            onBlur={handleBlur}
+                                                                            onChange={handleChange}
+                                                                            onKeyUp={e =>
+                                                                                onKeyUp(
+                                                                                    e,
+                                                                                    'document_additional',
+                                                                                    values,
+                                                                                    setFieldValue
+                                                                                )
+                                                                            }
+                                                                            required
+                                                                        />
+                                                                    )}
+                                                                </React.Fragment>
                                                             )}
                                                         </Field>
                                                     </fieldset>

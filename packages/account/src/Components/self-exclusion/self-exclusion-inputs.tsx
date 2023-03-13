@@ -188,8 +188,6 @@ const StakeLossAndLimitsInputs = () => {
     );
 };
 
-const begambleaware = 'http://begambleaware.org';
-
 const SessionAndLoginLimitsInputs = () => {
     const { is_mlt, is_mx, is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, setFieldValue, values }: TFormikContext =
@@ -330,7 +328,7 @@ const SessionAndLoginLimitsInputs = () => {
                                         className='da-self-exclusion__warning-link'
                                         rel='noopener noreferrer'
                                         target='_blank'
-                                        href={begambleaware}
+                                        href='https://www.begambleaware.org'
                                     />,
                                 ]}
                             />

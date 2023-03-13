@@ -194,7 +194,7 @@ const DataList = ({
                                 >
                                     <List
                                         className={className}
-                                        deferredMeasurementCache={cache?.current && cache?.current}
+                                        deferredMeasurementCache={cache?.current}
                                         height={height}
                                         onRowsRendered={onRowsRendered}
                                         overscanRowCount={overscanRowCount || 1}

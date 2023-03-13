@@ -84,7 +84,7 @@ const getDays = ({
 
     const moment_start_date = toMoment(start_date).startOf('day');
 
-    dates.map(date => {
+    dates.forEach(date => {
         const moment_date = toMoment(date).startOf('day');
         const is_active = selected_date && moment_date.isSame(moment_selected);
         const is_today = moment_date.isSame(moment_today, 'day');

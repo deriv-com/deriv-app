@@ -1,4 +1,12 @@
 .dc-modal__container_account-transfer-modal {
+    @include mobile {
+        .dc-modal-body {
+            padding: 4.8rem 2.4rem;
+        }
+    }
+}
+
+.dc-modal__container_account-transfer-modal-hide {
     display: none;
 }
 

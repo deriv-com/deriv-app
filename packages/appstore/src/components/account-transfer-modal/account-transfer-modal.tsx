@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Modal } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import AccountTransfer from '@deriv/cashier/src/pages/account-transfer';
@@ -49,11 +49,11 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
 
     return (
         <Modal
-            className={should_switch_account ? 'account-transfer-modal' : ''}
+            className={should_switch_account ? 'account-transfer-modal-hide' : 'account-transfer-modal'}
             has_close_icon={!is_transfer_confirm}
             is_open={is_modal_open}
             is_title_centered={is_transfer_confirm}
-            small
+            small={isDesktop()}
             title={modal_title}
             toggleModal={toggleModal}
             should_header_stick_body={false}

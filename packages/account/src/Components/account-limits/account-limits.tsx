@@ -142,7 +142,7 @@ const AccountLimits = ({
         .sort((a: FormikValues, b: FormikValues) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
     const derived_ordered = synthetic_index
         ?.slice()
-        .sort((a: FormikValues, b: FormikValues) => (a.level < b.level ? 1 : -1));
+        .sort((a: FormikValues, b: FormikValues) => (a.level > b.level ? 1 : -1));
 
     const context_value: TAccountLimitsContext = {
         currency,
@@ -201,7 +201,12 @@ const AccountLimits = ({
                                             <Localize i18n_default_text='*Maximum account cash balance' />
                                         </AccountLimitsTableCell>
                                         <AccountLimitsTableCell align='right'>
-                                            {formatMoney(currency, account_balance, true)}
+                                            {/* null or 0 are expected form BE when max balance limit is not set */}
+                                            {account_balance ? (
+                                                formatMoney(currency, account_balance, true)
+                                            ) : (
+                                                <Localize i18n_default_text='Not set' />
+                                            )}
                                         </AccountLimitsTableCell>
                                     </tr>
                                     <tr>

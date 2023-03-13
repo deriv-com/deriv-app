@@ -33,7 +33,13 @@ const Highlight = ({
         });
     }
 
-    return <span style={highlight_style} className='dc-button-menu--highlight' />;
+    return (
+        <span
+            data-testid={`dt_highlight${has_rounded_button ? '_rounded' : ''}`}
+            style={highlight_style}
+            className='dc-button-menu--highlight'
+        />
+    );
 };
 
 export { Highlight };

@@ -42,7 +42,7 @@ export const isBot = () => {
     }
     return {
         is_pathname_bot,
-        local_storage: is_bot,
+        is_config_route_bot: is_bot,
     };
 };
 

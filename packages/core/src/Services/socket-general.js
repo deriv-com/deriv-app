@@ -17,11 +17,8 @@ const BinarySocketGeneral = (() => {
     };
 
     const onOpen = is_ready => {
-        console.log(is_ready, 'is_ready');
         if (is_ready) {
-            console.log(client_store.is_valid_login, 'is_valid_login');
             if (!client_store.is_valid_login) {
-                console.log('logout ==>')
                 client_store.logout();
                 return;
             }
@@ -79,7 +76,7 @@ const BinarySocketGeneral = (() => {
                 client_store.setAccountStatus(response.get_account_status);
                 break;
             case 'payout_currencies':
-                client_store.responsePayoutCurrencies(response.payout_currencies);
+                client_store.responsePayoutCurrencies(response?.payout_currencies);
                 break;
             case 'transaction':
                 gtm_store.pushTransactionData(response);
@@ -206,6 +203,7 @@ const BinarySocketGeneral = (() => {
 
                 // DBot handles this internally. Special case: 'client.invalid_token'
                 if (active_platform === 'DBot') return;
+
                 client_store.logout().then(() => {
                     let redirect_to = routes.trade;
                     const action = getActionFromUrl();

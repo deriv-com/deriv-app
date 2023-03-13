@@ -22,13 +22,23 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
     const { notifications, client, ui, common } = useStore();
     const {
         addNotificationMessage,
+        client_notifications,
         filterNotificationMessages,
         refreshNotifications,
         removeNotificationByKey,
         removeNotificationMessage,
         setP2POrderProps,
     } = notifications;
-    const { balance, currency, local_currency_config, loginid, is_logging_in, is_virtual, residence } = client;
+    const {
+        balance,
+        currency,
+        local_currency_config,
+        loginid,
+        is_logging_in,
+        is_virtual,
+        residence,
+        setP2pAdvertiserInfo,
+    } = client;
     const { notification_messages_ui: Notifications, is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
     const { platform } = common;
     const { general_store } = useCashierStore();
@@ -36,7 +46,7 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
     const [order_id, setOrderId] = React.useState<string | null>(null);
     const [action_param, setActionParam] = React.useState<string | null>(null);
     const [code_param, setCodeParam] = React.useState<string | null>(null);
-
+    const url_params = new URLSearchParams(location.search);
     const server_time = {
         get,
         init,
@@ -45,20 +55,18 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
 
     const setQueryOrder = React.useCallback(
         (input_order_id: string | null) => {
-            const current_query_params = new URLSearchParams(location.search);
-
             if (is_mobile) {
-                current_query_params.delete('action');
-                current_query_params.delete('code');
+                url_params.delete('action');
+                url_params.delete('code');
             }
 
-            if (current_query_params.has('order_id') || current_query_params.has('order')) {
-                current_query_params.delete('order');
-                current_query_params.delete('order_id');
+            if (url_params.has('order_id') || url_params.has('order')) {
+                url_params.delete('order');
+                url_params.delete('order_id');
             }
 
             if (input_order_id) {
-                current_query_params.append('order', input_order_id);
+                url_params.append('order', input_order_id);
             }
 
             if (!input_order_id) {
@@ -72,10 +80,11 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
                 // Changing query params
                 history.push({
                     pathname: routes.cashier_p2p,
-                    search: current_query_params.toString(),
+                    search: url_params.toString(),
                     hash: location.hash,
                 });
-
+                url_params.delete('action');
+                url_params.delete('code');
                 setOrderId(input_order_id);
             }
         },
@@ -85,7 +94,6 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
     );
 
     React.useEffect(() => {
-        const url_params = new URLSearchParams(location.search);
         let passed_order_id;
 
         setActionParam(url_params.get('action'));
@@ -114,7 +122,7 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
         return () => setQueryOrder(null);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setQueryOrder]);
+    }, []);
 
     if (is_logging_in) {
         return <Loading is_fullscreen />;
@@ -124,7 +132,8 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
         <P2P
             addNotificationMessage={addNotificationMessage}
             balance={balance}
-            client={{ currency, local_currency_config, is_virtual, residence, loginid }}
+            client={{ currency, local_currency_config, is_virtual, residence, loginid, setP2pAdvertiserInfo }}
+            client_notifications={client_notifications}
             current_focus={current_focus}
             filterNotificationMessages={filterNotificationMessages}
             history={history}

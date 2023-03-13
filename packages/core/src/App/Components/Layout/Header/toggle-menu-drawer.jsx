@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -336,38 +336,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                         )}
 
                         <React.Fragment>
-                            {is_logged_in && is_trading_hub_category ? (
-                                <MobileDrawer.SubHeader
-                                    className={classNames({
-                                        'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
-                                    })}
-                                >
-                                    <Button
-                                        className={`header__menu--exit-trading-hub ${
-                                            is_dark_mode ? 'header__menu--exit-trading-hub--dark' : ''
-                                        }`}
-                                        type='button'
-                                        large
-                                    >
-                                        <div className='header__menu--trading-hub-container'>
-                                            <Text className='header__menu--trading-hub-text' size='xs'>
-                                                {localize("Exit Trader's hub")}
-                                            </Text>
-                                            <Icon
-                                                className='header__menu--exit-trading-hub-beta-icon'
-                                                icon='IcAppstoreTradingHubBeta'
-                                                size={30}
-                                            />
-                                            <Icon
-                                                className='header__menu-mobile-right-arrow'
-                                                icon='IcArrowRight'
-                                                size={18}
-                                                color='red'
-                                            />
-                                        </div>
-                                    </Button>
-                                </MobileDrawer.SubHeader>
-                            ) : (
+                            {is_logged_in && !is_trading_hub_category && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -384,9 +353,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     />
                                 </MobileDrawer.SubHeader>
                             )}
-                            <MobileDrawer.Body>
+                            <MobileDrawer.Body
+                                className={classNames({
+                                    'header__menu-mobile-traders-hub': is_trading_hub_category,
+                                })}
+                            >
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
-
                                 {is_logged_in && (
                                     <MobileDrawer.Item>
                                         <MenuLink

@@ -360,6 +360,17 @@ const AccountTransferForm = observer(
                 className='cashier__wrapper account-transfer-form__wrapper'
                 data-testid='dt_account_transfer_form_wrapper'
             >
+                {!is_from_outside_cashier && (
+                    <Text
+                        as='h2'
+                        color='prominent'
+                        weight='bold'
+                        align='center'
+                        className='cashier__header cashier__content-header'
+                    >
+                        {localize('Transfer between your accounts in Deriv')}
+                    </Text>
+                )}
                 <Formik
                     initialValues={{
                         amount: account_transfer_amount || '',

@@ -1,5 +1,5 @@
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
-import { isCryptocurrency, isEmptyObject, routes, ContentFlag } from '@deriv/shared';
+import { isCryptocurrency, isEmptyObject, routes, ContentFlag, CookieStorage } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
@@ -335,6 +335,10 @@ export default class GeneralStore extends BaseStore {
                 this.root_store.modules.cashier.account_prompt_dialog.last_location ?? routes.cashier_deposit
             );
         }
+
+        const p2p_cookie = new (CookieStorage as any)('is_p2p_disabled');
+        if (is_p2p_visible) p2p_cookie.set('is_p2p_disabled', false);
+        else p2p_cookie.set('is_p2p_disabled', true);
     }
 
     get is_cashier_locked(): boolean {

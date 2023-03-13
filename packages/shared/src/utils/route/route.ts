@@ -1,15 +1,17 @@
 // Checks if pathname matches route. (Works even with query string /?)
+
 // TODO: Add test cases for this
 type TRoute = {
+    component?: React.ElementType;
     default?: boolean;
     exact?: boolean;
-    id?: string;
+    getTitle?: () => string;
     icon_component?: string;
+    id?: string;
+    is_authenticated?: boolean;
     is_invisible?: boolean;
     path?: string;
     to?: string;
-    getTitle?: () => string;
-    is_authenticated?: boolean;
 };
 
 type TGetSelectedRoute = {

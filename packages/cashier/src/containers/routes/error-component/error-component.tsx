@@ -41,7 +41,7 @@ const ErrorComponent = ({
                     : [
                           <Localize
                               key={0}
-                              i18n_default_text='Sorry, an error occured while processing your request.'
+                              i18n_default_text='Sorry, an error occurred while processing your request.'
                           />,
                           refresh_message,
                       ]

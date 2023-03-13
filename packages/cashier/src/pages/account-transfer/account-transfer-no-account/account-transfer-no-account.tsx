@@ -21,6 +21,8 @@ const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccoun
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const preAppstoreOnClick = () => (is_pre_appstore ? openModal('currency_selection') : toggleAccountsDialog());
+
     return (
         <div className='cashier__wrapper cashier__no-balance'>
             <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
@@ -47,13 +49,7 @@ const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccoun
                 className='account-transfer-no-account__button'
                 primary
                 large
-                onClick={() =>
-                    openAccountSwitcherModal
-                        ? openAccountSwitcherModal()
-                        : is_pre_appstore
-                        ? openModal('currency_selection')
-                        : toggleAccountsDialog()
-                }
+                onClick={() => (openAccountSwitcherModal ? openAccountSwitcherModal() : preAppstoreOnClick())}
             >
                 <Localize i18n_default_text='Create account' />
             </Button>

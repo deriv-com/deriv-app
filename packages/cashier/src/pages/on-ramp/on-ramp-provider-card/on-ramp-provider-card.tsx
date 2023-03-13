@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TProviderDetails } from '../../../types';
+import { TOnRampProvider } from '../../../types';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TOnRampProviderCardProps = {
-    provider: TProviderDetails;
+    provider: TOnRampProvider;
 };
 
 const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => {

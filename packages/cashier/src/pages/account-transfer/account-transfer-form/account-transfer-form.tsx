@@ -28,6 +28,7 @@ type TAccountTransferFormProps = {
     error?: TError;
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
+    onClose?: () => void;
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
@@ -152,9 +153,9 @@ const AccountTransferForm = observer(
 
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(selected_from.currency),
-                min: transfer_limit.min,
-                max: transfer_limit.max,
+                decimals: getDecimalPlaces(selected_from.currency || ''),
+                min: Number(transfer_limit.min),
+                max: Number(transfer_limit.max),
             });
             if (!is_ok) return message;
 
@@ -275,7 +276,7 @@ const AccountTransferForm = observer(
                             derivez: derivez_remaining_transfers?.allowed,
                         }}
                         transfer_fee={transfer_fee}
-                        currency={selected_from.currency}
+                        currency={selected_from.currency || ''}
                         minimum_fee={minimum_fee}
                         key={0}
                         is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
@@ -300,7 +301,17 @@ const AccountTransferForm = observer(
             from_accounts,
             is_dxtrade_allowed,
             crypto_transactions,
-        ]); // eslint-disable-line react-hooks/exhaustive-deps
+            setSideNotes,
+            is_crypto,
+            internal_remaining_transfers?.allowed,
+            mt5_remaining_transfers?.allowed,
+            dxtrade_remaining_transfers?.allowed,
+            derivez_remaining_transfers?.allowed,
+            is_dxtrade_transfer,
+            is_mt_transfer,
+            is_from_derivgo,
+            is_derivez_transfer,
+        ]);
 
         React.useEffect(() => {
             const getRemainingTransfers = () => {
@@ -387,7 +398,9 @@ const AccountTransferForm = observer(
                         converter_to_amount: converter_to_amount || '',
                     }}
                     onSubmit={() => {
-                        requestTransferBetweenAccounts({ amount: +account_transfer_amount });
+                        requestTransferBetweenAccounts({
+                            amount: account_transfer_amount ? +account_transfer_amount : 0,
+                        });
                     }}
                     validateOnBlur={false}
                     enableReinitialize
@@ -455,8 +468,8 @@ const AccountTransferForm = observer(
                                             {({ field }: FieldProps<string>) => (
                                                 <Input
                                                     {...field}
-                                                    onChange={e => {
-                                                        setErrorMessage('');
+                                                    onChange={(e: TReactChangeEvent) => {
+                                                        setErrorMessage({ code: '', message: '' });
                                                         handleChange(e);
                                                         setAccountTransferAmount(e.target.value);
                                                     }}
@@ -523,8 +536,8 @@ const AccountTransferForm = observer(
                                         >
                                             <div className='account-transfer-form__crypto--percentage-selector'>
                                                 <PercentageSelector
-                                                    amount={+selected_from.balance}
-                                                    currency={selected_from.currency}
+                                                    amount={selected_from.balance ? +selected_from.balance : 0}
+                                                    currency={selected_from.currency || ''}
                                                     from_account={selected_from.value}
                                                     getCalculatedAmount={setTransferPercentageSelectorResult}
                                                     percentage={percentage}
@@ -533,8 +546,8 @@ const AccountTransferForm = observer(
                                                 />
                                             </div>
                                             <CryptoFiatConverter
-                                                from_currency={selected_from.currency}
-                                                to_currency={selected_to.currency}
+                                                from_currency={selected_from.currency || ''}
+                                                to_currency={selected_to.currency || ''}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize
@@ -592,7 +605,7 @@ const AccountTransferForm = observer(
                                                 (remaining_transfers && !+remaining_transfers) ||
                                                 !!selected_from.error ||
                                                 !!selected_to.error ||
-                                                !+selected_from.balance ||
+                                                (selected_from.balance && !+selected_from.balance) ||
                                                 !!converter_from_error ||
                                                 !!converter_to_error ||
                                                 !!errors.amount ||
@@ -616,7 +629,7 @@ const AccountTransferForm = observer(
                                                     derivez: derivez_remaining_transfers?.allowed,
                                                 }}
                                                 transfer_fee={transfer_fee}
-                                                currency={selected_from.currency}
+                                                currency={selected_from.currency || ''}
                                                 minimum_fee={minimum_fee}
                                                 is_crypto_to_crypto_transfer={
                                                     selected_from.is_crypto && selected_to.is_crypto

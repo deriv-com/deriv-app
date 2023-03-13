@@ -1,6 +1,6 @@
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
 import { isCryptocurrency, isEmptyObject, getPropertyValue, routes, ContentFlag } from '@deriv/shared';
-import type { P2PAdvertInfo } from '@deriv/api-types';
+import type { P2PAdvertInfo, CashierInformationRequest } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import Constants from 'Constants/constants';
 import CashierNotifications from 'Components/cashier-notifications';
@@ -88,7 +88,8 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container = Constants.containers.deposit;
+    // This TS error will be fixed when the constants.js migrated to the TS
+    active_container: CashierInformationRequest['cashier'] = Constants.containers.deposit;
     cashier_route_tab_index = 0;
     deposit_target = '';
     has_set_currency = false;
@@ -151,7 +152,7 @@ export default class GeneralStore extends BaseStore {
         const is_p2p_restricted = this.p2p_advertiser_error === 'RestrictedCountry';
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
-            account => !isCryptocurrency(account.title) && account.title !== 'Real'
+            account => !isCryptocurrency(account.title || '') && account.title !== 'Real'
         );
 
         if (is_p2p_restricted || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
@@ -218,6 +219,7 @@ export default class GeneralStore extends BaseStore {
         account_prompt_dialog.resetIsConfirmed();
 
         this.setLoading(true);
+        // This TS error will be fixed when the constants.js migrated to the TS
         if (!payment_agent.all_payment_agent_list?.paymentagent_list?.list) {
             const agent_list = await payment_agent.getAllPaymentAgentList();
             payment_agent.setAllPaymentAgentList(agent_list);
@@ -230,9 +232,11 @@ export default class GeneralStore extends BaseStore {
         const { account_transfer } = modules.cashier;
 
         if (this.active_container === account_transfer.container) {
-            this.percentage = Number(((amount / Number(account_transfer.selected_from.balance)) * 100).toFixed(0));
+            this.percentage = Number(
+                ((Number(amount) / Number(account_transfer.selected_from.balance)) * 100).toFixed(0)
+            );
         } else {
-            this.percentage = Number(((amount / Number(client.balance)) * 100).toFixed(0));
+            this.percentage = Number(((Number(amount) / Number(client.balance)) * 100).toFixed(0));
         }
         if (!isFinite(this.percentage)) {
             this.percentage = 0;
@@ -419,7 +423,7 @@ export default class GeneralStore extends BaseStore {
         this.is_loading = is_loading;
     }
 
-    setActiveTab(container: string): void {
+    setActiveTab(container: CashierInformationRequest['cashier']): void {
         this.active_container = container;
     }
 

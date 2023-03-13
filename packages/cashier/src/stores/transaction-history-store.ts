@@ -90,7 +90,7 @@ export default class TransactionHistoryStore {
     }
 
     sortCryptoTransactions() {
-        // TODO: Check this, using replace on array.
+        // TODO: CHECK THIS TYPE ERROR
         this.crypto_transactions.replace(
             this.crypto_transactions.slice().sort((a, b) => b.submit_date - a.submit_date)
         );

@@ -14,7 +14,12 @@ type TAccountsList = {
         is_mt?: boolean;
         market_type?: string;
         nativepicker_text?: string;
-        platform_icon?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
         text?: JSX.Element | string;
         value?: string;
     };
@@ -236,7 +241,18 @@ type TNotificationStore = {
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
-    openModal: (modal_id: string, props?: any) => void;
+    combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
+        {
+            short_code_and_region: string;
+            login: string;
+            sub_title: string;
+            icon: string;
+        }[];
+    openModal: (modal_id: string, props?: unknown) => void;
+    selected_account: {
+        login: string;
+        account_id: string;
+    };
 };
 
 export type TRootStore = {
@@ -244,7 +260,7 @@ export type TRootStore = {
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: Record<string, any>;
+    modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

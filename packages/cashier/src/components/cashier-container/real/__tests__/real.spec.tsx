@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Real from '../real';
 
 jest.mock('@deriv/components', () => ({
-    ...(jest.requireActual('@deriv/components') as any),
+    ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,
 }));
 

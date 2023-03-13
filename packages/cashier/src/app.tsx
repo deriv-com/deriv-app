@@ -3,8 +3,16 @@ import { setWebsocket } from '@deriv/shared';
 import { init } from 'Utils/server_time';
 import Routes from 'Containers/routes';
 import CashierProviders from './cashier-providers';
+import type { TRootStore, TWebSocket } from './types';
 
-const App = ({ passthrough: { WS, root_store } }) => {
+type TAppProps = {
+    passthrough: {
+        WS: TWebSocket;
+        root_store: TRootStore;
+    };
+};
+
+const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     React.useEffect(() => {
         setWebsocket(WS);
         init();

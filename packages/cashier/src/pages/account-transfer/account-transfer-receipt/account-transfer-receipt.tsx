@@ -14,9 +14,8 @@ type TSwitch = {
     currency?: string;
 };
 
-type TAccountTransferReceipt = {
-    onClose: () => void;
-    history: RouteComponentProps;
+type TAccountTransferReceipt = RouteComponentProps & {
+    onClose?: () => void;
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
@@ -68,7 +67,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
-        onClose();
+        onClose?.();
     };
 
     return (

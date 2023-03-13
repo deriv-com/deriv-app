@@ -1,4 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
+import { Cashier } from '@deriv/api-types';
 import Constants from '../constants/constants';
 import { TRootStore } from '../types';
 
@@ -79,7 +80,7 @@ export default class IframeStore {
         }
     }
 
-    setIframeUrl(url?: string): void {
+    setIframeUrl(url?: Cashier): void {
         const { client, ui } = this.root_store;
 
         if (url) {

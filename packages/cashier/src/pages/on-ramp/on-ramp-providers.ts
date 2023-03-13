@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import OnRampStore from '../stores/on-ramp-store';
+import OnRampStore from '../../stores/on-ramp-store';
 
 const createBanxaProvider = (store: OnRampStore) => ({
     icon: { dark: 'IcCashierBanxaDark', light: 'IcCashierBanxaLight' },
@@ -54,4 +54,4 @@ const createBanxaProvider = (store: OnRampStore) => ({
     should_show_deposit_address: false,
 });
 
-export default { createBanxaProvider };
+export default createBanxaProvider;

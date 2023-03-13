@@ -3,7 +3,7 @@ import { TRootStore } from '../types';
 import { CounterStore } from './stores';
 
 export type TStores = TRootStore & {
-    counter: CounterStore;
+    counter?: CounterStore;
 };
 
 const StoreContext = createContext<TStores | null>(null);

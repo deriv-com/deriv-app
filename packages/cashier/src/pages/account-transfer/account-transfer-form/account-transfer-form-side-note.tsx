@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Localize } from '@deriv/translations';
 import { GetLimits } from '@deriv/api-types';
 import { Text } from '@deriv/components';
@@ -12,14 +12,14 @@ type TAccountTransferBulletProps = {
 type TAccountTransferNoteProps = {
     allowed_transfers_count: GetLimits['daily_transfers'];
     currency: string;
-    is_crypto_to_crypto_transfer: boolean;
-    is_derivez_transfer: boolean;
+    is_crypto_to_crypto_transfer?: boolean;
+    is_derivez_transfer?: boolean;
     is_dxtrade_allowed: boolean;
-    is_dxtrade_transfer: boolean;
+    is_dxtrade_transfer?: boolean;
     is_from_derivgo: boolean;
-    is_mt_transfer: boolean;
-    minimum_fee: string | number;
-    transfer_fee: string | number;
+    is_mt_transfer?: boolean;
+    minimum_fee: string | null;
+    transfer_fee?: number | null;
 };
 
 const AccountTransferBullet = ({ children }: TAccountTransferBulletProps) => (
@@ -46,7 +46,7 @@ const AccountTransferNote = ({
     const platform_name_derivez = getPlatformSettings('derivez').name;
 
     //TODO: to refactor derivez notes once this account is used in deriv app and not only from derivgo
-    const getTransferFeeNote = () => {
+    const getTransferFeeNote = useCallback(() => {
         if (transfer_fee === 0) {
             if (is_from_derivgo && is_derivez_transfer) {
                 return (
@@ -144,54 +144,96 @@ const AccountTransferNote = ({
             );
         }
         return null;
-    };
+    }, [
+        currency,
+        is_crypto_to_crypto_transfer,
+        is_derivez_transfer,
+        is_dxtrade_allowed,
+        is_dxtrade_transfer,
+        is_from_derivgo,
+        is_mt_transfer,
+        minimum_fee,
+        platform_name_derivez,
+        platform_name_dxtrade,
+        platform_name_mt5,
+        transfer_fee,
+    ]);
 
-    return (
-        <div className='account-transfer-form__notes'>
-            <AccountTransferBullet>
-                {is_from_derivgo && is_derivez_transfer ? (
-                    <Localize
-                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, {{platform_name_derivez}} and {{platform_name_dxtrade}} accounts.'
-                        values={{ platform_name_dxtrade, platform_name_mt5, platform_name_derivez }}
-                    />
-                ) : is_dxtrade_allowed ? (
-                    <Localize
-                        i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_dxtrade}} accounts.'
-                        values={{ platform_name_dxtrade, platform_name_mt5 }}
-                    />
-                ) : (
+    const getDerivGoNotes = useCallback(() => {
+        if (is_from_derivgo && is_derivez_transfer) {
+            return (
+                <React.Fragment>
+                    <AccountTransferBullet>
+                        <Localize
+                            i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, {{platform_name_derivez}} and {{platform_name_dxtrade}} accounts.'
+                            values={{ platform_name_dxtrade, platform_name_mt5, platform_name_derivez }}
+                        />
+                    </AccountTransferBullet>
+                    <AccountTransferBullet>
+                        <Localize
+                            i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, up to {{ allowed_derivez }} transfers between your Deriv and {{platform_name_derivez}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
+                            values={{
+                                allowed_internal: allowed_transfers_count?.internal,
+                                allowed_mt5: allowed_transfers_count?.mt5,
+                                allowed_dxtrade: allowed_transfers_count?.dxtrade,
+                                allowed_derivez: allowed_transfers_count?.derivez,
+                                platform_name_dxtrade,
+                                platform_name_mt5,
+                                platform_name_derivez,
+                            }}
+                        />
+                    </AccountTransferBullet>
+                </React.Fragment>
+            );
+        }
+
+        return null;
+    }, [
+        allowed_transfers_count?.derivez,
+        allowed_transfers_count?.dxtrade,
+        allowed_transfers_count?.internal,
+        allowed_transfers_count?.mt5,
+        is_derivez_transfer,
+        is_from_derivgo,
+        platform_name_derivez,
+        platform_name_dxtrade,
+        platform_name_mt5,
+    ]);
+
+    const getDxtradeAllowedNotes = useCallback(() => {
+        if (is_dxtrade_allowed) {
+            return (
+                <React.Fragment>
+                    <AccountTransferBullet>
+                        <Localize
+                            i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_dxtrade}} accounts.'
+                            values={{ platform_name_dxtrade, platform_name_mt5 }}
+                        />
+                    </AccountTransferBullet>
+                    <AccountTransferBullet>
+                        <Localize
+                            i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
+                            values={{
+                                allowed_internal: allowed_transfers_count?.internal,
+                                allowed_mt5: allowed_transfers_count?.mt5,
+                                allowed_dxtrade: allowed_transfers_count?.dxtrade,
+                                platform_name_dxtrade,
+                                platform_name_mt5,
+                            }}
+                        />
+                    </AccountTransferBullet>
+                </React.Fragment>
+            );
+        }
+        return (
+            <React.Fragment>
+                <AccountTransferBullet>
                     <Localize
                         i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, and {{platform_name_mt5}} accounts.'
                         values={{ platform_name_mt5 }}
                     />
-                )}
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                {is_from_derivgo && is_derivez_transfer ? (
-                    <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, up to {{ allowed_derivez }} transfers between your Deriv and {{platform_name_derivez}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
-                        values={{
-                            allowed_internal: allowed_transfers_count?.internal,
-                            allowed_mt5: allowed_transfers_count?.mt5,
-                            allowed_dxtrade: allowed_transfers_count?.dxtrade,
-                            allowed_derivez: allowed_transfers_count?.derivez,
-                            platform_name_dxtrade,
-                            platform_name_mt5,
-                            platform_name_derivez,
-                        }}
-                    />
-                ) : is_dxtrade_allowed ? (
-                    <Localize
-                        i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, and up to {{ allowed_dxtrade }} transfers between your Deriv and {{platform_name_dxtrade}} accounts.'
-                        values={{
-                            allowed_internal: allowed_transfers_count?.internal,
-                            allowed_mt5: allowed_transfers_count?.mt5,
-                            allowed_dxtrade: allowed_transfers_count?.dxtrade,
-                            platform_name_dxtrade,
-                            platform_name_mt5,
-                        }}
-                    />
-                ) : (
+                </AccountTransferBullet>
+                <AccountTransferBullet>
                     <Localize
                         i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts and up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts.'
                         values={{
@@ -200,8 +242,22 @@ const AccountTransferNote = ({
                             platform_name_mt5,
                         }}
                     />
-                )}
-            </AccountTransferBullet>
+                </AccountTransferBullet>
+            </React.Fragment>
+        );
+    }, [
+        allowed_transfers_count?.dxtrade,
+        allowed_transfers_count?.internal,
+        allowed_transfers_count?.mt5,
+        is_dxtrade_allowed,
+        platform_name_dxtrade,
+        platform_name_mt5,
+    ]);
+
+    return (
+        <div className='account-transfer-form__notes'>
+            {getDerivGoNotes()}
+            {getDxtradeAllowedNotes()}
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferBullet>

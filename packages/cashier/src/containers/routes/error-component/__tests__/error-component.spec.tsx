@@ -26,7 +26,7 @@ describe('<ErrorComponent/>', () => {
     it('should show the default message when message is not passed', () => {
         const message = '';
         renderWithRouter(<ErrorComponent {...props} message={message} />);
-        expect(screen.getByText('Sorry, an error occured while processing your request.')).toBeInTheDocument();
+        expect(screen.getByText('Sorry, an error occurred while processing your request.')).toBeInTheDocument();
     });
     it('should show the actual message when message is passed', () => {
         const message = 'This is the error message';

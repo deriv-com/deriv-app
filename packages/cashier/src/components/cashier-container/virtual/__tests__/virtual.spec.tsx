@@ -1,19 +1,21 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { mockStore } from '@deriv/stores';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import Virtual from '../virtual';
 import CashierProviders from '../../../../cashier-providers';
+import { TRootStore } from '../../../../types';
 
 describe('<Virtual />', () => {
     const history = createBrowserHistory();
-    let mockRootStore;
+    let mockRootStore: TRootStore;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             ui: { is_dark_mode_on: true, toggleAccountsDialog: jest.fn() },
             client: { is_pre_appstore: true },
-        };
+        });
     });
 
     it('component should render', () => {

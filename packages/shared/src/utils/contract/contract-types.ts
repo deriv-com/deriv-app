@@ -32,6 +32,8 @@ export type TContractInfo = {
     current_spot?: number;
     barrier?: string;
     contract_type?: string;
+    underlying?: string;
+    contract_id?: string;
     exit_tick_time?: number;
     date_expiry?: number;
     is_path_dependent?: 0 | 1;

@@ -85,22 +85,6 @@ export type TBinaryRoutes = {
     is_logging_in: boolean;
 };
 
-type TOptions = {
-    min?: number;
-    max?: number;
-    type?: string;
-    decimals?: string | number;
-    regex?: RegExp;
-};
-
-type TConfig = {
-    default_value: string | boolean | number;
-    supported_in: string[];
-    rules?: Array<(TOptions & string)[]>;
-    values?: Record<string, string | boolean>;
-};
-export type TSchema = { [key: string]: TConfig };
-
 export type TUpgradeInfo = {
     type: string;
     can_upgrade: boolean;

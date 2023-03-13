@@ -1258,6 +1258,14 @@ export default class ClientStore extends BaseStore {
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
+        // delete all notifications key when set new account except notifications for this account
+        const notification_messages = LocalStore.getObject('notification_messages');
+        const messages = notification_messages[this.loginid];
+        if (this.loginid)
+            LocalStore.setObject('notification_messages', {
+                [this.loginid]: messages,
+            });
+
         // For residences without local currency (e.g. ax)
         const default_fractional_digits = 2;
         this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
@@ -1988,13 +1996,6 @@ export default class ClientStore extends BaseStore {
     setAccountSettings(settings) {
         const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
         if (!is_equal_settings) {
-            // delete all notifications key when set new account
-            const notification_messages = LocalStore.getObject('notification_messages');
-            if (this.loginid)
-                LocalStore.setObject('notification_messages', {
-                    ...notification_messages,
-                    [this.loginid]: [],
-                });
             this.account_settings = settings;
             this.is_account_setting_loaded = true;
         }

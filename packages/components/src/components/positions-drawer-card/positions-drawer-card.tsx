@@ -46,8 +46,8 @@ type TPositionsDrawerCardProps = {
     onClickSell: (contract_id: string) => void;
     onClickRemove?: () => void;
     onFooterEntered: () => void;
-    onMouseEnter: () => void;
-    onMouseLeave: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
     removeToast: (key: number) => void;
     result: string;
     setCurrentFocus: (value: string) => void;

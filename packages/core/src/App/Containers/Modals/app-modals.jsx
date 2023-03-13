@@ -71,6 +71,7 @@ const AppModals = ({
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
+    setIsCFDScoreAvailable,
     content_flag,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
@@ -86,7 +87,10 @@ const AppModals = ({
 
     React.useEffect(() => {
         if (is_logged_in) {
-            fetchFinancialAssessment().then(response => setCFDScore(response?.cfd_score ?? 0));
+            fetchFinancialAssessment().then(response => {
+                setCFDScore(response?.cfd_score ?? 0);
+                setIsCFDScoreAvailable(true);
+            });
         }
     }, [is_logged_in]);
 
@@ -176,6 +180,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
+    setIsCFDScoreAvailable: client.setIsCFDScoreAvailable,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,

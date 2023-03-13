@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, useLocation, withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { Icon, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {

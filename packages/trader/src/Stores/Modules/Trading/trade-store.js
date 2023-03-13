@@ -345,7 +345,6 @@ export default class TradeStore extends BaseStore {
                 } else {
                     // we need to remove these two validation rules on contract_type change
                     // to be able to remove any existing Stop loss / Take profit validation errors
-                    delete this.validation_rules.amount;
                     delete this.validation_rules.stop_loss;
                     delete this.validation_rules.take_profit;
                 }

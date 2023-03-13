@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
@@ -15,6 +16,12 @@ const Heading = ({ code }) => {
             return (
                 <Text as='h1' align='center' weight='bold'>
                     <Localize i18n_default_text='Already signed up?' />
+                </Text>
+            );
+        case 'InvalidAccount':
+            return (
+                <Text as='h1' align='center' weight='bold'>
+                    <Localize i18n_default_text='You can’t add another real account' />
                 </Text>
             );
         default:
@@ -75,10 +82,10 @@ const ErrorCTA = ({ code, onConfirm }) => {
     }
 };
 
-const SignupErrorContent = ({ message, code, onConfirm }) => {
+const SignupErrorContent = ({ message, code, onConfirm, className }) => {
     return (
-        <div className='account-wizard--error'>
-            <Icon icon='IcAccountError' size={115} />
+        <div className={classNames('account-wizard--error', className)}>
+            <Icon icon='IcAccountError' size={code === 'InvalidAccount' ? 96 : 115} />
             <Heading code={code} />
             <Message code={code} message={message} />
             <ErrorCTA code={code} onConfirm={onConfirm} />
@@ -90,6 +97,7 @@ SignupErrorContent.propTypes = {
     code: PropTypes.string,
     message: PropTypes.string,
     onConfirm: PropTypes.func,
+    className: PropTypes.string,
 };
 
 export default SignupErrorContent;

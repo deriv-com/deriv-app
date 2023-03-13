@@ -29,6 +29,7 @@ const modal_pages_indices = {
     choose_crypto_currency: 6,
     add_currency: 7,
     finished_add_currency: 8,
+    restricted_country_signup_error: 9,
 };
 
 const WizardHeading = ({
@@ -254,6 +255,18 @@ const RealAccountSignup = ({
                 />
             ),
         },
+        {
+            body: local_props => (
+                <SignupErrorContent
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
+                    code={local_props.state_value.error_code}
+                    onConfirm={onErrorConfirm}
+                    className='restricted-country-error'
+                />
+            ),
+        },
     ]);
 
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
@@ -274,6 +287,7 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
+        if (getActiveModalIndex() === modal_pages_indices.restricted_country_signup_error) return '304px';
 
         return '740px'; // Account wizard modal
     };
@@ -353,8 +367,8 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         if (!is_from_restricted_country) return;
         setParams({
-            active_modal_index: modal_pages_indices.signup_error,
-            error_message: localize('Sorry, account opening is unavailable in your region.'),
+            active_modal_index: modal_pages_indices.restricted_country_signup_error,
+            error_message: localize('Adding more real accounts has been restricted for your country.'),
             error_code: 'InvalidAccount',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -437,8 +451,15 @@ const RealAccountSignup = ({
 
     // set title and body of the modal
     const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
-    const { account_wizard, add_or_manage_account, finished_set_currency, status_dialog, set_currency, signup_error } =
-        modal_pages_indices;
+    const {
+        account_wizard,
+        add_or_manage_account,
+        finished_set_currency,
+        status_dialog,
+        set_currency,
+        signup_error,
+        restricted_country_signup_error,
+    } = modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
         getActiveModalIndex()
@@ -550,8 +571,10 @@ const RealAccountSignup = ({
                         <Modal
                             id='real_account_signup_modal'
                             className={classNames('real-account-signup-modal', {
-                                'dc-modal__container_real-account-signup-modal--error':
-                                    getActiveModalIndex() === signup_error,
+                                'dc-modal__container_real-account-signup-modal--error': [
+                                    signup_error,
+                                    restricted_country_signup_error,
+                                ].includes(getActiveModalIndex()),
                                 'dc-modal__container_real-account-signup-modal--success': [
                                     finished_set_currency,
                                     status_dialog,

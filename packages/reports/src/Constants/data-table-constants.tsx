@@ -46,6 +46,13 @@ type TColumnTemplateType = {
     col_index?: string;
     renderCellContent?: (props: TCellContentProps) => React.ReactNode;
     renderHeader?: (props: THeaderProps) => React.ReactNode;
+    icon?: string;
+    action_type?: string;
+    refid?: string;
+    date?: string;
+    balance?: string;
+    item?: any;
+    map?: any;
 };
 
 type TMultiplierOpenPositionstemplateProps = {
@@ -131,7 +138,7 @@ export const getProfitTableColumnsTemplate = (currency: string, items_count: num
             if (is_footer) {
                 return localize('Profit/loss on the last {{item_count}} contracts', { item_count: items_count });
             }
-            return <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />;
+            return <MarketSymbolIconRow key={row_obj.transaction_id} payload={row_obj} />;
         },
     },
     {
@@ -196,7 +203,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string): TColumnTempla
         renderCellContent: ({ cell_value, row_obj, is_footer }: TCellContentProps) => {
             if (is_footer) return localize('Total');
 
-            return <MarketSymbolIconRow action={cell_value} key={row_obj.id} payload={row_obj.contract_info} />;
+            return <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} />;
         },
     },
     {
@@ -279,12 +286,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
             if (is_footer) return localize('Total');
 
             return (
-                <MarketSymbolIconRow
-                    action={cell_value}
-                    key={row_obj.id}
-                    payload={row_obj.contract_info}
-                    should_show_multiplier={false}
-                />
+                <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} should_show_multiplier={false} />
             );
         },
     },

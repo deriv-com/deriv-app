@@ -47,14 +47,14 @@ type TGetSupportedContractsReturn = ReturnType<typeof getSupportedContracts>;
 
 type TStatement = {
     action_type: string;
-    account_statistics: Pick<TAccountStatistics, 'account_statistics'>;
+    account_statistics: React.ComponentProps<typeof AccountStatistics>['account_statistics'];
     component_icon: string;
     currency: string;
     data: TFormatStatementTransaction[];
     date_from: number | null;
     date_to: number | null;
     error: string;
-    filtered_date_range: Record<string, any>;
+    filtered_date_range: React.ComponentProps<typeof FilterComponent>['filtered_date_range'];
     handleDateChange: () => void;
     handleFilterChange: () => void;
     handleScroll: () => void;
@@ -122,6 +122,7 @@ const getRowAction = (row_obj: TFormatStatementTransaction) => {
             ] && !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
                 ? getContractPath(row_obj.id)
                 : {
+                      message: '',
                       component: (
                           <Localize
                               i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
@@ -202,7 +203,7 @@ const Statement = ({
         return map;
     }, {} as Record<TColIndex, typeof columns[number]>);
 
-    // export type instead of any from 'DataList' component when it migrates to tsx
+    // TODO: Export type instead of any from 'DataList' component when it migrates to tsx
     const mobileRowRenderer = ({ row, passthrough }: any) => (
         <React.Fragment>
             <div className='data-list__row'>

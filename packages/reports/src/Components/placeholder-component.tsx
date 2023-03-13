@@ -2,13 +2,13 @@ import React from 'react';
 import Loading from '_common/components/loading';
 
 type TPlaceholderComponent = {
-    component_icon: string;
-    empty_message_component: React.ElementType;
-    has_selected_date: boolean;
-    is_empty: boolean;
+    component_icon?: string;
+    empty_message_component?: React.ElementType;
+    has_selected_date?: boolean;
+    is_empty?: boolean;
     is_loading: boolean;
-    localized_message: string;
-    localized_period_message: string;
+    localized_message?: string;
+    localized_period_message?: string;
 };
 
 const PlaceholderComponent = ({

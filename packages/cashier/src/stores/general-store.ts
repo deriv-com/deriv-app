@@ -4,7 +4,7 @@ import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
 import type { TRootStore, TWebSocket } from 'Types';
-import { ServerStatusResponse } from '@deriv/api-types';
+import { AccountStatusResponse } from '@deriv/api-types';
 
 export default class GeneralStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -51,6 +51,7 @@ export default class GeneralStore extends BaseStore {
             should_set_currency_modal_title_change: observable,
             should_show_all_available_currencies: observable,
             show_p2p_in_cashier_onboarding: observable,
+            // setShowP2pInCashierOnboarding: action.bound,
             showP2pInCashierOnboarding: action.bound,
         });
 
@@ -135,11 +136,11 @@ export default class GeneralStore extends BaseStore {
     async showP2pInCashierOnboarding(): Promise<void> {
         const { account_list, is_virtual } = this.root_store.client;
 
-        const website_status: Promise<ServerStatusResponse> = this.WS.wait(
-            'website_status'
-        ) as unknown as Promise<ServerStatusResponse>;
+        const get_account_status: Promise<AccountStatusResponse> = this.WS.wait(
+            'get_account_status'
+        ) as unknown as Promise<AccountStatusResponse>;
 
-        const is_p2p_disabled = (await website_status)?.website_status?.p2p_config?.disabled;
+        const is_p2p_disabled = (await get_account_status)?.get_account_status?.p2p_status === 'none';
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
             account => !isCryptocurrency(account?.title as string) && account.title !== 'Real'
@@ -259,10 +260,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     async checkP2pStatus(): Promise<void> {
-        const website_status: Promise<ServerStatusResponse> = this.WS.wait(
-            'website_status'
-        ) as unknown as Promise<ServerStatusResponse>;
-        const is_p2p_disabled = (await website_status)?.website_status?.p2p_config?.disabled;
+        const get_account_status: Promise<AccountStatusResponse> = this.WS.wait(
+            'get_account_status'
+        ) as unknown as Promise<AccountStatusResponse>;
+
+        const is_p2p_disabled = (await get_account_status)?.get_account_status?.p2p_status === 'none';
         this.setIsP2pVisible(!(is_p2p_disabled || this.root_store.client.is_virtual));
     }
 

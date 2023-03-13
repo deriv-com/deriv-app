@@ -27,7 +27,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     const { loginid, switchAccount } = client;
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
-    const is_from_pre_appstore = !location.pathname.startsWith(routes.cashier);
+    const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
@@ -75,7 +75,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         <div
             className={classNames(
                 'account-transfer-receipt__crypto',
-                !is_from_pre_appstore && 'account-transfer-receipt__crypto-padding'
+                !is_from_outside_cashier && 'account-transfer-receipt__crypto-padding'
             )}
         >
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>

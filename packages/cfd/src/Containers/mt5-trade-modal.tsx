@@ -5,6 +5,7 @@ import RootStore from '../Stores/index';
 import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDDashboardContainer } from '../Components/props.types';
+import TradeModal from './trade-modal';
 import DMT5TradeModal from './dmt5-trade-modal';
 import DerivXTradeModal from './derivx-trade-modal';
 
@@ -23,7 +24,7 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    platform: 'mt5' | 'dxtrade';
+    platform: 'mt5' | 'dxtrade' | 'cTrader';
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
     show_eu_related_content: boolean;
@@ -35,7 +36,6 @@ const MT5TradeModal = ({
     enableApp,
     is_eu_user,
     is_open,
-    context,
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
@@ -44,27 +44,40 @@ const MT5TradeModal = ({
     show_eu_related_content,
 }: TMT5TradeModalProps) => {
     const CFDTradeModal = () => {
-        if (platform === 'mt5') {
-            return (
-                <DMT5TradeModal
-                    mt5_trade_account={mt5_trade_account}
-                    show_eu_related_content={show_eu_related_content}
-                    onPasswordManager={onPasswordManager}
-                    toggleModal={toggleModal}
-                    dxtrade_tokens={dxtrade_tokens}
-                />
-            );
-        }
+        // if (platform === 'mt5') {
+        //     return (
+        //         <DMT5TradeModal
+        //             mt5_trade_account={mt5_trade_account}
+        //             show_eu_related_content={show_eu_related_content}
+        //             onPasswordManager={onPasswordManager}
+        //             toggleModal={toggleModal}
+        //             dxtrade_tokens={dxtrade_tokens}
+        //         />
+        //     );
+        // }
+        // if (platform === 'cTrader') {
         return (
-            <DerivXTradeModal
+            <TradeModal
                 mt5_trade_account={mt5_trade_account}
                 is_eu_user={is_eu_user}
                 onPasswordManager={onPasswordManager}
                 toggleModal={toggleModal}
                 dxtrade_tokens={dxtrade_tokens}
                 is_demo={is_demo}
+                platform={'derivEZ'}
             />
         );
+        // }
+        // return (
+        //     <DerivXTradeModal
+        //         mt5_trade_account={mt5_trade_account}
+        //         is_eu_user={is_eu_user}
+        //         onPasswordManager={onPasswordManager}
+        //         toggleModal={toggleModal}
+        //         dxtrade_tokens={dxtrade_tokens}
+        //         is_demo={is_demo}
+        //     />
+        // );
     };
 
     return (
@@ -73,7 +86,7 @@ const MT5TradeModal = ({
                 <Modal
                     disableApp={disableApp}
                     enableApp={enableApp}
-                    is_open={is_open}
+                    is_open={true}
                     title={localize('Trade')}
                     toggleModal={toggleModal}
                     should_header_stick_body={false}

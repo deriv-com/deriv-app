@@ -12,7 +12,7 @@ jest.mock('Stores/connect', () => ({
 }));
 
 describe('ToggleSettings Component', () => {
-    it('should has render toggle settings with ic-settings footer class', () => {
+    it('should render toggle settings with "ic-settings" footer class', () => {
         render(<ToggleSettings />);
         const link = screen.getByTestId('dt_toggle_settings');
         expect(link).toHaveClass('ic-settings footer__link footer__link');

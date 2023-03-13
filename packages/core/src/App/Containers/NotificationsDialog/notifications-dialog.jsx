@@ -255,7 +255,7 @@ NotificationsDialog.propTypes = {
     removeNotifications: PropTypes.func,
 };
 
-export default connect(({ common, notifications, client }) => ({
+export default connect(({ common, client, notifications }) => ({
     app_routing_history: common.app_routing_history,
     loginid: client.loginid,
     notifications: notifications.notifications,

@@ -1,6 +1,7 @@
 import React from 'react';
 import BinaryBot from 'Assets/svgs/trading-platform/ic-brand-binarybot.svg';
 import BinaryBotBlue from 'Assets/svgs/trading-platform/ic-appstore-binarybot-blue.svg';
+import CTrader from 'Assets/svgs/trading-platform/ic-brand-deriv-ctrader.svg';
 import DBot from 'Assets/svgs/trading-platform/ic-brand-dbot.svg';
 import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
 import Derived from 'Assets/svgs/trading-platform/ic-appstore-derived.svg';
@@ -21,6 +22,7 @@ import { IconProps } from '../icon-types';
 export const PlatformIcons = {
     BinaryBot,
     BinaryBotBlue,
+    CTrader,
     DBot,
     Demo,
     Derived,

@@ -101,6 +101,7 @@ const TradingHubHeader = ({
     toggleNotifications,
 }) => {
     const is_mf = loginid?.startsWith('MF');
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {

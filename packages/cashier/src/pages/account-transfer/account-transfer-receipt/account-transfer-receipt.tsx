@@ -135,8 +135,8 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <Button
                     className='account-transfer-receipt__button'
                     has_effect
-                    text={is_from_pre_appstore ? localize('Close') : localize('Make a new transfer')}
-                    onClick={is_from_pre_appstore ? onClose : resetAccountTransfer}
+                    text={is_from_outside_cashier ? localize('Close') : localize('Make a new transfer')}
+                    onClick={is_from_outside_cashier ? onClose : resetAccountTransfer}
                     primary
                     large
                 />

@@ -76,7 +76,7 @@ const ListItem = ({ is_active, is_disabled, index, item, child_ref, onItemSelect
 
 const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
     const { active_index, list_items, is_object_list, onItemSelection, setActiveIndex, not_found_text } = props;
-    const is_grouped_list = list_items.some(list_item => (typeof list_item === 'object' ? !!list_item.group : false));
+    const is_grouped_list = list_items.some(list_item => typeof list_item === 'object' && !!list_item.group);
 
     if (is_grouped_list) {
         const groups: { [key: string]: TItem[] } = {};
@@ -111,7 +111,7 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
                                         onItemSelection={onItemSelection}
                                         setActiveIndex={setActiveIndex}
                                         is_object_list={is_object_list}
-                                        is_disabled={typeof item === 'object' ? item.disabled === 'DISABLED' : false}
+                                        is_disabled={typeof item === 'object' && item.disabled === 'DISABLED'}
                                         child_ref={item_idx === active_index ? ref : null}
                                     />
                                 );

@@ -98,6 +98,10 @@ type TClientStore = {
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
+    cfd_score: number;
+    is_cfd_score_available: boolean;
+    setCFDScore: (score: number) => void;
+    setIsCFDScoreAvailable: (is_set: boolean) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;

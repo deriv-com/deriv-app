@@ -51,7 +51,6 @@ export default class GeneralStore extends BaseStore {
             should_set_currency_modal_title_change: observable,
             should_show_all_available_currencies: observable,
             show_p2p_in_cashier_onboarding: observable,
-            // setShowP2pInCashierOnboarding: action.bound,
             showP2pInCashierOnboarding: action.bound,
         });
 

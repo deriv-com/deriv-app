@@ -441,7 +441,9 @@ const AccountTransferForm = observer(
                                                         setAccountTransferAmount(e.target.value);
                                                     }}
                                                     className={classNames(
-                                                        'cashier__input dc-input--no-placeholder account-transfer-form__input'
+                                                        'cashier__input dc-input--no-placeholder account-transfer-form__input',
+                                                        !is_from_outside_cashier &&
+                                                            'account-transfer-form__input-fit-content'
                                                     )}
                                                     classNameHint={classNames('account-transfer-form__hint', {
                                                         'account-transfer-form__hint__disabled': is_mt5_restricted,
@@ -582,7 +584,7 @@ const AccountTransferForm = observer(
                                             <Localize i18n_default_text='Transfer' />
                                         </Button>
                                     </div>
-                                    {!is_from_pre_appstore && (
+                                    {!is_from_outside_cashier && (
                                         <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
                                             {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                             <AccountTransferNote

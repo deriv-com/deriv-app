@@ -153,7 +153,7 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
             clearTimeout(scroll_timeout);
         }
         scroll_timeout = setTimeout(() => {
-            props?.onScrollStop?.();
+            props.onScrollStop?.();
         }, 150);
     };
 

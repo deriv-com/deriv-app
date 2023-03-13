@@ -161,6 +161,7 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     initial_values: TQuickStrategyFormValues;
     is_onscreen_keyboard_active: boolean;
     is_stop_button_visible: boolean;
+    is_strategy_modal_open: boolean;
     selected_symbol: TMarketOption;
     selected_trade_type: TTradeType;
     selected_duration_unit: TDurationOptions;

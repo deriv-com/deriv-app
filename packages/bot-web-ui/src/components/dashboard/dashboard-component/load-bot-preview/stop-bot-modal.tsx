@@ -9,6 +9,7 @@ type TStopBotModal = {
     is_dialog_open: boolean;
     onOkButtonClick: () => void;
     toggleStopBotDialog: () => void;
+    loadDataStrategy: () => void;
 };
 
 const StopBotModalContent = ({ is_running, is_dialog_open, onOkButtonClick, toggleStopBotDialog }: TStopBotModal) => {
@@ -75,7 +76,13 @@ const StopBotModalContent = ({ is_running, is_dialog_open, onOkButtonClick, togg
     );
 };
 
-const StopBotModal = ({ is_running, is_dialog_open, onOkButtonClick, toggleStopBotDialog }: TStopBotModal) =>
+const StopBotModal = ({
+    is_running,
+    is_dialog_open,
+    onOkButtonClick,
+    toggleStopBotDialog,
+    loadDataStrategy,
+}: TStopBotModal) =>
     isMobile() ? (
         <MobileFullPageModal
             is_modal_open={is_dialog_open}
@@ -97,7 +104,10 @@ const StopBotModal = ({ is_running, is_dialog_open, onOkButtonClick, toggleStopB
             is_running={is_running}
             is_dialog_open={is_dialog_open}
             onOkButtonClick={onOkButtonClick}
-            toggleStopBotDialog={toggleStopBotDialog}
+            toggleStopBotDialog={() => {
+                toggleStopBotDialog();
+                loadDataStrategy();
+            }}
         />
     );
 
@@ -106,4 +116,5 @@ export default connect(({ run_panel, toolbar, quick_strategy }: RootStore) => ({
     is_running: run_panel.is_running,
     onOkButtonClick: toolbar.onResetOkButtonClick, //!TODO replace it after set implementation
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
 }))(StopBotModal);

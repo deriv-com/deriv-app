@@ -13,6 +13,7 @@ const QuickStrategyFooter = ({
     submitForm,
     setActiveTab,
     toggleStopBotDialog,
+    loadDataStrategy,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
@@ -22,6 +23,7 @@ const QuickStrategyFooter = ({
 
     const handleRun = React.useCallback(() => {
         setActiveTab(1);
+        loadDataStrategy();
         if (!is_dialog_open) {
             toggleStopBotDialog();
         } else {
@@ -40,7 +42,7 @@ const QuickStrategyFooter = ({
                 <Button
                     type='button'
                     id='db-quick-strategy__button-edit'
-                    text={localize('Create and edit')}
+                    text={localize('Edit')}
                     is_disabled={!is_submit_enabled}
                     secondary
                     large

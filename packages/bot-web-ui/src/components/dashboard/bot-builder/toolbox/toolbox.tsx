@@ -60,7 +60,7 @@ const Toolbox = ({
                     button_id='db-toolbar__get-started-button'
                     button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
                     buttonOnClick={loadDataStrategy}
-                    button_text={localize('Quick strategies')}
+                    button_text={localize('Quick strategy')}
                 />
                 <div id='gtm-toolbox' className='db-toolbox__content'>
                     <div className='db-toolbox__header'>

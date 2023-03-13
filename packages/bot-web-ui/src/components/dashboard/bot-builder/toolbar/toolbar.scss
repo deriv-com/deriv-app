@@ -19,8 +19,13 @@
             display: flex;
             justify-content: center;
             height: calc(5.6rem - 1.6rem) !important;
-            width: 22rem;
-            margin-bottom: 1rem;
+            @include desktop {
+                width: 22rem;
+                margin-bottom: 1rem;
+            }
+            @include mobile {
+                margin-bottom: 2rem;
+            }
 
             & .dc-btn__icon {
                 padding-right: 0.4rem;
@@ -36,8 +41,14 @@
     &__section {
         display: flex;
 
+        @include mobile {
+            margin-top: 2rem;
+        }
+
         > * {
-            align-self: center;
+            @include desktop {
+                align-self: center;
+            }
         }
     }
     &__icon {

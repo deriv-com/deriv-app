@@ -16,7 +16,7 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
-import { isBot, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
@@ -60,7 +60,6 @@ const TradingHubFooter = ({
     }
 
     const changeTheme = () => {
-        if (isBot()) return;
         setDarkMode(!is_dark_mode);
     };
 

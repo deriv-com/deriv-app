@@ -185,6 +185,8 @@ const AccountDisplay = ({
                     )}
             </div>
         );
+
+    const { pathname, route } = isBot();
     return (
         <div>
             {/* TODO: Remove below condition once deriv x changes are completed */}
@@ -197,7 +199,7 @@ const AccountDisplay = ({
                         color={is_dark_mode_on ? 'general' : 'colored-background'}
                         size='xxs'
                         className={classNames('badge-server', {
-                            'badge-server-bot': isBot(),
+                            'badge-server-bot': pathname || route,
                         })}
                     >
                         {getServerName(server)}

@@ -3,7 +3,7 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize, getLanguage } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
 import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
 
@@ -133,6 +133,7 @@ const TradingAssessmentForm = ({
                                 <div
                                     className={classNames('trading-assessment__form--fields', {
                                         highlight: should_inform_user,
+                                        'field-layout': ['ID', 'FR'].includes(getLanguage()),
                                     })}
                                 >
                                     {questions?.length ? (

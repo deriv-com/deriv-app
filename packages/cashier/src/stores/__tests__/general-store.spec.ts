@@ -119,29 +119,29 @@ describe('GeneralStore', () => {
     //     expect(general_store.is_p2p_enabled).toBeTruthy();
     // });
 
-    it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has not account with USD currency', () => {
+    it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has not account with USD currency', async () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
-        general_store.showP2pInCashierOnboarding();
+        await general_store.showP2pInCashierOnboarding();
 
         expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
     });
 
-    it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has not account with USD currency', () => {
+    it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has not account with USD currency', async () => {
         general_store.root_store.client.account_list = [{ title: 'EUR' }];
-        general_store.showP2pInCashierOnboarding();
+        await general_store.showP2pInCashierOnboarding();
 
         expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
     });
 
-    it('should show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has USD account', () => {
-        general_store.showP2pInCashierOnboarding();
+    it('should show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has USD account', async () => {
+        await general_store.showP2pInCashierOnboarding();
 
         expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
     });
 
-    it('should show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has not fiat currency accounts', () => {
+    it('should show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has not fiat currency accounts', async () => {
         general_store.root_store.client.account_list = [{ title: 'BTC' }];
-        general_store.showP2pInCashierOnboarding();
+        await general_store.showP2pInCashierOnboarding();
 
         expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
     });

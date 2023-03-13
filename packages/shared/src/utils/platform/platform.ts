@@ -34,7 +34,7 @@ export const isBot = () => {
     const is_pathname_bot =
         /^\/bot/.test(window.location.pathname) ||
         (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'bot');
-    if (is_bot && window.location.pathname.split('/')[1] === ('' || 'cashier' || 'reports')) {
+    if (window.location.pathname.split('/')[1] === '') {
         window.localStorage.removeItem('config.route');
     }
     if (is_pathname_bot) {

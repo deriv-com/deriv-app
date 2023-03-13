@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
+import { AutoHeightWrapper, FormSubmitButton } from '@deriv/components';
+
 import { Formik } from 'formik';
+import ProofOfIdentityContainer from '@deriv/account';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ProofOfIdentityContainer from '@deriv/account';
-import { AutoHeightWrapper, FormSubmitButton } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -17,6 +19,8 @@ const ProofOfIdentityForm = ({ form_error, index, onCancel, onSubmit, value }) =
 
         return errors;
     };
+
+    console.log('Real ac signup POI" ');
 
     return (
         <Formik

@@ -1,12 +1,14 @@
-import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-import { getAllowedLanguages, changeLanguage as changeLanguageTranslation } from '@deriv/translations';
-import { action, computed, observable, makeObservable } from 'mobx';
-import { currentLanguage } from 'Utils/Language/index';
-import ServerTime from '_common/base/server_time';
-import BinarySocket from '_common/base/socket_base';
-import BaseStore from './base-store';
-import WS from 'Services/ws-methods';
 import * as SocketCache from '_common/base/socket_cache';
+
+import { action, computed, makeObservable, observable } from 'mobx';
+import { changeLanguage as changeLanguageTranslation, getAllowedLanguages } from '@deriv/translations';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
+
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import ServerTime from '_common/base/server_time';
+import WS from 'Services/ws-methods';
+import { currentLanguage } from 'Utils/Language/index';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
@@ -120,12 +122,16 @@ export default class CommonStore extends BaseStore {
         const search = window.location.search;
         if (search) {
             const url_params = new URLSearchParams(search);
+            // eslint-disable-next-line no-console
+            console.log('url_params.get', url_params.get('platform'));
             this.platform = url_params.get('platform') || '';
             localStorage.setItem('config.platform', this.platform);
         }
     }
 
     get is_from_derivgo() {
+        // eslint-disable-next-line no-console
+        console.log('this.platform', this.platform);
         return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
     }
 

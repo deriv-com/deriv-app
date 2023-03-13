@@ -117,6 +117,7 @@ const AppNotificationMessages = ({
                   'close_mx_mlt_account',
                   'trustpilot',
                   'close_uk_account',
+                  'p2p_daily_limit_increase',
                   'document_needs_action',
                   'identity',
                   'poi_name_mismatch',
@@ -146,9 +147,11 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
-    // svg... and authenticate keys will be showed like separate pop up (not only indide 'View notifications')
+    // svg... and authenticate keys will be showed like separate pop up (not only inside 'View notifications')
     const filtered_excluded_notifications = notifications.filter(message =>
-        message.key.includes('svg') || message.key.includes('authenticate')
+        message.key.includes('svg') ||
+        message.key.includes('p2p_daily_limit_increase') ||
+        message.key.includes('authenticate')
             ? message
             : excluded_notifications.includes(message.key)
     );

@@ -1321,6 +1321,9 @@
                 }
                 &-links {
                     display: flex;
+                    align-items: center;
+                    flex-direction: column;
+                    gap: 0.8rem;
 
                     a {
                         margin: 0.4rem;

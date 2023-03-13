@@ -58,8 +58,10 @@ export const icons =
     ],
     'brand': [
         'IcBrandBinarybot',
+        'IcBrandCtrader',
         'IcBrandDbot',
         'IcBrandDerivApps',
+        'IcBrandDerivEz',
         'IcBrandDeriv',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',

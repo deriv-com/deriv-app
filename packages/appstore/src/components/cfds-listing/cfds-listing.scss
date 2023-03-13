@@ -365,6 +365,9 @@
                 &-links {
                     display: flex;
                     align-items: center;
+                    flex-direction: column;
+                    gap: 0.8rem;
+
                     @include mobile {
                         flex-direction: column;
                         grid-gap: 0.5rem;

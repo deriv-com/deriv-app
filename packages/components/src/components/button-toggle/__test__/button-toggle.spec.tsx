@@ -36,11 +36,15 @@ describe('ButtonToggle component', () => {
     });
     it('should render the button with active class when the value is equal to the button value', () => {
         render(<ButtonToggle {...mocked_props} />);
-        expect(screen.getByRole('button', { name: 'Buy 5' })).toHaveClass('__button--active');
+        expect(screen.getByRole('button', { name: 'Buy 5' })).toHaveClass('dc-button-menu__button--active', {
+            exact: false,
+        });
     });
     it('should render a button toggle for traders_hub', () => {
         render(<ButtonToggle {...mocked_props} is_traders_hub />);
-        expect(screen.getByRole('button', { name: 'Buy 5' })).toHaveClass('__toggle--active');
+        expect(screen.getByRole('button', { name: 'Buy 5' })).toHaveClass('dc-button-menu__toggle--active', {
+            exact: false,
+        });
     });
     it('should render an animated highlighted button toggle with rounded button calling onChange when clicked', () => {
         render(<ButtonToggle {...mocked_props} is_animated has_rounded_button />);

@@ -250,7 +250,9 @@ export default class NotificationStore extends BaseStore {
         const { loginid } = this.root_store.client;
         const refined_list = notifications_list[loginid] ? Object.values(notifications_list[loginid]) : [];
         const p2p_settings = LocalStore.getObject('p2p_settings');
-        const is_p2p_notifications_visible = p2p_settings[loginid].is_notifications_visible;
+        const is_p2p_notifications_visible = p2p_settings[loginid]
+            ? p2p_settings[loginid].is_notifications_visible
+            : false;
 
         if (refined_list.length) {
             refined_list.map(refined => {

@@ -1,6 +1,6 @@
 import { Step, Styles, Locale } from 'react-joyride';
 import React from 'react';
-import { Text, Button } from '@deriv/components';
+import { Text, SpanButton } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 

@@ -48,8 +48,10 @@ export const getTourStepConfig = (): Step[] => [
     },
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize("Trader's hub tour")}
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize("Trader's hub tour")}
+                </Text>
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
@@ -77,9 +79,11 @@ export const getTourStepConfigHighRisk = (): Step[] => [
     },
     {
         title: (
-            <Text as='p' weight='bold' color='brand-red-coral'>
-                {localize("Trader's hub tour")}
-                <div className='toggle-account-type__divider' />
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize("Trader's hub tour")}
+                    <div className='toggle-account-type__divider' />
+                </Text>
             </React.Fragment>
         ),
         content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
@@ -135,7 +139,7 @@ export const tour_styles_dark_mode: Styles = {
     },
 };
 export const getTourStepLocale = (): Locale => ({
-    back: <Button has_effect text={localize('Back')} secondary medium />,
+    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),
@@ -143,7 +147,7 @@ export const getTourStepLocale = (): Locale => ({
 });
 
 export const getHighRiskTourStepLocale = (): Locale => ({
-    back: <Button has_effect text={localize('Back')} secondary medium />,
+    back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: localize('Close'),
     last: localize('OK'),
     next: localize('Next'),

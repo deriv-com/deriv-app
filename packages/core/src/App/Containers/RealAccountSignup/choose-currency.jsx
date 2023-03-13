@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Text, ThemedScrollbars } from '@deriv/components';
+import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { useAllPaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { reorderCurrencies, routes } from '@deriv/shared';
@@ -30,7 +30,7 @@ const ChooseCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
 
-    const { data: all_payment_agent_list } = useAllPaymentAgentList();
+    const { data: all_payment_agent_list, is_loading } = useAllPaymentAgentList();
 
     React.useEffect(() => {
         return () => setShouldShowAllAvailableCurrencies(false);
@@ -135,29 +135,33 @@ const ChooseCurrency = ({
                             : localize('Choose one of your accounts or add a new cryptocurrency account')}
                     </Text>
                     <ThemedScrollbars>
-                        <CurrencyRadioButtonGroup
-                            id='crypto_currency'
-                            className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                            item_count={getReorderedCryptoCurrencies.length}
-                        >
-                            {getReorderedCryptoCurrencies.map(currency => (
-                                <Field
-                                    key={currency.value}
-                                    component={CurrencyRadioButton}
-                                    name='currency'
-                                    id={currency.value}
-                                    label={currency.name}
-                                    icon={currency.icon}
-                                    second_line_label={currency.second_line_label}
-                                    onClick={currency.onClick}
-                                    selected={
-                                        currency.is_disabled || deposit_target === routes.cashier_pa
-                                            ? !currency.has_payment_agent
-                                            : false
-                                    }
-                                />
-                            ))}
-                        </CurrencyRadioButtonGroup>
+                        {is_loading ? (
+                            <Loading is_fullscreen={false} />
+                        ) : (
+                            <CurrencyRadioButtonGroup
+                                id='crypto_currency'
+                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                item_count={getReorderedCryptoCurrencies.length}
+                            >
+                                {getReorderedCryptoCurrencies.map(currency => (
+                                    <Field
+                                        key={currency.value}
+                                        component={CurrencyRadioButton}
+                                        name='currency'
+                                        id={currency.value}
+                                        label={currency.name}
+                                        icon={currency.icon}
+                                        second_line_label={currency.second_line_label}
+                                        onClick={currency.onClick}
+                                        selected={
+                                            currency.is_disabled || deposit_target === routes.cashier_pa
+                                                ? !currency.has_payment_agent
+                                                : false
+                                        }
+                                    />
+                                ))}
+                            </CurrencyRadioButtonGroup>
+                        )}
                     </ThemedScrollbars>
                     <FormSubmitButton
                         className='currency-selector__button'

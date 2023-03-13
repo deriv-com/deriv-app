@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { FormSubmitButton, Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { useAllPaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv/shared';
@@ -30,7 +30,7 @@ const AddCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
 
-    const { data: all_payment_agent_list } = useAllPaymentAgentList();
+    const { data: all_payment_agent_list, is_loading } = useAllPaymentAgentList();
 
     const getReorderedCurrencies = React.useMemo(() => {
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
@@ -79,25 +79,29 @@ const AddCurrency = ({
                         {localize('You are limited to one fiat account only.')}
                     </Text>
                 )}
-                <CurrencyRadioButtonGroup
-                    id='crypto_currency'
-                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                    item_count={getReorderedCurrencies.fiat.length}
-                >
-                    {getReorderedCurrencies.fiat.map(currency => (
-                        <Field
-                            key={currency.value}
-                            component={CurrencyRadioButton}
-                            name='currency'
-                            id={currency.value}
-                            label={currency.name}
-                            icon={currency.icon}
-                            second_line_label={currency.second_line_label}
-                            onClick={currency.onClick}
-                            selected={has_fiat}
-                        />
-                    ))}
-                </CurrencyRadioButtonGroup>
+                {is_loading ? (
+                    <Loading is_fullscreen={false} />
+                ) : (
+                    <CurrencyRadioButtonGroup
+                        id='crypto_currency'
+                        className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                        item_count={getReorderedCurrencies.fiat.length}
+                    >
+                        {getReorderedCurrencies.fiat.map(currency => (
+                            <Field
+                                key={currency.value}
+                                component={CurrencyRadioButton}
+                                name='currency'
+                                id={currency.value}
+                                label={currency.name}
+                                icon={currency.icon}
+                                second_line_label={currency.second_line_label}
+                                onClick={currency.onClick}
+                                selected={has_fiat}
+                            />
+                        ))}
+                    </CurrencyRadioButtonGroup>
+                )}
             </div>
         );
     };
@@ -111,25 +115,29 @@ const AddCurrency = ({
                 <Text as='p' color='prominent' align='center' size='xxs' className='add-currency__sub-title'>
                     {localize('You can open an account for each cryptocurrency.')}
                 </Text>
-                <CurrencyRadioButtonGroup
-                    id='crypto_currency'
-                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                    item_count={getReorderedCurrencies.crypto.length}
-                >
-                    {getReorderedCurrencies.crypto.map(currency => (
-                        <Field
-                            key={currency.value}
-                            component={CurrencyRadioButton}
-                            name='currency'
-                            id={currency.value}
-                            label={currency.name}
-                            icon={currency.icon}
-                            second_line_label={currency.second_line_label}
-                            onClick={currency.onClick}
-                            selected={deposit_target === routes.cashier_pa ? !currency.has_payment_agent : false}
-                        />
-                    ))}
-                </CurrencyRadioButtonGroup>
+                {is_loading ? (
+                    <Loading is_fullscreen={false} />
+                ) : (
+                    <CurrencyRadioButtonGroup
+                        id='crypto_currency'
+                        className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                        item_count={getReorderedCurrencies.crypto.length}
+                    >
+                        {getReorderedCurrencies.crypto.map(currency => (
+                            <Field
+                                key={currency.value}
+                                component={CurrencyRadioButton}
+                                name='currency'
+                                id={currency.value}
+                                label={currency.name}
+                                icon={currency.icon}
+                                second_line_label={currency.second_line_label}
+                                onClick={currency.onClick}
+                                selected={deposit_target === routes.cashier_pa ? !currency.has_payment_agent : false}
+                            />
+                        ))}
+                    </CurrencyRadioButtonGroup>
+                )}
             </div>
         );
     };

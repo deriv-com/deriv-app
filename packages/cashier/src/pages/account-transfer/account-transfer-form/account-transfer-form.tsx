@@ -118,6 +118,8 @@ const AccountTransferForm = observer(
         const [to_accounts, setToAccounts] = React.useState({});
         const [transfer_to_hint, setTransferToHint] = React.useState<string>();
 
+        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
+
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5;
         const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
@@ -549,7 +551,7 @@ const AccountTransferForm = observer(
                                         )}
                                         data-testid='dt_account_transfer_form_submit'
                                     >
-                                        <NotesLink />
+                                        {is_from_outside_cashier && <NotesLink />}
                                         <Button
                                             className='account-transfer-form__deposit-button'
                                             secondary
@@ -580,6 +582,30 @@ const AccountTransferForm = observer(
                                             <Localize i18n_default_text='Transfer' />
                                         </Button>
                                     </div>
+                                    {!is_from_pre_appstore && (
+                                        <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
+                                            {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
+                                            <AccountTransferNote
+                                                allowed_transfers_count={{
+                                                    internal: internal_remaining_transfers?.allowed,
+                                                    mt5: mt5_remaining_transfers?.allowed,
+                                                    dxtrade: dxtrade_remaining_transfers?.allowed,
+                                                    derivez: derivez_remaining_transfers?.allowed,
+                                                }}
+                                                transfer_fee={transfer_fee}
+                                                currency={selected_from.currency}
+                                                minimum_fee={minimum_fee}
+                                                is_crypto_to_crypto_transfer={
+                                                    selected_from.is_crypto && selected_to.is_crypto
+                                                }
+                                                is_dxtrade_allowed={is_dxtrade_allowed}
+                                                is_dxtrade_transfer={is_dxtrade_transfer}
+                                                is_mt_transfer={is_mt_transfer}
+                                                is_from_derivgo={is_from_derivgo}
+                                                is_derivez_transfer={is_derivez_transfer}
+                                            />
+                                        </SideNote>
+                                    )}
                                     <ErrorDialog error={error} />
                                 </Form>
                             )}

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Text } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
@@ -11,7 +11,6 @@ const Virtual = observer(() => {
     const {
         ui: { is_dark_mode_on, toggleAccountsDialog },
     } = useStore();
-    const history = useHistory();
 
     return (
         <div className='cashier__wrapper' data-testid='dt_cashier_wrapper_id'>

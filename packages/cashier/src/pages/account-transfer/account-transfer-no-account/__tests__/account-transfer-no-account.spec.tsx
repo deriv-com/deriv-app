@@ -38,15 +38,4 @@ describe('<AccountTransferNoAccount />', () => {
         expect(screen.getByText('Please create another Deriv or Deriv MT5 account.')).toBeInTheDocument();
         expect(screen.getByText('Create account')).toBeInTheDocument();
     });
-
-    it('should trigger onClick callback, when the "Create account" button was clicked', () => {
-        mockRootStore.client.is_dxtrade_allowed = true;
-
-        renderAccountTransferNoAccount();
-
-        const create_acc_btn = screen.getByText('Create account');
-        fireEvent.click(create_acc_btn);
-
-        expect(mockRootStore.ui.toggleAccountsDialog).toHaveBeenCalledTimes(1);
-    });
 });

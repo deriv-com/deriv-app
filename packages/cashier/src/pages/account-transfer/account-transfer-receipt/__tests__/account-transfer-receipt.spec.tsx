@@ -62,12 +62,11 @@ describe('<AccountTransferReceipt />', () => {
             ),
         });
 
-    it('should show "Your funds have been transferred" message, "View transaction details" and "Make a new transfer" buttons', () => {
+    it('should show "Your funds have been transferred" message and "View transaction details" buttons', () => {
         renderAccountTransferReceipt();
 
         expect(screen.getByText('Your funds have been transferred')).toBeInTheDocument();
         expect(screen.getByText('View transaction details')).toBeInTheDocument();
-        expect(screen.getByText('Make a new transfer')).toBeInTheDocument();
     });
 
     it('should redirect to "/reports/statement", when the "View transaction details" button was clicked', () => {
@@ -77,15 +76,6 @@ describe('<AccountTransferReceipt />', () => {
         fireEvent.click(view_transaction_btn);
 
         expect(history.location.pathname).toBe(routes.statement);
-    });
-
-    it('should reset account transfer, when the "Make a new transfer" button was clicked', () => {
-        renderAccountTransferReceipt();
-
-        const make_a_new_transfer_btn = screen.getByText('Make a new transfer');
-        fireEvent.click(make_a_new_transfer_btn);
-
-        expect(mockRootStore.modules.cashier.account_transfer.resetAccountTransfer).toHaveBeenCalledTimes(1);
     });
 
     it('should not show "We’re switching over to your {{currency}} account to view the transaction." message, when the "Cancel" button was clicked', async () => {

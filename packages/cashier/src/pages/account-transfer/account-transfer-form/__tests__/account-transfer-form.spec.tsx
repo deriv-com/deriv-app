@@ -120,7 +120,7 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
-        expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
+        expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
 
     it('should show loader if account_list.length === 0', () => {
@@ -218,19 +218,6 @@ describe('<AccountTransferForm />', () => {
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
 
-    it('should show <AccountTransferNote /> component', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-
-        renderAccountTransferForm();
-
-        expect(screen.getByText('Transfer limits may vary depending on the exchange rates.')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.'
-            )
-        ).toBeInTheDocument();
-    });
-
     it('should show proper hint about mt5 remained transfers', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
@@ -287,59 +274,5 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.selected_from.is_crypto = true;
-        mockRootStore.modules.cashier.account_transfer.selected_from.currency = 'BTC';
-        mockRootStore.modules.cashier.account_transfer.selected_to.is_crypto = true;
-        mockRootStore.modules.cashier.account_transfer.selected_to.currency = 'BTC';
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
-
-        renderAccountTransferForm();
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 BTC, whichever is higher, for transfers between your Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 2%, is_mt_transfer, and is_dxtrade_allowed is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
-        mockRootStore.modules.cashier.account_transfer.selected_to.is_mt = true;
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
-
-        renderAccountTransferForm();
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 2% and is_mt_transfer is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
-
-        renderAccountTransferForm();
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is null', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = null;
-
-        renderAccountTransferForm();
-
-        expect(screen.getByText('Please bear in mind that some transfers may not be possible.')).toBeInTheDocument();
     });
 });

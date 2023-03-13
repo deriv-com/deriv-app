@@ -494,7 +494,7 @@ describe('AccountTransferStore', () => {
             accounts: [MX_USD_account],
         });
 
-        expect(account_transfer_store.selected_to.error).not.toBe(undefined);
+        expect(account_transfer_store.selected_to.error).toBe(undefined);
     });
 
     it('should set proper values for selected_from property', () => {

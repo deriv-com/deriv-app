@@ -9,6 +9,7 @@ const useLiveChat = (has_cookie_account = false) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
+    const search_params = window.location.search;
 
     const liveChatDeletion = () =>
         new Promise<void>(resolve => {
@@ -103,8 +104,7 @@ const useLiveChat = (has_cookie_account = false) => {
 
     useEffect(() => {
         onHistoryChange();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [window.location.search, onHistoryChange]);
+    }, [search_params, onHistoryChange]);
 
     useEffect(() => {
         history.listen(onHistoryChange);

@@ -449,23 +449,6 @@ describe('PaymentAgentStore', () => {
         expect(spyGetPaymentAgentList).toHaveBeenCalled();
     });
 
-    it('should get all payment agents', async () => {
-        const payment_agents = await payment_agent_store.getAllPaymentAgentList();
-        expect(payment_agents).toEqual({
-            paymentagent_list: mocked_payment_agent_list,
-        });
-    });
-
-    it('should set all_payment_agent_list', () => {
-        const list = {
-            paymentagent_list: mocked_payment_agent_list,
-        };
-
-        payment_agent_store.setAllPaymentAgentList(list);
-        expect(payment_agent_store.all_payment_agent_list).toEqual(list);
-        expect(payment_agent_store.is_payment_agent_visible_in_onboarding).toBeTruthy();
-    });
-
     it('should request for payment agent withdraw', async () => {
         payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ paymentagent_withdraw: 1 });
         await payment_agent_store.onMountPaymentAgentWithdraw();

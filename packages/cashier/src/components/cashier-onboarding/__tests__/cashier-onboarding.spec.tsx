@@ -7,6 +7,11 @@ import { routes } from '@deriv/shared';
 import type { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useIsPaymentAgentVisibleInOnboarding: jest.fn(() => true),
+}));
+
 describe('<CashierOnboarding />', () => {
     let mockRootStore: DeepPartial<TRootStore>;
     beforeEach(() => {

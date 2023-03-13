@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Field, Form, Formik } from 'formik';
-import { Button, DesktopWrapper, Input, Loading, Modal, Text } from '@deriv/components';
+import { Field, Form } from 'formik';
+import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import CancelEditPaymentMethodModal from './cancel-edit-payment-method-modal.jsx';
 import PageReturn from 'Components/page-return/page-return.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import ModalForm from 'Components/modal-manager/modal-form';
 
-const EditPaymentMethodForm = ({ formik_ref }) => {
+const EditPaymentMethodForm = () => {
     const { general_store, my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     React.useEffect(() => {
         return () => {
@@ -27,10 +28,8 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
 
     return (
         <React.Fragment>
-            <CancelEditPaymentMethodModal />
-            <Formik
+            <ModalForm
                 enableReinitialize
-                innerRef={formik_ref}
                 initialValues={my_profile_store.initial_values}
                 onSubmit={my_profile_store.updatePaymentMethod}
                 validate={my_profile_store.validatePaymentMethodFields}
@@ -42,7 +41,9 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                                 <PageReturn
                                     onClick={() => {
                                         if (dirty) {
-                                            my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                            showModal({
+                                                key: 'CancelEditPaymentMethodModal',
+                                            });
                                         } else {
                                             my_profile_store.setShouldShowEditPaymentMethodForm(false);
                                         }
@@ -114,7 +115,9 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                                         large
                                         onClick={() => {
                                             if (dirty) {
-                                                my_profile_store.setIsCancelEditPaymentMethodModalOpen(true);
+                                                showModal({
+                                                    key: 'CancelEditPaymentMethodModal',
+                                                });
                                             } else {
                                                 my_profile_store.setPaymentMethodToEdit(null);
                                                 my_profile_store.setShouldShowEditPaymentMethodForm(false);
@@ -137,34 +140,9 @@ const EditPaymentMethodForm = ({ formik_ref }) => {
                         </React.Fragment>
                     );
                 }}
-            </Formik>
-            <Modal
-                is_open={my_profile_store.should_show_add_payment_method_error_modal}
-                small
-                has_close_icon={false}
-                title={localize("Something's not right")}
-            >
-                <Modal.Body>
-                    <Text color='prominent' size='xs'>
-                        {my_profile_store.add_payment_method_error_message}
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Ok')}
-                        onClick={() => my_profile_store.setShouldShowAddPaymentMethodErrorModal(false)}
-                        primary
-                        large
-                    />
-                </Modal.Footer>
-            </Modal>
+            </ModalForm>
         </React.Fragment>
     );
-};
-
-EditPaymentMethodForm.propTypes = {
-    formik_ref: PropTypes.shape({ current: PropTypes.any }),
 };
 
 export default observer(EditPaymentMethodForm);

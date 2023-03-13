@@ -21,8 +21,9 @@ const ExitTradersHubModal = ({
 
     const exit_traders_hub_modal_content = (
         <Text size={isMobile() ? 'xxs' : 'xs'}>
-            {localize(`You won’t be able to see your EU account in the traditional view. The open positions in your EU
-        account will remain open. You can switch back to this view at any time.`)}
+            {localize(
+                "You won't be able to see your EU account in the traditional view. The open positions in your EU account will remain open. You can switch back to this view at any time."
+            )}
         </Text>
     );
 
@@ -48,7 +49,7 @@ const ExitTradersHubModal = ({
         const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();
 
-        if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
+        if (content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.LOW_RISK_CR_NON_EU) {
             if (!cr_account) {
                 await switchAccount(account_list.find(acc => acc.loginid.startsWith('VRTC'))?.loginid);
             }

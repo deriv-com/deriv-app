@@ -321,7 +321,11 @@ const Dropdown = ({
     };
 
     const handleVisibility = () => {
-        onClick?.();
+        if (typeof onClick === 'function') {
+            onClick();
+
+            return;
+        }
 
         if (is_nativepicker && !is_list_visible) {
             if (mobileOSDetect() === 'iOS') {

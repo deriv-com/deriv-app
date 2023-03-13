@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, useLocation, withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { Icon, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {
@@ -206,6 +206,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         selected_account_group: '',
         selected_server: '',
     });
+    const location = useLocation();
 
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
@@ -250,14 +251,13 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     });
 
     React.useEffect(() => {
-        if (window.location.hash === '#real') {
+        if (location.hash === '#real') {
             setActiveIndex(0);
         }
-        if (window.location.hash === '#demo-all' || window.location.hash === '#demo') {
+        if (location.hash === '#demo-all' || location.hash === '#demo') {
             setActiveIndex(1);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [window.location.hash]);
+    }, [location.hash]);
 
     const openResetPassword = () => {
         if (!/reset-password/.test(props.location.hash)) {

@@ -298,13 +298,7 @@ export default class TradeStore extends BaseStore {
 
         // Adds intercept to change min_max value of duration validation
         reaction(
-            () => [
-                this.contract_expiry_type,
-                this.duration_min_max,
-                this.duration_unit,
-                this.expiry_type,
-                this.root_store.common.is_language_changing,
-            ],
+            () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],
             () => {
                 this.changeDurationValidationRules();
             }
@@ -917,8 +911,7 @@ export default class TradeStore extends BaseStore {
                 ...(!this.is_initial_barrier_applied ? this.initial_barriers : {}),
             });
             this.is_initial_barrier_applied = true;
-
-            if (/\bcontract_type\b/.test(Object.keys(new_state))) {
+            if (/\b(contract_type|currency|)\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();
             }
             this.debouncedProposal();

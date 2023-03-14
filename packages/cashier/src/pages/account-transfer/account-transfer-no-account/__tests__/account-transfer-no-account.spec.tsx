@@ -3,9 +3,11 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import AccountTransferNoAccount from '../account-transfer-no-account';
 import CashierProviders from '../../../../cashier-providers';
 import { routes } from '@deriv/shared';
+import { createBrowserHistory } from 'history';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore;
+    const history = createBrowserHistory();
     beforeEach(() => {
         mockRootStore = {
             client: {

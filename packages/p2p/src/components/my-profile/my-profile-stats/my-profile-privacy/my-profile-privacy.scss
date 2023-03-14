@@ -6,7 +6,6 @@
 
     @include mobile {
         justify-content: space-between;
-        margin: 3.8rem 0 1.4rem;
     }
 
     &__toggle {
@@ -21,6 +20,7 @@
 
             @include mobile {
                 align-items: unset;
+                margin-top: 0;
             }
         }
 

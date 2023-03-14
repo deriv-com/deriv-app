@@ -160,7 +160,7 @@ const TradingHubHeader = ({
                 </MobileWrapper>
 
                 <div className='platform-switcher'>
-                    <DerivBrandLogo className={'trading-hub-header__logo'} />
+                    <DerivBrandLogo className='trading-hub-header__logo' />
                 </div>
 
                 <DesktopWrapper>

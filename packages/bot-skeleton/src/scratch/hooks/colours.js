@@ -56,7 +56,7 @@ const lightMode = () => {
         colourTertiary: '#6d7278',
     };
 
-    Blockly.Colours.Special3 = {
+    workspace.Colours.Special3 = {
         colour: '#e5e5e5',
         colourSecondary: '#ffffff',
         colourTertiary: '#6d7278',

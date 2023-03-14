@@ -25,17 +25,11 @@ const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccoun
         <div className='cashier__wrapper cashier__no-balance'>
             <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
             <Text as='h2' weight='bold' align='center'>
-                <Localize i18n_default_text='You need at least two accounts' />
+                <Localize i18n_default_text='You only have one account' />
             </Text>
             <Text as='p' size='xs' line_height='s' align='center' className='cashier__text'>
                 {is_dxtrade_allowed ? (
-                    <Localize
-                        i18n_default_text='Please create another Deriv, {{platform_name_mt5}}, or {{platform_name_dxtrade}} account.'
-                        values={{
-                            platform_name_mt5: getPlatformSettings('mt5').name,
-                            platform_name_dxtrade: getPlatformSettings('dxtrade').name,
-                        }}
-                    />
+                    <Localize i18n_default_text='Transferring funds will require you to create a second account' />
                 ) : (
                     <Localize
                         i18n_default_text='Please create another Deriv or {{platform_name_mt5}} account.'
@@ -55,7 +49,7 @@ const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccoun
                         : toggleAccountsDialog()
                 }
             >
-                <Localize i18n_default_text='Create account' />
+                <Localize i18n_default_text={`Back to trader's hub`} />
             </Button>
         </div>
     );

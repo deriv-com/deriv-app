@@ -10,6 +10,16 @@
     background-color: var(--general-main-1);
     @include mobile {
         left: 1.4rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
     z-index: 1;
     &__btn {

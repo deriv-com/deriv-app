@@ -143,10 +143,6 @@ const Account = ({
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
-            if (route.path === shared_routes.languages) {
-                route.is_hidden = true;
-            }
-
             if (route.path === shared_routes.financial_assessment) {
                 route.is_disabled =
                     is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);

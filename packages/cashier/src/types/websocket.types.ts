@@ -8,7 +8,7 @@ import {
     P2PAdvertInfo,
     TransferBetweenAccountsResponse,
 } from '@deriv/api-types';
-import { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
+import type { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
 import type { TTransactionItem } from 'Types';
 
 export type TCashierPayments = {

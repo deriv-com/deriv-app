@@ -1,0 +1,19 @@
+.real {
+    &__loader {
+        width: 100%;
+        height: 80vh;
+    }
+
+    &__header {
+        width: 100%;
+        margin-bottom: 1.6rem;
+
+        ul > *:not(:last-child) {
+            cursor: pointer;
+        }
+
+        @include mobile {
+            margin-top: 1.6rem;
+        }
+    }
+}

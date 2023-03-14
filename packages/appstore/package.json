@@ -33,7 +33,6 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
-        "@deriv/ui": "^0.0.15",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^6.6.1",

@@ -4,6 +4,7 @@
     justify-content: center;
     padding: 2.4rem;
     width: 44rem;
+
     @include mobile {
         width: unset;
     }
@@ -11,6 +12,10 @@
     .dc-form-submit-button {
         align-self: center;
         padding: 1.6rem 0 0;
+        > button {
+            text-overflow: ellipsis;
+            white-space: pre-wrap;
+        }
 
         @include mobile {
             background: unset;

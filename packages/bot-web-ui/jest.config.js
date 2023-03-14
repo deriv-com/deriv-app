@@ -16,8 +16,8 @@ module.exports = {
     coveragePathIgnorePatterns: [
         '<rootDir>/.eslintrc.js',
         '<rootDir>/jest.config.js',
-        '<rootDir>/build',
         '<rootDir>/coverage/lcov-report',
         '<rootDir>/dist',
+        '<rootDir>/docs',
     ],
 };

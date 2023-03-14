@@ -1,0 +1,11 @@
+.daily-limit-modal {
+    &__loader {
+        .barspinner {
+            margin: 0.8rem auto -2.4rem;
+
+            @include mobile {
+                margin: 0 auto -2rem;
+            }
+        }
+    }
+}

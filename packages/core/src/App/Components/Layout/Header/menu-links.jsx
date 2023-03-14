@@ -6,6 +6,7 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount } from '@deriv/hooks';
 import './menu-links.scss';
+import { useHistory } from 'react-router';
 
 const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
     return (
@@ -39,6 +40,8 @@ const CashierTab = observer(() => {
     const { has_any_real_account, is_virtual } = client;
     const { toggleReadyToDepositModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
+
+    const history = useHistory();
 
     const toggle_modal_routes =
         window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;

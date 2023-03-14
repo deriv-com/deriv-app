@@ -16,7 +16,6 @@ export const buildCurrenciesList = payout_currencies => {
     };
 };
 
-// here is currency_list .reduce is not working
 export const getDefaultCurrency = (currencies_list, currency = '') => {
     const supported_currencies = Object.values(currencies_list).reduce((a, b) => [...a, ...b]);
     const default_currency = supported_currencies.find(c => c.value === currency)

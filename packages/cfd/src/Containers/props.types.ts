@@ -269,6 +269,7 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     is_pre_appstore_setting: boolean;
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
+    financial_restricted_countries: string[];
 };
 
 export type TCompareAccountContentProps = {
@@ -315,6 +316,7 @@ export type TDMT5CompareModalContentProps = {
     no_CR_account: boolean;
     is_eu_user: boolean;
     no_MF_account: boolean;
+    financial_restricted_countries: string[];
 };
 
 export type TCFDDbviOnboardingProps = {

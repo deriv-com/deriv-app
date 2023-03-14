@@ -35,6 +35,7 @@ const Row = ({
     is_pre_appstore_setting,
     content_flag,
     is_high_risk_for_mt5,
+    financial_restricted_countries,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
@@ -48,6 +49,12 @@ const Row = ({
     if (is_platform_row && !is_pre_appstore_setting) {
         return null;
     }
+
+    if (is_platform_row && is_pre_appstore_setting && financial_restricted_countries) {
+        //delete synthetic bvi from values for restricted countries like norway/japan
+        delete values.synthetic_bvi;
+    }
+
     if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR && is_high_risk_for_mt5) {
         // needed to adjust the design for high risk
         values.financial_svg = { text: 'MT5' };
@@ -59,9 +66,12 @@ const Row = ({
                 classNames(`cfd-accounts-compare-modal__table-row${pre_appstore_class}`, {
                     [`cfd-accounts-compare-modal__table-row--leverage${pre_appstore_class}`]: is_leverage_row,
                     [`cfd-accounts-compare-modal__row-with-columns-count-${available_accounts_count + 1}`]:
-                        available_accounts_count < 6,
-                    [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}`]: is_platform_row,
+                        available_accounts_count < 6 && !is_platform_row,
+                    [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}`]:
+                        is_platform_row && !financial_restricted_countries,
                     [`cfd-accounts-compare-modal__table-row--instruments${pre_appstore_class}`]: is_instruments_row,
+                    [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}--restricted`]:
+                        is_platform_row && financial_restricted_countries,
                 })
             }
         >
@@ -166,6 +176,7 @@ const DMT5CompareModalContent = ({
     no_CR_account,
     is_eu_user,
     no_MF_account,
+    financial_restricted_countries,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -444,7 +455,9 @@ const DMT5CompareModalContent = ({
                                 classname_for_demo_and_eu ??
                                 classNames(`cfd-accounts-compare-modal__table-header${pre_appstore_class}`, {
                                     [`cfd-accounts-compare-modal__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}${pre_appstore_class}`]:
-                                        available_accounts_count < 6,
+                                        available_accounts_count < 6 && !financial_restricted_countries,
+                                    [`cfd-accounts-compare-modal__table-header-for-synthetic-${synthetic_accounts_count}${pre_appstore_class}`]:
+                                        financial_restricted_countries,
                                 })
                             }
                         >
@@ -454,7 +467,7 @@ const DMT5CompareModalContent = ({
                                     {localize('Derived')}
                                 </Table.Head>
                             )}
-                            {financial_accounts_count > 0 && (
+                            {!financial_restricted_countries && financial_accounts_count > 0 && (
                                 <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
                                     {show_eu_related_content ? localize('CFDs') : localize('Financial')}
                                 </Table.Head>
@@ -479,6 +492,7 @@ const DMT5CompareModalContent = ({
                                     is_pre_appstore_setting={is_pre_appstore_setting}
                                     content_flag={content_flag}
                                     is_high_risk_for_mt5={is_high_risk_for_mt5}
+                                    financial_restricted_countries={financial_restricted_countries}
                                 />
                             ))}
                         </Table.Body>
@@ -562,4 +576,5 @@ export default connect(({ modules, client, common, ui, traders_hub }: RootStore)
     no_CR_account: traders_hub.no_CR_account,
     is_eu_user: traders_hub.is_eu_user,
     no_MF_account: traders_hub.no_MF_account,
+    financial_restricted_countries: traders_hub.financial_restricted_countries,
 }))(DMT5CompareModalContent);

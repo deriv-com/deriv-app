@@ -279,11 +279,6 @@ TradingHubHeader.propTypes = {
     toggleExitTradersHubModal: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    toggleReadyToDepositModal: PropTypes.func,
-    is_virtual: PropTypes.bool,
-    has_any_real_account: PropTypes.bool,
-    account_list: PropTypes.array,
-    switchAccount: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -307,9 +302,4 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     switchToCRAccount: traders_hub.switchToCRAccount,
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
-    has_any_real_account: client.has_any_real_account,
-    is_virtual: client.is_virtual,
-    account_list: client.account_list,
-    switchAccount: client.switchAccount,
 }))(withRouter(TradingHubHeader));

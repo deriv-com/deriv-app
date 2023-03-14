@@ -50,6 +50,8 @@ const DTraderHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     is_switching,
+    toggleReadyToDepositModal,
+    has_any_real_account,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -62,7 +64,14 @@ const DTraderHeader = ({
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
 
-    const onClickDeposit = () => history.push(routes.cashier_deposit);
+    const handleClickCashier = () => {
+        if (!has_any_real_account && is_virtual) {
+            toggleReadyToDepositModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -146,7 +155,7 @@ const DTraderHeader = ({
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
-                            onClickDeposit={onClickDeposit}
+                            onClickDeposit={handleClickCashier}
                             notifications_count={notifications_count}
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleNotifications={toggleNotifications}
@@ -198,8 +207,6 @@ DTraderHeader.propTypes = {
     is_switching: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
-    account_list: PropTypes.array,
-    switchAccount: PropTypes.func,
 };
 
 export default connect(({ client, common, ui, notifications }) => ({
@@ -237,6 +244,4 @@ export default connect(({ client, common, ui, notifications }) => ({
     is_switching: client.is_switching,
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     has_any_real_account: client.has_any_real_account,
-    account_list: client.account_list,
-    switchAccount: client.switchAccount,
 }))(withRouter(DTraderHeader));

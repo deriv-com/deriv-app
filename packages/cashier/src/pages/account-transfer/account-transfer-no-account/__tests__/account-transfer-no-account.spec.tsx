@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import AccountTransferNoAccount from '../account-transfer-no-account';
 import CashierProviders from '../../../../cashier-providers';
+import { routes } from '@deriv/shared';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore;
@@ -23,20 +24,20 @@ describe('<AccountTransferNoAccount />', () => {
         });
     };
 
-    it('should show "Please create another Deriv, Deriv MT5, or Deriv X account." message and "Create account" button', () => {
+    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
         renderAccountTransferNoAccount();
 
-        expect(screen.getByText('Please create another Deriv, Deriv MT5, or Deriv X account.')).toBeInTheDocument();
-        expect(screen.getByText('Create account')).toBeInTheDocument();
+        expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
+        expect(screen.getByText(`Back to trader's hub`)).toBeInTheDocument();
     });
 
-    it('should show "Please create another Deriv or Deriv MT5 account." message and "Create account" button', () => {
+    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button', () => {
         renderAccountTransferNoAccount();
 
-        expect(screen.getByText('Please create another Deriv or Deriv MT5 account.')).toBeInTheDocument();
-        expect(screen.getByText('Create account')).toBeInTheDocument();
+        expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
+        expect(screen.getByText(`Back to trader's hub`)).toBeInTheDocument();
     });
 
     it('should trigger onClick callback, when the "Create account" button was clicked', () => {
@@ -44,9 +45,9 @@ describe('<AccountTransferNoAccount />', () => {
 
         renderAccountTransferNoAccount();
 
-        const create_acc_btn = screen.getByText('Create account');
-        fireEvent.click(create_acc_btn);
+        const back_to_traders_hub_btn = screen.getByText(`Back to trader's hub`);
+        fireEvent.click(back_to_traders_hub_btn);
 
-        expect(mockRootStore.ui.toggleAccountsDialog).toHaveBeenCalledTimes(1);
+        expect(history.location.pathname).toBe(routes.traders_hub);
     });
 });

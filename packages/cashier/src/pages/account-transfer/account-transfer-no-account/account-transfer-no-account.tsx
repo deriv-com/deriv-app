@@ -12,9 +12,8 @@ type TAccountTransferNoAccount = {
 
 const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccountTransferNoAccount) => {
     const {
-        client: { is_dxtrade_allowed, is_pre_appstore },
-        ui: { toggleAccountsDialog },
-        traders_hub: { openModal, closeModal },
+        client: { is_dxtrade_allowed },
+        traders_hub: { closeModal },
     } = useStore();
 
     const history = useHistory();

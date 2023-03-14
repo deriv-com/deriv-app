@@ -98,7 +98,8 @@ const ContractReplay = ({
     };
 
     const unsupportedContractOnClose = () => {
-        window.open(urlFor('user/statementws', { legacy: true }), '_blank');
+        const statementws_url = urlFor('user/statementws', { legacy: true });
+        window.open(statementws_url, '_blank');
     };
 
     return (

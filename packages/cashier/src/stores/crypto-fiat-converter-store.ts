@@ -60,7 +60,7 @@ export default class CryptoFiatConverterStore {
             exchange_rates: 1,
             base_currency: from_currency,
         });
-        return to_currency ? exchange_rates.rates[to_currency] : '';
+        return to_currency ? exchange_rates?.rates?.[to_currency] : '';
     }
 
     validateFromAmount() {

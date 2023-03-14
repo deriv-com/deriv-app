@@ -1,22 +1,50 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Icon, Counter } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
+import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
-import { useHistory } from 'react-router';
+import { localize } from '@deriv/translations';
+import { useP2PNotificationCount } from '@deriv/hooks';
+import './menu-links.scss';
 
-const MenuItems = ({ item, hide_menu_item, toggleReadyToDepositModal, has_any_real_account, is_virtual }) => {
-    const history = useHistory();
+const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
+    return (
+        <BinaryLink
+            id={id}
+            key={icon}
+            to={link_to}
+            className='header__menu-link'
+            active_class='header__menu-link--active'
+            onClick={handleClickCashier}
+        >
+            <Text size='m' line_height='xs' title={text} className='header__menu-link-text'>
+                {icon}
+                {text}
+            </Text>
+        </BinaryLink>
+    );
+};
 
-    const { id, link_to, href, text, image, logo, icon } = item;
+const ReportTab = () => (
+    <MenuItems
+        id={'dt_reports_tab'}
+        icon={<Icon icon='IcReports' className='header__icon' />}
+        text={localize('Reports')}
+        link_to={routes.reports}
+    />
+);
 
-    const cashier_item = link_to === routes.cashier;
+const CashierTab = observer(() => {
+    const { client, ui } = useStore();
+    const { has_any_real_account, is_virtual } = client;
+    const { toggleReadyToDepositModal } = ui;
+    const p2p_notification_count = useP2PNotificationCount();
 
     const toggle_modal_routes =
         window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
 
     const toggleModal = () => {
-        if (cashier_item && toggle_modal_routes && !has_any_real_account) {
+        if (toggle_modal_routes && !has_any_real_account) {
             toggleReadyToDepositModal();
         }
     };
@@ -29,82 +57,40 @@ const MenuItems = ({ item, hide_menu_item, toggleReadyToDepositModal, has_any_re
         }
     };
 
-    const cashier_redirect = cashier_item && toggle_modal_routes && !has_any_real_account && is_virtual;
+    const cashier_redirect = toggle_modal_routes && !has_any_real_account && is_virtual;
 
-    return hide_menu_item ? null : (
-        <BinaryLink
-            id={id}
-            key={icon}
-            to={!cashier_redirect ? link_to : null}
-            href={!cashier_redirect ? href : null}
-            className='header__menu-link'
-            active_class='header__menu-link--active'
-            onClick={handleClickCashier}
-        >
-            <Text size='m' line_height='xs' title={text()} className='header__menu-link-text'>
-                {icon}
-                {text()}
-                {logo}
-            </Text>
-            <span className='header__menu-link-text'>
-                {image}
-                {logo}
-            </span>
-        </BinaryLink>
+    return (
+        <MenuItems
+            id={'dt_cashier_tab'}
+            icon={
+                <>
+                    <Icon icon='IcCashier' className='header__icon' />
+                    {p2p_notification_count > 0 && (
+                        <Counter className='cashier__counter' count={p2p_notification_count} />
+                    )}
+                </>
+            }
+            text={localize('Cashier')}
+            link_to={!cashier_redirect ? routes.cashier : null}
+            handleClickCashier={handleClickCashier}
+        />
     );
-};
+});
 
-const MenuLinks = ({
-    is_logged_in,
-    is_mobile,
-    items,
-    is_pre_appstore,
-    toggleReadyToDepositModal,
-    has_any_real_account,
-    is_virtual,
-}) => (
-    <React.Fragment>
-        {!!items.length && (
-            <div className='header__menu-links'>
-                {items.map(item => {
-                    const cashier_item = item?.link_to?.toLowerCase() === '/cashier';
-                    const reports_item = item?.link_to?.toLowerCase() === '/reports';
+const MenuLinks = observer(() => {
+    const { client, ui } = useStore();
+    const { is_logged_in } = client;
+    const { is_mobile } = ui;
+    const is_traders_hub = window.location.pathname === routes.traders_hub;
 
-                    return (
-                        is_logged_in && (
-                            <MenuItems
-                                key={`${item.icon}${item.id}`}
-                                item={item}
-                                hide_menu_item={is_pre_appstore && (reports_item || (cashier_item && is_mobile))}
-                                toggleReadyToDepositModal={toggleReadyToDepositModal}
-                                has_any_real_account={has_any_real_account}
-                                is_virtual={is_virtual}
-                            />
-                        )
-                    );
-                })}
-            </div>
-        )}
-    </React.Fragment>
-);
+    if (!is_logged_in) return <></>;
 
-MenuLinks.propTypes = {
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            icon: PropTypes.shape({
-                className: PropTypes.string,
-            }),
-            is_logged_in: PropTypes.bool,
-            link_to: PropTypes.string,
-            text: PropTypes.func,
-        })
-    ),
-    is_mobile: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
-    toggleReadyToDepositModal: PropTypes.func,
-    has_any_real_account: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-};
+    return (
+        <div className='header__menu-links'>
+            {!is_traders_hub && <ReportTab />}
+            {!is_mobile && <CashierTab />}
+        </div>
+    );
+});
 
 export { MenuLinks };

@@ -17,6 +17,8 @@ const CryptoDeposit = observer(() => {
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
 
+    const crumbs = [localize('Cashier'), localize('Deposit cryptocurrencies')];
+
     React.useEffect(() => {
         recentTransactionOnMount();
     }, [recentTransactionOnMount]);
@@ -108,6 +110,15 @@ const CryptoDeposit = observer(() => {
         setOptionListValue(event.target.value);
     };
 
+    const onBreadcrumbHandler = (item: string) => {
+        switch (item) {
+            case localize('Cashier'):
+                setIsDeposit(false);
+                break;
+            default:
+        }
+    };
+
     if (is_deposit_address_loading) {
         return <Loading is_fullscreen />;
     }
@@ -126,17 +137,6 @@ const CryptoDeposit = observer(() => {
             <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
         );
     }
-
-    const onBreadcrumbHandler = (item: string) => {
-        switch (item) {
-            case localize('Cashier'):
-                setIsDeposit(false);
-                break;
-            default:
-        }
-    };
-
-    const crumbs = [localize('Cashier'), localize('Deposit cryptocurrencies')];
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>

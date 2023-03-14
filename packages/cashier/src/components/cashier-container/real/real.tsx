@@ -25,7 +25,7 @@ const Real = ({
     onMountDeposit,
     setIsDeposit,
 }: TRealProps) => {
-    const should_show_arrow_back = !is_eu && is_deposit && Boolean(iframe_height);
+    const should_show_breadcrumbs = !is_eu && is_deposit && Boolean(iframe_height);
     const should_show_loader = is_loading || !iframe_height;
     const crumbs = [localize('Cashier'), localize('Deposit via bank wire, credit card and e-wallet')];
 
@@ -48,12 +48,11 @@ const Real = ({
     return (
         <div className='cashier__wrapper real'>
             {should_show_loader && <Loading className='real__loader' />}
-            {should_show_arrow_back && (
+            {should_show_breadcrumbs && (
                 <div className='real__header'>
                     <Breadcrumb items={crumbs} handleOnClick={onBreadcrumbHandler} />
                 </div>
             )}
-            {is_loading && <Loading is_fullscreen />}
             {iframe_url && (
                 <iframe
                     className='cashier__content'

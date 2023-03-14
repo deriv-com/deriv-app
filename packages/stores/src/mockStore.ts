@@ -239,8 +239,13 @@ const mock = (): TRootStore => {
         },
         traders_hub: {
             closeModal: jest.fn(),
-            openModal: jest.fn(),
+            combined_cfd_mt5_accounts: [],
             content_flag: '',
+            openModal: jest.fn(),
+            selected_account: {
+                login: '',
+                account_id: '',
+            },
         },
         menu: {
             attach: jest.fn(),

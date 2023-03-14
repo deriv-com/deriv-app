@@ -6,11 +6,7 @@ import { useStore, observer } from '@deriv/stores';
 import './account-transfer-no-account.scss';
 import { useHistory } from 'react-router-dom';
 
-type TAccountTransferNoAccount = {
-    openAccountSwitcherModal?: () => void;
-};
-
-const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccountTransferNoAccount) => {
+const AccountTransferNoAccount = observer(() => {
     const {
         client: { is_dxtrade_allowed },
         traders_hub: { closeModal },

@@ -23,6 +23,7 @@ type TLocalComponent = {
     loadFileFromRecent: () => void;
     onConfirmSave: () => void;
     onDrop: () => void;
+    handleTabChange: (param: number) => void;
     previewRecentStrategy: () => void;
     setActiveTab: (param: number) => void;
     dashboard_strategies: Array<TWorkspace>;
@@ -41,6 +42,7 @@ const LocalComponent = ({
     dashboard_strategies,
     setPreviewOnDialog,
     has_mobile_preview_loaded,
+    handleTabChange,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     // eslint-disable-next-line no-unused-expressions
@@ -85,7 +87,8 @@ const LocalComponent = ({
                         <div className='tab__dashboard__preview__retrigger'>
                             <button
                                 onClick={() => {
-                                    setActiveTab(4);
+                                    setActiveTab(3);
+                                    handleTabChange(3);
                                 }}
                             >
                                 <Icon

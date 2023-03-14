@@ -14,6 +14,7 @@ type TDashboard = {
     dashboard_strategies: [];
     has_started_onboarding_tour: boolean;
     setActiveTab: (param: number) => void;
+    handleTabChange: (active_number: number) => void;
 };
 
 type TDashboardMobileCommonProps = {
@@ -33,10 +34,16 @@ const DashboardTitle = ({ is_mobile, has_dashboard_strategies }: TDashboardMobil
     </div>
 );
 
-const MobileIconGuide = ({ has_dashboard_strategies }: { has_dashboard_strategies: boolean }) => (
+const MobileIconGuide = ({
+    has_dashboard_strategies,
+    handleTabChange,
+}: {
+    has_dashboard_strategies: boolean;
+    handleTabChange: (active_number: number) => void;
+}) => (
     <MobileWrapper>
         <div>
-            <Local />
+            <Local handleTabChange={handleTabChange} />
         </div>
     </MobileWrapper>
 );
@@ -57,7 +64,12 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
     </div>
 );
 
-const DashboardComponent = ({ dashboard_strategies, has_started_onboarding_tour, setActiveTab }: TDashboard) => {
+const DashboardComponent = ({
+    dashboard_strategies,
+    has_started_onboarding_tour,
+    setActiveTab,
+    handleTabChange,
+}: TDashboard) => {
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
     return (
@@ -100,7 +112,10 @@ const DashboardComponent = ({ dashboard_strategies, has_started_onboarding_tour,
                                         has_dashboard_strategies={has_dashboard_strategies}
                                     />
                                 )}
-                                <MobileIconGuide has_dashboard_strategies={has_dashboard_strategies} />
+                                <MobileIconGuide
+                                    handleTabChange={handleTabChange}
+                                    has_dashboard_strategies={has_dashboard_strategies}
+                                />
                             </div>
                             {is_mobile && !has_dashboard_strategies && (
                                 <DashboardDescription

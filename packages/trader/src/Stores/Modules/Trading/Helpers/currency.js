@@ -5,7 +5,7 @@ export const buildCurrenciesList = payout_currencies => {
     const fiat = [];
     const crypto = [];
 
-    payout_currencies?.forEach(cur => {
+    payout_currencies.forEach(cur => {
         const isCrypto = isCryptocurrency(cur);
         (isCrypto ? crypto : fiat).push({ text: cur, value: cur, has_tooltip: isCrypto });
     });
@@ -16,6 +16,7 @@ export const buildCurrenciesList = payout_currencies => {
     };
 };
 
+// here is currency_list .reduce is not working
 export const getDefaultCurrency = (currencies_list, currency = '') => {
     const supported_currencies = Object.values(currencies_list).reduce((a, b) => [...a, ...b]);
     const default_currency = supported_currencies.find(c => c.value === currency)

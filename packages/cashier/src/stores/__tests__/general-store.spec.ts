@@ -383,6 +383,7 @@ describe('GeneralStore', () => {
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_p2p,
+                hostname: 'localhost.binary.sx',
             },
         }));
         general_store.setIsP2pVisible(false);

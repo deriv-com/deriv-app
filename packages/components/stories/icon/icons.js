@@ -97,7 +97,6 @@ export const icons =
         'IcCashierBchLight',
         'IcCashierBitcoinDark',
         'IcCashierBitcoinLight',
-        'IcCashierBlockAd',
         'IcCashierBlueshyftDark',
         'IcCashierBlueshyftLight',
         'IcCashierBniDark',

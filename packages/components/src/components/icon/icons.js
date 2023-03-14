@@ -90,7 +90,6 @@ import './cashier/ic-cashier-bch-dark.svg';
 import './cashier/ic-cashier-bch-light.svg';
 import './cashier/ic-cashier-bitcoin-dark.svg';
 import './cashier/ic-cashier-bitcoin-light.svg';
-import './cashier/ic-cashier-block-ad.svg';
 import './cashier/ic-cashier-blueshyft-dark.svg';
 import './cashier/ic-cashier-blueshyft-light.svg';
 import './cashier/ic-cashier-bni-dark.svg';

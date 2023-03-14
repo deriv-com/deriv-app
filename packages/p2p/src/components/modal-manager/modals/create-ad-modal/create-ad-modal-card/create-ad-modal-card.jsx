@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Text, Icon } from '@deriv/components';
-import { localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import BlockTradeAd from 'Assets/svgComponents/block-trade-ad.svg';
 import './create-ad-modal-card.scss';
 
 const CreateAdModalCard = ({ title, text, type }) => {
@@ -18,7 +19,7 @@ const CreateAdModalCard = ({ title, text, type }) => {
 
     return (
         <div className='ad-component'>
-            <Icon icon={type === 'normal' ? 'IcCashierNormalAd' : 'IcCashierBlockAd'} width={48} height={48} />
+            {type === 'normal' ? <Icon icon='IcCashierNormalAd' width={48} height={48} /> : <BlockTradeAd />}
             <div className='ad-component__title'>
                 <Text as='p' line_height='xxl' color='prominent' weight='bold'>
                     {title}
@@ -29,7 +30,7 @@ const CreateAdModalCard = ({ title, text, type }) => {
             </div>
             <div>
                 <Button large primary onClick={onClickChoose}>
-                    {localize('Choose')}
+                    <Localize i18n_default_text='Choose' />
                 </Button>
             </div>
         </div>

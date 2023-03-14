@@ -40,6 +40,7 @@ export default class NotificationStore extends BaseStore {
     client_notifications = {};
     should_show_popups = true;
     p2p_order_props = {};
+    p2p_redirect_to = {};
     p2p_completed_orders = null;
 
     constructor(root_store) {
@@ -54,6 +55,7 @@ export default class NotificationStore extends BaseStore {
             client_notifications: observable,
             should_show_popups: observable,
             p2p_order_props: observable,
+            p2p_redirect_to: observable,
             custom_notifications: computed,
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
@@ -72,6 +74,7 @@ export default class NotificationStore extends BaseStore {
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
             setP2POrderProps: action.bound,
+            setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
             toggleNotificationsModal: action.bound,
             unmarkNotificationMessage: action.bound,
@@ -877,7 +880,7 @@ export default class NotificationStore extends BaseStore {
                         routes.cashier_p2p === window.location.pathname
                             ? {
                                   onClick: () => {
-                                      this.p2p_order_props.redirectTo('my_profile');
+                                      this.p2p_redirect_to.redirectTo('my_profile');
                                       if (this.is_notifications_visible) this.toggleNotificationsModal();
 
                                       this.removeNotificationMessage({
@@ -1475,6 +1478,10 @@ export default class NotificationStore extends BaseStore {
 
     setP2POrderProps(p2p_order_props) {
         this.p2p_order_props = p2p_order_props;
+    }
+
+    setP2PRedirectTo(p2p_redirect_to) {
+        this.p2p_redirect_to = p2p_redirect_to;
     }
 
     //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation

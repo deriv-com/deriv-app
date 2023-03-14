@@ -135,14 +135,12 @@ export default class GeneralStore extends BaseStore {
     async showP2pInCashierOnboarding(): Promise<void> {
         const { account_list, is_virtual } = this.root_store.client;
 
-        const get_account_status: Promise<AccountStatusResponse> = this.WS.wait(
-            'get_account_status'
-        ) as unknown as Promise<AccountStatusResponse>;
+        const get_account_status = this.WS.wait('get_account_status');
 
         const is_p2p_disabled = (await get_account_status)?.get_account_status?.p2p_status === 'none';
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
-            account => !isCryptocurrency(account?.title as string) && account.title !== 'Real'
+            account => account?.title && account.title !== 'Real' && !isCryptocurrency(account?.title)
         );
 
         if (is_p2p_disabled || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
@@ -259,9 +257,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     async checkP2pStatus(): Promise<void> {
-        const get_account_status: Promise<AccountStatusResponse> = this.WS.wait(
-            'get_account_status'
-        ) as unknown as Promise<AccountStatusResponse>;
+        const get_account_status = this.WS.wait('get_account_status');
 
         const is_p2p_disabled = (await get_account_status)?.get_account_status?.p2p_status === 'none';
         this.setIsP2pVisible(!(is_p2p_disabled || this.root_store.client.is_virtual));
@@ -337,8 +333,7 @@ export default class GeneralStore extends BaseStore {
         }
 
         const p2p_cookie = new (CookieStorage as any)('is_p2p_disabled');
-        if (is_p2p_visible) p2p_cookie.set('is_p2p_disabled', false);
-        else p2p_cookie.set('is_p2p_disabled', true);
+        p2p_cookie.set('is_p2p_disabled', !is_p2p_visible);
     }
 
     get is_cashier_locked(): boolean {

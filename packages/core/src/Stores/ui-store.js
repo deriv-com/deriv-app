@@ -133,6 +133,9 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
+    //warn user if they want to close create real account modal
+    is_closing_create_real_account_modal = false;
+
     // MT5 account needed modal
     is_account_needed_modal_on = false;
     account_needed_modal_props = {
@@ -167,6 +170,7 @@ export default class UIStore extends BaseStore {
     is_exit_traders_hub_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
+    sub_section_index = 0;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -229,6 +233,7 @@ export default class UIStore extends BaseStore {
             is_chart_layout_default: observable,
             is_close_mx_mlt_account_modal_visible: observable,
             is_close_uk_account_modal_visible: observable,
+            is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_exit_traders_hub_modal_visible: observable,
@@ -284,6 +289,7 @@ export default class UIStore extends BaseStore {
             should_show_trading_assessment_modal: observable,
             show_positions_toggle: observable,
             simple_duration_unit: observable,
+            sub_section_index: observable,
             toasts: observable.shallow,
             vanilla_trade_type: observable,
             addToast: action.bound,
@@ -327,6 +333,7 @@ export default class UIStore extends BaseStore {
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setIsAcuityModalOpen: action.bound,
+            setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
             setIsNewAccount: action.bound,
             setIsRealTabEnabled: action.bound,
@@ -351,6 +358,7 @@ export default class UIStore extends BaseStore {
             setShouldShowTradeAssessmentForm: action.bound,
             setShouldShowTradingAssessmentModal: action.bound,
             setShouldShowWarningModal: action.bound,
+            setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             showCloseMxMltAccountPopup: action.bound,
@@ -400,6 +408,10 @@ export default class UIStore extends BaseStore {
             !this.has_read_scam_message &&
             !this.is_new_account
         );
+    }
+
+    setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
+        this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;
     }
 
     setIsRealTabEnabled(is_real_tab_enabled) {
@@ -878,5 +890,9 @@ export default class UIStore extends BaseStore {
 
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
+    }
+
+    setSubSectionIndex(index) {
+        this.sub_section_index = index;
     }
 }

@@ -34,10 +34,6 @@
 
     &:hover {
         background-color: var(--state-hover);
-
-        .contract-type-item__icon {
-            display: block;
-        }
     }
 
     &__new {
@@ -57,7 +53,6 @@
     }
 
     &__icon {
-        display: none;
         margin-left: auto;
 
         /* postcss-bem-linter: ignore */

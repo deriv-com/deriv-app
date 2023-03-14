@@ -220,6 +220,8 @@ export const OpenPositionsTable = ({
     </React.Fragment>
 );
 
+const portfoliows_href = urlFor('user/portfoliows', { legacy: true });
+
 const getRowAction = row_obj =>
     row_obj.is_unsupported
         ? {
@@ -235,7 +237,7 @@ const getRowAction = row_obj =>
                               className='link link--orange'
                               rel='noopener noreferrer'
                               target='_blank'
-                              href={urlFor('user/portfoliows', { legacy: true })}
+                              href={portfoliows_href}
                           />,
                       ]}
                   />

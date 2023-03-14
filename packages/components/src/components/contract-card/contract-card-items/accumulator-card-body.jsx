@@ -62,7 +62,7 @@ const AccumulatorCardBody = ({
                     is_loss={+profit < 0}
                     is_won={+profit > 0}
                 >
-                    {typeof profit === 'number' ? <Money amount={profit} currency={currency} /> : <strong>-</strong>}
+                    <Money amount={profit} currency={currency} />
                     <div
                         className={classNames('dc-contract-card__indicative--movement', {
                             'dc-contract-card__indicative--movement-complete': is_sold,
@@ -117,6 +117,7 @@ AccumulatorCardBody.propTypes = {
     error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
+    indicative: PropTypes.number,
     is_positions: PropTypes.bool,
     is_sold: PropTypes.bool,
     onMouseLeave: PropTypes.func,

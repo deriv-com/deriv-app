@@ -84,6 +84,7 @@ export default class PortfolioStore extends BaseStore {
             updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
+            is_accumulator: computed,
             is_multiplier: computed,
         });
 

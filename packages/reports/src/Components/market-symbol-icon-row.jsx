@@ -94,7 +94,6 @@ const MarketSymbolIconRow = ({
 };
 
 MarketSymbolIconRow.propTypes = {
-    action: PropTypes.string,
     icon: PropTypes.node,
     payload: PropTypes.object,
     show_description: PropTypes.bool,

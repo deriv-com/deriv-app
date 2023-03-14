@@ -17,6 +17,8 @@ import {
     isMobile,
     isMultiplierContract,
     isEmptyObject,
+    getDurationPeriod,
+    getDurationUnitText,
     getPlatformRedirect,
     urlFor,
 } from '@deriv/shared';
@@ -284,7 +286,10 @@ const Chart = props => {
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
-            shouldFetchTickHistory
+            shouldFetchTickHistory={
+                getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds' ||
+                props.contract_info.status === 'open'
+            }
             contractInfo={passthrough_contract_info}
         >
             {props.markers_array.map(marker => (

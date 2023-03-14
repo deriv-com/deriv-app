@@ -44,11 +44,9 @@ export const getStatementTableColumnsTemplate = currency => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'icon',
-        renderCellContent: ({ cell_value, passthrough, row_obj }) => {
+        renderCellContent: ({ passthrough, row_obj }) => {
             const icon = passthrough.isTopUp(row_obj) ? 'icCashierTopUp' : null;
-            return (
-                <MarketSymbolIconRow action={cell_value} icon={icon} key={row_obj.transaction_id} payload={row_obj} />
-            );
+            return <MarketSymbolIconRow icon={icon} key={row_obj.transaction_id} payload={row_obj} />;
         },
     },
     {
@@ -107,11 +105,11 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'action_type',
-        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+        renderCellContent: ({ row_obj, is_footer }) => {
             if (is_footer) {
                 return localize('Profit/loss on the last {{item_count}} contracts', { item_count: items_count });
             }
-            return <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />;
+            return <MarketSymbolIconRow key={row_obj.transaction_id} payload={row_obj} />;
         },
     },
     {
@@ -174,10 +172,10 @@ export const getOpenPositionsColumnsTemplate = currency => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
-        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+        renderCellContent: ({ row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
 
-            return <MarketSymbolIconRow action={cell_value} key={row_obj.id} payload={row_obj.contract_info} />;
+            return <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} />;
         },
     },
     {
@@ -254,16 +252,11 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
-        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+        renderCellContent: ({ row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
 
             return (
-                <MarketSymbolIconRow
-                    action={cell_value}
-                    key={row_obj.id}
-                    payload={row_obj.contract_info}
-                    should_show_multiplier={false}
-                />
+                <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} should_show_multiplier={false} />
             );
         },
     },
@@ -424,12 +417,11 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
-        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+        renderCellContent: ({ row_obj, is_footer }) => {
             if (is_footer) return localize('Total');
 
             return (
                 <MarketSymbolIconRow
-                    action={cell_value}
                     key={row_obj.id}
                     payload={row_obj.contract_info}
                     should_show_multiplier={false}
@@ -469,15 +461,13 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({ currency, onClickSe
         renderCellContent: ({ row_obj }) => {
             const { take_profit } = row_obj.contract_info?.limit_order || {};
             return (
-                <React.Fragment>
-                    <div>
-                        {take_profit?.order_amount ? (
-                            <Money has_sign amount={take_profit.order_amount} currency={currency} />
-                        ) : (
-                            '-'
-                        )}
-                    </div>
-                </React.Fragment>
+                <div>
+                    {take_profit?.order_amount ? (
+                        <Money has_sign amount={take_profit.order_amount} currency={currency} />
+                    ) : (
+                        '-'
+                    )}
+                </div>
             );
         },
     },

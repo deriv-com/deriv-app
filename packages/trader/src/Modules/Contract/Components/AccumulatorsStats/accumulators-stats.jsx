@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Icon, MobileDialog, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileDialog, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import ExpandedTicksHistory from './expanded-ticks-history';
 import TicksHistoryCounter from './ticks-history-counter';
 import { AccumulatorsStatsManualModal } from './accumulators-stats-manual-modal';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
@@ -33,19 +34,6 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
         return acc;
     }, []);
 
-    const DynamicWrapper = {
-        Component: isMobile() ? MobileDialog : React.Fragment,
-        props: isMobile()
-            ? {
-                  onClose: () => setIsCollapsed(!is_collapsed),
-                  portal_element_id: 'modal_root',
-                  title: widget_title,
-                  visible: !is_collapsed,
-                  wrapper_classname: 'accumulators-stats',
-              }
-            : null,
-    };
-
     if (!ticks_history.length) return null;
 
     return (
@@ -72,21 +60,22 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
                 </Text>
             </div>
             {is_expandable && !is_collapsed && (
-                <DynamicWrapper.Component {...DynamicWrapper.props}>
-                    <Text size={history_text_size} className='accumulators-stats__history--expanded'>
-                        {rows.map((row, i) => (
-                            <div key={i} data-testid='dt_accu_stats_history_row' className='accumulators-stats__row'>
-                                {row.map((counter, idx) => (
-                                    <TicksHistoryCounter
-                                        key={idx}
-                                        value={counter}
-                                        has_progress_dots={i === 0 && idx === 0}
-                                    />
-                                ))}
-                            </div>
-                        ))}
-                    </Text>
-                </DynamicWrapper.Component>
+                <React.Fragment>
+                    <DesktopWrapper>
+                        <ExpandedTicksHistory history_text_size={history_text_size} rows={rows} />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <MobileDialog
+                            onClose={() => setIsCollapsed(!is_collapsed)}
+                            portal_element_id='modal_root'
+                            title={widget_title}
+                            visible={!is_collapsed}
+                            wrapper_classname='accumulators-stats'
+                        >
+                            <ExpandedTicksHistory history_text_size={history_text_size} rows={rows} />
+                        </MobileDialog>
+                    </MobileWrapper>
+                </React.Fragment>
             )}
             {is_expandable && (
                 <Icon

@@ -385,7 +385,7 @@ export default class TradeStore extends BaseStore {
 
     setDefaultGrowthRate() {
         if (
-            this.contract_type === 'accumulator' &&
+            this.is_accumulator &&
             !this.accumulator_range_list.includes(this.growth_rate) &&
             this.accumulator_range_list.length
         ) {

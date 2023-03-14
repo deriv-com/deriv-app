@@ -85,14 +85,23 @@ const OrderDetails = observer(() => {
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
 
-        // TODO: remove condition check and settimeout once access chat_channel_url from p2p_order_create is activated in BO, since chat channel url response is always delayed
-        setTimeout(() => {
+        const handleChatChannelCreation = () => {
             if (order_channel_url) {
                 sendbird_store.setChatChannelUrl(order_channel_url);
             } else {
                 sendbird_store.createChatForNewOrder(order_store.order_id);
             }
-        }, 1250);
+        };
+
+        // TODO: remove condition check and settimeout once access chat_channel_url from p2p_order_create is activated in BO, since chat channel url response is always delayed
+        // Added delay only for first time order creation, since response is delayed. To be removed after feature release.
+        if (buy_sell_store.is_create_order_subscribed) {
+            setTimeout(() => {
+                handleChatChannelCreation();
+            }, 1250);
+        } else {
+            handleChatChannelCreation();
+        }
 
         return () => {
             disposeListeners();

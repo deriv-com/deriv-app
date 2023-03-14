@@ -28,6 +28,7 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
         removeNotificationByKey,
         removeNotificationMessage,
         setP2POrderProps,
+        setP2PRedirectTo,
     } = notifications;
     const {
         balance,
@@ -154,6 +155,7 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
             setOrderId={setQueryOrder}
             setOnRemount={setOnRemount}
             setP2POrderProps={setP2POrderProps}
+            setP2PRedirectTo={setP2PRedirectTo}
             should_show_verification={/verification/.test(location.hash)}
             verification_action={action_param}
             verification_code={code_param}

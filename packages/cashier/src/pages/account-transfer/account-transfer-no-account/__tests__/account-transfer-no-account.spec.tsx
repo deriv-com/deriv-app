@@ -4,6 +4,7 @@ import AccountTransferNoAccount from '../account-transfer-no-account';
 import CashierProviders from '../../../../cashier-providers';
 import { routes } from '@deriv/shared';
 import { createBrowserHistory } from 'history';
+import { Router } from 'react-router';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore;
@@ -20,32 +21,30 @@ describe('<AccountTransferNoAccount />', () => {
         };
     });
 
-    const renderAccountTransferNoAccount = () => {
-        render(<AccountTransferNoAccount />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
-        });
+    const renderAccountTransferNoAccountWithRouter = () => {
+        render(
+            <Router history={history}>
+                <AccountTransferNoAccount />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            }
+        );
     };
 
-    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button', () => {
+    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button when is_dxtrade_allowed=true', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
-        renderAccountTransferNoAccount();
+        renderAccountTransferNoAccountWithRouter();
 
         expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
         expect(screen.getByText(`Back to trader's hub`)).toBeInTheDocument();
     });
 
-    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button', () => {
-        renderAccountTransferNoAccount();
-
-        expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
-        expect(screen.getByText(`Back to trader's hub`)).toBeInTheDocument();
-    });
-
-    it('should trigger onClick callback, when the "Create account" button was clicked', () => {
+    it('should navigate to traders hub, when the "CBack to traders hub" button was clicked', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
-        renderAccountTransferNoAccount();
+        renderAccountTransferNoAccountWithRouter();
 
         const back_to_traders_hub_btn = screen.getByText(`Back to trader's hub`);
         fireEvent.click(back_to_traders_hub_btn);

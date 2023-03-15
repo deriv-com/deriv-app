@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
-import { useAllPaymentAgentList } from '@deriv/hooks';
+import { usePaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -29,8 +29,18 @@ const AddCurrency = ({
 }) => {
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
+    const [all_payment_agent_list, setAllPaymentAgentList] = React.useState();
 
-    const { data: all_payment_agent_list, is_loading } = useAllPaymentAgentList();
+    const { data, is_loading, send } = usePaymentAgentList();
+
+    React.useEffect(() => {
+        //TODO: check AddCurrency component regarding 2 times rerendering, that causes api call 2 times accordingly
+        send();
+    }, [send]);
+
+    React.useEffect(() => {
+        setAllPaymentAgentList(data);
+    }, [data]);
 
     const getReorderedCurrencies = React.useMemo(() => {
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(

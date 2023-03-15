@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv/components';
-import { useAllPaymentAgentList } from '@deriv/hooks';
+import { usePaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { reorderCurrencies, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -30,7 +30,17 @@ const ChooseCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
 
-    const { data: all_payment_agent_list, is_loading } = useAllPaymentAgentList();
+    const [all_payment_agent_list, setAllPaymentAgentList] = React.useState();
+
+    const { data, is_loading, send } = usePaymentAgentList();
+
+    React.useEffect(() => {
+        send();
+    }, [send]);
+
+    React.useEffect(() => {
+        setAllPaymentAgentList(data);
+    }, [data]);
 
     React.useEffect(() => {
         return () => setShouldShowAllAvailableCurrencies(false);

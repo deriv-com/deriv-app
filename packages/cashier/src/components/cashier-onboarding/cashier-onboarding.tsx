@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
-import { useIsPaymentAgentVisibleInOnboarding } from '@deriv/hooks';
+import { usePaymentAgentList } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import Providers from './cashier-onboarding-providers';
 import CashierOnboardingDetails from './cashier-onboarding-details';
@@ -65,7 +65,22 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
     const is_currency_banner_visible =
         (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
 
-    const is_payment_agent_visible_in_onboarding = useIsPaymentAgentVisibleInOnboarding();
+    const { data, send } = usePaymentAgentList();
+
+    const [all_payment_agent_list, setAllPaymentAgentList] = React.useState<typeof data>();
+
+    const is_payment_agent_visible_in_onboarding = React.useMemo(
+        () => !!all_payment_agent_list?.list?.length,
+        [all_payment_agent_list]
+    );
+
+    React.useEffect(() => {
+        send();
+    }, [send]);
+
+    React.useEffect(() => {
+        setAllPaymentAgentList(data);
+    }, [data]);
 
     React.useEffect(() => {
         onMountCashierOnboarding();

@@ -4,13 +4,11 @@ import ButtonLoading from './button_loading';
 import Icon from '../icon';
 import Text from '../text';
 
-export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> & {
+export type TButtonCommonProps = {
     alternate: boolean;
     blue: boolean;
-    classNameSpan: string;
     green: boolean;
     has_effect: boolean;
-    icon: React.ReactNode;
     is_button_toggle: boolean;
     is_circular: boolean;
     is_circle: boolean;
@@ -22,16 +20,21 @@ export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HT
     medium: boolean;
     primary: boolean;
     primary_light: boolean;
-    renderText: (param: React.ReactNode) => React.ReactNode;
     rounded: boolean;
     secondary: boolean;
     small: boolean;
     tertiary: boolean;
     text: string;
     transparent: boolean;
-    type: 'button' | 'submit' | 'reset';
-    wrapperClassName: string;
 };
+export type TButtonProps = React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>> &
+    TButtonCommonProps & {
+        classNameSpan: string;
+        icon: React.ReactNode;
+        renderText: (param: React.ReactNode) => React.ReactNode;
+        type: 'button' | 'submit' | 'reset';
+        wrapperClassName: string;
+    };
 
 const ButtonGroup = ({ children, className }: React.PropsWithChildren<HTMLDivElement>) => (
     <div className={classNames('dc-btn__group', className)}>{children}</div>

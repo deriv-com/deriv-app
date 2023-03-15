@@ -239,13 +239,13 @@ export default class TicksService {
     }
     requestStream(options) {
         const { style } = options;
-        const stringifiedOptions = JSON.stringify(options);
+        const stringified_options = JSON.stringify(options);
 
         if (style === 'ticks') {
-            if (!this.ticks_history_promise || this.ticks_history_promise.stringifiedOptions !== stringifiedOptions) {
+            if (!this.ticks_history_promise || this.ticks_history_promise.stringified_options !== stringified_options) {
                 this.ticks_history_promise = {
                     promise: this.requestPipSizes().then(() => this.requestTicks(options)),
-                    stringifiedOptions,
+                    stringified_options,
                 };
             }
 
@@ -253,10 +253,10 @@ export default class TicksService {
         }
 
         if (style === 'candles') {
-            if (!this.candles_promise || this.candles_promise.stringifiedOptions !== stringifiedOptions) {
+            if (!this.candles_promise || this.candles_promise.stringified_options !== stringified_options) {
                 this.candles_promise = {
                     promise: this.requestPipSizes().then(() => this.requestTicks(options)),
-                    stringifiedOptions,
+                    stringified_options,
                 };
             }
 
@@ -296,5 +296,28 @@ export default class TicksService {
                     globalObserver.emit('Error', e);
                 });
         });
+    }
+
+    forget = subscription_id => {
+        if (subscription_id) {
+            this.api.forget(subscription_id);
+        }
+    };
+
+    unsubscribeFromTicksService() {
+        if (this.ticks_history_promise) {
+            const { stringified_options } = this.ticks_history_promise;
+            const { symbol = '' } = JSON.parse(stringified_options);
+            if (symbol) {
+                this.forget(this.subscriptions.getIn(['tick', symbol]));
+            }
+        }
+        if (this.candles_promise) {
+            const { stringified_options } = this.candles_promise;
+            const { symbol = '' } = JSON.parse(stringified_options);
+            if (symbol) {
+                this.forget(this.subscriptions.getIn(['candle', symbol]));
+            }
+        }
     }
 }

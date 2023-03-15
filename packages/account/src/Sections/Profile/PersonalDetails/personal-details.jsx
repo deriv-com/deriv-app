@@ -1228,7 +1228,7 @@ export const PersonalDetailsForm = ({
                                                                         components={[
                                                                             <a
                                                                                 key={0}
-                                                                                className='link link--red'
+                                                                                className='link--no-bold'
                                                                                 rel='noopener noreferrer'
                                                                                 target='_blank'
                                                                                 href={getRedirectionLink()}

@@ -1,7 +1,7 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const personal_details_config = ({ residence_list, account_settings, is_appstore }) => {
+const personal_details_config = ({ residence_list, account_settings, is_appstore, real_account_signup_target }) => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -86,9 +86,10 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             ],
         },
         tax_residence: {
-            default_value: account_settings.tax_residence
-                ? residence_list.find(item => item.value === account_settings.tax_residence)?.text
-                : '',
+            default_value:
+                real_account_signup_target === 'maltainvest'
+                    ? account_settings.residence
+                    : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
@@ -163,7 +164,12 @@ const personalDetailsConfig = (
     PersonalDetails,
     is_appstore = false
 ) => {
-    const [config] = personal_details_config({ residence_list, account_settings, is_appstore });
+    const [config] = personal_details_config({
+        residence_list,
+        account_settings,
+        is_appstore,
+        real_account_signup_target,
+    });
     const disabled_items = account_settings.immutable_fields;
     return {
         header: {

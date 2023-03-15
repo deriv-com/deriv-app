@@ -259,6 +259,14 @@ export const getSupportedContracts = is_high_low => ({
         name: <Localize i18n_default_text='Down' />,
         position: 'bottom',
     },
+    VANILLALONGCALL: {
+        name: <Localize i18n_default_text='Call' />,
+        position: 'top',
+    },
+    VANILLALONGPUT: {
+        name: <Localize i18n_default_text='Put' />,
+        position: 'bottom',
+    },
 });
 
 export const getContractConfig = is_high_low => ({

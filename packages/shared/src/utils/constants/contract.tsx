@@ -18,7 +18,7 @@ type TContractTypesConfig = {
     basis: string[];
     components: string[];
     barrier_count?: number;
-    config?: { hide_duration: boolean };
+    config?: { hide_duration?: boolean; should_override?: boolean };
 };
 
 type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
@@ -127,8 +127,17 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
+    vanilla: {
+        title: localize('Call/Put'),
+        trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
+        basis: ['stake'],
+        components: ['duration', 'strike', 'amount', 'vanilla_trade_type'],
+        barrier_count: 1,
+        config: { should_override: true },
+    },
 });
 
+// Config for rendering trade options
 export const getContractCategoriesConfig = () => ({
     Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
     'Ups & Downs': {
@@ -139,6 +148,7 @@ export const getContractCategoriesConfig = () => ({
     'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
     'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
     Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
+    Vanillas: { name: localize('Vanillas'), categories: ['vanilla'] },
 });
 
 export const unsupported_contract_types_list = [
@@ -157,35 +167,38 @@ export const unsupported_contract_types_list = [
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),
-    STAKE: localize('Stake:'),
-    CLOSE: localize('Close'),
-    CANCEL: localize('Cancel'),
-    CURRENT_STAKE: localize('Current stake:'),
-    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
-    TAKE_PROFIT: localize('Take profit:'),
     BUY_PRICE: localize('Buy price:'),
-    STOP_LOSS: localize('Stop loss:'),
-    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
-    PROFIT_LOSS: localize('Profit/Loss:'),
-    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
-    INDICATIVE_PRICE: localize('Indicative price:'),
-    PAYOUT: localize('Sell price:'),
-    PURCHASE_PRICE: localize('Buy price:'),
-    POTENTIAL_PAYOUT: localize('Payout limit:'),
-    TICK: localize('Tick '),
-    WON: localize('Won'),
-    LOST: localize('Lost'),
-    DAYS: localize('days'),
+    CANCEL: localize('Cancel'),
+    CLOSE: localize('Close'),
+    CONTRACT_VALUE: localize('Contract value:'),
+    CURRENT_STAKE: localize('Current stake:'),
     DAY: localize('day'),
-    SELL: localize('Sell'),
-    INCREMENT_VALUE: localize('Increment value'),
+    DAYS: localize('days'),
+    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
     DECREMENT_VALUE: localize('Decrement value'),
+    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
+    ENTRY_SPOT: localize('Entry spot:'),
+    INCREMENT_VALUE: localize('Increment value'),
+    INDICATIVE_PRICE: localize('Indicative price:'),
+    LOST: localize('Lost'),
+    NOT_AVAILABLE: localize('N/A'),
+    PAYOUT: localize('Sell price:'),
+    POTENTIAL_PAYOUT: localize('Payout limit:'),
+    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
+    PROFIT_LOSS: localize('Profit/Loss:'),
+    PURCHASE_PRICE: localize('Buy price:'),
+    RESALE_NOT_OFFERED: localize('Resale not offered'),
+    SELL: localize('Sell'),
+    STAKE: localize('Stake:'),
+    STOP_LOSS: localize('Stop loss:'),
+    STRIKE: localize('Strike:'),
     TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
         'Take profit and/or stop loss are not available while deal cancellation is active.'
     ),
-    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
-    RESALE_NOT_OFFERED: localize('Resale not offered'),
-    NOT_AVAILABLE: localize('N/A'),
+    TAKE_PROFIT: localize('Take profit:'),
+    TICK: localize('Tick '),
+    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
+    WON: localize('Won'),
 });
 
 export const getMarketNamesMap = () => ({
@@ -412,6 +425,14 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
     MULTDOWN: {
         name: <Localize i18n_default_text='Down' />,
+        position: 'bottom',
+    },
+    VANILLALONGCALL: {
+        name: <Localize i18n_default_text='Call' />,
+        position: 'top',
+    },
+    VANILLALONGPUT: {
+        name: <Localize i18n_default_text='Put' />,
         position: 'bottom',
     },
 });

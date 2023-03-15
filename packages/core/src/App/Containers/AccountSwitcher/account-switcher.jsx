@@ -483,8 +483,11 @@ const AccountSwitcher = props => {
             !props.no_MF_account &&
             !props.no_CR_account &&
             props.obj_total_balance.amount_real_MF > 0
-        )
-            total -= +props.obj_total_balance.amount_real_MF;
+        ) {
+            const mt5_MF_accounts = props.mt5_login_list.filter(a => a.landing_company_short === 'maltainvest');
+            const mt5_total_MF = getTotalBalanceCfd(mt5_MF_accounts, false, exchanged_rate_cfd_real);
+            total = total - Number(props.obj_total_balance.amount_real_MF) - Number(mt5_total_MF.balance);
+        }
 
         return props.is_pre_appstore ? traders_hub_total : total;
     };

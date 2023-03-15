@@ -16,14 +16,13 @@ const ToggleLanguageSettings = ({ enableApp, is_settings_visible, disableApp, to
                 id='dt_language_settings_toggle'
                 data-testid='dt_toggle_language_settings'
                 onClick={toggleSettings}
-                className={`${toggle_settings_class} footer__link`}
+                className={toggle_settings_class}
             >
                 <Popover alignment='top' message={localize('Language')} zIndex={9999}>
                     <Icon
                         icon={`IcFlag${lang.replace('_', '-')}`}
                         data_testid='dt_icon'
                         className='ic-settings-language__icon'
-                        type={lang.replace(/(\s|_)/, '-').toLowerCase()}
                         size={18}
                     />
                     <Text weight='bold' size='xxs'>

@@ -21,7 +21,7 @@
 
             @include mobile {
                 padding: 0.8rem;
-                grid-template-columns: repeat(2, minmax(90px, 1fr));
+                grid-template-columns: repeat(2, minmax(9rem, 1fr));
                 grid-gap: 0;
             }
         }
@@ -44,7 +44,7 @@
                 padding: 8px;
 
                 &--pre-appstore {
-                    padding: 16px;
+                    padding: 1.6rem;
                 }
             }
             text-decoration: none;
@@ -59,6 +59,7 @@
         &-flag {
             width: 5rem;
             height: 4rem;
+            cursor: pointer;
 
             @include mobile {
                 margin-top: 1rem;
@@ -68,7 +69,6 @@
                 &--pre-appstore {
                     width: 3.5rem;
                     height: 2.5rem;
-                    //padding: 1.6rem;
                 }
             }
         }

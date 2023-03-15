@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
 import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
@@ -8,7 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage, Localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
-import { BinaryLink } from 'App/Components/Routes';
+import { BinaryLink, LanguageLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
@@ -136,7 +135,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_onramp_visible = useOnrampVisible();
 
     const liveChat = useLiveChat();
-    const { i18n } = useTranslation();
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -337,23 +335,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     };
 
     const getLanguageRoutesTraderHub = () => {
-        const LanguageLink = ({ lang }) => (
-            <React.Fragment>
-                <Icon
-                    icon={`IcFlag${lang.replace('_', '-')}`}
-                    className={'settings-language__language-link-flag settings-language__language-flag--pre-appstore'}
-                    type={lang.replace(/(\s|_)/, '-').toLowerCase()}
-                />
-                <span
-                    className={classNames('settings-language__language-name', {
-                        'settings-language__language-name--active': currentLanguage === lang,
-                    })}
-                >
-                    {getAllowedLanguages()[lang]}
-                </span>
-            </React.Fragment>
-        );
-
         return (
             <MobileDrawer.SubMenu
                 is_expanded={is_language_changing}
@@ -371,25 +352,18 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     })}
                 >
                     {Object.keys(getAllowedLanguages()).map(lang => (
-                        <span
-                            id={`dt_settings_${lang}_button`}
+                        <LanguageLink
                             key={lang}
-                            onClick={async () => {
-                                await changeLanguage(lang, changeCurrentLanguage);
-                                await i18n.changeLanguage(lang);
+                            changeCurrentLanguage={changeCurrentLanguage}
+                            current_language={currentLanguage}
+                            icon_classname='settings-language__language-flag--pre-appstore'
+                            is_clickable
+                            lang={lang}
+                            toggleModal={() => {
                                 toggleDrawer();
                                 setIsLanguageChanging(!is_language_changing);
                             }}
-                            className={classNames(
-                                'settings-language__language-link',
-                                'settings-language__language-link--pre-appstore',
-                                {
-                                    'settings-language__language-link--active': currentLanguage === lang,
-                                }
-                            )}
-                        >
-                            <LanguageLink lang={lang} key={lang} />
-                        </span>
+                        />
                     ))}
                 </div>
             </MobileDrawer.SubMenu>
@@ -437,28 +411,30 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     };
 
     const menu_title = (
-        <>
+        <React.Fragment>
             <div>{localize('Menu')}</div>
-            <div
-                className='settings-language__language-button_wrapper'
-                onClick={() => {
-                    if (!is_language_changing) {
-                        setIsLanguageChanging(true);
-                    }
-                }}
-            >
-                <Icon
-                    icon={`IcFlag${currentLanguage.replace('_', '-')}`}
-                    data_testid='dt_icon'
-                    className='ic-settings-language__icon'
-                    type={currentLanguage.replace(/(\s|_)/, '-').toLowerCase()}
-                    size={22}
-                />
-                <Text weight='bold' size='xxs'>
-                    <Localize i18n_default_text={currentLanguage} />
-                </Text>
-            </div>
-        </>
+            {is_pre_appstore && (
+                <div
+                    className='settings-language__language-button_wrapper'
+                    onClick={() => {
+                        if (!is_language_changing) {
+                            setIsLanguageChanging(true);
+                        }
+                    }}
+                >
+                    <Icon
+                        icon={`IcFlag${currentLanguage.replace('_', '-')}`}
+                        data_testid='dt_icon'
+                        className='ic-settings-language__icon'
+                        type={currentLanguage.replace(/(\s|_)/, '-').toLowerCase()}
+                        size={22}
+                    />
+                    <Text weight='bold' size='xxs'>
+                        <Localize i18n_default_text={currentLanguage} />
+                    </Text>
+                </div>
+            )}
+        </React.Fragment>
     );
 
     return (
@@ -480,7 +456,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 id='dt_mobile_drawer'
                 enableApp={enableApp}
                 disableApp={disableApp}
-                title={is_pre_appstore ? menu_title : localize('Menu')}
+                title={menu_title}
                 height='100vh'
                 width='295px'
                 className={is_pre_appstore ? 'pre-appstore' : ''}

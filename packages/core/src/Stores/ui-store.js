@@ -24,6 +24,7 @@ export default class UIStore extends BaseStore {
 
     is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     is_settings_modal_on = false;
+    is_language_settings_modal_on = false;
     is_accounts_switcher_on = false;
     account_switcher_disabled_message = '';
 
@@ -211,6 +212,7 @@ export default class UIStore extends BaseStore {
             notification_messages_ui: observable,
             is_dark_mode_on: observable,
             is_settings_modal_on: observable,
+            is_language_settings_modal_on: observable,
             is_accounts_switcher_on: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
@@ -319,6 +321,7 @@ export default class UIStore extends BaseStore {
             toggleCashier: action.bound,
             setModalIndex: action.bound,
             toggleSettingsModal: action.bound,
+            toggleLanguageSettingsModal: action.bound,
             openPositionsDrawer: action.bound,
             openRealAccountSignup: action.bound,
             setShouldShowCancel: action.bound,
@@ -588,6 +591,10 @@ export default class UIStore extends BaseStore {
 
     toggleSettingsModal() {
         this.is_settings_modal_on = !this.is_settings_modal_on;
+    }
+
+    toggleLanguageSettingsModal() {
+        this.is_language_settings_modal_on = !this.is_language_settings_modal_on;
     }
 
     openPositionsDrawer() {

@@ -6,6 +6,7 @@ import Icon from '../icon/icon';
 
 type TMobileDrawerSubmenu = {
     has_subheader?: boolean;
+    is_expanded?: boolean;
     onToggle: (params: boolean) => void;
     submenu_toggle_class?: string;
     submenu_icon?: string;
@@ -23,11 +24,12 @@ const SubMenu = ({
     submenu_title,
     submenu_suffix_icon,
     route_config_path,
+    is_expanded = false,
 }: React.PropsWithChildren<TMobileDrawerSubmenu>) => {
-    const [is_expanded, setIsExpanded] = React.useState(false);
+    const [_is_expanded, setIsExpanded] = React.useState(is_expanded);
 
     const toggleMenu = () => {
-        const should_expanded = !is_expanded;
+        const should_expanded = !_is_expanded;
         setIsExpanded(should_expanded);
         if (onToggle) {
             onToggle(should_expanded);
@@ -53,7 +55,7 @@ const SubMenu = ({
             <SubMenuList
                 collapse={toggleMenu}
                 has_subheader={has_subheader}
-                is_expanded={is_expanded}
+                is_expanded={_is_expanded}
                 submenu_title={submenu_title}
             >
                 {children}

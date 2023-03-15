@@ -37,17 +37,28 @@ const LanguageLink = ({ lang }) => (
     </React.Fragment>
 );
 
-const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSettingsModal }) => {
+const LanguageSettings = ({
+    changeCurrentLanguage,
+    current_language,
+    is_pre_appstore,
+    toggleLanguageSettingsModal,
+    toggleSettingsModal,
+}) => {
     const { i18n } = useTranslation();
-
     return (
         <div className='settings-language'>
-            <div className='settings-language__language-header'>
-                <Text size='xs' color='prominent' weight='bold'>
-                    <Localize i18n_default_text='Select language' />
-                </Text>
-            </div>
-            <div className='settings-language__language-container'>
+            {!is_pre_appstore && (
+                <div className='settings-language__language-header'>
+                    <Text size='xs' color='prominent' weight='bold'>
+                        <Localize i18n_default_text='Select language' />
+                    </Text>
+                </div>
+            )}
+            <div
+                className={classNames('settings-language__language-container', {
+                    'settings-language__language-container--pre-appstore': is_pre_appstore,
+                })}
+            >
                 {Object.keys(getAllowedLanguages()).map(key =>
                     isCurrentLanguage(key) ? (
                         <NonClickableLink lang={key} key={key}>
@@ -60,7 +71,11 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
                             onClick={async () => {
                                 await changeLanguage(key, changeCurrentLanguage);
                                 await i18n.changeLanguage(key);
-                                toggleSettingsModal();
+                                if (is_pre_appstore) {
+                                    toggleLanguageSettingsModal();
+                                } else {
+                                    toggleSettingsModal();
+                                }
                             }}
                             className={classNames('settings-language__language-link', {
                                 'settings-language__language-link--active': isCurrentLanguage(key, current_language),
@@ -84,8 +99,10 @@ NonClickableLink.propTypes = {
     lang: PropTypes.string,
 };
 
-export default connect(({ common, ui }) => ({
+export default connect(({ client, common, ui }) => ({
     changeCurrentLanguage: common.changeCurrentLanguage,
     current_language: common.current_language,
+    toggleLanguageSettingsModal: ui.toggleLanguageSettingsModal,
     toggleSettingsModal: ui.toggleSettingsModal,
+    is_pre_appstore: client.is_pre_appstore,
 }))(LanguageSettings);

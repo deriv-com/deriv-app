@@ -209,21 +209,23 @@ type TUiStore = {
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
-    is_dark_mode_on: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_dark_mode_on: boolean;
+    is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    sub_section_index: number;
+    setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
+    toggleLanguageSettingsModal: () => void;
     toggleSetCurrencyModal: () => void;
-    setSubSectionIndex: (index: number) => void;
 };
 
 type TMenuStore = {

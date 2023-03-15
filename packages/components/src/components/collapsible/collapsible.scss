@@ -73,7 +73,15 @@
         margin-left: 0;
         margin-right: auto;
     }
-    //&__content {
-    //    transition: all 0.3s ease;
-    //}
+    // Vanilla Options specific styles
+    .trade-container {
+        &__fieldset {
+            flex: 1;
+            margin-left: 0.4rem;
+
+            .dc-button-menu__wrapper {
+                height: 4rem;
+            }
+        }
+    }
 }

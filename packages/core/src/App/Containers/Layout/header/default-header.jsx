@@ -41,12 +41,10 @@ const DefaultHeader = ({
     is_route_modal_on,
     is_trading_assessment_for_existing_user_enabled,
     is_virtual,
-    menu_items,
     notifications_count,
     openRealAccountSignup,
     platform,
     removeNotificationMessage,
-    replaceCashierMenuOnclick,
     setIsPreAppStore,
     toggleAccountsDialog,
     toggleNotifications,
@@ -58,10 +56,6 @@ const DefaultHeader = ({
         () => removeNotificationMessage({ key: 'new_version_available' }),
         [removeNotificationMessage]
     );
-
-    React.useEffect(() => {
-        if (is_logged_in) replaceCashierMenuOnclick();
-    }, [is_logged_in]);
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
@@ -140,7 +134,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <MenuLinks />
                 </div>
                 {is_logging_in
                     ? null
@@ -230,18 +224,16 @@ DefaultHeader.propTypes = {
     openRealAccountSignup: PropTypes.func,
     platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
-    replaceCashierMenuOnclick: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    menu_items: PropTypes.array,
     setIsPreAppStore: PropTypes.func,
     is_landing_company_loaded: PropTypes.bool,
     is_switching: PropTypes.bool,
 };
 
-export default connect(({ client, common, ui, menu, modules, notifications }) => ({
+export default connect(({ client, common, ui, notifications }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -265,10 +257,8 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_notifications_visible: notifications.is_notifications_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
-    menu_items: menu.extensions,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,

@@ -3,7 +3,7 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, isVanillaContract } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
@@ -20,25 +20,31 @@ const RawMarkerMaker = draw_callback => {
     return Marker;
 };
 
-function get_color({ status, profit, is_dark_theme }) {
-    const colors = is_dark_theme
-        ? {
-              open: '#377cfc',
-              won: '#00a79e',
-              lost: '#cc2e3d',
-              sold: '#ffad3a',
-              fg: '#ffffff',
-              bg: '#0e0e0e',
-          }
-        : {
-              open: '#377cfc',
-              won: '#4bb4b3',
-              lost: '#ec3f3f',
-              sold: '#ffad3a',
-              fg: '#333333',
-              bg: '#ffffff',
-          };
+const dark_theme = {
+    open: '#377cfc',
+    won: '#00a79e',
+    lost: '#cc2e3d',
+    sold: '#ffad3a',
+    fg: '#ffffff',
+    bg: '#0e0e0e',
+};
+
+const light_theme = {
+    open: '#377cfc',
+    won: '#4bb4b3',
+    lost: '#ec3f3f',
+    sold: '#ffad3a',
+    fg: '#333333',
+    bg: '#ffffff',
+};
+
+function get_color({ status, profit, is_dark_theme, is_vanilla }) {
+    const colors = is_dark_theme ? dark_theme : light_theme;
     let color = colors[status || 'open'];
+    if (is_vanilla) {
+        if (status === 'open') return colors.open;
+        return colors[profit > 0 ? 'won' : 'lost'];
+    }
     if (status === 'open' && profit) {
         color = colors[profit > 0 ? 'won' : 'lost'];
     }
@@ -141,10 +147,11 @@ const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     });
 };
 
-const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
+const shadowed_text = ({ ctx, color, is_dark_theme, text, left, top, scale }) => {
     ctx.textAlign = 'center';
     const size = Math.floor(scale * 12);
     ctx.font = `bold ${size}px BinarySymbols, Roboto`;
+    if (color) ctx.fillStyle = color;
     if (!is_firefox) {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
@@ -338,7 +345,7 @@ const NonTickContract = RawMarkerMaker(
         granularity,
         currency,
         contract_info: {
-            // contract_type,
+            contract_type,
             // exit_tick_time,
             // is_expired,
             is_sold,
@@ -359,7 +366,7 @@ const NonTickContract = RawMarkerMaker(
             }
         }
 
-        const color = get_color({ status, profit, is_dark_theme });
+        const color = get_color({ status, profit, is_dark_theme, is_vanilla: isVanillaContract(contract_type) });
 
         ctx.save();
         ctx.strokeStyle = color;
@@ -455,6 +462,7 @@ const NonTickContract = RawMarkerMaker(
             const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
             shadowed_text({
                 ctx,
+                color: get_color({ status: 'open', profit }),
                 scale,
                 text,
                 is_dark_theme,

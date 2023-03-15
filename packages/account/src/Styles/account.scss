@@ -420,7 +420,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
 
             .dc-input__label {
-                top: 0.9rem;
+                top: 1rem;
             }
 
             @include mobile {
@@ -786,7 +786,7 @@ $MIN_HEIGHT_FLOATING: calc(
                             width: inherit;
                             max-width: 40rem;
                             .email-input {
-                                margin-bottom: 1.6rem;
+                                margin-bottom: 0.8rem;
                             }
                         }
                         width: 40rem;

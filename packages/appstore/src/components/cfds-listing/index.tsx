@@ -231,9 +231,9 @@ const CFDsListing = () => {
                                     existing_account.display_balance,
                                     true
                                 )} ${existing_account.currency}`}
-                                description={existing_account.display_login}
+                                description={existing_account.login}
                                 platform={account.platform}
-                                key={`trading_app_card_${existing_account.display_login}`}
+                                key={`trading_app_card_${existing_account.login}`}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     const button_name = e?.currentTarget?.name;
                                     if (button_name === 'transfer-btn') {

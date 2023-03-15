@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Icon, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {
     isEmptyObject,
@@ -205,6 +205,14 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         selected_account_group: '',
         selected_server: '',
     });
+
+    const history = useHistory();
+
+    React.useEffect(() => {
+        if (window.location.href.includes(routes.mt5) || window.location.href.includes(routes.dxtrade)) {
+            history.push(routes.error404);
+        }
+    }, [history]);
 
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());

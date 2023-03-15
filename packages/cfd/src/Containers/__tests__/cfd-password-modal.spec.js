@@ -285,7 +285,7 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
     });
 
-    it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
+    it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
         const props = {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
@@ -298,10 +298,10 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcRebrandingDerivx')).toBeInTheDocument();
     });
 
-    it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
+    it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
         const props = {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
@@ -314,7 +314,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('IcDxtradeFinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcRebrandingDerivx')).toBeInTheDocument();
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {

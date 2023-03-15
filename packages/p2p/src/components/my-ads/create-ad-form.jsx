@@ -65,6 +65,13 @@ const CreateAdForm = () => {
         },
     });
 
+    const onCleanup = () => {
+        my_ads_store.setApiErrorMessage('');
+        floating_rate_store.setApiErrorMessage('');
+        my_ads_store.setShowAdForm(false);
+        buy_sell_store.setCreateSellAdFromNoAds(false);
+    };
+
     React.useEffect(() => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         my_profile_store.getPaymentMethodsList();
@@ -80,10 +87,7 @@ const CreateAdForm = () => {
 
         return () => {
             disposeApiErrorReaction();
-            my_ads_store.setApiErrorMessage('');
-            floating_rate_store.setApiErrorMessage('');
-            my_ads_store.setShowAdForm(false);
-            buy_sell_store.setCreateSellAdFromNoAds(false);
+            onCleanup();
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -407,7 +411,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 secondary
                                                 large
-                                                onClick={() => my_ads_store.setShowAdForm(false)}
+                                                onClick={() => onCleanup()}
                                                 type='button'
                                             >
                                                 <Localize i18n_default_text='Cancel' />

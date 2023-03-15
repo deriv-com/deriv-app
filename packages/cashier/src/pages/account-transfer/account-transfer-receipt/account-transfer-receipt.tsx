@@ -70,7 +70,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         }
         // close modal only when the user try to transfer money from traders-hub, not from cashier
         // because in cashier this component is not a modal
-        if (is_from_pre_appstore) onClose?.();
+        if (is_from_outside_cashier) onClose?.();
     };
 
     return (

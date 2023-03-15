@@ -101,7 +101,7 @@ describe('<AccountTransferReceipt />', () => {
         });
     });
 
-    it('should redirect to "/reports/statement", when the "Switch to {currency} account" button was clicked', () => {
+    it('should redirect to "/reports/statement", when the "Switch to {currency} account" button was clicked', async () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
@@ -114,6 +114,8 @@ describe('<AccountTransferReceipt />', () => {
         const switch_to_currency_acc = screen.getByText('Switch to BTC account');
         fireEvent.click(switch_to_currency_acc);
 
-        expect(history.location.pathname).toBe(routes.statement);
+        await waitFor(() => {
+            expect(history.location.pathname).toBe(routes.statement);
+        });
     });
 });

@@ -35,6 +35,7 @@ const PurchaseButton = ({
     is_high_low,
     is_loading,
     is_multiplier,
+    is_vanilla,
     is_proposal_empty,
     purchased_states_arr,
     setPurchaseState,
@@ -50,6 +51,22 @@ const PurchaseButton = ({
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
     const non_multiplier_info_right = is_accumulator ? `${getGrowthRatePercentage(info.growth_rate)}%` : info.returns;
 
+    let button_value;
+
+    if (is_multiplier) {
+        button_value = (
+            <Text size='xs' weight='bold' color='colored-background'>
+                <Money amount={info.stake} currency={currency} show_currency />
+            </Text>
+        );
+    } else if (!is_vanilla) {
+        button_value = (
+            <Text size='xs' weight='bold' color='colored-background'>
+                {!(is_loading || is_disabled) ? non_multiplier_info_right : ''}
+            </Text>
+        );
+    }
+
     return (
         <button
             disabled={is_disabled}
@@ -64,6 +81,8 @@ const PurchaseButton = ({
                 'btn-purchase--accumulator': is_accumulator,
                 'btn-purchase--multiplier': is_multiplier,
                 'btn-purchase--multiplier-deal-cancel': has_deal_cancellation,
+                'btn-purchase--1__vanilla-opts': index === 0 && is_vanilla,
+                'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
             })}
             onClick={() => {
                 setPurchaseState(index);
@@ -85,23 +104,14 @@ const PurchaseButton = ({
                 <div className='btn-purchase__effect-detail' />
                 <div className='btn-purchase__effect-detail--arrow' />
                 <div className='btn-purchase__info btn-purchase__info--right'>
-                    <div className='btn-purchase__text_wrapper'>
-                        {is_multiplier ? (
-                            <Text size='xs' weight='bold' color='colored-background'>
-                                <Money amount={info.stake} currency={currency} show_currency />
-                            </Text>
-                        ) : (
-                            <Text size='xs' weight='bold' color='colored-background'>
-                                {!(is_loading || is_disabled) ? non_multiplier_info_right : ''}
-                            </Text>
-                        )}
-                    </div>
+                    <div className='btn-purchase__text_wrapper'>{button_value}</div>
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
                 <div
                     className={classNames('btn-purchase__top', {
                         'btn-purchase__top--accumulator': is_accumulator,
+                        'btn-purchase--vanilla': is_vanilla,
                     })}
                 >
                     <IconComponentWrapper type={getIconType()} />
@@ -112,19 +122,21 @@ const PurchaseButton = ({
                         is_high_low={is_high_low}
                     />
                 </div>
-                <div className='btn-purchase__bottom'>
-                    <ContractInfo
-                        basis={basis}
-                        currency={currency}
-                        has_increased={has_increased}
-                        is_accumulator={is_accumulator}
-                        is_loading={is_loading}
-                        is_multiplier={is_multiplier}
-                        should_fade={should_fade}
-                        proposal_info={info}
-                        type={type}
-                    />
-                </div>
+                {!is_vanilla && (
+                    <div className='btn-purchase__bottom'>
+                        <ContractInfo
+                            basis={basis}
+                            currency={currency}
+                            has_increased={has_increased}
+                            is_accumulator={is_accumulator}
+                            is_loading={is_loading}
+                            is_multiplier={is_multiplier}
+                            should_fade={should_fade}
+                            proposal_info={info}
+                            type={type}
+                        />
+                    </div>
+                )}
             </MobileWrapper>
         </button>
     );
@@ -143,6 +155,7 @@ PurchaseButton.propTypes = {
     is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,
     should_fade: PropTypes.bool,

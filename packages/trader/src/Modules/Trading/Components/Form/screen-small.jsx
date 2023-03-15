@@ -24,6 +24,8 @@ import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/t
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
+import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
+import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -34,6 +36,7 @@ const CollapsibleTradeParams = ({
     is_accumulator,
     is_trade_params_expanded,
     is_multiplier,
+    is_vanilla,
     onChange,
     take_profit,
     setIsTradeParamsExpanded,
@@ -62,6 +65,7 @@ const CollapsibleTradeParams = ({
                 <ContractType />
                 {is_multiplier && <MultiplierOptionsWidget />}
                 {is_accumulator && <AccumulatorOptionsWidget />}
+                {is_vanilla && <VanillaTradeTypes />}
             </div>
             {isVisible('last_digit') && (
                 <div collapsible='true'>
@@ -69,8 +73,13 @@ const CollapsibleTradeParams = ({
                 </div>
             )}
             {isVisible('barrier') && (
-                <div collapsible={'true'}>
+                <div collapsible='true'>
                     <BarrierMobile />
+                </div>
+            )}
+            {isVisible('strike') && (
+                <div collapsible='true'>
+                    <Strike />
                 </div>
             )}
             {!is_accumulator && <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />}
@@ -94,9 +103,13 @@ const CollapsibleTradeParams = ({
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}
-            <div className={`purchase-container${is_accumulator ? '--accumulator' : ''}`}>
+            {is_vanilla ? (
                 <Purchase />
-            </div>
+            ) : (
+                <div className='purchase-container'>
+                    <Purchase />
+                </div>
+            )}
         </Collapsible>
     );
 };
@@ -142,6 +155,7 @@ export default connect(({ modules }) => ({
     is_accumulator: modules.trade.is_accumulator,
     is_allow_equal: !!modules.trade.is_equal,
     is_multiplier: modules.trade.is_multiplier,
+    is_vanilla: modules.trade.is_vanilla,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
     contract_type: modules.trade.contract_type,

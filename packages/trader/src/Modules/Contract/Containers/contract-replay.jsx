@@ -12,14 +12,15 @@ import {
     usePrevious,
 } from '@deriv/components';
 import {
-    isAccumulatorContract,
-    isDesktop,
-    isMobile,
-    isMultiplierContract,
-    isEmptyObject,
     getDurationPeriod,
     getDurationUnitText,
     getPlatformRedirect,
+    isAccumulatorContract,
+    isDesktop,
+    isEmptyObject,
+    isMobile,
+    isMultiplierContract,
+    isVanillaContract,
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -78,6 +79,7 @@ const ContractReplay = ({
 
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_vanilla = isVanillaContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -91,6 +93,7 @@ const ContractReplay = ({
             is_multiplier={is_multiplier}
             is_sell_requested={is_sell_requested}
             is_valid_to_cancel={is_valid_to_cancel}
+            is_vanilla={is_vanilla}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             status={indicative_status}

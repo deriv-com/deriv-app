@@ -84,9 +84,13 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-        const accumulators_category = list.filter(({ label }) => label === localize('Accumulators'));
-        const multipliers_category = list.filter(({ label }) => label === localize('Multipliers'));
-        const options_category = list.filter(
+
+        // Order the list based on categories provided in order_arr
+        const order_arr = ['Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
+        const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+        const accumulators_category = ordered_list.filter(({ label }) => label === localize('Accumulators'));
+        const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
+        const options_category = ordered_list.filter(
             ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
         );
 
@@ -95,7 +99,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (list.length > 0) {
             categories.push({
                 label: localize('All'),
-                contract_categories: [...list],
+                contract_categories: [...ordered_list],
                 key: 'All',
             });
         }

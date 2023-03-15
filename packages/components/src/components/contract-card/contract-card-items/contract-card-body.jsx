@@ -12,6 +12,7 @@ import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 import AccumulatorCardBody from './accumulator-card-body.jsx';
 import MultiplierCardBody from './multiplier-card-body.jsx';
+import VanillaOptionsCardBody from './vanilla-options-card-body.jsx';
 
 const ContractCardBody = ({
     addToast,
@@ -29,6 +30,7 @@ const ContractCardBody = ({
     is_multiplier,
     is_positions,
     is_sold,
+    is_vanilla,
     onMouseLeave,
     removeToast,
     server_time,
@@ -100,6 +102,18 @@ const ContractCardBody = ({
                 removeToast={removeToast}
                 setCurrentFocus={setCurrentFocus}
                 is_positions={is_positions}
+            />
+        );
+    } else if (is_vanilla) {
+        card_body = (
+            <VanillaOptionsCardBody
+                contract_info={contract_info}
+                currency={currency}
+                getCardLabels={getCardLabels}
+                is_sold={is_sold}
+                has_progress_slider={has_progress_slider}
+                progress_slider={progress_slider_mobile_el}
+                status={status}
             />
         );
     } else {

@@ -16,7 +16,9 @@
     }
 
     &__textarea {
-        margin-top: 2.5rem;
+        padding-top: 2.5rem;
+        height: 9.8rem;
+        margin-bottom: 5.7rem;
 
         @include mobile {
             margin: 0 2vw;

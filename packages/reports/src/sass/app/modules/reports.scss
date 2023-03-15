@@ -577,7 +577,7 @@ $side-padding: 1.2em;
                 background-color: var(--general-section-1);
                 border-radius: $BORDER_RADIUS;
                 border: 1px solid var(--border-disabled);
-                padding: 0;
+                padding: 0 !important;
 
                 /* postcss-bem-linter: ignore */
                 & .dc-progress-slider--completed {
@@ -902,11 +902,6 @@ $side-padding: 1.2em;
             }
         }
     }
-    .market-symbol-icon {
-        @include mobile {
-            width: 80px;
-        }
-    }
 }
 
 /** market-symbol-icon.scss doesn't get applied in reports */
@@ -1050,6 +1045,11 @@ $side-padding: 1.2em;
     /* postcss-bem-linter: ignore */
     .data-list__item {
         background-color: var(--general-section-1);
+        padding: 1.6rem 0;
+
+        &--multiplier {
+            padding: 0;
+        }
     }
     .currency {
         &__wrapper {

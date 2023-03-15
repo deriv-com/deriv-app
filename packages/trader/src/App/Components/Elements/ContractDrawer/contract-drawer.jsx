@@ -28,6 +28,7 @@ const ContractDrawer = ({
     is_dark_theme,
     is_market_closed,
     is_multiplier,
+    is_vanilla,
     onClickCancel,
     onClickSell,
     server_time,
@@ -55,8 +56,9 @@ const ContractDrawer = ({
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier || is_accumulator}
+                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
                 toggleHistoryTab={toggleHistoryTab}
+                is_vanilla={is_vanilla}
             />
         );
 
@@ -70,6 +72,7 @@ const ContractDrawer = ({
                     is_mobile={is_mobile}
                     is_market_closed={is_market_closed}
                     is_multiplier={is_multiplier}
+                    is_vanilla={is_vanilla}
                     is_sell_requested={is_sell_requested}
                     is_collapsed={should_show_contract_audit}
                     onClickCancel={onClickCancel}
@@ -104,8 +107,9 @@ const ContractDrawer = ({
             duration={getDurationTime(contract_info)}
             duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
             exit_spot={exit_spot}
-            has_result={!!is_sold || is_multiplier || is_accumulator}
+            has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
             toggleHistoryTab={toggleHistoryTab}
+            is_vanilla={is_vanilla}
         />
     );
 
@@ -123,7 +127,7 @@ const ContractDrawer = ({
                 id='dt_contract_drawer'
                 className={classNames('contract-drawer', {
                     'contract-drawer--with-collapsible-btn':
-                        !!getEndTime(contract_info) || ((is_multiplier || is_accumulator) && isMobile()),
+                        !!getEndTime(contract_info) || ((is_multiplier || is_vanilla || is_accumulator) && isMobile()),
                     'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                     'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                 })}
@@ -180,6 +184,7 @@ ContractDrawer.propTypes = {
     is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     is_history_tab_active: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,

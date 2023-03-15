@@ -20,6 +20,7 @@ const PurchaseFieldset = ({
     is_loading,
     is_market_closed,
     is_multiplier,
+    is_vanilla,
     is_proposal_empty,
     is_proposal_error,
     purchased_states_arr,
@@ -47,6 +48,7 @@ const PurchaseFieldset = ({
                 is_high_low={is_high_low}
                 is_loading={is_loading}
                 is_multiplier={is_multiplier}
+                is_vanilla={is_vanilla}
                 is_proposal_empty={is_proposal_empty}
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
@@ -83,6 +85,7 @@ const PurchaseFieldset = ({
                             has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
+                            is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             type={type}
                         />

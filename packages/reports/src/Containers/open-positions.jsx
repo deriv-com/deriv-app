@@ -6,6 +6,7 @@ import {
     DesktopWrapper,
     MobileWrapper,
     ProgressBar,
+    ProgressSliderMobile,
     DataList,
     DataTable,
     ContractCard,
@@ -19,10 +20,12 @@ import {
     isAccumulatorContract,
     isMobile,
     isMultiplierContract,
+    isVanillaContract,
     getTimePercentage,
     website_name,
     getTotalProfit,
     getContractPath,
+    getCurrentTick,
     getGrowthRatePercentage,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -92,7 +95,8 @@ const MobileRowRenderer = ({
     }
 
     const { contract_info, contract_update, type, is_sell_requested } = row;
-    const { currency, status, date_expiry, date_start } = contract_info;
+    const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
+    const current_tick = tick_count ? getCurrentTick(contract_info) : null;
     const duration_type = getContractDurationType(contract_info.longcode);
     const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
@@ -118,7 +122,20 @@ const MobileRowRenderer = ({
         <>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.type} />
-                <ProgressBar label={duration_type} value={progress_value} />
+                {isVanillaContract(type) ? (
+                    <ProgressSliderMobile
+                        current_tick={current_tick}
+                        className='data-list__row--vanilla'
+                        expiry_time={date_expiry}
+                        getCardLabels={getCardLabels}
+                        is_loading={false}
+                        server_time={server_time}
+                        start_time={purchase_time}
+                        ticks_count={tick_count}
+                    />
+                ) : (
+                    <ProgressBar label={duration_type} value={progress_value} />
+                )}
             </div>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.reference} />
@@ -333,6 +350,7 @@ const OpenPositions = ({
     is_accumulator,
     is_loading,
     is_multiplier,
+    is_vanilla,
     NotificationMessages,
     onClickCancel,
     onClickSell,
@@ -560,6 +578,7 @@ OpenPositions.propTypes = {
     is_accumulator: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     NotificationMessages: PropTypes.func,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,

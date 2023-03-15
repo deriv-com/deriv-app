@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
@@ -8,16 +9,23 @@ const MarketSymbolIconRow = ({
     icon,
     payload,
     show_description,
-    should_show_multiplier = true,
     should_show_accumulator = true,
+    should_show_multiplier = true,
+    is_vanilla,
 }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
 
+    // We need the condition to update the label for vanilla trade type since the label doesn't match with the trade type key unlike other contracts
+    const category_label = is_vanilla
+        ? info_from_shortcode.category.replace('Vanillalong', '').charAt(0).toUpperCase() +
+          info_from_shortcode.category.replace('Vanillalong', '').slice(1)
+        : info_from_shortcode.category;
+
     if (should_show_category_icon && info_from_shortcode) {
         return (
-            <div className='market-symbol-icon'>
+            <div className={classNames('market-symbol-icon', { 'market-symbol-icon__vanilla': is_vanilla })}>
                 <div className='market-symbol-icon-name'>
                     <Popover
                         classNameTarget='market-symbol-icon__popover'
@@ -57,7 +65,7 @@ const MarketSymbolIconRow = ({
                             color='brand'
                         />
                     </Popover>
-                    {show_description && info_from_shortcode.category}
+                    {show_description && category_label}
                 </div>
                 {should_show_multiplier && info_from_shortcode.multiplier && (
                     <div className='market-symbol-icon__multiplier'>x{info_from_shortcode.multiplier}</div>
@@ -95,6 +103,7 @@ const MarketSymbolIconRow = ({
 
 MarketSymbolIconRow.propTypes = {
     icon: PropTypes.node,
+    is_vanilla: PropTypes.bool,
     payload: PropTypes.object,
     show_description: PropTypes.bool,
     should_show_multiplier: PropTypes.bool,

@@ -172,10 +172,17 @@ export const getOpenPositionsColumnsTemplate = currency => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',
-        renderCellContent: ({ row_obj, is_footer }) => {
+        renderCellContent: ({ row_obj, is_footer, is_vanilla }) => {
             if (is_footer) return localize('Total');
 
-            return <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} />;
+            return (
+                <MarketSymbolIconRow
+                    key={row_obj.id}
+                    payload={row_obj.contract_info}
+                    show_description={is_vanilla}
+                    is_vanilla={is_vanilla}
+                />
+            );
         },
     },
     {
@@ -197,8 +204,11 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Payout limit'),
         col_index: 'payout',
-        renderCellContent: ({ cell_value }) =>
-            cell_value ? <Money amount={cell_value} currency={currency} /> : <span>-</span>,
+        renderHeader: ({ title, is_vanilla }) => <span>{is_vanilla ? localize('Strike') : title}</span>,
+        renderCellContent: ({ cell_value, row_obj, is_vanilla }) => {
+            const non_vanilla_payout = cell_value ? <Money amount={cell_value} currency={currency} /> : <span>-</span>;
+            return is_vanilla ? row_obj.barrier?.toFixed(2) : non_vanilla_payout;
+        },
     },
     {
         title: localize('Indicative profit/loss'),

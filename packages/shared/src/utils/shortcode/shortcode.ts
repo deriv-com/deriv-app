@@ -52,6 +52,7 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
 
     const is_accumulators = /^ACCU/i.test(shortcode);
     const is_multipliers = /^MULT/i.test(shortcode);
+
     // First group of regex pattern captures the trade category, second group captures the market's underlying
     let pattern;
     if (is_multipliers) {
@@ -59,7 +60,7 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
     } else pattern = is_accumulators ? accumulators_regex : options_regex;
     const extracted = pattern.exec(shortcode);
     if (extracted !== null) {
-        info_from_shortcode.category = extracted[1].toLowerCase();
+        info_from_shortcode.category = extracted[1].charAt(0).toUpperCase() + extracted[1].slice(1).toLowerCase();
         info_from_shortcode.underlying = extracted[2];
 
         if (is_multipliers) {

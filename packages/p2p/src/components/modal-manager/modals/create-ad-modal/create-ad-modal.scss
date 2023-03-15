@@ -1,11 +1,7 @@
-.dc-modal__container_create-ad-modal {
+.create-ad-modal {
     min-width: 35.6rem;
-    .dc-modal-header {
-        border-bottom: 2px solid var(--general-section-5);
-        height: 5.6rem;
-    }
 
-    .dc-modal-body {
+    &__body {
         padding: 2.4rem 3.2rem;
         display: flex;
         gap: 1.6rem;
@@ -13,4 +9,8 @@
         align-items: center;
         justify-content: center;
     }
+}
+.dc-modal-header--create-ad-modal {
+    border-bottom: 2px solid var(--general-section-5);
+    height: 5.6rem;
 }

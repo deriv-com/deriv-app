@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text, Toast } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -38,6 +38,8 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
+    action_toastbox,
+    actionChangeToastbox,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
@@ -51,6 +53,27 @@ const TopWidgets = ({
         />
     );
 
+    const BuyNotificationPopup = ({ portal_id = 'popup_root' }) => {
+        const message = `Please be on time ${action_toastbox}`;
+
+        // if (!document.getElementById(portal_id) || !purchase_info) return null;
+
+        React.useEffect(() => {
+            setTimeout(() => {
+                actionChangeToastbox(false);
+            }, 4000);
+        }, []);
+
+        return ReactDOM.createPortal(
+            <MobileWrapper>
+                <Toast className='dc-toat-popup4' is_open={action_toastbox} timeout={0} type='info'>
+                    {message}
+                </Toast>
+            </MobileWrapper>,
+            document.getElementById(portal_id)
+        );
+    };
+
     const portal = ReactDOM.createPortal(
         <div className={`smartcharts-${theme}`}>
             <div
@@ -59,6 +82,7 @@ const TopWidgets = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
+                {is_mobile && action_toastbox && <BuyNotificationPopup />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>
@@ -85,6 +109,15 @@ TopWidgets.propTypes = {
     open_market: PropTypes.object,
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
+    proposal_info: PropTypes.object,
+    purchase_info: PropTypes.object,
+    action_toastbox: PropTypes.bool,
+    actionChangeToastbox: PropTypes.func,
 };
 
-export default TopWidgets;
+export default connect(({ modules }) => ({
+    proposal_info: modules.trade.proposal_info,
+    purchase_info: modules.trade.purchase_info,
+    action_toastbox: modules.trade.action_toastbox,
+    actionChangeToastbox: modules.trade.actionChangeToastbox,
+}))(TopWidgets);

@@ -133,6 +133,9 @@ export default class TradeStore extends BaseStore {
     // Mobile
     is_trade_params_expanded = true;
 
+    //Toastbox
+    action_toastbox = false;
+
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
@@ -294,6 +297,8 @@ export default class TradeStore extends BaseStore {
             has_alternative_source: computed,
             is_multiplier: computed,
             getFirstOpenMarket: action.bound,
+            action_toastbox: observable,
+            actionChangeToastbox: action.bound,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -762,6 +767,7 @@ export default class TradeStore extends BaseStore {
                                     this.root_store.ui.openPositionsDrawer();
                                 }
                             }
+                            this.action_toastbox = true;
                             this.proposal_info = {};
                             this.forgetAllProposal();
                             this.purchase_info = response;
@@ -1358,6 +1364,9 @@ export default class TradeStore extends BaseStore {
         return this.contract_type === 'multiplier';
     }
 
+    actionChangeToastbox(is_visible) {
+        return (this.action_toastbox = is_visible);
+    }
     async getFirstOpenMarket(markets_to_search) {
         if (this.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);

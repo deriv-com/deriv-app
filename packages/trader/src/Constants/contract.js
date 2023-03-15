@@ -3,35 +3,38 @@ import { localize, Localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),
-    STAKE: localize('Stake:'),
-    CLOSE: localize('Close'),
-    CANCEL: localize('Cancel'),
-    CURRENT_STAKE: localize('Current stake:'),
-    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
-    TAKE_PROFIT: localize('Take profit:'),
     BUY_PRICE: localize('Buy price:'),
-    STOP_LOSS: localize('Stop loss:'),
-    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
-    PROFIT_LOSS: localize('Profit/Loss:'),
-    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
-    INDICATIVE_PRICE: localize('Indicative price:'),
-    PAYOUT: localize('Sell price:'),
-    PURCHASE_PRICE: localize('Buy price:'),
-    POTENTIAL_PAYOUT: localize('Payout limit:'),
-    TICK: localize('Tick '),
-    WON: localize('Won'),
-    LOST: localize('Lost'),
-    DAYS: localize('days'),
+    CANCEL: localize('Cancel'),
+    CLOSE: localize('Close'),
+    CONTRACT_VALUE: localize('Contract value:'),
+    CURRENT_STAKE: localize('Current stake:'),
     DAY: localize('day'),
-    SELL: localize('Sell'),
-    INCREMENT_VALUE: localize('Increment value'),
+    DAYS: localize('days'),
+    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
     DECREMENT_VALUE: localize('Decrement value'),
+    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
+    ENTRY_SPOT: localize('Entry spot:'),
+    INCREMENT_VALUE: localize('Increment value'),
+    INDICATIVE_PRICE: localize('Indicative price:'),
+    LOST: localize('Lost'),
+    NOT_AVAILABLE: localize('N/A'),
+    PAYOUT: localize('Sell price:'),
+    POTENTIAL_PAYOUT: localize('Payout limit:'),
+    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
+    PROFIT_LOSS: localize('Profit/Loss:'),
+    PURCHASE_PRICE: localize('Buy price:'),
+    RESALE_NOT_OFFERED: localize('Resale not offered'),
+    SELL: localize('Sell'),
+    STAKE: localize('Stake:'),
+    STOP_LOSS: localize('Stop loss:'),
+    STRIKE: localize('Strike:'),
     TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
         'Take profit and/or stop loss are not available while deal cancellation is active.'
     ),
-    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
-    RESALE_NOT_OFFERED: localize('Resale not offered'),
-    NOT_AVAILABLE: localize('N/A'),
+    TAKE_PROFIT: localize('Take profit:'),
+    TICK: localize('Tick '),
+    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
+    WON: localize('Won'),
 });
 
 export const getMarketNamesMap = () => ({
@@ -202,6 +205,7 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
+// Config to display trade button and their position
 export const getSupportedContracts = is_high_low => ({
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
@@ -257,6 +261,14 @@ export const getSupportedContracts = is_high_low => ({
     },
     MULTDOWN: {
         name: <Localize i18n_default_text='Down' />,
+        position: 'bottom',
+    },
+    VANILLALONGCALL: {
+        name: <Localize i18n_default_text='Call' />,
+        position: 'top',
+    },
+    VANILLALONGPUT: {
+        name: <Localize i18n_default_text='Put' />,
         position: 'bottom',
     },
 });

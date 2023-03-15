@@ -38,7 +38,7 @@ describe('<AccountTransferNoAccount />', () => {
         renderAccountTransferNoAccountWithRouter();
 
         expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
-        expect(screen.getByText(`Back to trader's hub`)).toBeInTheDocument();
+        expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
     });
 
     it('should navigate to traders hub, when the "CBack to traders hub" button was clicked', () => {
@@ -46,7 +46,7 @@ describe('<AccountTransferNoAccount />', () => {
 
         renderAccountTransferNoAccountWithRouter();
 
-        const back_to_traders_hub_btn = screen.getByText(`Back to trader's hub`);
+        const back_to_traders_hub_btn = screen.getByText("Back to trader's hub");
         fireEvent.click(back_to_traders_hub_btn);
 
         expect(history.location.pathname).toBe(routes.traders_hub);

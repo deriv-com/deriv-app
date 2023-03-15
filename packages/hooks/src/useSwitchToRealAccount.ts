@@ -13,7 +13,10 @@ const useSwitchToRealAccount = () => {
 
     const switchToReal = React.useCallback(() => {
         if (is_pre_appstore && is_virtual && has_active_real_account) {
-            const new_account = account_list.find(account => account.loginid?.[0]);
+            const new_account = account_list?.find(account => {
+                const account_loginid = account?.loginid;
+                return account_loginid && (account_loginid?.startsWith('CR') || account_loginid?.startsWith('MF'));
+            });
 
             if (new_account && new_account.loginid) {
                 const new_loginid = new_account.loginid;

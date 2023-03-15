@@ -9,6 +9,7 @@
         position: absolute;
         right: 0;
         pointer-events: none;
+        margin-right: 1.1rem;
         cursor: text;
         transition: transform 0.2s ease;
         transform: rotate(0deg);
@@ -38,7 +39,6 @@
     .dc-input__field {
         white-space: nowrap;
         text-overflow: ellipsis;
-        padding-right: 2.4rem;
     }
     .dc-dropdown-list {
         box-shadow: 0 8px 16px 0 var(--shadow-menu);

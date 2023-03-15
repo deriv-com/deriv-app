@@ -269,7 +269,7 @@ export type TRootStore = {
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: Record<string, unknown>;
+    modules: Record<string, Record<string, unknown>>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

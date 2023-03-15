@@ -17,7 +17,10 @@ const CryptoDeposit = observer(() => {
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
 
-    const crumbs = [localize('Cashier'), localize('Deposit cryptocurrencies')];
+    const crumbs = [
+        { value: 0, text: localize('Cashier') },
+        { value: 1, text: localize('Deposit cryptocurrencies') },
+    ];
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -110,9 +113,9 @@ const CryptoDeposit = observer(() => {
         setOptionListValue(event.target.value);
     };
 
-    const onBreadcrumbHandler = (item: string) => {
-        switch (item) {
-            case localize('Cashier'):
+    const onBreadcrumbHandler = (item: { value: number; text: string }) => {
+        switch (item.value) {
+            case 0:
                 setIsDeposit(false);
                 break;
             default:

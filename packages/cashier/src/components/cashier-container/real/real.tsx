@@ -27,7 +27,10 @@ const Real = ({
 }: TRealProps) => {
     const should_show_breadcrumbs = !is_eu && is_deposit && Boolean(iframe_height);
     const should_show_loader = is_loading || !iframe_height;
-    const crumbs = [localize('Cashier'), localize('Deposit via bank wire, credit card and e-wallet')];
+    const crumbs = [
+        { value: 0, text: localize('Cashier') },
+        { value: 1, text: localize('Deposit via bank wire, credit card, and e-wallet') },
+    ];
 
     React.useEffect(() => {
         return () => {
@@ -36,9 +39,9 @@ const Real = ({
         };
     }, [clearIframe, onMountDeposit]);
 
-    const onBreadcrumbHandler = (item: string) => {
-        switch (item) {
-            case localize('Cashier'):
+    const onBreadcrumbHandler = (item: { value: number; text: string }) => {
+        switch (item.value) {
+            case 0:
                 setIsDeposit?.(false);
                 break;
             default:

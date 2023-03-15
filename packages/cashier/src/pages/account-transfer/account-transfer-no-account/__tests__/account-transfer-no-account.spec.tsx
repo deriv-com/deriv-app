@@ -5,12 +5,14 @@ import CashierProviders from '../../../../cashier-providers';
 import { routes } from '@deriv/shared';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
+import { mockStore } from '@deriv/stores';
+import { TRootStore } from '@deriv/stores/types';
 
 describe('<AccountTransferNoAccount />', () => {
-    let mockRootStore;
+    let mockRootStore: TRootStore;
     const history = createBrowserHistory();
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 is_dxtrade_allowed: false,
             },
@@ -18,7 +20,7 @@ describe('<AccountTransferNoAccount />', () => {
                 toggleAccountsDialog: jest.fn(),
             },
             traders_hub: { openModal: jest.fn(), closeModal: jest.fn() },
-        };
+        });
     });
 
     const renderAccountTransferNoAccountWithRouter = () => {
@@ -32,6 +34,13 @@ describe('<AccountTransferNoAccount />', () => {
         );
     };
 
+    it('should show "Transferring funds will require you to create a second account." message and "Back to traders hub" button', () => {
+        renderAccountTransferNoAccountWithRouter();
+
+        expect(screen.getByText('Transferring funds will require you to create a second account.')).toBeInTheDocument();
+        expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
+    });
+
     it('should show "Transferring funds will require you to create a second account." message and "Back to traders hub" button when is_dxtrade_allowed=true', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
@@ -41,16 +50,7 @@ describe('<AccountTransferNoAccount />', () => {
         expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
     });
 
-    it('should show "Transferring funds will require you to create a second account." message and "Back to traders hub" button', () => {
-        renderAccountTransferNoAccountWithRouter();
-
-        expect(screen.getByText('Transferring funds will require you to create a second account.')).toBeInTheDocument();
-        expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
-    });
-
-    it('should navigate to traders hub, when the "Back to traders hub" button was clicked and is_dxtrade_allowed=true', () => {
-        mockRootStore.client.is_dxtrade_allowed = true;
-
+    it('should navigate to traders hub, when the "Back to traders hub" button was clicked', () => {
         renderAccountTransferNoAccountWithRouter();
 
         const back_to_traders_hub_btn = screen.getByText("Back to trader's hub");
@@ -59,7 +59,9 @@ describe('<AccountTransferNoAccount />', () => {
         expect(history.location.pathname).toBe(routes.traders_hub);
     });
 
-    it('should navigate to traders hub, when the "Back to traders hub" button was clicked', () => {
+    it('should navigate to traders hub, when the "Back to traders hub" button was clicked and is_dxtrade_allowed=true', () => {
+        mockRootStore.client.is_dxtrade_allowed = true;
+
         renderAccountTransferNoAccountWithRouter();
 
         const back_to_traders_hub_btn = screen.getByText("Back to trader's hub");

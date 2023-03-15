@@ -41,9 +41,25 @@ describe('<AccountTransferNoAccount />', () => {
         expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
     });
 
-    it('should navigate to traders hub, when the "Back to traders hub" button was clicked', () => {
+    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button', () => {
+        renderAccountTransferNoAccountWithRouter();
+
+        expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
+        expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
+    });
+
+    it('should navigate to traders hub, when the "Back to traders hub" button was clicked and is_dxtrade_allowed=true', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
+        renderAccountTransferNoAccountWithRouter();
+
+        const back_to_traders_hub_btn = screen.getByText("Back to trader's hub");
+        fireEvent.click(back_to_traders_hub_btn);
+
+        expect(history.location.pathname).toBe(routes.traders_hub);
+    });
+
+    it('should navigate to traders hub, when the "Back to traders hub" button was clicked', () => {
         renderAccountTransferNoAccountWithRouter();
 
         const back_to_traders_hub_btn = screen.getByText("Back to trader's hub");

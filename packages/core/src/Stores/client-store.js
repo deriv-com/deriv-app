@@ -1659,8 +1659,9 @@ export default class ClientStore extends BaseStore {
             if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-
-            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            await WS.authorized.cache
+                .landingCompany(this.residence || account_settings.country_code)
+                .then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
             await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);

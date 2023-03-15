@@ -30,6 +30,7 @@ const SocketCache = (() => {
         contracts_for: { expire: 10 },
         exchange_rates: { expire: 60 },
         trading_times: { expire: 120 },
+        get_settings: { expire: 10 },
         // TODO: Enable statement and trade table caching once we have UI design for handling
         // transitions between cached table and newly added data to table
         // statement             : { expire: 10 },

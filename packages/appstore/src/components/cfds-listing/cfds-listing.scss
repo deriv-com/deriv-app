@@ -1182,6 +1182,10 @@
 
     &-row-demo {
         grid-template-columns: 1.5fr 1fr 1fr 1fr;
+
+        &--restricted {
+            grid-template-columns: 1fr 2fr 1fr;
+        }
         @include mobile {
             width: 116vw;
             height: unset;

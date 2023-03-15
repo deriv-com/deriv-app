@@ -36,6 +36,7 @@ const Row = ({
     content_flag,
     is_high_risk_for_mt5,
     financial_restricted_countries,
+    is_preappstore_restricted_cr_demo_account,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
@@ -51,8 +52,11 @@ const Row = ({
     }
 
     if (is_platform_row && is_pre_appstore_setting && financial_restricted_countries) {
-        //delete synthetic bvi from values for restricted countries like norway/japan
-        delete values.synthetic_bvi;
+        values.synthetic_bvi = { text: 'MT5' };
+    }
+
+    if (is_leverage_row && is_pre_appstore_setting && is_preappstore_restricted_cr_demo_account) {
+        values.synthetic_bvi = { text: 'Up to 1:1000' };
     }
 
     if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR && is_high_risk_for_mt5) {
@@ -66,12 +70,9 @@ const Row = ({
                 classNames(`cfd-accounts-compare-modal__table-row${pre_appstore_class}`, {
                     [`cfd-accounts-compare-modal__table-row--leverage${pre_appstore_class}`]: is_leverage_row,
                     [`cfd-accounts-compare-modal__row-with-columns-count-${available_accounts_count + 1}`]:
-                        available_accounts_count < 6 && !is_platform_row,
-                    [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}`]:
-                        is_platform_row && !financial_restricted_countries,
+                        available_accounts_count < 6,
+                    [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}`]: is_platform_row,
                     [`cfd-accounts-compare-modal__table-row--instruments${pre_appstore_class}`]: is_instruments_row,
-                    [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}--restricted`]:
-                        is_platform_row && financial_restricted_countries,
                 })
             }
         >
@@ -154,6 +155,7 @@ const DMT5CompareModalContent = ({
     is_logged_in,
     is_pre_appstore_setting,
     is_preappstore_cr_demo_account,
+    is_preappstore_restricted_cr_demo_account,
     is_real_enabled,
     is_virtual,
     openDerivRealAccountNeededModal,
@@ -406,7 +408,7 @@ const DMT5CompareModalContent = ({
     };
 
     const getModalContent = () => {
-        if (is_preappstore_cr_demo_account) {
+        if (is_preappstore_cr_demo_account || is_preappstore_restricted_cr_demo_account) {
             return preappstore_cr_demo_content;
         } else if (show_eu_related_content) {
             if (is_pre_appstore_setting && content_flag === ContentFlag.EU_DEMO) {
@@ -438,7 +440,10 @@ const DMT5CompareModalContent = ({
     const pre_appstore_class = should_show_derivx && synthetic_accounts_count ? '__pre-appstore' : '';
 
     const getClassNamesForDemoAndEu = () => {
-        if (is_preappstore_cr_demo_account) return 'cfd-accounts-compare-modal-row-demo';
+        if (is_preappstore_cr_demo_account && !financial_restricted_countries)
+            return 'cfd-accounts-compare-modal-row-demo';
+        else if (is_preappstore_cr_demo_account && !financial_restricted_countries)
+            return 'cfd-accounts-compare-modal-row-demo--restricted';
         else if (show_eu_related_content) return 'cfd-accounts-compare-modal-row-eu';
         return null;
     };
@@ -493,6 +498,9 @@ const DMT5CompareModalContent = ({
                                     content_flag={content_flag}
                                     is_high_risk_for_mt5={is_high_risk_for_mt5}
                                     financial_restricted_countries={financial_restricted_countries}
+                                    is_preappstore_restricted_cr_demo_account={
+                                        is_preappstore_restricted_cr_demo_account
+                                    }
                                 />
                             ))}
                         </Table.Body>

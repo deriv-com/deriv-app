@@ -32,19 +32,19 @@ describe('<AccountTransferNoAccount />', () => {
         );
     };
 
-    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button when is_dxtrade_allowed=true', () => {
+    it('should show "Transferring funds will require you to create a second account." message and "Back to traders hub" button when is_dxtrade_allowed=true', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
         renderAccountTransferNoAccountWithRouter();
 
-        expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
+        expect(screen.getByText('Transferring funds will require you to create a second account.')).toBeInTheDocument();
         expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
     });
 
-    it('should show "Transferring funds will require you to create a second account" message and "Back to traders hub" button', () => {
+    it('should show "Transferring funds will require you to create a second account." message and "Back to traders hub" button', () => {
         renderAccountTransferNoAccountWithRouter();
 
-        expect(screen.getByText('Transferring funds will require you to create a second account')).toBeInTheDocument();
+        expect(screen.getByText('Transferring funds will require you to create a second account.')).toBeInTheDocument();
         expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
     });
 

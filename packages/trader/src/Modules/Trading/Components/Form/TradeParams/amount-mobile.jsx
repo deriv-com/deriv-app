@@ -1,8 +1,9 @@
-import React from 'react';
-import { Tabs, Money, Numpad } from '@deriv/components';
-import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Money, Numpad, Tabs, Text } from '@deriv/components';
+import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
 
+import React from 'react';
+import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
 const Basis = ({
@@ -21,6 +22,9 @@ const Basis = ({
     trade_duration,
     trade_duration_unit,
     setAmountError,
+    contract_type,
+    stake_boundary,
+    vanilla_trade_type,
 }) => {
     const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
@@ -65,28 +69,46 @@ const Basis = ({
     };
 
     return (
-        <div className='trade-params__amount-keypad'>
-            <Numpad
-                value={selected_basis}
-                format={formatAmount}
-                onSubmit={setBasisAndAmount}
-                currency={currency}
-                min={min_amount}
-                is_currency
-                render={({ value: v, className }) => {
-                    return (
-                        <div className={className}>
-                            {parseFloat(v) > 0 ? <Money currency={currency} amount={v} should_format={false} /> : v}
-                        </div>
-                    );
-                }}
-                reset_press_interval={450}
-                reset_value=''
-                pip_size={user_currency_decimal_places}
-                onValidate={validateAmount}
-                submit_label={localize('OK')}
-                onValueChange={onNumberChange}
-            />
+        <div className='trade-params__strike'>
+            {contract_type === 'vanilla' && (
+                <section className='trade-container__stake-field'>
+                    <div className='trade-container__stake-field--min'>
+                        <Text size='xxs'>{localize('Min. stake')}</Text>
+                        <Text size='xxs'>
+                            {stake_boundary[vanilla_trade_type].min_stake} {currency}
+                        </Text>
+                    </div>
+                    <div className='trade-container__stake-field--max'>
+                        <Text size='xxs'>{localize('Max. stake')}</Text>
+                        <Text size='xxs'>
+                            {stake_boundary[vanilla_trade_type].max_stake} {currency}
+                        </Text>
+                    </div>
+                </section>
+            )}
+            <div className={classNames('trade-params__amount-keypad', { strike__pos: contract_type === 'vanilla' })}>
+                <Numpad
+                    value={selected_basis}
+                    format={formatAmount}
+                    onSubmit={setBasisAndAmount}
+                    currency={currency}
+                    min={min_amount}
+                    is_currency
+                    render={({ value: v, className }) => {
+                        return (
+                            <div className={className}>
+                                {parseFloat(v) > 0 ? <Money currency={currency} amount={v} should_format={false} /> : v}
+                            </div>
+                        );
+                    }}
+                    reset_press_interval={450}
+                    reset_value=''
+                    pip_size={user_currency_decimal_places}
+                    onValidate={validateAmount}
+                    submit_label={localize('OK')}
+                    onValueChange={onNumberChange}
+                />
+            </div>
         </div>
     );
 };
@@ -99,6 +121,9 @@ const AmountWrapper = connect(({ modules, client, ui }) => ({
     trade_duration: modules.trade.duration,
     currency: client.currency,
     addToast: ui.addToast,
+    contract_type: modules.trade.contract_type,
+    vanilla_trade_type: ui.vanilla_trade_type,
+    stake_boundary: modules.trade.stake_boundary,
 }))(Basis);
 
 const Amount = ({

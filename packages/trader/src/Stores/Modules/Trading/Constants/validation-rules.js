@@ -2,6 +2,8 @@ import { localize } from '@deriv/translations';
 import { isHourValid, isMinuteValid, isTimeValid, toMoment } from '@deriv/shared';
 import { isSessionAvailable } from '../Helpers/start-date';
 
+const tradeSpecificBarrierCheck = (is_vanilla, input) => is_vanilla || input !== 0;
+
 export const getValidationRules = () => ({
     amount: {
         rules: [
@@ -31,7 +33,9 @@ export const getValidationRules = () => ({
                 'custom',
                 {
                     func: (value, options, store, inputs) =>
-                        /^[+-]/.test(inputs.barrier_1) ? +inputs.barrier_1 !== 0 : true,
+                        /^[+-]/.test(inputs.barrier_1)
+                            ? tradeSpecificBarrierCheck(store.is_vanilla, +inputs.barrier_1)
+                            : true,
                     message: localize('Barrier cannot be zero.'),
                 },
             ],

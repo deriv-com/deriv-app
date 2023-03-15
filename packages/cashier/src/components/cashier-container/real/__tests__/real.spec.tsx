@@ -10,8 +10,10 @@ jest.mock('@deriv/components', () => ({
 describe('<Real />', () => {
     const props = {
         iframe_url: 'https://www.test_url.com',
+        changeTheme: jest.fn(),
         clearIframe: jest.fn(),
         iframe_height: '',
+        is_dark_mode_on: false,
         is_loading: false,
     };
 

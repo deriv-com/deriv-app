@@ -21,7 +21,7 @@ type TDeposit = {
 };
 
 const Deposit = observer(({ setSideNotes }: TDeposit) => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, ui } = useStore();
     const {
         can_change_fiat_currency,
         currency,
@@ -30,8 +30,9 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_virtual,
         landing_company_shortcode,
     } = client;
+    const { is_dark_mode_on } = ui;
     const { iframe, deposit, transaction_history, general_store } = useCashierStore();
-    const { clearIframe, iframe_height, iframe_url } = iframe;
+    const { clearIframe, iframe_height, iframe_url, changeTheme } = iframe;
     const { container, error, onMountDeposit: onMount } = deposit;
     const { content_flag } = traders_hub;
     const {
@@ -144,6 +145,8 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                     iframe_url={iframe_url}
                     is_loading={is_loading}
                     clearIframe={clearIframe}
+                    changeTheme={changeTheme}
+                    is_dark_mode_on={is_dark_mode_on}
                 />
             </>
         );

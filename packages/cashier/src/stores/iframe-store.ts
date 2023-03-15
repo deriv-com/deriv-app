@@ -9,15 +9,18 @@ export default class IframeStore {
         makeObservable(this, {
             iframe_height: observable,
             iframe_url: observable,
+            base_url: observable,
             is_session_timeout: observable,
             timeout_session: observable,
             setSessionTimeout: action.bound,
             checkIframeLoaded: action.bound,
             clearTimeoutCashierUrl: action.bound,
+            setBaseUrl: action.bound,
             setTimeoutCashierUrl: action.bound,
             setIframeUrl: action.bound,
             setContainerHeight: action.bound,
             clearIframe: action.bound,
+            changeTheme: action.bound,
         });
 
         this.root_store = root_store;
@@ -25,6 +28,7 @@ export default class IframeStore {
 
     iframe_height = 0;
     iframe_url = '';
+    base_url = '';
     is_session_timeout = true;
     onIframeLoaded: TOnIframeLoadedCallback | null = null;
     timeout_session: NodeJS.Timeout | null = null;
@@ -83,7 +87,8 @@ export default class IframeStore {
         const { client, ui } = this.root_store;
 
         if (url) {
-            this.iframe_url = `${url}&theme=${ui.is_dark_mode_on ? 'dark' : 'light'}`;
+            this.setBaseUrl(url);
+            this.iframe_url = `${url}&DarkMode=${ui.is_dark_mode_on ? 'on' : 'off'}`;
 
             const container = this.root_store.modules.cashier.general_store.active_container;
 
@@ -96,6 +101,17 @@ export default class IframeStore {
         } else {
             this.iframe_url = url || '';
         }
+    }
+
+    setBaseUrl(url?: string): void {
+        if (url) {
+            this.base_url = url;
+        }
+    }
+
+    changeTheme(): void {
+        const { ui } = this.root_store;
+        this.iframe_url = `${this.base_url}&DarkMode=${ui.is_dark_mode_on ? 'on' : 'off'}`;
     }
 
     setContainerHeight(height: number): void {

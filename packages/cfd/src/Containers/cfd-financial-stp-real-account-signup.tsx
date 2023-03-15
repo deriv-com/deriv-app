@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
+import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
 import CFDPOA from '../Components/cfd-poa';
@@ -112,7 +112,10 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const should_show_poi = () => {
-        if (jurisdiction_selected_shortcode === 'vanuatu' || jurisdiction_selected_shortcode === 'maltainvest') {
+        if (
+            jurisdiction_selected_shortcode === Jurisdiction.VANUATU ||
+            jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST
+        ) {
             return need_poi_for_vanuatu_maltainvest;
         }
         return need_poi_for_bvi_labuan;
@@ -122,7 +125,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     );
 
     const should_show_personal_details =
-        !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== 'maltainvest';
+        !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;
 
     const verification_configs = [
         ...(should_show_poi() ? [poi_config] : []),

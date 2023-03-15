@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS } from '@deriv/shared';
+import { WS, Jurisdiction } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
@@ -30,7 +30,7 @@ const POISubmissionForMT5 = ({
                 is_idv_supported &&
                 Number(idv_submissions_left) > 0 &&
                 !is_idv_disallowed &&
-                jurisdiction_selected_shortcode !== 'vanuatu'
+                jurisdiction_selected_shortcode !== Jurisdiction.VANUATU
             ) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {

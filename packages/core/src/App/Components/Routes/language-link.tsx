@@ -25,7 +25,7 @@ const LanguageLink = ({
     const { i18n } = useTranslation();
     const is_active = current_language === lang;
 
-    const link: any = (
+    const link: React.ReactNode = (
         <React.Fragment>
             <Icon
                 icon={`IcFlag${lang.replace('_', '-')}`}

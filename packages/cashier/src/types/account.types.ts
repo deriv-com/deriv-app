@@ -3,6 +3,8 @@
 /* -------------------------------------------------------------------------- */
 import { DetailsOfEachMT5Loginid, TransferBetweenAccountsResponse } from '@deriv/api-types';
 
+export type TPlatformIcon = 'Derived' | 'Financial' | 'Options' | 'CFDs';
+
 export type TAccount = {
     balance?: string | number;
     currency?: string;
@@ -14,7 +16,7 @@ export type TAccount = {
     is_mt?: boolean;
     market_type?: string;
     nativepicker_text?: string;
-    platform_icon?: 'Derived' | 'Financial' | 'Options' | 'CFDs';
+    platform_icon?: TPlatformIcon;
     status?: string;
     text?: JSX.Element | string;
     value?: string;

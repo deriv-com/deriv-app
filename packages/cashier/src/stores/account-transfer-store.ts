@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount } from '../types';
+import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
@@ -87,7 +87,7 @@ export default class AccountTransferStore {
     account_transfer_amount: string | null = '';
     should_switch_account = false;
     transfer_fee?: number | null = null;
-    transfer_limit: { min?: string | null; max?: string | null } = {};
+    transfer_limit: { min?: string | number; max?: string | number } = {};
 
     get is_transfer_locked() {
         const {
@@ -267,7 +267,7 @@ export default class AccountTransferStore {
                 (Number(balance) >= (transfer_limit?.min || 0) && Number(balance) <= transfer_limit?.max)
                     ? balance
                     : transfer_limit?.max.toFixed(decimal_places),
-            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
+            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : '',
         };
     }
 
@@ -391,7 +391,7 @@ export default class AccountTransferStore {
                 sub_account_type: account.sub_account_type,
                 platform: account.account_type,
                 is_eu: this.root_store.client.is_eu,
-            })}`;
+            })}` as TPlatformIcon;
             const non_eu_accounts =
                 account.landing_company_short &&
                 account.landing_company_short !== 'svg' &&

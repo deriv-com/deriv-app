@@ -3,12 +3,13 @@ import { setWebsocket } from '@deriv/shared';
 import { init } from 'Utils/server_time';
 import Routes from 'Containers/routes';
 import CashierProviders from './cashier-providers';
-import type { TRootStore, TWebSocket } from './types';
+import type { TWebSocket } from './types';
+import type { TStores } from '@deriv/stores';
 
 type TAppProps = {
     passthrough: {
         WS: TWebSocket;
-        root_store: TRootStore;
+        root_store: TStores;
     };
 };
 

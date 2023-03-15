@@ -111,7 +111,7 @@ export default class GeneralStore extends BaseStore {
 
     get is_p2p_enabled(): boolean {
         const { content_flag } = this.root_store.traders_hub;
-        const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
+        const is_eu = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
         return this.is_p2p_visible && !is_eu;
     }

@@ -249,13 +249,13 @@ type TNotificationStore = {
 
 type TTradersHubStore = {
     closeModal: () => void;
-    content_flag: any;
+    content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
         {
             short_code_and_region: string;
             login: string;
             sub_title: string;
-            icon: string;
+            icon: 'Derived' | 'Financial' | 'Options' | 'CFDs';
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {
@@ -269,7 +269,7 @@ export type TRootStore = {
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: any;
+    modules: Record<string, unknown>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

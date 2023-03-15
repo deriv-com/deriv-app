@@ -37,21 +37,21 @@ describe('<Real />', () => {
             render(<Real {...props} is_deposit is_eu={false} />);
 
             expect(screen.getByText(/cashier/i)).toBeInTheDocument();
-            expect(screen.getByText(/deposit via bank wire, credit card and e-wallet/i)).toBeInTheDocument();
+            expect(screen.getByText(/deposit via bank wire, credit card, and e-wallet/i)).toBeInTheDocument();
         });
 
         it('should not show breadcrumbs on deposit page if iframe_height is equal to 0', () => {
             render(<Real {...props} is_deposit is_eu={false} iframe_height={0} />);
 
             expect(screen.queryByText(/cashier/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/deposit via bank wire, credit card and e-wallet/i)).not.toBeInTheDocument();
+            expect(screen.queryByText(/deposit via bank wire, credit card, and e-wallet/i)).not.toBeInTheDocument();
         });
 
         it('should not show breadcrumbs on withdraw page', () => {
             render(<Real {...props} is_deposit={false} />);
 
             expect(screen.queryByText(/cashier/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/deposit via bank wire, credit card and e-wallet/i)).not.toBeInTheDocument();
+            expect(screen.queryByText(/deposit via bank wire, credit card, and e-wallet/i)).not.toBeInTheDocument();
         });
     });
 

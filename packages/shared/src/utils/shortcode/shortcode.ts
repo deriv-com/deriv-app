@@ -18,11 +18,12 @@ export const extractInfoFromShortcode = (shortcode: string) => {
     };
 
     const is_multipliers = /^MULT/i.test(shortcode);
+
     // First group of regex pattern captures the trade category, second group captures the market's underlying
     const pattern = is_multipliers ? multipliers_regex : options_regex;
     const extracted = pattern.exec(shortcode);
     if (extracted !== null) {
-        info_from_shortcode.category = extracted[1].toLowerCase();
+        info_from_shortcode.category = extracted[1].charAt(0).toUpperCase() + extracted[1].slice(1).toLowerCase();
         info_from_shortcode.underlying = extracted[2];
 
         if (is_multipliers) {

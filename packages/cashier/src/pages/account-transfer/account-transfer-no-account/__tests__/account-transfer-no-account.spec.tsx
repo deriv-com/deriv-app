@@ -41,7 +41,7 @@ describe('<AccountTransferNoAccount />', () => {
         expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
     });
 
-    it('should navigate to traders hub, when the "CBack to traders hub" button was clicked', () => {
+    it('should navigate to traders hub, when the "Back to traders hub" button was clicked', () => {
         mockRootStore.client.is_dxtrade_allowed = true;
 
         renderAccountTransferNoAccountWithRouter();

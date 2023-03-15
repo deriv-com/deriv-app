@@ -4,14 +4,14 @@
         "outDir": "./lib",
         "baseUrl": "./",
         "paths": {
-            "Assets/*": ["./src/Assets/*"],
             "@deriv/*": ["../*/src"]
         }
     },
     "include": [
         "src",
-        "globals.d.ts",
-        "./@types/react-div-100vh/react-div-100vh-config.d.ts, ./@types/@enykeev/react-virtualized/dist/es/AutoSizer.d.ts",
+        "./@types/react-div-100vh/react-div-100vh-config.d.ts",
+        "./@types/@enykeev/react-virtualized/dist/es/AutoSizer.d.ts",
+        "../../global.d.ts",
         "../../utils.d.ts"
     ]
 }

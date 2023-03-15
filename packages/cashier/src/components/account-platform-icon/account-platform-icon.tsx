@@ -1,6 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
-import TradingPlatformIcon from 'Assets/svgs/trading-platform';
+import { Icon, TradingPlatformIcon } from '@deriv/components';
 import { TAccountsList } from 'Types';
 
 type TAccountPlatformIcon = {

@@ -14,6 +14,7 @@ import {
     PasswordMeter,
     Text,
     MultiStep,
+    TradingPlatformIcon,
 } from '@deriv/components';
 import {
     CFD_PLATFORMS,
@@ -33,7 +34,6 @@ import SuccessDialog from '../Components/success-dialog';
 import 'Sass/cfd.scss';
 import { connect } from '../Stores/connect';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 
 export type TCFDPasswordFormValues = { password: string };
 

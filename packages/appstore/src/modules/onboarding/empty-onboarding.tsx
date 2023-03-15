@@ -1,11 +1,11 @@
 import React from 'react';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import { TradingPlatformIcon } from '@deriv/components';
 
 const EmptyOnboarding = () => {
     return (
         <div className='empty-onboarding__wrapper'>
             <div className='empty-onboarding__header'>
-                <TradigPlatformIconProps icon='DerivTradingLogo' />
+                <TradingPlatformIcon icon='DerivTradingLogo' />
             </div>
         </div>
     );

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, StatusBadge } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import { Text, StatusBadge, TradingPlatformIcon } from '@deriv/components';
 import { platform_config, mf_platform_config, BrandConfig } from 'Constants/platform-config';
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
@@ -55,7 +54,7 @@ const TradingAppCard = ({
                     'trading-app-card__icon--container__clickable': clickable_icon,
                 })}
             >
-                <TradigPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
+                <TradingPlatformIcon icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
             </div>
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>

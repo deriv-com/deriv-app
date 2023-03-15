@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
-import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
+import CurrencyIcon, { Currency } from 'Components/currency';
 import './currency-switcher-container.scss';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';

@@ -103,6 +103,7 @@ export { default as TickPicker } from './components/tick-picker';
 export { default as TickProgress } from './components/tick-progress';
 export { default as Timeline } from './components/timeline';
 export { default as Tooltip } from './components/tooltip';
+export { default as TradingPlatformIcon } from './components/trading-platform-icon';
 export { default as UILoader } from './components/u-i-loader';
 export { default as VerticalTab } from './components/vertical-tab';
 export { default as Wizard } from './components/wizard';

@@ -10,11 +10,11 @@ declare global {
             open_chat_window: VoidFunction;
         };
     }
-}
 
-declare module '*.svg' {
-    const content: React.SVGAttributes<SVGElement>;
-    export default content;
+    declare module '*.svg' {
+        const content: React.SVGAttributes<SVGElement>;
+        export default content;
+    }
 }
 
 export {};

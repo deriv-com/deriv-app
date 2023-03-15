@@ -1,10 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
-import { Text, Button } from '@deriv/components';
+import { Text, Button, TradingPlatformIcon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { platform_config } from 'Constants/platform-config';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 
 import './static-trading-app-card.scss';
@@ -29,7 +28,7 @@ const StaticTradingAppCard = ({
                 'static-trading-app-card--with-bot-margin': has_divider,
             })}
         >
-            <TradigPlatformIconProps
+            <TradingPlatformIcon
                 icon={icon}
                 size={icon_size}
                 className={is_item_blurry ? 'static-trading-app-card--blurry' : ''}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, Icon, Money, Popover } from '@deriv/components';
+import { Text, Button, Icon, Money, Popover, TradingPlatformIcon } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import {
@@ -14,7 +14,6 @@ import {
 import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;

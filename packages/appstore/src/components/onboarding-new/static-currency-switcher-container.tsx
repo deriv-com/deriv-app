@@ -1,15 +1,14 @@
-import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import './static-currency-switcher-container.scss';
-import { Icon } from '@deriv/components';
+import { Icon, CurrencyIcon } from '@deriv/components';
 
 type CurrentSwitcherContainerProps = {
     actions?: ReactNode;
     children: ReactNode;
-    icon: Currency;
+    icon: React.ComponentProps<typeof CurrencyIcon>['icon'];
     title: ReactNode;
 };
 

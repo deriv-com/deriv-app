@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
 const FooterNote = ({
@@ -17,7 +17,7 @@ const FooterNote = ({
 
     const { poa_pending } = getAuthenticationStatusInfo(account_status);
 
-    if (jurisdiction_selected_shortcode === 'svg') {
+    if (jurisdiction_selected_shortcode === Jurisdiction.SVG) {
         return (
             <Localize
                 i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0> account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
@@ -25,8 +25,8 @@ const FooterNote = ({
             />
         );
     } else if (
-        (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation) ||
-        (jurisdiction_selected_shortcode === 'vanuatu' && should_restrict_vanuatu_account_creation)
+        (jurisdiction_selected_shortcode === Jurisdiction.BVI && should_restrict_bvi_account_creation) ||
+        (jurisdiction_selected_shortcode === Jurisdiction.VANUATU && should_restrict_vanuatu_account_creation)
     ) {
         return poa_pending ? (
             <Localize
@@ -43,21 +43,21 @@ const FooterNote = ({
                 values={{ account_type_name }}
             />
         );
-    } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+    } else if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
         return (
             <Localize
                 i18n_default_text='Add Your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
                 values={{ account_type_name }}
             />
         );
-    } else if (jurisdiction_selected_shortcode === 'labuan') {
+    } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
         return (
             <Localize
                 i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0>  STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
                 values={{ account_type_name }}
             />
         );
-    } else if (jurisdiction_selected_shortcode === 'maltainvest') {
+    } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
         return (
             <Localize i18n_default_text='Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).' />
         );

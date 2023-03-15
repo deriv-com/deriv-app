@@ -143,6 +143,7 @@ const CompareAccountsModal = ({
 
     const show_preappstore_eu_demo = is_pre_appstore_setting && show_eu_related_content && is_demo_tab;
     const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
+
     const is_preappstore_restricted_cr_demo_account =
         is_pre_appstore_setting && financial_restricted_countries && content_flag === ContentFlag.CR_DEMO;
 

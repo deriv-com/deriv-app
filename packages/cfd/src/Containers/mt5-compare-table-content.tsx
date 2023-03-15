@@ -55,8 +55,8 @@ const Row = ({
         values.synthetic_bvi = { text: 'MT5' };
     }
 
-    if (is_leverage_row && is_pre_appstore_setting && is_preappstore_restricted_cr_demo_account) {
-        values.synthetic_bvi = { text: 'Up to 1:1000' };
+    if (is_pre_appstore_setting && is_preappstore_restricted_cr_demo_account) {
+        delete values.synthetic_bvi;
     }
 
     if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR && is_high_risk_for_mt5) {
@@ -408,7 +408,7 @@ const DMT5CompareModalContent = ({
     };
 
     const getModalContent = () => {
-        if (is_preappstore_cr_demo_account || is_preappstore_restricted_cr_demo_account) {
+        if (is_preappstore_cr_demo_account) {
             return preappstore_cr_demo_content;
         } else if (show_eu_related_content) {
             if (is_pre_appstore_setting && content_flag === ContentFlag.EU_DEMO) {
@@ -440,10 +440,7 @@ const DMT5CompareModalContent = ({
     const pre_appstore_class = should_show_derivx && synthetic_accounts_count ? '__pre-appstore' : '';
 
     const getClassNamesForDemoAndEu = () => {
-        if (is_preappstore_cr_demo_account && !financial_restricted_countries)
-            return 'cfd-accounts-compare-modal-row-demo';
-        else if (is_preappstore_cr_demo_account && !financial_restricted_countries)
-            return 'cfd-accounts-compare-modal-row-demo--restricted';
+        if (is_preappstore_cr_demo_account) return 'cfd-accounts-compare-modal-row-demo';
         else if (show_eu_related_content) return 'cfd-accounts-compare-modal-row-eu';
         return null;
     };

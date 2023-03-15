@@ -288,7 +288,6 @@ export default class BaseStore {
     validateAllProperties() {
         const validation_rules = Object.keys(this.validation_rules);
         const validation_errors = Object.keys(this.validation_errors);
-
         validation_rules.forEach(p => {
             this.validateProperty(p, this[p]);
         });

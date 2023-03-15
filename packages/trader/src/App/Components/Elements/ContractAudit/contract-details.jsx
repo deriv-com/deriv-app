@@ -4,8 +4,10 @@ import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     epochToMoment,
+    formatMoney,
     toGMTFormat,
     getCancellationPrice,
+    getCurrencyDisplayCode,
     isMobile,
     isMultiplierContract,
     isUserSold,
@@ -21,7 +23,7 @@ import {
 import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
-const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {
+const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot, is_vanilla }) => {
     const {
         commission,
         contract_type,
@@ -33,6 +35,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         date_start,
         tick_count,
         transaction_ids: { buy, sell } = {},
+        number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
@@ -86,18 +89,39 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                     : `${duration} ${duration_unit}`
                             }
                         />
-                        <ContractAuditItem
-                            id='dt_bt_label'
-                            icon={
-                                isDigitType(contract_type) ? (
-                                    <Icon icon='IcContractTarget' size={24} />
-                                ) : (
-                                    <Icon icon='IcContractBarrier' size={24} />
-                                )
-                            }
-                            label={getBarrierLabel(contract_info)}
-                            value={getBarrierValue(contract_info) || ' - '}
-                        />
+                        {is_vanilla ? (
+                            <React.Fragment>
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={<Icon icon='IcContractStrike' size={24} />}
+                                    label={getBarrierLabel(contract_info)}
+                                    value={getBarrierValue(contract_info) || ' - '}
+                                />
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={<Icon icon='IcContractPayout' size={24} />}
+                                    label={localize('Payout per point')}
+                                    value={
+                                        `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(
+                                            currency
+                                        )}` || ' - '
+                                    }
+                                />
+                            </React.Fragment>
+                        ) : (
+                            <ContractAuditItem
+                                id='dt_bt_label'
+                                icon={
+                                    isDigitType(contract_type) ? (
+                                        <Icon icon='IcContractTarget' size={24} />
+                                    ) : (
+                                        <Icon icon='IcContractBarrier' size={24} />
+                                    )
+                                }
+                                label={getBarrierLabel(contract_info)}
+                                value={getBarrierValue(contract_info) || ' - '}
+                            />
+                        )}
                     </React.Fragment>
                 )}
                 <ContractAuditItem

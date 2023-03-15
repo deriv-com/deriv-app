@@ -5,7 +5,6 @@ import {
     isCryptocurrency,
     getCancellationPrice,
     getLimitOrderAmount,
-    getTotalProfit,
     isValidToCancel,
     isValidToSell,
     shouldShowCancellation,

@@ -205,6 +205,7 @@ ContractCardBody.propTypes = {
     is_multiplier: PropTypes.bool,
     is_positions: PropTypes.bool,
     is_sold: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
     server_time: PropTypes.object,

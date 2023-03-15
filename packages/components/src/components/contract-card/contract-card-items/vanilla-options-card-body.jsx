@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isCryptocurrency } from '@deriv/shared';
+import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import ContractCardItem from './contract-card-item.jsx';
 import Icon from '../../icon';
-import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 

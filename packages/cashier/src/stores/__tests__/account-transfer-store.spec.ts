@@ -1,5 +1,4 @@
 import AccountTransferStore from '../account-transfer-store';
-import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { configure } from 'mobx';
 import type { TTransferAccount, TRootStore, TWebSocket } from 'Types';
@@ -431,7 +430,7 @@ describe('AccountTransferStore', () => {
         account_transfer_store.setSelectedFrom({ balance: 1500, currency: 'USD', is_dxtrade: false, is_mt: false });
         account_transfer_store.setTransferLimit();
 
-        expect(account_transfer_store.transfer_limit).toEqual({ min: null, max: '1000.00' });
+        expect(account_transfer_store.transfer_limit).toEqual({ min: '', max: '1000.00' });
     });
 
     it('should not sort and set accounts if there is an error in transfer_between_accounts response when calling sortAccountsTransfer method', async () => {

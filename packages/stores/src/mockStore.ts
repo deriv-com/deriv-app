@@ -241,6 +241,7 @@ const mock = (): TRootStore => {
             closeModal: jest.fn(),
             openModal: jest.fn(),
             content_flag: '',
+            is_low_risk_cr_eu_real: false,
         },
         menu: {
             attach: jest.fn(),

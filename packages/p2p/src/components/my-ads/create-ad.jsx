@@ -15,7 +15,7 @@ const CreateAd = () => {
     };
     return (
         <React.Fragment>
-            <PageReturn onClick={() => onClickBack()} page_title={localize('Create new ad')} />
+            <PageReturn onClick={onClickBack} page_title={localize('Create new ad')} />
             {my_ads_store.is_form_loading ? <Loading is_fullscreen={false} /> : <CreateAdForm />}
         </React.Fragment>
     );

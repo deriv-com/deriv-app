@@ -411,7 +411,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 secondary
                                                 large
-                                                onClick={() => onCleanup()}
+                                                onClick={onCleanup}
                                                 type='button'
                                             >
                                                 <Localize i18n_default_text='Cancel' />

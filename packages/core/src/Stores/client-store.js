@@ -1655,8 +1655,6 @@ export default class ClientStore extends BaseStore {
             let account_settings = this.account_settings;
             if (Object.keys(account_settings).length === 0) {
                 account_settings = (await WS.authorized.getSettings()).get_settings;
-            } else {
-                account_settings = this.account_settings;
             }
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();

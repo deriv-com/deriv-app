@@ -6,11 +6,11 @@ import { TRootStore } from 'Types';
 
 const CashierProviders = ({ children, store }: React.PropsWithChildren<{ store: TRootStore }>) => {
     return (
-        <ThemeProvider>
-            <StoreProvider store={store}>
-                <CashierStoreProvider>{children}</CashierStoreProvider>
-            </StoreProvider>
-        </ThemeProvider>
+        <StoreProvider store={store}>
+            <CashierStoreProvider>
+                <ThemeProvider>{children} </ThemeProvider>
+            </CashierStoreProvider>
+        </StoreProvider>
     );
 };
 

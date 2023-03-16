@@ -4,7 +4,7 @@ import { Breadcrumb } from '@deriv/ui';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier-breadcrumb.scss';
 
-const CashierBreadcrumb = ({ is_crypto_deposit }: { is_crypto_deposit?: boolean }) => {
+const CashierBreadcrumb = ({ is_crypto_deposit = false }: { is_crypto_deposit?: boolean }) => {
     const {
         general_store: { setIsDeposit },
     } = useCashierStore();
@@ -19,10 +19,7 @@ const CashierBreadcrumb = ({ is_crypto_deposit }: { is_crypto_deposit?: boolean 
         { value: 1, text: localize('Deposit via bank wire, credit card, and e-wallet') },
     ];
 
-    const onBreadcrumbHandler: React.ComponentProps<typeof Breadcrumb>['handleOnClick'] = (item: {
-        value: number;
-        text: string;
-    }) => {
+    const onBreadcrumbHandler: React.ComponentProps<typeof Breadcrumb>['handleOnClick'] = item => {
         switch (item.value) {
             case 0:
                 setIsDeposit(false);

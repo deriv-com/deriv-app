@@ -5,7 +5,7 @@ import CashierBreadcrumb from '../../cashier-breadcrumb';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 
-const Real = ({ is_deposit }: { is_deposit?: boolean }) => {
+const Real = ({ is_deposit = false }: { is_deposit?: boolean }) => {
     const {
         traders_hub: { is_low_risk_cr_eu_real },
     } = useStore();

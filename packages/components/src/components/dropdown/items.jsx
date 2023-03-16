@@ -18,7 +18,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
     React.useEffect(() => {
         const removeListeners = () => {
             nodes.delete(item.value, item_ref.current);
-            item_ref.current.removeEventListener('keydown', onKeyPressed);
+            item_ref.current?.removeEventListener('keydown', onKeyPressed);
         };
 
         if (item.disabled) removeListeners();

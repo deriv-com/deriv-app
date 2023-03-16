@@ -11,7 +11,13 @@ const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redire
 
     switch (status) {
         case identity_status_codes.pending:
-            return <IdvSubmitComplete is_from_external={is_from_external} needs_poa={needs_poa} />;
+            return (
+                <IdvSubmitComplete
+                    is_from_external={is_from_external}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
+                />
+            );
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
             if (Number(submissions_left) < 1)

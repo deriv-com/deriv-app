@@ -3,7 +3,7 @@ import { getTotalProfit } from '../contract';
 import { TGetTotalProfit } from '../contract/contract-types';
 import { getBuyPrice } from './logic';
 
-type TContractStore = {
+export type TContractStore = {
     contract_update_stop_loss?: number;
     contract_info: TGetTotalProfit;
     contract_update_take_profit?: string;

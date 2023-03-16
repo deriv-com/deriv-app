@@ -1,11 +1,17 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const TradeTypeTabs = ({ className, onChange, contract_type }) => {
+type TTradeTypeTabs = {
+    className?: string;
+};
+const TradeTypeTabs = observer(({ className }: TTradeTypeTabs) => {
+    const {
+        modules: { trade },
+    } = useStore();
+    const { onChange, contract_type } = trade;
     const tab_list = [
         { text: localize('Long'), value: 'turboslong' },
         { text: localize('Short'), value: 'turbosshort' },
@@ -22,19 +28,10 @@ const TradeTypeTabs = ({ className, onChange, contract_type }) => {
                 className='trade-container__trade-type-tabs--button'
                 is_animated
                 onChange={onChange}
-                value={tab_list.find(tab => tab.value === contract_type)?.value}
+                value={tab_list.find(tab => tab.value === contract_type)?.value || ''}
             />
         </div>
     );
-};
+});
 
-TradeTypeTabs.propTypes = {
-    className: PropTypes.string,
-    onChange: PropTypes.func,
-    contract_type: PropTypes.string,
-};
-
-export default connect(({ modules }) => ({
-    onChange: modules.trade.onChange,
-    contract_type: modules.trade.contract_type,
-}))(TradeTypeTabs);
+export default TradeTypeTabs;

@@ -1,11 +1,28 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Text, ThemedScrollbars } from '@deriv/components';
 
-const BarriersList = ({ active_item_classname, base_classname, selected_item, className, list, onClick, onHover }) => {
-    const onMouseEnter = barrier => {
+type TBarriersLIst = {
+    active_item_classname: string;
+    base_classname: string;
+    selected_item: string;
+    className: string;
+    list: Array<string>;
+    onClick: (barrier: string) => void;
+    onHover: (barrier: string | null) => void;
+};
+
+const BarriersList = ({
+    active_item_classname,
+    base_classname,
+    selected_item,
+    className,
+    list,
+    onClick,
+    onHover,
+}: TBarriersLIst) => {
+    const onMouseEnter = (barrier: string) => {
         if (selected_item !== barrier) {
             onHover(barrier);
         }
@@ -42,23 +59,13 @@ const BarriersList = ({ active_item_classname, base_classname, selected_item, cl
                 as='p'
                 className='trade-container__barriers-table__text'
             >
-                {localize('Distance to spot')}
+                {localize('Distance to current spot')}
             </Text>
-            <ThemedScrollbars height={isMobile() ? 'calc(100% - 5.5rem)' : null} autohide={false}>
+            <ThemedScrollbars autohide={false}>
                 <ul className={className}>{barriers_list}</ul>
             </ThemedScrollbars>
         </React.Fragment>
     );
-};
-
-BarriersList.propTypes = {
-    active_item_classname: PropTypes.string,
-    base_classname: PropTypes.string,
-    selected_item: PropTypes.string,
-    className: PropTypes.string,
-    list: PropTypes.arrayOf(PropTypes.string),
-    onClick: PropTypes.func,
-    onHover: PropTypes.func,
 };
 
 export default React.memo(BarriersList);

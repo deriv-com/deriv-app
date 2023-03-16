@@ -1,16 +1,19 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import TurbosCardBody from '../turbos-card-body';
 
-const contract_info = {
+const contract_info: TContractInfo = {
     contract_id: 1,
-    buy_price: '1044.00',
+    bid_price: 1044.02,
+    buy_price: 1044.0,
     profit: 50,
-    limit_order: null,
     barrier: '10904.80',
     current_spot_display_value: '1046.80',
-    sell_spot: '1046.80',
+    sell_spot: 1046.8,
     entry_spot: 1054,
+    is_valid_to_sell: 1,
 };
 
 const mockCardLabels = () => ({
@@ -30,14 +33,19 @@ describe('TurbosCardBody', () => {
         addToast: jest.fn(),
         connectWithContractUpdate: jest.fn(),
         contract_info,
-        contract_update: contract_info,
+        contract_update: {
+            take_profit: {
+                display_name: 'Take profit',
+                order_amount: 0,
+                order_date: 1678948046,
+            },
+        },
         currency: 'USD',
         current_focus: null,
         error_message_alignment: 'left',
         getCardLabels: mockCardLabels,
         getContractById: jest.fn(),
         is_sold: false,
-        is_turbos: true,
         is_open_positions: false,
         onMouseLeave: jest.fn(),
         removeToast: jest.fn(),
@@ -45,10 +53,15 @@ describe('TurbosCardBody', () => {
         status: 'profit',
         progress_slider_mobile_el: false,
     };
+    beforeAll(() => {
+        (ReactDOM.createPortal as jest.Mock) = jest.fn(component => {
+            return component;
+        });
+    });
 
     // is_open_positions = false && is_sold = false
     it('renders stake amount correctly', () => {
-        render(<TurbosCardBody {...mock_props} contract_info={contract_info} currency='USD' />);
+        render(<TurbosCardBody {...mock_props} />);
         const stake_header = screen.getByText(mockCardLabels().STAKE);
         expect(stake_header).toBeInTheDocument();
         const stake_amount = screen.getByText('1,044.00');
@@ -66,38 +79,28 @@ describe('TurbosCardBody', () => {
 
         const take_profit_header = screen.getByText(mockCardLabels().TAKE_PROFIT);
         expect(take_profit_header).toBeInTheDocument();
-        const take_profit_amount = screen.getByText('0.00');
+        const take_profit_amount = screen.getByText('0.02');
         expect(take_profit_amount).toBeInTheDocument();
 
         const total_profit_loss_header = screen.getByText(mockCardLabels().TOTAL_PROFIT_LOSS);
         expect(total_profit_loss_header).toBeInTheDocument();
-        const total_profit_loss_amount = screen.getByText('0.00');
+        const total_profit_loss_amount = screen.getByText('0.02');
         expect(total_profit_loss_amount).toBeInTheDocument();
     });
 
     // is_open_positions = true && is_sold = false
     it('renders potential profit/loss correctly for open positions', () => {
-        render(
-            <TurbosCardBody
-                {...mock_props}
-                contract_info={contract_info}
-                currency='USD'
-                is_open_positions
-                is_sold={false}
-            />
-        );
+        render(<TurbosCardBody {...mock_props} is_open_positions />);
 
         const potential_profit_loss_header = screen.getByText(mockCardLabels().POTENTIAL_PROFIT_LOSS);
         expect(potential_profit_loss_header).toBeInTheDocument();
-        const potential_profit_loss_amount = screen.getByText('0.00');
+        const potential_profit_loss_amount = screen.getByText('0.02');
         expect(potential_profit_loss_amount).toBeInTheDocument();
     });
 
     // is_open_positions = true && is_sold = true
     it('renders headers when contract is sold', () => {
-        render(
-            <TurbosCardBody {...mock_props} contract_info={contract_info} currency='USD' is_open_positions is_sold />
-        );
+        render(<TurbosCardBody {...mock_props} is_open_positions is_sold />);
 
         const profit_loss_header = screen.getByText(mockCardLabels().PROFIT_LOSS);
         expect(profit_loss_header).toBeInTheDocument();

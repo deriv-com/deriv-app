@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency, getLimitOrderAmount, getTotalProfit, isValidToSell } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
@@ -8,6 +7,35 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { TContractInfo, TGetContractUpdateConfig } from '@deriv/shared/src/utils/contract/contract-types';
+import { TContractStore } from '@deriv/shared/src/utils/helpers/validation-rules';
+
+type TToastConfig = {
+    key?: string;
+    content: string;
+    timeout?: number;
+    is_bottom?: boolean;
+    type: string;
+};
+
+type TTurbosCardBody = {
+    addToast: (toast_config: TToastConfig) => void;
+    connectWithContractUpdate?: (Component: React.ComponentType) => React.ComponentType;
+    contract_info: TContractInfo;
+    contract_update?: TGetContractUpdateConfig['contract_update'];
+    currency: string;
+    current_focus?: string | null;
+    error_message_alignment?: string;
+    getCardLabels: () => { [key: string]: string };
+    getContractById: (contract_id: number) => TContractStore;
+    is_sold: boolean;
+    is_open_positions?: boolean;
+    onMouseLeave: () => void;
+    removeToast: (key: string) => void;
+    progress_slider_mobile_el: React.ReactNode;
+    setCurrentFocus: (value: string | null) => void;
+    status: string | null;
+};
 
 const TurbosCardBody = ({
     addToast,
@@ -20,18 +48,16 @@ const TurbosCardBody = ({
     getCardLabels,
     getContractById,
     is_sold,
-    is_turbos,
     is_open_positions,
     onMouseLeave,
     removeToast,
+    progress_slider_mobile_el,
     setCurrentFocus,
     status,
-    progress_slider_mobile_el,
-}) => {
+}: TTurbosCardBody) => {
     const total_profit = getTotalProfit(contract_info);
-    const { buy_price, profit, limit_order, barrier, current_spot_display_value, sell_spot, entry_spot } =
-        contract_info;
-    const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
+    const { buy_price, profit, barrier, current_spot_display_value, sell_spot, entry_spot } = contract_info;
+    const { take_profit } = contract_update ? getLimitOrderAmount(contract_update) : { take_profit: null };
     const is_valid_to_sell = isValidToSell(contract_info);
     const {
         BARRIER_LEVEL,
@@ -48,9 +74,8 @@ const TurbosCardBody = ({
     return (
         <React.Fragment>
             <div
-                className={classNames('dc-contract-card-items-wrapper', {
-                    'dc-contract-card--turbos': is_turbos,
-                    'dc-contract-card--turbos-open-positions': is_open_positions && is_turbos,
+                className={classNames('dc-contract-card-items-wrapper dc-contract-card--turbos', {
+                    'dc-contract-card--turbos-open-positions': is_open_positions,
                 })}
             >
                 <ContractCardItem
@@ -190,28 +215,6 @@ const TurbosCardBody = ({
             )}
         </React.Fragment>
     );
-};
-
-TurbosCardBody.propTypes = {
-    addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    getContractById: PropTypes.func,
-    is_sold: PropTypes.bool,
-    is_turbos: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_open_positions: PropTypes.bool,
-    is_positions: PropTypes.bool,
-    onMouseLeave: PropTypes.func,
-    removeToast: PropTypes.func,
-    progress_slider_mobile_el: PropTypes.node,
-    setCurrentFocus: PropTypes.func,
-    status: PropTypes.string,
 };
 
 export default React.memo(TurbosCardBody);

@@ -7,6 +7,7 @@ import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';
 import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions.jsx';
 import { NetworkStatusToastErrorPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import { MobxContentProvider } from 'Stores/connect';
+import { StoreProvider } from '@deriv/stores';
 import initStore from './init-store.js'; // eslint-disable-line import/extensions
 import 'Sass/app.scss';
 
@@ -30,14 +31,14 @@ const App = ({ passthrough }: Apptypes) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <React.Fragment>
+            <StoreProvider store={root_store}>
                 <Routes />
                 <TradeModals />
                 <NetworkStatusToastErrorPopup />
                 <TradeHeaderExtensions store={root_store} />
                 <TradeFooterExtensions />
                 <TradeSettingsExtensions store={root_store} />
-            </React.Fragment>
+            </StoreProvider>
         </MobxContentProvider>
     );
 };

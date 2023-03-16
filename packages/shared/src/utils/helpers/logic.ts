@@ -24,7 +24,18 @@ type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start
 
 type TIsStarted = Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>;
 
-type TGetEndTime = Pick<TContractInfo, 'is_expired' | 'sell_time' | 'status' | 'tick_count'> &
+type TGetEndTime = Pick<
+    TContractInfo,
+    | 'is_expired'
+    | 'sell_time'
+    | 'status'
+    | 'tick_count'
+    | 'bid_price'
+    | 'buy_price'
+    | 'contract_id'
+    | 'is_valid_to_sell'
+    | 'profit'
+> &
     Required<Pick<TContractInfo, 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
 
 type TGetBuyPrice = {

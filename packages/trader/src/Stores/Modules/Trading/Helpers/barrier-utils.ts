@@ -1,6 +1,6 @@
 import { BARRIER_COLORS } from '../../SmartChart/Constants/barriers';
 
-export const getHoveredColor = type => {
+export const getHoveredColor = (type: string): string => {
     switch (type) {
         case 'TURBOSSHORT':
             return BARRIER_COLORS.RED;

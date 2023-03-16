@@ -11,7 +11,7 @@ import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 import MultiplierCardBody from './multiplier-card-body.jsx';
-import TurbosCardBody from './turbos-card-body.jsx';
+import TurbosCardBody from './turbos-card-body';
 
 const ContractCardBody = ({
     addToast,
@@ -27,7 +27,6 @@ const ContractCardBody = ({
     is_mobile,
     is_multiplier,
     is_turbos,
-    is_positions,
     is_sold,
     onMouseLeave,
     removeToast,
@@ -97,10 +96,7 @@ const ContractCardBody = ({
                 is_sold={is_sold}
                 onMouseLeave={onMouseLeave}
                 status={status}
-                is_mobile={is_mobile}
                 is_open_positions={is_open_positions}
-                is_positions={is_positions}
-                is_turbos={is_turbos}
                 removeToast={removeToast}
                 setCurrentFocus={setCurrentFocus}
                 progress_slider_mobile_el={progress_slider_mobile_el}

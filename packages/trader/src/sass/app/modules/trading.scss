@@ -287,18 +287,6 @@
         flex-direction: column;
         position: relative;
         bottom: 0.1rem;
-        &__footer {
-            height: 8rem;
-            padding: 1.6rem 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            border-top: 0.2rem solid var(--general-section-1);
-            background-color: var(--general-main-1);
-            &__button {
-                margin: 0 1rem;
-            }
-        }
         &__wrapper {
             display: flex;
             justify-content: center;
@@ -317,6 +305,12 @@
             width: 100%;
             height: 3.2rem;
             cursor: pointer;
+            position: relative;
+            &--arrow-right {
+                position: absolute;
+                right: 0.8rem;
+                transform: rotate(180deg);
+            }
         }
         &-input {
             padding-left: 0.3rem;

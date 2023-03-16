@@ -10,7 +10,7 @@ import {
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import { MultiplierOptionsWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
-import BarrierSelector from './TradeParams/Turbos/barrier-selector.jsx';
+import BarrierSelector from './TradeParams/Turbos/barrier-selector';
 import RiskManagementInfo from '../Elements/Multiplier/risk-management-info.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
@@ -19,7 +19,7 @@ import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import PayoutPerPoint from '../Elements/Turbos/payout-per-point.jsx';
-import TradeTypeTabs from './TradeParams/Turbos/trade-type-tabs.jsx';
+import TradeTypeTabs from './TradeParams/Turbos/trade-type-tabs';
 
 const CollapsibleTradeParams = ({
     form_components,

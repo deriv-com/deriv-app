@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Amount from 'Modules/Trading/Components/Form/TradeParams/amount.jsx';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
-import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector.jsx';
+import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
 import Duration from 'Modules/Trading/Components/Form/TradeParams/Duration';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import CancelDeal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/cancel-deal.jsx';

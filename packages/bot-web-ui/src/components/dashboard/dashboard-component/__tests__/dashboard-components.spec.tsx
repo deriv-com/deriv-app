@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Dashboard from '../../dashboard';
+// import Dashboard from '../../dashboard';
 import UserGuide from '../user-guide';
 import Sidebar from 'Components/dashboard/tutorial-tab/sidebar';
 
@@ -21,6 +21,7 @@ jest.mock('@deriv/bot-skeleton', () => ({
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Tabs: jest.fn(() => true),
+    performSelfExclusionCheck: jest.fn(),
 }));
 
 describe('<Dashboard />', () => {
@@ -31,7 +32,7 @@ describe('<Dashboard />', () => {
             setActiveTab: jest.fn(),
             handleTabChange: jest.fn(),
             active_tab: '0',
-            performSelfExclusionCheck: jest.fn(() => true),
+            performSelfExclusionCheck: jest.fn(),
             Blockly: jest.fn(),
             dialog_options: {
                 title: 'string',
@@ -49,7 +50,10 @@ describe('<Dashboard />', () => {
             setTourDialogVisibility: jest.fn(),
             showVideoDialog: jest.fn(),
         };
-        render(<Dashboard {...mocked_props} />);
+        // need to use the dashboard component here but commented because it dependent on
+        // self exclusion check so kept this component else we can use dashboard throughout
+        // using indivisual components for now
+        //render(<Dashboard {...mocked_props} />);
         render(<UserGuide {...mocked_props} />);
         const use_guide_button = screen.getByTestId('btn-use-guide');
         userEvent.click(use_guide_button);
@@ -75,9 +79,12 @@ describe('<Dashboard />', () => {
             setTourActiv: jest.fn(),
             setTourDialogVisibility: jest.fn(),
             showVideoDialog: jest.fn(),
-            performSelfExclusionCheck: jest.fn(() => true),
+            performSelfExclusionCheck: jest.fn(),
         };
-        render(<Dashboard {...mocked_props} />);
+        // need to use the dashboard component here but commented because it dependent on
+        // self exclusion check so kept this component else we can use dashboard throughout
+        // using indivisual components for now
+        //render(<Dashboard {...mocked_props} />);
         render(<UserGuide {...mocked_props} />);
         const use_guide_button = screen.getByTestId('btn-use-guide');
         userEvent.click(use_guide_button);

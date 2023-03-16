@@ -351,7 +351,7 @@ export const PersonalDetailsForm = ({
             if (name) {
                 if (!validLength(name.trim(), { min: min_name, max: max_name })) {
                     errors[field] = localize('You should enter 2-50 characters.');
-                } else if (!/^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u.test(name)) {
+                } else if (!validName(name)) {
                     // the exact regex used at the backend for allowing non digit characters including accented unicode characters.
                     // two or more space between name not allowed.
                     errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');

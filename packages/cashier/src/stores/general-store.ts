@@ -12,7 +12,6 @@ export default class GeneralStore extends BaseStore {
         makeObservable(this, {
             calculatePercentage: action.bound,
             cashier_route_tab_index: observable,
-            changeSetCurrencyModalTitle: action.bound,
             checkP2pStatus: action.bound,
             continueRoute: action.bound,
             deposit_target: observable,
@@ -50,7 +49,6 @@ export default class GeneralStore extends BaseStore {
             setP2pAdvertiserError: action.bound,
             setShouldShowAllAvailableCurrencies: action.bound,
             should_percentage_reset: observable,
-            should_set_currency_modal_title_change: observable,
             should_show_all_available_currencies: observable,
             show_p2p_in_cashier_onboarding: observable,
             showP2pInCashierOnboarding: action.bound,
@@ -62,10 +60,6 @@ export default class GeneralStore extends BaseStore {
                 this.setHasSetCurrency();
             }
         );
-
-        if (!this.has_set_currency) {
-            this.changeSetCurrencyModalTitle();
-        }
 
         reaction(
             () => [
@@ -94,7 +88,6 @@ export default class GeneralStore extends BaseStore {
     percentage = 0;
     payment_agent: PaymentAgentStore | null = null;
     should_percentage_reset = false;
-    should_set_currency_modal_title_change = false;
     should_show_all_available_currencies = false;
     show_p2p_in_cashier_onboarding = false;
 
@@ -157,10 +150,6 @@ export default class GeneralStore extends BaseStore {
         this.has_set_currency =
             account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real') ||
             !has_active_real_account;
-    }
-
-    changeSetCurrencyModalTitle(): void {
-        this.should_set_currency_modal_title_change = true;
     }
 
     async onMountCashierOnboarding() {

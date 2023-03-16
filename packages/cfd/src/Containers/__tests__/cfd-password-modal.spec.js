@@ -290,7 +290,7 @@ describe('<CFDPasswordModal/>', () => {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
             error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'synthetic' },
+            account_type: { category: 'real', type: 'all' },
         };
         render(
             <Router history={history}>

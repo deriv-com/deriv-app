@@ -3,18 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import {
-    isEnded,
-    isDigitContract,
-    // unsupported_contract_types_list,
-    // formatMoney,
-    // getCurrencyDisplayCode,
-} from '@deriv/shared';
+import { isEnded, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
-// import { getAvailableContractTypes, findContractCategory } from '../../Trading/Helpers/contract-type';
-// import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
-import BuyNotificationNew from './buy-notification-new';
+import BuyToastNotification from './buy-toast-notification';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
@@ -70,7 +62,7 @@ const TopWidgets = ({
                 }}
             >
                 {is_mobile && action_toastbox.key && (
-                    <BuyNotificationNew portal_id='popup_root' action_toastbox={action_toastbox} />
+                    <BuyToastNotification portal_id='popup_root' action_toastbox={action_toastbox} />
                 )}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}

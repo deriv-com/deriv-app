@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { findContractCategory } from '../../Trading/Helpers/contract-type';
 
-const BuyNotificationNew = ({ portal_id = 'popup_root', action_toastbox, actionChangeToastbox }) => {
+const BuyToastNotification = ({ portal_id = 'popup_root', action_toastbox, actionChangeToastbox }) => {
     const { buy_price, currency, contract_type, list } = action_toastbox;
     const active_trade_type = { value: contract_type };
 
@@ -47,11 +47,11 @@ const BuyNotificationNew = ({ portal_id = 'popup_root', action_toastbox, actionC
     );
 };
 
-BuyNotificationNew.propTypes = {
+BuyToastNotification.propTypes = {
     portal_id: PropTypes.string,
     action_toastbox: PropTypes.bool,
     actionChangeToastbox: PropTypes.func,
 };
 export default connect(({ modules }) => ({
     actionChangeToastbox: modules.trade.actionChangeToastbox,
-}))(BuyNotificationNew);
+}))(BuyToastNotification);

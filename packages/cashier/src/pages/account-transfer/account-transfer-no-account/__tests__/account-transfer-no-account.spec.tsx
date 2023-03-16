@@ -5,11 +5,10 @@ import CashierProviders from '../../../../cashier-providers';
 import { routes } from '@deriv/shared';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { mockStore } from '@deriv/stores';
-import { TRootStore } from '@deriv/stores/types';
+import { mockStore, TStores } from '@deriv/stores';
 
 describe('<AccountTransferNoAccount />', () => {
-    let mockRootStore: TRootStore;
+    let mockRootStore: TStores;
     const history = createBrowserHistory();
     beforeEach(() => {
         mockRootStore = mockStore({
@@ -20,7 +19,7 @@ describe('<AccountTransferNoAccount />', () => {
                 toggleAccountsDialog: jest.fn(),
             },
             traders_hub: { openModal: jest.fn(), closeModal: jest.fn() },
-        });
+        }) as TStores;
     });
 
     const renderAccountTransferNoAccountWithRouter = () => {

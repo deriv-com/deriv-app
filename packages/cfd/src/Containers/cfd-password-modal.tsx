@@ -627,6 +627,7 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_logged_in,
+    is_pre_appstore,
     context,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,

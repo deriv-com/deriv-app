@@ -134,9 +134,14 @@ export default class GeneralStore extends BaseStore {
     async showP2pInCashierOnboarding(): Promise<void> {
         const { account_list, is_virtual } = this.root_store.client;
 
-        const get_account_status = this.WS.wait('get_account_status');
+        const authorize = this.WS.wait('authorize');
+        const website_status = this.WS.wait('website_status');
 
-        const is_p2p_disabled = (await get_account_status)?.get_account_status?.p2p_status === 'none';
+        const supported_currencies = (await website_status)?.website_status?.p2p_config?.supported_currencies;
+        const currency = (await authorize)?.authorize?.currency?.toLowerCase();
+
+        const is_p2p_disabled = !supported_currencies?.includes(currency as string);
+
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
             account => account?.title && account.title !== 'Real' && !isCryptocurrency(account?.title)
@@ -256,9 +261,13 @@ export default class GeneralStore extends BaseStore {
     }
 
     async checkP2pStatus(): Promise<void> {
-        const get_account_status = this.WS.wait('get_account_status');
+        const authorize = this.WS.wait('authorize');
+        const website_status = this.WS.wait('website_status');
 
-        const is_p2p_disabled = (await get_account_status)?.get_account_status?.p2p_status === 'none';
+        const supported_currencies = (await website_status)?.website_status?.p2p_config?.supported_currencies;
+        const currency = (await authorize)?.authorize?.currency?.toLowerCase();
+
+        const is_p2p_disabled = !supported_currencies?.includes(currency as string);
         this.setIsP2pVisible(!(is_p2p_disabled || this.root_store.client.is_virtual));
     }
 

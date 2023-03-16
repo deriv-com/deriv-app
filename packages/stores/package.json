@@ -11,7 +11,7 @@
         "react": "^17.0.2"
     },
     "devDependencies": {
-        "@deriv/api-types": "^1.0.11",
+        "@deriv/api-types": "^1.0.85",
         "@testing-library/react": "^12.0.0",
         "@testing-library/react-hooks": "^7.0.2",
         "@types/lodash.merge": "^4.6.7",

@@ -67,6 +67,7 @@ const AccountSwitcher = props => {
         props.dxtrade_accounts_list.find(account => isDemo(account))?.currency;
 
     const history = useHistory();
+    const there_are_CR_and_MF = !props.no_MF_account && !props.no_CR_account;
 
     React.useEffect(() => {
         if (getMaxAccountsDisplayed()) {
@@ -371,7 +372,7 @@ const AccountSwitcher = props => {
 
     const getRealMT5 = () => {
         const low_risk_non_eu = props.content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
-        if (low_risk_non_eu) {
+        if (low_risk_non_eu || (!props.is_pre_appstore && there_are_CR_and_MF && props.is_virtual)) {
             return getSortedCFDList(props.mt5_login_list).filter(
                 account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
             );
@@ -478,12 +479,7 @@ const AccountSwitcher = props => {
             props.obj_total_balance.amount_dxtrade > 0 ? props.obj_total_balance.amount_dxtrade : dxtrade_total.balance;
 
         // subtract  MF account balance from total for DIEL accounts outside of traders hub
-        if (
-            !props.is_pre_appstore &&
-            !props.no_MF_account &&
-            !props.no_CR_account &&
-            props.obj_total_balance.amount_real_MF > 0
-        ) {
+        if (!props.is_pre_appstore && there_are_CR_and_MF && props.obj_total_balance.amount_real_MF > 0) {
             const mt5_MF_accounts = props.mt5_login_list.filter(a => a.landing_company_short === 'maltainvest');
             const mt5_total_MF = getTotalBalanceCfd(mt5_MF_accounts, false, exchanged_rate_cfd_real);
             total = total - Number(props.obj_total_balance.amount_real_MF) - Number(mt5_total_MF.balance);

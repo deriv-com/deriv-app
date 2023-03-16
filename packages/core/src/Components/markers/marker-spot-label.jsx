@@ -41,7 +41,7 @@ const MarkerSpotLabel = ({
     }
 
     return (
-        <div>
+        <React.Fragment>
             <div className={'chart-spot-label'}>
                 {show_label && !is_value_hidden && (
                     <div className='chart-spot-label__info-container'>
@@ -96,7 +96,7 @@ const MarkerSpotLabel = ({
                     </div>
                 </div>
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

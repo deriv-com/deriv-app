@@ -193,6 +193,13 @@ const mock = (): TRootStore => {
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
             is_crypto: false,
+            obj_total_balance: {
+                amount_real_MF: undefined,
+                amount_real: undefined,
+                amount_mt5: undefined,
+                amount_dxtrade: undefined,
+                currency: '',
+            },
         },
         common: {
             error: {

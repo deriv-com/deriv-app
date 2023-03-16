@@ -177,6 +177,13 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    obj_total_balance: {
+        amount_real_MF?: number;
+        amount_real?: number;
+        amount_mt5?: number;
+        amount_dxtrade?: number;
+        currency: string;
+    };
 };
 
 type TCommonStoreError = {

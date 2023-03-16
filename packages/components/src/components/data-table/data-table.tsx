@@ -1,5 +1,4 @@
 /* eslint @typescript-eslint/triple-slash-reference: "off" */
-/// <reference path="../cellmeasurer/CellMeasurerCache.d.ts" />
 /// <reference path="../cellmeasurer/CellMeasurer.d.ts" />
 /// <reference path="../list/List.d.ts" />
 
@@ -12,7 +11,8 @@ import TableRowInfo from './table-row-info';
 import TableCell from './table-cell';
 import { TTableRowItem } from '../types/common.types';
 import { AutoSizer } from '@enykeev/react-virtualized/dist/es/AutoSizer';
-import { CellMeasurer, CellMeasurerCache } from '@enykeev/react-virtualized/dist/es/CellMeasurer';
+import { CellMeasurer } from '@enykeev/react-virtualized/dist/es/CellMeasurer';
+import CellMeasurerCache from '@enykeev/react-virtualized/dist/es/CellMeasurer/CellMeasurerCache';
 import List from '@enykeev/react-virtualized/dist/es/List';
 
 /* TODO:
@@ -124,7 +124,7 @@ const DataTable = ({
         );
 
         return is_dynamic_height ? (
-            <CellMeasurer cache={cache_ref.current!} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+            <CellMeasurer cache={cache_ref.current!} columnIndex={0} key={row_key} rowIndex={index}>
                 {({ measure }: TMeasure) => <div style={style}>{getContent(measure)}</div>}
             </CellMeasurer>
         ) : (

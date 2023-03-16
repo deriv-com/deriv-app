@@ -1,18 +1,17 @@
-
 declare module '@enykeev/react-virtualized/dist/es/List' {
     import { ListProps } from '@enykeev/react-virtualized/dist/es/List';
     import type { Grid } from 'react-virtualized';
 
     type TRowRenderer = {
-        style:CSSProperties;
+        style: CSSProperties;
         index: number;
-        key:string;
-        parent:React.RefObject<Grid>;
-    }
+        key: string;
+        parent: React.RefObject<Grid>;
+    };
 
     type TList = {
-        autoHeight: boolean,
-        className?: string,
+        autoHeight: boolean;
+        className?: string;
         deferredMeasurementCache: any;
         height: number;
         overscanRowCount: number;
@@ -23,9 +22,9 @@ declare module '@enykeev/react-virtualized/dist/es/List' {
         scrollingResetTimeInterval: number;
         scrollTop: number;
         width: number;
-    }
+    };
 
-    export const List =  ({
+    export const List = ({
         autoHeight,
         className,
         deferredMeasurementCache,
@@ -39,9 +38,7 @@ declare module '@enykeev/react-virtualized/dist/es/List' {
         scrollTop,
         width,
     }: TList): JSX.Element => JSX.Element;
-    // or just: 
+    // or just:
     //export const List =  (props: TList): JSX.Element => JSX.Element;
     export default List;
-}
-
 }

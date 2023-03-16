@@ -1652,10 +1652,12 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-            let account_settings = this.account_settings;
-            if (Object.keys(account_settings).length === 0) {
-                account_settings = (await WS.authorized.getSettings()).get_settings;
-            }
+
+            const account_settings =
+                Object.keys(account_settings).length === 0
+                    ? (await WS.authorized.getSettings()).get_settings
+                    : this.account_settings;
+
             if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();

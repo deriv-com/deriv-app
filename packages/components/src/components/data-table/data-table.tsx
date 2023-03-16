@@ -1,6 +1,7 @@
 /* eslint @typescript-eslint/triple-slash-reference: "off" */
 /// <reference path="../cellmeasurer/CellMeasurer.d.ts" />
 /// <reference path="../list/List.d.ts" />
+/// <reference path="../cellmeasurer/CellMeasurerCache.d.ts" />
 
 import classNames from 'classnames';
 import React, { CSSProperties, UIEventHandler } from 'react';

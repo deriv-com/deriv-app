@@ -34,6 +34,7 @@ import {
     routes,
     WS,
     useIsMounted,
+    validName,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { withRouter } from 'react-router';

@@ -165,8 +165,8 @@ export const getContractCategoriesConfig = () => ({
     'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
     'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
     Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
-    Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
     Vanillas: { name: localize('Vanillas'), categories: ['vanilla'] },
+    Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
 });
 
 export const unsupported_contract_types_list = [

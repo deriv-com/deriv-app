@@ -160,6 +160,7 @@ PurchaseFieldset.propTypes = {
     is_multiplier: PropTypes.bool,
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     onHoverPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,

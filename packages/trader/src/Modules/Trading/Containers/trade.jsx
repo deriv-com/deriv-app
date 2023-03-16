@@ -172,7 +172,7 @@ const Trade = ({
                     fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || is_chart_loading} />}
                 >
                     <DesktopWrapper>
-                        <div className='chart-container__wrapper'>
+                        <div className={classNames('chart-container__wrapper', { 'vanilla-trade-chart': is_vanilla })}>
                             <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                             <ChartTrade
                                 topWidgets={topWidgets}

@@ -144,6 +144,7 @@ const ContractReplay = ({
                         <div
                             className={classNames('replay-chart__container', {
                                 'replay-chart__container--is-multiplier': isMobile() && is_multiplier,
+                                'vanilla-trade-chart': is_vanilla,
                             })}
                         >
                             <DesktopWrapper>

@@ -99,7 +99,7 @@ const ContractInfo = ({
                     'trade-container__price-info--fade': is_loading && should_fade,
                 })}
             >
-                {is_multiplier || is_accumulator ? (
+                {(is_multiplier || is_accumulator) && (
                     <React.Fragment>
                         {!is_accumulator && (
                             <DesktopWrapper>
@@ -120,7 +120,8 @@ const ContractInfo = ({
                             </div>
                         </MobileWrapper>
                     </React.Fragment>
-                ) : is_vanilla && isMobile() ? (
+                )}
+                {is_vanilla && isMobile() && (
                     <React.Fragment>
                         <MobileWrapper>
                             <div
@@ -169,17 +170,31 @@ const ContractInfo = ({
                             </div>
                         </MobileWrapper>
                     </React.Fragment>
-                ) : (
-                    obj_contract_basis && (
-                        <React.Fragment>
+                )}
+                {!is_multiplier && !is_accumulator && !(is_vanilla && isMobile()) && obj_contract_basis && (
+                    <React.Fragment>
+                        <div
+                            className={classNames('trade-container__price-info-basis', {
+                                'trade-container__price-info-strike': is_vanilla,
+                            })}
+                        >
+                            {basis_text}
+                        </div>
+                        <DesktopWrapper>
+                            <ValueMovement
+                                has_error_or_not_loaded={has_error_or_not_loaded}
+                                proposal_info={proposal_info}
+                                currency={getCurrencyDisplayCode(currency)}
+                                has_increased={has_increased}
+                                is_vanilla={is_vanilla}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
                             <div
-                                className={classNames('trade-container__price-info-basis', {
-                                    'trade-container__price-info-strike': is_vanilla,
+                                className={classNames('trade-container__price-info-wrapper', {
+                                    'strike--info': is_vanilla,
                                 })}
                             >
-                                {basis_text}
-                            </div>
-                            <DesktopWrapper>
                                 <ValueMovement
                                     has_error_or_not_loaded={has_error_or_not_loaded}
                                     proposal_info={proposal_info}
@@ -187,24 +202,9 @@ const ContractInfo = ({
                                     has_increased={has_increased}
                                     is_vanilla={is_vanilla}
                                 />
-                            </DesktopWrapper>
-                            <MobileWrapper>
-                                <div
-                                    className={classNames('trade-container__price-info-wrapper', {
-                                        'strike--info': is_vanilla,
-                                    })}
-                                >
-                                    <ValueMovement
-                                        has_error_or_not_loaded={has_error_or_not_loaded}
-                                        proposal_info={proposal_info}
-                                        currency={getCurrencyDisplayCode(currency)}
-                                        has_increased={has_increased}
-                                        is_vanilla={is_vanilla}
-                                    />
-                                </div>
-                            </MobileWrapper>
-                        </React.Fragment>
-                    )
+                            </div>
+                        </MobileWrapper>
+                    </React.Fragment>
                 )}
             </div>
             {!is_multiplier && !is_accumulator && (

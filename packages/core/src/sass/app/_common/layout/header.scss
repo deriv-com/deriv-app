@@ -210,9 +210,15 @@
         align-items: center;
     }
 
+    &__menu--trading-hub-text {
+        width: 13rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
     &__menu--explore-trading-hub {
         border-radius: 1rem;
-        width: 25.5rem;
 
         &--dark {
             background-color: var(--general-main-1);
@@ -226,9 +232,14 @@
 
     &__menu--exit-trading-hub {
         border-radius: 1rem;
-        width: 90%;
+
         &--dark {
             background-color: var(--general-main-1);
+        }
+        .dc-btn__text {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
         }
     }
 
@@ -237,7 +248,7 @@
     }
 
     &__menu--exit-trading-hub-beta-icon {
-        margin: 0 7rem 0 1rem;
+        margin: 0 4rem 0 1rem;
     }
 
     &__menu--back-to-ui-text {

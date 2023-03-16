@@ -409,7 +409,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             <React.Fragment>
                                 {is_logged_in && is_trading_hub_category ? (
                                     <MobileDrawer.SubHeader
-                                        className={classNames({
+                                        className={classNames('header__menu--trading-hub', {
                                             'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                         })}
                                     >
@@ -453,6 +453,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             is_logging_in={is_logging_in}
                                             platform_config={platform_config}
                                             toggleDrawer={toggleDrawer}
+                                            is_pre_appstore={is_pre_appstore}
                                         />
                                     </MobileDrawer.SubHeader>
                                 )}

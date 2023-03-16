@@ -98,6 +98,10 @@ type TClientStore = {
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
+    cfd_score: number;
+    is_cfd_score_available: boolean;
+    setCFDScore: (score: number) => void;
+    setIsCFDScoreAvailable: (is_set: boolean) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -147,6 +151,7 @@ type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
+    setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => void;
     switched: boolean;
@@ -205,12 +210,14 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
+    is_closing_create_real_account_modal: boolean;
     is_mobile: boolean;
     sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
@@ -226,11 +233,13 @@ type TMenuStore = {
 
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
+    client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    setP2PRedirectTo: () => void;
 };
 
 type TTradersHubStore = {

@@ -6,10 +6,11 @@ import { Formik, Field, FormikProps, FormikValues, FormikHelpers } from 'formik'
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
 import {
-    isSequentialNumber,
-    isRecurringNumberRegex,
+    documentAdditionalError,
     getDocumentData,
     getRegex,
+    isRecurringNumberRegex,
+    isSequentialNumber,
     preventEmptyClipboardPaste,
 } from './utils';
 import { useToggleValidation } from '../../hooks/useToggleValidation';
@@ -26,7 +27,10 @@ type TIdvDocumentSubmit = {
             services: {
                 idv: {
                     has_visual_sample: boolean;
-                    documents_supported: Record<string, { display_name: string; format: string }>;
+                    documents_supported: Record<
+                        string,
+                        { display_name: string; format: string; additional: { display_name: string; format: string } }
+                    >;
                 };
             };
         };
@@ -36,8 +40,12 @@ type TIdvDocumentSubmit = {
 
 type TFormValues = {
     error_message?: string;
-    document_type?: string;
+    document_type?: Record<
+        string,
+        { display_name: string; format: string; additional: { display_name: string; format: string } }
+    >;
     document_number?: string;
+    document_additional?: string;
 };
 
 const IdvDocumentSubmit = ({
@@ -73,7 +81,21 @@ const IdvDocumentSubmit = ({
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+                const needs_additional_document = !!document_data[key].additional;
 
+                if (needs_additional_document) {
+                    return {
+                        id: key,
+                        text: new_display_name || display_name,
+                        additional: {
+                            display_name: document_data[key].additional?.display_name,
+                            format: document_data[key].additional?.format,
+                        },
+                        value: format,
+                        sample_image,
+                        example_format,
+                    };
+                }
                 return {
                     id: key,
                     text: new_display_name || display_name,
@@ -86,6 +108,16 @@ const IdvDocumentSubmit = ({
     }, [country_code, document_data]);
 
     type TsetFieldValue = FormikHelpers<FormikValues>['setFieldValue'];
+
+    const onKeyUp = (e: FormikValues, document_name: string, values: TFormValues, setFieldValue: TsetFieldValue) => {
+        const { example_format } =
+            document_name === 'document_number' ? values.document_type : values.document_type?.additional;
+        const current_input = example_format.includes('-')
+            ? formatInput(example_format, current_input || e.target.value, '-')
+            : e.target.value;
+        setFieldValue(document_name, current_input, true);
+        validateFields(values);
+    };
 
     const resetDocumentItemSelected = (setFieldValue: TsetFieldValue) => {
         setFieldValue(
@@ -117,14 +149,22 @@ const IdvDocumentSubmit = ({
 
     const validateFields = (values: FormikValues) => {
         const errors: TFormValues = {};
-        const { document_type, document_number } = values;
+        const { document_type, document_number, document_additional } = values;
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
+        const needs_additional_document = !!document_type.additional;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
             setInputDisable(false);
+        }
+
+        if (needs_additional_document) {
+            const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+            if (error_message)
+                errors.document_additional =
+                    localize(error_message) + getExampleFormat(document_type.additional?.example_format);
         }
 
         if (!document_number) {
@@ -148,11 +188,11 @@ const IdvDocumentSubmit = ({
 
     const submitHandler = (values: TFormValues, { setSubmitting, setErrors }: FormikHelpers<TFormValues>) => {
         setSubmitting(true);
-        const { document_number, document_type }: FormikValues = values;
         const submit_data = {
             identity_verification_document_add: 1,
-            document_number,
-            document_type: document_type.id,
+            document_number: values.document_number,
+            document_additional: values.document_additional || '',
+            document_type: values.document_type?.id,
             issuing_country: country_code,
         };
 
@@ -288,36 +328,57 @@ const IdvDocumentSubmit = ({
                             <fieldset className='proof-of-identity__fieldset-input'>
                                 <Field name='document_number'>
                                     {({ field }: FormikValues) => (
-                                        <Input
-                                            {...field}
-                                            name='document_number'
-                                            bottom_label={
-                                                values?.document_type &&
-                                                getExampleFormat(values?.document_type.example_format)
-                                            }
-                                            disabled={is_input_disable}
-                                            error={
-                                                (touched?.document_number && errors?.document_number) ||
-                                                errors?.error_message
-                                            }
-                                            autoComplete='off'
-                                            placeholder='Enter your document number'
-                                            value={values?.document_number}
-                                            onPaste={preventEmptyClipboardPaste}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                                                const { example_format } = values?.document_type;
-                                                const current_input: string = example_format.includes('-')
-                                                    ? formatInput(example_format, e.currentTarget.value, '-')
-                                                    : e.currentTarget.value;
-                                                if (typeof setFieldValue === 'function') {
-                                                    setFieldValue('document_number', current_input, true);
+                                        <React.Fragment>
+                                            <Input
+                                                {...field}
+                                                name='document_number'
+                                                bottom_label={
+                                                    values?.document_type &&
+                                                    getExampleFormat(values?.document_type.example_format)
                                                 }
-                                                validateFields(values);
-                                            }}
-                                            required
-                                        />
+                                                disabled={is_input_disable}
+                                                error={
+                                                    (touched?.document_number && errors?.document_number) ||
+                                                    errors?.error_message
+                                                }
+                                                autoComplete='off'
+                                                placeholder='Enter your document number'
+                                                value={values?.document_number}
+                                                onPaste={preventEmptyClipboardPaste}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
+                                                    onKeyUp(e, 'document_number', values, setFieldValue)
+                                                }
+                                                required
+                                            />
+                                            {values.document_type.additional?.display_name && (
+                                                <Input
+                                                    {...field}
+                                                    name='document_additional'
+                                                    bottom_label={
+                                                        values.document_type.additional &&
+                                                        getExampleFormat(
+                                                            values.document_type.additional?.example_format
+                                                        )
+                                                    }
+                                                    disabled={is_input_disable}
+                                                    error={
+                                                        (touched.document_additional && errors.document_additional) ||
+                                                        errors.error_message
+                                                    }
+                                                    autoComplete='off'
+                                                    placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                    value={values.document_additional}
+                                                    onPaste={preventEmptyClipboardPaste}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                    onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
+                                                        onKeyUp(e, 'document_additional', values, setFieldValue)
+                                                    }
+                                                />
+                                            )}
+                                        </React.Fragment>
                                     )}
                                 </Field>
                             </fieldset>

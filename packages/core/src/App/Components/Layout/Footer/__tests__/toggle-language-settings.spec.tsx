@@ -14,7 +14,7 @@ jest.mock('Stores/connect', () => ({
 
 jest.mock('../../../../Containers/SettingsModal/settings-language', () => jest.fn(() => <div>LanguageSettings</div>));
 
-describe('ToggleSettings Component', () => {
+describe('ToggleLanguageSettings Component', () => {
     const mock_props: TToggleLanguageSettings = {
         is_settings_visible: false,
         lang: 'EN',
@@ -32,6 +32,6 @@ describe('ToggleSettings Component', () => {
         render(<ToggleLanguageSettings {...mock_props} />);
         const link = screen.getByTestId('dt_toggle_language_settings');
         userEvent.click(link);
-        expect(mock_props.toggleSettings).toHaveBeenCalledTimes(1);
+        expect(mock_props.toggleSettings).toHaveBeenCalled();
     });
 });

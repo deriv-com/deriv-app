@@ -4,12 +4,12 @@ import { init } from 'Utils/server_time';
 import Routes from 'Containers/routes';
 import CashierProviders from './cashier-providers';
 import type { TWebSocket } from './types';
-import type { TStores } from '@deriv/stores';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {
         WS: TWebSocket;
-        root_store: TStores;
+        root_store: TCoreStores;
     };
 };
 

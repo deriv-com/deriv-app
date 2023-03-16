@@ -264,7 +264,10 @@ type TTradersHubStore = {
     };
 };
 
-export type TRootStore = {
+/**
+ * This is the type that contains all the `core` package stores
+ */
+export type TCoreStores = {
     client: TClientStore;
     common: TCommonStore;
     menu: TMenuStore;

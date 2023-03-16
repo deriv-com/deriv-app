@@ -1,15 +1,17 @@
-import classNames from 'classnames';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { Div100vhContainer, Tabs, Modal, Money, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import { localize } from '@deriv/translations';
-import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
-import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
-import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
-import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
+
+import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom, Popover } from '@deriv/components';
+
+import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
+import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
+import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
+import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
+import { PropTypes as MobxPropTypes } from 'mobx-react';
+import PropTypes from 'prop-types';
+import React from 'react';
+import classNames from 'classnames';
+import { connect } from 'Stores/connect';
+import { localize, Localize } from '@deriv/translations';
 
 const DEFAULT_DURATION = Object.freeze({
     t: 5,
@@ -40,6 +42,7 @@ const TradeParamsModal = ({
     toggleModal,
     currency,
     duration_units_list,
+    is_vanilla,
 }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
@@ -96,6 +99,28 @@ const TradeParamsModal = ({
 
     const isVisible = component_key => form_components.includes(component_key);
 
+    const setTooltipContent = () => {
+        if (is_vanilla && state.trade_param_tab_idx === 1)
+            return (
+                <div className='trade-params__vanilla-ic-info-wrapper'>
+                    <Popover
+                        alignment='bottom'
+                        icon='info'
+                        id='dt_vanilla-stake__tooltip'
+                        zIndex={9999}
+                        is_bubble_hover_enabled
+                        arrow_styles={{ top: '-9px' }}
+                        message={
+                            <Localize i18n_default_text='Your stake is a non-refundable one-time premium to purchase this contract. Your total profit/loss equals the contract value minus your stake.' />
+                        }
+                        classNameWrapper='trade-params--modal-wrapper'
+                        classNameBubble='trade-params--modal-wrapper__content--vanilla'
+                    />
+                </div>
+            );
+        return null;
+    };
+
     return (
         <React.Fragment>
             <Modal
@@ -103,12 +128,12 @@ const TradeParamsModal = ({
                 className='trade-params'
                 enableApp={enableApp}
                 is_open={is_open}
-                is_vertical_top
                 header={<div />}
                 disableApp={disableApp}
                 toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
+                renderTitle={setTooltipContent}
             >
                 <ThemedScrollbars>
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>
@@ -171,6 +196,7 @@ export default connect(({ client, modules, ui }) => ({
     expiry_type: modules.trade.expiry_type,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    is_vanilla: modules.trade.is_vanilla,
 }))(TradeParamsModal);
 
 const TradeParamsMobile = ({
@@ -188,6 +214,7 @@ const TradeParamsMobile = ({
     duration_tab_idx,
     has_amount_error,
     has_duration_error,
+    is_vanilla,
     // amount
     setAmountError,
     setSelectedAmount,
@@ -237,7 +264,9 @@ const TradeParamsMobile = ({
             case 'amount':
                 return (
                     <div className='trade-params__header'>
-                        <div className='trade-params__header-label'>{localize('Amount')}</div>
+                        <div className='trade-params__header-label'>
+                            {is_vanilla ? localize('Stake') : localize('Amount')}
+                        </div>
                         <div
                             className={classNames('trade-params__header-value', {
                                 'trade-params__header-value--has-error': has_amount_error,
@@ -301,6 +330,7 @@ const TradeParamsMobile = ({
 const TradeParamsMobileWrapper = connect(({ modules }) => ({
     basis_list: modules.trade.basis_list,
     basis: modules.trade.basis,
+    is_vanilla: modules.trade.is_vanilla,
 }))(TradeParamsMobile);
 
 export const LastDigitMobile = connect(({ modules }) => ({

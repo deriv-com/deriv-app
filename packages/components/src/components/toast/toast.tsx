@@ -7,7 +7,7 @@ type TToast = {
     is_open?: boolean;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
     onClose?: () => void;
-    type?: 'error' | 'info';
+    type?: 'error' | 'info' | 'notification';
     timeout?: number;
 };
 

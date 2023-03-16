@@ -3,10 +3,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text, Toast } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isEnded, isDigitContract, unsupported_contract_types_list } from '@deriv/shared';
+import {
+    isEnded,
+    isDigitContract,
+    unsupported_contract_types_list,
+    formatMoney,
+    getCurrencyDisplayCode,
+} from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
 import { getAvailableContractTypes, findContractCategory } from '../../Trading/Helpers/contract-type';
+// import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
@@ -41,7 +48,7 @@ const TopWidgets = ({
     is_digits_widget_active,
     action_toastbox,
     actionChangeToastbox,
-    purchase_info,
+    // purchase_info,
     contract_info,
     contract_type,
     contract_types_list,
@@ -60,6 +67,7 @@ const TopWidgets = ({
 
     const BuyNotificationPopup = ({ portal_id = 'popup_root' }) => {
         const active_trade_type = { value: contract_type };
+        const { buy_price, currency } = contract_info;
 
         const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
@@ -67,10 +75,18 @@ const TopWidgets = ({
             findContractCategory(list, active_trade_type)?.contract_types?.find(item => item.value === contract_type)
                 .text;
 
-        const buy_price = purchase_info && purchase_info.buy ? purchase_info.buy.buy_price : contract_info?.buy_price;
-        const message = `The Purchase of ${getDisplayText()} contract has been completed for the amount of ${buy_price}${
-            contract_info.currency
-        }`;
+        const trade_type_name = getDisplayText();
+        const format_price = formatMoney(currency, buy_price, true, 0, 0);
+        const currency_display_code = getCurrencyDisplayCode(currency);
+
+        const message = (
+            <p>
+                The purchase of <strong>{trade_type_name} contract</strong> has been completed for the amount of
+                <strong>
+                    &nbsp; {format_price} {currency_display_code}
+                </strong>
+            </p>
+        );
 
         // if (!document.getElementById(portal_id) || !purchase_info) return null;
 
@@ -82,7 +98,7 @@ const TopWidgets = ({
 
         return ReactDOM.createPortal(
             <MobileWrapper>
-                <Toast className='dc-toast-popup-mobile' is_open={action_toastbox} timeout={0} type='info'>
+                <Toast className='dc-toast-popup-mobile' is_open={action_toastbox} timeout={0} type='notification'>
                     {message}
                 </Toast>
             </MobileWrapper>,
@@ -126,7 +142,7 @@ TopWidgets.propTypes = {
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
     // proposal_info: PropTypes.object,
-    purchase_info: PropTypes.object,
+    // purchase_info: PropTypes.object,
     action_toastbox: PropTypes.bool,
     actionChangeToastbox: PropTypes.func,
     contract_info: PropTypes.object,
@@ -136,7 +152,7 @@ TopWidgets.propTypes = {
 
 export default connect(({ modules, contract_trade }) => ({
     // proposal_info: modules.trade.proposal_info,
-    purchase_info: modules.trade.purchase_info,
+    // purchase_info: modules.trade.purchase_info,
     action_toastbox: modules.trade.action_toastbox,
     actionChangeToastbox: modules.trade.actionChangeToastbox,
     contract_info: contract_trade.last_contract.contract_info,

@@ -33,6 +33,17 @@
             }
         }
     }
+    &__notification {
+        .dc-toast__message {
+            background: var(--status-adjustment);
+            font-size: 1.2rem;
+            color: var(--general-main-1);
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 580px) {
+                font-size: 1rem;
+            }
+        }
+    }
     &--enter,
     &--exit {
         transform: scale(1, 0);

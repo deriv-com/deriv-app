@@ -1411,7 +1411,7 @@ export default class TradeStore extends BaseStore {
     get is_vanilla() {
         return this.contract_type === 'vanilla';
     }
-    actionChangeToastbox(is_visible) {
+    async actionChangeToastbox(is_visible) {
         return (this.action_toastbox = is_visible);
     }
 

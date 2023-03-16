@@ -106,7 +106,7 @@ const CollapsibleTradeParams = ({
             {is_vanilla ? (
                 <Purchase />
             ) : (
-                <div className='purchase-container'>
+                <div className={`purchase-container${is_accumulator ? '--accumulator' : ''}`}>
                     <Purchase />
                 </div>
             )}

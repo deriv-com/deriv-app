@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MobileWrapper, Toast } from '@deriv/components';
-// import { localize } from '@deriv/translations';
+import { MobileWrapper, Toast, Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { findContractCategory } from '../../Trading/Helpers/contract-type';
 
@@ -16,12 +16,13 @@ const BuyNotificationNew = ({ portal_id = 'popup_root', action_toastbox, actionC
     const trade_type_name = getDisplayText();
 
     const message = (
-        <p>
-            The purchase of <strong>{trade_type_name} contract</strong> has been completed for the amount of
-            <strong>
-                &nbsp; {buy_price} {currency}
-            </strong>
-        </p>
+        <Text color='main-1' as='p' size='xxs' className='dc-toast__notification'>
+            <Localize
+                i18n_default_text='The purchase of <0>{{trade_type_name}} contract</0> has been completed for the amount of <0> {{buy_price}} {{currency}}</0>'
+                components={[<strong key={0} />]}
+                values={{ trade_type_name, buy_price, currency }}
+            />
+        </Text>
     );
 
     React.useEffect(() => {

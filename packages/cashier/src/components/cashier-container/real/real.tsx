@@ -1,36 +1,25 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { Breadcrumb } from '@deriv/ui';
+import { useStore } from '@deriv/stores';
+import CashierBreadcrumb from 'Components/cashier-breadcrumb';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 
-type TRealProps = {
-    clearIframe: VoidFunction;
-    iframe_height: number | string;
-    iframe_url: string;
-    is_deposit?: boolean;
-    is_eu?: boolean;
-    is_loading: boolean;
-    onMountDeposit?: () => Promise<void>;
-    setIsDeposit?: (value: boolean) => void;
-};
+const Real = ({ is_deposit }: { is_deposit?: boolean }) => {
+    const {
+        traders_hub: { is_low_risk_cr_eu_real },
+    } = useStore();
 
-const Real = ({
-    clearIframe,
-    iframe_height,
-    iframe_url,
-    is_deposit,
-    is_eu,
-    is_loading,
-    onMountDeposit,
-    setIsDeposit,
-}: TRealProps) => {
-    const should_show_breadcrumbs = !is_eu && is_deposit && Boolean(iframe_height);
+    const { iframe, deposit, general_store } = useCashierStore();
+
+    const { clearIframe, iframe_height, iframe_url } = iframe;
+
+    const { is_loading } = general_store;
+
+    const { onMountDeposit } = deposit;
+
+    const should_show_breadcrumbs = !is_low_risk_cr_eu_real && is_deposit && Boolean(iframe_height);
     const should_show_loader = is_loading || !iframe_height;
-    const crumbs = [
-        { value: 0, text: localize('Cashier') },
-        { value: 1, text: localize('Deposit via bank wire, credit card, and e-wallet') },
-    ];
 
     React.useEffect(() => {
         return () => {
@@ -39,23 +28,10 @@ const Real = ({
         };
     }, [clearIframe, onMountDeposit]);
 
-    const onBreadcrumbHandler = (item: { value: number; text: string }) => {
-        switch (item.value) {
-            case 0:
-                setIsDeposit?.(false);
-                break;
-            default:
-        }
-    };
-
     return (
         <div className='cashier__wrapper real'>
             {should_show_loader && <Loading className='real__loader' />}
-            {should_show_breadcrumbs && (
-                <div className='real__header'>
-                    <Breadcrumb items={crumbs} handleOnClick={onBreadcrumbHandler} />
-                </div>
-            )}
+            {should_show_breadcrumbs && <CashierBreadcrumb />}
             {iframe_url && (
                 <iframe
                     className='cashier__content'

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
-import { ContentFlag } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
@@ -31,9 +30,9 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         landing_company_shortcode,
     } = client;
     const { iframe, deposit, transaction_history, general_store } = useCashierStore();
-    const { clearIframe, iframe_height, iframe_url } = iframe;
+    const { iframe_height, iframe_url } = iframe;
     const { container, error, onMountDeposit: onMount } = deposit;
-    const { content_flag } = traders_hub;
+    const { is_low_risk_cr_eu_real } = traders_hub;
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
@@ -51,8 +50,6 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         setIsDeposit,
     } = general_store;
     const is_deposit_locked = useDepositLocked();
-
-    const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
 
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
@@ -126,7 +123,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         return <CryptoTransactionsHistory />;
     }
 
-    if (is_deposit || is_eu) {
+    if (is_deposit || is_low_risk_cr_eu_real) {
         if (error.message) {
             return <Error error={error} />;
         }
@@ -141,16 +138,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                         <CashierOnboardingSideNote is_crypto={false} />
                     </SideNote>
                 )}
-                <Real
-                    iframe_height={iframe_height}
-                    iframe_url={iframe_url}
-                    is_deposit
-                    is_eu={is_eu}
-                    is_loading={is_loading}
-                    clearIframe={clearIframe}
-                    setIsDeposit={setIsDeposit}
-                    onMountDeposit={onMount}
-                />
+                <Real is_deposit />
             </>
         );
     }

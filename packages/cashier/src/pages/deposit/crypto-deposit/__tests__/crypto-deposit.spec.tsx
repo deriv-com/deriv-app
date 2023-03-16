@@ -39,6 +39,7 @@ describe('<CryptoDeposit />', () => {
     };
 
     it('should show loader', () => {
+        // TODO: use mockStore for tests after TStores type will be updated
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 currency: 'BTC',

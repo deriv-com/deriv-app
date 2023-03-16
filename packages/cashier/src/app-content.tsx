@@ -3,7 +3,7 @@ import Routes from 'Containers/routes';
 import { observer, useStore } from '@deriv/stores';
 import { useTheme } from '@deriv/ui';
 
-const AppThemeContent = () => {
+const AppContent = () => {
     const {
         ui: { is_dark_mode_on },
     } = useStore();
@@ -18,4 +18,4 @@ const AppThemeContent = () => {
     return <Routes />;
 };
 
-export default observer(AppThemeContent);
+export default observer(AppContent);

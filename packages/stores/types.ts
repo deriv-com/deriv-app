@@ -245,6 +245,7 @@ type TNotificationStore = {
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
+    is_low_risk_cr_eu_real: boolean;
     openModal: (modal_id: string, props?: any) => void;
 };
 

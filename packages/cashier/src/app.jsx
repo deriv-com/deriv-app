@@ -1,9 +1,8 @@
 import React from 'react';
 import { setWebsocket } from '@deriv/shared';
-import { ThemeProvider } from '@deriv/ui';
 import { init } from 'Utils/server_time';
 import CashierProviders from './cashier-providers';
-import AppThemeContent from './app-theme-content';
+import AppContent from './app-content';
 
 const App = ({ passthrough: { WS, root_store } }) => {
     React.useEffect(() => {
@@ -13,11 +12,9 @@ const App = ({ passthrough: { WS, root_store } }) => {
     }, []);
 
     return (
-        <ThemeProvider>
-            <CashierProviders store={root_store}>
-                <AppThemeContent />
-            </CashierProviders>
-        </ThemeProvider>
+        <CashierProviders store={root_store}>
+            <AppContent />
+        </CashierProviders>
     );
 };
 

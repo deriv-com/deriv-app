@@ -3,7 +3,7 @@ import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { Breadcrumb } from '@deriv/ui';
+import CashierBreadcrumb from 'Components/cashier-breadcrumb';
 import QRCode from 'qrcode.react';
 import RecentTransaction from '../../../components/recent-transaction';
 import { useCashierStore } from '../../../stores/useCashierStores';
@@ -16,11 +16,6 @@ const CryptoDeposit = observer(() => {
     const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
-
-    const crumbs = [
-        { value: 0, text: localize('Cashier') },
-        { value: 1, text: localize('Deposit cryptocurrencies') },
-    ];
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -113,15 +108,6 @@ const CryptoDeposit = observer(() => {
         setOptionListValue(event.target.value);
     };
 
-    const onBreadcrumbHandler = (item: { value: number; text: string }) => {
-        switch (item.value) {
-            case 0:
-                setIsDeposit(false);
-                break;
-            default:
-        }
-    };
-
     if (is_deposit_address_loading) {
         return <Loading is_fullscreen />;
     }
@@ -143,9 +129,7 @@ const CryptoDeposit = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
-            <div className='crypto-deposit__header'>
-                <Breadcrumb items={crumbs} handleOnClick={onBreadcrumbHandler} />
-            </div>
+            <CashierBreadcrumb is_crypto_deposit />
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text

@@ -7,23 +7,6 @@
         }
     }
 
-    &__header {
-        width: 100%;
-        margin-bottom: 1.6rem;
-
-        ul > *:not(:last-child) {
-            cursor: pointer;
-        }
-
-        li {
-            text-align: left;
-        }
-
-        @include mobile {
-            margin-top: 1.6rem;
-        }
-    }
-
     &__transaction-wrapper {
         display: flex;
         flex-direction: column;

@@ -3,21 +3,4 @@
         width: 100%;
         height: 80vh;
     }
-
-    &__header {
-        width: 100%;
-        margin-bottom: 1.6rem;
-
-        ul > *:not(:last-child) {
-            cursor: pointer;
-        }
-
-        li {
-            text-align: left;
-        }
-
-        @include mobile {
-            margin-top: 1.6rem;
-        }
-    }
 }

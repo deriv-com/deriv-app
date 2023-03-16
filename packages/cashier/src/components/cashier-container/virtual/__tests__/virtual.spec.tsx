@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import Virtual from '../virtual';
@@ -8,7 +8,7 @@ import CashierProviders from '../../../../cashier-providers';
 
 describe('<Virtual />', () => {
     const history = createBrowserHistory();
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
         mockRootStore = mockStore({

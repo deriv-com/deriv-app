@@ -1,9 +1,9 @@
 import React, { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react';
-import type { TCoreStores } from '../types';
 import { CounterStore } from './stores';
+import type { TCoreStores } from '../types';
 
 export type TStores = TCoreStores & {
-    counter?: CounterStore;
+    counter: CounterStore;
 };
 
 const StoreContext = createContext<TStores | null>(null);

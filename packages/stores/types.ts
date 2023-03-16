@@ -272,7 +272,9 @@ export type TCoreStores = {
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: Record<string, Record<string, unknown>>;
+    // This should be `any` as this property will be handled in each package.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

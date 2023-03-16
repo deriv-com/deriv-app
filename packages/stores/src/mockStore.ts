@@ -187,6 +187,7 @@ const mock = (): TRootStore => {
             setBalanceOtherAccounts: jest.fn(),
             setInitialized: jest.fn(),
             setLogout: jest.fn(),
+            setP2pAdvertiserInfo: jest.fn(),
             setPreSwitchAccount: jest.fn(),
             switched: false,
             switch_broadcast: false,
@@ -247,11 +248,13 @@ const mock = (): TRootStore => {
         },
         notifications: {
             addNotificationMessage: jest.fn(),
+            client_notifications: {},
             filterNotificationMessages: jest.fn(),
             refreshNotifications: jest.fn(),
             removeNotificationByKey: jest.fn(),
             removeNotificationMessage: jest.fn(),
             setP2POrderProps: jest.fn(),
+            setP2PRedirectTo: jest.fn(),
         },
         modules: {},
     };

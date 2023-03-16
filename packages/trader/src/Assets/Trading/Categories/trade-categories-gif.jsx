@@ -17,6 +17,7 @@ import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg'
 import ImageStaysInGoesOut from 'Assets/SvgComponents/trade_explanations/img-stays-in-goes-out.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
+import ImageVanilla from 'Assets/SvgComponents/trade_explanations/img-vanilla.svg';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
 const TradeCategoriesGIF = ({ category }) => {
@@ -57,6 +58,8 @@ const TradeCategoriesGIF = ({ category }) => {
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;
+        case 'vanilla':
+            return <ImageVanilla />;
         default:
             return null;
     }

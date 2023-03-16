@@ -20,6 +20,7 @@ jest.mock('@deriv/account', () => ({
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Icon: jest.fn(({ icon }) => <div>{icon}</div>),
+    TradingPlatformIcon: jest.fn(() => <div>{'MockedMT5Icon'}</div>),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -35,7 +36,6 @@ jest.mock('@deriv/shared', () => ({
     validPassword: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockedMT5Icon'));
 describe('<CFDPasswordModal/>', () => {
     const mockFn = jest.fn();
     const mockDisableCFDPasswordModalFn = jest.fn();

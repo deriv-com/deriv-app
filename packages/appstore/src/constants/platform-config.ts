@@ -1,6 +1,6 @@
 import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { PlatformIcons } from 'Assets/svgs/trading-platform';
+import { PlatformIcons } from '@deriv/components';
 import { TAccountCategory, TRegionAvailability } from 'Types';
 
 export type AccountType = { text: 'Real' | 'Demo'; value: TAccountCategory };

@@ -38,12 +38,15 @@ export const PlatformIcons = {
     CFDs,
 };
 
-const TradingPlatformIcon = ({ icon, className, size, onClick }: TTradingPlatformProps<keyof typeof PlatformIcons>) => {
+export const TradingPlatformIcon = ({
+    icon,
+    className,
+    size,
+    onClick,
+}: TTradingPlatformProps<keyof typeof PlatformIcons>) => {
     const PlatformIcon = PlatformIcons[icon] as React.ElementType;
 
     return PlatformIcon ? (
         <PlatformIcon className={className} style={{ width: size, height: size }} onClick={onClick} />
     ) : null;
 };
-
-export default TradingPlatformIcon;

@@ -1,3 +1,1 @@
-import TradingPlatformIcon from './trading-platform-icon';
-
-export default TradingPlatformIcon;
+export { TradingPlatformIcon, PlatformIcons } from './trading-platform-icon';

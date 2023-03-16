@@ -2,7 +2,7 @@
 /* ACCOUNT TYPES                                                              */
 /* -------------------------------------------------------------------------- */
 import { DetailsOfEachMT5Loginid, TransferBetweenAccountsResponse } from '@deriv/api-types';
-import { PlatformIcons } from '../assets/svgs/trading-platform/index';
+import { PlatformIcons } from '@deriv/components';
 
 export type TAccount = {
     balance?: string | number;

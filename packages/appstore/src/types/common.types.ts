@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { PlatformIcons } from 'Assets/svgs/trading-platform';
+import { PlatformIcons } from '@deriv/components';
 import { RegionAvailability } from 'Constants/platform-config';
 
 export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]

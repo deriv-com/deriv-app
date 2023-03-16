@@ -90,7 +90,7 @@
 
     &__logo {
         height: 2.5rem;
-        margin: 0 0.5rem 0 1.5rem;
+        margin-bottom: 0.8rem !important;
 
         @include mobile {
             margin-left: 0.7rem;

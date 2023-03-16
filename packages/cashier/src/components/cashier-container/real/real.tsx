@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useStore } from '@deriv/stores';
-import CashierBreadcrumb from 'Components/cashier-breadcrumb';
+import CashierBreadcrumb from '../../cashier-breadcrumb';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 

@@ -395,16 +395,12 @@ describe('<AccountTransferForm />', () => {
             },
         ];
 
-        // mockRootStore.modules.cashier.account_transfer.selected_to;
-        // mockRootStore.modules.cashier.account_transfer.selected_from;
-
         const derivez_account = {
             currency: 'USD',
             is_mt: false,
             is_dxtrade: false,
             is_derivez: true,
             is_crypto: false,
-            // platform_icon: "IcDerivez",
             text: 'Deriv EZ',
             value: 'EZR80000469',
         };
@@ -450,12 +446,6 @@ describe('<AccountTransferForm />', () => {
             is_dxtrade: false,
             is_derivez: false,
         };
-        // it('should show the deriv ez icon when deriv ez account is selected in the from or to account dropdown`', () => {
-
-        //     renderAccountTransferForm();
-        //     expect(screen.getByTestId('dt_IcDerivez')).toBeInTheDocument()
-
-        // });
 
         describe('from_dropdown', () => {
             it('should check for USD icon when USD is selected in from_dropdown', () => {
@@ -466,7 +456,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(10.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt-currency-usd')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_currency_usd')).toBeInTheDocument();
             });
 
             it('should check for icon BTC when BTC is selected in from dropdown', () => {
@@ -477,7 +467,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt-currency-btc')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_currency_btc')).toBeInTheDocument();
             });
 
             it('should check for derivez icon when derivez is selected in from_dropdown', () => {
@@ -488,7 +478,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt-IcDerivez')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcDerivez')).toBeInTheDocument();
             });
 
             it('should check for MT5 icon when MT5 is selected in from_dropdown', () => {
@@ -499,7 +489,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt-IcMt5Derived')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcMt5Derived')).toBeInTheDocument();
             });
 
             it('should check for DerivX icon when DerivX is selected in from_dropdown', () => {
@@ -510,7 +500,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt-IcDeriv X')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_account_platform_icon_IcDeriv X')).toBeInTheDocument();
             });
         });
     });

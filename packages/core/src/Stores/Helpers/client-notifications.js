@@ -61,5 +61,5 @@ export const getCashierValidations = cashier_arr => {
     }, {});
 };
 
-// Notifications keys will not be added to localStorage and will appear again after page refresh
+// Notifications keys will not be added to localStorage and will appear again after user logout/login
 export const excluded_notifications = ['contract_sold'];

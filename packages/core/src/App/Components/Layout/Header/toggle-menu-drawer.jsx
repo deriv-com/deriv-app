@@ -145,7 +145,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
 
-    const currentLanguage = getLanguage();
+    const current_language = getLanguage();
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -322,7 +322,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     <MobileDrawer.Item key={idx}>
                         <MenuLink
                             is_language
-                            is_active={currentLanguage === lang}
+                            is_active={current_language === lang}
                             link_to={lang}
                             icon={`IcFlag${lang.replace('_', '-')}`}
                             text={getAllowedLanguages()[lang]}
@@ -355,7 +355,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                         <LanguageLink
                             key={lang}
                             changeCurrentLanguage={changeCurrentLanguage}
-                            current_language={currentLanguage}
+                            current_language={current_language}
                             icon_classname='settings-language__language-flag--pre-appstore'
                             is_clickable
                             lang={lang}
@@ -423,14 +423,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     }}
                 >
                     <Icon
-                        icon={`IcFlag${currentLanguage.replace('_', '-')}`}
+                        icon={`IcFlag${current_language.replace('_', '-')}`}
                         data_testid='dt_icon'
                         className='ic-settings-language__icon'
-                        type={currentLanguage.replace(/(\s|_)/, '-').toLowerCase()}
+                        type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
                         size={22}
                     />
                     <Text weight='bold' size='xxs'>
-                        <Localize i18n_default_text={currentLanguage} />
+                        <Localize i18n_default_text={current_language} />
                     </Text>
                 </div>
             )}

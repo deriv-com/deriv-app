@@ -100,8 +100,6 @@ const Footer = ({
                     <ToggleLanguageSettings
                         is_settings_visible={is_language_settings_modal_on}
                         toggleSettings={toggleLanguageSettingsModal}
-                        disableApp={disableApp}
-                        enableApp={enableApp}
                         is_pre_appstore={is_pre_appstore}
                         lang={current_language}
                     />

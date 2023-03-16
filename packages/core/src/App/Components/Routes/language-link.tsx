@@ -5,7 +5,7 @@ import { Icon } from '@deriv/components';
 import { getAllowedLanguages } from '@deriv/translations';
 import { changeLanguage } from 'Utils/Language';
 
-type TLanguageLink = {
+export type TLanguageLink = {
     current_language: string;
     changeCurrentLanguage?: (lang: string) => void;
     icon_classname?: string;
@@ -57,6 +57,7 @@ const LanguageLink = ({
                 </div>
             ) : (
                 <span
+                    data-testid='dt_settings_language_button'
                     id={`dt_settings_${lang}_button`}
                     key={lang}
                     onClick={async () => {

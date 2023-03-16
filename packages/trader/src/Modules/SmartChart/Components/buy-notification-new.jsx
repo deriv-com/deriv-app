@@ -24,11 +24,17 @@ const BuyNotificationNew = ({ portal_id = 'popup_root', action_toastbox, actionC
         </p>
     );
 
-    if (!document.getElementById(portal_id) || !action_toastbox) return null;
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            actionChangeToastbox({});
+        }, 4000);
 
-    setTimeout(() => {
-        actionChangeToastbox({});
-    }, 4000);
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [actionChangeToastbox, action_toastbox]);
+
+    if (!document.getElementById(portal_id) || !action_toastbox) return null;
 
     return ReactDOM.createPortal(
         <MobileWrapper>

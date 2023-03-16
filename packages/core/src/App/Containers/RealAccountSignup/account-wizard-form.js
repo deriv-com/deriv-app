@@ -29,14 +29,7 @@ const shouldShowIdentityInformation = ({
     const country = residence_list.find(item => item.value === citizen);
     const maltainvest = real_account_signup_target === 'maltainvest';
     const is_age_verified = account_status.status.some(status => status === 'age_verification');
-    const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
-    return (
-        !maltainvest &&
-        citizen &&
-        country?.identity?.services?.idv?.is_country_supported &&
-        !is_age_verified &&
-        !is_idv_disallowed
-    );
+    return !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported && !is_age_verified;
 };
 
 export const getItems = props => [

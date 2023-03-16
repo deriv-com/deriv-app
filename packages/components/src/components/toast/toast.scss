@@ -35,9 +35,9 @@
     }
     &__notification {
         .dc-toast__message {
-            background: var(--status-adjustment);
+            background: var(--general-active);
             font-size: 1.2rem;
-            color: var(--general-main-1);
+            padding: 0.9rem 1.2rem;
             /* iPhone SE screen height fixes due to UI space restrictions */
             @media only screen and (max-height: 580px) {
                 font-size: 1rem;

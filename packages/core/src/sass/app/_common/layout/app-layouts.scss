@@ -73,11 +73,11 @@
             display: inherit;
             background-color: var(--general-main-1);
             max-width: calc(100vw - 1.6rem);
-            left: 1.6rem;
-            width: calc(100vw - 3.2rem);
-            top: #{$HEADER_HEIGHT};
+            left: 1.2rem;
+            width: calc(100vw - 1.2rem);
+            top: 0.4rem;
             position: absolute;
-            right: 1.6rem;
+            right: 1.2rem;
         }
     }
 }

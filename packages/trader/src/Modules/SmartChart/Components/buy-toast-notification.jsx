@@ -10,17 +10,17 @@ const BuyToastNotification = ({ portal_id = 'popup_root', action_toastbox, actio
     const { buy_price, currency, contract_type, list } = action_toastbox;
     const active_trade_type = { value: contract_type };
 
-    const getDisplayText = () =>
-        findContractCategory(list, active_trade_type)?.contract_types?.find(item => item.value === contract_type).text;
-
-    const trade_type_name = getDisplayText();
+    const trade_type_name = findContractCategory(list, active_trade_type)?.contract_types?.find(
+        item => item.value === contract_type
+    ).text;
 
     const message = (
-        <Text color='main-1' as='p' size='xxs' className='dc-toast__notification'>
+        <Text as='p' size='xxs' className='dc-toast__notification'>
             <Localize
                 i18n_default_text='The purchase of <0>{{trade_type_name}} contract</0> has been completed for the amount of <0> {{buy_price}} {{currency}}</0>'
                 components={[<strong key={0} />]}
                 values={{ trade_type_name, buy_price, currency }}
+                shouldUnescape={true}
             />
         </Text>
     );

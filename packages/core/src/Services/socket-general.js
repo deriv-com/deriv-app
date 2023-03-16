@@ -76,7 +76,7 @@ const BinarySocketGeneral = (() => {
                 client_store.setAccountStatus(response.get_account_status);
                 break;
             case 'payout_currencies':
-                client_store.responsePayoutCurrencies(response.payout_currencies);
+                client_store.responsePayoutCurrencies(response?.payout_currencies);
                 break;
             case 'transaction':
                 gtm_store.pushTransactionData(response);

@@ -8,10 +8,12 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
+import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import './app.scss';
 
 const App = props => {
     const { general_store, order_store } = useStores();
+    const [should_show_profile, setShouldShowProfile] = React.useState(false);
     const {
         balance,
         className,
@@ -35,6 +37,11 @@ const App = props => {
         if (/\/verification$/.test(history?.location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
             history.push(routes.cashier_p2p);
+        }
+
+        if (/\/profile$/.test(history?.location.pathname)) {
+            history.push(routes.cashier_p2p);
+            setShouldShowProfile(true);
         }
 
         ServerTime.init(server_time);
@@ -63,15 +70,14 @@ const App = props => {
     }, [lang]);
 
     React.useEffect(() => {
+        if (should_show_profile) general_store.redirectTo('my_profile');
+    }, [should_show_profile]);
+
+    React.useEffect(() => {
         if (order_id) {
             general_store.redirectTo('orders');
             order_store.setOrderId(order_id);
         }
-        general_store.props.setP2POrderProps({
-            order_id,
-            redirectToOrderDetails: general_store.redirectToOrderDetails,
-            setIsRatingModalOpen: order_store.setIsRatingModalOpen,
-        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
 
@@ -91,7 +97,7 @@ const App = props => {
             order_store.setVerificationCode(verification_code);
         }
         if (verification_action && verification_code) {
-            order_store.setIsLoadingModalOpen(true);
+            general_store.showModal({ key: 'LoadingModal', props: {} });
             order_store.verifyEmailVerificationCode(verification_action, verification_code);
         }
 
@@ -101,7 +107,10 @@ const App = props => {
     return (
         <main className={classNames('p2p-cashier', className)}>
             <Notifications />
-            <AppContent />
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+            </ModalManagerContextProvider>
         </main>
     );
 };

@@ -5,6 +5,10 @@
     @include desktop {
         min-width: 132rem;
     }
+    @include mobile {
+        position: relative;
+        bottom: 2rem;
+    }
 
     &--deposit-button-blurry {
         opacity: 0.2;
@@ -44,11 +48,6 @@
             border: 1px solid var(--general-hover);
             padding: 2rem;
             border-radius: 2.4rem;
-
-            @include mobile {
-                padding: 3rem;
-                border: none;
-            }
         }
 
         &__bordered--with-margin {
@@ -56,9 +55,16 @@
             padding: 2.4rem;
             border-radius: 2.4rem;
             margin-bottom: 2rem;
+        }
 
+        &__bordered,
+        &__bordered--with-margin {
             @include mobile {
+                padding: 3rem 3rem 15rem;
+                height: 36.5rem;
                 border: none;
+                overflow-y: scroll;
+                overflow-x: hidden;
             }
         }
 

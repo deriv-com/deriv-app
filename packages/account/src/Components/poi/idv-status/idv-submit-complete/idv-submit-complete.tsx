@@ -22,15 +22,15 @@ const IdvSubmitComplete = ({ needs_poa, is_from_external, redirect_button }: TId
             <Text className='proof-of-identity__text text' size='xs' align='center'>
                 {localize('We’ll review your documents and notify you of its status within 5 minutes.')}
             </Text>
-            {!needs_poa ? (
-                redirect_button
-            ) : (
+            {needs_poa ? (
                 <React.Fragment>
                     <Text className='text' size='xs' align='center'>
                         {localize("Next, we'll need your proof of address.")}
                     </Text>
                     {poa_button}
                 </React.Fragment>
+            ) : (
+                redirect_button
             )}
         </div>
     );

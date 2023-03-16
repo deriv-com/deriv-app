@@ -25,10 +25,18 @@ jest.mock('Utils/Language', () => {
     };
 });
 
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    useStore: jest.fn().mockReturnValue({
+        common: {
+            current_language: 'EN',
+            changeCurrentLanguage: jest.fn(),
+        },
+    }),
+}));
+
 describe('LanguageLink component', () => {
     const mock_props: TLanguageLink = {
-        changeCurrentLanguage: jest.fn(),
-        current_language: 'EN',
         is_clickable: false,
         lang: 'ID',
         toggleModal: jest.fn(),

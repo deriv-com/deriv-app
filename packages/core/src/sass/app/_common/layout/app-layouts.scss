@@ -69,6 +69,16 @@
             position: absolute;
             right: 1.6rem;
         }
+        .dc-toast-popup-mobile {
+            display: inherit;
+            background-color: var(--general-main-1);
+            max-width: calc(100vw - 1.6rem);
+            left: 1.6rem;
+            width: calc(100vw - 3.2rem);
+            top: #{$HEADER_HEIGHT};
+            position: absolute;
+            right: 1.6rem;
+        }
     }
 }
 

@@ -3,9 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper, Text, Toast } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isEnded, isDigitContract } from '@deriv/shared';
+import { isEnded, isDigitContract, unsupported_contract_types_list } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { ChartTitle } from 'Modules/SmartChart';
+import { getAvailableContractTypes, findContractCategory } from '../../Trading/Helpers/contract-type';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
@@ -40,6 +41,10 @@ const TopWidgets = ({
     is_digits_widget_active,
     action_toastbox,
     actionChangeToastbox,
+    purchase_info,
+    contract_info,
+    contract_type,
+    contract_types_list,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
@@ -54,7 +59,18 @@ const TopWidgets = ({
     );
 
     const BuyNotificationPopup = ({ portal_id = 'popup_root' }) => {
-        const message = `Please be on time ${action_toastbox}`;
+        const active_trade_type = { value: contract_type };
+
+        const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
+
+        const getDisplayText = () =>
+            findContractCategory(list, active_trade_type)?.contract_types?.find(item => item.value === contract_type)
+                .text;
+
+        const buy_price = purchase_info && purchase_info.buy ? purchase_info.buy.buy_price : contract_info?.buy_price;
+        const message = `The Purchase of ${getDisplayText()} contract has been completed for the amount of ${buy_price}${
+            contract_info.currency
+        }`;
 
         // if (!document.getElementById(portal_id) || !purchase_info) return null;
 
@@ -66,7 +82,7 @@ const TopWidgets = ({
 
         return ReactDOM.createPortal(
             <MobileWrapper>
-                <Toast className='dc-toat-popup4' is_open={action_toastbox} timeout={0} type='info'>
+                <Toast className='dc-toast-popup-mobile' is_open={action_toastbox} timeout={0} type='info'>
                     {message}
                 </Toast>
             </MobileWrapper>,
@@ -109,15 +125,21 @@ TopWidgets.propTypes = {
     open_market: PropTypes.object,
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
-    proposal_info: PropTypes.object,
+    // proposal_info: PropTypes.object,
     purchase_info: PropTypes.object,
     action_toastbox: PropTypes.bool,
     actionChangeToastbox: PropTypes.func,
+    contract_info: PropTypes.object,
+    contract_type: PropTypes.string,
+    contract_types_list: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
-    proposal_info: modules.trade.proposal_info,
+export default connect(({ modules, contract_trade }) => ({
+    // proposal_info: modules.trade.proposal_info,
     purchase_info: modules.trade.purchase_info,
     action_toastbox: modules.trade.action_toastbox,
     actionChangeToastbox: modules.trade.actionChangeToastbox,
+    contract_info: contract_trade.last_contract.contract_info,
+    contract_type: modules.trade.contract_type,
+    contract_types_list: modules.trade.contract_types_list,
 }))(TopWidgets);

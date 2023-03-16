@@ -1,28 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@deriv/components';
 import { getAllowedLanguages } from '@deriv/translations';
 import { changeLanguage } from 'Utils/Language';
 
 export type TLanguageLink = {
-    current_language: string;
-    changeCurrentLanguage?: (lang: string) => void;
     icon_classname?: string;
     is_clickable?: boolean;
     lang: string;
     toggleModal?: () => void;
 };
 
-const LanguageLink = ({
-    changeCurrentLanguage,
-    current_language,
-    icon_classname,
-    is_clickable = false,
-    lang,
-    toggleModal,
-}: TLanguageLink) => {
+const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, toggleModal }: TLanguageLink) => {
     const { i18n } = useTranslation();
+    const { common } = useStore();
+    const { changeCurrentLanguage, current_language } = common;
     const is_active = current_language === lang;
 
     const link: React.ReactNode = (
@@ -74,6 +68,6 @@ const LanguageLink = ({
             )}
         </React.Fragment>
     );
-};
+});
 
 export default LanguageLink;

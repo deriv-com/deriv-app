@@ -103,7 +103,7 @@ const MenuLink = observer(
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
-    const { app_routing_history, changeCurrentLanguage } = common;
+    const { app_routing_history } = common;
     const {
         disableApp,
         enableApp,
@@ -354,8 +354,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     {Object.keys(getAllowedLanguages()).map(lang => (
                         <LanguageLink
                             key={lang}
-                            changeCurrentLanguage={changeCurrentLanguage}
-                            current_language={current_language}
                             icon_classname='settings-language__language-flag--pre-appstore'
                             is_clickable
                             lang={lang}

@@ -201,6 +201,7 @@ type TCommonStore = {
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
+    current_language: string;
 };
 
 type TUiStore = {

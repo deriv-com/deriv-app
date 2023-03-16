@@ -26,13 +26,13 @@ const SubMenu = ({
     route_config_path,
     is_expanded = false,
 }: React.PropsWithChildren<TMobileDrawerSubmenu>) => {
-    const [is_extended, setIsExpanded] = React.useState(is_expanded);
+    const [is_extended, setIsExtended] = React.useState(is_expanded);
 
     const toggleMenu = () => {
-        const should_expanded = !is_extended;
-        setIsExpanded(should_expanded);
+        const should_menu_expand = !is_extended;
+        setIsExtended(should_menu_expand);
         if (onToggle) {
-            onToggle(should_expanded);
+            onToggle(should_menu_expand);
         }
     };
     return (

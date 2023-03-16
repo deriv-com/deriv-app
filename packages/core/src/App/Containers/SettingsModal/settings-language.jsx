@@ -7,13 +7,7 @@ import { LanguageLink } from 'App/Components/Routes';
 
 const isCurrentLanguage = (lang, current_language) => lang === current_language;
 
-const LanguageSettings = ({
-    changeCurrentLanguage,
-    current_language,
-    is_pre_appstore,
-    toggleLanguageSettingsModal,
-    toggleSettingsModal,
-}) => {
+const LanguageSettings = ({ current_language, is_pre_appstore, toggleLanguageSettingsModal, toggleSettingsModal }) => {
     return (
         <div className='settings-language'>
             {!is_pre_appstore && (
@@ -29,13 +23,11 @@ const LanguageSettings = ({
                 })}
             >
                 {Object.keys(getAllowedLanguages()).map(lang =>
-                    isCurrentLanguage(lang) ? (
-                        <LanguageLink key={lang} lang={lang} current_language={current_language} />
+                    isCurrentLanguage(lang, current_language) ? (
+                        <LanguageLink key={lang} lang={lang} />
                     ) : (
                         <LanguageLink
                             key={lang}
-                            changeCurrentLanguage={changeCurrentLanguage}
-                            current_language={current_language}
                             is_clickable
                             lang={lang}
                             toggleModal={is_pre_appstore ? toggleLanguageSettingsModal : toggleSettingsModal}

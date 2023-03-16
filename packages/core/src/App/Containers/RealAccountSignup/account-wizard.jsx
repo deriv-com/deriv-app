@@ -190,7 +190,9 @@ const AccountWizard = props => {
 
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
-        delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
+        delete clone?.tax_identification_confirm;
+        delete clone?.agreed_tnc;
+        delete clone?.agreed_tos;
         props.setRealAccountFormData(clone);
         if (payload) {
             clone = {

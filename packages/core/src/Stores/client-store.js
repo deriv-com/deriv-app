@@ -1266,11 +1266,10 @@ export default class ClientStore extends BaseStore {
 
         // delete all notifications key when set new account except notifications for this account
         const notification_messages = LocalStore.getObject('notification_messages');
-        const messages = notification_messages[this.loginid];
-        if (this.loginid)
-            LocalStore.setObject('notification_messages', {
-                [this.loginid]: messages,
-            });
+        const messages = notification_messages[this.loginid] ?? [];
+        LocalStore.setObject('notification_messages', {
+            [this.loginid]: messages,
+        });
 
         // For residences without local currency (e.g. ax)
         const default_fractional_digits = 2;

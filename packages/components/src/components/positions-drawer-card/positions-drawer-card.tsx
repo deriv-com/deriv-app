@@ -9,6 +9,7 @@ import {
     getCardLabels,
     getContractTypeDisplay,
     getEndTime,
+    isVanillaContract,
 } from '@deriv/shared';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import type { ContractUpdate } from '@deriv/api-types';
@@ -90,6 +91,7 @@ const PositionsDrawerCard = ({
     toggleUnsupportedContractModal,
 }: TPositionsDrawerCardProps) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type || '');
+    const is_vanilla = isVanillaContract(contract_info.contract_type || '');
     const is_crypto = isCryptoContract(contract_info.underlying || '');
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
@@ -129,6 +131,7 @@ const PositionsDrawerCard = ({
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={has_ended}
+            is_vanilla={is_vanilla}
             has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}

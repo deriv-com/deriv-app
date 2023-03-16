@@ -22,11 +22,15 @@ import {
     showDigitalOptionsUnavailableError,
     showMxMltUnavailableError,
     showUnavailableLocationError,
+    formatMoney,
+    getCurrencyDisplayCode,
+    unsupported_contract_types_list,
 } from '@deriv/shared';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getMultiplierValidationRules, getValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
+import { getAvailableContractTypes } from '../../../Modules/Trading/Helpers/contract-type';
 
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import BaseStore from '../../base-store';
@@ -140,7 +144,7 @@ export default class TradeStore extends BaseStore {
     is_trade_params_expanded = true;
 
     //Toastbox
-    action_toastbox = false;
+    action_toastbox = {};
 
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
@@ -310,6 +314,7 @@ export default class TradeStore extends BaseStore {
             updateSymbol: action.bound,
             action_toastbox: observable,
             actionChangeToastbox: action.bound,
+            getActionToastbox: action.bound,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -778,7 +783,6 @@ export default class TradeStore extends BaseStore {
                                     this.root_store.ui.openPositionsDrawer();
                                 }
                             }
-                            this.action_toastbox = true;
                             this.proposal_info = {};
                             this.forgetAllProposal();
                             this.purchase_info = response;
@@ -786,6 +790,7 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
+                            this.getActionToastbox(response.buy);
                             this.is_purchasing_contract = false;
                             return;
                         }
@@ -1410,6 +1415,16 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla() {
         return this.contract_type === 'vanilla';
+    }
+    async getActionToastbox(response) {
+        const list = getAvailableContractTypes(this.contract_types_list, unsupported_contract_types_list);
+        return (this.action_toastbox = {
+            key: true,
+            buy_price: formatMoney(this.root_store.client.currency, response.buy_price, true, 0, 0),
+            contract_type: this.contract_type,
+            currency: getCurrencyDisplayCode(this.root_store.client.currency),
+            list,
+        });
     }
     async actionChangeToastbox(is_visible) {
         return (this.action_toastbox = is_visible);

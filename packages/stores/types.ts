@@ -151,6 +151,7 @@ type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
+    setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => void;
     switched: boolean;
@@ -232,11 +233,13 @@ type TMenuStore = {
 
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
+    client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    setP2PRedirectTo: () => void;
 };
 
 type TTradersHubStore = {

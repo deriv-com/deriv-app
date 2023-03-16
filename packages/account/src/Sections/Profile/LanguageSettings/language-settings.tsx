@@ -2,37 +2,23 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, DesktopWrapper, ThemedScrollbars } from '@deriv/components';
 import { localize, getAllowedLanguages } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import FormSubHeader from 'Components/form-sub-header';
-import TCoreStore from '../../../Stores';
 import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
 
-type TchangeCurrentLanguage = (lang: string) => void;
-
-type TLanguageSettings = {
-    current_language: string;
-    changeCurrentLanguage: TchangeCurrentLanguage;
-    changeLanguage: (lang: string, changeCurrentLanguage: TchangeCurrentLanguage) => Promise<void>;
-    isCurrentLanguage: (lang: string) => boolean;
-};
-
-const LanguageSettings = ({
-    changeCurrentLanguage,
-    changeLanguage,
-    current_language,
-    isCurrentLanguage,
-}: TLanguageSettings) => {
+const LanguageSettings = observer(() => {
     const { i18n } = useTranslation();
+    const { common } = useStore();
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
-    const initial_values = { language_code: current_language };
+    const initial_values = { language_code: common.current_language };
     return (
         <Formik
             initialValues={initial_values}
-            onSubmit={async values => {
+            onSubmit={async (values: { language_code: any }) => {
                 const { language_code } = values;
-                await changeLanguage(language_code, changeCurrentLanguage);
+                await common.changeLanguage(language_code, common.changeCurrentLanguage);
                 await i18n.changeLanguage?.(language_code);
             }}
         >
@@ -69,7 +55,7 @@ const LanguageSettings = ({
                                 text={localize('Submit')}
                                 large
                                 primary
-                                is_disabled={isCurrentLanguage(values.language_code)}
+                                is_disabled={common.isCurrentLanguage(values.language_code)}
                             />
                         </FormFooter>
                     </form>
@@ -77,11 +63,6 @@ const LanguageSettings = ({
             }}
         </Formik>
     );
-};
+});
 
-export default connect(({ common, ui }: TCoreStore) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
-    current_language: common.current_language,
-    changeLanguage: common.changeLanguage,
-    isCurrentLanguage: common.isCurrentLanguage,
-}))(LanguageSettings);
+export default LanguageSettings;

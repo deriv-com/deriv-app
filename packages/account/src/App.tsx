@@ -4,11 +4,12 @@ import ResetTradingPassword from './Containers/reset-trading-password';
 import { MobxContentProvider } from './Stores/connect';
 import initStore from './Stores/init-store';
 import TCoreStore from './Stores/index';
+import { StoreProvider } from '@deriv/stores';
 
 // TODO: add correct types for stores and WS after implementing them
 type TAppProps = {
     passthrough: {
-        root_store: TCoreStore;
+        root_store: TCoreStore | any;
         WS: Record<string, any>;
     };
 };
@@ -19,8 +20,10 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <Routes />
-            <ResetTradingPassword />
+            <StoreProvider store={root_store}>
+                <Routes />
+                <ResetTradingPassword />
+            </StoreProvider>
         </MobxContentProvider>
     );
 };

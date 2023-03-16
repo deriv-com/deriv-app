@@ -16,7 +16,11 @@ const mock = (): TRootStore => {
                     landing_company_name: 'svg',
                 },
             },
+            is_loading_mt5: false,
+            is_loading_dxtrade: false,
+            is_social_signup: {},
             active_account_landing_company: '',
+            account_settings: {},
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
@@ -128,6 +132,8 @@ const mock = (): TRootStore => {
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
+            is_uk: false,
+            has_residence: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_identity_verification_needed: false,
@@ -202,6 +208,9 @@ const mock = (): TRootStore => {
                 redirectOnClick: jest.fn(),
                 setError: jest.fn(),
             },
+            current_language: '',
+            isCurrentLanguage: jest.fn(),
+            changeLanguage: jest.fn(),
             is_from_derivgo: false,
             has_error: false,
             platform: '',
@@ -231,6 +240,7 @@ const mock = (): TRootStore => {
             toggleSetCurrencyModal: jest.fn(),
             setSubSectionIndex: jest.fn(),
             sub_section_index: 0,
+            toggleShouldShowRealAccountsList: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),

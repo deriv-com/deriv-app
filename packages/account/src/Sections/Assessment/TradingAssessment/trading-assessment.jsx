@@ -16,7 +16,7 @@ import {
 } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
 import { isMobile, routes, WS } from '@deriv/shared';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';
 
@@ -35,7 +35,8 @@ const populateData = form_data => {
     };
 };
 
-const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => {
+const TradingAssessment = observer(() => {
+    const { client } = useStore();
     const history = useHistory();
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
@@ -46,7 +47,7 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => 
     const [form_data, setFormData] = React.useState({});
 
     React.useEffect(() => {
-        if (is_virtual) {
+        if (client.is_virtual) {
             setIsLoading(false);
             history.push(routes.personal_details);
         } else {
@@ -84,7 +85,7 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => 
                     trading_frequency_financial_instruments: values.trading_frequency_financial_instruments,
                 },
             };
-            const data = await setFinancialAndTradingAssessment(form_payload);
+            const data = await client.setFinancialAndTradingAssessment(form_payload);
             const { trading_score } = data?.set_financial_assessment;
             setShouldShowWarningModal(prev_score > 0 && trading_score === 0);
 
@@ -283,9 +284,6 @@ const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => 
             }}
         </Formik>
     );
-};
+});
 
-export default connect(({ client }) => ({
-    is_virtual: client.is_virtual,
-    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-}))(withRouter(TradingAssessment));
+export default withRouter(TradingAssessment);

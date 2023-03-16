@@ -3,27 +3,17 @@ import classNames from 'classnames';
 import { Icon, Text, Button } from '@deriv/components';
 import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import { TPlatformContext } from 'Types';
-import RootStore from 'Stores/index';
 
 type TIconWithMessage = {
     icon: string;
     has_button?: boolean;
-    has_real_account?: boolean;
     message: string;
-    toggleAccountsDialog: (status?: boolean) => void;
-    toggleShouldShowRealAccountsList: (value: boolean) => void;
 };
 
-const IconWithMessage = ({
-    has_button,
-    has_real_account,
-    icon,
-    message,
-    toggleAccountsDialog,
-    toggleShouldShowRealAccountsList,
-}: TIconWithMessage) => {
+const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessage) => {
+    const { client, ui } = useStore();
     const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
 
     return (
@@ -43,21 +33,19 @@ const IconWithMessage = ({
                 <Button
                     primary
                     onClick={() => {
-                        toggleShouldShowRealAccountsList(true);
-                        toggleAccountsDialog();
+                        ui.toggleShouldShowRealAccountsList(true);
+                        ui.toggleAccountsDialog();
                     }}
                     className='account__demo-message-button'
                     data-testid='icon-with-message-button'
                 >
-                    {has_real_account ? localize('Switch to real account') : localize('Add a real account')}
+                    {client.has_active_real_account
+                        ? localize('Switch to real account')
+                        : localize('Add a real account')}
                 </Button>
             )}
         </div>
     );
-};
+});
 
-export default connect(({ client, ui }: RootStore) => ({
-    has_real_account: client.has_any_real_account,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
-    toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
-}))(IconWithMessage);
+export default IconWithMessage;

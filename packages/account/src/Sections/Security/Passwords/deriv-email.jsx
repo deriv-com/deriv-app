@@ -8,9 +8,10 @@ import { Button, Text, Input } from '@deriv/components';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkAccountModal from 'Components/unlink-account-modal';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const DerivEmail = ({ email, social_identity_provider, is_social_signup, is_from_derivgo }) => {
+const DerivEmail = observer(({ email, social_identity_provider, is_social_signup }) => {
+    const { common } = useStore();
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
 
@@ -57,7 +58,7 @@ const DerivEmail = ({ email, social_identity_provider, is_social_signup, is_from
                             />
                         </fieldset>
                     </Formik>
-                    {!is_from_derivgo && (
+                    {!common.is_from_derivgo && (
                         <Button
                             className='email-change_button'
                             type='submit'
@@ -88,18 +89,13 @@ const DerivEmail = ({ email, social_identity_provider, is_social_signup, is_from
             </div>
         </React.Fragment>
     );
-};
+});
 
 DerivEmail.propTypes = {
     email: PropTypes.string,
     is_dark_mode_on: PropTypes.bool,
     is_social_signup: PropTypes.bool,
-    is_from_derivgo: PropTypes.bool,
     social_identity_provider: PropTypes.string,
 };
 
-export default withRouter(
-    connect(({ common }) => ({
-        is_from_derivgo: common.is_from_derivgo,
-    }))(DerivEmail)
-);
+export default withRouter(DerivEmail);

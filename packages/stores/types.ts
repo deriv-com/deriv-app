@@ -82,6 +82,7 @@ type TNotification =
 type TClientStore = {
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
+    account_settings: object;
     active_account_landing_company: string;
     account_limits: {
         daily_transfers?: {
@@ -108,6 +109,11 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_uk: boolean;
+    is_loading_mt5: boolean;
+    is_loading_dxtrade: boolean;
+    is_social_signup: object;
+    has_residence: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
@@ -186,6 +192,9 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
+    current_language: any;
+    isCurrentLanguage(language_code: any): boolean | undefined;
+    changeLanguage(language_code: any, changeCurrentLanguage: (new_language: string) => void): unknown;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
@@ -207,6 +216,7 @@ type TUiStore = {
     is_mobile: boolean;
     sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
+    toggleShouldShowRealAccountsList: (value: boolean) => boolean;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;

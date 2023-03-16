@@ -22,8 +22,7 @@ const BinarySocketGeneral = (() => {
                 client_store.logout();
                 return;
             }
-            // Waiting for authorize call to be completed so BE can use residence instead of IP
-            WS.wait('authorize').then(() => WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus));
+
             ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
@@ -246,6 +245,7 @@ const BinarySocketGeneral = (() => {
 
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
+        WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
         subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();

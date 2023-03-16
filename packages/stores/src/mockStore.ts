@@ -1,7 +1,7 @@
 import merge from 'lodash.merge';
-import type { TRootStore } from '../types';
+import type { TStores } from './useStore';
 
-const mock = (): TRootStore => {
+const mock = (): TStores => {
     return {
         client: {
             accounts: {
@@ -262,9 +262,15 @@ const mock = (): TRootStore => {
             setP2PRedirectTo: jest.fn(),
         },
         modules: {},
+        counter: {
+            count: 0,
+            increment: jest.fn(),
+            decrement: jest.fn(),
+            unmount: jest.fn(),
+        },
     };
 };
 
-const mockStore = (override: DeepPartial<TRootStore>): TRootStore => merge(mock(), override);
+const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
 export { mockStore };

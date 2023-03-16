@@ -2,6 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Breadcrumb } from '@deriv/ui';
 import { useCashierStore } from '../../stores/useCashierStores';
+import './cashier-breadcrumb.scss';
 
 const CashierBreadcrumb = ({ is_crypto_deposit }: { is_crypto_deposit?: boolean }) => {
     const {

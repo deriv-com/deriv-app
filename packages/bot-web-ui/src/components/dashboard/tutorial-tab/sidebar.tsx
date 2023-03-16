@@ -80,8 +80,9 @@ const Sidebar = ({
             <DesktopWrapper>
                 <div className='dc-tabs__wrapper'>
                     <div className='dc-tabs__wrapper__group'>
-                        <Icon width='1.6rem' height='1.6rem' icon={'IcSearch'} />
+                        <Icon data-testid='id-test-search' width='1.6rem' height='1.6rem' icon={'IcSearch'} />
                         <input
+                            data-testid='id-test-search'
                             ref={search_input}
                             type='text'
                             placeholder={localize('Search')}
@@ -107,6 +108,7 @@ const Sidebar = ({
                 <div className='tutorials-mobile'>
                     <div className='tutorials-mobile__select'>
                         <SelectNative
+                            data-testid='id-test-search'
                             list_items={menu_items.map(({ label }, idx) => ({ id: idx, value: label, text: label }))}
                             value={selected_tab.label}
                             label={''}

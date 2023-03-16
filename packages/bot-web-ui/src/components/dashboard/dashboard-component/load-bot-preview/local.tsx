@@ -87,7 +87,6 @@ const LocalComponent = ({
                         <div className='tab__dashboard__preview__retrigger'>
                             <button
                                 onClick={() => {
-                                    setActiveTab(3);
                                     handleTabChange(3);
                                 }}
                             >

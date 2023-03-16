@@ -17,6 +17,11 @@ type TDashboard = {
     handleTabChange: (active_number: number) => void;
 };
 
+type TMobileIconGuide = {
+    has_dashboard_strategies: boolean;
+    handleTabChange: (active_number: number) => void;
+};
+
 type TDashboardMobileCommonProps = {
     is_mobile: boolean;
     has_dashboard_strategies: boolean;
@@ -34,13 +39,7 @@ const DashboardTitle = ({ is_mobile, has_dashboard_strategies }: TDashboardMobil
     </div>
 );
 
-const MobileIconGuide = ({
-    has_dashboard_strategies,
-    handleTabChange,
-}: {
-    has_dashboard_strategies: boolean;
-    handleTabChange: (active_number: number) => void;
-}) => (
+const MobileIconGuide = ({ has_dashboard_strategies, handleTabChange }: TMobileIconGuide) => (
     <MobileWrapper>
         <div>
             <Local handleTabChange={handleTabChange} />
@@ -129,7 +128,7 @@ const DashboardComponent = ({
 
                     {has_dashboard_strategies && !is_mobile && (
                         <div className='tab__dashboard__preview'>
-                            <Local />
+                            <Local handleTabChange={handleTabChange} />
                         </div>
                     )}
                 </div>

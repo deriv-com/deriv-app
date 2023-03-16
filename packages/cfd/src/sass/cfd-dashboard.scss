@@ -1269,6 +1269,8 @@
             justify-content: center;
             align-items: center;
             margin: 1.6rem;
+            gap: 1.6rem;
+
             &--desktop {
                 display: block;
                 align-items: baseline;
@@ -1321,14 +1323,8 @@
                 }
                 &-links {
                     display: flex;
-
-                    a {
-                        margin: 0.4rem;
-                    }
-
-                    @include mobile {
-                        flex-direction: column;
-                    }
+                    flex-direction: column;
+                    gap: 0.8rem;
                 }
                 @include mobile {
                     margin-left: unset;
@@ -1338,20 +1334,17 @@
             &--qrcode {
                 display: flex;
                 flex-direction: column;
+                width: 13.6rem;
+                height: 14rem;
                 padding: 0.8rem;
-                margin: 0 0.8rem;
                 align-items: center;
                 justify-content: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
-                max-width: 14rem;
-                @include mobile {
-                    margin-left: 1.6rem;
-                }
             }
-            @include mobile {
-                align-items: flex-start;
-            }
+        }
+        &-text {
+            margin: 1.6rem;
         }
         &--heading {
             @include typeface(--title-center-bold-black, none);

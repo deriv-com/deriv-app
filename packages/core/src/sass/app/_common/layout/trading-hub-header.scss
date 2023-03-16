@@ -85,6 +85,10 @@
             }
 
             &--account-toggle {
+                height: #{$HEADER_HEIGHT - 1px};
+                @include mobile {
+                    height: 3.8rem;
+                }
                 .acc-info__wrapper {
                     @include mobile {
                         margin-right: 0rem;

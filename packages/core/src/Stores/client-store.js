@@ -280,6 +280,7 @@ export default class ClientStore extends BaseStore {
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
+            should_restrict_vanuatu_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -837,6 +838,12 @@ export default class ClientStore extends BaseStore {
     get should_restrict_bvi_account_creation() {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
+        ).length;
+    }
+
+    get should_restrict_vanuatu_account_creation() {
+        return !!this.mt5_login_list.filter(
+            item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
     }
 

@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import { findContractCategory } from '../../Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
 
-type TContracType = {
+type TContractType = {
     text: string;
     value: string;
 };
@@ -32,7 +32,7 @@ const BuyToastNotification = observer(() => {
     const active_trade_type = { value: contract_type };
 
     const trade_type_name = findContractCategory(list, active_trade_type)?.contract_types?.find(
-        (item: TContracType) => item.value === contract_type
+        (item: TContractType) => item.value === contract_type
     ).text;
 
     return ReactDOM.createPortal(

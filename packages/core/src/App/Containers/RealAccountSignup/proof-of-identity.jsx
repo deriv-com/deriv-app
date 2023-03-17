@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AutoHeightWrapper, FormSubmitButton } from '@deriv/components';
 
 import { Formik } from 'formik';
@@ -19,8 +18,6 @@ const ProofOfIdentityForm = ({ form_error, index, onCancel, onSubmit, value }) =
 
         return errors;
     };
-
-    console.log('Real ac signup POI" ');
 
     return (
         <Formik

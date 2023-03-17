@@ -51,10 +51,6 @@
             }
         }
 
-        @include mobile {
-            margin: 0.8rem 0;
-        }
-
         &-wrapper {
             $gap: 2.4rem;
             display: flex;
@@ -110,6 +106,17 @@
         &-field {
             @include desktop() {
                 display: flex;
+            }
+        }
+        @include mobile {
+            .dc-input {
+                &__container {
+                    width: 100%;
+                    padding: 0.5rem 1rem 0.5rem 1.2rem;
+                }
+                &__wrapper {
+                    margin: 0.8rem 0.2rem 1.4rem 0;
+                }
             }
         }
     }

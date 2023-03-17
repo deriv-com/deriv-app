@@ -9,6 +9,7 @@ export const routes = {
     personal_details: '/account/personal-details',
     proof_of_identity: '/account/proof-of-identity',
     proof_of_address: '/account/proof-of-address',
+    proof_of_ownership: '/account/proof-of-ownership',
     passwords: '/account/passwords',
     closing_account: '/account/closing-account',
     deactivate_account: '/account/deactivate-account', // TODO: Remove once mobile team has changed this link
@@ -51,6 +52,7 @@ export const routes = {
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
+    cashier_p2p_profile: '/cashier/p2p/profile',
     cashier_p2p_verification: '/cashier/p2p/verification',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
@@ -60,6 +62,6 @@ export const routes = {
 
     // Appstore
     appstore: '/appstore',
-    trading_hub: '/appstore/traders-hub',
+    traders_hub: '/appstore/traders-hub',
     onboarding: '/appstore/onboarding',
 };

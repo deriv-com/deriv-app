@@ -1,15 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
 
-const CryptoTransactionsStatusModal = () => {
-    const {
-        modules: {
-            cashier: { transaction_history },
-        },
-    } = useStore();
+const CryptoTransactionsStatusModal = observer(() => {
+    const { transaction_history } = useCashierStore();
     const {
         hideCryptoTransactionsStatusModal,
         is_crypto_transactions_status_modal_visible: is_status_modal_visible,
@@ -33,6 +29,6 @@ const CryptoTransactionsStatusModal = () => {
             </Modal>
         </React.Fragment>
     );
-};
+});
 
-export default observer(CryptoTransactionsStatusModal);
+export default CryptoTransactionsStatusModal;

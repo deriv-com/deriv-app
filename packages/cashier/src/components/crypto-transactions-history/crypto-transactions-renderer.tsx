@@ -1,24 +1,20 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { getStatus } from 'Constants/transaction-status';
-import { TCryptoTransactionDetails } from 'Types';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
+import { getStatus } from '../../constants/transaction-status';
+import { TCryptoTransactionDetails } from '../../types';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
 };
 
-const CryptoTransactionsRenderer = ({ row: crypto }: TCryptoTransactionsRendererProps) => {
-    const {
-        modules: {
-            cashier: { transaction_history },
-        },
-        client,
-    } = useStore();
+const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransactionsRendererProps) => {
+    const { client } = useStore();
+    const { transaction_history } = useCashierStore();
     const { cancelCryptoTransaction, showCryptoTransactionsCancelModal, showCryptoTransactionsStatusModal } =
         transaction_history;
     const { currency } = client;
@@ -303,6 +299,6 @@ const CryptoTransactionsRenderer = ({ row: crypto }: TCryptoTransactionsRenderer
             </Table.Row>
         </div>
     );
-};
+});
 
-export default observer(CryptoTransactionsRenderer);
+export default CryptoTransactionsRenderer;

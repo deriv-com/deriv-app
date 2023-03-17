@@ -97,7 +97,14 @@ const AccountLimits = ({
 
     const { commodities, forex, indices, synthetic_index } = { ...market_specific };
     const forex_ordered = forex?.slice().sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
-    const derived_ordered = synthetic_index?.slice().sort((b, a) => (a.level < b.level ? 1 : -1));
+    // sort submarkets by names alphabetically and put 'market' at the beginning
+    const derived_ordered = synthetic_index
+        ?.slice()
+        .sort((a, b) =>
+            a.level === 'submarket' && b.level === 'submarket'
+                ? a.name.localeCompare(b.name)
+                : a.level.localeCompare(b.level)
+        );
 
     const context_value = {
         currency,
@@ -121,7 +128,7 @@ const AccountLimits = ({
                                 <thead>
                                     <tr>
                                         <AccountLimitsTableHeader>
-                                            <Localize i18n_default_text='Trading limits - Item' />
+                                            <Localize i18n_default_text='Trading limits' />
                                         </AccountLimitsTableHeader>
                                         <AccountLimitsTableHeader align='right'>
                                             <Localize i18n_default_text='Limit' />
@@ -200,7 +207,7 @@ const AccountLimits = ({
                                                 />
                                             )}
                                         >
-                                            <Localize i18n_default_text='Trading limits - Maximum daily turnover' />
+                                            <Localize i18n_default_text='Maximum daily turnover' />
                                         </AccountLimitsTableHeader>
                                         <AccountLimitsTableHeader align='right'>
                                             <Localize i18n_default_text='Limit' />

@@ -185,6 +185,17 @@
                 }
             }
         }
+        &__strike {
+            display: flex;
+            flex-direction: column;
+            .trade-container__stake-field {
+                justify-content: space-around;
+                margin-top: 1.6rem;
+            }
+            .strike__pos {
+                margin-top: unset;
+            }
+        }
         &__amount {
             &-keypad {
                 width: 100%;
@@ -195,6 +206,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                &--strike {
+                    padding: 0 1.6rem;
+                    margin-bottom: 2.4rem;
+                }
 
                 .dc-numpad--is-currency,
                 .dc-numpad--is-regular {
@@ -258,6 +274,28 @@
                     transform: scale(1, 0.92);
                     transform-origin: top;
                     margin-top: -0.4rem;
+                }
+
+                .dc-radio-group {
+                    flex-direction: column;
+                    width: 100%;
+                    gap: 10px;
+                    align-items: flex-start;
+
+                    .trade-params__amount--mobile {
+                        display: flex;
+                        height: 4.8rem;
+                        align-items: center;
+                        padding: 0 0.8rem;
+                        box-sizing: border-box;
+                        border: 1px solid var(--general-section-2);
+                        border-radius: $BORDER_RADIUS;
+                        width: 100%;
+                        &:hover {
+                            box-shadow: none;
+                            border-color: var(--border-active);
+                        }
+                    }
                 }
             }
         }
@@ -405,5 +443,36 @@
                 }
             }
         }
+        &--modal-wrapper {
+            left: 2.4rem !important;
+
+            &__content {
+                max-width: 32.8rem;
+                left: 2.5rem;
+                &--vanilla {
+                    top: -0.9rem;
+                    left: 2.3rem;
+                }
+            }
+        }
+        &--mobile {
+            &-strike {
+                overflow: auto;
+                margin-top: unset;
+            }
+            &__payout-container {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}
+
+.dc-modal__container_trade-params {
+    .trade-params__multiplier-ic-info-wrapper {
+        margin-left: 1.4rem;
+    }
+    .dc-modal-header__close {
+        margin-right: 1rem;
     }
 }

@@ -1,13 +1,17 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { TCryptoTransactionDetails } from 'Types';
+import { useStore, observer } from '@deriv/stores';
+import { TCryptoTransactionDetails } from '../../types';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer';
-import { useStore } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
+
+type TCryptoTransactionDetailsRow = {
+    row: TCryptoTransactionDetails;
+};
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -19,13 +23,9 @@ const getHeaders = () => [
     { text: localize('Action') },
 ];
 
-const CryptoTransactionsHistory = () => {
-    const {
-        modules: {
-            cashier: { transaction_history, general_store },
-        },
-        client,
-    } = useStore();
+const CryptoTransactionsHistory = observer(() => {
+    const { client } = useStore();
+    const { transaction_history, general_store } = useCashierStore();
     const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
     const { setIsDeposit } = general_store;
     const { currency } = client;
@@ -73,12 +73,12 @@ const CryptoTransactionsHistory = () => {
                         )}
                         <Table.Body className='crypto-transactions-history__table-body'>
                             {is_loading ? (
-                                <Loading is_fullscreen />
+                                <Loading is_fullscreen={false} />
                             ) : (
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'
                                     data_source={crypto_transactions}
-                                    rowRenderer={(row_props: TCryptoTransactionDetails) => (
+                                    rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
                                         <CryptoTransactionsRenderer {...row_props} />
                                     )}
                                     keyMapper={(row: TCryptoTransactionDetails) => row.id}
@@ -97,6 +97,6 @@ const CryptoTransactionsHistory = () => {
             </div>
         </React.Fragment>
     );
-};
+});
 
-export default observer(CryptoTransactionsHistory);
+export default CryptoTransactionsHistory;

@@ -40,6 +40,15 @@ const copyConfig = base => {
             to: 'cashier/css',
         },
         {
+            from: path.resolve(__dirname, '../node_modules/@deriv/p2p/dist/p2p/js/'),
+            to: 'p2p/js',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/p2p/dist/p2p/css/'),
+            to: 'p2p/css',
+            noErrorOnMissing: true,
+        },
+        {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public'),
             to: 'cashier/public',
             transformPath(context) {
@@ -87,7 +96,7 @@ const copyConfig = base => {
             to: 'assetlinks.json',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
+        { from: path.resolve(__dirname, '../src/root_files/custom404.html'), to: 'custom404.html', toType: 'file' },
         {
             from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),
             to: 'localstorage-sync.html',
@@ -123,6 +132,10 @@ const copyConfig = base => {
             transform(content, transform_path) {
                 return transformContentUrlBase(content, transform_path, base);
             },
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/pdf'),
+            to: 'public/pdf',
         },
     ];
 

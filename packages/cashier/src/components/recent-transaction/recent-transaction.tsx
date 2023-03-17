@@ -1,23 +1,17 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
-import { getStatus } from 'Constants/transaction-status';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
+import { getStatus } from '../../constants/transaction-status';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './recent-transaction.scss';
 
-const RecentTransaction = () => {
-    const {
-        client,
-        modules: {
-            cashier: { transaction_history },
-        },
-    } = useStore();
-
+const RecentTransaction = observer(() => {
+    const { client } = useStore();
     const { currency } = client;
-
+    const { transaction_history } = useCashierStore();
     const { crypto_transactions, onMount, setIsCryptoTransactionsVisible } = transaction_history;
 
     React.useEffect(() => {
@@ -121,6 +115,6 @@ const RecentTransaction = () => {
             </div>
         </div>
     );
-};
+});
 
-export default observer(RecentTransaction);
+export default RecentTransaction;

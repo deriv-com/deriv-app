@@ -16,6 +16,7 @@ import {
     DateOfBirthPicker,
     Text,
     useStateCallback,
+    HintBox,
 } from '@deriv/components';
 import {
     toMoment,
@@ -44,6 +45,7 @@ import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
+import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
@@ -100,6 +102,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
 );
 
 export const PersonalDetailsForm = ({
+    authentication_status,
     is_eu,
     is_mf,
     is_uk,
@@ -109,6 +112,9 @@ export const PersonalDetailsForm = ({
     states_list,
     current_landing_company,
     refreshNotifications,
+    showPOAAddressMismatchSuccessNotification,
+    showPOAAddressMismatchFailureNotification,
+    Notifications,
     fetchResidenceList,
     fetchStatesList,
     has_residence,
@@ -117,6 +123,8 @@ export const PersonalDetailsForm = ({
     history,
     is_social_signup,
     updateAccountStatus,
+    has_poa_address_mismatch,
+    is_language_changing,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -148,12 +156,15 @@ export const PersonalDetailsForm = ({
                 await WS.wait('get_settings');
 
                 fetchResidenceList();
+
                 if (has_residence) {
-                    setIsStateLoading(true, () => {
-                        fetchStatesList().then(() => {
-                            setIsStateLoading(false);
+                    if (!is_language_changing) {
+                        setIsStateLoading(true, () => {
+                            fetchStatesList().then(() => {
+                                setIsStateLoading(false);
+                            });
                         });
-                    });
+                    }
                 }
             };
             getSettings();
@@ -241,6 +252,15 @@ export const PersonalDetailsForm = ({
             setIsBtnLoading(false);
             setSubmitting(false);
         } else {
+            // Adding a delay to show the notification after the page reload
+            setTimeout(() => {
+                if (data.set_settings.notification) {
+                    showPOAAddressMismatchSuccessNotification();
+                } else if (has_poa_address_mismatch) {
+                    showPOAAddressMismatchFailureNotification();
+                }
+            }, 2000);
+
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
@@ -531,6 +551,21 @@ export const PersonalDetailsForm = ({
         if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
 
+    const is_poa_verified = authentication_status?.document_status === 'verified';
+    const is_poi_verified = authentication_status?.identity_status === 'verified';
+
+    const is_account_verified = is_poa_verified && is_poi_verified;
+
+    //Generate Redirection Link to user based on verifiction status
+    const getRedirectionLink = () => {
+        if (!is_poi_verified) {
+            return '/account/proof-of-identity';
+        } else if (!is_poa_verified) {
+            return '/account/proof-of-address';
+        }
+        return null;
+    };
+
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
             {({
@@ -548,6 +583,7 @@ export const PersonalDetailsForm = ({
                 dirty,
             }) => (
                 <>
+                    {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <form
@@ -922,7 +958,12 @@ export const PersonalDetailsForm = ({
                                                     </fieldset>
                                                 )}
                                                 {'tax_identification_number' in values && (
-                                                    <fieldset className='account-form__fieldset'>
+                                                    <fieldset
+                                                        className={classNames('account-form__fieldset', {
+                                                            'account-form__fieldset--tin':
+                                                                getWarningMessages(values).tax_identification_number,
+                                                        })}
+                                                    >
                                                         <Input
                                                             data-lpignore='true'
                                                             type='text'
@@ -981,6 +1022,7 @@ export const PersonalDetailsForm = ({
                                     )}
                                     {!is_appstore && !is_virtual && (
                                         <React.Fragment>
+                                            {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                             <FormSubHeader title={localize('Address')} />
                                             <FormBodySection has_side_note={is_appstore}>
                                                 <div className='account-address__details-section'>
@@ -1145,30 +1187,60 @@ export const PersonalDetailsForm = ({
                                                             <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
                                                         </Text>
                                                     </div>
-                                                    <Checkbox
-                                                        name='request_professional_status'
-                                                        value={values.request_professional_status}
-                                                        onChange={() => {
-                                                            setFieldValue(
-                                                                'request_professional_status',
-                                                                !values.request_professional_status
-                                                            );
-                                                            setFieldTouched('request_professional_status', true, true);
-                                                        }}
-                                                        label={localize(
-                                                            'I would like to be treated as a professional client.'
-                                                        )}
-                                                        id='request_professional_status'
-                                                        defaultChecked={!!values.request_professional_status}
-                                                        disabled={
-                                                            is_virtual ||
-                                                            !!form_initial_values.request_professional_status
-                                                        }
-                                                        greyDisabled
-                                                        className={classNames({
-                                                            'dc-checkbox-blue': is_appstore,
-                                                        })}
-                                                    />
+                                                    {is_account_verified ? (
+                                                        <Checkbox
+                                                            name='request_professional_status'
+                                                            value={values.request_professional_status}
+                                                            onChange={() => {
+                                                                setFieldValue(
+                                                                    'request_professional_status',
+                                                                    !values.request_professional_status
+                                                                );
+                                                                setFieldTouched(
+                                                                    'request_professional_status',
+                                                                    true,
+                                                                    true
+                                                                );
+                                                            }}
+                                                            label={localize(
+                                                                'I would like to be treated as a professional client.'
+                                                            )}
+                                                            id='request_professional_status'
+                                                            defaultChecked={!!values.request_professional_status}
+                                                            disabled={
+                                                                is_virtual ||
+                                                                !!form_initial_values.request_professional_status
+                                                            }
+                                                            greyDisabled
+                                                            className={classNames({
+                                                                'dc-checkbox-blue': is_appstore,
+                                                            })}
+                                                        />
+                                                    ) : (
+                                                        <HintBox
+                                                            icon='IcInfoBlue'
+                                                            icon_height={20}
+                                                            icon_width={30}
+                                                            message={
+                                                                <Text as='p' size='xs'>
+                                                                    <Localize
+                                                                        i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
+                                                                        components={[
+                                                                            <a
+                                                                                key={0}
+                                                                                className='link--no-bold'
+                                                                                rel='noopener noreferrer'
+                                                                                target='_blank'
+                                                                                href={getRedirectionLink()}
+                                                                            />,
+                                                                        ]}
+                                                                    />
+                                                                </Text>
+                                                            }
+                                                            is_info
+                                                            is_inline
+                                                        />
+                                                    )}
                                                 </fieldset>
                                             </FormBodySection>
                                         </div>
@@ -1256,6 +1328,7 @@ export const PersonalDetailsForm = ({
 };
 
 PersonalDetailsForm.propTypes = {
+    authentication_status: PropTypes.object,
     is_eu: PropTypes.bool,
     is_mf: PropTypes.bool,
     is_uk: PropTypes.bool,
@@ -1264,6 +1337,9 @@ PersonalDetailsForm.propTypes = {
     residence_list: PropTypes.arrayOf(PropTypes.object),
     states_list: PropTypes.array,
     refreshNotifications: PropTypes.func,
+    showPOAAddressMismatchSuccessNotification: PropTypes.func,
+    showPOAAddressMismatchFailureNotification: PropTypes.func,
+    Notifications: PropTypes.node,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     has_residence: PropTypes.bool,
@@ -1273,10 +1349,13 @@ PersonalDetailsForm.propTypes = {
     history: PropTypes.object,
     is_social_signup: PropTypes.bool,
     updateAccountStatus: PropTypes.func,
+    has_poa_address_mismatch: PropTypes.bool,
+    is_language_changing: PropTypes.bool,
 };
 
-export default connect(({ client, notifications }) => ({
+export default connect(({ client, notifications, ui, common }) => ({
     account_settings: client.account_settings,
+    authentication_status: client.authentication_status,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
     current_landing_company: client.current_landing_company,
@@ -1291,5 +1370,10 @@ export default connect(({ client, notifications }) => ({
     fetchStatesList: client.fetchStatesList,
     is_social_signup: client.is_social_signup,
     refreshNotifications: notifications.refreshNotifications,
+    showPOAAddressMismatchSuccessNotification: notifications.showPOAAddressMismatchSuccessNotification,
+    showPOAAddressMismatchFailureNotification: notifications.showPOAAddressMismatchFailureNotification,
+    Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
+    has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
+    is_language_changing: common.is_language_changing,
 }))(withRouter(PersonalDetailsForm));

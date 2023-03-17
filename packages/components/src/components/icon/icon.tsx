@@ -15,8 +15,10 @@ const Icon = React.forwardRef(
             icon,
             id,
             onClick,
+            onMouseDown,
             onMouseEnter,
             onMouseLeave,
+            onTouchStart,
             size = 16,
             width,
         }: TIconProps,
@@ -55,8 +57,10 @@ const Icon = React.forwardRef(
                 id={id}
                 width={width || size}
                 onClick={onClick}
+                onMouseDown={onMouseDown}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
+                onTouchStart={onTouchStart}
                 ref={ref}
                 style={
                     (custom_color

@@ -25,8 +25,8 @@ const MyStats = () => {
             onClick: () => my_profile_store.setActiveTab(my_profile_tabs.AD_TEMPLATE),
         },
         {
-            default_text: 'Blocked advertisers',
-            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.BLOCKED_ADVERTISERS),
+            default_text: 'My counterparties',
+            onClick: () => my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES),
         },
     ];
 
@@ -45,6 +45,7 @@ const MyStats = () => {
                 <MyProfileStatsTable />
             </DesktopWrapper>
             <MobileWrapper>
+                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
                 <MyProfilePrivacy />
                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
                 {tabs.map((tab, key) => {

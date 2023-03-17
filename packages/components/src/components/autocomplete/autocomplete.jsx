@@ -6,6 +6,7 @@ import Icon from '../icon';
 import Input from '../input';
 import DropdownList from '../dropdown-list';
 import { useBlockScroll } from '../../hooks/use-blockscroll';
+import { getEnglishCharacters } from '../../../utils/helper';
 
 const KEY_CODE = {
     ENTER: 13,
@@ -23,9 +24,10 @@ const getFilteredItems = (val, list, should_filter_by_char) => {
             is_string_array ? matchStringByChar(item, val) : matchStringByChar(item.text, val)
         );
     }
-
     return list.filter(item =>
-        is_string_array ? item.toLowerCase().includes(val) : item.text.toLowerCase().includes(val)
+        is_string_array
+            ? getEnglishCharacters(item).toLowerCase().includes(val) || item.toLowerCase().includes(val)
+            : getEnglishCharacters(item.text).toLowerCase().includes(val) || item.text.toLowerCase().includes(val)
     );
 };
 const Autocomplete = React.memo(props => {
@@ -36,6 +38,7 @@ const Autocomplete = React.memo(props => {
         historyValue,
         error,
         has_updating_list = true,
+        hide_list = false,
         input_id,
         is_alignment_top,
         is_list_visible = false,
@@ -44,7 +47,9 @@ const Autocomplete = React.memo(props => {
         onHideDropdownList,
         onItemSelection,
         onScrollStop,
+        onShowDropdownList,
         should_filter_by_char,
+        show_list = false,
         value,
         ...other_props
     } = props;
@@ -91,11 +96,13 @@ const Autocomplete = React.memo(props => {
     }, [filtered_items]);
 
     React.useEffect(() => {
+        if (show_list) showDropdownList();
+        if (hide_list) hideDropdownList();
         if (should_show_list && list_item_ref.current) {
             const item = list_item_ref.current.offsetTop;
             dropdown_ref.current.scrollTo({ top: item, behavior: 'smooth' });
         }
-    }, [should_show_list, list_item_ref]);
+    }, [show_list, hide_list, should_show_list, list_item_ref]);
 
     React.useEffect(() => {
         if (list_wrapper_ref.current && list_portal_id && should_show_list) {
@@ -238,7 +245,13 @@ const Autocomplete = React.memo(props => {
         }
     };
 
-    const showDropdownList = () => setShouldShowList(true);
+    const showDropdownList = () => {
+        setShouldShowList(true);
+
+        if (typeof props.onShowDropdownList === 'function') {
+            props.onShowDropdownList();
+        }
+    };
 
     const hideDropdownList = () => {
         setShouldShowList(false);
@@ -346,6 +359,7 @@ Autocomplete.propTypes = {
     not_found_text: PropTypes.string,
     onHideDropdownList: PropTypes.func,
     onItemSelection: PropTypes.func,
+    onShowDropdownList: PropTypes.func,
     list_portal_id: PropTypes.string,
     is_alignment_top: PropTypes.bool,
     should_filter_by_char: PropTypes.bool,
@@ -357,6 +371,8 @@ Autocomplete.propTypes = {
     onScrollStop: PropTypes.func,
     value: PropTypes.string,
     onBlur: PropTypes.func,
+    show_list: PropTypes.bool,
+    hide_list: PropTypes.bool,
 };
 
 export default Autocomplete;

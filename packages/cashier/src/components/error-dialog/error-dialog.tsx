@@ -1,15 +1,14 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Link, useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { TError, TReactElement } from 'Types';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
+import { TError, TReactElement } from '../../types';
 
 type TErrorDialogProps = {
-    className: string;
-    error: TError | Record<string, never>;
+    className?: string;
+    error?: TError | Record<string, never>;
 };
 
 type TSetDetails = {
@@ -21,7 +20,7 @@ type TSetDetails = {
     has_close_icon?: boolean;
 };
 
-const ErrorDialog = ({ className, error = {} }: TErrorDialogProps) => {
+const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
     const {
         ui: { disableApp, enableApp },
     } = useStore();
@@ -121,6 +120,11 @@ const ErrorDialog = ({ className, error = {} }: TErrorDialogProps) => {
         setErrorVisibility(!!error.message);
     }, [error.message]);
 
+    React.useEffect(() => {
+        return () => dismissError();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const setErrorVisibility = (is_error_visible: boolean) => {
         setIsVisible(is_error_visible);
     };
@@ -151,6 +155,6 @@ const ErrorDialog = ({ className, error = {} }: TErrorDialogProps) => {
             {details.message}
         </Dialog>
     );
-};
+});
 
-export default observer(ErrorDialog);
+export default ErrorDialog;

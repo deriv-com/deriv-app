@@ -1,26 +1,31 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import { Button, Icon, Text } from '@deriv/components';
+import { useDepositLocked } from '@deriv/hooks';
 import { routes, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
 
-const NoBalance = ({ history }: RouteComponentProps) => {
-    const {
-        client: { currency },
-        modules: {
-            cashier: {
-                deposit: { is_deposit_locked },
-                general_store: { setCashierTabIndex: setTabIndex },
-            },
-        },
-    } = useStore();
+type TNoBalanceProps = RouteComponentProps & {
+    onClickDeposit?: () => void;
+};
 
-    const onClickDeposit = () => {
-        // index of deposit tab in the cashier modal is 0
-        setTabIndex(0);
-        history.push(routes.cashier_deposit);
+const NoBalance = observer(({ history, onClickDeposit }: TNoBalanceProps) => {
+    const { client } = useStore();
+    const { currency } = client;
+    const { general_store } = useCashierStore();
+    const { setCashierTabIndex: setTabIndex } = general_store;
+    const is_deposit_locked = useDepositLocked();
+
+    const onClickDepositHandler = () => {
+        if (onClickDeposit) {
+            onClickDeposit();
+        } else {
+            // index of deposit tab in the cashier modal is 0
+            setTabIndex(0);
+            history.push(routes.cashier_deposit);
+        }
     };
 
     return (
@@ -38,10 +43,11 @@ const NoBalance = ({ history }: RouteComponentProps) => {
                         <Localize i18n_default_text='Please make a deposit to use this feature.' />
                     </Text>
                     <Button
+                        style={{ marginTop: '2rem' }}
                         className='cashier__no-balance-button'
                         has_effect
                         text={localize('Deposit now')}
-                        onClick={onClickDeposit}
+                        onClick={onClickDepositHandler}
                         primary
                         large
                     />
@@ -49,6 +55,6 @@ const NoBalance = ({ history }: RouteComponentProps) => {
             )}
         </div>
     );
-};
+});
 
-export default observer(withRouter(NoBalance));
+export default withRouter(NoBalance);

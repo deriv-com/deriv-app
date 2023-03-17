@@ -13,7 +13,7 @@ const useWS = <T extends TSocketEndpointNames>(name: T) => {
             setIsLoading(true);
 
             try {
-                const response = await WS.send({ [name]: 1, ...(props[0] || {}) });
+                const response = await WS.authorized.send({ [name]: 1, ...(props[0] || {}) });
 
                 if (response.error) {
                     setError(response.error);

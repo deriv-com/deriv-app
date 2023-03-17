@@ -1,4 +1,5 @@
 import React from 'react';
+import { Loading } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
@@ -22,9 +23,12 @@ const WithdrawalTab = observer(() => {
     // We shouldn't call `verify.send()` inside the `useEffect` and we should improve the UX to
     // match the behavior of the `Withdrawal` page and first inform the user.
 
+    if (verify.is_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
+
     if (verify.error && 'code' in verify.error) return <PaymentAgentWithdrawalLocked error={verify.error} />;
-    if (!verify.is_loading && verify.has_been_sent)
-        return <EmailVerificationEmptyState type={'paymentagent_withdraw'} />;
+    if (verify.has_been_sent) return <EmailVerificationEmptyState type={'paymentagent_withdraw'} />;
     if (verification_code || payment_agent.is_withdraw)
         return <PaymentAgentContainer verification_code={verification_code} />;
 

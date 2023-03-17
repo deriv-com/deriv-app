@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, useHistory } from 'react-router';
+import { withRouter } from 'react-router';
 import {
     Button,
     DesktopWrapper,
@@ -23,10 +23,48 @@ import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
 
-const AccountSwitcher = props => {
-    const [active_tab_index, setActiveTabIndex] = React.useState(
-        !props.is_virtual || props.should_show_real_accounts_list ? 0 : 1
-    );
+const AccountSwitcher = ({
+    available_crypto_currencies,
+    account_list,
+    account_loginid,
+    accounts,
+    account_type,
+    client_residence,
+    country_standpoint,
+    has_active_real_account,
+    has_any_real_account,
+    has_fiat,
+    history,
+    is_dark_mode_on,
+    is_eu,
+    is_low_risk,
+    is_high_risk,
+    is_logged_in,
+    is_mobile,
+    is_positions_drawer_on,
+    is_virtual,
+    is_visible,
+    landing_company_shortcode,
+    logoutClient,
+    mt5_login_list,
+    obj_total_balance,
+    openRealAccountSignup,
+    routeBackInApp,
+    should_show_real_accounts_list,
+    show_eu_related_content,
+    switchAccount,
+    resetVirtualBalance,
+    toggleAccountsDialog,
+    togglePositionsDrawer,
+    toggleSetCurrencyModal,
+    upgradeable_landing_companies,
+    real_account_creation_unlock_date,
+    setShouldShowCooldownModal,
+    content_flag,
+    virtual_account_loginid,
+    setTogglePlatformType,
+}) => {
+    const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
@@ -35,12 +73,10 @@ const AccountSwitcher = props => {
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
 
-    const account_total_balance_currency = props.obj_total_balance.currency;
+    const account_total_balance_currency = obj_total_balance.currency;
 
-    const vrtc_loginid = props.account_list.find(account => account.is_virtual)?.loginid;
-    const vrtc_currency = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].currency : 'USD';
-
-    const history = useHistory();
+    const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid;
+    const vrtc_currency = accounts[vrtc_loginid] ? accounts[vrtc_loginid].currency : 'USD';
 
     const toggleVisibility = section => {
         switch (section) {
@@ -59,47 +95,35 @@ const AccountSwitcher = props => {
 
     const handleLogout = async () => {
         closeAccountsDialog();
-        if (props.is_positions_drawer_on) {
-            props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
+        if (is_positions_drawer_on) {
+            togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        props.routeBackInApp(props.history);
-        await props.logoutClient();
+        routeBackInApp(history);
+        await logoutClient();
     };
 
     const closeAccountsDialog = () => {
-        props.toggleAccountsDialog(false);
+        toggleAccountsDialog(false);
     };
 
-    const validateClickOutside = event => props.is_visible && !event.target.classList.contains('acc-info');
+    const validateClickOutside = event => is_visible && !event.target.classList.contains('acc-info');
 
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
     const setAccountCurrency = () => {
         closeAccountsDialog();
-        props.toggleSetCurrencyModal();
+        toggleSetCurrencyModal();
     };
-
-    // * mt5_login_list returns these:
-    // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
-    // account_type: "real" | "demo"
-    // market_type: "financial" | "gaming"
-    // sub_account_type: "financial" | "financial_stp" | "swap_free"
-    //
-    // (all market type gaming are synthetic accounts and can only have financial or swap_free sub account)
-    //
-    // * we should map them to landing_company:
-    // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
-    // mt_gaming_company: { financial: {}, swap_free: {} }
 
     const doSwitch = async loginid => {
         closeAccountsDialog();
-        if (props.account_loginid === loginid) return;
-        await props.switchAccount(loginid);
+        if (account_loginid === loginid) return;
+        await switchAccount(loginid);
     };
 
     const resetBalance = async () => {
         closeAccountsDialog();
-        props.resetVirtualBalance();
+        resetVirtualBalance();
     };
 
     // Real accounts is always the first tab index based on design
@@ -107,59 +131,55 @@ const AccountSwitcher = props => {
     const isDemoAccountTab = active_tab_index === 1;
 
     const getRealMT5 = () => {
-        const low_risk_non_eu = props.content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+        const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
         if (low_risk_non_eu) {
-            return getSortedCFDList(props.mt5_login_list).filter(
+            return getSortedCFDList(mt5_login_list).filter(
                 account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
             );
         }
-        return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
+        return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
     };
 
     const canOpenMulti = () => {
-        if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
-        return !props.is_virtual;
+        if (available_crypto_currencies.length < 1 && !has_fiat) return true;
+        return !is_virtual;
     };
 
     const is_regulated_able_to_change_currency =
-        props.show_eu_related_content &&
-        (props.landing_company_shortcode === 'malta' ||
-            (props.landing_company_shortcode === 'iom' && props.upgradeable_landing_companies.length !== 0));
+        show_eu_related_content &&
+        (landing_company_shortcode === 'malta' ||
+            (landing_company_shortcode === 'iom' && upgradeable_landing_companies.length !== 0));
 
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
         if (
-            props.show_eu_related_content ||
-            props.is_virtual ||
+            show_eu_related_content ||
+            is_virtual ||
             !canOpenMulti() ||
-            is_regulated_able_to_change_currency
+            is_regulated_able_to_change_currency ||
+            is_low_risk
         ) {
-            return props.upgradeable_landing_companies;
+            return upgradeable_landing_companies;
         }
         return [];
     };
 
     const hasSetCurrency = () => {
-        return props.account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real');
+        return account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real');
     };
 
     const getTotalDemoAssets = () => {
-        const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
+        const vrtc_balance = accounts[vrtc_loginid] ? accounts[vrtc_loginid].balance : 0;
 
         return vrtc_balance;
     };
 
     const getTotalRealAssets = () => {
-        // props.obj_total_balance.amount_mt5 is returning 0 regarding performance issues so we have to calculate
-        // the total MT5 accounts balance from props.mt5_login_list.
-        // You can remove this part if WS sends obj_total_balance.amount_mt5 correctly.
-
-        const traders_hub_total = props.obj_total_balance.amount_real;
-
+        const traders_hub_total = obj_total_balance.amount_real;
         return traders_hub_total;
     };
 
-    if (!props.is_logged_in) return false;
+    if (!is_logged_in) return false;
 
     const canResetBalance = account => {
         const account_init_balance = 10000;
@@ -184,12 +204,12 @@ const AccountSwitcher = props => {
     };
 
     const have_more_accounts = type =>
-        getSortedAccountList(props.account_list, props.accounts).filter(
+        getSortedAccountList(account_list, accounts).filter(
             account => !account.is_virtual && account.loginid.startsWith(type)
         ).length > 1;
 
     // all: 1 in mt5_status response means that server is suspended
-    const has_cr_account = props.account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
+    const has_cr_account = account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
 
     const demo_account = (
         <div className='acc-switcher__list-wrapper'>
@@ -202,25 +222,25 @@ const AccountSwitcher = props => {
                     }}
                 >
                     <div className='acc-switcher__accounts'>
-                        {getSortedAccountList(props.account_list, props.accounts)
+                        {getSortedAccountList(account_list, accounts)
                             .filter(account => account.is_virtual)
                             .map(account => (
                                 <AccountList
-                                    is_dark_mode_on={props.is_dark_mode_on}
+                                    is_dark_mode_on={is_dark_mode_on}
                                     key={account.loginid}
-                                    balance={props.accounts[account.loginid].balance}
-                                    currency={props.accounts[account.loginid].currency}
+                                    balance={accounts[account.loginid].balance}
+                                    currency={accounts[account.loginid].currency}
                                     currency_icon={`IcCurrency-${account.icon}`}
-                                    country_standpoint={props.country_standpoint}
+                                    country_standpoint={country_standpoint}
                                     display_type={'currency'}
-                                    has_balance={'balance' in props.accounts[account.loginid]}
-                                    has_reset_balance={canResetBalance(props.accounts[props.account_loginid])}
+                                    has_balance={'balance' in accounts[account.loginid]}
+                                    has_reset_balance={canResetBalance(accounts[account_loginid])}
                                     is_disabled={account.is_disabled}
                                     is_virtual={account.is_virtual}
                                     loginid={account.loginid}
                                     redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
                                     onClickResetVirtualBalance={resetBalance}
-                                    selected_loginid={props.account_loginid}
+                                    selected_loginid={account_loginid}
                                 />
                             ))}
                     </div>
@@ -232,12 +252,12 @@ const AccountSwitcher = props => {
     const real_accounts = (
         <div ref={scroll_ref} className='acc-switcher__list-wrapper'>
             <React.Fragment>
-                {!props.is_eu || props.is_low_risk ? (
+                {!is_eu || is_low_risk ? (
                     <React.Fragment>
                         <AccountWrapper
                             className='acc-switcher__title'
                             header={
-                                props.is_low_risk
+                                is_low_risk
                                     ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                                     : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                             }
@@ -247,28 +267,28 @@ const AccountSwitcher = props => {
                             }}
                         >
                             <div className='acc-switcher__accounts'>
-                                {getSortedAccountList(props.account_list, props.accounts)
+                                {getSortedAccountList(account_list, accounts)
                                     .filter(account => !account.is_virtual && account.loginid.startsWith('CR'))
                                     .map(account => {
                                         return (
                                             <AccountList
-                                                account_type={props.account_type}
-                                                is_dark_mode_on={props.is_dark_mode_on}
+                                                account_type={account_type}
+                                                is_dark_mode_on={is_dark_mode_on}
                                                 key={account.loginid}
-                                                balance={props.accounts[account.loginid].balance}
-                                                currency={props.accounts[account.loginid].currency}
+                                                balance={accounts[account.loginid].balance}
+                                                currency={accounts[account.loginid].currency}
                                                 currency_icon={`IcCurrency-${account.icon}`}
-                                                country_standpoint={props.country_standpoint}
+                                                country_standpoint={country_standpoint}
                                                 display_type={'currency'}
-                                                has_balance={'balance' in props.accounts[account.loginid]}
+                                                has_balance={'balance' in accounts[account.loginid]}
                                                 is_disabled={account.is_disabled}
                                                 is_virtual={account.is_virtual}
-                                                is_eu={props.is_eu}
+                                                is_eu={is_eu}
                                                 loginid={account.loginid}
                                                 redirectAccount={
                                                     account.is_disabled ? undefined : () => doSwitch(account.loginid)
                                                 }
-                                                selected_loginid={props.account_loginid}
+                                                selected_loginid={account_loginid}
                                                 should_show_server_name={checkMultipleSvgAcc()}
                                             />
                                         );
@@ -283,17 +303,17 @@ const AccountSwitcher = props => {
                                             <Text size='xs' color='general' className='acc-switcher__new-account-text'>
                                                 {getAccountTitle(
                                                     account,
-                                                    { account_residence: props.client_residence },
-                                                    props.country_standpoint
+                                                    { account_residence: client_residence },
+                                                    country_standpoint
                                                 )}
                                             </Text>
                                             <Button
                                                 id='dt_core_account-switcher_add-new-account'
                                                 onClick={() => {
-                                                    if (props.real_account_creation_unlock_date) {
+                                                    if (real_account_creation_unlock_date) {
                                                         closeAccountsDialog();
-                                                        props.setShouldShowCooldownModal(true);
-                                                    } else props.openRealAccountSignup(account);
+                                                        setShouldShowCooldownModal(true);
+                                                    } else openRealAccountSignup(account);
                                                 }}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
@@ -307,10 +327,10 @@ const AccountSwitcher = props => {
                         <div className='acc-switcher__separator' />
                     </React.Fragment>
                 ) : null}
-                {!props.is_high_risk || props.is_eu ? (
+                {!is_high_risk || is_eu ? (
                     <AccountWrapper
                         header={
-                            props.is_low_risk
+                            is_low_risk
                                 ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                                 : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                         }
@@ -320,28 +340,28 @@ const AccountSwitcher = props => {
                         }}
                     >
                         <div className='acc-switcher__accounts'>
-                            {getSortedAccountList(props.account_list, props.accounts)
+                            {getSortedAccountList(account_list, accounts)
                                 .filter(account => !account.is_virtual && account.loginid.startsWith('MF'))
                                 .map(account => {
                                     return (
                                         <AccountList
-                                            account_type={props.account_type}
-                                            is_dark_mode_on={props.is_dark_mode_on}
+                                            account_type={account_type}
+                                            is_dark_mode_on={is_dark_mode_on}
                                             key={account.loginid}
-                                            balance={props.accounts[account.loginid].balance}
-                                            currency={props.accounts[account.loginid].currency}
+                                            balance={accounts[account.loginid].balance}
+                                            currency={accounts[account.loginid].currency}
                                             currency_icon={`IcCurrency-${account.icon}`}
-                                            country_standpoint={props.country_standpoint}
+                                            country_standpoint={country_standpoint}
                                             display_type={'currency'}
-                                            has_balance={'balance' in props.accounts[account.loginid]}
+                                            has_balance={'balance' in accounts[account.loginid]}
                                             is_disabled={account.is_disabled}
                                             is_virtual={account.is_virtual}
-                                            is_eu={props.is_eu}
+                                            is_eu={is_eu}
                                             loginid={account.loginid}
                                             redirectAccount={
                                                 account.is_disabled ? undefined : () => doSwitch(account.loginid)
                                             }
-                                            selected_loginid={props.account_loginid}
+                                            selected_loginid={account_loginid}
                                             should_show_server_name={checkMultipleSvgAcc()}
                                         />
                                     );
@@ -356,18 +376,18 @@ const AccountSwitcher = props => {
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
                                             {getAccountTitle(
                                                 account,
-                                                { account_residence: props.client_residence },
-                                                props.country_standpoint
+                                                { account_residence: client_residence },
+                                                country_standpoint
                                             )}
                                         </Text>
                                         <Button
                                             id='dt_core_account-switcher_add-new-account'
                                             onClick={() => {
-                                                if (props.real_account_creation_unlock_date) {
+                                                if (real_account_creation_unlock_date) {
                                                     closeAccountsDialog();
-                                                    props.setShouldShowCooldownModal(true);
+                                                    setShouldShowCooldownModal(true);
                                                 } else {
-                                                    props.openRealAccountSignup(account);
+                                                    openRealAccountSignup(account);
                                                 }
                                             }}
                                             className='acc-switcher__new-account-btn'
@@ -385,19 +405,19 @@ const AccountSwitcher = props => {
         </div>
     );
 
-    const first_real_login_id = props.account_list?.find(account => /^(CR|MF)/.test(account.loginid))?.loginid;
+    const first_real_login_id = account_list?.find(account => /^(CR|MF)/.test(account.loginid))?.loginid;
 
     const TradersHubRedirect = () => {
         const TradersHubLink = () => {
             const handleRedirect = async () => {
-                if (!props.is_virtual && isDemoAccountTab) {
-                    await props.switchAccount(props.virtual_account_loginid);
-                } else if (props.is_virtual && isRealAccountTab) {
-                    await props.switchAccount(first_real_login_id);
+                if (!is_virtual && isDemoAccountTab) {
+                    await switchAccount(virtual_account_loginid);
+                } else if (is_virtual && isRealAccountTab) {
+                    await switchAccount(first_real_login_id);
                 }
-                props.toggleAccountsDialog(false);
+                toggleAccountsDialog(false);
                 history.push(routes.traders_hub);
-                props.setTogglePlatformType('cfd');
+                setTogglePlatformType('cfd');
             };
 
             return (
@@ -414,7 +434,7 @@ const AccountSwitcher = props => {
             );
         };
 
-        if ((isRealAccountTab && props.has_any_real_account) || isDemoAccountTab) {
+        if ((isRealAccountTab && has_any_real_account) || isDemoAccountTab) {
             return <TradersHubLink />;
         }
 
@@ -454,7 +474,7 @@ const AccountSwitcher = props => {
             </Tabs>
             <div
                 className={classNames('acc-switcher__separator', {
-                    'acc-switcher__separator--auto-margin': props.is_mobile,
+                    'acc-switcher__separator--auto-margin': is_mobile,
                 })}
             />
             <div className='acc-switcher__total'>
@@ -482,14 +502,14 @@ const AccountSwitcher = props => {
             <TradersHubRedirect />
 
             <div className='acc-switcher__footer'>
-                {isRealAccountTab && props.has_active_real_account && !props.is_virtual && (
+                {isRealAccountTab && has_active_real_account && !is_virtual && (
                     <Button
                         className='acc-switcher__btn--traders_hub'
                         secondary
                         onClick={
-                            props.has_any_real_account && !hasSetCurrency()
+                            has_any_real_account && !hasSetCurrency()
                                 ? setAccountCurrency
-                                : () => props.openRealAccountSignup('manage')
+                                : () => openRealAccountSignup('manage')
                         }
                     >
                         {localize('Manage accounts')}
@@ -571,7 +591,6 @@ const account_switcher = withRouter(
         switchAccount: client.switchAccount,
         resetVirtualBalance: client.resetVirtualBalance,
         has_active_real_account: client.has_active_real_account,
-        openAccountNeededModal: ui.openAccountNeededModal,
         logoutClient: client.logout,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
         routeBackInApp: common.routeBackInApp,

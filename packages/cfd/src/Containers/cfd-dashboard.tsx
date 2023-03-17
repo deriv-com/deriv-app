@@ -210,7 +210,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
     React.useEffect(() => {
         if (window.location.href.includes(routes.mt5) || window.location.href.includes(routes.dxtrade)) {
-            history.push(routes.error404);
+            history.push(routes.traders_hub);
         }
     }, [history]);
 

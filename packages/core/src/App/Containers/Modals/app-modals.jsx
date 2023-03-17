@@ -8,6 +8,7 @@ import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
+import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 
 const AccountSignupModal = React.lazy(() =>
@@ -75,6 +76,7 @@ const AppModals = ({
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
+    is_ready_to_deposit_modal_visible,
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
 }) => {
@@ -153,6 +155,9 @@ const AppModals = ({
     } else if (should_show_risk_accept_modal) {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     }
+    if (is_ready_to_deposit_modal_visible) {
+        ComponentToLoad = <ReadyToDepositModal />;
+    }
 
     return (
         <>
@@ -185,6 +190,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
     is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,

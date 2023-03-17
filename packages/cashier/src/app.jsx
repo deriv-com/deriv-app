@@ -5,6 +5,8 @@ import Routes from 'Containers/routes';
 import CashierProviders from './cashier-providers';
 
 const App = ({ passthrough: { WS, root_store } }) => {
+    const { notification_messages_ui: Notifications } = root_store.ui;
+
     React.useEffect(() => {
         setWebsocket(WS);
         init();
@@ -13,6 +15,7 @@ const App = ({ passthrough: { WS, root_store } }) => {
 
     return (
         <CashierProviders store={root_store}>
+            {Notifications && <Notifications />}
             <Routes />
         </CashierProviders>
     );

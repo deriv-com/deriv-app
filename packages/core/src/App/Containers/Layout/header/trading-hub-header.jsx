@@ -213,6 +213,7 @@ const TradingHubHeader = ({
 };
 
 TradingHubHeader.propTypes = {
+    content_flag: PropTypes.string,
     header_extension: PropTypes.any,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
@@ -230,10 +231,10 @@ TradingHubHeader.propTypes = {
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     should_show_exit_traders_modal: PropTypes.bool,
+    switchToCRAccount: PropTypes.func,
+    toggleExitTradersHubModal: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    content_flag: PropTypes.string,
-    switchToCRAccount: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -256,4 +257,5 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
     content_flag: traders_hub.content_flag,
     switchToCRAccount: traders_hub.switchToCRAccount,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
 }))(withRouter(TradingHubHeader));

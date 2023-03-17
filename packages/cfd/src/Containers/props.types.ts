@@ -184,6 +184,7 @@ export type TVerificationStatusBannerProps = {
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
 };
 
 export type TJurisdictionCheckBoxProps = {
@@ -193,6 +194,7 @@ export type TJurisdictionCheckBoxProps = {
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
 };
 type TOpenAccountTransferMeta = {
     category: string;
@@ -214,6 +216,7 @@ export type TJurisdictionModalProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
     show_eu_related_content: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     fetchAccountSettings: () => void;
@@ -226,18 +229,14 @@ export type TJurisdictionModalProps = {
 };
 
 export type TJurisdictionModalContentProps = {
-    account_status: GetAccountStatus;
     context: RootStore;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
-    checked: boolean;
-    setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
-    should_restrict_bvi_account_creation: boolean;
     is_virtual: boolean;
 };
 
@@ -248,6 +247,7 @@ export type TJurisdictionModalFootNoteProps = {
     context: RootStore;
     jurisdiction_selected_shortcode: string;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
 };
 
 export type TCompareAccountRowItem = {
@@ -303,6 +303,7 @@ export type TDMT5CompareModalContentProps = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
     toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;

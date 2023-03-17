@@ -187,6 +187,70 @@ const TradingHubHeader = ({
         });
     const history = useHistory();
 
+    const CashierMobileLinks = () => (
+        <>
+            <div className='trading-hub-header__menu-right--items--notifications__cashier'>
+                <ShowNotifications
+                    is_notifications_visible={is_notifications_visible}
+                    notifications_count={notifications_count}
+                    toggleNotifications={toggleNotifications}
+                />
+            </div>
+            <div className='trading-hub-header__menu-right--items--account-toggle'>
+                <ShowAccountSwitcher
+                    acc_switcher_disabled_message={acc_switcher_disabled_message}
+                    account_type={account_type}
+                    balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
+                    is_disabled={is_acc_switcher_disabled}
+                    is_eu={is_eu}
+                    is_virtual={is_virtual}
+                    currency={currency}
+                    country_standpoint={country_standpoint}
+                    is_dialog_on={is_acc_switcher_on}
+                    toggleDialog={toggleAccountsDialog}
+                />
+            </div>
+        </>
+    );
+
+    const DefaultMobileLinks = () => (
+        <>
+            <div className='trading-hub-header__menu-right--items--onboarding'>
+                <TradingHubOnboarding
+                    is_dark_mode={is_dark_mode}
+                    toggleIsTourOpen={toggleIsTourOpen}
+                    is_mf={is_mf}
+                    is_eu={is_eu}
+                    is_eu_country={is_eu_country}
+                    setIsOnboardingVisited={setIsOnboardingVisited}
+                />
+            </div>
+            <div className='trading-hub-header__menu-right--items--notifications'>
+                <ShowNotifications
+                    is_notifications_visible={is_notifications_visible}
+                    notifications_count={notifications_count}
+                    toggleNotifications={toggleNotifications}
+                />
+            </div>
+            <Popover
+                classNameBubble='account-settings-toggle__tooltip'
+                alignment='bottom'
+                message={<Localize i18n_default_text='Manage account settings' />}
+                should_disable_pointer_events
+                zIndex={9999}
+            >
+                <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
+                    <Icon icon='IcUserOutline' size={20} />
+                </BinaryLink>
+            </Popover>
+            <div className='trading-hub-header__cashier-button'>
+                <Button primary small onClick={() => history.push(routes.cashier_deposit)}>
+                    <Localize i18n_default_text='Cashier' />
+                </Button>
+            </div>
+        </>
+    );
+
     return (
         <header
             className={classNames('trading-hub-header', {
@@ -271,71 +335,7 @@ const TradingHubHeader = ({
             <MobileWrapper>
                 <div className='trading-hub-header__mobile-parent'>
                     <div className='trading-hub-header__menu-middle'>
-                        {cashier_routes ? (
-                            <>
-                                <div className='trading-hub-header__menu-right--items--notifications__cashier'>
-                                    <ShowNotifications
-                                        is_notifications_visible={is_notifications_visible}
-                                        notifications_count={notifications_count}
-                                        toggleNotifications={toggleNotifications}
-                                    />
-                                </div>
-                                <div className='trading-hub-header__menu-right--items--account-toggle'>
-                                    <ShowAccountSwitcher
-                                        acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                        account_type={account_type}
-                                        balance={
-                                            typeof balance === 'undefined'
-                                                ? balance
-                                                : formatMoney(currency, balance, true)
-                                        }
-                                        is_disabled={is_acc_switcher_disabled}
-                                        is_eu={is_eu}
-                                        is_virtual={is_virtual}
-                                        currency={currency}
-                                        country_standpoint={country_standpoint}
-                                        is_dialog_on={is_acc_switcher_on}
-                                        toggleDialog={toggleAccountsDialog}
-                                    />
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className='trading-hub-header__menu-right--items--onboarding'>
-                                    <TradingHubOnboarding
-                                        is_dark_mode={is_dark_mode}
-                                        toggleIsTourOpen={toggleIsTourOpen}
-                                        is_mf={is_mf}
-                                        is_eu={is_eu}
-                                        is_eu_country={is_eu_country}
-                                        setIsOnboardingVisited={setIsOnboardingVisited}
-                                    />
-                                </div>
-                                <div className='trading-hub-header__menu-right--items--notifications'>
-                                    <ShowNotifications
-                                        is_notifications_visible={is_notifications_visible}
-                                        notifications_count={notifications_count}
-                                        toggleNotifications={toggleNotifications}
-                                    />
-                                </div>
-                                <Popover
-                                    classNameBubble='account-settings-toggle__tooltip'
-                                    alignment='bottom'
-                                    message={<Localize i18n_default_text='Manage account settings' />}
-                                    should_disable_pointer_events
-                                    zIndex={9999}
-                                >
-                                    <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
-                                        <Icon icon='IcUserOutline' size={20} />
-                                    </BinaryLink>
-                                </Popover>
-                                <div className='trading-hub-header__cashier-button'>
-                                    <Button primary small onClick={() => history.push(routes.cashier_deposit)}>
-                                        <Localize i18n_default_text='Cashier' />
-                                    </Button>
-                                </div>
-                            </>
-                        )}
+                        {cashier_routes ? <CashierMobileLinks /> : <DefaultMobileLinks />}
                     </div>
                 </div>
                 <RealAccountSignup />

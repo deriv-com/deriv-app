@@ -91,7 +91,7 @@
                 }
                 .acc-info__wrapper {
                     @include mobile {
-                        margin-right: 0rem;
+                        margin-right: 0;
                     }
                     .acc-info__separator {
                         width: unset;

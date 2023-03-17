@@ -6,47 +6,33 @@ import { TRootStore } from '@deriv/stores/types';
 import { TLanguageLink } from 'App/Components/Routes/language-link';
 import { LanguageLink } from '../index';
 
-jest.mock('react-i18next', () => {
-    return {
-        ...jest.requireActual('react-i18next'),
-        useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
-    };
-});
+jest.mock('react-i18next', () => ({
+    ...jest.requireActual('react-i18next'),
+    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
+}));
 
-jest.mock('@deriv/components', () => {
-    return {
-        ...jest.requireActual('@deriv/components'),
-        Icon: jest.fn(() => <div data-testid='dt_mocked_icon' />),
-    };
-});
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Icon: jest.fn(() => <div data-testid='dt_mocked_icon' />),
+}));
 
-jest.mock('Utils/Language', () => {
-    return {
-        ...jest.requireActual('Utils/Language'),
-        changeLanguage: jest.fn(),
-    };
-});
+jest.mock('Utils/Language', () => ({
+    ...jest.requireActual('Utils/Language'),
+    changeLanguage: jest.fn(),
+}));
 
 describe('LanguageLink component', () => {
-    let mock_props: TLanguageLink, mockRootStore: TRootStore;
-
-    beforeEach(() => {
-        mock_props = {
-            is_clickable: false,
-            lang: 'ID',
-            toggleModal: jest.fn(),
-        };
-        mockRootStore = mockStore({
-            common: { changeCurrentLanguage: jest.fn(), current_language: 'EN' },
-        });
-    });
+    const mock_props: TLanguageLink = {
+        is_clickable: false,
+        lang: 'ID',
+        toggleModal: jest.fn(),
+    };
+    const mockRootStore = mockStore({});
 
     it('should render language icon with language when not clickable', () => {
-        render(
-            <StoreProvider store={mockRootStore}>
-                <LanguageLink {...mock_props} />
-            </StoreProvider>
-        );
+        render(<LanguageLink {...mock_props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Indonesian')).toBeInTheDocument();
         expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
@@ -55,11 +41,9 @@ describe('LanguageLink component', () => {
     it('should render language icon with language when clickable', async () => {
         mock_props.is_clickable = true;
 
-        render(
-            <StoreProvider store={mockRootStore}>
-                <LanguageLink {...mock_props} />
-            </StoreProvider>
-        );
+        render(<LanguageLink {...mock_props} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const lang_btn = screen.getByTestId('dt_settings_language_button');
         expect(screen.getByText('Indonesian')).toBeInTheDocument();

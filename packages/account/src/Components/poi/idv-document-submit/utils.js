@@ -21,6 +21,20 @@ const createDocumentPatterns = () => {
     return pattern_array;
 };
 
+export const documentAdditionalError = (document_additional, document_additional_format) => {
+    let error_message = null;
+    if (!document_additional) {
+        error_message = 'Please enter your document number. ';
+    } else {
+        const format_regex = getRegex(document_additional_format);
+        if (!format_regex.test(document_additional)) {
+            error_message = 'Please enter the correct format. ';
+        }
+    }
+
+    return error_message;
+};
+
 export const isSequentialNumber = document_number => {
     const trimmed_document_number = document_number.replace(/[.-]*/g, '');
     const pattern_results = [];
@@ -46,7 +60,11 @@ export const getDocumentData = (country_code, document_type) => {
     if (Object.keys(idv_document_data).includes(country_code)) {
         return idv_document_data[country_code][document_type];
     }
-    return null;
+    return {
+        new_display_name: '',
+        example_format: '',
+        sample_image: '',
+    };
 };
 
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);

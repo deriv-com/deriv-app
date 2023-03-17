@@ -114,6 +114,10 @@
             }
             &-body {
                 text-align: center;
+                padding: 2.4rem 2.4rem 0rem;
+                @include mobile {
+                    padding: 1.6rem 1.6rem 0rem;
+                }
                 .risk-acceptance__text {
                     margin-top: 2.4rem;
                 }
@@ -577,7 +581,7 @@
         }
 
         .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
-            max-width: unset;
+            max-width: initial;
             padding-bottom: 0.5rem;
             @include mobile() {
                 width: 90%;
@@ -749,5 +753,26 @@
     }
     100% {
         -o-transform: translate(0, 0);
+    }
+}
+
+.field-layout {
+    .trading-assessment__wrapper__dropdown {
+        div:last-child {
+            .dc-dropdown__display-placeholder {
+                padding-right: 1rem;
+            }
+
+            .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
+                @include desktop() {
+                    white-space: inherit;
+                    text-overflow: unset;
+                }
+            }
+        }
+    }
+
+    .trading-frequency--field {
+        height: 5rem;
     }
 }

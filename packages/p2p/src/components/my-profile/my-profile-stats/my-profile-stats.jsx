@@ -45,6 +45,7 @@ const MyStats = () => {
                 <MyProfileStatsTable />
             </DesktopWrapper>
             <MobileWrapper>
+                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
                 <MyProfilePrivacy />
                 <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
                 {tabs.map((tab, key) => {

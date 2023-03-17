@@ -143,10 +143,12 @@ export default class ClientStore extends BaseStore {
     is_cfd_poi_completed = false;
 
     cfd_score = 0;
+    is_cfd_score_available = false;
 
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
+    p2p_advertiser_info = {};
     prev_account_type = 'demo';
 
     constructor(root_store) {
@@ -198,6 +200,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_disabled_signup_types: observable,
             statement: observable,
             cfd_score: observable,
+            is_cfd_score_available: observable,
             obj_total_balance: observable,
             verification_code: observable,
             new_email: observable,
@@ -210,6 +213,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
+            p2p_advertiser_info: observable,
             prev_account_type: observable,
             balance: computed,
             account_open_date: computed,
@@ -276,6 +280,7 @@ export default class ClientStore extends BaseStore {
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
+            should_restrict_vanuatu_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -304,6 +309,7 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
+            setIsCFDScoreAvailable: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -387,6 +393,7 @@ export default class ClientStore extends BaseStore {
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             setIsPreAppStore: action.bound,
+            setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
         });
 
@@ -834,6 +841,12 @@ export default class ClientStore extends BaseStore {
         ).length;
     }
 
+    get should_restrict_vanuatu_account_creation() {
+        return !!this.mt5_login_list.filter(
+            item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
+        ).length;
+    }
+
     get is_virtual() {
         return !isEmptyObject(this.accounts) && this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
@@ -1210,6 +1223,9 @@ export default class ClientStore extends BaseStore {
     setCFDScore(score) {
         this.cfd_score = score;
     }
+    setIsCFDScoreAvailable(is_set) {
+        this.is_cfd_score_set = is_set;
+    }
 
     getSelfExclusion() {
         return new Promise(resolve => {
@@ -1238,7 +1254,7 @@ export default class ClientStore extends BaseStore {
 
     responsePayoutCurrencies(response) {
         const list = response?.payout_currencies || response;
-        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
+        this.currencies_list = buildCurrenciesList(Array.isArray(list) ? list : []);
         this.selectCurrency('');
     }
 
@@ -1333,7 +1349,7 @@ export default class ClientStore extends BaseStore {
             currency = form_values.currency;
         }
         this.root_store.ui.setRealAccountSignupParams(form_values);
-        const { document_number, document_type, ...required_form_values } = form_values;
+        const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
@@ -1654,6 +1670,8 @@ export default class ClientStore extends BaseStore {
 
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
+
+            await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1708,6 +1726,10 @@ export default class ClientStore extends BaseStore {
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+    }
+
+    setP2pAdvertiserInfo(response) {
+        this.p2p_advertiser_info = response.p2p_advertiser_info;
     }
 
     setStandpoint(landing_companies) {

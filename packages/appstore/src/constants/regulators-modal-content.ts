@@ -12,7 +12,7 @@ export type TRegulatorsContentProps = {
     content: TRegulatorContent;
 };
 
-export const cfd_content: TRegulatorsContentProps[] = [
+export const getCFDContents = (): TRegulatorsContentProps[] => [
     {
         id: 'cfds',
         attribute: localize('CFDs'),
@@ -105,7 +105,7 @@ export const cfd_content: TRegulatorsContentProps[] = [
     },
 ];
 
-export const options_content: TRegulatorsContentProps[] = [
+export const getOptionsContents = (): TRegulatorsContentProps[] => [
     {
         id: 'options',
         attribute: localize('Options & Multipliers'),

@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs, Money, Numpad } from '@deriv/components';
 import { isEmptyObject, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import TurbosInfo from './Turbos/turbos-info.jsx';
+import TurbosInfo from './Turbos/turbos-info';
 
 import { connect } from 'Stores/connect';
 

@@ -18,7 +18,7 @@ import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mo
 import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
-import PayoutPerPoint from '../Elements/Turbos/payout-per-point.jsx';
+import PayoutPerPoint from '../Elements/Turbos/payout-per-point';
 import TradeTypeTabs from './TradeParams/Turbos/trade-type-tabs';
 
 const CollapsibleTradeParams = ({

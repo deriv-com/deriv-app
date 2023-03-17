@@ -1,12 +1,15 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Money, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const PayoutPerPoint = ({ currency, proposal_info, contract_type }) => {
+const PayoutPerPoint = observer(() => {
+    const {
+        modules: { trade },
+    } = useStore();
+    const { currency, proposal_info, contract_type } = trade;
     const label = localize('Payout per point');
     const contract_key = contract_type?.toUpperCase();
     const stake = proposal_info?.[contract_key]?.number_of_contracts || 0;
@@ -23,7 +26,7 @@ const PayoutPerPoint = ({ currency, proposal_info, contract_type }) => {
                     icon='info'
                     is_bubble_hover_enabled
                     margin={0}
-                    zIndex={9999}
+                    zIndex='9999'
                     message={message}
                 />
             </div>
@@ -32,16 +35,6 @@ const PayoutPerPoint = ({ currency, proposal_info, contract_type }) => {
             </Text>
         </Fieldset>
     );
-};
+});
 
-PayoutPerPoint.propTypes = {
-    currency: PropTypes.string,
-    proposal_info: PropTypes.object,
-    contract_type: PropTypes.string,
-};
-
-export default connect(({ modules }) => ({
-    currency: modules.trade.currency,
-    proposal_info: modules.trade.proposal_info,
-    contract_type: modules.trade.contract_type,
-}))(PayoutPerPoint);
+export default PayoutPerPoint;

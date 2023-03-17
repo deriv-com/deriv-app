@@ -103,11 +103,11 @@ const useLiveChat = (has_cookie_account = false) => {
     };
 
     useEffect(() => {
-        if (!widget) {
+        if (isReady && !widget) {
             setIsReady(false);
             onHistoryChange();
         }
-    }, [widget, onHistoryChange]);
+    }, [widget, isReady, onHistoryChange]);
 
     useEffect(() => {
         history.listen(onHistoryChange);

@@ -18,13 +18,15 @@ describe('useWS', () => {
 
     test('should call ping and get pong in response', async () => {
         mockUseWSShared.mockReturnValue({
-            send: jest.fn(() =>
-                Promise.resolve<TSocketResponse<'ping'>>({
-                    msg_type: 'ping',
-                    ping: 'pong',
-                    echo_req: {},
-                })
-            ),
+            authorized: {
+                send: jest.fn(() =>
+                    Promise.resolve<TSocketResponse<'ping'>>({
+                        msg_type: 'ping',
+                        ping: 'pong',
+                        echo_req: {},
+                    })
+                ),
+            },
         });
 
         const { result, waitForNextUpdate } = renderHook(() => useWS('ping'));
@@ -46,13 +48,15 @@ describe('useWS', () => {
 
     test('should call verify_email and get 1 in response', async () => {
         mockUseWSShared.mockReturnValue({
-            send: jest.fn(() =>
-                Promise.resolve<TSocketResponse<'verify_email'>>({
-                    verify_email: 1,
-                    msg_type: 'verify_email',
-                    echo_req: {},
-                })
-            ),
+            authorized: {
+                send: jest.fn(() =>
+                    Promise.resolve<TSocketResponse<'verify_email'>>({
+                        verify_email: 1,
+                        msg_type: 'verify_email',
+                        echo_req: {},
+                    })
+                ),
+            },
         });
 
         const { result, waitForNextUpdate } = renderHook(() => useWS('verify_email'));
@@ -74,16 +78,18 @@ describe('useWS', () => {
 
     test('should call cashier and get ASK_TNC_APPROVAL error code in response', async () => {
         mockUseWSShared.mockReturnValue({
-            send: jest.fn(() =>
-                Promise.resolve<TSocketResponse<'cashier'>>({
-                    msg_type: 'cashier',
-                    echo_req: {},
-                    error: {
-                        code: 'ASK_TNC_APPROVAL',
-                        message: 'Error message',
-                    },
-                })
-            ),
+            authorized: {
+                send: jest.fn(() =>
+                    Promise.resolve<TSocketResponse<'cashier'>>({
+                        msg_type: 'cashier',
+                        echo_req: {},
+                        error: {
+                            code: 'ASK_TNC_APPROVAL',
+                            message: 'Error message',
+                        },
+                    })
+                ),
+            },
         });
 
         const { result, waitForNextUpdate } = renderHook(() => useWS('cashier'));

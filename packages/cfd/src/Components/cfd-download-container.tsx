@@ -38,7 +38,11 @@ const DxtradeDesktopDownload = ({ active_index, dxtrade_tokens }: TDxtradeDeskto
             target='_blank'
             rel='noopener noreferrer'
         >
-            <Icon className='cfd-dashboard__download-container-dxtrade-button-icon' icon='IcBrandDxtrade' size={32} />
+            <Icon
+                className='cfd-dashboard__download-container-dxtrade-button-icon'
+                icon='IcRebrandingDxtrade'
+                size={32}
+            />
             <div className='cfd-dashboard__download-container-dxtrade-button-text'>
                 <Text color='colored-background' size='xxs' weight='bold'>
                     <Localize i18n_default_text='Web terminal' />

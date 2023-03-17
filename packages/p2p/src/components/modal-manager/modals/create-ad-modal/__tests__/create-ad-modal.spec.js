@@ -5,6 +5,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 
 const el_modal = document.createElement('div');
 
+// eslint-disable-next-line react/display-name
 jest.mock('../create-ad-modal-card', () => () => {
     return <div data-testid='create-ad-modal-card' />;
 });
@@ -33,8 +34,8 @@ describe('<CreateAdModal/>', () => {
     });
 
     it('should show the create ad modal card', () => {
-        const { queryAllByTestId } = render(<CreateAdModal />);
-        expect(queryAllByTestId('create-ad-modal-card')).toHaveLength(2);
+        render(<CreateAdModal />);
+        expect(screen.queryAllByTestId('create-ad-modal-card')).toHaveLength(2);
     });
     it('should close modal on click close button', () => {
         const { hideModal } = useModalManagerContext();

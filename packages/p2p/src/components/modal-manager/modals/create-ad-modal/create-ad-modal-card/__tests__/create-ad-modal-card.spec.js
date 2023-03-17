@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
-import CreateAdModalCard from '../../create-ad-modal-card';
+import CreateAdModalCard from '../create-ad-modal-card';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 

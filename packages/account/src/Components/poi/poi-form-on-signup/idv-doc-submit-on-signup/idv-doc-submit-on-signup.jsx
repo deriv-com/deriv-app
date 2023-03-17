@@ -53,7 +53,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         setDocumentList(
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+                const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key);
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
@@ -240,7 +240,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                     'Choose the document type'
                                                                                 )}
                                                                                 list_items={document_list}
-                                                                                value={values.document_type.text}
+                                                                                value={values.document_type.text ?? ''}
                                                                                 onBlur={e => {
                                                                                     handleBlur(e);
                                                                                     if (!getDocument(e.target.value)) {

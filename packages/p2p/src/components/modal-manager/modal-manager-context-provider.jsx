@@ -120,6 +120,7 @@ const ModalManagerContextProvider = props => {
     const state = {
         hideModal,
         is_modal_open,
+        isCurrentModal,
         modal: active_modal,
         modal_props,
         previous_modal,

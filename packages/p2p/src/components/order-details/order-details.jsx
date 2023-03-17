@@ -24,7 +24,7 @@ import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
     const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
-    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+    const { hideModal, isCurrentModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const {
         account_currency,
@@ -115,8 +115,10 @@ const OrderDetails = observer(() => {
         )
             showModal({ key: 'EmailLinkExpiredModal' });
 
+        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal')) hideModal();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [verification_pending]);
+    }, [verification_pending, status_string]);
 
     React.useEffect(() => {
         if (completion_time) {

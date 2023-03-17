@@ -153,6 +153,7 @@ const SignupErrorContent = ({ message, code, onConfirm, className, error_field =
 
 SignupErrorContent.propTypes = {
     code: PropTypes.string,
+    error_field: PropTypes.object,
     message: PropTypes.string,
     onConfirm: PropTypes.func,
     className: PropTypes.string,

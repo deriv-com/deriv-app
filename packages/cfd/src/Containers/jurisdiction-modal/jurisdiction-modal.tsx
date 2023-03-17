@@ -1,13 +1,14 @@
-import React from 'react';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { connect } from '../../Stores/connect';
-import RootStore from '../../Stores/index';
-import JurisdictionModalContent from './jurisdiction-modal-content';
 import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
-import { TJurisdictionModalProps } from '../props.types';
+
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
+import JurisdictionModalContent from './jurisdiction-modal-content';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
+import React from 'react';
+import RootStore from '../../Stores/index';
+import { TJurisdictionModalProps } from '../props.types';
+import { connect } from '../../Stores/connect';
+import { localize } from '@deriv/translations';
 
 const JurisdictionModal = ({
     account_status,
@@ -39,7 +40,7 @@ const JurisdictionModal = ({
         poi_acknowledged_for_bvi_labuan,
         poi_acknowledged_for_vanuatu_maltainvest,
         poa_acknowledged,
-        poa_resubmit_for_labuan,
+        // poa_resubmit_for_labuan,
         need_poa_resubmission,
     } = getAuthenticationStatusInfo(account_status);
 
@@ -148,7 +149,7 @@ const JurisdictionModal = ({
                 toggleCFDVerificationModal();
             }
         } else if (is_labuan_selected) {
-            if (poi_acknowledged_for_bvi_labuan && has_submitted_cfd_personal_details && !poa_resubmit_for_labuan) {
+            if (poi_acknowledged_for_bvi_labuan && has_submitted_cfd_personal_details) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();

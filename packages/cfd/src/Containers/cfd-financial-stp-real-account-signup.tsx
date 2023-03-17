@@ -1,12 +1,13 @@
-import React from 'react';
-import { Div100vhContainer } from '@deriv/components';
-import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
-import { connect } from '../Stores/connect';
-import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
+import { GetAccountStatus, GetSettings, LandingCompany, ResidenceList, StatesList } from '@deriv/api-types';
+import { getAuthenticationStatusInfo, isDesktop } from '@deriv/shared';
+
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
+import { Div100vhContainer } from '@deriv/components';
+import React from 'react';
 import RootStore from '../Stores/index';
+import { connect } from '../Stores/connect';
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -44,7 +45,6 @@ type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
     has_submitted_cfd_personal_details: boolean;
-    is_authenticated_with_idv_photoid: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
@@ -64,7 +64,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         refreshNotifications,
         has_submitted_cfd_personal_details,
         jurisdiction_selected_shortcode,
-        is_authenticated_with_idv_photoid,
+        // is_authenticated_with_idv_photoid,
     } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
@@ -104,7 +104,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             'storeProofOfAddress',
             'refreshNotifications',
             'jurisdiction_selected_shortcode',
-            'is_authenticated_with_idv_photoid',
         ],
     };
 
@@ -129,7 +128,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     let should_show_poa = false;
 
-    if (jurisdiction_selected_shortcode === 'labuan' && is_authenticated_with_idv_photoid) {
+    if (jurisdiction_selected_shortcode === 'labuan' && account_status.risk_classification === 'high') {
         should_show_poa = true;
     } else {
         should_show_poa = !(
@@ -245,5 +244,4 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     account_status: client.account_status,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
-    is_authenticated_with_idv_photoid: client.is_authenticated_with_idv_photoid,
 }))(CFDFinancialStpRealAccountSignup);

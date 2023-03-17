@@ -1,24 +1,25 @@
-import { Field, Formik, FieldProps, FormikHelpers, FormikProps, FormikErrors } from 'formik';
-import React from 'react';
+import { AccountStatusResponse, GetSettings, StatesList } from '@deriv/api-types';
 import {
     AutoHeightWrapper,
-    FormSubmitButton,
-    ThemedScrollbars,
-    Dropdown,
-    Loading,
+    DesktopWrapper,
     Div100vhContainer,
+    Dropdown,
+    FormSubmitButton,
+    Loading,
+    MobileWrapper,
     Modal,
     SelectNative,
-    DesktopWrapper,
-    MobileWrapper,
-    useStateCallback,
     Text,
+    ThemedScrollbars,
+    useStateCallback,
 } from '@deriv/components';
+import { Field, FieldProps, Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
 import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
-import { localize } from '@deriv/translations';
-import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode, WS } from '@deriv/shared';
+import { WS, isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
+
 import { InputField } from './cfd-personal-details-form';
-import { GetSettings, StatesList, AccountStatusResponse } from '@deriv/api-types';
+import React from 'react';
+import { localize } from '@deriv/translations';
 
 type TErrors = {
     code: string;
@@ -84,7 +85,7 @@ export type TCFDPOAProps = {
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
-    is_authenticated_with_idv_photoid: boolean;
+    // is_authenticated_with_idv_photoid: boolean;
     jurisdiction_selected_shortcode: string;
 };
 type TUpload = {
@@ -99,7 +100,7 @@ const CFDPOA = ({
     onSubmit,
     refreshNotifications,
     jurisdiction_selected_shortcode,
-    is_authenticated_with_idv_photoid,
+    // is_authenticated_with_idv_photoid,
     ...props
 }: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
@@ -238,7 +239,7 @@ const CFDPOA = ({
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
                 const poa_status =
-                    jurisdiction_selected_shortcode === 'labuan' && is_authenticated_with_idv_photoid
+                    jurisdiction_selected_shortcode === 'labuan'
                         ? 'none'
                         : response.get_account_status?.authentication?.document?.status;
                 const poi_status = response.get_account_status?.authentication?.identity?.status;

@@ -311,6 +311,7 @@ export default class NotificationStore extends BaseStore {
         const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.acuity_mt5_download.key
         );
+
         let has_missing_required_field;
 
         if (is_logged_in) {
@@ -1550,6 +1551,23 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
+        });
+    };
+
+    showAccountSwitchToRealNotification = (loginid, currency) => {
+        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
+
+        this.addNotificationMessage({
+            key: 'switched_to_real',
+            header: localize('Switched to real account'),
+            message: (
+                <Localize
+                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
+                    values={{ loginid, currency, regulation }}
+                />
+            ),
+            type: 'info',
+            should_show_again: true,
         });
     };
 

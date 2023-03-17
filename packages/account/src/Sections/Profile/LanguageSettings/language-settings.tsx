@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, DesktopWrapper, ThemedScrollbars } from '@deriv/components';
+import { Button, DesktopWrapper } from '@deriv/components';
 import { localize, getAllowedLanguages } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
@@ -9,21 +9,13 @@ import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
 
-type TchangeCurrentLanguage = (lang: string) => void;
-
 type TLanguageSettings = {
     current_language: string;
-    changeCurrentLanguage: TchangeCurrentLanguage;
-    changeLanguage: (lang: string, changeCurrentLanguage: TchangeCurrentLanguage) => Promise<void>;
+    changeSelectedLanguage: (lang: string) => void;
     isCurrentLanguage: (lang: string) => boolean;
 };
 
-const LanguageSettings = ({
-    changeCurrentLanguage,
-    changeLanguage,
-    current_language,
-    isCurrentLanguage,
-}: TLanguageSettings) => {
+const LanguageSettings = ({ changeSelectedLanguage, current_language, isCurrentLanguage }: TLanguageSettings) => {
     const { i18n } = useTranslation();
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     const initial_values = { language_code: current_language };
@@ -32,7 +24,7 @@ const LanguageSettings = ({
             initialValues={initial_values}
             onSubmit={async values => {
                 const { language_code } = values;
-                await changeLanguage(language_code, changeCurrentLanguage);
+                changeSelectedLanguage(language_code);
                 await i18n.changeLanguage?.(language_code);
             }}
         >
@@ -79,9 +71,8 @@ const LanguageSettings = ({
     );
 };
 
-export default connect(({ common, ui }: TCoreStore) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
+export default connect(({ common }: TCoreStore) => ({
+    changeSelectedLanguage: common.changeSelectedLanguage,
     current_language: common.current_language,
-    changeLanguage: common.changeLanguage,
     isCurrentLanguage: common.isCurrentLanguage,
 }))(LanguageSettings);

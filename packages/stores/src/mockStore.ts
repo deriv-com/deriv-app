@@ -238,11 +238,14 @@ const mock = (): TRootStore => {
             toggleSetCurrencyModal: jest.fn(),
             setSubSectionIndex: jest.fn(),
             sub_section_index: 0,
+            toggleReadyToDepositModal: jest.fn(),
+            is_ready_to_deposit_modal_visible: false,
         },
         traders_hub: {
             closeModal: jest.fn(),
             openModal: jest.fn(),
             content_flag: '',
+            is_eu_user: false,
         },
         menu: {
             attach: jest.fn(),
@@ -256,6 +259,7 @@ const mock = (): TRootStore => {
             removeNotificationByKey: jest.fn(),
             removeNotificationMessage: jest.fn(),
             setP2POrderProps: jest.fn(),
+            showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
         },
         modules: {},

@@ -168,6 +168,7 @@ export default class UIStore extends BaseStore {
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
     is_exit_traders_hub_modal_visible = false;
+    is_ready_to_deposit_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
@@ -203,6 +204,28 @@ export default class UIStore extends BaseStore {
         makeObservable(this, {
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
+            has_only_forward_starting_contracts: observable,
+            has_read_scam_message: observable,
+            is_exit_traders_hub_modal_visible: observable,
+            is_ready_to_deposit_modal_visible: observable,
+            is_services_error_visible: observable,
+            is_unsupported_contract_modal_visible: observable,
+            is_new_account: observable,
+            is_account_signup_modal_visible: observable,
+            is_set_residence_modal_visible: observable,
+            is_reset_password_modal_visible: observable,
+            is_reset_email_modal_visible: observable,
+            is_update_email_modal_visible: observable,
+            is_reset_trading_password_modal_visible: observable,
+            is_cfd_reset_password_modal_enabled: observable,
+            sub_section_index: observable,
+            is_chart_countdown_visible: observable,
+            is_chart_layout_default: observable,
+            pwa_prompt_event: observable,
+            screen_width: observable,
+            screen_height: observable,
+            is_onscreen_keyboard_active: observable,
+            is_advanced_duration: observable,
             advanced_duration_unit: observable,
             advanced_expiry_type: observable,
             app_contents_scroll_ref: observable,
@@ -215,44 +238,37 @@ export default class UIStore extends BaseStore {
             duration_s: observable,
             duration_t: observable,
             footer_extensions: observable,
-            has_only_forward_starting_contracts: observable,
-            has_read_scam_message: observable,
             has_real_account_signup_ended: observable,
             header_extension: observable,
             is_account_needed_modal_on: observable,
             is_account_settings_visible: observable,
-            is_account_signup_modal_visible: observable,
+
             is_accounts_switcher_on: observable,
             is_acuity_modal_open: observable,
-            is_advanced_duration: observable,
+
             is_app_disabled: observable,
             is_cashier_visible: observable,
             is_cfd_page: observable,
-            is_cfd_reset_password_modal_enabled: observable,
-            is_chart_countdown_visible: observable,
-            is_chart_layout_default: observable,
+
             is_close_mx_mlt_account_modal_visible: observable,
             is_close_uk_account_modal_visible: observable,
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
-            is_exit_traders_hub_modal_visible: observable,
+
             is_history_tab_active: observable,
             is_landscape: observable,
             is_nativepicker_visible: observable,
-            is_new_account: observable,
-            is_onscreen_keyboard_active: observable,
+
             is_positions_drawer_on: observable,
             is_real_acc_signup_on: observable,
             is_real_tab_enabled: observable,
             is_reports_visible: observable,
-            is_reset_email_modal_visible: observable,
-            is_reset_password_modal_visible: observable,
-            is_reset_trading_password_modal_visible: observable,
+
             is_route_modal_on: observable,
-            is_services_error_visible: observable,
+
             is_set_currency_modal_visible: observable,
-            is_set_residence_modal_visible: observable,
+
             is_settings_modal_on: observable,
             is_switch_to_deriv_account_modal_visible: observable,
             is_top_up_virtual_in_progress: observable,
@@ -260,8 +276,6 @@ export default class UIStore extends BaseStore {
             is_top_up_virtual_success: observable,
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
-            is_unsupported_contract_modal_visible: observable,
-            is_update_email_modal_visible: observable,
             is_welcome_modal_visible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
@@ -269,12 +283,9 @@ export default class UIStore extends BaseStore {
             prompt_when: observable,
             promptFn: observable,
             purchase_states: observable,
-            pwa_prompt_event: observable,
             real_account_signup_target: observable,
             real_account_signup: observable,
             reports_route_tab_index: observable,
-            screen_height: observable,
-            screen_width: observable,
             settings_extension: observable,
             should_show_appropriateness_warning_modal: observable,
             should_show_assessment_complete_modal: observable,
@@ -289,7 +300,6 @@ export default class UIStore extends BaseStore {
             should_show_trading_assessment_modal: observable,
             show_positions_toggle: observable,
             simple_duration_unit: observable,
-            sub_section_index: observable,
             toasts: observable.shallow,
             vanilla_trade_type: observable,
             addToast: action.bound,
@@ -335,6 +345,14 @@ export default class UIStore extends BaseStore {
             setIsAcuityModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
+            setReportsTabIndex: action.bound,
+            toggleWelcomeModal: action.bound,
+            toggleExitTradersHubModal: action.bound,
+            toggleReadyToDepositModal: action.bound,
+            toggleShouldShowRealAccountsList: action.bound,
+            toggleShouldShowMultipliersOnboarding: action.bound,
+            shouldNavigateAfterChooseCrypto: action.bound,
+            setShouldShowRiskWarningModal: action.bound,
             setIsNewAccount: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -346,7 +364,6 @@ export default class UIStore extends BaseStore {
             setPWAPromptEvent: action.bound,
             setRealAccountSignupEnd: action.bound,
             setRealAccountSignupParams: action.bound,
-            setReportsTabIndex: action.bound,
             setResetTradingPasswordModalOpen: action.bound,
             setRouteModal: action.bound,
             setScamMessageLocalStorage: action.bound,
@@ -354,13 +371,11 @@ export default class UIStore extends BaseStore {
             setShouldShowAssessmentCompleteModal: action.bound,
             setShouldShowCancel: action.bound,
             setShouldShowCooldownModal: action.bound,
-            setShouldShowRiskWarningModal: action.bound,
             setShouldShowTradeAssessmentForm: action.bound,
             setShouldShowTradingAssessmentModal: action.bound,
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
-            shouldNavigateAfterChooseCrypto: action.bound,
             showCloseMxMltAccountPopup: action.bound,
             showCloseUKAccountPopup: action.bound,
             toggleAccountsDialog: action.bound,
@@ -368,7 +383,6 @@ export default class UIStore extends BaseStore {
             toggleAccountSignupModal: action.bound,
             toggleCancellationWarning: action.bound,
             toggleCashier: action.bound,
-            toggleExitTradersHubModal: action.bound,
             toggleHistoryTab: action.bound,
             toggleOnScreenKeyboard: action.bound,
             togglePositionsDrawer: action.bound,
@@ -379,11 +393,8 @@ export default class UIStore extends BaseStore {
             toggleSetCurrencyModal: action.bound,
             toggleSetResidenceModal: action.bound,
             toggleSettingsModal: action.bound,
-            toggleShouldShowMultipliersOnboarding: action.bound,
-            toggleShouldShowRealAccountsList: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
-            toggleWelcomeModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -887,6 +898,10 @@ export default class UIStore extends BaseStore {
 
     toggleExitTradersHubModal() {
         this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
+    }
+
+    toggleReadyToDepositModal() {
+        this.is_ready_to_deposit_modal_visible = !this.is_ready_to_deposit_modal_visible;
     }
 
     setCFDPasswordResetModal(val) {

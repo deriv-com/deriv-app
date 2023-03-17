@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
@@ -20,10 +21,17 @@ const Heading = ({ code }) => {
             );
         case 'InvalidAccount':
             return (
-                <Text as='h1' align='center' weight='bold'>
+                <Text as='h2' size={isMobile() ? 'xs' : 's'} align='center' weight='bold' line_height='xxl'>
                     <Localize i18n_default_text='You can’t add another real account' />
                 </Text>
             );
+        case 'InputValidationFailed':
+            return (
+                <Text as='h1' align='center' weight='bold'>
+                    <Localize i18n_default_text='Invalid input' />
+                </Text>
+            );
+
         default:
             return (
                 <Text as='h1' align='center' weight='bold'>
@@ -33,7 +41,18 @@ const Heading = ({ code }) => {
     }
 };
 
-const Message = ({ code, message }) => {
+const Message = ({ code, message, details }) => {
+    const invalid_fields_data = Object.keys(details.error_details).map(item => (
+        <div key={item} className='invalid_fields_input'>
+            <Text size='xs' weight='bold'>
+                <Localize i18n_default_text={item} />
+            </Text>
+            <Text size='xs' weight='bold'>
+                :
+            </Text>
+            <Text size='xs'>{details[item]}</Text>
+        </div>
+    ));
     switch (code) {
         case 'DuplicateAccount':
             return (
@@ -48,6 +67,22 @@ const Message = ({ code, message }) => {
                     />
                 </p>
             );
+        case 'InvalidAccount':
+            return (
+                <Text size={isMobile() ? 'xxs' : 'xs'} align='center'>
+                    <Localize i18n_default_text={message} />
+                </Text>
+            );
+        case 'InputValidationFailed':
+            return (
+                <div>
+                    <Text align='center' weight='normal'>
+                        <Localize i18n_default_text='We don’t accept the following input for' />
+                    </Text>
+                    {invalid_fields_data}
+                </div>
+            );
+
         default:
             return <p>{message}</p>;
     }
@@ -67,6 +102,11 @@ const ErrorCTA = ({ code, onConfirm }) => {
             return <TryAgain text={localize('Try a different phone number')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':
             return null;
+        case 'InputValidationFailed':
+            return <TryAgain text={localize('Let’s try again')} onConfirm={onConfirm} />;
+        case 'InvalidAccount':
+            return <TryAgain text={localize('OK')} onConfirm={onConfirm} />;
+
         default:
             return (
                 <StaticUrl
@@ -82,9 +122,27 @@ const ErrorCTA = ({ code, onConfirm }) => {
     }
 };
 
-const SignupErrorContent = ({ message, code, onConfirm, className }) => {
+const SignupErrorContent = ({ message, code, onConfirm, className, error_field = {} }) => {
+    if (code === 'InputValidationFailed') {
+        return (
+            <div
+                className={classNames('account-wizard--error', {
+                    [`account-wizard--error__${className}`]: className,
+                })}
+            >
+                <Icon icon='IcRedWarning' size={64} />
+                <Heading code={code} />
+                <Message code={code} message={message} details={error_field} />
+                <ErrorCTA code={code} onConfirm={onConfirm} />
+            </div>
+        );
+    }
     return (
-        <div className={classNames('account-wizard--error', className)}>
+        <div
+            className={classNames('account-wizard--error', {
+                [`account-wizard--error__${className}`]: className,
+            })}
+        >
             <Icon icon='IcAccountError' size={code === 'InvalidAccount' ? 96 : 115} />
             <Heading code={code} />
             <Message code={code} message={message} />

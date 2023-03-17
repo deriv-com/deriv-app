@@ -30,6 +30,7 @@ const modal_pages_indices = {
     add_currency: 7,
     finished_add_currency: 8,
     restricted_country_signup_error: 9,
+    invalid_input_error: 10,
 };
 
 const WizardHeading = ({
@@ -262,8 +263,21 @@ const RealAccountSignup = ({
                         local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
                     }
                     code={local_props.state_value.error_code}
-                    onConfirm={onErrorConfirm}
+                    onConfirm={closeRealAccountSignup}
                     className='restricted-country-error'
+                />
+            ),
+        },
+        {
+            body: local_props => (
+                <SignupErrorContent
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
+                    code={local_props.state_value.error_code}
+                    onConfirm={onErrorConfirm}
+                    error_field={local_props.state_value}
+                    className='invalid-input-error'
                 />
             ),
         },
@@ -272,7 +286,9 @@ const RealAccountSignup = ({
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
     const getModalHeight = () => {
-        if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
+        if (getActiveModalIndex() === modal_pages_indices.restricted_country_signup_error) return '304px';
+        else if (getActiveModalIndex() === modal_pages_indices.invalid_input_error) return '292px';
+        else if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -287,9 +303,11 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
-        if (getActiveModalIndex() === modal_pages_indices.restricted_country_signup_error) return '304px';
-
         return '740px'; // Account wizard modal
+    };
+    const getModalWidth = () => {
+        if ([invalid_input_error, restricted_country_signup_error].includes(getActiveModalIndex())) return '440px';
+        return !has_close_icon ? 'auto' : '955px';
     };
 
     const showStatusDialog = curr => {
@@ -357,9 +375,14 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         if (!error) return;
         setParams({
-            active_modal_index: modal_pages_indices.signup_error,
+            active_modal_index:
+                error.code === 'InputValidationFailed'
+                    ? modal_pages_indices.invalid_input_error
+                    : modal_pages_indices.signup_error,
             error_message: error.message,
             error_code: error.code,
+            ...(error.code === 'InputValidationFailed' && { error_details: error.details }),
+            // error_details: error.details,
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error]);
@@ -459,6 +482,7 @@ const RealAccountSignup = ({
         set_currency,
         signup_error,
         restricted_country_signup_error,
+        invalid_input_error,
     } = modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
@@ -574,6 +598,7 @@ const RealAccountSignup = ({
                                 'dc-modal__container_real-account-signup-modal--error': [
                                     signup_error,
                                     restricted_country_signup_error,
+                                    invalid_input_error,
                                 ].includes(getActiveModalIndex()),
                                 'dc-modal__container_real-account-signup-modal--success': [
                                     finished_set_currency,
@@ -606,7 +631,7 @@ const RealAccountSignup = ({
                             }}
                             toggleModal={closeModal}
                             height={getModalHeight()}
-                            width={!has_close_icon ? 'auto' : '955px'}
+                            width={getModalWidth()}
                             elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <ModalContent

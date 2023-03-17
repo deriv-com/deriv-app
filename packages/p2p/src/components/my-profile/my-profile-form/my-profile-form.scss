@@ -16,9 +16,8 @@
     }
 
     &__textarea {
-        padding-top: 2.5rem;
         height: 9.8rem;
-        margin-bottom: 5.7rem;
+        margin-bottom: 4rem;
 
         @include mobile {
             margin: 0 2vw;
@@ -41,6 +40,15 @@
             }
             @include tablet-up {
                 padding-bottom: 7.4rem + 2.4rem;
+            }
+        }
+
+        .dc-input {
+            &__wrapper {
+                margin-top: 2.5rem;
+            }
+            &__footer {
+                margin-bottom: 2rem;
             }
         }
     }

@@ -60,7 +60,7 @@ const TopWidgets = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
-                {is_mobile && <BuyToastNotification portal_id='popup_root' />}
+                {is_mobile && <BuyToastNotification />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>

@@ -1416,7 +1416,8 @@ export default class TradeStore extends BaseStore {
     get is_vanilla() {
         return this.contract_type === 'vanilla';
     }
-    async setContractPurchaseToastbox(response) {
+
+    setContractPurchaseToastbox(response) {
         const list = getAvailableContractTypes(this.contract_types_list, unsupported_contract_types_list);
 
         return (this.contract_purchase_toast_box = {

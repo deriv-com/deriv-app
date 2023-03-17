@@ -30,7 +30,6 @@ const MenuLink = observer(
                         'header__menu-mobile-link--disabled': is_disabled,
                         'header__menu-mobile-link--active': is_active,
                     })}
-                    active_class='header__menu-mobile-link--active'
                     onClick={() => {
                         onClickLink();
                         changeLanguage(link_to, changeCurrentLanguage);

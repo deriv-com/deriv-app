@@ -45,10 +45,10 @@
         }
         .dc-input {
             &__label {
-                top: 1rem;
+                top: 0.9rem;
             }
             label {
-                top: 1rem;
+                top: 0.9rem;
                 background-color: var(--general-main-2);
                 @include mobile {
                     background-color: var(--fill-normal);

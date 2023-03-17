@@ -57,7 +57,9 @@ export default class AccountPromptDialogStore {
 
         const non_crypto_account_loginid = Object.entries(client.accounts).reduce(
             (initial_value, [loginid, settings]) => {
-                return !settings.is_virtual && !isCryptocurrency(settings.currency || '') ? loginid : initial_value;
+                return !settings.is_virtual && !isCryptocurrency(settings.currency || '') && loginid.startsWith('CR')
+                    ? loginid
+                    : initial_value;
             },
             ''
         );

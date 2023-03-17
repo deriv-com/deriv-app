@@ -16,9 +16,7 @@ const AccountPromptDialog = observer(() => {
     const non_crypto_account_loginid = React.useMemo(
         () =>
             Object.entries(accounts).reduce((initial_value, [loginid, settings]) => {
-                return !settings.is_virtual && !isCryptocurrency(settings.currency || '') && loginid.startsWith('CR')
-                    ? loginid
-                    : initial_value;
+                return !settings.is_virtual && !isCryptocurrency(settings.currency || '') ? loginid : initial_value;
             }, ''),
         [accounts]
     );

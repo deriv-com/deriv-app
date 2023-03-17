@@ -42,7 +42,7 @@ const ProofOfIdentityContainer = ({
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
-    const should_show_redirect_btn = from_platform.ref === 'P2P' || from_platform.ref === 'derivgo';
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform.ref);
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);

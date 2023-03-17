@@ -11,3 +11,4 @@ export { default as useHasSetCurrency } from './useHasSetCurrency';
 export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';
 export { default as useOnrampVisible } from './useOnrampVisible';
+export { default as useSwitchToRealAccount } from './useSwitchToRealAccount';

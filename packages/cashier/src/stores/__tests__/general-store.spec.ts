@@ -139,11 +139,11 @@ describe('GeneralStore', () => {
         expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
     });
 
-    it('should show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has not fiat currency accounts', async () => {
+    it('should not show p2p in cashier onboarding if the user account is not virtual, there is no p2p_advertiser_error and he has not fiat currency accounts', async () => {
         general_store.root_store.client.account_list = [{ title: 'BTC' }];
         await general_store.showP2pInCashierOnboarding();
 
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
+        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
     });
 
     it('should set has_set_currency equal to true if the client has real USD account', () => {

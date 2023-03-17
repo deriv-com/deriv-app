@@ -39,7 +39,6 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
-    action_toastbox,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
@@ -61,9 +60,7 @@ const TopWidgets = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
-                {is_mobile && action_toastbox.key && (
-                    <BuyToastNotification portal_id='popup_root' action_toastbox={action_toastbox} />
-                )}
+                {is_mobile && <BuyToastNotification portal_id='popup_root' />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>
@@ -90,9 +87,6 @@ TopWidgets.propTypes = {
     open_market: PropTypes.object,
     theme: PropTypes.string,
     y_axis_width: PropTypes.number,
-    action_toastbox: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
-    action_toastbox: modules.trade.action_toastbox,
-}))(TopWidgets);
+export default TopWidgets;

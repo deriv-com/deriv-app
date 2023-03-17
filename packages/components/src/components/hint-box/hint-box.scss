@@ -7,6 +7,21 @@
     padding: 8px;
     border-radius: $BORDER_RADIUS;
 
+    &--inline {
+        margin-top: 0.8rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+
+        &-message {
+            > p {
+                padding-bottom: 0 !important;
+            }
+        }
+        &-icon {
+            margin-right: 0;
+        }
+    }
     &--info {
         background-color: var(--transparent-info);
     }

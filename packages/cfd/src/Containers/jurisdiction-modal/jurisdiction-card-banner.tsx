@@ -15,17 +15,21 @@ const VerificationStatusBanner = ({
     is_virtual,
     type_of_card,
     should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
 }: TVerificationStatusBannerProps) => {
     const {
         poi_not_submitted_for_vanuatu_maltainvest,
-        poi_or_poa_not_submitted,
+        poi_and_poa_not_submitted,
         poi_resubmit_for_vanuatu_maltainvest,
         poi_resubmit_for_bvi_labuan,
         need_poa_resubmission,
         need_poi_for_bvi_labuan,
         poa_pending,
+        poi_acknowledged_for_vanuatu_maltainvest,
+        poi_acknowledged_for_bvi_labuan,
+        poa_not_submitted,
     } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => {
@@ -94,7 +98,7 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (poi_or_poa_not_submitted) {
+    } else if (poi_and_poa_not_submitted) {
         // if poi or poa is not submitted
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
@@ -103,7 +107,18 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_bvi && should_restrict_bvi_account_creation) {
+    } else if (is_vanuatu && poi_not_submitted_for_vanuatu_maltainvest) {
+        return (
+            <div className={`${card_classname}__verification-status--not_submitted`}>
+                <Text as='p' size='xxs' align='center' color='prominent'>
+                    <Localize i18n_default_text='Proof of identity is required' />
+                </Text>
+            </div>
+        );
+    } else if (
+        (is_bvi && should_restrict_bvi_account_creation) ||
+        (is_vanuatu && should_restrict_vanuatu_account_creation)
+    ) {
         if (poa_pending) {
             return (
                 <div className={`${card_classname}__verification-status--pending`}>
@@ -120,11 +135,14 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_vanuatu && poi_not_submitted_for_vanuatu_maltainvest) {
+    } else if (
+        ((is_bvi || is_labuan) && poi_acknowledged_for_vanuatu_maltainvest && poa_not_submitted) ||
+        ((is_vanuatu || is_maltainvest) && poi_acknowledged_for_bvi_labuan && poa_not_submitted)
+    ) {
         return (
-            <div className={`${card_classname}__verification-status--not_submitted`}>
-                <Text as='p' size='xxs' align='center' color='prominent'>
-                    <Localize i18n_default_text='You will need to submit proof of identity' />
+            <div className={`${card_classname}__verification-status--failed`}>
+                <Text size='xxs' color='colored-background'>
+                    <Localize i18n_default_text='Proof of address is required' />
                 </Text>
             </div>
         );
@@ -174,6 +192,7 @@ export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
 }))(JurisdictionCardBanner);

@@ -168,6 +168,7 @@ const DMT5CompareModalContent = ({
     setJurisdictionSelectedShortcode,
     setShouldShowCooldownModal,
     should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation,
     should_show_derivx,
     show_eu_related_content,
     toggleCFDVerificationModal,
@@ -321,12 +322,14 @@ const DMT5CompareModalContent = ({
                     toggleCFDVerificationModal();
                 }
                 break;
+            case 'synthetic_vanuatu':
             case 'financial_vanuatu':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (
                     poi_acknowledged_for_vanuatu_maltainvest &&
                     !poi_or_poa_not_submitted &&
+                    !should_restrict_vanuatu_account_creation &&
                     has_submitted_personal_details &&
                     poa_acknowledged
                 ) {
@@ -433,7 +436,10 @@ const DMT5CompareModalContent = ({
             return false;
         } else if (type === 'bvi' && should_restrict_bvi_account_creation && poa_pending) {
             return true;
+        } else if (type === 'vanuatu' && should_restrict_vanuatu_account_creation && poa_pending) {
+            return true;
         }
+
         return false;
     };
 
@@ -573,6 +579,7 @@ export default connect(({ modules, client, common, ui, traders_hub }: RootStore)
     setAccountType: modules.cfd.setAccountType,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     updateMT5Status: client.updateMT5Status,

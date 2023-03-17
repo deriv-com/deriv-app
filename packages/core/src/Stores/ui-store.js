@@ -570,7 +570,8 @@ export default class UIStore extends BaseStore {
             this.is_dark_mode_on = is_dark_mode_on;
             // This GTM call is here instead of the GTM store due to frequency of use
             this.root_store.gtm.pushDataLayer({ event: 'switch theme' });
-            if (isBot()) {
+            const { is_pathname_bot } = isBot();
+            if (is_pathname_bot) {
                 location.reload();
             }
         }

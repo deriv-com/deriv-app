@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { findContractCategory } from '../../Trading/Helpers/contract-type';
+import { findContractCategory } from 'Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
 
 type TContractType = {

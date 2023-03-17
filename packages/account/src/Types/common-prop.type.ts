@@ -1,7 +1,8 @@
 /** Add types that are shared between components */
 
+import { InferProps, Requireable } from 'prop-types';
+
 import { Authorize } from '@deriv/api-types';
-import { Requireable, InferProps } from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -13,7 +14,7 @@ export type TToken = {
 
 export type TPoaStatusProps = {
     needs_poi: boolean;
-    is_description_enabled?: boolean;
+    redirect_button: React.ReactNode;
 };
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {

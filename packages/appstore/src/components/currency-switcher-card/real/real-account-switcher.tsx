@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { getStatusBadgeConfig } from '@deriv/account';
 import { StatusBadge, Text } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
@@ -13,11 +14,16 @@ type AccountNeedsVerificationProps = {
 const AccountNeedsVerification = observer(({ multipliers_account_status }: AccountNeedsVerificationProps) => {
     const { client, traders_hub } = useStores();
     const { account_list, loginid } = client;
-
     const { openModal, openFailedVerificationModal } = traders_hub;
 
     const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
     const icon = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).icon;
+
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+        multipliers_account_status,
+        openFailedVerificationModal,
+        'multipliers'
+    );
 
     return (
         <CurrencySwitcherContainer
@@ -32,11 +38,7 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: Accou
                 return openModal('currency_selection');
             }}
         >
-            <StatusBadge
-                account_status={multipliers_account_status}
-                openFailedVerificationModal={openFailedVerificationModal}
-                selected_account_type='multipliers'
-            />
+            <StatusBadge account_status={multipliers_account_status} icon={badge_icon} text={badge_text} />
         </CurrencySwitcherContainer>
     );
 });

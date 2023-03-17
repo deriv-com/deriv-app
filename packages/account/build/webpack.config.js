@@ -28,6 +28,7 @@ module.exports = function (env) {
             'form-body': 'Components/form-body',
             'form-footer': 'Components/form-footer',
             'form-sub-header': 'Components/form-sub-header',
+            'get-status-badge-config': 'Configs/get-status-badge-config',
             'icon-message-content': 'Components/icon-message-content',
             'leave-confirm': 'Components/leave-confirm',
             'load-error-message': 'Components/load-error-message',

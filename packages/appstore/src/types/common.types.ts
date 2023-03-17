@@ -91,6 +91,8 @@ export type TCFDAccountsProps = {
     has_real_account?: boolean;
 };
 
+export type TCFDPlatforms = 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
+
 export type TStaticAccountProps = {
     name: 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
     description: string;

@@ -1,11 +1,12 @@
 import React, { HTMLAttributes } from 'react';
 import classNames from 'classnames';
-import { Icon, Text } from '@deriv/components';
-import './regulators-switcher.scss';
-import { useStores } from 'Stores/index';
-import { region_availability } from 'Constants/platform-config';
 import { observer } from 'mobx-react-lite';
+import { Icon, Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { region_availability } from 'Constants/platform-config';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
+import { useStores } from 'Stores/index';
+import './regulators-switcher.scss';
 
 type SwitcherItemProps = {
     onClick: () => void;
@@ -30,7 +31,7 @@ const RegulatorSwitcher = () => {
     return (
         <div className='regulators-switcher__container'>
             <div className='regulators-switcher--text'>
-                <Text>Regulation:</Text>
+                <Text>{localize('Regulation:')}</Text>
                 <div className='regulators-switcher--icon' onClick={() => toggleRegulatorsCompareModal()}>
                     <Icon icon='IcInfoOutline' />
                 </div>

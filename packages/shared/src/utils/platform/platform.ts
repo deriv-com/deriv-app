@@ -28,9 +28,23 @@ export const CFD_PLATFORMS = Object.freeze({
     DERIVEZ: 'derivez',
 });
 
-export const isBot = () =>
-    /^\/bot/.test(window.location.pathname) ||
-    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'bot');
+export const isBot = () => {
+    const config_route = window.localStorage.getItem('config.route');
+    const is_bot = config_route === 'bot';
+    const is_pathname_bot =
+        /^\/bot/.test(window.location.pathname) ||
+        (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'bot');
+    if (window.location.pathname.split('/')[1] === '') {
+        window.localStorage.removeItem('config.route');
+    }
+    if (is_pathname_bot) {
+        window.localStorage.setItem('config.route', 'bot');
+    }
+    return {
+        is_pathname_bot,
+        is_config_route_bot: is_bot,
+    };
+};
 
 export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
@@ -41,7 +55,8 @@ export const isDXtrade = () =>
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'derivx');
 
 export const getPathname = () => {
-    if (isBot()) return platform_name.DBot;
+    const { is_pathname_bot } = isBot();
+    if (is_pathname_bot) return platform_name.DBot;
     if (isMT5()) return platform_name.DMT5;
     if (isDXtrade()) return platform_name.DXtrade;
     switch (window.location.pathname.split('/')[1]) {
@@ -57,7 +72,8 @@ export const getPathname = () => {
 };
 
 export const getPlatformInformation = (routing_history: TRoutingHistory) => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) {
+    const { is_pathname_bot } = isBot();
+    if (is_pathname_bot || isNavigationFromPlatform(routing_history, routes.bot)) {
         return { header: platform_name.DBot, icon: getPlatformSettings('dbot').icon };
     }
 
@@ -80,7 +96,8 @@ export const getPlatformInformation = (routing_history: TRoutingHistory) => {
 };
 
 export const getActivePlatform = (routing_history: TRoutingHistory) => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
+    const { is_pathname_bot } = isBot();
+    if (is_pathname_bot || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return platform_name.DXtrade;
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
@@ -89,7 +106,8 @@ export const getActivePlatform = (routing_history: TRoutingHistory) => {
 };
 
 export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot))
+    const { is_pathname_bot } = isBot();
+    if (is_pathname_bot || isNavigationFromPlatform(routing_history, routes.bot))
         return { name: platform_name.DBot, route: routes.bot };
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5))
         return { name: platform_name.DMT5, route: routes.mt5 };

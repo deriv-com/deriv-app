@@ -379,6 +379,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .cfd-personal-details-modal__form & {
                 margin: unset;
+                max-width: unset;
             }
 
             &--2-cols {
@@ -420,7 +421,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
 
             .dc-input__label {
-                top: 1rem;
+                top: 0.9rem;
             }
 
             @include mobile {
@@ -786,7 +787,7 @@ $MIN_HEIGHT_FLOATING: calc(
                             width: inherit;
                             max-width: 40rem;
                             .email-input {
-                                margin-bottom: 0.8rem;
+                                margin-bottom: 1.6rem;
                             }
                         }
                         width: 40rem;

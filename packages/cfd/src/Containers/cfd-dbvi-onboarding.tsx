@@ -53,7 +53,7 @@ const CFDDbviOnboarding = ({
     updateAccountStatus,
     updateMT5Status,
 }: TCFDDbviOnboardingProps) => {
-    const [showSubmittedModal, setShowSubmittedModal] = React.useState(false);
+    const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
 
     const getAccountStatusFromAPI = () => {

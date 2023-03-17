@@ -201,6 +201,7 @@ type TCommonStore = {
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
     current_language: string;
 };
 
@@ -226,7 +227,9 @@ type TUiStore = {
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
+    toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
+    is_ready_to_deposit_modal_visible: boolean;
 };
 
 type TMenuStore = {
@@ -242,6 +245,7 @@ type TNotificationStore = {
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
 };
 
@@ -249,6 +253,7 @@ type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
+    is_eu_user: boolean;
 };
 
 export type TRootStore = {

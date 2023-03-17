@@ -52,7 +52,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     } = general_store;
     const is_deposit_locked = useDepositLocked();
 
-    const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
+    const is_eu = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;

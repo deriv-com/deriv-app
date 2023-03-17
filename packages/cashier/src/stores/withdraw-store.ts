@@ -1,6 +1,6 @@
 import { action, computed, observable, makeObservable } from 'mobx';
 import { formatMoney, getDecimalPlaces, getMinWithdrawal, isMobile, validNumber } from '@deriv/shared';
-import { CryptoConfig, CashierInformationRequest } from '@deriv/api-types';
+import { CryptoConfig } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
@@ -42,7 +42,7 @@ export default class WithdrawStore {
     }
 
     blockchain_address = '';
-    container: CashierInformationRequest['cashier'] = Constants.containers.withdraw;
+    container: string = Constants.containers.withdraw;
     error = new ErrorStore();
     is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;

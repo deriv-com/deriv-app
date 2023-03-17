@@ -112,7 +112,7 @@ const CryptoFiatConverter = observer(
                                 handleChange(e);
                             }}
                             type='text'
-                            error={converter_from_error}
+                            error={converter_from_error as string}
                             label={localize('Amount ({{currency}})', {
                                 currency: getCurrencyDisplayCode(from_currency),
                             })}

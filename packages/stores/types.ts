@@ -185,16 +185,16 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
+    app_routing_history: unknown[];
     header: string | JSX.Element;
     message: string | JSX.Element;
-    type?: string;
     redirect_label: string;
     redirect_to: string;
+    redirectOnClick: () => void;
+    setError: (has_error: boolean, error: React.ReactNode | null) => void;
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;
-    redirectOnClick: () => void;
-    setError: (has_error: boolean, error: TCommonStoreError | null) => void;
-    app_routing_history: unknown[];
+    type?: string;
 };
 
 type TCommonStore = {

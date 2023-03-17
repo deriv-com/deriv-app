@@ -2,7 +2,7 @@ import React from 'react';
 import { getStaticUrl, PlatformContext, setUrlLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 
-const StaticUrl = ({ href, is_document, is_eu_url = false, children, ...props }) => {
+const StaticUrl = ({ href, is_document, is_eu_url = false, children = null, ...props }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const getHref = () => {
         setUrlLanguage(getLanguage());

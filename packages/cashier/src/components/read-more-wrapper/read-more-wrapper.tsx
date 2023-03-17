@@ -12,7 +12,7 @@ const ReadMoreWrapper = ({ error_content, openDialog }: TReadMoreWrapperProps) =
     return (
         <ReadMore
             expand_text={localize('more')}
-            text={error_content}
+            text={error_content as string}
             collapse_length={28}
             openDialog={openDialog}
             show_dialog

@@ -49,7 +49,7 @@ type TServiceTokenResponse = {
 
 type TWebSocketCall = {
     cashier: (
-        action: CashierInformationRequest['cashier'],
+        action: string,
         parameters: Omit<CashierInformationRequest, 'cashier'>
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
     cashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;

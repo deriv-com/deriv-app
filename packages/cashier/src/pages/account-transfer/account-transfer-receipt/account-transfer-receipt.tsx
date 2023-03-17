@@ -145,8 +145,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             <Modal
                 is_open={is_switch_visible}
                 toggleModal={toggleSwitchAlert}
-                enableApp={enableApp}
-                disableApp={disableApp}
                 has_close_icon={isMobile()}
                 className='account_transfer_switch_modal'
                 small

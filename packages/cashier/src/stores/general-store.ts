@@ -1,6 +1,5 @@
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
 import { isCryptocurrency, isEmptyObject, getPropertyValue, routes, ContentFlag } from '@deriv/shared';
-import type { CashierInformationRequest } from '@deriv/api-types';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
@@ -81,7 +80,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     // This TS error will be fixed when the constants.js migrated to the TS
-    active_container: CashierInformationRequest['cashier'] = Constants.containers.deposit;
+    active_container: string = Constants.containers.deposit;
     cashier_route_tab_index = 0;
     deposit_target = '';
     has_set_currency = false;
@@ -366,7 +365,7 @@ export default class GeneralStore extends BaseStore {
         this.is_loading = is_loading;
     }
 
-    setActiveTab(container: CashierInformationRequest['cashier']): void {
+    setActiveTab(container: string): void {
         this.active_container = container;
     }
 

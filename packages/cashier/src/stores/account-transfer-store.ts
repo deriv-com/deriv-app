@@ -71,7 +71,7 @@ export default class AccountTransferStore {
     }
 
     accounts_list: Array<TAccount> = [];
-    container = Constants.containers.account_transfer;
+    container: string = Constants.containers.account_transfer;
     error = new ErrorStore();
     has_no_account = false;
     has_no_accounts_balance = false;

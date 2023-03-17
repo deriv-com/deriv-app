@@ -6,10 +6,8 @@ import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
-import DerivGoLight from 'Assets/ic-brand-deriv-go-light.svg';
-import DerivGoDark from 'Assets/ic-brand-deriv-go-dark.svg';
 
-const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identity_provider }) => {
+const DerivPassword = ({ email, is_social_signup, social_identity_provider }) => {
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
@@ -53,23 +51,35 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                         />
                     </Text>
                     <div className='passwords-platform__logo-container'>
-                        <DerivComLogo className='passwords-platform__single-icon' />
+                        <DerivComLogo />
                         <Text line_height='l' size='xs' weight='bold'>
                             {brand_website_name}
                         </Text>
                     </div>
                     <div className='passwords-platform__icons'>
                         <Popover alignment='bottom' message={platform_name_trader}>
-                            <Icon icon={getPlatformSettings('trader').icon} size={32} />
+                            <Icon
+                                icon={`${getPlatformSettings('trader').icon  }-dashboard`}
+                                size={32}
+                                description='trader'
+                            />
                         </Popover>
                         <Popover alignment='bottom' message={platform_name_dbot}>
-                            <Icon icon={getPlatformSettings('dbot').icon} size={32} />
+                            <Icon icon={`${getPlatformSettings('dbot').icon  }-dashboard`} size={32} description='dbot' />
                         </Popover>
                         <Popover alignment='bottom' message={platform_name_smarttrader}>
-                            <Icon icon={getPlatformSettings('smarttrader').icon} size={32} />
+                            <Icon
+                                icon={`${getPlatformSettings('smarttrader').icon  }-dashboard`}
+                                size={32}
+                                description='smarttrader'
+                            />
                         </Popover>
                         <Popover alignment='bottom' message={platform_name_go}>
-                            {is_dark_mode_on ? <DerivGoDark /> : <DerivGoLight />}
+                            <Icon
+                                icon={`${getPlatformSettings('go').icon  }-dashboard`}
+                                size={32}
+                                description='derivgo'
+                            />
                         </Popover>
                     </div>
                 </React.Fragment>

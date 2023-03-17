@@ -207,6 +207,97 @@ const CFDsListing = () => {
                     <hr className='divider' />
                 </div>
             )}
+
+            {
+                //Adding CTrader
+            }
+            <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                <Text line_height='m' weight='bold'>
+                    {localize('Deriv cTrader')}
+                </Text>
+            </div>
+
+            {is_landing_company_loaded ? (
+                [
+                    {
+                        platform: 'ctrader',
+                        market_type: 'all',
+                        icon: 'CTrader',
+                        name: 'Deriv cTrader',
+                        key: 'ctrader',
+                        description:
+                            'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.',
+                    },
+                ].map((account: any) => {
+                    const existing_accounts = getExistingAccounts(account.platform, account.market_type);
+                    const has_existing_accounts = existing_accounts.length > 0;
+                    return has_existing_accounts ? (
+                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                            <TradingAppCard
+                                action_type='multi-action'
+                                availability={selected_region}
+                                clickable_icon
+                                icon={account.icon}
+                                sub_title={account.name}
+                                name={`${formatMoney(
+                                    existing_account.currency,
+                                    existing_account.display_balance,
+                                    true
+                                )} ${existing_account.currency}`}
+                                description={existing_account.display_login}
+                                platform={account.platform}
+                                key={`trading_app_card_${existing_account.display_login}`}
+                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                    const button_name = e?.currentTarget?.name;
+                                    if (button_name === 'transfer-btn') {
+                                        toggleAccountTransferModal();
+                                        setSelectedAccount(existing_account);
+                                    } else if (button_name === 'topup-btn') {
+                                        showTopUpModal(existing_account);
+                                    } else {
+                                        startTrade(account.platform, existing_account);
+                                    }
+                                }}
+                            />
+                        ))
+                    ) : (
+                        <TradingAppCard
+                            action_type='get'
+                            availability={selected_region}
+                            clickable_icon
+                            icon={account.icon}
+                            name={account.name}
+                            platform={account.platform}
+                            description={account.description}
+                            onAction={() => {
+                                if ((has_no_real_account || no_CR_account) && is_real) {
+                                    openDerivRealAccountNeededModal();
+                                } else {
+                                    setAccountType({
+                                        category: selected_account_type,
+                                        type: account.market_type,
+                                    });
+                                    setAppstorePlatform(account.platform);
+                                    getAccount();
+                                }
+                            }}
+                            key={`trading_app_card_${account.name}`}
+                        />
+                    );
+                })
+            ) : (
+                <PlatformLoader />
+            )}
+
+            {
+                //Ending CTrader
+            }
+
+            {!is_eu_user && (
+                <div className='cfd-full-row'>
+                    <hr className='divider' />
+                </div>
+            )}
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
                     <Text line_height='m' weight='bold'>

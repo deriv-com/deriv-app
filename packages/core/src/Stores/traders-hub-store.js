@@ -505,6 +505,8 @@ export default class TradersHubStore extends BaseStore {
         const { createCFDAccount, enableCFDPasswordModal, toggleJurisdictionModal } = modules.cfd;
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
             toggleJurisdictionModal();
+        } else if (platform === CFD_PLATFORMS.CTRADER) {
+            toggleJurisdictionModal();
         } else {
             createCFDAccount({ ...account_type, platform });
             enableCFDPasswordModal();

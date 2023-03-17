@@ -13,6 +13,7 @@ const CFD_text: { [key: string]: string } = {
     synthetic: 'Derived',
     synthetic_bvi: 'Derived BVI',
     synthetic_svg: 'Derived SVG',
+    synthetic_v: 'Derived Vanuatu',
     financial: 'Financial',
     financial_bvi: 'Financial BVI',
     financial_fx: 'Financial Labuan',
@@ -49,6 +50,8 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                     return 'synthetic_svg';
                 case 'bvi':
                     return 'synthetic_bvi';
+                case 'vanuatu':
+                    return 'synthetic_v';
                 default:
                     return 'synthetic';
             }
@@ -236,6 +239,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
 
     const poi_not_submitted = poi_status === 'none';
     const poi_or_poa_not_submitted = poa_not_submitted || poi_not_submitted;
+    const poi_and_poa_not_submitted = poa_not_submitted && poi_not_submitted;
 
     //vanuatu-maltainvest
 
@@ -304,6 +308,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
         poa_verified,
         poi_or_poa_not_submitted,
         need_poa_resubmission,
+        poi_and_poa_not_submitted,
         poa_not_submitted,
         poi_not_submitted,
         need_poi_for_vanuatu_maltainvest,

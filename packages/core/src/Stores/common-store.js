@@ -122,16 +122,12 @@ export default class CommonStore extends BaseStore {
         const search = window.location.search;
         if (search) {
             const url_params = new URLSearchParams(search);
-            // eslint-disable-next-line no-console
-            console.log('url_params.get', url_params.get('platform'));
             this.platform = url_params.get('platform') || '';
             localStorage.setItem('config.platform', this.platform);
         }
     }
 
     get is_from_derivgo() {
-        // eslint-disable-next-line no-console
-        console.log('this.platform', this.platform);
         return platforms[this.platform]?.platform_name === platforms.derivgo.platform_name;
     }
 

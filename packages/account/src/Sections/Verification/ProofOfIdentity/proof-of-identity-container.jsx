@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
 import { Button, Loading } from '@deriv/components';
-import { WS, getPlatformRedirect } from '@deriv/shared';
+import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 
 import DemoMessage from 'Components/demo-message';
@@ -43,8 +42,7 @@ const ProofOfIdentityContainer = ({
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
-    console.log('from_platform', from_platform);
-    const should_show_redirect_btn = from_platform.name === 'P2P';
+    const should_show_redirect_btn = from_platform.ref === 'P2P' || from_platform.ref === 'derivgo';
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
@@ -101,7 +99,18 @@ const ProofOfIdentityContainer = ({
     }
 
     const redirect_button = should_show_redirect_btn && (
-        <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
+        <Button
+            primary
+            className='proof-of-identity__redirect'
+            onClick={() => {
+                if (platforms[from_platform.ref].is_hard_redirect) {
+                    const url = platforms[from_platform.ref]?.url;
+                    window.location.href = url;
+                } else {
+                    routeBackTo(from_platform.route);
+                }
+            }}
+        >
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
     );

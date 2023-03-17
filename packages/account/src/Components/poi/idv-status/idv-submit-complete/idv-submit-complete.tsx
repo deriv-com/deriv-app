@@ -1,17 +1,16 @@
-import { ButtonLink, Text } from '@deriv/components';
-
 import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
 import PoaButton from 'Components/poa/poa-button';
 import React from 'react';
+import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
 
 type TIdvSubmitComplete = {
     needs_poa: boolean;
     is_from_external: boolean;
+    redirect_button: React.ReactNode;
 };
 
-const IdvSubmitComplete = ({ needs_poa, is_from_external }: TIdvSubmitComplete) => {
+const IdvSubmitComplete = ({ needs_poa, is_from_external, redirect_button }: TIdvSubmitComplete) => {
     const poa_button = !is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />;
 
     return (
@@ -31,13 +30,7 @@ const IdvSubmitComplete = ({ needs_poa, is_from_external }: TIdvSubmitComplete) 
                     {poa_button}
                 </React.Fragment>
             )}
-            {!!is_from_external && (
-                <ButtonLink className='account-management__button' to={routes.proof_of_address}>
-                    <Text className='dc-btn__text' as='p' weight='bold' data-testid='dt_redirect_btn'>
-                        {localize('Back to Deriv GO')}
-                    </Text>
-                </ButtonLink>
-            )}
+            {redirect_button}
         </div>
     );
 };

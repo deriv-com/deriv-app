@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AutoHeightWrapper } from '@deriv/components';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 import React from 'react';
@@ -19,7 +18,6 @@ const ProofOfIdentity = ({
     refreshNotifications,
     routeBackInApp,
     should_allow_authentication,
-    is_from_derivgo,
 }) => {
     // next useEffect implements seo requirements
     React.useEffect(() => {
@@ -35,8 +33,6 @@ const ProofOfIdentity = ({
         };
     }, []);
 
-    console.log('Section POI" ', is_from_external, is_from_derivgo);
-
     return (
         <AutoHeightWrapper default_height={200}>
             {({ setRef, height }) => (
@@ -47,7 +43,7 @@ const ProofOfIdentity = ({
                             account_status={account_status}
                             app_routing_history={app_routing_history}
                             fetchResidenceList={fetchResidenceList}
-                            is_from_external={is_from_external || is_from_derivgo}
+                            is_from_external={is_from_external}
                             is_switching={is_switching}
                             is_virtual={is_virtual}
                             is_high_risk={is_high_risk}
@@ -76,5 +72,4 @@ export default connect(({ client, common, notifications }) => ({
     refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
-    is_from_derivgo: common.is_from_derivgo,
 }))(withRouter(ProofOfIdentity));

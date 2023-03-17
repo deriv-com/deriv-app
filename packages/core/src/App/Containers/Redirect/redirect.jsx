@@ -142,7 +142,6 @@ const Redirect = ({
         case 'add_account_multiplier': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
                 return openRealAccountSignup('maltainvest');
             });
             const ext_platform_url = url_params.get('ext_platform_url');

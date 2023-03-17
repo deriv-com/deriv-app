@@ -6,9 +6,9 @@ import './cfds-listing.scss';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import AddOptionsAccount from 'Components/add-options-account';
-import { isMobile, formatMoney } from '@deriv/shared';
+import { isMobile, formatMoney, CFD_PLATFORMS } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { AvailableAccount, TDetailsOfEachMT5Loginid, TMt5StatusServer, TMt5StatusServerType } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
@@ -52,12 +52,60 @@ const CFDsListing = () => {
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
+    const {
+        is_landing_company_loaded,
+        real_account_creation_unlock_date,
+        account_settings,
+        website_status,
+        mt5_disabled_signup_types,
+        dxtrade_disabled_signup_types,
+        dxtrade_accounts_list_error,
+        has_account_error_in_mt5_real_list: has_mt5_real_account_error,
+        has_account_error_in_mt5_demo_list: has_mt5_demo_account_error,
+        has_account_error_in_dxtrade_real_list: has_dxtrade_real_account_error,
+        has_account_error_in_dxtrade_demo_list: has_dxtrade_demo_account_error,
+    } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
+    const { dxtrade_user_exception: is_user_exception } = account_settings;
+    const { mt5_status: mt5_status_server, dxtrade_status: dxtrade_status_server } = website_status;
+
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
+
+    // all: 1 in mt5_status response means that server is suspended
+    const getIsSuspendedMt5Server = (type_server: TMt5StatusServer['demo' | 'real']) =>
+        type_server?.map((item: TMt5StatusServerType) => item.all).some((item: number) => item === 1);
+
+    const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(mt5_status_server?.demo);
+    const is_suspended_mt5_real_server = getIsSuspendedMt5Server(mt5_status_server?.real);
+    const is_suspended_dxtrade_demo_server = !!dxtrade_status_server?.demo;
+    const is_suspended_dxtrade_real_server = !!dxtrade_status_server?.real;
+
+    const has_mt5_account_error = is_demo
+        ? is_suspended_mt5_demo_server || has_mt5_demo_account_error || mt5_disabled_signup_types.demo
+        : is_suspended_mt5_real_server || has_mt5_real_account_error || mt5_disabled_signup_types.real;
+
+    const has_dxtrade_account_error = is_demo
+        ? is_suspended_dxtrade_demo_server || has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
+        : is_suspended_dxtrade_real_server || has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
+
+    const has_cfd_account_error = is_user_exception
+        ? !is_user_exception
+        : // : platform === CFD_PLATFORMS.MT5
+        CFD_PLATFORMS.MT5
+        ? has_mt5_account_error
+        : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
+
+    const has_cfd_real_account_dxtrade_error =
+        is_suspended_dxtrade_real_server || dxtrade_disabled_signup_types.real || !!dxtrade_accounts_list_error;
+    const has_cfd_demo_account_dxtrade_error =
+        is_suspended_dxtrade_demo_server || dxtrade_disabled_signup_types.demo || !!dxtrade_accounts_list_error;
+    const has_cfd_real_account_mt5_error = is_suspended_mt5_real_server || mt5_disabled_signup_types.real;
+    const has_cfd_demo_account_mt5_error = is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo;
+
+    // console.log('has_cfd_account_error = ', has_cfd_account_error);
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
         if (current_acc_status === 'proof_failed') {

@@ -277,9 +277,7 @@ const Chart = props => {
             isConnectionOpened={props.is_socket_opened}
             isStaticChart={
                 // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:
-                props.is_accumulator_contract &&
-                props.contract_info.status !== 'open' &&
-                props.start_epoch < prev_start_epoch
+                props.is_accumulator_contract && props.end_epoch && props.start_epoch < prev_start_epoch
             }
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}

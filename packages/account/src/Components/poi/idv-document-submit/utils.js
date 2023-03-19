@@ -60,7 +60,11 @@ export const getDocumentData = (country_code, document_type) => {
     if (Object.keys(idv_document_data).includes(country_code)) {
         return idv_document_data[country_code][document_type];
     }
-    return null;
+    return {
+        new_display_name: '',
+        example_format: '',
+        sample_image: '',
+    };
 };
 
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);

@@ -38,6 +38,7 @@ const ContractCardHeader = ({
         tick_count,
         tick_passed,
     } = contract_info;
+    const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
     const contract_type_list_info = [
@@ -59,7 +60,7 @@ const ContractCardHeader = ({
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_accumulator,
-                    'dc-contract-card__grid-underlying-trade--trader': !isBot(),
+                    'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
                     'dc-contract-card__grid-underlying-trade--trader--accumulator': is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader--accumulator-sold': is_accumulator && is_sold,
                 })}

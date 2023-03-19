@@ -58,7 +58,7 @@ const LanguageSettings = ({ changeCurrentLanguage, current_language, toggleSetti
                             id={`dt_settings_${key}_button`}
                             key={key}
                             onClick={async () => {
-                                await changeLanguage(key, changeCurrentLanguage);
+                                changeLanguage(key, changeCurrentLanguage);
                                 await i18n.changeLanguage(key);
                                 toggleSettingsModal();
                             }}

@@ -27,13 +27,14 @@ const ContractCardHeader = ({
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
     const { underlying, multiplier, contract_type, shortcode, purchase_time, date_expiry, tick_count, is_sold } =
         contract_info;
+    const { is_pathname_bot } = isBot();
 
     return (
         <>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier,
-                    'dc-contract-card__grid-underlying-trade--trader': !isBot(),
+                    'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
                 })}
             >
                 <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>

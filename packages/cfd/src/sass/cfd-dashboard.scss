@@ -366,6 +366,7 @@
             line-height: 1.5;
         }
     }
+
     &__footnote {
         &-title {
             padding-bottom: 0.8rem;
@@ -493,7 +494,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    min-height: 38rem;
+    min-height: 36rem;
     width: 27.6em;
     position: relative;
     padding: 1.6rem;
@@ -523,6 +524,8 @@
         @include mobile {
             flex-direction: column;
             align-items: center;
+            overflow-y: scroll;
+            height: 60%;
         }
     }
     &--selected {
@@ -573,6 +576,24 @@
     &__h2-header {
         margin: 1.4rem 0 2.4rem;
     }
+    &__footer-wrapper {
+        @include mobile {
+            background-color: var(--general-main-1);
+            width: 100%;
+            height: 100%;
+            position: sticky;
+            bottom: 0;
+            max-height: 20rem;
+            z-index: 12;
+        }
+        .dc-modal-footer {
+            @include desktop {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+        }
+    }
     &__footnote {
         display: flex;
         flex-direction: column;
@@ -593,6 +614,7 @@
     &__jurisdiction-checkbox {
         display: flex;
         justify-content: center;
+        margin-bottom: 2.4rem;
         @include mobile {
             padding: 0.8rem;
         }
@@ -2146,9 +2168,9 @@
         }
     }
     &__table-header {
-        grid-template-columns: 0.9fr 1.39fr 2.74fr;
+        grid-template-columns: 11rem 38rem 46rem;
         &__pre-appstore {
-            grid-template-columns: 0.9fr 1.39fr 2.74fr 0.9fr;
+            grid-template-columns: 11rem 36rem 46rem 13.5rem;
         }
     }
     @for $financial_accounts_count from 0 through 6 {
@@ -2185,20 +2207,25 @@
     }
 
     &__table-row {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
         &__pre-appstore {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
+            grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
         &--leverage {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr;
+            grid-template-columns: 11rem 38rem 36rem 10rem;
             &__pre-appstore {
-                grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr 0.9fr;
+                grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem;
+            }
+        }
+        &--platform {
+            &__pre-appstore {
+                grid-template-columns: 11rem 82rem 13.5rem;
             }
         }
         &--instruments {
-            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
+            grid-template-columns: 11rem 38rem 26rem 10rem 10rem;
             &__pre-appstore {
-                grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr 0.9fr;
+                grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem;
             }
         }
     }
@@ -2211,14 +2238,13 @@
         }
     }
     &__table-footer {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
-        height: 5.8rem;
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
+        height: 4.8rem;
         &__pre-appstore {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr 0.9fr;
-            height: 5.8rem;
+            grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
         &__item {
-            height: 5.8rem;
+            height: 4.8rem;
             justify-content: center;
             &--verification-pending {
                 display: flex;

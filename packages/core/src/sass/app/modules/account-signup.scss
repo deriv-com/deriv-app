@@ -35,7 +35,35 @@
             margin-left: unset;
         }
     }
-    &__residence-selection,
+    &__main {
+        @include mobile {
+            padding: 9rem 1.6rem;
+        }
+        .dc-select-native {
+            margin-bottom: 0.2rem;
+        }
+        .account-signup__residence-selection {
+            height: 8.6rem;
+            margin-bottom: 2.4rem;
+            .account-signup__subtext {
+                margin-left: 1.6rem;
+                margin-top: 1rem;
+            }
+            .dc-field--error {
+                margin-left: 1.6rem;
+                margin-top: 1rem;
+                padding-left: unset;
+            }
+        }
+        .account-signup__heading {
+            margin-bottom: 2.4rem;
+        }
+
+        .acount-signup__footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
     &__password-selection {
         display: flex;
         justify-content: center;
@@ -53,58 +81,9 @@
             background-color: var(--general-main-2);
         }
     }
-    &__same-citizenship {
-        display: flex;
-        justify-content: space-between;
-        &-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-    }
     .dc-password-input {
         &__visibility-icon {
             background-color: var(--general-main-2);
-        }
-    }
-    &__residence-selection {
-        .dc-select-native {
-            margin-bottom: 2.5rem;
-        }
-        @include mobile {
-            height: 100%;
-            & .dc-select-native {
-                margin-bottom: 4.8rem;
-            }
-        }
-    }
-    &__password-selection {
-        .account-signup__heading {
-            padding-top: 1.5rem;
-            margin-bottom: 4.3rem;
-
-            @include mobile {
-                padding-top: 0;
-                text-align: center;
-                margin-top: -3rem;
-            }
-        }
-        & .dc-password-meter__container {
-            max-height: 4rem;
-            margin-bottom: 3.3rem;
-            @include desktop {
-                width: calc(100% - 3.2rem);
-            }
-            @include mobile {
-                width: 100%;
-            }
-        }
-        & .dc-field--error {
-            top: 4.4rem;
-        }
-        .initial-loader__barspinner {
-            @include mobile {
-                margin: 0;
-            }
         }
     }
     &__heading {
@@ -150,19 +129,12 @@
         }
         @include mobile {
             height: 4rem;
-            bottom: 2rem;
+            bottom: 3rem;
             left: 0;
             right: 0;
             position: absolute;
             width: calc(100% - 8rem);
             margin: 0 auto;
-        }
-    }
-    &__residence-field {
-        margin-bottom: 4.4rem;
-
-        @include desktop {
-            min-width: 30rem;
         }
     }
     &__password-field {

@@ -6,10 +6,8 @@ import { localize } from '@deriv/translations';
 
 const SetResidenceForm = ({
     class_prefix = 'set-residence',
-    children,
     default_value,
     history_value,
-    header_text,
     errors,
     touched,
     setFieldTouched,
@@ -22,16 +20,9 @@ const SetResidenceForm = ({
             setFieldValue('residence', default_value, true);
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <div className={`${class_prefix}__residence-selection`}>
-            {!!header_text && (
-                <Text as='p' align='center' weight='bold' className={`${class_prefix}__heading`}>
-                    {header_text}
-                </Text>
-            )}
-            <Text as='p' className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>
-                {localize('Where do you live?')}
-            </Text>
             <Field name='residence'>
                 {({ field }) => (
                     <React.Fragment>
@@ -70,7 +61,13 @@ const SetResidenceForm = ({
                     </React.Fragment>
                 )}
             </Field>
-            {children}
+            {!errors?.residence || errors?.residence === true ? (
+                <Text as='p' size='xxs' className='account-signup__subtext' align='left' color='less-prominent'>
+                    {localize(
+                        'Country of residence is where you currently live, work, pay taxes and receive government services.'
+                    )}
+                </Text>
+            ) : null}
         </div>
     );
 };

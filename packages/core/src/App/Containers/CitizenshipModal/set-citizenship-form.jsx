@@ -2,21 +2,10 @@ import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
-const SetCitizenshipForm = ({
-    class_prefix,
-    children,
-    errors,
-    touched,
-    setFieldTouched,
-    setFieldValue,
-    citizenship_list,
-}) => (
+const SetCitizenshipForm = ({ class_prefix, errors, touched, setFieldTouched, setFieldValue, citizenship_list }) => (
     <div className={`${class_prefix}__residence-selection`}>
-        <Text as='p' align='center' weight='bold' className={`${class_prefix}__heading-citizen`}>
-            {localize('Choose your citizenship')}
-        </Text>
         <Field name='citizenship'>
             {({ field }) => (
                 <React.Fragment>
@@ -53,7 +42,9 @@ const SetCitizenshipForm = ({
                 </React.Fragment>
             )}
         </Field>
-        {children}
+        <Text as='p' size='xxs' className='account-signup__subtext' align='left' color='less-prominent'>
+            <Localize i18n_default_text='Country of citizenship or nationality is the country that issues your passport or other national identity document.' />
+        </Text>
     </div>
 );
 

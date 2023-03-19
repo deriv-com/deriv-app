@@ -29,7 +29,7 @@ type TListItems = {
     active_index: number;
     is_object_list?: boolean;
     list_items: TItem[];
-    not_found_text: string;
+    not_found_text?: string;
     onItemSelection: (item: TItem) => void;
     setActiveIndex: (index: number) => void;
 };
@@ -49,7 +49,7 @@ type TDropDownList = {
     onItemSelection: (item: TItem) => void;
     setActiveIndex: (index: number) => void;
     style: React.CSSProperties;
-    not_found_text: string;
+    not_found_text?: string;
     portal_id?: string;
     dropdown_refs?: TDropdownRefs;
 };

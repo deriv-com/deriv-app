@@ -13,23 +13,23 @@ type TAutocompleteProps = {
     disabled?: boolean;
     dropdown_offset: string;
     error: string;
-    has_updating_list: boolean;
-    hide_list: boolean;
+    has_updating_list?: boolean;
+    hide_list?: boolean;
     historyValue: string;
     input_id: string;
     is_alignment_top: boolean;
-    is_list_visible: boolean;
+    is_list_visible?: boolean;
     list_height: string;
     list_items: TItem[];
     list_portal_id: string;
-    not_found_text: string;
+    not_found_text?: string;
     onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onHideDropdownList: () => void;
     onItemSelection: (item: TItem) => void;
     onScrollStop?: () => void;
     onShowDropdownList?: () => void;
     should_filter_by_char: boolean;
-    show_list: boolean;
+    show_list?: boolean;
     trailing_icon?: React.ReactElement;
     value: string;
 };
@@ -51,7 +51,9 @@ const getFilteredItems = (val: string, list: TItem[], should_filter_by_char = fa
     return list.filter(item =>
         typeof item === 'string'
             ? getEnglishCharacters(item).toLowerCase().includes(val) || item.toLowerCase().includes(val)
-            : getEnglishCharacters(item.text).toLowerCase().includes(val) || item?.text?.toLowerCase().includes(val)
+            : getEnglishCharacters(item.text || '')
+                  .toLowerCase()
+                  .includes(val) || item?.text?.toLowerCase().includes(val)
     );
 };
 const Autocomplete = React.memo((props: TAutocompleteProps) => {

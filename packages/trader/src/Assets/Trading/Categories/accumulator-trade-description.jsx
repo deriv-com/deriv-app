@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 
 export const AccumulatorTradeDescription = () => {
     const content = [
@@ -44,11 +45,13 @@ export const AccumulatorTradeDescription = () => {
                 /* We're using the array’s indexes as keys in this “static” list, which is never re-ordered, for better performance. https://www.developerway.com/posts/react-key-attribute
             We're not using text itself as keys here because text will update each time platform language is changed. */
                 type === 'heading' ? (
-                    <h2 key={index}>
-                        <strong>{text}</strong>
-                    </h2>
+                    <Text as='h2' key={index} weight='bold'>
+                        {text}
+                    </Text>
                 ) : (
-                    <p key={index}>{text}</p>
+                    <Text as='p' key={index}>
+                        {text}
+                    </Text>
                 )
             )}
         </React.Fragment>

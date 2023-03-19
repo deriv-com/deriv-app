@@ -108,8 +108,9 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
               align_label: should_show_profit_label ? 'middle' : align_label,
               spot_count,
               spot_profit:
-                  should_show_profit_label &&
-                  `${formatMoney(contract_info.currency, contract_info.profit, true)} ${contract_info.currency}`,
+                  (should_show_profit_label &&
+                      `${formatMoney(contract_info.currency, contract_info.profit, true)} ${contract_info.currency}`) ||
+                  '',
           }
         : {};
 

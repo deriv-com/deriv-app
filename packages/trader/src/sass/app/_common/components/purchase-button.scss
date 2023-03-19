@@ -355,18 +355,20 @@
         }
     }
     &--accumulator {
-        .btn-purchase__info {
-            &--left {
-                width: 65%;
-                padding-left: 1.6rem;
+        .btn-purchase {
+            &__info {
+                &--left {
+                    width: 65%;
+                    padding-left: 1.6rem;
+                }
+                &--right {
+                    width: 30%;
+                    padding-right: 1.6rem;
+                }
             }
-            &--right {
-                width: 30%;
-                padding-right: 1.6rem;
+            &__effect-detail--arrow {
+                left: 11rem;
             }
-        }
-        .btn-purchase__effect-detail--arrow {
-            left: 110px;
         }
         &.btn-purchase--swoosh {
             .btn-purchase {

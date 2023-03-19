@@ -248,12 +248,6 @@ const Chart = props => {
         return margin;
     };
     const prev_start_epoch = usePrevious(props.start_epoch);
-    const passthrough_contract_info = props.is_accumulator_contract
-        ? {
-              ...props.contract_info,
-              tick_stream: props.all_ticks.length ? props.all_ticks : props.contract_info.tick_stream,
-          }
-        : props.contract_info;
 
     return (
         <SmartChart
@@ -294,7 +288,7 @@ const Chart = props => {
                 getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds' ||
                 props.contract_info.status === 'open'
             }
-            contractInfo={passthrough_contract_info}
+            contractInfo={props.contract_info}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker
@@ -304,7 +298,7 @@ const Chart = props => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-            {props.is_accumulator_contract && (
+            {props.is_accumulator_contract && props.markers_array && (
                 <AccumulatorsShadedBarriers
                     key={props.accumulators_barriers_marker.key}
                     is_dark_theme={props.is_dark_theme}
@@ -371,18 +365,14 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI
     };
-    const { contract_type, status, tick_stream } = contract_store.contract_info;
-    const should_show_10_last_ticks =
-        isAccumulatorContract(contract_type) && status === 'open' && tick_stream.length === 10;
-    const allowed_scroll_to_epoch = should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.scroll_to_epoch;
 
     return {
         accumulators_barriers_marker: contract_store.marker,
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
-        start_epoch: should_show_10_last_ticks ? tick_stream[0].epoch : contract_config.start_epoch,
+        start_epoch: contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: allow_scroll_to_epoch && allowed_scroll_to_epoch,
+        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,

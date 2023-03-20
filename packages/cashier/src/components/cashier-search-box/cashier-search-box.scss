@@ -6,11 +6,12 @@
         height: 3.2rem;
         overflow: hidden;
         &__field {
-            padding: 0 2rem;
+            padding: 0.6rem 3.2rem;
+            height: 3.2rem;
         }
         &__leading-icon {
-            margin-left: 0.9rem;
-            top: 0.9rem;
+            margin-left: 0.8rem;
+            top: 0.8rem;
         }
         &__trailing-icon {
             cursor: pointer;

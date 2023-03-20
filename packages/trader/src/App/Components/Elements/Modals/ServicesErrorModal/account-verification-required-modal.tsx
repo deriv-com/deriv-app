@@ -18,19 +18,21 @@ const AccountVerificationRequiredModal = ({ is_visible, onConfirm }: TAccountVer
             toggleModal={onConfirm}
             title={localize('Account verification required')}
             width='440px'
-            height='200px'
+            height='220px'
         >
             <Modal.Body>
                 <Localize i18n_default_text='Please submit your proof of identity and proof of address to verify your account and continue trading.' />
             </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    has_effect
-                    text={localize('Submit Proof')}
-                    onClick={() => history.push(routes.proof_of_identity)}
-                    primary
-                />
-            </Modal.Footer>
+            <div className='account-verification-required-button'>
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        text={localize('Submit Proof')}
+                        onClick={() => history.push(routes.proof_of_identity)}
+                        primary
+                    />
+                </Modal.Footer>
+            </div>
         </Modal>
     );
 };

@@ -37,7 +37,6 @@ const ContractCardBody = ({
     should_show_cancellation_warning,
     status,
     toggleCancellationWarning,
-    is_open_positions,
 }) => {
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
@@ -98,7 +97,6 @@ const ContractCardBody = ({
                 is_sold={is_sold}
                 onMouseLeave={onMouseLeave}
                 status={status}
-                is_open_positions={is_open_positions}
                 removeToast={removeToast}
                 setCurrentFocus={setCurrentFocus}
                 progress_slider_mobile_el={progress_slider_mobile_el}
@@ -203,7 +201,6 @@ ContractCardBody.propTypes = {
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_turbos: PropTypes.bool,
-    is_positions: PropTypes.bool,
     is_sold: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
@@ -213,7 +210,6 @@ ContractCardBody.propTypes = {
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
     has_progress_slider: PropTypes.bool,
-    is_open_positions: PropTypes.bool,
 };
 
 export default ContractCardBody;

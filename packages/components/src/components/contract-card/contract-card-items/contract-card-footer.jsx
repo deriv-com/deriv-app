@@ -10,14 +10,12 @@ const CardFooter = ({
     contract_info,
     getCardLabels,
     is_multiplier,
-    is_turbos,
     is_positions,
     is_sell_requested,
     onClickCancel,
     onClickSell,
     onFooterEntered,
     server_time,
-    is_open_positions,
     should_show_transition,
 }) => {
     const { in_prop } = useNewRowTransition(should_show_transition);
@@ -44,11 +42,7 @@ const CardFooter = ({
             onEntered={onFooterEntered}
             unmountOnExit
         >
-            <div
-                className={classNames('dc-contract-card-item__footer', {
-                    'dc-contract-card--turbos': is_turbos && is_open_positions,
-                })}
-            >
+            <div className='dc-contract-card-item__footer'>
                 {is_multiplier ? (
                     <div
                         className={classNames('dc-contract-card__sell-button', {
@@ -89,9 +83,7 @@ CardFooter.propTypes = {
     contract_info: PropTypes.object,
     getCardLabels: PropTypes.func,
     is_multiplier: PropTypes.bool,
-    is_turbos: PropTypes.bool,
     is_positions: PropTypes.bool,
-    is_open_positions: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,

@@ -19,7 +19,6 @@ import {
     urlFor,
     isMobile,
     isMultiplierContract,
-    isTurbosContract,
     isVanillaContract,
     getTimePercentage,
     website_name,
@@ -60,7 +59,6 @@ const MobileRowRenderer = ({
     is_footer,
     columns_map,
     server_time,
-    is_mobile,
     onClickCancel,
     onClickSell,
     measure,
@@ -99,21 +97,18 @@ const MobileRowRenderer = ({
     const duration_type = getContractDurationType(contract_info.longcode);
     const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
-    if (isMultiplierContract(type) || isTurbosContract(type)) {
+    if (isMultiplierContract(type)) {
         return (
             <PositionsDrawerCard
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
                 is_multiplier
-                is_mobile={is_mobile}
                 is_link_disabled
-                is_open_positions={isTurbosContract(type)}
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
                 server_time={server_time}
                 status={status}
-                duration_type={duration_type}
                 {...props}
             />
         );
@@ -401,7 +396,6 @@ const OpenPositions = ({
             {...args}
             columns_map={columns_map}
             server_time={server_time}
-            is_mobile={is_mobile}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             {...props}

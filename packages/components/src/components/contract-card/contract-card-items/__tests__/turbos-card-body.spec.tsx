@@ -46,7 +46,6 @@ describe('TurbosCardBody', () => {
         getCardLabels: mockCardLabels,
         getContractById: jest.fn(),
         is_sold: false,
-        is_open_positions: false,
         onMouseLeave: jest.fn(),
         removeToast: jest.fn(),
         setCurrentFocus: jest.fn(),
@@ -59,7 +58,7 @@ describe('TurbosCardBody', () => {
         });
     });
 
-    // is_open_positions = false && is_sold = false
+    // is_sold = false
     it('renders stake amount correctly', () => {
         render(<TurbosCardBody {...mock_props} />);
         const stake_header = screen.getByText(mockCardLabels().STAKE);
@@ -88,19 +87,9 @@ describe('TurbosCardBody', () => {
         expect(total_profit_loss_amount).toBeInTheDocument();
     });
 
-    // is_open_positions = true && is_sold = false
-    it('renders potential profit/loss correctly for open positions', () => {
-        render(<TurbosCardBody {...mock_props} is_open_positions />);
-
-        const potential_profit_loss_header = screen.getByText(mockCardLabels().POTENTIAL_PROFIT_LOSS);
-        expect(potential_profit_loss_header).toBeInTheDocument();
-        const potential_profit_loss_amount = screen.getByText('0.02');
-        expect(potential_profit_loss_amount).toBeInTheDocument();
-    });
-
-    // is_open_positions = true && is_sold = true
+    // is_sold = true
     it('renders headers when contract is sold', () => {
-        render(<TurbosCardBody {...mock_props} is_open_positions is_sold />);
+        render(<TurbosCardBody {...mock_props} is_sold />);
 
         const profit_loss_header = screen.getByText(mockCardLabels().PROFIT_LOSS);
         expect(profit_loss_header).toBeInTheDocument();
@@ -117,12 +106,12 @@ describe('TurbosCardBody', () => {
         const buy_price_amount = screen.getByText('1,054.00');
         expect(buy_price_amount).toBeInTheDocument();
 
-        const take_profit_header = screen.getByText(mockCardLabels().TAKE_PROFIT);
-        expect(take_profit_header).toBeInTheDocument();
-        const take_profit_amount = screen.getByText('-');
-        expect(take_profit_amount).toBeInTheDocument();
+        const take_profit_header = screen.queryByText(mockCardLabels().TAKE_PROFIT);
+        expect(take_profit_header).not.toBeInTheDocument();
+        const take_profit_amount = screen.queryByText('-');
+        expect(take_profit_amount).not.toBeInTheDocument();
 
-        expect(screen.queryByText('Barrier level')).not.toBeInTheDocument();
+        expect(screen.getByText('Barrier level')).toBeInTheDocument();
         expect(screen.queryByText('Current price')).not.toBeInTheDocument();
     });
 });

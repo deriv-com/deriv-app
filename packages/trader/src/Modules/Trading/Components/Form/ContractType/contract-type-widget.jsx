@@ -107,7 +107,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             categories.push({
                 label: localize('Multipliers'),
                 contract_categories: multipliers_category,
-                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
                 key: 'Multipliers',
             });
         }

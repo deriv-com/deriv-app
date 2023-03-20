@@ -137,14 +137,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
     turboslong: {
-        title: localize('Turbos'),
+        title: localize('Long/Short'),
         trade_types: ['TURBOSLONG'],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
     turbosshort: {
-        title: localize('Turbos'),
+        title: localize('Long/Short'),
         trade_types: ['TURBOSSHORT'],
         basis: ['stake'],
         barrier_count: 1,
@@ -223,7 +223,6 @@ export const getCardLabels = () => ({
     ),
     TAKE_PROFIT: localize('Take profit:'),
     TICK: localize('Tick '),
-    TICKS: localize('Ticks '),
     TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
     WON: localize('Won'),
 });

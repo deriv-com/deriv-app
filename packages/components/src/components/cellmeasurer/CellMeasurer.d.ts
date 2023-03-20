@@ -23,7 +23,5 @@ declare module '@enykeev/react-virtualized/dist/es/CellMeasurer' {
         rowHeight,
         children,
     }: CellMeasurer): JSX.Element => JSX.Element;
-    // or just:
-    //export const CellMeasurer =  (props: CellMeasureCache): JSX.Element => JSX.Element;
     export default CellMeasurer;
 }

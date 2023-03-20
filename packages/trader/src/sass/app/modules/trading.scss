@@ -779,6 +779,14 @@
     padding: 0 1.6rem 1.6rem;
 }
 
-.account-verification-required-button {
-    margin: 0;
+.account-verification-required-modal {
+    @include mobile {
+        &-text {
+            padding: 1.5rem;
+        }
+    }
+
+    &-button {
+        margin: 0;
+    }
 }

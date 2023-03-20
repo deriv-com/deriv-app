@@ -7,7 +7,7 @@ const el_modal = document.createElement('div');
 
 // eslint-disable-next-line react/display-name
 jest.mock('../create-ad-modal-card', () => () => {
-    return <div data-testid='create-ad-modal-card' />;
+    return <div data-testid='dt_create_ad_modal_card' />;
 });
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({

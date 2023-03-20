@@ -727,4 +727,18 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     });
+
+    it('should autopopulate tax_residence for MF clients', () => {
+        const new_props = {
+            ...props,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'Malta',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        const el_tax_residence = screen.getByTestId('selected_value');
+        expect(el_tax_residence).toHaveTextContent('Malta');
+    });
 });

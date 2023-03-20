@@ -1,7 +1,8 @@
 import React from 'react';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, getLanguage } from '@deriv/translations';
+import classNames from 'classnames';
 
 const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
     React.useEffect(() => {
@@ -28,7 +29,15 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                             <React.Fragment>
                                 <DesktopWrapper>
                                     <Dropdown
-                                        classNameDisplay='trading-assessment__wrapper__dropdown--mobile--display'
+                                        classNameDisplay={classNames(
+                                            'trading-assessment__wrapper__dropdown--mobile--display',
+                                            {
+                                                'trading-frequency--field':
+                                                    question.form_control ===
+                                                        'trading_frequency_financial_instruments' &&
+                                                    ['ID', 'FR'].includes(getLanguage()),
+                                            }
+                                        )}
                                         is_align_text_left
                                         name={question?.question_text}
                                         placeholder={question?.question_text}

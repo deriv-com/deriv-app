@@ -1,11 +1,22 @@
 import { shuffleArray } from '../array';
+import crypto from 'crypto';
+import { beforeAll } from '@jest/globals';
 
 describe('shuffleArray', () => {
+    beforeAll(() => {
+        // using node.js randomBytes method here for simulating window.getRandomValues in shuffleArray function
+        Object.defineProperty(global, 'crypto', {
+            value: {
+                getRandomValues: (arr: any) => crypto.randomBytes(arr.length),
+            },
+        });
+    });
+
     it('shuffleArray should return same shuffled array', () => {
         const arrayEquals = (a: any[], b: any[]) => JSON.stringify(a) === JSON.stringify(b);
 
-        const not_shuffled_test_array = [3, 5, 8, 0];
-        const test_array = [3, 5, 8, 0];
+        const not_shuffled_test_array = [1, 2, 3, 4];
+        const test_array = [1, 2, 3, 4];
 
         expect(arrayEquals(not_shuffled_test_array, test_array)).toBeTruthy();
 

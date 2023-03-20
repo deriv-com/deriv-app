@@ -45,11 +45,8 @@
         .account-signup__residence-selection {
             height: 8.6rem;
             margin-bottom: 1rem;
+            .dc-field--error,
             .account-signup__subtext {
-                margin-left: 1.6rem;
-                margin-top: 1rem;
-            }
-            .dc-field--error {
                 margin-left: 1.6rem;
                 margin-top: 1rem;
                 padding-left: unset;
@@ -158,7 +155,7 @@
     }
     @include mobile {
         &__password-selection {
-            height: 32.8rem !important;
+            height: 32.8rem;
             padding: 6rem 1.6rem;
         }
         width: calc(90vw - 10px);

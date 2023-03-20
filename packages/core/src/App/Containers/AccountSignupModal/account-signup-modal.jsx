@@ -22,13 +22,18 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [is_pasword_modal, setIsPasswordModal] = React.useState(false);
+    const [selected_residence, setSelectedResidence] = React.useState('');
+    const [selected_citizenship, setSelectedCitizenship] = React.useState('');
+    const disable_btn = (values, errors) =>
+        !values.residence || !!errors.residence || !values.citizenship || !!errors.citizenship;
 
     const updatePassword = new_password => {
         setPWInput(new_password);
     };
 
-    const handleFormSubmit = values => {
-        history_value.current = values;
+    const handleFormSubmit = (residence, citizenship) => {
+        setSelectedResidence(residence);
+        setSelectedCitizenship(citizenship);
         setIsPasswordModal(true);
     };
 
@@ -91,7 +96,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                         touched,
                     }) => (
                         <Form>
-                            {!is_pasword_modal ? (
+                            {(!selected_residence && !selected_citizenship) || !is_pasword_modal ? (
                                 <div className='account-signup__main'>
                                     <Text as='h1' weight='bold' className='account-signup__heading'>
                                         {localize('Select your country and citizenship:')}
@@ -117,20 +122,13 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     <div className='account-signup__footer'>
                                         <Button
                                             className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled':
-                                                    !values.residence ||
-                                                    !!errors.residence ||
-                                                    !values.citizenship ||
-                                                    !!errors.citizenship,
+                                                'account-signup__btn--disabled': disable_btn(values, errors),
                                             })}
                                             type='button'
-                                            is_disabled={
-                                                !values.residence ||
-                                                !!errors.residence ||
-                                                !values.citizenship ||
-                                                !!errors.citizenship
-                                            }
-                                            onClick={handleFormSubmit(values.residence)}
+                                            onClick={() => {
+                                                history_value.current = values;
+                                                handleFormSubmit(values.residence, values.citizenship);
+                                            }}
                                             primary
                                             large
                                             text={localize('Next')}

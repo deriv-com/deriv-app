@@ -120,7 +120,7 @@ export default class GoogleDriveStore {
         }
 
         const xml_doc = await this.createLoadFilePicker(
-            ['text/xml', 'application/xml'],
+            'text/xml,application/xml',
             localize('Select a Deriv Bot Strategy')
         );
 

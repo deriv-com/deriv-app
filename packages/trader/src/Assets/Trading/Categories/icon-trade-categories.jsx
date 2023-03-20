@@ -208,6 +208,18 @@ const IconTradeCategory = ({ category, className }) => {
                     </React.Fragment>
                 );
                 break;
+            case 'vanilla':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeVanillaLongCall' className='category-type' color='brand' />
+                        </div>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeVanillaLongPut' className='category-type' color='brand' />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
             default:
                 IconCategory = (
                     <div className='category-wrapper'>

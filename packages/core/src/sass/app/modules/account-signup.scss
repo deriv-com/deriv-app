@@ -42,11 +42,6 @@
         .dc-select-native {
             margin-bottom: 0.2rem;
         }
-        .account-signup__body {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
         .account-signup__residence-selection {
             height: 8.6rem;
             margin-bottom: 1rem;
@@ -136,7 +131,6 @@
         justify-content: flex-end;
     }
     &__btn {
-        align-self: flex-end;
         margin: 0;
         background-color: var(--button-primary-default);
         font-weight: bold;

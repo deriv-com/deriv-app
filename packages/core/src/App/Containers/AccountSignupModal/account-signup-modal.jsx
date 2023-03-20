@@ -99,26 +99,24 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     <Text as='h1' weight='bold' className='account-signup__heading'>
                                         {localize('Select your country and citizenship:')}
                                     </Text>
-                                    <div className='account-signup__body'>
-                                        <ResidenceForm
-                                            class_prefix='account-signup'
-                                            errors={errors}
-                                            touched={touched}
-                                            setFieldTouched={setFieldTouched}
-                                            setFieldValue={setFieldValue}
-                                            residence_list={residence_list}
-                                            default_value={country}
-                                            history_value={history_value.current}
-                                        />
-                                        <CitizenshipForm
-                                            class_prefix='account-signup'
-                                            errors={errors}
-                                            touched={touched}
-                                            setFieldTouched={setFieldTouched}
-                                            setFieldValue={setFieldValue}
-                                            citizenship_list={residence_list}
-                                        />
-                                    </div>
+                                    <ResidenceForm
+                                        class_prefix='account-signup'
+                                        errors={errors}
+                                        touched={touched}
+                                        setFieldTouched={setFieldTouched}
+                                        setFieldValue={setFieldValue}
+                                        residence_list={residence_list}
+                                        default_value={country}
+                                        history_value={history_value.current}
+                                    />
+                                    <CitizenshipForm
+                                        class_prefix='account-signup'
+                                        errors={errors}
+                                        touched={touched}
+                                        setFieldTouched={setFieldTouched}
+                                        setFieldValue={setFieldValue}
+                                        citizenship_list={residence_list}
+                                    />
                                     <div className='account-signup__footer'>
                                         <Button
                                             className={classNames('account-signup__btn', {

@@ -17,6 +17,8 @@ const AccountVerificationRequiredModal = ({ is_visible, onConfirm }: TAccountVer
             is_vertical_centered={isMobile()}
             toggleModal={onConfirm}
             title={localize('Account verification required')}
+            width='440px'
+            height='200px'
         >
             <Modal.Body>
                 <Localize i18n_default_text='Please submit your proof of identity and proof of address to verify your account and continue trading.' />

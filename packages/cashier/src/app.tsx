@@ -14,6 +14,8 @@ type TAppProps = {
 };
 
 const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
+    const { notification_messages_ui: Notifications } = root_store.ui;
+
     React.useEffect(() => {
         setWebsocket(WS);
         init();
@@ -22,6 +24,7 @@ const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
 
     return (
         <CashierProviders store={root_store}>
+            {Notifications && <Notifications />}
             <Routes />
         </CashierProviders>
     );

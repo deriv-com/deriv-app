@@ -6,8 +6,9 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount } from '@deriv/hooks';
 import './menu-links.scss';
+import { useHistory } from 'react-router';
 
-const MenuItems = ({ id, text, icon, link_to }) => {
+const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
     return (
         <BinaryLink
             id={id}
@@ -15,6 +16,7 @@ const MenuItems = ({ id, text, icon, link_to }) => {
             to={link_to}
             className='header__menu-link'
             active_class='header__menu-link--active'
+            onClick={handleClickCashier}
         >
             <Text size='m' line_height='xs' title={text} className='header__menu-link-text'>
                 {icon}
@@ -34,7 +36,31 @@ const ReportTab = () => (
 );
 
 const CashierTab = observer(() => {
+    const { client, ui } = useStore();
+    const { has_any_real_account, is_virtual } = client;
+    const { toggleReadyToDepositModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
+
+    const history = useHistory();
+
+    const toggle_modal_routes =
+        window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
+
+    const toggleModal = () => {
+        if (toggle_modal_routes && !has_any_real_account) {
+            toggleReadyToDepositModal();
+        }
+    };
+
+    const handleClickCashier = () => {
+        if (!has_any_real_account && is_virtual) {
+            toggleModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
+
+    const cashier_redirect = toggle_modal_routes && !has_any_real_account && is_virtual;
 
     return (
         <MenuItems
@@ -48,7 +74,8 @@ const CashierTab = observer(() => {
                 </>
             }
             text={localize('Cashier')}
-            link_to={routes.cashier}
+            link_to={!cashier_redirect ? routes.cashier : null}
+            handleClickCashier={handleClickCashier}
         />
     );
 });

@@ -17,11 +17,51 @@ import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common } = useStore();
+        const { common, ui, client } = useStore();
         const { changeCurrentLanguage } = common;
         const deriv_static_url = getStaticUrl(link_to);
+        const history = useHistory();
+        const { has_any_real_account, is_virtual } = client;
+        const { toggleReadyToDepositModal } = ui;
+
+        const cashier_link =
+            link_to === routes.cashier_deposit ||
+            link_to === routes.cashier_withdrawal ||
+            link_to === routes.cashier_acc_transfer;
 
         if (is_hidden) return null;
+
+        if (cashier_link && is_virtual && !has_any_real_account) {
+            const toggle_modal_routes =
+                window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
+
+            const toggleModal = () => {
+                if (toggle_modal_routes && !has_any_real_account) {
+                    toggleReadyToDepositModal();
+                }
+            };
+
+            const handleClickCashier = () => {
+                if (is_virtual && has_any_real_account) {
+                    history.push(routes.cashier_deposit);
+                } else if (!has_any_real_account && is_virtual) {
+                    toggleModal();
+                }
+                onClickLink();
+            };
+            return (
+                <div
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                    })}
+                    onClick={handleClickCashier}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </div>
+            );
+        }
 
         if (is_language) {
             return (

@@ -1,10 +1,9 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 
 const MarketClosedContractOverlay = ({ validation_error }) => (
-    <div className={classNames('contract-card__market-closed', {})}>
+    <div className='contract-card__market-closed'>
         <Text align='center' as='p' className='contract-card__market-closed__title' weight='bold'>
             {validation_error}
         </Text>

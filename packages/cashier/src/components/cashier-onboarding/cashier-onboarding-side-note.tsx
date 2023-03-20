@@ -44,7 +44,7 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
         );
     };
 
-    function getHeaderTitle() {
+    const getHeaderTitle = () => {
         if (!is_pre_appstore) {
             if (!is_crypto)
                 <Localize
@@ -75,7 +75,7 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
                 values={{ eu_text, currency_code, loginid }}
             />
         );
-    }
+    };
 
     return (
         <div>

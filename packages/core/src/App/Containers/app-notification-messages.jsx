@@ -158,13 +158,13 @@ const AppNotificationMessages = ({
         // );
 
         const obj = {
-            key: message.key,
+            key: message?.key,
             is_not_marked_notification,
             is_non_hidden_notification,
             is_only_for_p2p_notification,
         };
 
-        window.check[message.key] = obj;
+        window[message?.key ?? 'none'] = obj;
 
         return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
     });

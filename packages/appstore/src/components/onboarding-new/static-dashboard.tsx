@@ -515,7 +515,7 @@ const StaticDashboard = ({
 
                         <div className='static-dashboard-wrapper__body'>
                             <StaticCFDAccountManager
-                                type='all'
+                                type='Financial'
                                 platform='ctrader'
                                 appname={localize('Deriv cTrader')}
                                 description={localize(

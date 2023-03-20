@@ -21,17 +21,14 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const [country, setCountry] = React.useState('');
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
-    const [selected_residence, setSelectedResidence] = React.useState('');
-    const [selected_citizenship, setSelectedCitizenship] = React.useState('');
     const [is_pasword_modal, setIsPasswordModal] = React.useState(false);
 
     const updatePassword = new_password => {
         setPWInput(new_password);
     };
 
-    const onFormSingup = (residence, citizenship) => {
-        setSelectedCitizenship(citizenship);
-        setSelectedResidence(residence);
+    const handleFormSubmit = values => {
+        history_value.current = values;
         setIsPasswordModal(true);
     };
 
@@ -94,7 +91,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                         touched,
                     }) => (
                         <Form>
-                            {(!selected_residence && !selected_citizenship) || !is_pasword_modal ? (
+                            {!is_pasword_modal ? (
                                 <div className='account-signup__main'>
                                     <Text as='h1' weight='bold' className='account-signup__heading'>
                                         {localize('Select your country and citizenship:')}
@@ -133,10 +130,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                                 !values.citizenship ||
                                                 !!errors.citizenship
                                             }
-                                            onClick={() => {
-                                                onFormSingup(values.residence, values.citizenship);
-                                                history_value.current = values.residence;
-                                            }}
+                                            onClick={handleFormSubmit(values.residence)}
                                             primary
                                             large
                                             text={localize('Next')}

@@ -1,13 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { Localize, getAllowedLanguages } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { LanguageLink } from 'App/Components/Routes';
 
 const isCurrentLanguage = (lang, current_language) => lang === current_language;
 
-const LanguageSettings = ({ current_language, is_pre_appstore, toggleLanguageSettingsModal, toggleSettingsModal }) => {
+const LanguageSettings = () => {
+    const { client, common, ui } = useStore();
+    const { current_language } = common;
+    const { toggleLanguageSettingsModal, toggleSettingsModal } = ui;
+    const { is_pre_appstore } = client;
+
     return (
         <div className='settings-language'>
             {!is_pre_appstore && (
@@ -39,10 +44,4 @@ const LanguageSettings = ({ current_language, is_pre_appstore, toggleLanguageSet
     );
 };
 
-export default connect(({ client, common, ui }) => ({
-    changeCurrentLanguage: common.changeCurrentLanguage,
-    current_language: common.current_language,
-    is_pre_appstore: client.is_pre_appstore,
-    toggleLanguageSettingsModal: ui.toggleLanguageSettingsModal,
-    toggleSettingsModal: ui.toggleSettingsModal,
-}))(LanguageSettings);
+export default LanguageSettings;

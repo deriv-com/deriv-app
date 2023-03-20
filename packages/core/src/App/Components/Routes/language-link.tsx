@@ -4,7 +4,6 @@ import { observer, useStore } from '@deriv/stores';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@deriv/components';
 import { getAllowedLanguages } from '@deriv/translations';
-import { changeLanguage } from 'Utils/Language';
 
 export type TLanguageLink = {
     icon_classname?: string;
@@ -16,7 +15,7 @@ export type TLanguageLink = {
 const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, toggleModal }: TLanguageLink) => {
     const { i18n } = useTranslation();
     const { common } = useStore();
-    const { changeCurrentLanguage, current_language } = common;
+    const { changeSelectedLanguage, current_language } = common;
     const is_active = current_language === lang;
 
     const link: React.ReactNode = (
@@ -55,8 +54,7 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     id={`dt_settings_${lang}_button`}
                     key={lang}
                     onClick={async () => {
-                        changeLanguage(lang, changeCurrentLanguage);
-                        await i18n.changeLanguage(lang);
+                        changeSelectedLanguage(lang);
                         toggleModal?.();
                     }}
                     className={classNames('settings-language__language-link', {

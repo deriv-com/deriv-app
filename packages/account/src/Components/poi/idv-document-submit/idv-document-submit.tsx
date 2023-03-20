@@ -40,10 +40,14 @@ type TIdvDocumentSubmit = {
 
 type TFormValues = {
     error_message?: string;
-    document_type?: Record<
-        string,
-        { display_name: string; format: string; additional: { display_name: string; format: string } }
-    >;
+    example_format?: string;
+    document_type?:
+        | string
+        | {
+              example_format?: string;
+              id: string;
+              additional: { display_name: string; format: string; example_format: string };
+          };
     document_number?: string;
     document_additional?: string;
 };
@@ -110,11 +114,16 @@ const IdvDocumentSubmit = ({
     type TsetFieldValue = FormikHelpers<FormikValues>['setFieldValue'];
 
     const onKeyUp = (e: FormikValues, document_name: string, values: TFormValues, setFieldValue: TsetFieldValue) => {
-        const { example_format } =
-            document_name === 'document_number' ? values.document_type : values.document_type?.additional;
-        const current_input = example_format.includes('-')
-            ? formatInput(example_format, current_input || e.target.value, '-')
-            : e.target.value;
+        const example_format =
+            document_name === 'document_number'
+                ? typeof values.document_type === 'object' && values.document_type?.example_format
+                : typeof values.document_type === 'object' && values.document_type.additional.example_format;
+        let current_input = '';
+        if (typeof example_format === 'string' && example_format.includes('-')) {
+            current_input = formatInput(example_format, current_input || e.target.value, '-');
+        } else {
+            current_input = e.target.value;
+        }
         setFieldValue(document_name, current_input, true);
         validateFields(values);
     };
@@ -192,7 +201,7 @@ const IdvDocumentSubmit = ({
             identity_verification_document_add: 1,
             document_number: values.document_number,
             document_additional: values.document_additional || '',
-            document_type: values.document_type?.id,
+            document_type: typeof values.document_type === 'object' && values.document_type?.id,
             issuing_country: country_code,
         };
 
@@ -258,7 +267,7 @@ const IdvDocumentSubmit = ({
                                                         label={localize('Choose the document type')}
                                                         list_items={document_list}
                                                         value={values.document_type.text ?? ''}
-                                                        onBlur={e => {
+                                                        onBlur={(e: FormikValues) => {
                                                             handleBlur(e);
                                                             if (!getDocument(e.target.value)) {
                                                                 resetDocumentItemSelected(setFieldValue);

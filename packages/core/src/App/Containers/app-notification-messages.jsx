@@ -192,6 +192,7 @@ const AppNotificationMessages = ({
 
     window.notifications = notifications;
     window.filtered_excluded_notifications = filtered_excluded_notifications;
+    window.getNotificationSublist = getNotificationSublist();
 
     return getNotificationSublist().length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>

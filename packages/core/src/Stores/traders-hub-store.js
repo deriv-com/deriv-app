@@ -111,6 +111,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
+                this.root_store.common.current_language,
             ],
             () => {
                 this.getAvailablePlatforms();

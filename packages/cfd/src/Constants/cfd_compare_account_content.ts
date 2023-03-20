@@ -74,6 +74,7 @@ export const cr_real_content: TCompareAccountContentProps[] = [
         values: {
             synthetic_svg: { text: localize('St. Vincent & Grenadines'), options: { weight: 'bold' } },
             synthetic_bvi: { text: localize('British Virgin Islands'), options: { weight: 'bold' } },
+            synthetic_vanuatu: { text: localize('Vanuatu'), options: { weight: 'bold' } },
             financial_svg: { text: localize('St. Vincent & Grenadines'), options: { weight: 'bold' } },
             financial_bvi: { text: localize('British Virgin Islands'), options: { weight: 'bold' } },
             financial_vanuatu: { text: localize('Vanuatu'), options: { weight: 'bold' } },
@@ -93,6 +94,7 @@ export const cr_real_content: TCompareAccountContentProps[] = [
         values: {
             synthetic_svg: { text: localize('Deriv (SVG) LLC') },
             synthetic_bvi: { text: localize('Deriv (BVI) Ltd') },
+            synthetic_vanuatu: { text: localize('Deriv (V) Ltd') },
             financial_svg: { text: localize('Deriv (SVG) LLC') },
             financial_bvi: { text: localize('Deriv (BVI) Ltd') },
             financial_vanuatu: { text: localize('Deriv (V) Ltd') },
@@ -102,11 +104,14 @@ export const cr_real_content: TCompareAccountContentProps[] = [
     },
     {
         id: 'regulator',
-        attribute: localize('Regulators/External dispute resolution'),
+        attribute: localize('Regulator/External dispute resolution'),
         values: {
             synthetic_svg: { text: localize('Financial Commission') },
             synthetic_bvi: {
                 text: localize('British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114)'),
+            },
+            synthetic_vanuatu: {
+                text: localize('Vanuatu Financial Services Commission'),
             },
             financial_svg: { text: localize('Financial Commission') },
             financial_bvi: {
@@ -124,7 +129,6 @@ export const cr_real_content: TCompareAccountContentProps[] = [
         attribute: localize('Maximum leverage'),
         values: {
             synthetic_svg: { text: localize('Up to 1:1000') },
-            synthetic_bvi: { text: localize('Up to 1:1000') },
             financial_vanuatu: { text: localize('Up to 1:1000') },
             financial_labuan: { text: localize('Up to 1:100') },
             derivx: { text: localize('Up to 1:1000') },
@@ -170,6 +174,7 @@ export const cr_real_content: TCompareAccountContentProps[] = [
 export const cr_real_footer_buttons: TCompareAccountFooterButtonData[] = [
     { label: localize('Add'), action: 'synthetic_svg' },
     { label: localize('Add'), action: 'synthetic_bvi' },
+    { label: localize('Add'), action: 'synthetic_vanuatu' },
     { label: localize('Add'), action: 'financial_svg' },
     { label: localize('Add'), action: 'financial_bvi' },
     { label: localize('Add'), action: 'financial_vanuatu' },

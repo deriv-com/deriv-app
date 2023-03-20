@@ -31,6 +31,7 @@ const ContractCardHeader = ({
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
     const { underlying, multiplier, contract_type, shortcode, purchase_time, date_expiry, date_start, tick_count } =
         contract_info;
+    const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_turbos = isTurbosContract(contract_type);
     const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
@@ -55,7 +56,7 @@ const ContractCardHeader = ({
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_turbos,
-                    'dc-contract-card__grid-underlying-trade--trader': !isBot(),
+                    'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
                     'dc-contract-card__grid-underlying-trade--trader--turbos': is_turbos && is_open_positions,
                     'dc-contract-card__grid-underlying-trade--trader--turbos-sold': is_turbos && is_sold,
                 })}

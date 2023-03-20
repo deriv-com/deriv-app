@@ -777,6 +777,8 @@ export const icons =
         'IcTradetypeTurboslong',
         'IcTradetypeTurbosshort',
         'IcTradetypeUpordown',
+        'IcTradetypeVanillaLongCall',
+        'IcTradetypeVanillaLongPut',
     ],
     'underlying': [
         'IcUnderlying1HZ100V',

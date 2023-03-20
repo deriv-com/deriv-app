@@ -20,6 +20,8 @@ import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import PayoutPerPoint from '../Elements/Turbos/payout-per-point';
 import TradeTypeTabs from './TradeParams/Turbos/trade-type-tabs';
+import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
+import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -29,6 +31,7 @@ const CollapsibleTradeParams = ({
     is_multiplier,
     is_trade_params_expanded,
     is_turbos,
+    is_vanilla,
     setIsTradeParamsExpanded,
 }) => {
     React.useEffect(() => {
@@ -54,6 +57,7 @@ const CollapsibleTradeParams = ({
                 <ContractType />
                 {is_multiplier && <MultiplierOptionsWidget />}
                 {isVisible('trade_type_tabs') && <TradeTypeTabs />}
+                {is_vanilla && <VanillaTradeTypes />}
             </div>
             {isVisible('last_digit') && (
                 <div collapsible='true'>
@@ -66,6 +70,11 @@ const CollapsibleTradeParams = ({
                 </div>
             )}
             {isVisible('barrier_selector') && <BarrierSelector />}
+            {isVisible('strike') && (
+                <div collapsible='true'>
+                    <Strike />
+                </div>
+            )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
             {(is_multiplier || is_turbos) && (
@@ -74,13 +83,17 @@ const CollapsibleTradeParams = ({
                 </div>
             )}
             {is_turbos && <PayoutPerPoint />}
-            <div
-                className={classNames('purchase-container', {
-                    'purchase-container__turbos': is_turbos,
-                })}
-            >
+            {is_vanilla ? (
                 <Purchase />
-            </div>
+            ) : (
+                <div
+                    className={classNames('purchase-container', {
+                        'purchase-container__turbos': is_turbos,
+                    })}
+                >
+                    <Purchase />
+                </div>
+            )}
         </Collapsible>
     );
 };
@@ -126,6 +139,7 @@ export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
     is_multiplier: modules.trade.is_multiplier,
     is_turbos: modules.trade.is_turbos,
+    is_vanilla: modules.trade.is_vanilla,
     duration_unit: modules.trade.duration_unit,
     contract_types_list: modules.trade.contract_types_list,
     contract_type: modules.trade.contract_type,

@@ -11,15 +11,16 @@ import {
     FadeWrapper,
 } from '@deriv/components';
 import {
+    getDurationPeriod,
+    getDurationUnitText,
+    getPlatformRedirect,
     isDesktop,
+    isEmptyObject,
     isMobile,
     isMultiplierContract,
     isTurbosContract,
-    isEmptyObject,
-    getPlatformRedirect,
+    isVanillaContract,
     urlFor,
-    getDurationPeriod,
-    getDurationUnitText,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
@@ -76,6 +77,7 @@ const ContractReplay = ({
 
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_turbos = isTurbosContract(contract_info.contract_type);
+    const is_vanilla = isVanillaContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -89,6 +91,7 @@ const ContractReplay = ({
             is_turbos={is_turbos}
             is_sell_requested={is_sell_requested}
             is_valid_to_cancel={is_valid_to_cancel}
+            is_vanilla={is_vanilla}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             status={indicative_status}

@@ -19,6 +19,7 @@ const PurchaseFieldset = ({
     is_loading,
     is_market_closed,
     is_multiplier,
+    is_vanilla,
     is_proposal_empty,
     is_proposal_error,
     is_turbos,
@@ -46,6 +47,7 @@ const PurchaseFieldset = ({
                 is_high_low={is_high_low}
                 is_loading={is_loading}
                 is_multiplier={is_multiplier}
+                is_vanilla={is_vanilla}
                 is_proposal_empty={is_proposal_empty}
                 is_turbos={is_turbos}
                 purchased_states_arr={purchased_states_arr}
@@ -84,6 +86,7 @@ const PurchaseFieldset = ({
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
+                            is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             type={type}
                         />
@@ -158,6 +161,7 @@ PurchaseFieldset.propTypes = {
     is_proposal_empty: PropTypes.bool,
     is_proposal_error: PropTypes.bool,
     is_turbos: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     onClickPurchase: PropTypes.func,
     onHoverPurchase: PropTypes.func,
     purchased_states_arr: PropTypes.array,

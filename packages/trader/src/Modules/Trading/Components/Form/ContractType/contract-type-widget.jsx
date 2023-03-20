@@ -53,6 +53,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (selected_item && selected_item.value !== value) {
             onChange({ target: { name, value: selected_item.value } });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_item, onChange, name]);
 
     const handleInfoClick = clicked_item => {
@@ -84,21 +85,20 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-        const multipliers_category = list.filter(
-            contract_category => contract_category.label === localize('Multipliers')
-        );
-        const options_category = list.filter(
-            contract_category =>
-                contract_category.label !== localize('Multipliers') && contract_category.label !== localize('Turbos')
-        );
-        const turbos_category = list.filter(contract_category => contract_category.label === localize('Turbos'));
+
+        // Order the list based on categories provided in order_arr
+        const order_arr = ['Turbos', 'Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
+        const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+
+        const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
+        const options_category = ordered_list.filter(({ label }) => label !== localize('Multipliers'));
 
         const categories = [];
 
         if (list.length > 0) {
             categories.push({
                 label: localize('All'),
-                contract_categories: [...list],
+                contract_categories: [...ordered_list],
                 key: 'All',
             });
         }
@@ -117,14 +117,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
                 label: localize('Options'),
                 contract_categories: options_category,
                 key: 'Options',
-            });
-        }
-
-        if (turbos_category.length > 0) {
-            categories.push({
-                label: localize('Turbos'),
-                contract_categories: turbos_category,
-                key: 'Turbos',
             });
         }
 

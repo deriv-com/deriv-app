@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { title } from './constants';
+import { getTitle } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
 import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal.jsx';
@@ -33,7 +33,7 @@ const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, s
     }
 
     return (
-        <Modal is_open={is_visible} small title={title[services_error.type]} toggleModal={onConfirm}>
+        <Modal is_open={is_visible} small title={getTitle(services_error.type)} toggleModal={onConfirm}>
             <Modal.Body>{message}</Modal.Body>
             <Modal.Footer>
                 <Button has_effect text={localize('OK')} onClick={onConfirm} primary />

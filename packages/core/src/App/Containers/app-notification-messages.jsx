@@ -42,6 +42,8 @@ const NotificationsContent = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window_location]);
 
+    window.contentNotifications = notifications;
+
     return (
         <div
             className={classNames('notification-messages', {
@@ -179,26 +181,33 @@ const AppNotificationMessages = ({
             ? message
             : excluded_notifications.includes(message.key)
     );
-    const getNotificationSublist = () => {
-        if (window.location.pathname === routes.cashier_deposit) {
-            return filtered_excluded_notifications.filter(message =>
-                message.key.includes('switched_to_real') ? message : null
-            );
-        }
-        return filtered_excluded_notifications.slice(0, notifications_limit);
-    };
+    // const getNotificationSublist = () => {
+    //     if (window.location.pathname === routes.cashier_deposit) {
+    //         return filtered_excluded_notifications.filter(message =>
+    //             message.key.includes('switched_to_real') ? message : null
+    //         );
+    //     }
+    //     return filtered_excluded_notifications.slice(0, notifications_limit);
+    // };
+
+    const notifications_sublist =
+        window.location.pathname === routes.cashier_deposit
+            ? filtered_excluded_notifications.filter(
+                  message => message.key.includes('switched_to_real') // ? message : null
+              )
+            : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 
     window.notifications = notifications;
     window.filtered_excluded_notifications = filtered_excluded_notifications;
-    window.getNotificationSublist = getNotificationSublist();
+    window.getNotificationSublist = notifications_sublist;
 
-    return getNotificationSublist().length ? (
+    return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={getNotificationSublist()}
+                    notifications={notifications_sublist}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}

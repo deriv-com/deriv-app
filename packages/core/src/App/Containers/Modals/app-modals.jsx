@@ -9,6 +9,7 @@ import TradingAssessmentExistingUser from './trading-assessment-existing-user.js
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import ExitTradersHubModal from './exit-traders-hub-modal';
+import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 
 const AccountSignupModal = React.lazy(() =>
@@ -52,9 +53,14 @@ const WarningScamMessageModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-scam-message" */ '../WarningScamMessageModal')
 );
 
+const WarningCloseCreateRealAccountModal = React.lazy(() =>
+    import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
+);
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,
+    is_closing_create_real_account_modal,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -66,11 +72,13 @@ const AppModals = ({
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
+    setIsCFDScoreAvailable,
     content_flag,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
     is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible,
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
 }) => {
@@ -81,7 +89,10 @@ const AppModals = ({
 
     React.useEffect(() => {
         if (is_logged_in) {
-            fetchFinancialAssessment().then(response => setCFDScore(response?.cfd_score ?? 0));
+            fetchFinancialAssessment().then(response => {
+                setCFDScore(response?.cfd_score ?? 0);
+                setIsCFDScoreAvailable(true);
+            });
         }
     }, [is_logged_in]);
 
@@ -129,6 +140,8 @@ const AppModals = ({
         ComponentToLoad = <CloseUKAccountModal />;
     } else if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
+    } else if (is_closing_create_real_account_modal) {
+        ComponentToLoad = <WarningCloseCreateRealAccountModal />;
     } else if (is_welcome_modal_visible) {
         ComponentToLoad = <WelcomeModal />;
     } else if (is_account_needed_modal_on) {
@@ -147,6 +160,10 @@ const AppModals = ({
         ComponentToLoad = <RiskAcceptTestWarningModal />;
     }
 
+    if (is_ready_to_deposit_modal_visible) {
+        ComponentToLoad = <ReadyToDepositModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />
@@ -159,6 +176,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_acuity_modal_open: ui.is_acuity_modal_open,
+    is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
@@ -168,6 +186,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
+    setIsCFDScoreAvailable: client.setIsCFDScoreAvailable,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
@@ -176,6 +195,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
     is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,

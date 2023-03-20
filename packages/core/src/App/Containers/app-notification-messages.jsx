@@ -143,6 +143,29 @@ const AppNotificationMessages = ({
 
         const is_only_for_p2p_notification =
             window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
+
+        // console.log(
+        //     'message.key = ',
+        //     message.key,
+        //     ', filterResult = ',
+        //     is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification,
+        //     ', is_not_marked_notification = ',
+        //     is_not_marked_notification,
+        //     ', is_non_hidden_notification = ',
+        //     is_non_hidden_notification,
+        //     ', is_only_for_p2p_notification = ',
+        //     is_only_for_p2p_notification
+        // );
+
+        const obj = {
+            key: message.key,
+            is_not_marked_notification,
+            is_non_hidden_notification,
+            is_only_for_p2p_notification,
+        };
+
+        window.check[message.key] = obj;
+
         return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
     });
 

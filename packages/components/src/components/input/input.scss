@@ -1,9 +1,11 @@
 .dc-input {
     position: relative;
     width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--border-normal);
     display: flex;
-    flex-direction: column;
-    margin-bottom: 3.2rem;
+    align-items: center;
+    margin-bottom: 4rem;
     line-height: 1.43;
 
     &:hover:not(.dc-input--disabled) {
@@ -28,9 +30,11 @@
         margin-bottom: calc(3.2rem - 12px);
     }
     &--disabled {
+        border-color: var(--general-disabled);
         color: var(--text-disabled);
     }
     &--error {
+        border-color: var(--brand-red-coral) !important;
         @media (max-width: 992px) {
             margin-bottom: 5rem;
         }
@@ -39,38 +43,21 @@
             color: var(--brand-red-coral) !important;
         }
     }
-    &__container {
-        display: flex;
-        align-items: center;
-        border-radius: $BORDER_RADIUS;
-        border: 1px solid var(--border-normal);
-        padding: 0.5rem 1.2rem;
-        height: 4rem;
-
-        &:hover:not(.dc-input--disabled) {
-            border-color: var(--border-hover);
-        }
-        &:focus-within {
-            border-color: var(--brand-secondary);
-
-            &:hover {
-                border-color: var(--brand-secondary);
-            }
-        }
-        &--error {
-            border-color: var(--brand-red-coral) !important;
-        }
-        &--disabled {
-            border-color: var(--general-disabled);
+    &--hint {
+        @media (max-width: 992px) {
+            margin-bottom: 5rem;
         }
     }
     &__field {
         background: none;
         color: var(--text-prominent);
         font-size: var(--text-size-xs);
+        padding: 1rem 1.2rem;
         width: 100%;
-        height: 100%;
+        height: 3.8rem;
+        display: block;
         min-width: 0;
+        box-sizing: border-box;
 
         &::placeholder {
             line-height: 1.5;
@@ -172,7 +159,6 @@
             & ~ label {
                 transform: none;
                 color: var(--text-less-prominent);
-                margin-top: 2.5rem;
                 padding: 0 4px;
             }
         }
@@ -200,6 +186,8 @@
         }
     }
     &__trailing-icon {
+        margin-right: 1rem;
+        position: absolute;
         right: 0;
         font-size: var(--text-size-xs);
 
@@ -223,8 +211,8 @@
         background-color: var(--general-main-2);
         position: absolute;
         pointer-events: none;
-        left: 1.1rem;
-        top: 1.1rem;
+        left: 1rem;
+        top: 1rem;
         transition: 0.25s ease all;
         transform-origin: top left;
         text-overflow: ellipsis;
@@ -239,7 +227,9 @@
         }
     }
     &__hint {
-        margin: 0.1rem 0 -1.9rem 1.3rem;
+        margin-left: 1.2rem;
+        position: absolute;
+        top: 4rem;
 
         &--relative {
             margin-left: 1.2rem;
@@ -263,7 +253,6 @@
     &__footer {
         display: flex;
         flex-direction: row;
-        margin-bottom: -1.6rem;
 
         > :not(.dc-input__counter) {
             margin-right: 1.2rem;

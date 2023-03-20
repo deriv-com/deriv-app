@@ -262,7 +262,7 @@ const StaticDashboard = ({
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon='DTrader'
-                                        name='Deriv Trader'
+                                        name='DTrader'
                                         description={localize('Multipliers trading platform.')}
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
@@ -273,7 +273,7 @@ const StaticDashboard = ({
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon='DTrader'
-                                        name='Deriv Trader'
+                                        name='DTrader'
                                         description={localize('Options and multipliers trading platform.')}
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
@@ -288,7 +288,7 @@ const StaticDashboard = ({
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon='DBot'
-                                            name='Deriv Bot'
+                                            name='DBot'
                                             description={localize('Automate your trading, no coding needed.')}
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
@@ -515,7 +515,7 @@ const StaticDashboard = ({
 
                         <div className='static-dashboard-wrapper__body'>
                             <StaticCFDAccountManager
-                                type='synthetic'
+                                type='all'
                                 platform='ctrader'
                                 appname={localize('Deriv cTrader')}
                                 description={localize(

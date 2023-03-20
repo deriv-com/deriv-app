@@ -316,8 +316,6 @@ const Chart = props => {
         []
     );
 
-    // console.log(isEuropeCountry());
-
     const getMarketsOrder = active_symbols => {
         const synthetic_index = 'synthetic_index';
 

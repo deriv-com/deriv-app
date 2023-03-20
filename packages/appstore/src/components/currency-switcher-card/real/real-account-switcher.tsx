@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStatusBadgeConfig } from '@deriv/account';
 import { StatusBadge, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
@@ -12,6 +13,12 @@ const AccountNeedsVerification = observer(() => {
     const title = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).title;
     const icon = account_list.find((acc: { loginid: string }) => loginid === acc.loginid).icon;
 
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+        multipliers_account_status,
+        openFailedVerificationModal,
+        'multipliers'
+    );
+
     return (
         <CurrencySwitcherContainer
             className='real-account-switcher__container'
@@ -23,11 +30,7 @@ const AccountNeedsVerification = observer(() => {
             icon={icon}
             onClick={() => openModal('currency_selection')}
         >
-            <StatusBadge
-                account_status={multipliers_account_status}
-                openFailedVerificationModal={openFailedVerificationModal}
-                selected_account_type='multipliers'
-            />
+            <StatusBadge account_status={multipliers_account_status} icon={badge_icon} text={badge_text} />
         </CurrencySwitcherContainer>
     );
 });

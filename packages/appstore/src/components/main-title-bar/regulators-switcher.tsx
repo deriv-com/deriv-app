@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { region_availability } from 'Constants/platform-config';
+import { localize } from '@deriv/translations';
 import './regulators-switcher.scss';
 
 type SwitcherItemProps = {
@@ -27,7 +28,7 @@ const RegulatorSwitcher = observer(() => {
     return (
         <div className='regulators-switcher__container'>
             <div className='regulators-switcher--text'>
-                <Text>Regulation:</Text>
+                <Text>{localize('Regulation:')}</Text>
                 <div className='regulators-switcher--icon' onClick={() => toggleRegulatorsCompareModal()}>
                     <Icon icon='IcInfoOutline' />
                 </div>

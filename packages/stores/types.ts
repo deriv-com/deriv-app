@@ -201,9 +201,11 @@ type TCommonStore = {
     is_from_derivgo: boolean;
     is_network_online: boolean;
     platform: string;
+    current_language: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
 };
 
 type TUiStore = {
@@ -217,7 +219,7 @@ type TUiStore = {
     is_mobile: boolean;
     sub_section_index: number;
     notification_messages_ui: React.FC | null;
-    openRealAccountSignup: (value: string) => void;
+    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
@@ -227,6 +229,8 @@ type TUiStore = {
     toggleCashier: () => void;
     toggleSetCurrencyModal: () => void;
     setSubSectionIndex: (index: number) => void;
+    toggleReadyToDepositModal: () => void;
+    is_ready_to_deposit_modal_visible: boolean;
 };
 
 type TMenuStore = {
@@ -242,6 +246,7 @@ type TNotificationStore = {
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
 };
 
@@ -254,7 +259,6 @@ type TTradersHubStore = {
     cfd_demo_balance: TBalance;
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
-    is_eu_user: boolean;
     no_CR_account: boolean;
     no_MF_account: boolean;
     total_balance: TBalance;
@@ -270,6 +274,7 @@ type TTradersHubStore = {
     is_tour_open: boolean;
     setTogglePlatformType: (type: string) => void;
     selected_platform_type: string;
+    is_eu_user: boolean;
 };
 
 export type TRootStore = {

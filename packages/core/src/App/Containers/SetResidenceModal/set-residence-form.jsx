@@ -19,7 +19,7 @@ const SetResidenceForm = ({
             setFieldTouched('residence', true);
             setFieldValue('residence', default_value, true);
         }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={`${class_prefix}__residence-selection`}>

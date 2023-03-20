@@ -95,7 +95,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                     }) => (
                         <Form>
                             {(!selected_residence && !selected_citizenship) || !is_pasword_modal ? (
-                                <>
+                                <React.Fragment>
                                     <div className='account-signup__main'>
                                         <Text as='h1' weight='bold' className='account-signup__heading'>
                                             {localize('Select your country and citizenship:')}
@@ -146,7 +146,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             />
                                         </div>
                                     </div>
-                                </>
+                                </React.Fragment>
                             ) : (
                                 <PasswordSelectionModal
                                     api_error={api_error}

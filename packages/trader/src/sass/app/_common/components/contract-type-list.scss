@@ -35,9 +35,23 @@
     &:hover {
         background-color: var(--state-hover);
     }
+
+    &__new {
+        padding: 0.3rem 0.4rem;
+        margin-bottom: 0.8rem;
+        border-radius: $BORDER_RADIUS * 4;
+    }
+
     &__title {
         padding-left: 1.6rem;
     }
+
+    &__container {
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+    }
+
     &__icon {
         margin-left: auto;
 

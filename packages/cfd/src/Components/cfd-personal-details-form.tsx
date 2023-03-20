@@ -277,6 +277,10 @@ const CFDPersonalDetailsForm = ({
                     const item_value = item.value ? item.text : '';
                     setFieldValue(_field, item_value, true);
                 };
+                const tin_field_label = residence_list.find(res => res.text === values.tax_residence && res.tin_format)
+                    ?.tin_format
+                    ? localize('Tax identification number*')
+                    : localize('Tax identification number');
 
                 return (
                     <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
@@ -318,7 +322,7 @@ const CFDPersonalDetailsForm = ({
                                                                 data-lpignore='true'
                                                                 autoComplete='off'
                                                                 type='text'
-                                                                label={localize('Citizenship')}
+                                                                label={localize('Citizenship*')}
                                                                 error={citizenship_error}
                                                                 disabled={is_citizenship_disabled}
                                                                 list_items={residence_list}
@@ -334,7 +338,7 @@ const CFDPersonalDetailsForm = ({
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        label={localize('Citizenship')}
+                                                        label={localize('Citizenship*')}
                                                         value={values.citizen}
                                                         list_items={residence_list}
                                                         error={citizenship_error}
@@ -430,8 +434,8 @@ const CFDPersonalDetailsForm = ({
                                                 <InputField
                                                     id='real_mt5_tax_identification_number'
                                                     name='tax_identification_number'
-                                                    label={localize('Tax identification number')}
-                                                    placeholder={localize('Tax identification number')}
+                                                    label={tin_field_label}
+                                                    placeholder={tin_field_label}
                                                     value={values.tax_identification_number}
                                                     onBlur={handleBlur}
                                                     disabled={

@@ -63,9 +63,6 @@ const PageOverlayWrapper = ({
 }) => {
     const routeToPrevious = () => (is_pre_appstore ? history.push(shared_routes.traders_hub) : onClickClose());
 
-    // eslint-disable-next-line no-console
-    console.log('selected_route: ', { ...selected_route });
-
     if (isMobile() && selected_route) {
         return (
             <PageOverlay

@@ -1,5 +1,5 @@
-import { Button, Loading, getPlatformRedirect, useStateCallback } from '@deriv/components';
-import { WS, platforms } from '@deriv/shared';
+import { Button, Loading, useStateCallback } from '@deriv/components';
+import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
 
 import Expired from 'Components/poa/status/expired';
 import { Localize } from '@deriv/translations';

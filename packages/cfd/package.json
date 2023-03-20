@@ -90,7 +90,7 @@
         "classnames": "^2.2.6",
         "extend": "^3.0.2",
         "formik": "^2.1.4",
-        "i18next": "^20.3.2",
+        "i18next": "^22.4.6",
         "mobx": "^6.6.1",
         "mobx-react": "^7.5.1",
         "mobx-utils": "^6.0.5",

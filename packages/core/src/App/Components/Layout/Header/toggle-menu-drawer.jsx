@@ -371,7 +371,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         );
     };
 
-    const getLanguageRoutesTraderHub = () => {
+    const getLanguageRoutesTraderHub = React.useCallback(() => {
         return (
             <MobileDrawer.SubMenu
                 is_expanded={is_language_changing}
@@ -403,7 +403,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 </div>
             </MobileDrawer.SubMenu>
         );
-    };
+    }, [is_language_changing]);
 
     const HelpCentreRoute = has_border_bottom => {
         return (
@@ -445,31 +445,34 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
     };
 
-    const menu_title = (
-        <React.Fragment>
-            <div>{localize('Menu')}</div>
-            {is_pre_appstore && (
-                <div
-                    className='settings-language__language-button_wrapper'
-                    onClick={() => {
-                        if (!is_language_changing) {
-                            setIsLanguageChanging(true);
-                        }
-                    }}
-                >
-                    <Icon
-                        icon={`IcFlag${current_language.replace('_', '-')}`}
-                        data_testid='dt_icon'
-                        className='ic-settings-language__icon'
-                        type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
-                        size={22}
-                    />
-                    <Text weight='bold' size='xxs'>
-                        <Localize i18n_default_text={current_language} />
-                    </Text>
-                </div>
-            )}
-        </React.Fragment>
+    const menu_title = React.useCallback(
+        () => (
+            <React.Fragment>
+                <div>{localize('Menu')}</div>
+                {is_pre_appstore && (
+                    <div
+                        className='settings-language__language-button_wrapper'
+                        onClick={() => {
+                            if (!is_language_changing) {
+                                setIsLanguageChanging(true);
+                            }
+                        }}
+                    >
+                        <Icon
+                            icon={`IcFlag${current_language.replace('_', '-')}`}
+                            data_testid='dt_icon'
+                            className='ic-settings-language__icon'
+                            type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
+                            size={22}
+                        />
+                        <Text weight='bold' size='xxs'>
+                            <Localize i18n_default_text={current_language} />
+                        </Text>
+                    </div>
+                )}
+            </React.Fragment>
+        ),
+        [current_language]
     );
 
     return (
@@ -491,7 +494,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 id='dt_mobile_drawer'
                 enableApp={enableApp}
                 disableApp={disableApp}
-                title={menu_title}
+                title={menu_title()}
                 height='100vh'
                 width='295px'
                 className={is_pre_appstore ? 'pre-appstore' : ''}

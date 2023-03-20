@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
@@ -7,7 +8,7 @@ import { LanguageLink } from 'App/Components/Routes';
 
 const isCurrentLanguage = (lang, current_language) => lang === current_language;
 
-const LanguageSettings = () => {
+const LanguageSettings = observer(() => {
     const { client, common, ui } = useStore();
     const { current_language } = common;
     const { toggleLanguageSettingsModal, toggleSettingsModal } = ui;
@@ -42,6 +43,6 @@ const LanguageSettings = () => {
             </div>
         </div>
     );
-};
+});
 
 export default LanguageSettings;

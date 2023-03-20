@@ -13,3 +13,4 @@ export { default as useP2PNotificationCount } from './useP2PNotificationCount';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
 export { default as useCashierLocked } from './useCashierLocked';
+export { default as useSwitchToRealAccount } from './useSwitchToRealAccount';

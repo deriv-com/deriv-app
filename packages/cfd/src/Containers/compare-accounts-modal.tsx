@@ -195,7 +195,7 @@ const CompareAccountsModal = ({
         } else if (is_pre_appstore_setting && should_show_derivx) {
             return {
                 height: '574px',
-                width: '1131px',
+                width: '1115px',
             };
         }
         return {

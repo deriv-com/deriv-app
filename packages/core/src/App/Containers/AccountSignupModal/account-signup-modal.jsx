@@ -95,58 +95,56 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                     }) => (
                         <Form>
                             {(!selected_residence && !selected_citizenship) || !is_pasword_modal ? (
-                                <React.Fragment>
-                                    <div className='account-signup__main'>
-                                        <Text as='h1' weight='bold' className='account-signup__heading'>
-                                            {localize('Select your country and citizenship:')}
-                                        </Text>
-                                        <div className='account-signup__body'>
-                                            <ResidenceForm
-                                                class_prefix='account-signup'
-                                                errors={errors}
-                                                touched={touched}
-                                                setFieldTouched={setFieldTouched}
-                                                setFieldValue={setFieldValue}
-                                                residence_list={residence_list}
-                                                default_value={country}
-                                                history_value={history_value.current}
-                                            />
-                                            <CitizenshipForm
-                                                class_prefix='account-signup'
-                                                errors={errors}
-                                                touched={touched}
-                                                setFieldTouched={setFieldTouched}
-                                                setFieldValue={setFieldValue}
-                                                citizenship_list={residence_list}
-                                            />
-                                        </div>
-                                        <div className='account-signup__footer'>
-                                            <Button
-                                                className={classNames('account-signup__btn', {
-                                                    'account-signup__btn--disabled':
-                                                        !values.residence ||
-                                                        !!errors.residence ||
-                                                        !values.citizenship ||
-                                                        !!errors.citizenship,
-                                                })}
-                                                type='button'
-                                                is_disabled={
+                                <div className='account-signup__main'>
+                                    <Text as='h1' weight='bold' className='account-signup__heading'>
+                                        {localize('Select your country and citizenship:')}
+                                    </Text>
+                                    <div className='account-signup__body'>
+                                        <ResidenceForm
+                                            class_prefix='account-signup'
+                                            errors={errors}
+                                            touched={touched}
+                                            setFieldTouched={setFieldTouched}
+                                            setFieldValue={setFieldValue}
+                                            residence_list={residence_list}
+                                            default_value={country}
+                                            history_value={history_value.current}
+                                        />
+                                        <CitizenshipForm
+                                            class_prefix='account-signup'
+                                            errors={errors}
+                                            touched={touched}
+                                            setFieldTouched={setFieldTouched}
+                                            setFieldValue={setFieldValue}
+                                            citizenship_list={residence_list}
+                                        />
+                                    </div>
+                                    <div className='account-signup__footer'>
+                                        <Button
+                                            className={classNames('account-signup__btn', {
+                                                'account-signup__btn--disabled':
                                                     !values.residence ||
                                                     !!errors.residence ||
                                                     !values.citizenship ||
-                                                    !!errors.citizenship
-                                                }
-                                                onClick={() => {
-                                                    onFormSingup(values.residence, values.citizenship);
-                                                    history_value.current = values.residence;
-                                                }}
-                                                primary
-                                                large
-                                                text={localize('Next')}
-                                            />
-                                        </div>
+                                                    !!errors.citizenship,
+                                            })}
+                                            type='button'
+                                            is_disabled={
+                                                !values.residence ||
+                                                !!errors.residence ||
+                                                !values.citizenship ||
+                                                !!errors.citizenship
+                                            }
+                                            onClick={() => {
+                                                onFormSingup(values.residence, values.citizenship);
+                                                history_value.current = values.residence;
+                                            }}
+                                            primary
+                                            large
+                                            text={localize('Next')}
+                                        />
                                     </div>
-                                </React.Fragment>
+                                </div>
                             ) : (
                                 <PasswordSelectionModal
                                     api_error={api_error}

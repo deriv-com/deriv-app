@@ -68,6 +68,19 @@ export type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+export type TJurisdictionCardSectionTitleIndicators = {
+    type: 'displayText' | 'displayIcons';
+    displayText?: string;
+    displayTextSkinColor?: string;
+    displayIcons?: Array<string>;
+};
+
+export type TJurisdictionCardSection = {
+    title: string;
+    description?: string;
+    titleIndicators?: TJurisdictionCardSectionTitleIndicators;
+};
+
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
 
 export type TCFDAccountCard = {

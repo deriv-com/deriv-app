@@ -77,8 +77,8 @@ const JurisdictionModal = ({
     );
 
     const modal_title = show_eu_related_content
-        ? localize('Jurisdiction for your Deriv MT5 CFDs account')
-        : localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
+        ? localize('Choose a jurisdiction for your Deriv MT5 CFDs account')
+        : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
               account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
           });
 

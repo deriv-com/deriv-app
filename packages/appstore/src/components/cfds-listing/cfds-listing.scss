@@ -1,19 +1,20 @@
 .cfd-jurisdiction-card--synthetic,
 .cfd-jurisdiction-card--financial {
-    border: solid 1px var(--border-normal);
-    border-radius: 0.8rem;
+    border: solid 2px var(--border-normal);
+    border-radius: 1.6rem;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    min-height: 36rem;
-    width: 27.6em;
+    min-height: 38rem;
+    width: 26em;
     position: relative;
-    padding: 1.6rem;
+    cursor: pointer;
     @include mobile {
-        margin-bottom: 2rem;
+        min-height: auto;
+        width: 100%;
     }
 
-    &:hover {
+    &:not(.selected-card):hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
 
@@ -23,23 +24,27 @@
 
     @include desktop {
         height: auto;
-        margin: 0 0.8rem;
     }
 
     &__wrapper {
-        padding: 0;
-        margin-top: 4.8rem;
+        margin-top: 4em;
+        margin-left: 6em;
+        margin-right: 6em;
         display: flex;
         justify-content: center;
-
+        gap: 22px;
         @include mobile {
+            margin: 0em;
+            padding: 2em 4em;
             flex-direction: column;
             align-items: center;
+            overflow-y: scroll;
+            height: 60%;
         }
     }
     &--selected {
-        border: solid 1px $color-blue;
-        border-radius: 4px;
+        border: solid 2px $color-green;
+        box-shadow: 0px 12px 18px 8px var(--shadow-menu);
     }
 
     &__verification-status,
@@ -81,8 +86,59 @@
             border-radius: 0.5rem;
         }
     }
-    &__footer-wrapper {
+
+    &__card-content-over-header {
+        display: flex;
+        background: #dfeaff;
+        color: var(--text-info-blue);
+        height: 4em;
+        width: 100%;
+        justify-content: center;
+        font-weight: bold;
+        align-items: center;
+        border-radius: 1.6em 1.6em 0em 0em;
+    }
+
+    &__card-content-over-header-blank {
+        height: 4em;
+        width: 100%;
+        border-radius: 1.6em;
         @include mobile {
+            height: 2em;
+        }
+    }
+
+    &__h2-header {
+        text-align: center;
+        min-height: 4em;
+        margin: 0em 2em;
+        @include mobile {
+            margin-bottom: 1em;
+            min-height: auto;
+        }
+    }
+
+    &__card-content-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    &__card-section-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: 100%;
+        margin: 0em 2em 2em;
+    }
+
+    &__footer-wrapper {
+        min-height: 186px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        @include mobile {
+            min-height: 0px;
             background-color: var(--general-main-1);
             width: 100%;
             height: 100%;
@@ -91,17 +147,8 @@
             max-height: 20rem;
             z-index: 12;
         }
-        .dc-modal-footer {
-            @include desktop {
-                position: fixed;
-                bottom: 0;
-                width: 100%;
-            }
-        }
     }
-    &__h2-header {
-        margin: 1.4rem 0 2.4rem;
-    }
+
     &__footnote {
         display: flex;
         flex-direction: column;
@@ -122,6 +169,7 @@
     &__jurisdiction-checkbox {
         display: flex;
         justify-content: center;
+        margin-bottom: 2em;
         @include mobile {
             padding: 0.8rem;
         }
@@ -129,33 +177,68 @@
 
     &__over-header {
         background-color: #dfeaff;
-        top: -1rem;
+        top: -2rem;
         left: 1.4rem;
         z-index: 10;
         width: 90%;
         height: 4rem;
         position: absolute;
-        border-radius: 4px;
+        border-radius: 8px;
         margin-bottom: 1rem;
-
+        border: 1px solid var(--text-info-blue);
         & > p {
             font-size: 16px;
             text-align: center;
         }
     }
+}
 
-    &__bullet-wrapper {
-        display: flex;
-        margin-bottom: 1rem;
+.cfd-card-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 
-        &--checkmark {
-            margin-right: 1rem;
-        }
+.cfd-card-section-divider {
+    width: 100%;
+    border-bottom: 2px solid var(--general-section-1);
+}
+
+.cfd-card-section-title-indicator {
+    display: flex;
+    padding: 6px 12px;
+    color: var(--text-prominent);
+    border-radius: 4px;
+    font-weight: bold;
+    &__red-darker {
+        background: #661b20;
+    }
+    &__red-dark {
+        background: #b33037;
+    }
+    &__red-light {
+        background: #ff444f;
+    }
+    &__yellow-dark {
+        background: #b3760d;
+    }
+    &__yellow-light {
+        background: #ffa912;
+    }
+    &__violet-dark {
+        background: #4a3871;
+    }
+    &__brown-dark {
+        background: #664407;
     }
 }
 
-.cfd-jurisdiction-card--synthetic {
-    padding: 2.4rem;
+.cfd-card-title-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .cfd-modal--custom-exit {
@@ -1791,9 +1874,8 @@
 }
 
 .dc-modal__container_jurisdiction-modal {
-    min-height: 664px;
     .dc-modal-header {
-        border-bottom: 1px solid var(--general-section-1);
+        border-bottom: 2px solid var(--general-section-1);
     }
 }
 

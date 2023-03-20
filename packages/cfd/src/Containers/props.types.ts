@@ -9,7 +9,7 @@ import {
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
-import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
+import { TTradingPlatformAvailableAccount, TExistingData, TJurisdictionCardSection } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsContainerProps = {
@@ -172,6 +172,10 @@ export type TJurisdictionCardProps = {
     account_type: string;
     type_of_card: string;
     disabled: boolean;
+};
+
+export type TJurisdictionCardSectionProps = {
+    cardSectionItem: TJurisdictionCardSection;
 };
 
 export type TVerificationStatusBannerProps = {

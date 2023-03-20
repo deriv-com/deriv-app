@@ -97,34 +97,30 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                             {(!selected_residence && !selected_citizenship) || !is_pasword_modal ? (
                                 <>
                                     <div className='account-signup__main'>
-                                        <Text
-                                            as='h1'
-                                            size='s'
-                                            align='left'
-                                            weight='bold'
-                                            className='account-signup__heading'
-                                        >
+                                        <Text as='h1' weight='bold' className='account-signup__heading'>
                                             {localize('Select your country and citizenship:')}
                                         </Text>
-                                        <ResidenceForm
-                                            class_prefix='account-signup'
-                                            errors={errors}
-                                            touched={touched}
-                                            setFieldTouched={setFieldTouched}
-                                            setFieldValue={setFieldValue}
-                                            residence_list={residence_list}
-                                            default_value={country}
-                                            history_value={history_value.current}
-                                        />
-                                        <CitizenshipForm
-                                            class_prefix='account-signup'
-                                            errors={errors}
-                                            touched={touched}
-                                            setFieldTouched={setFieldTouched}
-                                            setFieldValue={setFieldValue}
-                                            citizenship_list={residence_list}
-                                        />
-                                        <div className='acount-signup__footer'>
+                                        <div className='account-signup__body'>
+                                            <ResidenceForm
+                                                class_prefix='account-signup'
+                                                errors={errors}
+                                                touched={touched}
+                                                setFieldTouched={setFieldTouched}
+                                                setFieldValue={setFieldValue}
+                                                residence_list={residence_list}
+                                                default_value={country}
+                                                history_value={history_value.current}
+                                            />
+                                            <CitizenshipForm
+                                                class_prefix='account-signup'
+                                                errors={errors}
+                                                touched={touched}
+                                                setFieldTouched={setFieldTouched}
+                                                setFieldValue={setFieldValue}
+                                                citizenship_list={residence_list}
+                                            />
+                                        </div>
+                                        <div className='account-signup__footer'>
                                             <Button
                                                 className={classNames('account-signup__btn', {
                                                     'account-signup__btn--disabled':

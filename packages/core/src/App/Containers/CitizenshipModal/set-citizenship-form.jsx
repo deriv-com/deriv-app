@@ -42,14 +42,13 @@ const SetCitizenshipForm = ({ class_prefix, errors, touched, setFieldTouched, se
                 </React.Fragment>
             )}
         </Field>
-        <Text as='p' size='xxs' className='account-signup__subtext' align='left' color='less-prominent'>
+        <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
             <Localize i18n_default_text='Country of citizenship or nationality is the country that issues your passport or other national identity document.' />
         </Text>
     </div>
 );
 
 SetCitizenshipForm.propTypes = {
-    children: PropTypes.node,
     class_prefix: PropTypes.string,
     citizenship_list: PropTypes.arrayOf(PropTypes.object),
     errors: PropTypes.object,

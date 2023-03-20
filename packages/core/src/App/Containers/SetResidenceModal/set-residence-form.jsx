@@ -62,7 +62,7 @@ const SetResidenceForm = ({
                 )}
             </Field>
             {!errors?.residence || errors?.residence === true ? (
-                <Text as='p' size='xxs' className='account-signup__subtext' align='left' color='less-prominent'>
+                <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
                     {localize(
                         'Country of residence is where you currently live, work, pay taxes and receive government services.'
                     )}
@@ -73,7 +73,6 @@ const SetResidenceForm = ({
 };
 
 SetResidenceForm.propTypes = {
-    children: PropTypes.node,
     class_prefix: PropTypes.string,
     default_value: PropTypes.string,
     history_value: PropTypes.string,

@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStatusBadgeConfig } from '@deriv/account';
 import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
@@ -36,6 +37,12 @@ const CurrencySelectionModal = ({
     switchAccount,
     multipliers_account_status,
 }: CurrencySelectionModalProps) => {
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+        multipliers_account_status,
+        openFailedVerificationModal,
+        'multipliers'
+    );
+
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
             <div className='currency-selection-modal__header'>
@@ -79,8 +86,8 @@ const CurrencySelectionModal = ({
                                     {multipliers_account_status ? (
                                         <StatusBadge
                                             account_status={multipliers_account_status}
-                                            openFailedVerificationModal={openFailedVerificationModal}
-                                            selected_account_type='multipliers'
+                                            icon={badge_icon}
+                                            text={badge_text}
                                         />
                                     ) : (
                                         <Text size='xs' color='prominent'>

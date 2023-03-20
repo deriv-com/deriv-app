@@ -19,7 +19,7 @@ const useAPISubscription = () => {
                 // queryClient.setQueriesError(queryKeys, data.error) ?!
             }
 
-            queryClient.setQueriesData(queryKeys, data);
+            if (queryKey) queryClient.setQueriesData(queryKeys, data[queryKey]);
         };
 
         websocket.current = WS.getSocket();

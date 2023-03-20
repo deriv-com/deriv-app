@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import useAPISubscription from './useAPISubscription';
+// import useAPISubscription from './useAPISubscription';
 import { getQueryKeys, typeSafeSend } from './utils';
 import { TSocketEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
 
 const useAPI = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcceptableProps<T>) => {
     const queryKey = getQueryKeys(props[0] || {}, name);
-    const send = useAPISubscription();
-    const query = useQuery<TSocketResponseData<T>, unknown>(queryKey, () => typeSafeSend(name, ...props), {
-        enabled: false,
-    });
+    // const send = useAPISubscription();
+    const query = useQuery<TSocketResponseData<T>, unknown>(queryKey, () => typeSafeSend(name, ...props));
 
     useEffect(() => {
         return () => {
@@ -18,7 +16,7 @@ const useAPI = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAccept
     }, []);
 
     return {
-        send: (..._props: TSocketAcceptableProps<T>) => send(name, ..._props),
+        // send: (..._props: TSocketAcceptableProps<T>) => send(name, ..._props),
         subscribe: () => {
             // Subscribe to the query
         },

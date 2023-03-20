@@ -46,16 +46,15 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
 
     const getHeaderTitle = () => {
         if (!is_pre_appstore) {
-            if (is_crypto)
-                <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />;
-            return (
-                <Localize
-                    i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
-                    values={{ currency_code }}
-                />
-            );
+            if (!is_crypto)
+                return (
+                    <Localize
+                        i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
+                        values={{ currency_code }}
+                    />
+                );
+            return <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />;
         }
-
         if (is_crypto) {
             return (
                 <Localize

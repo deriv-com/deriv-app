@@ -16,6 +16,7 @@ import {
     DateOfBirthPicker,
     Text,
     useStateCallback,
+    HintBox,
 } from '@deriv/components';
 import {
     toMoment,
@@ -101,6 +102,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
 );
 
 export const PersonalDetailsForm = ({
+    authentication_status,
     is_eu,
     is_mf,
     is_uk,
@@ -548,6 +550,21 @@ export const PersonalDetailsForm = ({
         if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
         if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
+
+    const is_poa_verified = authentication_status?.document_status === 'verified';
+    const is_poi_verified = authentication_status?.identity_status === 'verified';
+
+    const is_account_verified = is_poa_verified && is_poi_verified;
+
+    //Generate Redirection Link to user based on verifiction status
+    const getRedirectionLink = () => {
+        if (!is_poi_verified) {
+            return '/account/proof-of-identity';
+        } else if (!is_poa_verified) {
+            return '/account/proof-of-address';
+        }
+        return null;
+    };
 
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
@@ -1170,30 +1187,60 @@ export const PersonalDetailsForm = ({
                                                             <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
                                                         </Text>
                                                     </div>
-                                                    <Checkbox
-                                                        name='request_professional_status'
-                                                        value={values.request_professional_status}
-                                                        onChange={() => {
-                                                            setFieldValue(
-                                                                'request_professional_status',
-                                                                !values.request_professional_status
-                                                            );
-                                                            setFieldTouched('request_professional_status', true, true);
-                                                        }}
-                                                        label={localize(
-                                                            'I would like to be treated as a professional client.'
-                                                        )}
-                                                        id='request_professional_status'
-                                                        defaultChecked={!!values.request_professional_status}
-                                                        disabled={
-                                                            is_virtual ||
-                                                            !!form_initial_values.request_professional_status
-                                                        }
-                                                        greyDisabled
-                                                        className={classNames({
-                                                            'dc-checkbox-blue': is_appstore,
-                                                        })}
-                                                    />
+                                                    {is_account_verified ? (
+                                                        <Checkbox
+                                                            name='request_professional_status'
+                                                            value={values.request_professional_status}
+                                                            onChange={() => {
+                                                                setFieldValue(
+                                                                    'request_professional_status',
+                                                                    !values.request_professional_status
+                                                                );
+                                                                setFieldTouched(
+                                                                    'request_professional_status',
+                                                                    true,
+                                                                    true
+                                                                );
+                                                            }}
+                                                            label={localize(
+                                                                'I would like to be treated as a professional client.'
+                                                            )}
+                                                            id='request_professional_status'
+                                                            defaultChecked={!!values.request_professional_status}
+                                                            disabled={
+                                                                is_virtual ||
+                                                                !!form_initial_values.request_professional_status
+                                                            }
+                                                            greyDisabled
+                                                            className={classNames({
+                                                                'dc-checkbox-blue': is_appstore,
+                                                            })}
+                                                        />
+                                                    ) : (
+                                                        <HintBox
+                                                            icon='IcInfoBlue'
+                                                            icon_height={20}
+                                                            icon_width={30}
+                                                            message={
+                                                                <Text as='p' size='xs'>
+                                                                    <Localize
+                                                                        i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
+                                                                        components={[
+                                                                            <a
+                                                                                key={0}
+                                                                                className='link--no-bold'
+                                                                                rel='noopener noreferrer'
+                                                                                target='_blank'
+                                                                                href={getRedirectionLink()}
+                                                                            />,
+                                                                        ]}
+                                                                    />
+                                                                </Text>
+                                                            }
+                                                            is_info
+                                                            is_inline
+                                                        />
+                                                    )}
                                                 </fieldset>
                                             </FormBodySection>
                                         </div>
@@ -1281,6 +1328,7 @@ export const PersonalDetailsForm = ({
 };
 
 PersonalDetailsForm.propTypes = {
+    authentication_status: PropTypes.object,
     is_eu: PropTypes.bool,
     is_mf: PropTypes.bool,
     is_uk: PropTypes.bool,
@@ -1307,6 +1355,7 @@ PersonalDetailsForm.propTypes = {
 
 export default connect(({ client, notifications, ui, common }) => ({
     account_settings: client.account_settings,
+    authentication_status: client.authentication_status,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
     current_landing_company: client.current_landing_company,

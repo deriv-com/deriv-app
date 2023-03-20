@@ -1,5 +1,5 @@
 import { action, observable, makeObservable, computed } from 'mobx';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
@@ -266,8 +266,9 @@ export default class MyAdsStore extends BaseStore {
                             key: 'ErrorModal',
                             props: {
                                 has_close_icon: false,
-                                message: response.error.message,
-                                title: generateErrorDialogTitle(this.error_code),
+                                error_message: response.error.message,
+                                error_modal_title: generateErrorDialogTitle(this.error_code),
+                                width: isMobile() ? '90rem' : '40rem',
                             },
                         });
                     } else {
@@ -403,8 +404,9 @@ export default class MyAdsStore extends BaseStore {
                     key: 'ErrorModal',
                     props: {
                         has_close_icon: false,
-                        message: response.error.message,
-                        title: generateErrorDialogTitle(this.error_code),
+                        error_message: response.error.message,
+                        error_modal_title: generateErrorDialogTitle(this.error_code),
+                        width: isMobile() ? '90rem' : '40rem',
                     },
                 });
             }

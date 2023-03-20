@@ -591,7 +591,15 @@ const AccountSwitcher = props => {
             account => !account.is_virtual && account.loginid.startsWith(type)
         ).length > 1;
 
+    // all: 1 in mt5_status response means that server is suspended
+    const getIsSuspendedMt5Server = type_server => type_server?.map(item => item.all).some(item => item === 1);
+
+    const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(props.mt5_status_server?.demo);
+    const is_suspended_mt5_real_server = getIsSuspendedMt5Server(props.mt5_status_server?.real);
+    const is_suspended_dxtrade_demo_server = !!props.dxtrade_status_server?.demo;
+    const is_suspended_dxtrade_real_server = !!props.dxtrade_status_server?.real;
     const has_cr_account = props.account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
+    const is_user_exception = props.account_settings.dxtrade_user_exception;
 
     const default_demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
@@ -688,7 +696,8 @@ const AccountSwitcher = props => {
                                             className='acc-switcher__new-account-btn'
                                             is_disabled={
                                                 props.mt5_disabled_signup_types.demo ||
-                                                (account.type === 'synthetic' && props.standpoint.malta)
+                                                (account.type === 'synthetic' && props.standpoint.malta) ||
+                                                is_suspended_mt5_demo_server
                                             }
                                             secondary
                                             small
@@ -747,8 +756,11 @@ const AccountSwitcher = props => {
                                         secondary
                                         small
                                         is_disabled={
-                                            props.dxtrade_disabled_signup_types.demo ||
-                                            !!props.dxtrade_accounts_list_error
+                                            is_user_exception
+                                                ? !is_user_exception
+                                                : props.dxtrade_disabled_signup_types.demo ||
+                                                  !!props.dxtrade_accounts_list_error ||
+                                                  is_suspended_dxtrade_demo_server
                                         }
                                     >
                                         {localize('Add')}
@@ -834,37 +846,38 @@ const AccountSwitcher = props => {
                             );
                         })}
                     </div>
-                    {filtered_remaining_real_accounts.map((account, index) => (
-                        <div key={index} className='acc-switcher__new-account'>
-                            <Icon icon='IcDeriv' size={24} />
-                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                {getAccountTitle(
-                                    account,
-                                    { account_residence: props.client_residence },
-                                    props.country_standpoint
-                                )}
-                            </Text>
-                            <Button
-                                id='dt_core_account-switcher_add-new-account'
-                                onClick={() => {
-                                    if (props.real_account_creation_unlock_date) {
-                                        closeAccountsDialog();
-                                        props.setShouldShowCooldownModal(true);
-                                    } else if (
-                                        (can_manage_account_multi || can_manage_account_virtual) &&
-                                        props.has_any_real_account
-                                    )
-                                        props.openRealAccountSignup('manage');
-                                    else props.openRealAccountSignup(account);
-                                }}
-                                className='acc-switcher__new-account-btn'
-                                secondary
-                                small
-                            >
-                                {localize('Add')}
-                            </Button>
-                        </div>
-                    ))}
+                    {!has_cr_account &&
+                        filtered_remaining_real_accounts.map((account, index) => (
+                            <div key={index} className='acc-switcher__new-account'>
+                                <Icon icon='IcDeriv' size={24} />
+                                <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                    {getAccountTitle(
+                                        account,
+                                        { account_residence: props.client_residence },
+                                        props.country_standpoint
+                                    )}
+                                </Text>
+                                <Button
+                                    id='dt_core_account-switcher_add-new-account'
+                                    onClick={() => {
+                                        if (props.real_account_creation_unlock_date) {
+                                            closeAccountsDialog();
+                                            props.setShouldShowCooldownModal(true);
+                                        } else if (
+                                            (can_manage_account_multi || can_manage_account_virtual) &&
+                                            props.has_any_real_account
+                                        )
+                                            props.openRealAccountSignup('manage');
+                                        else props.openRealAccountSignup(account);
+                                    }}
+                                    className='acc-switcher__new-account-btn'
+                                    secondary
+                                    small
+                                >
+                                    {localize('Add')}
+                                </Button>
+                            </div>
+                        ))}
                     {(can_manage_account_multi ||
                         (!props.has_active_real_account && filtered_remaining_real_accounts?.length === 0)) && (
                         <Button
@@ -965,7 +978,9 @@ const AccountSwitcher = props => {
                                                 props.mt5_disabled_signup_types.real ||
                                                 isRealMT5AddDisabled(account.type) ||
                                                 (account.type === 'financial_stp' &&
-                                                    (props.is_pending_authentication || !!props.mt5_login_list_error))
+                                                    (props.is_pending_authentication ||
+                                                        !!props.mt5_login_list_error)) ||
+                                                is_suspended_mt5_real_server
                                             }
                                         >
                                             {localize('Add')}
@@ -1036,9 +1051,12 @@ const AccountSwitcher = props => {
                                             secondary
                                             small
                                             is_disabled={
-                                                props.dxtrade_disabled_signup_types.real ||
-                                                isRealDXTradeAddDisabled(account.type) ||
-                                                !!props.dxtrade_accounts_list_error
+                                                is_user_exception
+                                                    ? !is_user_exception
+                                                    : props.dxtrade_disabled_signup_types.real ||
+                                                      isRealDXTradeAddDisabled(account.type) ||
+                                                      !!props.dxtrade_accounts_list_error ||
+                                                      is_suspended_dxtrade_real_server
                                             }
                                         >
                                             {localize('Add')}
@@ -1385,6 +1403,8 @@ AccountSwitcher.propTypes = {
     logoutClient: PropTypes.func,
     mt5_disabled_signup_types: PropTypes.object,
     mt5_login_list: PropTypes.array,
+    dxtrade_status_server: PropTypes.bool,
+    mt5_status_server: PropTypes.bool,
     mt5_login_list_error: PropTypes.string,
     mt5_trading_servers: PropTypes.array,
     dxtrade_disabled_signup_types: PropTypes.object,
@@ -1465,6 +1485,8 @@ const account_switcher = withRouter(
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         mt5_trading_servers: client.mt5_trading_servers,
+        dxtrade_status_server: client.website_status.dxtrade_status,
+        mt5_status_server: client.website_status.mt5_status,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         togglePositionsDrawer: ui.togglePositionsDrawer,
         toggleSetCurrencyModal: ui.toggleSetCurrencyModal,

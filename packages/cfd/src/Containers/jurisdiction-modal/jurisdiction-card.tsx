@@ -25,8 +25,6 @@ const JurisdictionCard = ({
         is_synthetic ? number_of_synthetic_accounts_to_be_shown : number_of_financial_accounts_to_be_shown
     );
 
-    const one_or_two_cards = [1, 2].includes(number_of_cards);
-
     const card_values = jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents];
 
     const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
@@ -46,7 +44,7 @@ const JurisdictionCard = ({
                     [`${card_classname}--selected`]: jurisdiction_selected_shortcode === type_of_card,
                 })}
                 onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
-                style={one_or_two_cards ? { width: '32em' } : { width: '27.6em' }}
+                style={[1, 2, 3].includes(number_of_cards) ? { width: '32em' } : { width: '27.6em' }}
             >
                 {card_values.is_over_header_available && (
                     <div className={classNames(`${card_classname}__over-header`)}>

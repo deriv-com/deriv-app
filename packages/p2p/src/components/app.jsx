@@ -29,6 +29,7 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
+    const [should_show_profile, setShouldShowProfile] = React.useState(false);
 
     React.useEffect(() => {
         general_store.setExternalStores({ client, common, modules, notifications, ui });
@@ -39,6 +40,11 @@ const App = () => {
         if (/\/verification$/.test(history?.location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
             history.push(routes.cashier_p2p);
+        }
+
+        if (/\/profile$/.test(history?.location.pathname)) {
+            history.push(routes.cashier_p2p);
+            setShouldShowProfile(true);
         }
 
         ServerTime.init(general_store.server_time);
@@ -138,6 +144,10 @@ const App = () => {
     React.useEffect(() => {
         setLanguage(lang);
     }, [lang]);
+
+    React.useEffect(() => {
+        if (should_show_profile) general_store.redirectTo('my_profile');
+    }, [should_show_profile]);
 
     React.useEffect(() => {
         if (order_id) {

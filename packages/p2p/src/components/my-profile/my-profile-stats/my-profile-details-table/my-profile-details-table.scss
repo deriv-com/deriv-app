@@ -1,6 +1,9 @@
 .my-profile-details-table {
     display: flex;
     flex-direction: row;
+    border-bottom: 1px solid var(--general-section-2);
+    padding-bottom: 1.6rem;
+    margin-bottom: 1.1rem;
 
     @include mobile {
         gap: 20vw;
@@ -40,6 +43,15 @@
         @include mobile {
             flex-direction: column;
             width: unset;
+        }
+    }
+
+    &--limit {
+        display: flex;
+        align-items: center;
+
+        & span {
+            flex: 1;
         }
     }
 }

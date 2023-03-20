@@ -96,20 +96,18 @@ const ProofOfIdentityContainer = ({
         return <NotRequired />;
     }
 
+    const onClickRedirectButton = () => {
+        const platform = platforms[from_platform.name?.toLowerCase()];
+        const { is_hard_redirect = false, url = '' } = platform ?? {};
+        if (is_hard_redirect) {
+            window.location.href = url;
+        } else {
+            routeBackTo(from_platform.route);
+        }
+    };
+
     const redirect_button = should_show_redirect_btn && (
-        <Button
-            primary
-            className='proof-of-identity__redirect'
-            onClick={() => {
-                const platform = platforms[from_platform.name?.toLowerCase()];
-                const { is_hard_redirect = false, url = '' } = platform ?? {};
-                if (is_hard_redirect) {
-                    window.location.href = url;
-                } else {
-                    routeBackTo(from_platform.route);
-                }
-            }}
-        >
+        <Button primary className='proof-of-identity__redirect' onClick={onClickRedirectButton}>
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
     );

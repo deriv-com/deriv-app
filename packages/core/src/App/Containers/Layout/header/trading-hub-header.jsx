@@ -346,6 +346,7 @@ const TradingHubHeader = ({
 };
 
 TradingHubHeader.propTypes = {
+    content_flag: PropTypes.string,
     header_extension: PropTypes.any,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
@@ -364,6 +365,8 @@ TradingHubHeader.propTypes = {
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     should_show_exit_traders_modal: PropTypes.bool,
+    switchToCRAccount: PropTypes.func,
+    toggleExitTradersHubModal: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
     toggleExitTradersHubModal: PropTypes.func,
@@ -398,9 +401,6 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
     setIsPreAppStore: client.setIsPreAppStore,
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
-    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
-    content_flag: traders_hub.content_flag,
     switchToCRAccount: traders_hub.switchToCRAccount,
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
@@ -410,4 +410,6 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_virtual: client.is_virtual,
     toggleAccountsDialog: ui.toggleAccountsDialog,
+    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
+    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
 }))(withRouter(TradingHubHeader));

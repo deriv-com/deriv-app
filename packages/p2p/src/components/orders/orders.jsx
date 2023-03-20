@@ -56,6 +56,6 @@ const Orders = observer(() => {
     );
 });
 
-Orders.displayName = 'Orders';
+Orders.displayName = 'Order';
 
 export default Orders;

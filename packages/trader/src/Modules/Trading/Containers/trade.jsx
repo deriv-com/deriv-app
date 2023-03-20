@@ -296,14 +296,13 @@ const Chart = props => {
         end_epoch,
         granularity,
         has_alternative_source,
-        is_eu_country,
-        is_eu,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
         refToAddTick,
         setChartStatus,
         settings,
+        should_show_eu_content,
         show_digits_stats,
         symbol,
         wsForget,
@@ -352,8 +351,6 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
-            is_eu_country={is_eu_country}
-            is_eu={is_eu}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -374,6 +371,7 @@ const Chart = props => {
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
+            should_show_eu_content={should_show_eu_content}
             stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}
@@ -407,8 +405,6 @@ Chart.propTypes = {
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
-    is_eu_country: PropTypes.bool,
-    is_eu: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -416,6 +412,7 @@ Chart.propTypes = {
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
+    should_show_eu_content: PropTypes.bool,
     symbol: PropTypes.string,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
@@ -438,8 +435,6 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, client }) => 
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
-    is_eu_country: client.is_eu_country,
-    is_eu: client.is_eu,
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
@@ -447,6 +442,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, client }) => 
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     extra_barriers: modules.trade.barriers_flattened,
+    should_show_eu_content: client.should_show_eu_content,
     show_digits_stats: modules.trade.show_digits_stats,
     contract_type: modules.trade.contract_type,
     symbol: modules.trade.symbol,

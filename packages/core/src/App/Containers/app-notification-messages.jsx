@@ -169,8 +169,6 @@ const AppNotificationMessages = ({
         return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
     });
 
-    window.notifications = notifications;
-
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
     // svg... and authenticate keys will be showed like separate pop up (not only inside 'View notifications')
@@ -191,6 +189,9 @@ const AppNotificationMessages = ({
     };
 
     if (!should_show_popups) return null;
+
+    window.notifications = notifications;
+    window.filtered_excluded_notifications = filtered_excluded_notifications;
 
     return getNotificationSublist().length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>

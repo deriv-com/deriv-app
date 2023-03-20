@@ -296,7 +296,7 @@ const Chart = props => {
         end_epoch,
         granularity,
         has_alternative_source,
-        is_eu_country,
+        isEuropeCountry,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
@@ -315,6 +315,8 @@ const Chart = props => {
         ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
         []
     );
+
+    // console.log(isEuropeCountry());
 
     const getMarketsOrder = active_symbols => {
         const synthetic_index = 'synthetic_index';
@@ -351,7 +353,7 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
-            is_eu_country={is_eu_country}
+            isEuropeCountry={isEuropeCountry}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -405,7 +407,7 @@ Chart.propTypes = {
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
-    is_eu_country: PropTypes.bool,
+    isEuropeCountry: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -435,7 +437,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade, client }) => 
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
-    is_eu_country: client.is_eu_country,
+    isEuropeCountry: client.isEuropeCountry,
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,

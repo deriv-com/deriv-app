@@ -139,8 +139,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                             timeout={150}
                             no_text={noClick}
                         >
-                            {noClick && <RenderErrorMessage />}
-                            {!noClick && <RenderErrorMessage />}
+                            <RenderErrorMessage />
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on hover if files are accepted onDrag
@@ -180,8 +179,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                             timeout={150}
                             color='loss-danger'
                         >
-                            {noClick && <RenderValidationErrorMessage />}
-                            {!noClick && <RenderValidationErrorMessage />}
+                            <RenderValidationErrorMessage />
                         </FadeInMessage>
                     </div>
                 </div>

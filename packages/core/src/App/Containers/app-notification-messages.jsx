@@ -42,8 +42,6 @@ const NotificationsContent = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window_location]);
 
-    window.contentNotifications = notifications;
-
     return (
         <div
             className={classNames('notification-messages', {
@@ -146,28 +144,6 @@ const AppNotificationMessages = ({
         const is_only_for_p2p_notification =
             window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
 
-        // console.log(
-        //     'message.key = ',
-        //     message.key,
-        //     ', filterResult = ',
-        //     is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification,
-        //     ', is_not_marked_notification = ',
-        //     is_not_marked_notification,
-        //     ', is_non_hidden_notification = ',
-        //     is_non_hidden_notification,
-        //     ', is_only_for_p2p_notification = ',
-        //     is_only_for_p2p_notification
-        // );
-
-        const obj = {
-            key: message?.key,
-            is_not_marked_notification,
-            is_non_hidden_notification,
-            is_only_for_p2p_notification,
-        };
-
-        window[message?.key ?? 'none'] = obj;
-
         return is_not_marked_notification && is_non_hidden_notification && is_only_for_p2p_notification;
     });
 
@@ -181,33 +157,20 @@ const AppNotificationMessages = ({
             ? message
             : excluded_notifications.includes(message.key)
     );
-    // const getNotificationSublist = () => {
-    //     if (window.location.pathname === routes.cashier_deposit) {
-    //         return filtered_excluded_notifications.filter(message =>
-    //             message.key.includes('switched_to_real') ? message : null
-    //         );
-    //     }
-    //     return filtered_excluded_notifications.slice(0, notifications_limit);
-    // };
-
-    const notifications_sublist =
-        window.location.pathname === routes.cashier_deposit
-            ? filtered_excluded_notifications.filter(
-                  message => message.key.includes('switched_to_real') // ? message : null
-              )
-            : filtered_excluded_notifications.slice(0, notifications_limit);
+    const getNotificationSublist = () => {
+        if (window.location.pathname === routes.cashier_deposit) {
+            return filtered_excluded_notifications.filter(message => message.key.includes('switched_to_real'));
+        }
+        return filtered_excluded_notifications.slice(0, notifications_limit);
+    };
 
     if (!should_show_popups) return null;
 
-    window.notifications = notifications;
-    window.filtered_excluded_notifications = filtered_excluded_notifications;
-    window.getNotificationSublist = notifications_sublist;
-
-    return notifications_sublist.length ? (
+    return getNotificationSublist().length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={notifications_sublist}
+                    notifications={getNotificationSublist()}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}

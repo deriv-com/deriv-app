@@ -3,11 +3,9 @@ import Routes from 'Containers/routes';
 import { observer, useStore } from '@deriv/stores';
 import { useTheme } from '@deriv/ui';
 
-const AppContent = () => {
-    const {
-        ui: { is_dark_mode_on },
-    } = useStore();
-
+const AppContent = observer(() => {
+    const { ui } = useStore();
+    const { is_dark_mode_on, notification_messages_ui: Notifications } = ui;
     const { setColorMode } = useTheme();
 
     React.useEffect(() => {
@@ -15,7 +13,12 @@ const AppContent = () => {
         setColorMode(theme);
     }, [is_dark_mode_on, setColorMode]);
 
-    return <Routes />;
-};
+    return (
+        <>
+            {Notifications && <Notifications />}
+            <Routes />
+        </>
+    );
+});
 
-export default observer(AppContent);
+export default AppContent;

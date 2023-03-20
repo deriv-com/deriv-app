@@ -35,7 +35,7 @@ describe('<CreateAdModal/>', () => {
 
     it('should show the create ad modal card', () => {
         render(<CreateAdModal />);
-        expect(screen.queryAllByTestId('create-ad-modal-card')).toHaveLength(2);
+        expect(screen.queryAllByTestId('dt_create_ad_modal_card')).toHaveLength(2);
     });
     it('should close modal on click close button', () => {
         const { hideModal } = useModalManagerContext();

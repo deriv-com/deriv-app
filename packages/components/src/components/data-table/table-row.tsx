@@ -1,9 +1,35 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import TableCell from './table-cell.jsx';
-import TableRowInfo from './table-row-info.jsx';
+import { TTableRowItem } from '../types/common.types';
+import { TSource } from './data-table';
+import TableCell from './table-cell';
+import TableRowInfo from './table-row-info';
+
+type TTableRow<T> = {
+    className?: string;
+    id?: string;
+    is_footer: boolean;
+    is_header?: boolean;
+    passthrough?: (item: TSource) => boolean;
+    replace?: TTableRowItem;
+    to?: string;
+    show_preloader?: boolean;
+    measure?: () => void;
+    is_dynamic_height: boolean;
+    row_obj?: T;
+    getActionColumns?: (params: { row_obj?: T; is_header?: boolean; is_footer: boolean }) => any;
+    content_loader: React.ElementType;
+    columns?: any;
+};
+
+type TCellContent<U> = {
+    cell_value: string;
+    col_index: string;
+    row_obj?: U;
+    is_footer: boolean;
+    passthrough: any;
+};
 
 const TableRow = ({
     className,
@@ -20,23 +46,35 @@ const TableRow = ({
     to,
     measure,
     is_dynamic_height,
-}) => {
+}: TTableRow<any>) => {
     const action_columns = getActionColumns && getActionColumns({ row_obj, is_header, is_footer });
 
-    const cells = columns?.map(({ col_index, renderCellContent, title, key }) => {
-        let cell_content = title;
-        if (!is_header) {
-            const cell_value = row_obj[col_index] || '';
-            cell_content = renderCellContent
-                ? renderCellContent({ cell_value, col_index, row_obj, is_footer, passthrough })
-                : cell_value;
+    const cells = columns.map(
+        ({
+            col_index,
+            renderCellContent,
+            title,
+            key,
+        }: {
+            col_index: string;
+            renderCellContent: (params: TCellContent<any>) => any;
+            title: string;
+            key: string;
+        }) => {
+            let cell_content = title;
+            if (!is_header) {
+                const cell_value = row_obj[col_index] || '';
+                cell_content = renderCellContent
+                    ? renderCellContent({ cell_value, col_index, row_obj, is_footer, passthrough })
+                    : cell_value;
+            }
+            return (
+                <TableCell col_index={col_index} key={key || col_index}>
+                    {cell_content}
+                </TableCell>
+            );
         }
-        return (
-            <TableCell col_index={col_index} key={key || col_index}>
-                {cell_content}
-            </TableCell>
-        );
-    });
+    );
 
     const row_class_name = classNames(
         'table__row',
@@ -76,26 +114,6 @@ const TableRow = ({
             {action_columns}
         </div>
     );
-};
-
-TableRow.propTypes = {
-    className: PropTypes.string,
-    columns: PropTypes.array,
-    id: PropTypes.number,
-    is_footer: PropTypes.bool,
-    is_header: PropTypes.bool,
-    passthrough: PropTypes.object,
-    replace: PropTypes.shape({
-        component: PropTypes.object,
-        message: PropTypes.string,
-    }),
-    row_obj: PropTypes.object,
-    to: PropTypes.string,
-    content_loader: PropTypes.elementType,
-    measure: PropTypes.func,
-    getActionColumns: PropTypes.func,
-    show_preloader: PropTypes.bool,
-    is_dynamic_height: PropTypes.bool,
 };
 
 export default TableRow;

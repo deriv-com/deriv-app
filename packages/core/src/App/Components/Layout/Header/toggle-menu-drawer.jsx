@@ -4,7 +4,7 @@ import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } fro
 import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, getAllowedLanguages, getLanguage, Localize } from '@deriv/translations';
+import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink, LanguageLink } from 'App/Components/Routes';
@@ -142,7 +142,7 @@ const MenuLink = observer(
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
-    const { app_routing_history } = common;
+    const { app_routing_history, current_language } = common;
     const {
         disableApp,
         enableApp,
@@ -183,8 +183,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
-
-    const current_language = getLanguage();
 
     React.useEffect(() => {
         const processRoutes = () => {

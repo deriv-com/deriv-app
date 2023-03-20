@@ -56,9 +56,7 @@ const TradeButton = ({
             target='_blank'
             rel='noopener noreferrer'
         >
-            <Button primary className='trade-button'>
-                {localize('Trade')}
-            </Button>
+            <Button primary>{localize('Trade')}</Button>
         </a>
     );
 };

@@ -663,33 +663,6 @@ $side-padding: 1.2em;
                 }
             }
         }
-        &-turbos {
-            .data-list {
-                &__item {
-                    .dc-contract-card {
-                        background-color: var(--general-section-1);
-                        &-item__footer {
-                            background-color: var(--general-section-1);
-                        }
-                        &__wrapper {
-                            background-color: var(--general-section-1);
-                        }
-                    }
-                }
-                &__row {
-                    &-content {
-                        bottom: 0.6rem;
-                        position: relative;
-                        font-weight: bold;
-                        font-size: 1rem;
-                    }
-                    &-title {
-                        font-weight: bold;
-                        font-size: 1rem;
-                    }
-                }
-            }
-        }
         &__data-list {
             margin-top: 0.8rem;
         }

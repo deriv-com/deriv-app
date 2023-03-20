@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Label, Money, ContractCard, ContractCardSell, Popover } from '@deriv/components';
+import { Icon, Label, Money, ContractCard, Popover } from '@deriv/components';
 import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from '../Containers/progress-slider-stream.jsx';
@@ -422,112 +422,6 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                         onClickCancel={onClickCancel}
                         onClickSell={onClickSell}
                         server_time={server_time}
-                    />
-                </div>
-            );
-        },
-    },
-];
-
-export const getTurbosOpenPositionsColumnsTemplate = ({ currency, onClickSell, getPositionById }) => [
-    {
-        title: isMobile() ? '' : localize('Type'),
-        col_index: 'type',
-        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
-            if (is_footer) return localize('Total');
-
-            return (
-                <MarketSymbolIconRow
-                    action={cell_value}
-                    key={row_obj.id}
-                    payload={row_obj.contract_info}
-                    should_show_multiplier={false}
-                    should_show_accumulator={false}
-                />
-            );
-        },
-    },
-    {
-        title: localize('Ref. ID'),
-        col_index: 'reference',
-    },
-    {
-        title: localize('Currency'),
-        col_index: 'currency',
-        renderCellContent: ({ row_obj }) => (
-            <CurrencyWrapper currency={getCurrencyDisplayCode(row_obj.contract_info?.currency)} />
-        ),
-    },
-    {
-        title: localize('Barrier Level'),
-        col_index: 'barrier',
-        renderCellContent: ({ row_obj, is_footer }) => {
-            if (is_footer) {
-                return <div className='open-positions__row-action' />;
-            }
-            return <Money amount={row_obj?.barrier} currency={currency} />;
-        },
-    },
-
-    {
-        title: isMobile() ? localize('Total stake') : localize('Stake'),
-        col_index: 'purchase',
-        renderCellContent: ({ row_obj }) => {
-            if (!row_obj.contract_info || !row_obj.purchase) return '-';
-            return <Money amount={row_obj.purchase} currency={currency} />;
-        },
-    },
-    {
-        title: isMobile() ? localize('Total profit/Loss') : localize('Profit/loss'),
-        col_index: 'profit',
-        renderCellContent: ({ row_obj }) => {
-            if (!row_obj.contract_info || !row_obj.contract_info.profit) return null;
-            const total_profit = getTotalProfit(row_obj.contract_info);
-            // eslint-disable-next-line consistent-return
-            return (
-                <div
-                    className={classNames('open-positions__profit-loss', {
-                        'open-positions__profit-loss--negative': total_profit < 0,
-                        'open-positions__profit-loss--positive': total_profit > 0,
-                    })}
-                >
-                    <Money amount={Math.abs(total_profit)} currency={currency} />
-                    <div className='open-positions__profit-loss--movement'>
-                        {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
-                    </div>
-                </div>
-            );
-        },
-    },
-    {
-        title: localize('Remaining time'),
-        col_index: 'id',
-        renderCellContent: ({ row_obj, is_footer }) => {
-            if (is_footer) {
-                return <div className='open-positions__row-action' />;
-            }
-            return <ProgressSliderStream contract_info={row_obj?.contract_info} />;
-        },
-    },
-    {
-        title: localize('Action'),
-        col_index: 'action',
-        renderCellContent: ({ row_obj, is_footer }) => {
-            if (is_footer) {
-                return <div className='open-positions__row-action' />;
-            }
-
-            const { contract_info } = row_obj;
-            const position = getPositionById(contract_info.contract_id);
-            const { is_sell_requested } = position || {};
-
-            return (
-                <div className='open-positions__row-action'>
-                    <ContractCardSell
-                        contract_info={contract_info}
-                        is_sell_requested={is_sell_requested}
-                        getCardLabels={getCardLabels}
-                        onClickSell={onClickSell}
                     />
                 </div>
             );

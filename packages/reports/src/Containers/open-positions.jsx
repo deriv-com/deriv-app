@@ -35,12 +35,10 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.
 import {
     getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
-    getTurbosOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { getCardLabels } from '_common/contract';
 import { connect } from 'Stores/connect';
-import classNames from 'classnames';
 
 const EmptyPlaceholderWrapper = props => (
     <React.Fragment>
@@ -259,7 +257,7 @@ const getRowAction = row_obj =>
  */
 const isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
 
-const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected, is_turbos_selected) => {
+const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected) => {
     let totals;
 
     if (is_multiplier_selected) {
@@ -295,33 +293,6 @@ const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selecte
                 ask_price,
             };
         }
-    } else if (is_turbos_selected) {
-        let buy_price = 0;
-        let bid_price = 0;
-        let take_profit = 0;
-        let profit = 0;
-
-        active_positions_filtered?.forEach(({ contract_info }) => {
-            buy_price += +contract_info.buy_price;
-            bid_price += +contract_info.bid_price;
-            take_profit += contract_info.limit_order?.take_profit?.order_amount;
-            if (contract_info) {
-                profit += getTotalProfit(contract_info);
-            }
-        });
-        totals = {
-            contract_info: {
-                buy_price,
-                bid_price,
-                profit,
-                limit_order: {
-                    take_profit: {
-                        order_amount: take_profit,
-                    },
-                },
-            },
-            purchase: buy_price,
-        };
     } else {
         let indicative = 0;
         let purchase = 0;
@@ -352,7 +323,6 @@ const OpenPositions = ({
     getPositionById,
     is_loading,
     is_multiplier,
-    is_turbos,
     is_mobile,
     is_vanilla,
     NotificationMessages,
@@ -363,18 +333,16 @@ const OpenPositions = ({
     ...props
 }) => {
     const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    const [has_turbos_contract, setTurbosContract] = React.useState(false);
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
-        { text: localize('Options'), is_default: !is_multiplier && !is_turbos },
+        { text: localize('Options'), is_default: !is_multiplier },
         { text: localize('Multipliers'), is_default: is_multiplier },
-        { text: localize('Turbos'), is_default: is_turbos },
     ];
     const [contract_type_value, setContractTypeValue] = React.useState(
         contract_types.find(type => type.is_default)?.text || localize('Options')
     );
-    const is_turbos_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
+    const is_options_selected = contract_type_value === contract_types[0].text;
     const contract_types_list = contract_types.map(({ text }) => ({ text, value: text }));
 
     React.useEffect(() => {
@@ -384,22 +352,18 @@ const OpenPositions = ({
          */
 
         onMount();
-        checkForMultiplierTurbosContract();
+        checkForMultiplierContract();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        checkForMultiplierTurbosContract(previous_active_positions);
+        checkForMultiplierContract(previous_active_positions);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
-    const checkForMultiplierTurbosContract = (prev_active_positions = []) => {
-        if (active_positions === prev_active_positions) return;
-        if (!has_turbos_contract) {
-            setTurbosContract(active_positions.some(p => isTurbosContract(p.contract_info?.contract_type)));
-        }
-        if (!has_multiplier_contract) {
+    const checkForMultiplierContract = (prev_active_positions = []) => {
+        if (!has_multiplier_contract && active_positions !== prev_active_positions) {
             setMultiplierContract(active_positions.some(p => isMultiplierContract(p.contract_info?.contract_type)));
         }
     };
@@ -408,42 +372,24 @@ const OpenPositions = ({
 
     const active_positions_filtered = active_positions?.filter(p => {
         if (p.contract_info) {
-            if (is_multiplier_selected) return isMultiplierContract(p.contract_info.contract_type);
-            if (is_turbos_selected) return isTurbosContract(p.contract_info.contract_type);
-            return (
-                !isMultiplierContract(p.contract_info.contract_type) && !isTurbosContract(p.contract_info.contract_type)
-            );
+            return is_multiplier_selected
+                ? isMultiplierContract(p.contract_info.contract_type)
+                : !isMultiplierContract(p.contract_info.contract_type);
         }
         return true;
     });
 
-    const active_positions_filtered_totals = getOpenPositionsTotals(
-        active_positions_filtered,
-        is_multiplier_selected,
-        is_turbos_selected
-    );
+    const active_positions_filtered_totals = getOpenPositionsTotals(active_positions_filtered, is_multiplier_selected);
 
-    const getColumns = () => {
-        if (is_multiplier_selected) {
-            return getMultiplierOpenPositionsColumnsTemplate({
-                currency,
-                onClickCancel,
-                onClickSell,
-                getPositionById,
-                server_time,
-            });
-        }
-        if (is_turbos_selected) {
-            return getTurbosOpenPositionsColumnsTemplate({
-                currency,
-                onClickSell,
-                getPositionById,
-            });
-        }
-        return getOpenPositionsColumnsTemplate(currency);
-    };
-
-    const columns = getColumns();
+    const columns = is_multiplier_selected
+        ? getMultiplierOpenPositionsColumnsTemplate({
+              currency,
+              onClickCancel,
+              onClickSell,
+              getPositionById,
+              server_time,
+          })
+        : getOpenPositionsColumnsTemplate(currency);
 
     const columns_map = columns.reduce((map, item) => {
         map[item.col_index] = item;
@@ -477,29 +423,6 @@ const OpenPositions = ({
         setContractTypeValue(e.target.value);
     };
 
-    const getOpenPositionsTable = () => {
-        let classname = 'open-positions';
-        let row_size = isMobile() ? 5 : 63;
-
-        if (is_turbos_selected) {
-            classname = classNames('open-positions', {
-                'open-positions-turbos': is_mobile,
-            });
-        } else if (is_multiplier_selected) {
-            classname = 'open-positions-multiplier open-positions';
-            row_size = isMobile() ? 3 : 68;
-        }
-        return (
-            <OpenPositionsTable
-                className={classname}
-                columns={columns}
-                is_empty={active_positions_filtered.length === 0}
-                row_size={row_size}
-                {...shared_props}
-            />
-        );
-    };
-
     return (
         <React.Fragment>
             <NotificationMessages />
@@ -528,7 +451,23 @@ const OpenPositions = ({
                 </React.Fragment>
             )}
 
-            {getOpenPositionsTable()}
+            {is_options_selected ? (
+                <OpenPositionsTable
+                    is_empty={active_positions_filtered.length === 0}
+                    className='open-positions'
+                    columns={columns}
+                    {...shared_props}
+                    row_size={isMobile() ? 5 : 63}
+                />
+            ) : (
+                <OpenPositionsTable
+                    className='open-positions-multiplier open-positions'
+                    columns={columns}
+                    row_size={isMobile() ? 3 : 68}
+                    is_empty={active_positions_filtered.length === 0}
+                    {...shared_props}
+                />
+            )}
         </React.Fragment>
     );
 };
@@ -541,7 +480,6 @@ OpenPositions.propTypes = {
     getPositionById: PropTypes.func,
     is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
-    is_turbos: PropTypes.bool,
     is_vanilla: PropTypes.bool,
     NotificationMessages: PropTypes.func,
     onClickCancel: PropTypes.func,
@@ -567,7 +505,6 @@ export default connect(({ client, common, ui, portfolio, contract_trade }) => ({
     getPositionById: portfolio.getPositionById,
     is_loading: portfolio.is_loading,
     is_multiplier: portfolio.is_multiplier,
-    is_turbos: portfolio.is_turbos,
     NotificationMessages: ui.notification_messages_ui,
     onClickCancel: portfolio.onClickCancel,
     onClickSell: portfolio.onClickSell,

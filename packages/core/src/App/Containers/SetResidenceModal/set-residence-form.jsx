@@ -19,7 +19,7 @@ const SetResidenceForm = ({
             setFieldTouched('residence', true);
             setFieldValue('residence', default_value, true);
         }
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className={`${class_prefix}__residence-selection`}>
@@ -61,7 +61,7 @@ const SetResidenceForm = ({
                     </React.Fragment>
                 )}
             </Field>
-            {!errors?.residence || errors?.residence === true ? (
+            {!errors?.residence?.length > 0 ? (
                 <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
                     {localize(
                         'Country of residence is where you currently live, work, pay taxes and receive government services.'
@@ -77,7 +77,6 @@ SetResidenceForm.propTypes = {
     default_value: PropTypes.string,
     history_value: PropTypes.string,
     errors: PropTypes.object,
-    header_text: PropTypes.string,
     residence_list: PropTypes.arrayOf(PropTypes.object),
     setFieldTouched: PropTypes.func,
     setFieldValue: PropTypes.func,

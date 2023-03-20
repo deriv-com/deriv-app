@@ -21,10 +21,10 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const [country, setCountry] = React.useState('');
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
-    const [is_pasword_modal, setIsPasswordModal] = React.useState(false);
+    const [is_password_modal, setIsPasswordModal] = React.useState(false);
     const [selected_residence, setSelectedResidence] = React.useState('');
     const [selected_citizenship, setSelectedCitizenship] = React.useState('');
-    const disable_btn = (values, errors) =>
+    const disableBtn = (values, errors) =>
         !values.residence || !!errors.residence || !values.citizenship || !!errors.citizenship;
 
     const updatePassword = new_password => {
@@ -96,7 +96,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                         touched,
                     }) => (
                         <Form>
-                            {(!selected_residence && !selected_citizenship) || !is_pasword_modal ? (
+                            {(!selected_residence && !selected_citizenship) || !is_password_modal ? (
                                 <div className='account-signup__main'>
                                     <Text as='h1' weight='bold' className='account-signup__heading'>
                                         {localize('Select your country and citizenship:')}
@@ -122,7 +122,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     <div className='account-signup__footer'>
                                         <Button
                                             className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled': disable_btn(values, errors),
+                                                'account-signup__btn--disabled': disableBtn(values, errors),
                                             })}
                                             type='button'
                                             onClick={() => {

@@ -9,8 +9,10 @@ import {
     getCurrencyDisplayCode,
     validNumber,
     useIsMounted,
+    WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
 import SelfExclusionArticleContent from './self-exclusion-article-content.jsx';
@@ -19,31 +21,22 @@ import SelfExclusionModal from './self-exclusion-modal.jsx';
 import SelfExclusionWrapper from './self-exclusion-wrapper.jsx';
 import SelfExclusionForm from './self-exclusion-form.jsx';
 
-const SelfExclusion = ({
-    currency,
-    footer_ref,
-    is_app_settings,
-    is_cr,
-    is_appstore,
-    is_eu,
-    is_mf,
-    is_mlt,
-    is_mx,
-    is_switching,
-    is_tablet,
-    is_uk,
-    is_virtual,
-    is_wrapper_bypassed,
-    logout,
-    overlay_ref,
-    setIsOverlayShown,
-    ws,
-}) => {
+const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, overlay_ref, setIsOverlayShown }) => {
     const exclusion_fields_settings = Object.freeze({
         max_number: 9999999999999,
         max_open_positions: 999999999,
         six_weeks: 60480, // in minutes
     });
+    const { client, ui } = useStore();
+    const is_tablet = ui.is_tablet;
+    const is_eu = client.is_eu;
+    const currency = client.currency;
+    const is_mf = client.landing_company_shortcode === 'maltainvest';
+    const is_mlt = client.landing_company_shortcode === 'malta';
+    const is_mx = client.landing_company_shortcode === 'iom';
+    const is_uk = client.is_uk;
+    const is_wrapper_bypassed = false;
+    const logout = client.logout;
 
     const exclusion_texts = {
         max_deposit: localize('Max. deposit limit per day'),
@@ -99,7 +92,7 @@ const SelfExclusion = ({
     const [state, setState] = React.useReducer((prev_state, value) => ({ ...prev_state, ...value }), initial_state);
 
     React.useEffect(() => {
-        if (is_virtual) {
+        if (client.is_virtual) {
             setState({ is_loading: false });
         } else {
             getLimits();
@@ -113,15 +106,15 @@ const SelfExclusion = ({
     }, []);
 
     React.useEffect(() => {
-        if (prev_is_switching.current !== is_switching) {
-            prev_is_switching.current = is_switching;
+        if (prev_is_switching.current !== client.is_switching) {
+            prev_is_switching.current = client.is_switching;
 
             resetState();
             getLimits();
             getSelfExclusion();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_switching]);
+    }, [client.is_switching]);
 
     React.useEffect(() => {
         if (typeof setIsOverlayShown === 'function') {
@@ -190,7 +183,7 @@ const SelfExclusion = ({
                 });
                 if (!is_ok) errors[item] = message;
             }
-            if (state.self_exclusions[item] && !values[item] && !is_cr) {
+            if (state.self_exclusions[item] && !values[item] && !client.standpoint.svg) {
                 errors[item] = more_than_zero_message;
             }
         });
@@ -229,7 +222,7 @@ const SelfExclusion = ({
         }
 
         custom_validation.forEach(item => {
-            if (state.self_exclusions[item] && !values[item] && !is_cr) {
+            if (state.self_exclusions[item] && !values[item] && !client.standpoint.svg) {
                 errors[item] = more_than_zero_message;
             }
         });
@@ -251,7 +244,7 @@ const SelfExclusion = ({
                     request[attr] = string_exclusions.includes(attr) ? values[attr] : +values[attr];
                 });
 
-                ws.authorized.setSelfExclusion(request).then(response => resolve(response));
+                WS.authorized.setSelfExclusion(request).then(response => resolve(response));
             });
 
         if (has_need_logout) {
@@ -330,7 +323,7 @@ const SelfExclusion = ({
     const getSelfExclusion = () => {
         setState({ is_loading: true });
 
-        ws.authorized.getSelfExclusion({ get_self_exclusion: 1 }).then(self_exclusion_response => {
+        WS.authorized.getSelfExclusion({ get_self_exclusion: 1 }).then(self_exclusion_response => {
             populateExclusionResponse(self_exclusion_response);
         });
     };
@@ -338,7 +331,7 @@ const SelfExclusion = ({
     const getLimits = () => {
         setState({ is_loading: true });
 
-        ws.authorized.getLimits({ get_limits: 1 }).then(limits => {
+        WS.authorized.getLimits({ get_limits: 1 }).then(limits => {
             exclusion_limits.current = limits;
         });
     };
@@ -349,13 +342,17 @@ const SelfExclusion = ({
         const getLength = value =>
             value.toString().length + (isIntegerField(field) || decimals_length === 0 ? 0 : decimals_length + 1); // add 1 to allow typing dot
 
-        if (/max_open_bets/.test(field) && exclusion_limits.current.get_limits?.open_positions && !is_cr)
+        if (
+            /max_open_bets/.test(field) &&
+            exclusion_limits.current.get_limits?.open_positions &&
+            !client.standpoint.svg
+        )
             return getLength(exclusion_limits.current.get_limits.open_positions);
 
-        if (/max_balance/.test(field) && exclusion_limits.current.get_limits?.account_balance && !is_cr)
+        if (/max_balance/.test(field) && exclusion_limits.current.get_limits?.account_balance && !client.standpoint.svg)
             return getLength(exclusion_limits.current.get_limits.account_balance);
 
-        if (!state.self_exclusions[field] || is_cr) {
+        if (!state.self_exclusions[field] || client.standpoint.svg) {
             if (/max_open_bets/.test(field)) return 9; // TODO: remove when the error is fixed on BE
             return getLength(exclusion_fields_settings.max_number);
         }
@@ -363,11 +360,11 @@ const SelfExclusion = ({
         return getLength(state.self_exclusions[field]);
     };
 
-    if (is_virtual) {
+    if (client.is_virtual) {
         return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
     }
 
-    if (state.is_loading || is_switching) {
+    if (state.is_loading || client.is_switching) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -410,7 +407,7 @@ const SelfExclusion = ({
     return (
         <SelfExclusionContext.Provider value={context_value}>
             <SelfExclusionWrapper>
-                {/* Only show the modal in non-"<AppSettings>" views, others will 
+                {/* Only show the modal in non-"<AppSettings>" views, others will
                     use the overlay provided by <AppSettings> */}
                 {!is_app_settings && <SelfExclusionModal />}
                 <SelfExclusionForm />
@@ -418,27 +415,14 @@ const SelfExclusion = ({
             {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}
         </SelfExclusionContext.Provider>
     );
-};
+});
 
 SelfExclusion.propTypes = {
-    currency: PropTypes.string.isRequired,
     footer_ref: PropTypes.shape({ current: PropTypes.any }),
     is_appstore: PropTypes.bool,
     is_app_settings: PropTypes.bool,
-    is_cr: PropTypes.bool.isRequired,
-    is_eu: PropTypes.bool.isRequired,
-    is_mf: PropTypes.bool.isRequired,
-    is_mlt: PropTypes.bool.isRequired,
-    is_mx: PropTypes.bool.isRequired,
-    is_switching: PropTypes.bool.isRequired,
-    is_tablet: PropTypes.bool.isRequired,
-    is_uk: PropTypes.bool.isRequired,
-    is_virtual: PropTypes.bool.isRequired,
-    is_wrapper_bypassed: PropTypes.bool,
-    logout: PropTypes.func.isRequired,
     overlay_ref: PropTypes.shape({ current: PropTypes.any }),
     setIsOverlayShown: PropTypes.func,
-    ws: PropTypes.any,
 };
 
 export default SelfExclusion;

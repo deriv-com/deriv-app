@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
 import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import { flatten } from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Styles/account.scss';
@@ -109,25 +109,8 @@ const PageOverlayWrapper = ({
     );
 };
 
-const Account = ({
-    active_account_landing_company,
-    currency,
-    history,
-    is_from_derivgo,
-    is_logged_in,
-    is_logging_in,
-    is_pre_appstore,
-    is_risky_client,
-    is_virtual,
-    is_visible,
-    location,
-    logout,
-    platform,
-    routeBackInApp,
-    routes,
-    should_allow_authentication,
-    toggleAccount,
-}) => {
+const Account = observer(({ history, location, routes }) => {
+    const { client, common, ui } = useStore();
     const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
@@ -137,33 +120,34 @@ const Account = ({
         subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
     }));
     let selected_content = subroutes.find(r => matchRoute(r, location.pathname));
-    const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
+    const onClickClose = React.useCallback(() => common.routeBackInApp(history), [common.routeBackInApp, history]);
 
     React.useEffect(() => {
-        toggleAccount(true);
-    }, [toggleAccount]);
+        ui.toggleAccountSettings(true);
+    }, [ui.toggleAccountSettings]);
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.languages) {
-                route.is_hidden = !is_pre_appstore;
+                route.is_hidden = !client.is_pre_appstore;
             }
 
             if (route.path === shared_routes.financial_assessment) {
                 route.is_disabled =
-                    is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                    client.is_virtual ||
+                    (client.landing_company_shortcode === 'maltainvest' && !client.is_risky_client);
             }
 
             if (route.path === shared_routes.trading_assessment) {
-                route.is_disabled = is_virtual || active_account_landing_company !== 'maltainvest';
+                route.is_disabled = client.is_virtual || client.landing_company_shortcode !== 'maltainvest';
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
-                route.is_disabled = !should_allow_authentication;
+                route.is_disabled = !client.should_allow_authentication;
             }
 
             if (route.path === shared_routes.proof_of_ownership) {
-                route.is_disabled = is_virtual;
+                route.is_disabled = client.is_virtual;
             }
         });
     });
@@ -177,7 +161,7 @@ const Account = ({
     const action_bar_items = [
         {
             onClick: () => {
-                routeBackInApp(history);
+                common.routeBackInApp(history);
             },
             icon: 'IcCross',
             title: localize('Close'),
@@ -189,27 +173,31 @@ const Account = ({
     if (is_account_limits_route) {
         action_bar_items.push({
             // eslint-disable-next-line react/display-name
-            component: () => <AccountLimitInfo currency={currency} is_virtual={is_virtual} />,
+            component: () => <AccountLimitInfo currency={client.currency} is_virtual={client.is_virtual} />,
         });
     }
 
-    if (!is_logged_in && is_logging_in) {
+    if (!client.is_logged_in && client.is_logging_in) {
         return <Loading is_fullscreen className='account__initial-loader' />;
     }
 
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     return (
-        <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
+        <FadeWrapper
+            is_visible={ui.is_account_settings_visible}
+            className='account-page-wrapper'
+            keyname='account-page-wrapper'
+        >
             <div className='account'>
                 <PageOverlayWrapper
-                    is_from_derivgo={is_from_derivgo}
+                    is_from_derivgo={common.is_from_derivgo}
                     is_appstore={is_appstore}
-                    is_pre_appstore={is_pre_appstore}
+                    is_pre_appstore={client.is_pre_appstore}
                     list_groups={list_groups}
-                    logout={logout}
+                    logout={client.logout}
                     onClickClose={onClickClose}
-                    platform={platform}
+                    platform={common.platform}
                     selected_route={selected_route}
                     subroutes={subroutes}
                     history={history}
@@ -217,41 +205,12 @@ const Account = ({
             </div>
         </FadeWrapper>
     );
-};
+});
 
 Account.propTypes = {
-    active_account_landing_company: PropTypes.string,
-    currency: PropTypes.string,
     history: PropTypes.object,
-    is_from_derivgo: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
-    is_risky_client: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    is_visible: PropTypes.bool,
     location: PropTypes.object,
-    logout: PropTypes.func,
-    platform: PropTypes.string,
-    routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
-    should_allow_authentication: PropTypes.bool,
-    toggleAccount: PropTypes.func,
 };
 
-export default connect(({ client, common, ui }) => ({
-    active_account_landing_company: client.landing_company_shortcode,
-    currency: client.currency,
-    is_from_derivgo: common.is_from_derivgo,
-    is_logged_in: client.is_logged_in,
-    is_logging_in: client.is_logging_in,
-    is_pre_appstore: client.is_pre_appstore,
-    is_risky_client: client.is_risky_client,
-    is_virtual: client.is_virtual,
-    is_visible: ui.is_account_settings_visible,
-    logout: client.logout,
-    platform: common.platform,
-    routeBackInApp: common.routeBackInApp,
-    should_allow_authentication: client.should_allow_authentication,
-    toggleAccount: ui.toggleAccountSettings,
-}))(withRouter(Account));
+export default withRouter(Account);

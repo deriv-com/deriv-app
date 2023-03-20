@@ -41,10 +41,17 @@ const unrecoverable_errors = [
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
-const shouldRestartOnError = (bot, error_name = '') => !unrecoverable_errors.includes(error_name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
+const shouldRestartOnError = (bot, error_name = '') =>
+    !unrecoverable_errors.includes(error_name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, error_name = '') => {
-    const stop_errors = ['SellNotAvailableCustom', 'CustomInvalidProposal', 'ContractCreationFailure', 'OfferingsValidationError', 'InputValidationFailed'];
+    const stop_errors = [
+        'SellNotAvailableCustom',
+        'CustomInvalidProposal',
+        'ContractCreationFailure',
+        'OfferingsValidationError',
+        'InputValidationFailed',
+    ];
     if (stop_errors.includes(error_name) && botInitialized(bot)) {
         return true;
     }

@@ -77,6 +77,7 @@ const eu_countries = [
     'im',
     'gb',
     'mt',
+    'my',
 ];
 // TODO: [duplicate_code] - Move this to shared package
 // check if client is from EU

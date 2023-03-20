@@ -1,11 +1,11 @@
 import React from 'react';
 import BinaryBot from 'Assets/svgs/trading-platform/branding/ic-branding-binarybot-dashboard.svg';
 import BinaryBotBlue from 'Assets/svgs/trading-platform/ic-appstore-binarybot-blue.svg';
-import CFDs from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-cfds.svg';
-import DBot from 'Assets/svgs/trading-platform/branding/ic-branding-dbot-dashboard.svg';
+import DBot from 'Assets/svgs/trading-platform/ic-brand-dbot.svg';
 import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
-import Derived from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-derived-dashboard.svg';
-import DerivGo from 'Assets/svgs/trading-platform/branding/ic-branding-derivgo-dashboard.svg';
+import Derived from 'Assets/svgs/trading-platform/ic-appstore-derived.svg';
+import DerivEZ from 'Assets/svgs/trading-platform/ic-brand-derivEZ.svg';
+import DerivGo from 'Assets/svgs/trading-platform/ic-brand-derivgo.svg';
 import DerivGoBlack from 'Assets/svgs/trading-platform/ic-appstore-derivgo-black.svg';
 import DerivLogo from 'Assets/svgs/trading-platform/branding/ic-branding-deriv-logo.svg';
 import DerivTradingLogo from 'Assets/svgs/trading-platform/ic-appstore-deriv-trading-logo.svg';
@@ -21,10 +21,10 @@ import { IconProps } from '../icon-types';
 export const PlatformIcons = {
     BinaryBot,
     BinaryBotBlue,
-    CFDs,
     DBot,
     Demo,
     Derived,
+    DerivEZ,
     DerivGo,
     DerivGoBlack,
     DerivLogo,

@@ -99,7 +99,7 @@ const StaticCFDAccountManager = ({
                     is_eu_user &&
                     (type === 'financial' ? (
                         <TradigPlatformIconProps
-                            icon='CFDs'
+                            icon='Financial'
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
                                 'static-cfd-account-manager__icon--blurry':
@@ -115,6 +115,17 @@ const StaticCFDAccountManager = ({
                             })}
                         />
                     ))}
+
+                {platform === CFD_PLATFORMS.DERIVEZ && (
+                    <TradigPlatformIconProps
+                        icon='DerivEZ'
+                        size={icon_size}
+                        className={classNames('static-cfd-account-manager--cfds', {
+                            'static-cfd-account-manager__icon--blurry':
+                                is_blurry.icon || is_last_step || is_derivx_last_step,
+                        })}
+                    />
+                )}
 
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <TradigPlatformIconProps

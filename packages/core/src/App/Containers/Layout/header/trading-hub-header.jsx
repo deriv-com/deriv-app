@@ -232,7 +232,6 @@ TradingHubHeader.propTypes = {
     settings_extension: PropTypes.array,
     should_show_exit_traders_modal: PropTypes.bool,
     switchToCRAccount: PropTypes.func,
-    toggleExitTradersHubModal: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
 };
@@ -257,5 +256,4 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
     content_flag: traders_hub.content_flag,
     switchToCRAccount: traders_hub.switchToCRAccount,
-    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
 }))(withRouter(TradingHubHeader));

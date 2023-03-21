@@ -189,7 +189,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
-    is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
     is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,

@@ -78,7 +78,7 @@ const CFDsListing = () => {
             key: 'trading_app_card_SwapFree',
             action_type: 'get',
             availability: 'Non-EU',
-            market_type: 'swapfree',
+            market_type: 'all',
             status: 'authenticated',
             landing_company_short: 'costarica',
         },

@@ -24,7 +24,7 @@
 
         &--eu-user {
             @include mobile {
-                height: calc(550px) !important;
+                height: calc(550px + 8rem);
             }
         }
 

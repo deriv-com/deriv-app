@@ -68,6 +68,22 @@ const CFDsListing = () => {
         return null;
     };
 
+    const mock_combined_cfd_mt5_accounts = [
+        ...combined_cfd_mt5_accounts,
+        {
+            icon: 'SwapFree',
+            name: 'SwapFree',
+            platform: 'mt5',
+            description: 'Trade CFDs on MT5 with synthetics, baskets, and derived FX.',
+            key: 'trading_app_card_SwapFree',
+            action_type: 'get',
+            availability: 'Non-EU',
+            market_type: 'swapfree',
+            status: 'authenticated',
+            landing_company_short: 'costarica',
+        },
+        // add more objects here if needed
+    ];
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
 
     const no_real_cr_non_eu_regulator = no_CR_account && !is_eu_user && is_real;
@@ -135,7 +151,7 @@ const CFDsListing = () => {
             </div>
             {is_landing_company_loaded ? (
                 <>
-                    {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
+                    {mock_combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
                         const has_mt5_account_status = existing_account.status
                             ? getMT5AccountAuthStatus(existing_account.status)

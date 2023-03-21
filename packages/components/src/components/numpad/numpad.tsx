@@ -1,13 +1,34 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import NumberGrid from './number-grid.jsx';
-import StepInput from './step-input.jsx';
+import NumberGrid from './number-grid';
+import StepInput from './step-input';
 import Text from '../text';
 import Button from '../button/button';
 import { useLongPress } from '../../hooks';
 
-const concatenate = (number, default_value) => default_value.toString().concat(number);
+type TNumpad = {
+    className?: string;
+    currency: string;
+    is_regular?: boolean;
+    is_currency?: boolean;
+    is_submit_disabled?: boolean;
+    label: string;
+    reset_press_interval: number;
+    reset_value: string;
+    max: number;
+    min: number;
+    pip_size: number;
+    onSubmit: (param: number) => void;
+    v: string;
+    render?: (props: { string_value: string; className: string }) => React.ReactNode;
+    submit_label: string;
+    value: string;
+    format: (v: string) => number;
+    onValueChange: (val: number | string) => void;
+    onValidate: (default_value: number | string) => string | undefined;
+};
+
+const concatenate = (number: string, default_value: number) => default_value.toString().concat(number);
 const Numpad = ({
     className,
     currency,
@@ -27,16 +48,16 @@ const Numpad = ({
     format,
     onValueChange,
     onValidate,
-}) => {
-    const formatNumber = v => (typeof format === 'function' ? format(v) : v);
-    const isFloat = v => String(v).match(/\./);
+}: TNumpad) => {
+    const formatNumber = (v: string) => (typeof format === 'function' ? format(v) : Number(v));
+    const isFloat = (v: string) => new RegExp(/\./).test(String(v));
     const formatted_value = formatNumber(value);
-    const [is_float, setFloat] = React.useState(isFloat(formatted_value));
+    const [is_float, setFloat] = React.useState(isFloat(String(formatted_value)));
     const [default_value, setValue] = React.useState(formatted_value);
     const [has_error, setHasError] = React.useState(false);
 
     React.useEffect(() => {
-        if (formatted_value !== formatNumber(default_value)) {
+        if (formatted_value !== formatNumber(String(default_value))) {
             updateValue(value);
             setFloat(isFloat(value));
         }
@@ -49,12 +70,12 @@ const Numpad = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [default_value, value]);
 
-    const updateValue = val => {
-        setValue(val);
+    const updateValue = (val: string) => {
+        setValue(Number(val));
         if (onValueChange) onValueChange(val);
     };
 
-    const onSelect = num => {
+    const onSelect = (num: number | string) => {
         switch (num) {
             // backspace
             case -1:
@@ -67,8 +88,8 @@ const Numpad = ({
                     break;
                 }
                 setFloat(true);
-                if (default_value.length === 0) {
-                    updateValue(concatenate(num, '0'));
+                if (default_value.toString().length === 0) {
+                    updateValue(concatenate(num, 0));
                 } else {
                     updateValue(concatenate(num, default_value));
                 }
@@ -76,26 +97,26 @@ const Numpad = ({
                 break;
             default:
                 if (String(default_value) === '0') {
-                    updateValue(concatenate(num, ''));
+                    updateValue(concatenate(String(num), 0));
                 } else {
                     const regex = /(?:\d+\.)(\d+)$/;
-                    const matches = regex.exec(default_value);
+                    const matches = regex.exec(String(default_value));
 
                     if (matches !== null && is_float) {
                         matches.forEach((match, groupIndex) => {
                             const pip_size_allowed = groupIndex === 1 && match.length < pip_size && is_float;
                             if (pip_size_allowed) {
-                                updateValue(concatenate(num, default_value));
+                                updateValue(concatenate(String(num), default_value));
                             }
                         });
-                    } else if (concatenate(num, default_value) <= max) {
-                        updateValue(concatenate(num, default_value));
+                    } else if (Number(concatenate(String(num), default_value)) <= max) {
+                        updateValue(concatenate(String(num), default_value));
                     }
                 }
         }
     };
 
-    const getDecimals = val => {
+    const getDecimals = (val: string | number) => {
         const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
         return array_value && array_value.length > 1 ? array_value[1].length : 0;
     };
@@ -126,9 +147,11 @@ const Numpad = ({
     };
     const backspaceLongPress = useLongPress(clearValue, reset_press_interval);
 
-    const is_button_disabled =
-        is_submit_disabled || !default_value.toString().length || (min && formatNumber(default_value) < min);
-
+    const is_button_disabled = !!(
+        is_submit_disabled ||
+        !default_value.toString().length ||
+        (min && formatNumber(String(default_value)) < min)
+    );
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -137,7 +160,7 @@ const Numpad = ({
             })}
         >
             <StepInput
-                className={has_error ? 'dc-numpad__input-field--has-error' : null}
+                className={has_error ? 'dc-numpad__input-field--has-error' : ''}
                 currency={currency}
                 pip_size={pip_size}
                 value={default_value}
@@ -151,10 +174,10 @@ const Numpad = ({
                 max={max}
                 label={label}
             />
-            <NumberGrid onSelect={onSelect} />
+            <NumberGrid onSelect={onSelect} number={0} />
             {is_currency && (
                 <Button
-                    type='secondary'
+                    type='button'
                     className='dc-numpad__number'
                     has_effect
                     onClick={() => onSelect('.')}
@@ -169,7 +192,7 @@ const Numpad = ({
             <div className='dc-numpad__bkspace'>
                 <Button
                     {...backspaceLongPress}
-                    type='secondary'
+                    type='button'
                     has_effect
                     className='dc-numpad__number'
                     onClick={() => {
@@ -187,18 +210,18 @@ const Numpad = ({
 
             <div className='dc-numpad__ok'>
                 <Button
-                    type='secondary'
+                    type='button'
                     has_effect
                     className={classNames('dc-numpad__number', {
                         'dc-numpad__number--is-disabled':
                             is_submit_disabled ||
                             !default_value.toString().length ||
-                            (min && formatNumber(default_value) < min),
+                            (min && formatNumber(String(default_value)) < min),
                     })}
                     onClick={() => {
                         if (!default_value.toString().length) return;
-                        if (min && formatNumber(default_value) < min) return;
-                        onSubmit(formatNumber(default_value));
+                        if (min && formatNumber(String(default_value)) < min) return;
+                        onSubmit(formatNumber(String(default_value)));
                     }}
                     is_disabled={is_button_disabled}
                     text={submit_label}
@@ -216,27 +239,6 @@ const Numpad = ({
             </div>
         </div>
     );
-};
-
-Numpad.propTypes = {
-    currency: PropTypes.string,
-    format: PropTypes.func,
-    is_currency: PropTypes.bool,
-    is_regular: PropTypes.bool,
-    is_submit_disabled: PropTypes.bool,
-    reset_press_interval: PropTypes.number,
-    max: PropTypes.number,
-    min: PropTypes.number,
-    onSubmit: PropTypes.func,
-    onValidate: PropTypes.func,
-    pip_size: PropTypes.number,
-    render: PropTypes.func,
-    reset_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    submit_label: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    className: PropTypes.string,
-    label: PropTypes.string,
-    onValueChange: PropTypes.func,
 };
 
 export default Numpad;

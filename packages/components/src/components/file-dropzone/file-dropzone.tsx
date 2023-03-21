@@ -104,6 +104,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
     }, [validation_error_message]);
 
     const dropzone_ref = React.useRef(null);
+
     return (
         <Dropzone
             // sends back accepted files array

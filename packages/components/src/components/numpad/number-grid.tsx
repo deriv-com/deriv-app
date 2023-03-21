@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import NumberButton from './number-button.jsx';
+import NumberButton, { TNumberButton } from './number-button';
 
-const NumberGrid = ({ onSelect }) => {
+const NumberGrid = ({ onSelect }: TNumberButton) => {
     return (
         <React.Fragment>
             {Array.from(new Array(10), (val, index) => index).map(n => (
@@ -10,10 +9,6 @@ const NumberGrid = ({ onSelect }) => {
             ))}
         </React.Fragment>
     );
-};
-
-NumberGrid.propType = {
-    onSelect: PropTypes.func,
 };
 
 export default NumberGrid;

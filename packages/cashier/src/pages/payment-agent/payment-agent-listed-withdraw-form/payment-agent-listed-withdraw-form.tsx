@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
+import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, Input, Loading, Money, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -9,22 +8,36 @@ import { observer, useStore } from '@deriv/stores';
 import ErrorDialog from 'Components/error-dialog';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-listed-withdraw-form.scss';
+import { TPaymentAgent } from '../../../types';
 
-const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) => {
-    const errors = {};
+type TValidateWithdrawalValueProps = {
+    amount: string;
+};
+
+type TValidateWithdrawalProps = {
+    balance: string;
+    currency: string;
+    payment_agent: TPaymentAgent;
+};
+
+const validateWithdrawal = (
+    values: TValidateWithdrawalValueProps,
+    { balance, currency, payment_agent }: TValidateWithdrawalProps
+) => {
+    const errors = { amount: '' };
 
     const { is_ok, message } = validNumber(values.amount, {
         type: 'float',
         decimals: getDecimalPlaces(currency),
         ...(payment_agent.min_withdrawal && {
-            min: payment_agent.min_withdrawal,
-            max: payment_agent.max_withdrawal,
+            min: +payment_agent.min_withdrawal,
+            max: payment_agent.max_withdrawal !== null ? +payment_agent.max_withdrawal : undefined,
         }),
     });
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (!is_ok) {
+    } else if (!is_ok && message) {
         errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
@@ -33,7 +46,11 @@ const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) =
     return errors;
 };
 
-const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
+type TPaymentAgentListedWithdrawForm = {
+    payment_agent: TPaymentAgent;
+};
+
+const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgentListedWithdrawForm) => {
     const { client } = useStore();
     const { general_store, payment_agent: payment_agent_store } = useCashierStore();
     const {
@@ -54,22 +71,25 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
         onMount();
     }, [onMount]);
 
-    const input_ref = React.useRef(null);
+    const input_ref = React.useRef<HTMLInputElement>();
 
     React.useEffect(() => {
         if (input_ref.current) {
-            input_ref.current.value = null;
+            input_ref.current.value = '';
         }
     }, [selected_bank]);
 
-    const validateWithdrawalPassthrough = values =>
+    const validateWithdrawalPassthrough = (values: TValidateWithdrawalValueProps) =>
         validateWithdrawal(values, {
             balance,
             currency,
             payment_agent: payment_agent_list.find(pa => pa.value === payment_agent.paymentagent_loginid),
-        });
+        } as TValidateWithdrawalProps);
 
-    const onWithdrawalPassthrough = async (values, actions) => {
+    const onWithdrawalPassthrough = async (
+        values: TValidateWithdrawalValueProps,
+        actions: { setSubmitting: (value: boolean) => void }
+    ) => {
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
             loginid: payment_agent.paymentagent_loginid,
             currency,
@@ -132,7 +152,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
                     return (
                         <Form className='payment-agent-listed-withdraw-form__form'>
                             <Field name='amount'>
-                                {({ field }) => (
+                                {({ field }: FieldProps) => (
                                     <Input
                                         {...field}
                                         className={classNames('dc-input--no-placeholder', {
@@ -172,9 +192,5 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
         </div>
     );
 });
-
-PaymentAgentListedWithdrawForm.propTypes = {
-    payment_agent: PropTypes.object,
-};
 
 export default PaymentAgentListedWithdrawForm;

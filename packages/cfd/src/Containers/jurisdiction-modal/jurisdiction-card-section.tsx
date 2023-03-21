@@ -6,7 +6,7 @@ import { TJurisdictionCardSectionTitleIndicators } from 'Components/props.types'
 import classNames from 'classnames';
 
 const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionProps) => {
-    function renderTitleIndicator(titleIndicators: TJurisdictionCardSectionTitleIndicators) {
+    const renderTitleIndicator=(titleIndicators: TJurisdictionCardSectionTitleIndicators) =>{
         switch (titleIndicators.type) {
             case 'displayText':
                 return (
@@ -27,9 +27,9 @@ const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionPr
     }
 
     return (
-        <div className={'cfd-card-section'}>
-            <div className={'cfd-card-title-container'}>
-                <div className={'cfd-card-title'}>
+        <div className='cfd-card-section'>
+            <div className='cfd-card-title-container'>
+                <div className='cfd-card-title'>
                     <Text as='span' weight='bold' size='xs'>
                         <Localize i18n_default_text={cardSectionItem.title} />
                     </Text>

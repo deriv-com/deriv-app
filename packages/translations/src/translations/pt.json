@@ -3331,6 +3331,7 @@
     "-243332856": "Estatísticas do último dígito para 1000 ticks mais recentes de {{ underlying_name }}",
     "-339236213": "Multiplicador",
     "-1900883796": "<0>{{trade_type}}:</0> Você receberá um pagamento se o mercado for {{payout_status}} esse preço <0>na hora de expiração.</0> Caso contrário, seu pagamento será zero.",
+    "-347156282": "Submit Proof",
     "-461955353": "preço de aquisição",
     "-172348735": "lucro",
     "-1624674721": "tipo de contrato",

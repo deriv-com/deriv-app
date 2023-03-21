@@ -23,6 +23,16 @@ const BinarySocketGeneral = (() => {
                 return;
             }
 
+            if (client_store.is_logged_in || client_store.is_logging_in) {
+                WS.get()
+                    .expectResponse('authorize')
+                    .then(() => {
+                        WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+                    });
+            } else {
+                WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+            }
+
             ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
@@ -245,7 +255,6 @@ const BinarySocketGeneral = (() => {
 
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
-        WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
         subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();

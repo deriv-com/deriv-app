@@ -1502,6 +1502,8 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
+        if (!loginid) return;
+
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
@@ -2032,6 +2034,7 @@ export default class ClientStore extends BaseStore {
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
         this.landing_companies = {};
+        this.setIsLoggingIn(false);
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
         localStorage.setItem('active_loginid', this.loginid);

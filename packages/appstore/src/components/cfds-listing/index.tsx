@@ -174,6 +174,7 @@ const CFDsListing = () => {
                                             setSelectedAccount(existing_account);
                                         } else if (button_name === 'topup-btn') {
                                             showTopUpModal(existing_account);
+                                            setAppstorePlatform(existing_account.platform);
                                         } else {
                                             startTrade(existing_account.platform, existing_account);
                                         }
@@ -241,6 +242,7 @@ const CFDsListing = () => {
                                         setSelectedAccount(existing_account);
                                     } else if (button_name === 'topup-btn') {
                                         showTopUpModal(existing_account);
+                                        setAppstorePlatform(account.platform);
                                     } else {
                                         startTrade(account.platform, existing_account);
                                     }

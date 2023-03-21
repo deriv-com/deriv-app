@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import {
@@ -22,13 +21,11 @@ import {
     isRecurringNumberRegex,
     isSequentialNumber,
     preventEmptyClipboardPaste,
+    isIDVWhitelistDocumentNumber,
 } from '../../idv-document-submit/utils';
-import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
-    const location = useLocation();
-    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -100,6 +97,14 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         const is_sequential_number = isSequentialNumber(document_number);
         const is_recurring_number = isRecurringNumberRegex(document_number);
         const needs_additional_document = !!document_type.additional;
+        const is_idv_whitelist_document_number = isIDVWhitelistDocumentNumber(
+            country_code,
+            document_type.id,
+            document_number
+        );
+        const is_document_number_invalid =
+            (!is_idv_whitelist_document_number && (is_recurring_number || is_sequential_number)) ||
+            document_number === document_type.example_format;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -117,10 +122,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (
-            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
-            document_number === document_type.example_format
-        ) {
+        } else if (is_document_number_invalid) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
@@ -177,7 +179,17 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             validateOnChange
             validateOnBlur
         >
-            {({ errors, handleBlur, handleChange, handleSubmit, isValid, setFieldValue, touched, values }) => (
+            {({
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                setFieldValue,
+                touched,
+                values,
+            }) => (
                 <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef }) => (
                         <form ref={setRef} className='poi-form-on-signup' onSubmit={handleSubmit} noValidate>
@@ -332,8 +344,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                         }
                                                                         disabled={is_input_disable}
                                                                         error={
-                                                                            touched.document_number &&
-                                                                            errors.document_number
+                                                                            (touched.document_number &&
+                                                                                errors.document_number) ||
+                                                                            errors.error_message
                                                                         }
                                                                         autoComplete='off'
                                                                         placeholder='Enter your document number'
@@ -421,7 +434,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
 
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={(!values.document_number && !values.document_type) || !isValid}
+                                    is_disabled={
+                                        (!values.document_number && !values.document_type) || !isValid || isSubmitting
+                                    }
                                     label={localize('Next')}
                                     is_absolute={isMobile()}
                                     has_cancel={has_previous}

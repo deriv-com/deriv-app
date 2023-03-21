@@ -22,7 +22,6 @@ type TDiv100vhContainer = {
     max_height_offset?: string;
     className?: string;
     max_autoheight_offset?: string;
-    children: React.ReactNode;
 };
 
 const Div100vhContainer = ({

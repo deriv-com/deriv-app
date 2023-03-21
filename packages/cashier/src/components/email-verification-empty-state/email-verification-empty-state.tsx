@@ -1,17 +1,15 @@
 import React from 'react';
-import { useVerifyEmail, TEmailVerificationType } from '@deriv/hooks';
 import { EmptyState } from '@deriv/components';
+import { useVerifyEmail } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import EmailVerificationResendEmptyState from './email-verification-resend-empty-state';
 import './email-verification-empty-state.scss';
 
 type TEmailVerificationEmptyStateProps = {
-    type: TEmailVerificationType;
+    verify: ReturnType<typeof useVerifyEmail>;
 };
 
-const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps) => {
-    const verify = useVerifyEmail(type);
-
+const EmailVerificationEmptyState = ({ verify }: TEmailVerificationEmptyStateProps) => {
     const action = {
         label: localize("Didn't receive the email?"),
         onClick: verify.send,

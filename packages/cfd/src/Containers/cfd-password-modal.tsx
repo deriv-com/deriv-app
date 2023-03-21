@@ -151,7 +151,6 @@ const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
     platform,
-    context,
 }: TPasswordModalHeaderProps) => {
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
@@ -197,6 +196,7 @@ const ReviewMessageForMT5 = ({
 };
 
 const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
+    const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         switch (type) {
             case 'all':
@@ -208,7 +208,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
             default:
                 return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
-    } else {
+    } else if (traders_hub) {
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
@@ -219,6 +219,18 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
                 return <TradingPlatformIcon icon='Financial' size={128} />;
             default:
                 return <TradingPlatformIcon icon='Financial' size={128} />;
+        }
+    } else {
+        switch (type) {
+            case 'synthetic':
+                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+            case 'financial':
+                if (show_eu_related_content) {
+                    return <Icon icon='IcMt5CfdPlatform' size={128} />;
+                }
+                return <Icon icon='IcMt5FinancialPlatform' size={128} />;
+            default:
+                return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
         }
     }
 });

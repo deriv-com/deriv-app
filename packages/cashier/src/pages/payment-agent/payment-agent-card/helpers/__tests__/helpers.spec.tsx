@@ -2,7 +2,7 @@ import Constants from 'Constants/constants';
 import { getNormalizedPaymentMethod } from 'Utils/utility';
 import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from '../helpers';
 
-describe('Heplers', () => {
+describe('Helpers', () => {
     it('should normalize payment methods', () => {
         expect(getNormalizedPaymentMethod('E-WALLET', Constants.icon_payment_methods, true)).toBe('Ewallet');
         expect(getNormalizedPaymentMethod('Bank Wire Transfer', Constants.icon_payment_methods, true)).toBe('Bank');

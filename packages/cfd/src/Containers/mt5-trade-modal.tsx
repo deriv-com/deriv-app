@@ -12,7 +12,6 @@ type TMT5TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
     is_eu_user: boolean;
     is_open: boolean;
-    context: RootStore;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
@@ -31,7 +30,6 @@ const MT5TradeModal = ({
     mt5_trade_account,
     is_eu_user,
     is_open,
-    context,
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
@@ -72,7 +70,6 @@ const MT5TradeModal = ({
                     toggleModal={toggleModal}
                     should_header_stick_body={false}
                     width='600px'
-                    height={platform === 'mt5' ? '720px' : '500px'}
                     exit_classname='cfd-modal--custom-exit'
                 >
                     <CFDTradeModal />

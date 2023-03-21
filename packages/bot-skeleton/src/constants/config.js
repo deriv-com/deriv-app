@@ -270,6 +270,8 @@ export const config = {
         cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
         aid: 'derivbot-248506',
         api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
+        scope: 'https://www.googleapis.com/auth/drive.file',
+        discovery_docs: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
     },
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,

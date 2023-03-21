@@ -44,6 +44,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     upgradeable_landing_companies: unknown[];
     landing_company_shortcode: string;
     content_flag: string;
+    financial_restricted_countries: string[];
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
@@ -115,6 +116,7 @@ const CompareAccountsModal = ({
     toggleCompareAccounts,
     content_flag,
     show_eu_related_content,
+    financial_restricted_countries,
 }: TCompareAccountsModalProps) => {
     const location = window.location.pathname;
     const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
@@ -141,6 +143,9 @@ const CompareAccountsModal = ({
 
     const show_preappstore_eu_demo = is_pre_appstore_setting && show_eu_related_content && is_demo_tab;
     const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
+
+    const is_preappstore_restricted_cr_demo_account =
+        is_pre_appstore_setting && financial_restricted_countries && content_flag === ContentFlag.CR_DEMO;
 
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
     const mt5_accounts = [
@@ -225,6 +230,7 @@ const CompareAccountsModal = ({
                 is_logged_in={is_logged_in}
                 is_pre_appstore_setting={is_pre_appstore_setting}
                 is_preappstore_cr_demo_account={is_preappstore_cr_demo_account}
+                is_preappstore_restricted_cr_demo_account={is_preappstore_restricted_cr_demo_account}
                 is_real_enabled={is_real_enabled}
                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                 openPasswordModal={openPasswordModal}
@@ -305,4 +311,5 @@ export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
     is_eu_user: traders_hub.is_eu_user,
     content_flag: traders_hub.content_flag,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    financial_restricted_countries: traders_hub.financial_restricted_countries,
 }))(CompareAccountsModal);

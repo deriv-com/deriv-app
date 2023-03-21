@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Item from './contract-type-item.jsx';
+import { localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
+import classNames from 'classnames';
 
 const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
     list.map((contract_category, key) => {
@@ -16,8 +19,15 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
 
         return (
             <div key={key} className='contract-type-list' data-testid='contract_list'>
-                <div className='contract-type-list__label'>
-                    <span>{contract_category.label}</span>
+                <div className='contract-type-item__container'>
+                    <Text size='xs' className='contract-type-list__label'>
+                        {contract_category.label}
+                    </Text>
+                    {contract_category.key === 'Vanillas' && (
+                        <span className={classNames('dc-vertical-tab__header--new', 'contract-type-item__new')}>
+                            {localize('NEW!')}
+                        </span>
+                    )}
                 </div>
                 <div className='contract-type-list__wrapper'>
                     <Item

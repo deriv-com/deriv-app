@@ -5,7 +5,7 @@ import { Icon, Input } from '@deriv/components';
 import './cashier-search-box.scss';
 
 type TCashierSearchBoxProps = {
-    className: string;
+    className?: string;
     onClear: VoidFunction;
     onSearch: (search: string) => void;
     placeholder: string;

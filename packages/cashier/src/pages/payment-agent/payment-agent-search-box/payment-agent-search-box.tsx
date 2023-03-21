@@ -18,7 +18,7 @@ const PaymentAgentSearchBox = observer(() => {
         filterPaymentAgentList();
     };
 
-    const onSearch = search => {
+    const onSearch = (search: string) => {
         setSearchTerm(search.trim());
         debouncedFunction();
     };

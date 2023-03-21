@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '@deriv/components';
-import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { TQuickStrategyFooter } from './components.types';
 
@@ -33,11 +32,7 @@ const QuickStrategyFooter = ({
     }, [is_submit_enabled]);
 
     return (
-        <div
-            className={classNames('quick-strategy__form-footer', {
-                'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
-            })}
-        >
+        <div className={'quick-strategy__form-footer'}>
             <Button.Group>
                 <Button
                     type='button'

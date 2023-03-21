@@ -11,7 +11,7 @@ export const FORM_ERROR_MESSAGES = {
         }),
     email: () => localize('Invalid email address.'),
     general: () => localize('Only letters, numbers, space, hyphen, period, and apostrophe are allowed.'),
-    letter_symbol: () => localize('Letters, spaces, periods, hyphens, apostrophes only'),
+    name: () => localize('Letters, spaces, periods, hyphens, apostrophes only.'),
     password: () => localize('Password should have lower and uppercase English letters with numbers.'),
     po_box: () => localize('P.O. Box is not accepted in address'),
     phone: () => localize('Please enter a valid phone number (e.g. +15417541234).'),

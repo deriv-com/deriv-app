@@ -24,6 +24,7 @@ export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-
 export const validTaxID = (value: string) => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
 export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
 export const validLetterSymbol = (value: string) => /^[A-Za-z]+([a-zA-Z.' -])*[a-zA-Z.' -]+$/.test(value);
+export const validName = (value: string) => /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u.test(value);
 export const validLength = (value = '', options: TOptions) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 export const validPassword = (value: string) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
@@ -108,9 +109,9 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.general,
     },
     length: { func: validLength, message: '' }, // Message will be set in validLength function on initiation
-    letter_symbol: {
-        func: validLetterSymbol,
-        message: form_error_messages.letter_symbol,
+    name: {
+        func: validName,
+        message: form_error_messages.name,
     },
     number: {
         func: (...args: [string, TOptions, Record<string, string | boolean>]) => {

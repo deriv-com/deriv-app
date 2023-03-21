@@ -154,6 +154,8 @@ const mock = (): TRootStore => {
             residence: '',
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
+            sent_verify_emails_data: {},
+            setSentVerifyEmailsData: jest.fn(),
             standpoint: {
                 iom: '',
             },

@@ -55,7 +55,6 @@ type TIconTypeProps = {
     platform: string;
     type?: string;
     show_eu_related_content: boolean;
-    is_pre_appstore: boolean;
 };
 
 type TCFDPasswordFormReusedProps = {
@@ -197,7 +196,7 @@ const ReviewMessageForMT5 = ({
     return null;
 };
 
-const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_content }: TIconTypeProps) => {
+const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
     if (platform === CFD_PLATFORMS.DXTRADE) {
         switch (type) {
             case 'all':
@@ -209,7 +208,7 @@ const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_
             default:
                 return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
-    } else if (is_pre_appstore) {
+    } else {
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
@@ -221,18 +220,7 @@ const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_
             default:
                 return <TradingPlatformIcon icon='Financial' size={128} />;
         }
-    } else
-        switch (type) {
-            case 'synthetic':
-                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
-            case 'financial':
-                if (show_eu_related_content) {
-                    return <Icon icon='IcMt5CfdPlatform' size={128} />;
-                }
-                return <Icon icon='IcMt5FinancialPlatform' size={128} />;
-            default:
-                return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
-        }
+    }
 });
 IconType.displayName = 'IconType';
 
@@ -626,7 +614,6 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_logged_in,
-    is_pre_appstore,
     context,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
@@ -936,7 +923,6 @@ const CFDPasswordModal = ({
                 message={getSubmitText()}
                 icon={
                     <IconType
-                        is_pre_appstore={is_pre_appstore}
                         platform={platform}
                         type={account_type.type}
                         show_eu_related_content={show_eu_related_content}

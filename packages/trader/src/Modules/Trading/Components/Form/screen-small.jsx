@@ -54,24 +54,24 @@ const CollapsibleTradeParams = ({
                 {is_vanilla && <VanillaTradeTypes />}
             </div>
             {isVisible('last_digit') && (
-                <div collapsible='true'>
+                <div data-collapsible='true'>
                     <LastDigitMobile />
                 </div>
             )}
             {isVisible('barrier') && (
-                <div collapsible='true'>
+                <div data-collapsible='true'>
                     <BarrierMobile />
                 </div>
             )}
             {isVisible('strike') && (
-                <div collapsible='true'>
+                <div data-collapsible='true'>
                     <Strike />
                 </div>
             )}
             <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
             {is_multiplier && (
-                <div collapsible='true'>
+                <div data-collapsible='true'>
                     <RiskManagementInfo />
                 </div>
             )}

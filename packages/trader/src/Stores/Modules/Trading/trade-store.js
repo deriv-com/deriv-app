@@ -922,8 +922,7 @@ export default class TradeStore extends BaseStore {
                 ...(!this.is_initial_barrier_applied ? this.initial_barriers : {}),
             });
             this.is_initial_barrier_applied = true;
-
-            if (/\bcontract_type\b/.test(Object.keys(new_state))) {
+            if (/\b(contract_type|currency)\b/.test(Object.keys(new_state))) {
                 this.validateAllProperties();
             }
             this.debouncedProposal();

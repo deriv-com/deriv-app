@@ -286,9 +286,8 @@ const RealAccountSignup = ({
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
     const getModalHeight = () => {
-        if (getActiveModalIndex() === modal_pages_indices.restricted_country_signup_error) return '304px';
-        else if (getActiveModalIndex() === modal_pages_indices.invalid_input_error) return '292px';
-        else if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
+        if (is_from_restricted_country) return '304px';
+        else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -306,7 +305,8 @@ const RealAccountSignup = ({
         return '740px'; // Account wizard modal
     };
     const getModalWidth = () => {
-        if ([invalid_input_error, restricted_country_signup_error].includes(getActiveModalIndex())) return '440px';
+        if (is_from_restricted_country || getActiveModalIndex() === modal_pages_indices.invalid_input_error)
+            return '440px';
         return !has_close_icon ? 'auto' : '955px';
     };
 
@@ -375,14 +375,12 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         if (!error) return;
         setParams({
-            active_modal_index:
-                error.code === 'InputValidationFailed'
-                    ? modal_pages_indices.invalid_input_error
-                    : modal_pages_indices.signup_error,
+            active_modal_index: ['InputValidationFailed', 'PoBoxInAddress'].includes(error.code)
+                ? modal_pages_indices.invalid_input_error
+                : modal_pages_indices.signup_error,
             error_message: error.message,
             error_code: error.code,
             ...(error.code === 'InputValidationFailed' && { error_details: error.details }),
-            // error_details: error.details,
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error]);

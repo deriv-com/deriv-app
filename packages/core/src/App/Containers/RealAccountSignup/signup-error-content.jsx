@@ -26,9 +26,10 @@ const Heading = ({ code }) => {
                 </Text>
             );
         case 'InputValidationFailed':
+        case 'PoBoxInAddress':
             return (
-                <Text as='h1' align='center' weight='bold'>
-                    <Localize i18n_default_text='Invalid input' />
+                <Text as='h1' align='center' weight='bold' line_height='xxl'>
+                    <Localize i18n_default_text='Invalid inputs' />
                 </Text>
             );
 
@@ -42,17 +43,33 @@ const Heading = ({ code }) => {
 };
 
 const Message = ({ code, message, details }) => {
-    const invalid_fields_data = Object.keys(details.error_details).map(item => (
-        <div key={item} className='invalid_fields_input'>
-            <Text size='xs' weight='bold'>
-                <Localize i18n_default_text={item} />
-            </Text>
-            <Text size='xs' weight='bold'>
-                :
-            </Text>
-            <Text size='xs'>{details[item]}</Text>
-        </div>
-    ));
+    const getInvalidFields = () => {
+        if (code === 'PoBoxInAddress') {
+            return (
+                <div className='invalid_fields_input'>
+                    <Text size='xs' weight='bold'>
+                        <Localize i18n_default_text={'address_line_1'} />
+                    </Text>
+                    <Text size='xs' weight='bold'>
+                        {' : '}
+                    </Text>
+                    <Text size='xs'>{details.address_line_1}</Text>
+                </div>
+            );
+        }
+        return Object.keys(details.error_details).map(item => (
+            <div key={item} className='invalid_fields_input'>
+                <Text size='xs' weight='bold'>
+                    <Localize i18n_default_text={item} />
+                </Text>
+                <Text size='xs' weight='bold'>
+                    {' : '}
+                </Text>
+                <Text size='xs'>{details[item]}</Text>
+            </div>
+        ));
+    };
+    console.log('code', code);
     switch (code) {
         case 'DuplicateAccount':
             return (
@@ -74,12 +91,13 @@ const Message = ({ code, message, details }) => {
                 </Text>
             );
         case 'InputValidationFailed':
+        case 'PoBoxInAddress':
             return (
-                <div>
-                    <Text align='center' weight='normal'>
-                        <Localize i18n_default_text='We don’t accept the following input for' />
+                <div className='input_validation_failed'>
+                    <Text align='center' weight='normal' line_height='xxl'>
+                        <Localize i18n_default_text='We don’t accept the following inputs for:' />
                     </Text>
-                    {invalid_fields_data}
+                    {getInvalidFields()}
                 </div>
             );
 
@@ -103,6 +121,7 @@ const ErrorCTA = ({ code, onConfirm }) => {
         case 'DuplicateAccount':
             return null;
         case 'InputValidationFailed':
+        case 'PoBoxInAddress':
             return <TryAgain text={localize('Let’s try again')} onConfirm={onConfirm} />;
         case 'InvalidAccount':
             return <TryAgain text={localize('OK')} onConfirm={onConfirm} />;
@@ -123,29 +142,21 @@ const ErrorCTA = ({ code, onConfirm }) => {
 };
 
 const SignupErrorContent = ({ message, code, onConfirm, className, error_field = {} }) => {
-    if (code === 'InputValidationFailed') {
-        return (
-            <div
-                className={classNames('account-wizard--error', {
-                    [`account-wizard--error__${className}`]: className,
-                })}
-            >
-                <Icon icon='IcRedWarning' size={64} />
-                <Heading code={code} />
-                <Message code={code} message={message} details={error_field} />
-                <ErrorCTA code={code} onConfirm={onConfirm} />
-            </div>
-        );
-    }
+    const is_invalid_field_error = ['InputValidationFailed', 'PoBoxInAddress'].includes(code);
+    const getIconSize = () => {
+        if (is_invalid_field_error) return '64';
+        else if (code === 'InvalidAccount') return '96';
+        return '115';
+    };
     return (
         <div
             className={classNames('account-wizard--error', {
                 [`account-wizard--error__${className}`]: className,
             })}
         >
-            <Icon icon='IcAccountError' size={code === 'InvalidAccount' ? 96 : 115} />
+            <Icon icon={is_invalid_field_error ? 'IcInvalidError' : 'IcAccountError'} size={getIconSize()} />
             <Heading code={code} />
-            <Message code={code} message={message} />
+            <Message code={code} message={message} details={error_field} />
             <ErrorCTA code={code} onConfirm={onConfirm} />
         </div>
     );

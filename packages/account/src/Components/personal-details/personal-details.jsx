@@ -57,11 +57,11 @@ const FormInputField = ({ name, optional = false, warn, ...props }) => (
         {({ field, form: { errors, touched } }) => (
             <Input
                 type='text'
-                required={!optional}
+                // required={!optional}
                 name={name}
                 autoComplete='off'
                 maxLength={props.maxLength || 30}
-                error={touched[field.name] && errors[field.name]}
+                // error={touched[field.name] && errors[field.name]}
                 warn={warn}
                 {...field}
                 {...props}
@@ -158,8 +158,8 @@ const PersonalDetails = ({
         <Formik
             innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
-            validate={handleValidate}
-            validateOnMount
+            // validate={handleValidate}
+            // validateOnMount
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
@@ -259,17 +259,17 @@ const PersonalDetails = ({
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'
-                                                required={is_svg || is_appstore}
+                                                // required={is_svg || is_appstore}
                                                 label={
                                                     is_svg || is_appstore || is_mf
                                                         ? localize('First name*')
                                                         : localize('First name')
                                                 }
                                                 hint={getFieldHint(localize('first name'))}
-                                                disabled={
-                                                    disabled_items.includes('first_name') ||
-                                                    (props.value?.first_name && has_real_account)
-                                                }
+                                                // disabled={
+                                                //     disabled_items.includes('first_name') ||
+                                                //     (props.value?.first_name && has_real_account)
+                                                // }
                                                 placeholder={localize('John')}
                                                 data-testid='first_name'
                                             />
@@ -277,13 +277,13 @@ const PersonalDetails = ({
                                         {'last_name' in props.value && (
                                             <FormInputField
                                                 name='last_name'
-                                                required={is_svg || is_appstore}
+                                                // required={is_svg || is_appstore}
                                                 label={getLastNameLabel()}
                                                 hint={getFieldHint(localize('last name'))}
-                                                disabled={
-                                                    disabled_items.includes('last_name') ||
-                                                    (props.value?.last_name && has_real_account)
-                                                }
+                                                // disabled={
+                                                //     disabled_items.includes('last_name') ||
+                                                //     (props.value?.last_name && has_real_account)
+                                                // }
                                                 placeholder={localize('Doe')}
                                                 data-testid='last_name'
                                             />
@@ -756,7 +756,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={isSubmitDisabled(errors)}
+                                    // is_disabled={isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

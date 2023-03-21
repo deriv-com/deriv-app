@@ -82,8 +82,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         return () => {
             if (app_contents_scroll_ref.current) app_contents_scroll_ref.current.scrollTop = 0;
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [app_contents_scroll_ref]);
 
     React.useEffect(() => {
         if (

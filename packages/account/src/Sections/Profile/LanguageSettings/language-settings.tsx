@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, DesktopWrapper, ThemedScrollbars } from '@deriv/components';
+import { Button, DesktopWrapper } from '@deriv/components';
 import { localize, getAllowedLanguages } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import FormSubHeader from 'Components/form-sub-header';

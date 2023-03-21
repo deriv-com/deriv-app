@@ -123,6 +123,10 @@ const mock = (): TRootStore => {
             currency: '',
             current_currency_type: '',
             current_fiat_currency: '',
+            cfd_score: 0,
+            is_cfd_score_available: false,
+            setCFDScore: jest.fn(),
+            setIsCFDScoreAvailable: jest.fn(),
             getLimits: jest.fn(),
             has_active_real_account: false,
             has_logged_out: false,
@@ -156,6 +160,8 @@ const mock = (): TRootStore => {
             residence: '',
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
+            sent_verify_emails_data: {},
+            setSentVerifyEmailsData: jest.fn(),
             standpoint: {
                 iom: '',
             },
@@ -189,6 +195,7 @@ const mock = (): TRootStore => {
             setBalanceOtherAccounts: jest.fn(),
             setInitialized: jest.fn(),
             setLogout: jest.fn(),
+            setP2pAdvertiserInfo: jest.fn(),
             setPreSwitchAccount: jest.fn(),
             switched: false,
             switch_broadcast: false,
@@ -217,6 +224,7 @@ const mock = (): TRootStore => {
             routeBackInApp: jest.fn(),
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
+            changeSelectedLanguage: jest.fn(),
             is_network_online: false,
         },
         ui: {
@@ -246,6 +254,7 @@ const mock = (): TRootStore => {
             closeModal: jest.fn(),
             openModal: jest.fn(),
             content_flag: '',
+            is_eu_user: false,
         },
         menu: {
             attach: jest.fn(),
@@ -253,11 +262,14 @@ const mock = (): TRootStore => {
         },
         notifications: {
             addNotificationMessage: jest.fn(),
+            client_notifications: {},
             filterNotificationMessages: jest.fn(),
             refreshNotifications: jest.fn(),
             removeNotificationByKey: jest.fn(),
             removeNotificationMessage: jest.fn(),
             setP2POrderProps: jest.fn(),
+            showAccountSwitchToRealNotification: jest.fn(),
+            setP2PRedirectTo: jest.fn(),
         },
         modules: {},
     };

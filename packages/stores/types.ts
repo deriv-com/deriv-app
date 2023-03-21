@@ -1,4 +1,5 @@
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
+import type { TEmailVerificationType } from '@deriv/hooks';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -30,6 +31,8 @@ type TAccountsList = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: number;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    is_virtual: number;
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -97,6 +100,10 @@ type TClientStore = {
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
+    cfd_score: number;
+    is_cfd_score_available: boolean;
+    setCFDScore: (score: number) => void;
+    setIsCFDScoreAvailable: (is_set: boolean) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -151,6 +158,7 @@ type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
+    setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => void;
     switched: boolean;
@@ -166,7 +174,9 @@ type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    sent_verify_emails_data: TSentVerifyEmailsData;
     email: string;
+    setSentVerifyEmailsData: (sent_verify_emails_data: TSentVerifyEmailsData) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
@@ -177,6 +187,16 @@ type TClientStore = {
     should_allow_authentication: boolean;
     is_crypto: boolean;
 };
+
+type TSentVerifyEmailsData = Partial<
+    Record<
+        TEmailVerificationType,
+        {
+            last_time_sent_seconds: number;
+            sent_count: number;
+        }
+    >
+>;
 
 type TCommonStoreError = {
     header: string | JSX.Element;
@@ -192,7 +212,6 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
-    current_language: any;
     isCurrentLanguage(language_code: any): boolean | undefined;
     changeLanguage(language_code: any, changeCurrentLanguage: (new_language: string) => void): unknown;
     error: TCommonStoreError;
@@ -200,9 +219,11 @@ type TCommonStore = {
     is_from_derivgo: boolean;
     is_network_online: boolean;
     platform: string;
+    current_language: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
 };
 
 type TUiStore = {
@@ -227,6 +248,8 @@ type TUiStore = {
     toggleCashier: () => void;
     toggleSetCurrencyModal: () => void;
     setSubSectionIndex: (index: number) => void;
+    toggleReadyToDepositModal: () => void;
+    is_ready_to_deposit_modal_visible: boolean;
 };
 
 type TMenuStore = {
@@ -236,17 +259,21 @@ type TMenuStore = {
 
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
+    client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
+    setP2PRedirectTo: () => void;
 };
 
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
+    is_eu_user: boolean;
 };
 
 export type TRootStore = {

@@ -16,6 +16,8 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 
+const profit_tablews_href = urlFor('user/profit_tablews', { legacy: true });
+
 const getRowAction = row_obj =>
     getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
     !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
@@ -33,7 +35,7 @@ const getRowAction = row_obj =>
                               className='link link--orange'
                               rel='noopener noreferrer'
                               target='_blank'
-                              href={urlFor('user/profit_tablews', { legacy: true })}
+                              href={profit_tablews_href}
                           />,
                       ]}
                   />

@@ -9,6 +9,8 @@ import TradingAssessmentExistingUser from './trading-assessment-existing-user.js
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import ExitTradersHubModal from './exit-traders-hub-modal';
+import ReadyToDepositModal from './ready-to-deposit-modal';
+import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -70,12 +72,15 @@ const AppModals = ({
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
-    cfd_score,
+    setIsCFDScoreAvailable,
     content_flag,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
     is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible,
+    is_trading_experience_incomplete,
+    should_show_risk_accept_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -84,7 +89,10 @@ const AppModals = ({
 
     React.useEffect(() => {
         if (is_logged_in) {
-            fetchFinancialAssessment().then(response => setCFDScore(response?.cfd_score ?? 0));
+            fetchFinancialAssessment().then(response => {
+                setCFDScore(response?.cfd_score ?? 0);
+                setIsCFDScoreAvailable(true);
+            });
         }
     }, [is_logged_in]);
 
@@ -115,63 +123,45 @@ const AppModals = ({
             break;
     }
 
-    if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
-    }
-
-    if (is_close_mx_mlt_account_modal_visible) {
-        ComponentToLoad = <CloseMxMltAccountModal />;
-    }
-
-    if (is_close_uk_account_modal_visible) {
-        ComponentToLoad = <CloseUKAccountModal />;
-    }
-
-    if (is_warning_scam_message_modal_visible) {
-        ComponentToLoad = <WarningScamMessageModal />;
-    }
-
-    if (is_closing_create_real_account_modal) {
-        ComponentToLoad = <WarningCloseCreateRealAccountModal />;
-    }
-
-    if (is_welcome_modal_visible) {
-        ComponentToLoad = <WelcomeModal />;
-    }
-
-    if (is_account_needed_modal_on) {
-        ComponentToLoad = <MT5AccountNeededModal />;
-    }
-
-    if (is_reality_check_visible) {
-        ComponentToLoad = <RealityCheckModal />;
-    }
-
     if (
         is_logged_in &&
         active_account_landing_company === 'maltainvest' &&
         !is_trading_assessment_for_new_user_enabled &&
-        cfd_score === 0 &&
+        is_trading_experience_incomplete &&
         content_flag !== ContentFlag.LOW_RISK_CR_EU &&
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
-    }
-
-    if (should_show_cooldown_modal) {
+    } else if (is_acuity_modal_open) {
+        ComponentToLoad = <AcuityDownloadModal />;
+    } else if (is_close_mx_mlt_account_modal_visible) {
+        ComponentToLoad = <CloseMxMltAccountModal />;
+    } else if (is_close_uk_account_modal_visible) {
+        ComponentToLoad = <CloseUKAccountModal />;
+    } else if (is_warning_scam_message_modal_visible) {
+        ComponentToLoad = <WarningScamMessageModal />;
+    } else if (is_closing_create_real_account_modal) {
+        ComponentToLoad = <WarningCloseCreateRealAccountModal />;
+    } else if (is_welcome_modal_visible) {
+        ComponentToLoad = <WelcomeModal />;
+    } else if (is_account_needed_modal_on) {
+        ComponentToLoad = <MT5AccountNeededModal />;
+    } else if (is_reality_check_visible) {
+        ComponentToLoad = <RealityCheckModal />;
+    } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
-    }
-
-    if (should_show_assessment_complete_modal) {
+    } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;
-    }
-
-    if (is_deriv_account_needed_modal_visible) {
+    } else if (is_deriv_account_needed_modal_visible) {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
+    } else if (is_exit_traders_hub_modal_visible) {
+        ComponentToLoad = <ExitTradersHubModal />;
+    } else if (should_show_risk_accept_modal) {
+        ComponentToLoad = <RiskAcceptTestWarningModal />;
     }
 
-    if (is_exit_traders_hub_modal_visible) {
-        ComponentToLoad = <ExitTradersHubModal />;
+    if (is_ready_to_deposit_modal_visible) {
+        ComponentToLoad = <ReadyToDepositModal />;
     }
 
     return (
@@ -196,7 +186,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
-    cfd_score: client.cfd_score,
+    setIsCFDScoreAvailable: client.setIsCFDScoreAvailable,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
@@ -205,5 +195,8 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
     is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
     content_flag: traders_hub.content_flag,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
 }))(AppModals);

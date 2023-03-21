@@ -303,6 +303,7 @@ export default class TradeStore extends BaseStore {
             requestProposal: action.bound,
             resetErrorServices: action.bound,
             resetPreviousSymbol: action.bound,
+            resetAccumulatorData: action.bound,
             setActiveSymbols: action.bound,
             setAllowEqual: action.bound,
             setChartStatus: action.bound,
@@ -346,8 +347,7 @@ export default class TradeStore extends BaseStore {
                     this.expiry_date = date;
                 }
                 this.setDefaultGrowthRate();
-                this.tick_size_barrier = 0;
-                this.root_store.contract_trade.clearAccumulatorBarriersData();
+                this.resetAccumulatorData();
             }
         );
         reaction(
@@ -380,6 +380,7 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.stop_loss;
                     delete this.validation_rules.take_profit;
                 }
+                this.resetAccumulatorData();
             }
         );
         when(
@@ -392,6 +393,13 @@ export default class TradeStore extends BaseStore {
         return this.active_symbols.some(
             symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
         );
+    }
+
+    resetAccumulatorData() {
+        if (this.tick_size_barrier) this.tick_size_barrier = 0;
+        if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
+            this.root_store.contract_trade.clearAccumulatorBarriersData();
+        }
     }
 
     setDefaultGrowthRate() {

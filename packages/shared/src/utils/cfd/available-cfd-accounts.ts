@@ -30,4 +30,12 @@ export const getCFDAvailableAccount = () => [
         icon: 'DerivX',
         availability: 'Non-EU',
     },
+    {
+        name: 'Deriv EZ',
+        description: localize('Easy-to-start platform.'),
+        platform: CFD_PLATFORMS.DERIVEZ,
+        market_type: 'all',
+        icon: 'DerivEz',
+        availability: 'Non-EU',
+    },
 ];

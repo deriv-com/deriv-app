@@ -28,15 +28,8 @@ const shouldShowIdentityInformation = ({
     const citizen = account_settings.citizen || residence;
     const country = residence_list.find(item => item.value === citizen);
     const maltainvest = real_account_signup_target === 'maltainvest';
-    const is_age_verified = account_status?.status?.some(status => status === 'age_verification');
-    const { submissions_left: idv_submissions_left } = account_status?.authentication?.identity?.services?.idv;
-    return (
-        !maltainvest &&
-        citizen &&
-        country?.identity?.services?.idv?.is_country_supported &&
-        !is_age_verified &&
-        Number(idv_submissions_left) > 0
-    );
+    const should_skip_idv = account_status?.status?.some(status => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
+    return !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported && !should_skip_idv;
 };
 
 export const getItems = props => [

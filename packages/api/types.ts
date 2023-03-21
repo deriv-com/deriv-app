@@ -226,7 +226,7 @@ import type {
     ServerStatusRequest,
 } from '@deriv/api-types';
 
-export type TSocketEndpoints = {
+type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;
@@ -687,7 +687,7 @@ export type TSocketResponse<T extends TSocketEndpointNames> = TSocketEndpoints[T
 
 export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketResponse<T>[T extends 'ticks' ? 'tick' : T];
 
-export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
 type TSocketRequestCleaned<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
     Omit<

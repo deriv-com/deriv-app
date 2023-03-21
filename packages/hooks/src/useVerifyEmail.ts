@@ -1,13 +1,10 @@
 import { useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import type { TSocketEndpoints } from '@deriv/api/types';
 import useCountdown from './useCountdown';
 
 const RESEND_COUNTDOWN = 60;
 
-export type TEmailVerificationType = TSocketEndpoints['verify_email']['request']['type'];
-
-const useVerifyEmail = (type: TEmailVerificationType) => {
+const useVerifyEmail = (type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['send']>[0]['type']) => {
     const WS = useRequest('verify_email');
     const { client } = useStore();
     const { setSentVerifyEmailsData, sent_verify_emails_data } = client;

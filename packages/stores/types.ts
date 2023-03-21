@@ -1,5 +1,11 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
-import type { TEmailVerificationType } from '@deriv/hooks';
+import type {
+    GetAccountStatus,
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    LogOutResponse,
+    GetLimits,
+    VerifyEmailRequest,
+} from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -184,7 +190,7 @@ type TClientStore = {
 
 type TSentVerifyEmailsData = Partial<
     Record<
-        TEmailVerificationType,
+        VerifyEmailRequest['type'],
         {
             last_time_sent_seconds: number;
             sent_count: number;

@@ -156,6 +156,7 @@ export const cr_real_content: TCompareAccountContentProps[] = [
             derivx: [
                 { text: localize('Synthetics') },
                 { text: localize('Baskets') },
+                { text: localize('Derived FX') },
                 { text: localize('Forex: standard/micro') },
                 { text: localize('Stocks') },
                 { text: localize('Stock indices') },

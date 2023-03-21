@@ -14,7 +14,7 @@ const BlockUserTable = () => {
 
     React.useEffect(() => {
         my_profile_store.setTradePartnersList([]);
-        my_profile_store.getTradePartnersList(true);
+        my_profile_store.getTradePartnersList({ startIndex: 0 }, true);
         my_profile_store.setSearchTerm('');
 
         reaction(
@@ -22,7 +22,15 @@ const BlockUserTable = () => {
             () => {
                 if (!general_store.is_barred) general_store.setBlockUnblockUserError('');
                 my_profile_store.setSearchTerm('');
-                my_profile_store.getTradePartnersList(true);
+                my_profile_store.getTradePartnersList({ startIndex: 0 }, true);
+            }
+        );
+
+        reaction(
+            () => my_profile_store.trade_partners_list,
+            () => {
+                if (my_profile_store.trade_partners_list.length > 0 && my_profile_store.is_trade_partners_list_empty)
+                    my_profile_store.setIsTradePartnersListEmpty(false);
             }
         );
 
@@ -61,10 +69,10 @@ const BlockUserTable = () => {
                         <InfiniteDataList
                             data_list_className='block-use-table__data-list'
                             has_filler
-                            has_more_items_to_load={false}
+                            has_more_items_to_load={my_profile_store.has_more_items_to_load}
                             items={my_profile_store.rendered_trade_partners_list}
                             keyMapperFn={item => item.id}
-                            loadMoreRowsFn={() => {}}
+                            loadMoreRowsFn={my_profile_store.getTradePartnersList}
                             rowRenderer={props => <BlockUserRow {...props} />}
                         />
                     </Table.Body>

@@ -125,7 +125,8 @@ const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog,
     return (
         <div
             className={classNames('notifications-dialog', {
-                'notifications-dialog--pre-appstore': traders_hub,
+                'notifications-dialog--pre-appstore':
+                    traders_hub || window.location.pathname.startsWith(routes.account),
             })}
             ref={ref}
         >

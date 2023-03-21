@@ -186,6 +186,7 @@
     "2063890788": "Annullato",
     "2091671594": "Stato",
     "2096014107": "Richiedi",
+    "2104905634": "No one has recommended this trader yet",
     "2121837513": "Il minimo è {{value}} {{currency}}",
     "2142425493": "ID annuncio",
     "2142752968": "Assicurati di aver ricevuto {{amount}} {{local_currency}} sul tuo conto e premi Conferma per completare la transazione.",
@@ -380,7 +381,6 @@
     "-750202930": "Ordini attivi",
     "-1626659964": "Ho ricevuto {{amount}} {{currency}}.",
     "-237014436": "Consigliato da {{recommended_count}} trader",
-    "-1463630097": "Consigliato da 0 trader",
     "-2054589794": "Il tuo profilo è stato momentaneamente bloccato e non potrai accedere ai nostri servizi a causa di vari tentativi di annullamento. Riprova nuovamente dopo il giorno {{date_time}} GMT.",
     "-1079963355": "trade",
     "-930400128": "Per usare Deriv P2P, scegli un nome visualizzato (ossia un soprannome) e verifica la tua identità."

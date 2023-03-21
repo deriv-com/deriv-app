@@ -119,6 +119,7 @@ describe('GeneralStore', () => {
     //     expect(general_store.is_p2p_enabled).toBeTruthy();
     // });
 
+    // TODO: fix this test once website_status is called after authorized card has been released
     // it('should show p2p in cashier onboarding if the user account is not virtual, and he has USD account', async () => {
     //     await general_store.showP2pInCashierOnboarding();
 

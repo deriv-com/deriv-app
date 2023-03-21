@@ -87,6 +87,7 @@
         --text-red: #{$color-red};
         --text-blue: #{$color-blue-3};
         --text-info-blue: #{$color-blue};
+        --text-info-blue-bg: #{$color-blue-5};
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
@@ -186,6 +187,14 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // Modal
+        --modal-indicator-red-darker: #{$color-red-8};
+        --modal-indicator-red-dark: #{$color-red-9};
+        --modal-indicator-red-light: #{$color-red-10};
+        --modal-indicator-yellow-dark: #{$color-yellow-1};
+        --modal-indicator-yellow-light: #{$color-yellow-2};
+        --modal-indicator-violet-dark: #{$color-violet};
+        --modal-indicator-brown-dark: #{$color-brown};
     }
     .theme--dark {
         // General

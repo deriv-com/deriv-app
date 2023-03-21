@@ -27,14 +27,12 @@
     }
 
     &__wrapper {
-        margin-top: 4em;
-        margin-left: 6em;
-        margin-right: 6em;
+        margin: 4em 6em 0em;
         display: flex;
         justify-content: center;
-        gap: 22px;
+        gap: 2.2rem;
         @include mobile {
-            margin: 0em;
+            margin: 0;
             padding: 2em 4em;
             flex-direction: column;
             align-items: center;
@@ -89,7 +87,7 @@
 
     &__card-content-over-header {
         display: flex;
-        background: #dfeaff;
+        background: var(--text-info-blue-bg);
         color: var(--text-info-blue);
         height: 4em;
         width: 100%;
@@ -138,7 +136,7 @@
         flex-direction: column;
         justify-content: space-between;
         @include mobile {
-            min-height: 0px;
+            min-height: 0;
             background-color: var(--general-main-1);
             width: 100%;
             height: 100%;
@@ -209,28 +207,28 @@
     display: flex;
     padding: 0.6rem 1.2rem;
     color: var(--text-prominent);
-    border-radius: 4px;
+    border-radius: $BORDER_RADIUS;
     font-weight: bold;
     &__red-darker {
-        background: #661b20;
+        background: var(--modal-indicator-red-darker);
     }
     &__red-dark {
-        background: #b33037;
+        background: var(--modal-indicator-red-dark);
     }
     &__red-light {
-        background: #ff444f;
+        background: var(--modal-indicator-red-light);
     }
     &__yellow-dark {
-        background: #b3760d;
+        background: var(--modal-indicator-yellow-dark);
     }
     &__yellow-light {
-        background: #ffa912;
+        background: var(--modal-indicator-yellow-light);
     }
     &__violet-dark {
-        background: #4a3871;
+        background: var(--modal-indicator-violet-dark);
     }
     &__brown-dark {
-        background: #664407;
+        background: var(--modal-indicator-brown-dark);
     }
 }
 

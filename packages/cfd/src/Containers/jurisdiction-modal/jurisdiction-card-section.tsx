@@ -1,12 +1,11 @@
-import React from 'react';
 import { Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { TJurisdictionCardSectionProps } from '../props.types';
-import { TJurisdictionCardSectionTitleIndicators } from 'Components/props.types';
 import classNames from 'classnames';
+import React from 'react';
+import { TJurisdictionCardSectionTitleIndicators } from 'Components/props.types';
+import { TJurisdictionCardSectionProps } from '../props.types';
 
 const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionProps) => {
-    const renderTitleIndicator=(titleIndicators: TJurisdictionCardSectionTitleIndicators) =>{
+    const renderTitleIndicator = (titleIndicators: TJurisdictionCardSectionTitleIndicators) => {
         switch (titleIndicators.type) {
             case 'displayText':
                 return (
@@ -24,14 +23,14 @@ const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionPr
             default:
                 return null;
         }
-    }
+    };
 
     return (
         <div className='cfd-card-section'>
             <div className='cfd-card-title-container'>
                 <div className='cfd-card-title'>
                     <Text as='span' weight='bold' size='xs'>
-                        <Localize i18n_default_text={cardSectionItem.title} />
+                        {cardSectionItem.title}
                     </Text>
                 </div>
                 {cardSectionItem.titleIndicators && renderTitleIndicator(cardSectionItem.titleIndicators)}
@@ -39,7 +38,7 @@ const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionPr
 
             {cardSectionItem.description && (
                 <Text as='span' size='xxs'>
-                    <Localize i18n_default_text={cardSectionItem.description} />
+                    {cardSectionItem.description}
                 </Text>
             )}
         </div>

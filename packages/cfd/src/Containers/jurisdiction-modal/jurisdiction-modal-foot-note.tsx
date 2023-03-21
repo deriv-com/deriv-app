@@ -81,7 +81,7 @@ const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
             </Text>
         </div>
     ) : (
-        <></>
+        <React.Fragment />
     );
 };
 

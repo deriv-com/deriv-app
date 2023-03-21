@@ -46,10 +46,10 @@ const JurisdictionCard = ({
                     </Text>
                     <div className={`${card_classname}__card-section-container`}>
                         {card_data.map((item, index) => (
-                            <>
-                                <JurisdictionCardSection key={index} cardSectionItem={item} />
-                                {index < card_data.length - 1 && <div className='cfd-card-section-divider' /> }
-                            </>
+                            <React.Fragment key={index}>
+                                <JurisdictionCardSection cardSectionItem={item} />
+                                {index < card_data.length - 1 && <div className={'cfd-card-section-divider'} />}
+                            </React.Fragment>
                         ))}
                     </div>
                 </div>

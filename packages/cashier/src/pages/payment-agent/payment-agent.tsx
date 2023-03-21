@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -7,7 +6,11 @@ import { Virtual } from 'Components/cashier-container';
 import PaymentAgentList from './payment-agent-list';
 import { useCashierStore } from '../../stores/useCashierStores';
 
-const PaymentAgent = observer(({ setSideNotes }) => {
+type TPaymentAgent = {
+    setSideNotes: VoidFunction;
+};
+
+const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
     const { client } = useStore();
     const {
         is_switching,
@@ -49,9 +52,5 @@ const PaymentAgent = observer(({ setSideNotes }) => {
 
     return <PaymentAgentList setSideNotes={setSideNotes} />;
 });
-
-PaymentAgent.propTypes = {
-    setSideNotes: PropTypes.func,
-};
 
 export default PaymentAgent;

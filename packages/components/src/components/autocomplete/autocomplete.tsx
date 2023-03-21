@@ -32,6 +32,7 @@ type TAutocompleteProps = {
     show_list?: boolean;
     trailing_icon?: React.ReactElement;
     value: string;
+    onSearch?: (value: string, items: TItem[]) => void;
 };
 
 const KEY_CODE = {
@@ -98,7 +99,17 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
 
     React.useEffect(() => {
         if (has_updating_list) {
-            const new_filtered_items = is_list_visible ? getFilteredItems(value.toLowerCase(), list_items) : list_items;
+            let new_filtered_items = [];
+
+            if (is_list_visible) {
+                if (typeof props.onSearch === 'function') {
+                    new_filtered_items = props.onSearch(value.toLowerCase(), list_items);
+                } else {
+                    new_filtered_items = getFilteredItems(value.toLowerCase(), list_items);
+                }
+            } else {
+                new_filtered_items = list_items;
+            }
 
             setFilteredItems(new_filtered_items);
             if (historyValue) {
@@ -285,14 +296,21 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
     };
 
     const filterList = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const val = e.currentTarget.value.toLowerCase();
-        const new_filtered_items = getFilteredItems(val, props.list_items, should_filter_by_char);
+        const val = e.target.value.toLowerCase();
+        let new_filtered_items = [];
+
+        if (typeof props.onSearch === 'function') {
+            new_filtered_items = props.onSearch(val, props.list_items);
+        } else {
+            new_filtered_items = getFilteredItems(val, props.list_items, should_filter_by_char);
+        }
 
         if (!new_filtered_items.length) {
             setInputValue('');
         }
         setFilteredItems(new_filtered_items);
     };
+
     return (
         <div className={classNames('dc-autocomplete', className)}>
             <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>

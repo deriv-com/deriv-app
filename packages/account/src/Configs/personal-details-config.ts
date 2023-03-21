@@ -52,7 +52,7 @@ const personal_details_config = ({
             rules: [
                 ['req', localize('First name is required.')],
                 ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
-                ['letter_symbol', getErrorMessages().letter_symbol()],
+                ['name', getErrorMessages().name()],
             ],
         },
         last_name: {
@@ -61,7 +61,7 @@ const personal_details_config = ({
             rules: [
                 ['req', localize('Last name is required.')],
                 ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
-                ['letter_symbol', getErrorMessages().letter_symbol()],
+                ['name', getErrorMessages().name()],
             ],
         },
         date_of_birth: {

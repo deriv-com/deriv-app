@@ -113,6 +113,7 @@ export default class TradersHubStore extends BaseStore {
                 this.is_demo_low_risk,
                 this.restricted_countries_filter_content,
                 this.root_store.modules?.cfd?.current_list,
+                this.root_store.common.current_language,
             ],
             () => {
                 this.getAvailablePlatforms();

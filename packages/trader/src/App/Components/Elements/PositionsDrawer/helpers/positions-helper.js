@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { isHighLow, getContractTypesConfig, isCallPut } from '@deriv/shared';
+import { isHighLow, getContractTypesConfig, isCallPut, isVanillaContract } from '@deriv/shared';
 
 export const addCommaToNumber = (num, decimal_places) => {
     if (!num || isNaN(num)) {
@@ -13,6 +13,9 @@ export const addCommaToNumber = (num, decimal_places) => {
 export const getBarrierLabel = contract_info => {
     if (isDigitType(contract_info.contract_type)) {
         return localize('Target');
+    }
+    if (isVanillaContract(contract_info.contract_type)) {
+        return localize('Strike');
     }
     return localize('Barrier');
 };
@@ -38,10 +41,11 @@ const digitTypeMap = contract_info => ({
 export const filterByContractType = ({ contract_type, shortcode }, trade_contract_type) => {
     const is_call_put = isCallPut(trade_contract_type);
     const is_high_low = isHighLow({ shortcode });
+    const is_vanilla = isVanillaContract(contract_type);
     const trade_types = is_call_put
         ? ['CALL', 'CALLE', 'PUT', 'PUTE']
         : getContractTypesConfig()[trade_contract_type]?.trade_types;
     const match = trade_types?.includes(contract_type);
     if (trade_contract_type === 'high_low') return is_high_low;
-    return match && !is_high_low;
+    return match && (is_vanilla || !is_high_low);
 };

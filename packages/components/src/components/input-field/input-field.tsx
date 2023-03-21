@@ -164,7 +164,7 @@ const InputField = ({
                 e.target.value =
                     is_empty || is_signed || has_zero_at_end || is_scientific_notation || type === 'tel'
                         ? e.target.value
-                        : e.target.value;
+                        : '';
             } else if (!is_not_completed_number) {
                 e.target.value = value.toString();
                 return;

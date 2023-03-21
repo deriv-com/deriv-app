@@ -1,11 +1,20 @@
-import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { TSchema, TResidenseList } from 'Types';
+import { TResidenseList, TUpgradeInfo } from 'Types';
+import {
+    TSchema,
+    generateValidationFunction,
+    getDefaultFields,
+    getErrorMessages,
+    toMoment,
+    validLength,
+} from '@deriv/shared';
+
 import { GetSettings } from '@deriv/api-types';
+import { localize } from '@deriv/translations';
 
 type TPersonalDetailsConfig = {
+    upgrade_info?: TUpgradeInfo;
     real_account_signup_target: string;
-    residence_list: TResidenseList;
+    residence_list: TResidenseList[];
     account_settings: GetSettings;
     is_appstore: boolean;
 };
@@ -17,10 +26,10 @@ const personal_details_config = ({
     real_account_signup_target,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
-        return {};
+        return [{}, []];
     }
 
-    const disabled_items = account_settings.immutable_fields; // immutable fields set by BE
+    const disabled_items = account_settings.immutable_fields || []; // immutable fields set by BE
 
     // minimum characters required is 9 numbers (excluding +- signs or space)
     const min_phone_number = 9;
@@ -71,14 +80,14 @@ const personal_details_config = ({
         place_of_birth: {
             supported_in: ['maltainvest', 'iom', 'malta'],
             default_value: account_settings.place_of_birth
-                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
+                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text || ''
                 : '',
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.citizen
-                ? residence_list.find(item => item.value === account_settings.citizen)?.text
+                ? residence_list.find(item => item.value === account_settings.citizen)?.text || ''
                 : '',
             rules: [['req', localize('Citizenship is required')]],
         },
@@ -104,7 +113,7 @@ const personal_details_config = ({
         tax_residence: {
             default_value:
                 real_account_signup_target === 'maltainvest'
-                    ? account_settings.residence
+                    ? account_settings.residence || ''
                     : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
@@ -162,8 +171,8 @@ const personal_details_config = ({
     const getConfig = () => {
         if (is_appstore) {
             const allowed_fields = ['first_name', 'last_name', 'date_of_birth', 'phone'];
-            // Record<string, unknown>takes up any object type
-            return Object.keys(config).reduce((new_config: Record<string, unknown>, key: string) => {
+            // Record<string, any>takes up any object type
+            return Object.keys(config).reduce((new_config: Record<string, any>, key: string) => {
                 if (allowed_fields.includes(key)) {
                     new_config[key] = config[key];
                 }
@@ -177,7 +186,7 @@ const personal_details_config = ({
 };
 
 const personalDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence_list, account_settings }: PersonalDetailsConfig,
+    { upgrade_info, real_account_signup_target, residence_list, account_settings }: TPersonalDetailsConfig,
     PersonalDetails: React.Component,
     is_appstore: boolean
 ) => {

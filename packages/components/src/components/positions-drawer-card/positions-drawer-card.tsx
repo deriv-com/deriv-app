@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import ContractCard from '../contract-card';
@@ -10,16 +9,65 @@ import {
     getCardLabels,
     getContractTypeDisplay,
     getEndTime,
+    isVanillaContract,
 } from '@deriv/shared';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import type { ContractUpdate } from '@deriv/api-types';
+import moment from 'moment';
+
+type TToastConfig = {
+    key?: number;
+    content: string;
+    timeout?: number;
+    is_bottom?: boolean;
+    type?: string;
+};
+
+type TGetEndTime = Pick<
+    TContractInfo,
+    'is_expired' | 'sell_time' | 'status' | 'tick_count' | 'contract_type' | 'underlying' | 'contract_id'
+> &
+    Required<Pick<TContractInfo, 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
+
+type TPositionsDrawerCardProps = {
+    addToast: (toast_config: TToastConfig) => void;
+    className?: string;
+    contract_info: TGetEndTime;
+    contract_update: ContractUpdate;
+    currency: string;
+    current_focus: string;
+    display_name: string;
+    getContractById: (contract_id: string) => Record<string, any>;
+    is_mobile: boolean;
+    is_sell_requested: boolean;
+    is_unsupported: boolean;
+    is_link_disabled: boolean;
+    profit_loss: number;
+    onClickCancel: (contract_id: string) => void;
+    onClickSell: (contract_id: string) => void;
+    onClickRemove?: () => void;
+    onFooterEntered: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+    removeToast: (key: number) => void;
+    result: string;
+    setCurrentFocus: (value: string) => void;
+    server_time: moment.Moment;
+    should_show_transition: boolean;
+    should_show_cancellation_warning: boolean;
+    status: string;
+    toggleCancellationWarning: (value: boolean) => void;
+    toggleUnsupportedContractModal: (value: boolean) => void;
+};
 
 const PositionsDrawerCard = ({
     addToast,
     className,
-    display_name,
     contract_info,
     contract_update,
     currency,
     current_focus,
+    display_name,
     getContractById,
     is_mobile,
     is_sell_requested,
@@ -41,9 +89,10 @@ const PositionsDrawerCard = ({
     status,
     toggleCancellationWarning,
     toggleUnsupportedContractModal,
-}) => {
-    const is_multiplier = isMultiplierContract(contract_info.contract_type);
-    const is_crypto = isCryptoContract(contract_info.underlying);
+}: TPositionsDrawerCardProps) => {
+    const is_multiplier = isMultiplierContract(contract_info.contract_type || '');
+    const is_vanilla = isVanillaContract(contract_info.contract_type || '');
+    const is_crypto = isCryptoContract(contract_info.underlying || '');
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
 
@@ -61,7 +110,6 @@ const PositionsDrawerCard = ({
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_mobile && has_progress_slider}
             is_mobile={is_mobile}
-            is_positions={true}
             is_sell_requested={is_sell_requested}
             onClickSell={onClickSell}
             server_time={server_time}
@@ -83,6 +131,7 @@ const PositionsDrawerCard = ({
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={has_ended}
+            is_vanilla={is_vanilla}
             has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}
@@ -182,47 +231,6 @@ const PositionsDrawerCard = ({
             </div>
         </ContractCard>
     );
-};
-
-PositionsDrawerCard.propTypes = {
-    addToast: PropTypes.func,
-    className: PropTypes.string,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    current_tick: PropTypes.number,
-    display_name: PropTypes.string,
-    duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    duration_unit: PropTypes.string,
-    exit_spot: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    getContractById: PropTypes.func,
-    id: PropTypes.number,
-    indicative: PropTypes.number,
-    is_link_disabled: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
-    is_unsupported: PropTypes.bool,
-    is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-    onClickRemove: PropTypes.func,
-    onClickSell: PropTypes.func,
-    onClickCancel: PropTypes.func,
-    onFooterEntered: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    profit_loss: PropTypes.number,
-    removeToast: PropTypes.func,
-    result: PropTypes.string,
-    sell_time: PropTypes.number,
-    server_time: PropTypes.object,
-    setCurrentFocus: PropTypes.func,
-    should_show_cancellation_warning: PropTypes.bool,
-    should_show_transition: PropTypes.bool,
-    status: PropTypes.string,
-    toggleCancellationWarning: PropTypes.func,
-    toggleUnsupportedContractModal: PropTypes.func,
-    type: PropTypes.string,
 };
 
 export default PositionsDrawerCard;

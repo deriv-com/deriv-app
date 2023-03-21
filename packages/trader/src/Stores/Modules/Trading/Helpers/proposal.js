@@ -1,4 +1,4 @@
-import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+import { convertToUnix, getDecimalPlaces, getPropertyValue, toMoment } from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -25,7 +25,10 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const stake = proposal.display_value;
     const basis_list = store.basis_list;
 
-    const contract_basis = basis_list.find(o => o.value !== store.basis) || {};
+    const contract_basis = store.is_vanilla
+        ? { text: 'Payout', value: 'number_of_contracts' }
+        : basis_list.find(o => o.value !== store.basis) || {};
+
     const is_stake = contract_basis.text === 'Stake';
     const price = is_stake ? stake : proposal[contract_basis.value];
     let has_increased = price > obj_prev_contract_basis.value;

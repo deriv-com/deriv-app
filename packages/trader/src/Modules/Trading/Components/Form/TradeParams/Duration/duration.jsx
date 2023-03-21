@@ -34,7 +34,14 @@ const Duration = ({
     server_time,
     start_date,
     market_open_times,
+    contract_type,
 }) => {
+    React.useEffect(() => {
+        if (contract_type === 'vanilla') {
+            onToggleDurationType({ target: { value: true, name: 'is_advanced_duration' } });
+        }
+    }, [contract_type]);
+
     const expiry_list = [{ text: localize('Duration'), value: 'duration' }];
 
     const has_end_time = expiry_list.find(expiry => expiry.value === 'endtime');
@@ -185,11 +192,13 @@ const Duration = ({
                             simple_duration_unit={simple_duration_unit}
                         />
                     )}
-                    <DurationToggle
-                        name={'is_advanced_duration'}
-                        onChange={onToggleDurationType}
-                        value={is_advanced_duration}
-                    />
+                    {contract_type !== 'vanilla' && (
+                        <DurationToggle
+                            name={'is_advanced_duration'}
+                            onChange={onToggleDurationType}
+                            value={is_advanced_duration}
+                        />
+                    )}
                 </>
             )}
         </Fieldset>
@@ -199,6 +208,7 @@ const Duration = ({
 Duration.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type: PropTypes.string,
+    contract_type: PropTypes.string,
     duration: PropTypes.number,
     duration_t: PropTypes.number,
     duration_unit: PropTypes.string,

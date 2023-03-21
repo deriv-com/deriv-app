@@ -19,10 +19,10 @@ type TPreviewSingle = {
 
 type TFileDropzone = {
     className?: string;
-    validation_error_message: ReactNode & ((open?: () => void) => ReactNode);
+    validation_error_message?: ReactNode | ((open?: () => void) => ReactNode);
     max_size?: number;
     value: Array<File & { file: Blob }>;
-    message: ReactNode & ((open?: () => void) => ReactNode);
+    message?: ReactNode | ((open?: () => void) => ReactNode);
     filename_limit?: number;
     error_message: string;
     hover_message: string;
@@ -89,6 +89,20 @@ const PreviewSingle = (props: TPreviewSingle) => {
 };
 
 const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) => {
+    const { validation_error_message, message } = props;
+
+    const RenderErrorMessage = React.useCallback(() => {
+        if (typeof message === 'function') return <>{message(open)}</>;
+
+        return <>{message}</>;
+    }, [message]);
+
+    const RenderValidationErrorMessage = React.useCallback(() => {
+        if (typeof validation_error_message === 'function') return <>{validation_error_message(open)}</>;
+
+        return <>{validation_error_message}</>;
+    }, [validation_error_message]);
+
     const dropzone_ref = React.useRef(null);
 
     return (
@@ -111,8 +125,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                     className={classNames('dc-file-dropzone', className, {
                         'dc-file-dropzone--is-active': isDragActive,
                         'dc-file-dropzone--has-file': isDragActive || props.value.length > 0,
-                        'dc-file-dropzone--has-error':
-                            (isDragReject || !!props.validation_error_message) && !isDragAccept,
+                        'dc-file-dropzone--has-error': (isDragReject || !!validation_error_message) && !isDragAccept,
                         'dc-file-dropzone--is-noclick': noClick,
                     })}
                     ref={dropzone_ref}
@@ -122,15 +135,12 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                         <FadeInMessage
                             // default message when not on hover or onDrag
                             is_visible={
-                                !isDragActive &&
-                                !!props.message &&
-                                props.value.length < 1 &&
-                                !props.validation_error_message
+                                !isDragActive && !!message && props.value.length < 1 && !validation_error_message
                             }
                             timeout={150}
                             no_text={noClick}
                         >
-                            {noClick ? props.message(open) : props.message}
+                            <RenderErrorMessage />
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on hover if files are accepted onDrag
@@ -141,7 +151,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                         </FadeInMessage>
                         {/* Handle cases for displaying multiple files and single filenames */}
 
-                        {props.multiple && props.value.length > 0 && !props.validation_error_message
+                        {props.multiple && props.value.length > 0 && !validation_error_message
                             ? props.value.map((file, idx) => (
                                   <Text
                                       size='xxs'
@@ -155,9 +165,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                               ))
                             : props.value[0] &&
                               !isDragActive &&
-                              !props.validation_error_message && (
-                                  <PreviewSingle dropzone_ref={dropzone_ref} {...props} />
-                              )}
+                              !validation_error_message && <PreviewSingle dropzone_ref={dropzone_ref} {...props} />}
                         <FadeInMessage
                             // message shown if there are errors with the dragged file
                             is_visible={isDragReject}
@@ -168,13 +176,11 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on if there are validation errors with file uploaded
-                            is_visible={!!props.validation_error_message && !isDragActive}
+                            is_visible={!!validation_error_message && !isDragActive}
                             timeout={150}
                             color='loss-danger'
                         >
-                            {noClick && typeof props.validation_error_message === 'function'
-                                ? props.validation_error_message(open)
-                                : props.validation_error_message}
+                            <RenderValidationErrorMessage />
                         </FadeInMessage>
                     </div>
                 </div>

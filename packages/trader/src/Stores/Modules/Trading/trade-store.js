@@ -928,7 +928,7 @@ export default class TradeStore extends BaseStore {
             updateGranularity(0);
             updateChartType('mountain');
         } else if (
-            obj_new_values.contract_type &&
+            (obj_new_values.contract_type || obj_new_values.symbol) &&
             prev_chart_type &&
             prev_granularity &&
             (prev_chart_type !== chart_type || prev_granularity !== granularity)

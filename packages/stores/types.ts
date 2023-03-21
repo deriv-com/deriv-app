@@ -206,6 +206,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;

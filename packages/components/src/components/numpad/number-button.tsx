@@ -4,7 +4,7 @@ import Button from '../button/button';
 import Text from '../text';
 
 export type TNumberButton = {
-    onSelect: <T>(number: number) => T;
+    onSelect: (num: number | string) => void;
     number: number;
     className?: string;
 };

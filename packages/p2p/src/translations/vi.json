@@ -186,6 +186,7 @@
     "2063890788": "Đã huỷ",
     "2091671594": "Trạng thái",
     "2096014107": "Áp dụng",
+    "2104905634": "No one has recommended this trader yet",
     "2121837513": "Tối thiểu là {{value}} {{currency}}",
     "2142425493": "ID Quảng Cáo",
     "2142752968": "Vui lòng đảm bảo rằng bạn đã nhận được {{amount}} {{local_currency}} trong tài khoản và nhấn Xác nhận để hoàn tất giao dịch.",
@@ -380,7 +381,6 @@
     "-750202930": "Đơn hàng đang hoạt động",
     "-1626659964": "Tôi đã nhận {{amount}} {{currency}}.",
     "-237014436": "Được giới thiệu bởi {{recommended_count}} nhà giao dịch",
-    "-1463630097": "Được giới thiệu bởi 0 thương nhân",
     "-2054589794": "Bạn đã tạm thời bị cấm sử dụng dịch vụ của chúng tôi do nhiều lần hủy. Hãy thử lại sau {{date_time}} GMT.",
     "-1079963355": "các giao dịch",
     "-930400128": "Để sử dụng Deriv P2P, bạn cần chọn tên hiển thị (một biệt danh) và xác minh danh tính của mình."

@@ -186,6 +186,7 @@
     "2063890788": "Dibatalkan",
     "2091671594": "Status",
     "2096014107": "Daftar",
+    "2104905634": "No one has recommended this trader yet",
     "2121837513": "Minimum adalah {{value}} {{currency}}",
     "2142425493": "ID iklan",
     "2142752968": "Pastikan Anda telah menerima {{amount}} {{local_currency}} pada akun Anda dan tekan Konfirmasi untuk menyelesaikan transaksi.",
@@ -380,7 +381,6 @@
     "-750202930": "Order aktif",
     "-1626659964": "Saya telah menerima {{amount}} {{currency}}.",
     "-237014436": "Direkomendasikan oleh {{recommended_count}} trader",
-    "-1463630097": "Direkomendasikan oleh 0 trader",
     "-2054589794": "Anda telah diblokir sementara waktu untuk menggunakan layanan kami berhubung beberapa kali telah melakukan pembatalan transaksi. Coba kembali setelah {{date_time}} GMT.",
     "-1079963355": "transaksi",
     "-930400128": "Untuk menggunakan Deriv P2P, Anda harus memilih nama tampilan (nama panggilan) dan memverifikasi identitas Anda."

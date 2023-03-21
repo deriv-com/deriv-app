@@ -186,6 +186,7 @@
     "2063890788": "İptal edildi",
     "2091671594": "Durum",
     "2096014107": "Uygula",
+    "2104905634": "No one has recommended this trader yet",
     "2121837513": "Minimum: {{value}} {{currency}}",
     "2142425493": "İlan Kimliği",
     "2142752968": "Lütfen hesabınızda {{amount}} {{local_currency}} aldığınızdan emin olun ve İşlemi tamamlamak için Onayla düğmesine basın.",
@@ -380,7 +381,6 @@
     "-750202930": "Aktif emirler",
     "-1626659964": "{{amount}} {{currency}} aldım.",
     "-237014436": "{{recommended_count}} tüccar tarafından önerildi",
-    "-1463630097": "0 tüccar tarafından önerildi",
     "-2054589794": "Birden fazla iptal girişimi nedeniyle hizmetlerimizi kullanmanız geçici olarak engellendi. {{date_time}} GMT'den sonra tekrar deneyin.",
     "-1079963355": "işlemler",
     "-930400128": "Deriv P2P'yi kullanmak için bir ekran adı (takma ad) seçmeniz ve kimliğinizi doğrulamanız gerekir."

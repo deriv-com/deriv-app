@@ -186,6 +186,7 @@
     "2063890788": "Cancelado",
     "2091671594": "Status",
     "2096014107": "Aplicar",
+    "2104905634": "No one has recommended this trader yet",
     "2121837513": "O mínimo é {{value}} {{currency}}",
     "2142425493": "ID Anúncio",
     "2142752968": "Certifique-se de ter recebido {{amount}} {{local_currency}} em sua conta e clique em Confirmar para concluir a transação.",
@@ -380,7 +381,6 @@
     "-750202930": "Pedidos ativos",
     "-1626659964": "Eu recebi {{amount}} {{currency}}.",
     "-237014436": "Recomendado por {{recommended_count}} trader",
-    "-1463630097": "Recomendado por 0 traders",
     "-2054589794": "Você foi temporariamente impedido de usar nossos serviços devido às várias tentativas de cancelamento. Tente novamente após {{date_time}} GMT.",
     "-1079963355": "negócios",
     "-930400128": "Para usar o Deriv P2P, você precisa escolher um nome de exibição (um apelido) e verificar sua identidade."

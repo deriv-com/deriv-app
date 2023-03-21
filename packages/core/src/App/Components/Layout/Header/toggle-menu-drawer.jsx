@@ -5,7 +5,7 @@ import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deri
 import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { localize, getLanguage, getAllowedLanguages } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
@@ -341,6 +341,33 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
+    const getLanguageRoutes = () => {
+        const currentLanguage = getLanguage();
+
+        return (
+            <MobileDrawer.SubMenu
+                has_subheader
+                submenu_icon='IcLanguage'
+                submenu_title={localize('Language')}
+                submenu_suffix_icon='IcChevronRight'
+                onToggle={expandSubMenu}
+            >
+                {Object.keys(getAllowedLanguages()).map((lang, idx) => (
+                    <MobileDrawer.Item key={idx}>
+                        <MenuLink
+                            is_language
+                            is_active={currentLanguage === lang}
+                            link_to={lang}
+                            icon={`IcFlag${lang.replace('_', '-')}`}
+                            text={getAllowedLanguages()[lang]}
+                            onClickLink={toggleDrawer}
+                        />
+                    </MobileDrawer.Item>
+                ))}
+            </MobileDrawer.SubMenu>
+        );
+    };
+
     return (
         <React.Fragment>
             <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -375,7 +402,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                         )}
 
                         <React.Fragment>
-                            {is_logged_in && !is_trading_hub_category && (
+                            {!is_trading_hub_category && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -408,7 +435,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {is_logged_in && !is_trading_hub_category && (
+                                {!is_trading_hub_category && (
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.trade}
@@ -418,6 +445,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
+                                {!is_logged_in && getLanguageRoutes()}
+
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}
@@ -438,9 +467,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </div>
                                 </MobileDrawer.Item>
+
+                                {HelpCentreRoute()}
                                 {is_logged_in && (
                                     <React.Fragment>
-                                        {HelpCentreRoute()}
                                         <MobileDrawer.Item>
                                             <MenuLink
                                                 link_to={routes.account_limits}
@@ -475,43 +505,41 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>
-                                        {liveChat.isReady && (
-                                            <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
-                                                <Icon icon='IcWhatsApp' className='drawer-icon' />
-                                                <a
-                                                    className='header__menu-mobile-whatsapp-link'
-                                                    href={whatsapp_url}
-                                                    target='_blank'
-                                                    rel='noopener noreferrer'
-                                                    onClick={toggleDrawer}
-                                                >
-                                                    {localize('WhatsApp')}
-                                                </a>
-                                            </MobileDrawer.Item>
-                                        )}
-                                        <MobileDrawer.Item className='header__menu-mobile-livechat'>
-                                            {is_appstore ? null : <LiveChat is_mobile_drawer />}
-                                        </MobileDrawer.Item>
-                                        <MobileDrawer.Item
-                                            onClick={() => {
-                                                logoutClient();
-                                                toggleDrawer();
-                                            }}
-                                            className='dc-mobile-drawer__item'
-                                        >
-                                            <MenuLink
-                                                link_to={routes.index}
-                                                icon='IcLogout'
-                                                text={localize('Log out')}
-                                            />
-                                        </MobileDrawer.Item>
-                                        <MobileDrawer.Footer className='dc-mobile-drawer__footer--servertime'>
-                                            <ServerTime is_mobile />
-                                            <NetworkStatus is_mobile />
-                                        </MobileDrawer.Footer>
                                     </React.Fragment>
                                 )}
+                                {liveChat.isReady && (
+                                    <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
+                                        <Icon icon='IcWhatsApp' className='drawer-icon' />
+                                        <a
+                                            className='header__menu-mobile-whatsapp-link'
+                                            href={whatsapp_url}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            onClick={toggleDrawer}
+                                        >
+                                            {localize('WhatsApp')}
+                                        </a>
+                                    </MobileDrawer.Item>
+                                )}
+                                <MobileDrawer.Item className='header__menu-mobile-livechat'>
+                                    {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                </MobileDrawer.Item>
+                                {is_logged_in && (
+                                    <MobileDrawer.Item
+                                        onClick={() => {
+                                            logoutClient();
+                                            toggleDrawer();
+                                        }}
+                                        className='dc-mobile-drawer__item'
+                                    >
+                                        <MenuLink link_to={routes.index} icon='IcLogout' text={localize('Log out')} />
+                                    </MobileDrawer.Item>
+                                )}
                             </MobileDrawer.Body>
+                            <MobileDrawer.Footer className={is_logged_in && 'dc-mobile-drawer__footer--servertime'}>
+                                <ServerTime is_mobile />
+                                <NetworkStatus is_mobile />
+                            </MobileDrawer.Footer>
                         </React.Fragment>
                     </div>
                 </Div100vhContainer>

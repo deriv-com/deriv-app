@@ -3,9 +3,11 @@ import { TSocketAcceptableProps, TSocketEndpointNames, TSocketResponseData } fro
 
 export const typeSafeSend = async <T extends TSocketEndpointNames>(
     name: T,
-    ...props: TSocketAcceptableProps<T>
+    ...props: TSocketAcceptableProps<T, true>
 ): Promise<TSocketResponseData<T>> => {
-    const response = await WS.send({ [name]: 1, ...(props[0] || {}) });
+    const request = props[0];
+    delete request?.options;
+    const response = await WS.send({ [name]: 1, ...(request || {}) });
 
     if (response.error) {
         throw response.error;

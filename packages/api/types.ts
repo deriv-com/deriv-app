@@ -1,3 +1,4 @@
+import type { useQuery } from 'react-query';
 import type {
     ActiveSymbolsResponse,
     ActiveSymbolsRequest,
@@ -688,17 +689,26 @@ export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketRespons
 
 export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
-type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
-    TSocketRequest<T>,
-    (T extends KeysMatching<TSocketRequest<T>, 1> ? T : never) | 'passthrough' | 'req_id' | 'subscribe'
+type TSocketRequestCleaned<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
+    Omit<
+        TSocketRequest<T>,
+        (T extends KeysMatching<TSocketRequest<T>, 1> ? T : never) | 'passthrough' | 'req_id' | 'subscribe'
+    > & { options?: Parameters<typeof useQuery<TSocketResponseData<T>, unknown>>[2] },
+    O extends false ? 'options' : never
 >;
 
-type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
+type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestCleaned<
+    T,
+    O
+> extends Record<string, never>
     ? never
-    : TSocketRequestCleaned<T>;
+    : TSocketRequestCleaned<T, O>;
 
-export type TSocketAcceptableProps<T extends TSocketEndpointNames> = TSocketRequestProps<T> extends never
+export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestProps<
+    T,
+    O
+> extends never
     ? [undefined?]
-    : Partial<TSocketRequestProps<T>> extends TSocketRequestProps<T>
-    ? [TSocketRequestProps<T>?]
-    : [TSocketRequestProps<T>];
+    : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
+    ? [TSocketRequestProps<T, O>?]
+    : [TSocketRequestProps<T, O>];

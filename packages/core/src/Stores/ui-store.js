@@ -31,7 +31,7 @@ export default class UIStore extends BaseStore {
     has_read_scam_message = localStorage.getItem('readScamMessage') || false;
 
     // Purchase Controls
-    //  is_purchase_confirm_on    = false;
+    // @observable is_purchase_confirm_on    = false;
     is_services_error_visible = false;
     is_unsupported_contract_modal_visible = false;
     is_new_account = localStorage.getItem('isNewAccount') || false;
@@ -41,11 +41,11 @@ export default class UIStore extends BaseStore {
     is_reset_email_modal_visible = false;
     is_update_email_modal_visible = false;
     is_reset_trading_password_modal_visible = false;
-    // is_purchase_lock_on       = false;
+    // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
     // TODO: enable asset information
-    // is_chart_asset_info_visible = true;
+    // @observable is_chart_asset_info_visible = true;
     is_chart_countdown_visible = false;
     is_chart_layout_default = true;
 

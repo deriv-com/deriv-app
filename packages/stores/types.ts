@@ -1,4 +1,5 @@
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
+import type { TEmailVerificationType } from '@deriv/hooks';
 import type { RouteComponentProps } from 'react-router';
 
 type TBalance = { balance: number; currency: string };
@@ -169,7 +170,9 @@ type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    sent_verify_emails_data: TSentVerifyEmailsData;
     email: string;
+    setSentVerifyEmailsData: (sent_verify_emails_data: TSentVerifyEmailsData) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
@@ -181,6 +184,16 @@ type TClientStore = {
     is_crypto: boolean;
     getToken: (loginid?: string) => string;
 };
+
+type TSentVerifyEmailsData = Partial<
+    Record<
+        TEmailVerificationType,
+        {
+            last_time_sent_seconds: number;
+            sent_count: number;
+        }
+    >
+>;
 
 type TCommonStoreError = {
     header: string | JSX.Element;

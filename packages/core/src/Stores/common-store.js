@@ -257,7 +257,7 @@ export default class CommonStore extends BaseStore {
     setServicesError(error) {
         this.services_error = error;
         if (isMobile()) {
-            if (error.code === 'CompanyWideLimitExceeded') {
+            if (error.code === 'CompanyWideLimitExceeded' || error.code === 'PleaseAuthenticate') {
                 this.root_store.ui.toggleServicesErrorModal(true);
             } else {
                 this.root_store.ui.addToast({

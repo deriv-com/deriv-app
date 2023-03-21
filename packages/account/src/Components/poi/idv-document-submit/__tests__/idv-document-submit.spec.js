@@ -6,9 +6,6 @@ import { isSequentialNumber, isRecurringNumberRegex } from '../utils';
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
-jest.mock('../../../hooks/useToggleValidation', () => ({
-    useToggleValidation: jest.fn(() => '#toggle_id_validation'),
-}));
 jest.mock('../utils.js', () => ({
     getDocumentData: function (country_code, key) {
         const data = {
@@ -30,6 +27,7 @@ jest.mock('../utils.js', () => ({
     getRegex: jest.fn(() => /5436454364243/i),
     isSequentialNumber: jest.fn(() => false),
     isRecurringNumberRegex: jest.fn(() => false),
+    isIDVWhitelistDocumentNumber: jest.fn(() => false),
 }));
 
 jest.mock('@deriv/shared', () => ({

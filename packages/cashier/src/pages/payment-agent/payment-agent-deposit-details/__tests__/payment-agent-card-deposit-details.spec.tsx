@@ -5,11 +5,18 @@ import PaymentAgentDepositDetails from '../payment-agent-deposit-details';
 describe('<PaymentAgentDepositDetails />', () => {
     const mocked_payment_agent = {
         currency: 'USD',
+        currencies: 'USD',
         deposit_commission: '10',
         email: 'pa@example.com',
+        further_information: '',
         max_withdrawal: '2000',
         min_withdrawal: '10',
-        phones: [{ phone_number: '+12345678' }, { phone_number: '+87654321' }],
+        name: '',
+        paymentagent_loginid: '',
+        phone_numbers: [{ phone_number: '+12345678' }, { phone_number: '+87654321' }],
+        summary: '',
+        supported_payment_methods: [],
+        urls: [],
         withdrawal_commission: '0',
     };
 

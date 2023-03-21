@@ -129,6 +129,7 @@ export default class ClientStore extends BaseStore {
 
     account_limits = {};
     self_exclusion = {};
+    sent_verify_emails_data = {};
 
     local_currency_config = {
         currency: '',
@@ -206,6 +207,7 @@ export default class ClientStore extends BaseStore {
             new_email: observable,
             account_limits: observable,
             self_exclusion: observable,
+            sent_verify_emails_data: observable,
             local_currency_config: observable,
             has_cookie_account: observable,
             financial_assessment: observable,
@@ -310,6 +312,7 @@ export default class ClientStore extends BaseStore {
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
             setIsCFDScoreAvailable: action.bound,
+            setSentVerifyEmailsData: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -1180,6 +1183,11 @@ export default class ClientStore extends BaseStore {
         LocalStore.setObject(LANGUAGE_KEY, lang);
     };
 
+    setSentVerifyEmailsData(sent_verify_emails_data) {
+        this.sent_verify_emails_data = sent_verify_emails_data;
+        LocalStore.setObject('sent_verify_emails_data', sent_verify_emails_data);
+    }
+
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
 
@@ -1589,6 +1597,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
+        this.setSentVerifyEmailsData(LocalStore.getObject('sent_verify_emails_data'));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login

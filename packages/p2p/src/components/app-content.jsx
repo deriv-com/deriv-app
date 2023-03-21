@@ -76,7 +76,7 @@ const AppContent = ({ order_id }) => {
                 <TemporarilyBarredHint />
                 <BuySell />
             </div>
-            <div count={general_store.notification_count} label={localize('Orders')}>
+            <div label={localize('Orders')}>
                 <Orders />
             </div>
             <div label={localize('My ads')}>

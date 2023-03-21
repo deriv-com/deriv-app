@@ -120,7 +120,7 @@ const Tabs = ({
 
     const onClickTabItem = (index: number) => {
         if (should_update_hash) {
-            const hash = children[index].props.hash;
+            const hash = children[index].props['data-hash'];
             pushHash(hash);
         }
         setActiveTabIndex(index);

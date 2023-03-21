@@ -7,7 +7,7 @@ import { getCurrencyDisplayCode, getLocalizedBasis, isMobile } from '@deriv/shar
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_turbos, is_vanilla }) => (
-    <div className={is_vanilla ? 'strike--value-container' : ''}>
+    <div className='strike--value-container'>
         <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
             {!has_error_or_not_loaded && (
                 <Money
@@ -85,6 +85,18 @@ const ContractInfo = ({
                     values={{
                         trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                         title: type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                    }}
+                />
+            );
+        }
+        if (['TURBOSLONG', 'TURBOSSHORT'].includes(type)) {
+            return (
+                <Localize
+                    i18n_default_text='<0>For {{title}}:</0> {{message}}'
+                    components={[<Text key={0} weight='bold' size='xxs' />]}
+                    values={{
+                        title: type === 'TURBOSLONG' ? localize('Long') : localize('Short'),
+                        message,
                     }}
                 />
             );

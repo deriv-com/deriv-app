@@ -54,6 +54,7 @@ const Trade = ({
     is_synthetics_available,
     is_synthetics_trading_market_available,
     is_vanilla,
+    is_turbos,
 }) => {
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -146,7 +147,12 @@ const Trade = ({
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
 
     return (
-        <div id='trade_container' className='trade-container'>
+        <div
+            id='trade_container'
+            className={classNames('trade-container', {
+                'trade-container--turbos': is_turbos,
+            })}
+        >
             <DesktopWrapper>
                 <PositionsDrawer />
             </DesktopWrapper>
@@ -157,7 +163,7 @@ const Trade = ({
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset='259px'
+                height_offset={is_turbos ? '300px' : '259px'}
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -248,6 +254,7 @@ export default connect(({ client, common, modules, ui }) => ({
     onChange: modules.trade.onChange,
     setContractTypes: modules.trade.setContractTypes,
     is_vanilla: modules.trade.is_vanilla,
+    is_turbos: modules.trade.is_turbos,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------

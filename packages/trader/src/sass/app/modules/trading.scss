@@ -599,8 +599,6 @@
         }
     }
     &__trade {
-        position: relative;
-        top: 0.2rem;
         &-type-tabs {
             border-radius: $BORDER_RADIUS;
             padding: 0.8rem;
@@ -765,8 +763,10 @@
     position: relative;
 
     &__option {
-        padding: 1.6rem 0.8rem;
-
+        padding: 0.8rem;
+        &--vanilla {
+            padding: 1.6rem 0.8rem;
+        }
         &:not(:only-child) {
             &:nth-last-child(2) {
                 border-bottom-width: 0;

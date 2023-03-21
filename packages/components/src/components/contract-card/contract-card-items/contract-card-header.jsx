@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick, isBot, getSubType, isTurbosContract } from '@deriv/shared';
+import { isHighLow, getCurrentTick, isBot, getTurbosSubtype, isTurbosContract } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -38,7 +38,7 @@ const ContractCardHeader = ({
         },
         {
             is_param_displayed: isTurbosContract(contract_type),
-            displayed_param: getSubType(contract_type),
+            displayed_param: getTurbosSubtype(contract_type),
         },
     ];
 

@@ -78,6 +78,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
     min-height: calc(100vh - 84px);
     overflow: hidden;
 
+    &--turbos {
+        justify-content: space-between;
+    }
     &__replay {
         width: 100%;
         display: flex;

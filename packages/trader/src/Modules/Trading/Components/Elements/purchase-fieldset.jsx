@@ -69,6 +69,7 @@ const PurchaseFieldset = ({
         <Fieldset
             className={classNames('trade-container__fieldset', 'purchase-container__option', {
                 'purchase-container__option--has-cancellation': has_cancellation,
+                'purchase-container__option--vanilla': is_vanilla,
             })}
         >
             <DesktopWrapper>

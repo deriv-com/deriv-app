@@ -43,7 +43,10 @@ const TogglePositionsMobile = ({
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
-            filterByContractType(p.contract_info, trade_contract_type)
+            (trade_contract_type.includes('turbos')
+                ? filterByContractType(p.contract_info, 'turbosshort') ||
+                  filterByContractType(p.contract_info, 'turboslong')
+                : filterByContractType(p.contract_info, trade_contract_type))
     );
 
     // Show only 5 most recent open contracts

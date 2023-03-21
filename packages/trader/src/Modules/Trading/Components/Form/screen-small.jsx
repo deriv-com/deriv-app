@@ -69,7 +69,11 @@ const CollapsibleTradeParams = ({
                     <BarrierMobile />
                 </div>
             )}
-            {isVisible('barrier_selector') && <BarrierSelector />}
+            {isVisible('barrier_selector') && (
+                <div collapsible='true'>
+                    <BarrierSelector />
+                </div>
+            )}
             {isVisible('strike') && (
                 <div collapsible='true'>
                     <Strike />

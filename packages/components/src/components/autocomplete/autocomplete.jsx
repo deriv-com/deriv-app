@@ -71,7 +71,17 @@ const Autocomplete = React.memo(props => {
 
     React.useEffect(() => {
         if (has_updating_list) {
-            const new_filtered_items = is_list_visible ? getFilteredItems(value.toLowerCase(), list_items) : list_items;
+            let new_filtered_items = [];
+
+            if (is_list_visible) {
+                if (typeof props.onSearch === 'function') {
+                    new_filtered_items = props.onSearch(value.toLowerCase(), list_items);
+                } else {
+                    new_filtered_items = getFilteredItems(value.toLowerCase(), list_items);
+                }
+            } else {
+                new_filtered_items = list_items;
+            }
 
             setFilteredItems(new_filtered_items);
             if (historyValue) {
@@ -263,7 +273,13 @@ const Autocomplete = React.memo(props => {
 
     const filterList = e => {
         const val = e.target.value.toLowerCase();
-        const new_filtered_items = getFilteredItems(val, props.list_items, should_filter_by_char);
+        let new_filtered_items = [];
+
+        if (typeof props.onSearch === 'function') {
+            new_filtered_items = props.onSearch(val, props.list_items);
+        } else {
+            new_filtered_items = getFilteredItems(val, props.list_items, should_filter_by_char);
+        }
 
         if (!new_filtered_items.length) {
             setInputValue('');

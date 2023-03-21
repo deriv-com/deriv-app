@@ -1,17 +1,33 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import './payment-agent-detail.scss';
 
-const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, is_link, title, ...rest }) => {
+type TPaymentAgentDetail = {
+    action?: string;
+    children?: ReactNode;
+    className?: string;
+    has_red_color?: boolean;
+    icon?: string;
+    is_link?: boolean;
+    title?: string;
+    rel?: string;
+    target?: string;
+};
+
+const PaymentAgentDetail = ({
+    action,
+    children,
+    className,
+    has_red_color,
+    icon,
+    is_link,
+    title,
+    ...rest
+}: TPaymentAgentDetail) => {
     const detail = Array.isArray(children) ? children : [children];
     return (
-        <div
-            className={classNames('payment-agent-detail', {
-                [className]: !!className,
-            })}
-        >
+        <div className={classNames('payment-agent-detail', className && { [className]: !!className })}>
             {icon && (
                 <div className='payment-agent-detail__icon-wrapper'>
                     <Icon icon={icon} data_testid='dt_payment_agent_detail_icon' />
@@ -57,16 +73,6 @@ const PaymentAgentDetail = ({ action, children, className, has_red_color, icon, 
             </div>
         </div>
     );
-};
-
-PaymentAgentDetail.propTypes = {
-    action: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element, PropTypes.string]),
-    className: PropTypes.string,
-    has_red_color: PropTypes.bool,
-    icon: PropTypes.string,
-    is_link: PropTypes.bool,
-    title: PropTypes.string,
 };
 
 export default PaymentAgentDetail;

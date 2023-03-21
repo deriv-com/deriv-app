@@ -20,7 +20,7 @@ describe('<PaymentAgentDetail />', () => {
     });
 
     it('should show proper description if children is an array', () => {
-        render(<PaymentAgentDetail {...props} children={['+12345678', '+87654321']} />);
+        render(<PaymentAgentDetail {...props}>{['+12345678', '+87654321']}</PaymentAgentDetail>);
 
         expect(screen.getByText('+12345678,')).toBeInTheDocument();
         expect(screen.getByText('+87654321')).toBeInTheDocument();

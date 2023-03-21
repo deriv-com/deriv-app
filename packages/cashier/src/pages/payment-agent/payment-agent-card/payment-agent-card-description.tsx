@@ -1,12 +1,17 @@
-import PropTypes from 'prop-types';
 import { toJS } from 'mobx';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';
 import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from './helpers';
 import PaymentAgentDetail from '../payment-agent-detail';
+import { TPaymentAgent } from '../../../types';
 
-const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
+type TPaymentAgentCardDescription = {
+    is_dark_mode_on?: boolean;
+    payment_agent: TPaymentAgent;
+};
+
+const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }: TPaymentAgentCardDescription) => {
     const payment_agent_urls = toJS(payment_agent.urls);
 
     return (
@@ -47,11 +52,6 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }) => {
             )}
         </div>
     );
-};
-
-PaymentAgentCardDescription.propTypes = {
-    is_dark_mode_on: PropTypes.bool,
-    payment_agent: PropTypes.object,
 };
 
 export default PaymentAgentCardDescription;

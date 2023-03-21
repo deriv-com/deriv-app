@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useWS } from '@deriv/api';
+import { useRequest } from '@deriv/api';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import './funds-protection.scss';
 
 const FundsProtection = () => {
-    const { data, send } = useWS('tnc_approval');
+    const { data, send } = useRequest('tnc_approval');
 
     useEffect(() => {
         if (data) location.reload();

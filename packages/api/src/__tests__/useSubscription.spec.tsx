@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useWS as useWSShared } from '@deriv/shared';
+import { useWS } from '@deriv/shared';
 import useSubscription from '../useSubscription';
 
 jest.mock('@deriv/shared');
 
-const mockUseWSShared = useWSShared as jest.MockedFunction<typeof useWSShared>;
+const mockUseWS = useWS as jest.MockedFunction<typeof useWS>;
 
 describe('useSubscription', () => {
     test('should subscribe to p2p_order_info and get the order updates', async () => {
-        mockUseWSShared.mockReturnValue({
+        mockUseWS.mockReturnValue({
             subscribe: jest.fn(() => {
                 return {
                     subscribe: async (onData: (response: unknown) => void, onError: (response: unknown) => void) => {

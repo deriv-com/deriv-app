@@ -1,15 +1,15 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useWS as useWSShared } from '@deriv/shared';
-import useWS from '../useWS';
+import { useWS } from '@deriv/shared';
+import useRequest from '../useRequest';
 import { TSocketResponse } from '../../types';
 
 jest.mock('@deriv/shared');
 
-const mockUseWSShared = useWSShared as jest.MockedFunction<typeof useWSShared>;
+const mockUseWS = useWS as jest.MockedFunction<typeof useWS>;
 
-describe('useWS', () => {
+describe('useRequest', () => {
     test('should have initial error and data of undefined and is_loading of false', async () => {
-        const { result } = renderHook(() => useWS('ping'));
+        const { result } = renderHook(() => useRequest('ping'));
 
         expect(result.current.is_loading).toBe(false);
         expect(result.current.error).toBe(undefined);
@@ -17,7 +17,7 @@ describe('useWS', () => {
     });
 
     test('should call ping and get pong in response', async () => {
-        mockUseWSShared.mockReturnValue({
+        mockUseWS.mockReturnValue({
             send: jest.fn(() =>
                 Promise.resolve<TSocketResponse<'ping'>>({
                     msg_type: 'ping',
@@ -27,7 +27,7 @@ describe('useWS', () => {
             ),
         });
 
-        const { result, waitForNextUpdate } = renderHook(() => useWS('ping'));
+        const { result, waitForNextUpdate } = renderHook(() => useRequest('ping'));
 
         expect(result.current.is_loading).toBe(false);
         expect(result.current.error).toBe(undefined);
@@ -45,7 +45,7 @@ describe('useWS', () => {
     });
 
     test('should call verify_email and get 1 in response', async () => {
-        mockUseWSShared.mockReturnValue({
+        mockUseWS.mockReturnValue({
             send: jest.fn(() =>
                 Promise.resolve<TSocketResponse<'verify_email'>>({
                     verify_email: 1,
@@ -55,7 +55,7 @@ describe('useWS', () => {
             ),
         });
 
-        const { result, waitForNextUpdate } = renderHook(() => useWS('verify_email'));
+        const { result, waitForNextUpdate } = renderHook(() => useRequest('verify_email'));
 
         expect(result.current.is_loading).toBe(false);
         expect(result.current.error).toBe(undefined);
@@ -73,7 +73,7 @@ describe('useWS', () => {
     });
 
     test('should call cashier and get ASK_TNC_APPROVAL error code in response', async () => {
-        mockUseWSShared.mockReturnValue({
+        mockUseWS.mockReturnValue({
             send: jest.fn(() =>
                 Promise.resolve<TSocketResponse<'cashier'>>({
                     msg_type: 'cashier',
@@ -86,7 +86,7 @@ describe('useWS', () => {
             ),
         });
 
-        const { result, waitForNextUpdate } = renderHook(() => useWS('cashier'));
+        const { result, waitForNextUpdate } = renderHook(() => useRequest('cashier'));
 
         expect(result.current.is_loading).toBe(false);
         expect(result.current.error).toBe(undefined);

@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
-import { useWS as useWSShared } from '@deriv/shared';
+import { useWS } from '@deriv/shared';
 import { TSocketEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
 
-const useWS = <T extends TSocketEndpointNames>(name: T) => {
+const useRequest = <T extends TSocketEndpointNames>(name: T) => {
     const [is_loading, setIsLoading] = useState(false);
     const [error, setError] = useState<unknown>();
     const [data, setData] = useState<TSocketResponseData<T>>();
-    const WS = useWSShared();
+    const WS = useWS();
 
     const send = useCallback(
         async (...props: TSocketAcceptableProps<T>) => {
@@ -32,4 +32,4 @@ const useWS = <T extends TSocketEndpointNames>(name: T) => {
     return { send, is_loading, error, data };
 };
 
-export default useWS;
+export default useRequest;

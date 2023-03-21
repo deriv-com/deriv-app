@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useWS as useWSShared } from '@deriv/shared';
+import { useWS } from '@deriv/shared';
 import { TSocketSubscribableEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
 
 const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
@@ -8,7 +8,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
     const [error, setError] = useState<unknown>();
     const [data, setData] = useState<TSocketResponseData<T>>();
     const [subscriber, setSubscriber] = useState<{ unsubscribe?: VoidFunction }>();
-    const WS = useWSShared();
+    const WS = useWS();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onData = (response: any) => {

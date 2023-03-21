@@ -32,7 +32,7 @@ describe('<CryptoWithdrawReceipt />', () => {
                     },
                     withdraw: {
                         blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                        resetWithrawForm: jest.fn(),
+                        resetWithdrawForm: jest.fn(),
                         setIsWithdrawConfirmed: jest.fn(),
                         withdraw_amount: 0.0002,
                     },

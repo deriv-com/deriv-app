@@ -3,7 +3,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
-import { getContractTypeCategoryIcons } from '../../../Helpers/contract-type';
+import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
 
 const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageChanged }) => {
     const wrapper_ref = React.useRef(null);
@@ -38,11 +38,14 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     };
 
     const handleSelect = (clicked_item, e) => {
+        const categories = list_with_category();
+        const { key } = findContractCategory(categories, clicked_item);
         if (e.target.id !== 'info-icon') {
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
             setItem(clicked_item);
             setSelectedItem(clicked_item);
+            setSelectedCategory(key);
         }
     };
 
@@ -81,17 +84,24 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-        const multipliers_category = list.filter(
+
+        // Order the list based on categories provided in order_arr
+        const order_arr = ['Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
+        const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+
+        const multipliers_category = ordered_list.filter(
             contract_category => contract_category.label === localize('Multipliers')
         );
-        const options_category = list.filter(contract_category => contract_category.label !== localize('Multipliers'));
+        const options_category = ordered_list.filter(
+            contract_category => contract_category.label !== localize('Multipliers')
+        );
 
         const categories = [];
 
         if (multipliers_category.length > 0 && options_category.length > 0) {
             categories.push({
                 label: localize('All'),
-                contract_categories: [...list],
+                contract_categories: [...ordered_list],
                 key: 'All',
             });
         }

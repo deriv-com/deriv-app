@@ -39,6 +39,7 @@ const OnRampProviderPopup = observer(() => {
 
     React.useEffect(() => {
         return () => clearTimeout(timeout_clipboard);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // JS executed after "on-ramp__widget-container" has been added to the DOM.

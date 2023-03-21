@@ -1,11 +1,5 @@
 import { action, makeObservable, observable, reaction, computed, runInAction } from 'mobx';
-import {
-    available_traders_hub_cfd_accounts,
-    CFD_PLATFORMS,
-    ContentFlag,
-    formatMoney,
-    getAppstorePlatforms,
-} from '@deriv/shared';
+import { getCFDAvailableAccount, CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms } from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
 import { isEuCountry } from '_common/utility';
@@ -84,6 +78,7 @@ export default class TradersHubStore extends BaseStore {
             no_CR_account: computed,
             no_MF_account: computed,
             multipliers_account_status: computed,
+            financial_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -117,6 +112,8 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
+                this.root_store.client.landing_companies,
+                this.root_store.common.current_language,
             ],
             () => {
                 this.getAvailablePlatforms();
@@ -262,6 +259,9 @@ export default class TradersHubStore extends BaseStore {
         const { is_logged_in, landing_companies, residence } = this.root_store.client;
         const { financial_company, gaming_company } = landing_companies;
 
+        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
+        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
+
         if (!is_logged_in) return '';
         if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
             if (this.is_demo) return ContentFlag.EU_DEMO;
@@ -273,7 +273,10 @@ export default class TradersHubStore extends BaseStore {
         ) {
             if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
             return ContentFlag.LOW_RISK_CR_NON_EU;
-        } else if (financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg' && this.is_real) {
+        } else if (
+            ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') || restricted_countries) &&
+            this.is_real
+        ) {
             return ContentFlag.HIGH_RISK_CR;
         }
 
@@ -359,7 +362,7 @@ export default class TradersHubStore extends BaseStore {
                   );
 
         const all_available_accounts = [
-            ...available_traders_hub_cfd_accounts,
+            ...getCFDAvailableAccount(),
             {
                 name: !this.is_eu_user || this.is_demo_low_risk ? localize('Financial') : localize('CFDs'),
                 description: account_desc,
@@ -380,10 +383,23 @@ export default class TradersHubStore extends BaseStore {
         this.setCombinedCFDMT5Accounts();
     }
 
+    get financial_restricted_countries() {
+        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+
+        return gaming_company?.shortcode === 'svg' && !financial_company;
+    }
+
     getAvailableMt5Accounts() {
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
+
+        if (this.financial_restricted_countries) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account => account.market_type !== 'financial' && account.platform === CFD_PLATFORMS.MT5
             );
             return;
         }
@@ -735,12 +751,26 @@ export default class TradersHubStore extends BaseStore {
         this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
     }
 
-    openFailedVerificationModal(from_account) {
-        const { setJurisdictionSelectedShortcode } = this.root_store.modules.cfd;
-        if (from_account !== 'multipliers') {
-            setJurisdictionSelectedShortcode(from_account);
+    openFailedVerificationModal(selected_account_type) {
+        const {
+            common,
+            modules: { cfd },
+        } = this.root_store;
+        const { setJurisdictionSelectedShortcode, setAccountType } = cfd;
+        const { setAppstorePlatform } = common;
+
+        if (selected_account_type?.platform === CFD_PLATFORMS.MT5) {
+            setAppstorePlatform(selected_account_type.platform);
+            setAccountType({
+                category: selected_account_type.category,
+                type: selected_account_type.type,
+            });
+            setJurisdictionSelectedShortcode(selected_account_type.jurisdiction);
+        } else {
+            setJurisdictionSelectedShortcode('');
         }
-        this.open_failed_verification_for = from_account;
+        this.open_failed_verification_for =
+            selected_account_type?.platform === CFD_PLATFORMS.MT5 ? selected_account_type?.jurisdiction : 'multipliers';
         this.toggleFailedVerificationModalVisibility();
     }
 

@@ -8,7 +8,6 @@ describe('proof-of-ownership-form.jsx', () => {
         render(
             <ProofOfOwnershipForm
                 grouped_payment_method_data={{ beyonic: grouped_payment_method_data.beyonic }}
-                total_documents_required={1}
                 updateAccountStatus={jest.fn()}
                 refreshNotifications={jest.fn()}
                 is_dark_mode={false}
@@ -22,7 +21,6 @@ describe('proof-of-ownership-form.jsx', () => {
         render(
             <ProofOfOwnershipForm
                 grouped_payment_method_data={grouped_payment_method_data}
-                total_documents_required={7}
                 updateAccountStatus={jest.fn()}
                 refreshNotifications={jest.fn()}
                 is_dark_mode={false}

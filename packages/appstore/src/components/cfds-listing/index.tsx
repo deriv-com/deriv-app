@@ -180,7 +180,12 @@ const CFDsListing = () => {
                                     }
                                 }}
                                 mt5_acc_auth_status={has_mt5_account_status}
-                                selected_mt5_jurisdiction={existing_account.landing_company_short}
+                                selected_mt5_jurisdiction={{
+                                    platform: existing_account.platform,
+                                    category: selected_account_type,
+                                    type: existing_account.market_type,
+                                    jurisdiction: existing_account.landing_company_short,
+                                }}
                                 openFailedVerificationModal={openFailedVerificationModal}
                             />
                         );
@@ -226,9 +231,9 @@ const CFDsListing = () => {
                                     existing_account.display_balance,
                                     true
                                 )} ${existing_account.currency}`}
-                                description={existing_account.display_login}
+                                description={existing_account.login}
                                 platform={account.platform}
-                                key={`trading_app_card_${existing_account.display_login}`}
+                                key={`trading_app_card_${existing_account.login}`}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     const button_name = e?.currentTarget?.name;
                                     if (button_name === 'transfer-btn') {

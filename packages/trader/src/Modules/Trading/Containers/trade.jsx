@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
@@ -52,6 +53,7 @@ const Trade = ({
     symbol,
     is_synthetics_available,
     is_synthetics_trading_market_available,
+    is_vanilla,
 }) => {
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -184,6 +186,7 @@ const Trade = ({
                                 is_chart_loading ||
                                 should_show_active_symbols_loading
                             }
+                            className={classNames({ 'vanilla-trade-chart': is_vanilla })}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <ChartTrade
@@ -244,6 +247,7 @@ export default connect(({ client, common, modules, ui }) => ({
     should_show_multipliers_onboarding: ui.should_show_multipliers_onboarding,
     onChange: modules.trade.onChange,
     setContractTypes: modules.trade.setContractTypes,
+    is_vanilla: modules.trade.is_vanilla,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------
@@ -292,6 +296,7 @@ const Chart = props => {
         end_epoch,
         granularity,
         has_alternative_source,
+        is_eu_country,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
@@ -346,6 +351,7 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
+            is_eu_country={is_eu_country}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -399,6 +405,7 @@ Chart.propTypes = {
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
+    is_eu_country: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -413,7 +420,7 @@ Chart.propTypes = {
     wsSubscribe: PropTypes.func,
 };
 
-const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
+const ChartTrade = connect(({ modules, ui, common, contract_trade, client }) => ({
     is_socket_opened: common.is_socket_opened,
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,
@@ -428,6 +435,7 @@ const ChartTrade = connect(({ modules, ui, common, contract_trade }) => ({
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
+    is_eu_country: client.is_eu_country,
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,

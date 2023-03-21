@@ -22,8 +22,8 @@ type TTransferConfirmProps = {
     error?: object;
     header?: string;
     is_payment_agent_withdraw?: boolean;
-    onClickBack?: () => void;
-    onClickConfirm?: () => void;
+    onClickBack?: VoidFunction;
+    onClickConfirm?: VoidFunction;
     warning_messages?: Array<JSX.Element>;
 };
 

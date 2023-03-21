@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { trading_hub_contents } from 'Constants/trading-hub-content';
+import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -24,7 +24,7 @@ type TOnboardingProps = {
     >;
 };
 
-const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
+const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();

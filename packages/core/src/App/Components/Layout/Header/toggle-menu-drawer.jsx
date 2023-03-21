@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { useOnrampVisible } from '@deriv/hooks';
+import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
@@ -17,11 +17,51 @@ import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common } = useStore();
+        const { common, ui, client } = useStore();
         const { changeCurrentLanguage } = common;
         const deriv_static_url = getStaticUrl(link_to);
+        const history = useHistory();
+        const { has_any_real_account, is_virtual } = client;
+        const { toggleReadyToDepositModal } = ui;
+
+        const cashier_link =
+            link_to === routes.cashier_deposit ||
+            link_to === routes.cashier_withdrawal ||
+            link_to === routes.cashier_acc_transfer;
 
         if (is_hidden) return null;
+
+        if (cashier_link && is_virtual && !has_any_real_account) {
+            const toggle_modal_routes =
+                window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
+
+            const toggleModal = () => {
+                if (toggle_modal_routes && !has_any_real_account) {
+                    toggleReadyToDepositModal();
+                }
+            };
+
+            const handleClickCashier = () => {
+                if (is_virtual && has_any_real_account) {
+                    history.push(routes.cashier_deposit);
+                } else if (!has_any_real_account && is_virtual) {
+                    toggleModal();
+                }
+                onClickLink();
+            };
+            return (
+                <div
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                    })}
+                    onClick={handleClickCashier}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </div>
+            );
+        }
 
         if (is_language) {
             return (
@@ -30,7 +70,6 @@ const MenuLink = observer(
                         'header__menu-mobile-link--disabled': is_disabled,
                         'header__menu-mobile-link--active': is_active,
                     })}
-                    active_class='header__menu-mobile-link--active'
                     onClick={() => {
                         onClickLink();
                         changeLanguage(link_to, changeCurrentLanguage);
@@ -123,14 +162,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_landing_company_loaded,
         is_pre_appstore,
         setIsPreAppStore,
+        is_eu,
     } = client;
     const { cashier } = modules;
-    const { general_store, payment_agent_transfer, payment_agent, account_transfer } = cashier;
+    const { general_store, payment_agent_transfer, payment_agent } = cashier;
     const { is_p2p_enabled } = general_store;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
-    const { is_account_transfer_visible } = account_transfer;
-    const { content_flag, should_show_exit_traders_modal, switchToCRAccount } = traders_hub;
+    const { content_flag, should_show_exit_traders_modal, switchToCRAccount, show_eu_related_content } = traders_hub;
+    const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
 
     const liveChat = useLiveChat();
@@ -408,7 +448,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             <React.Fragment>
                                 {is_logged_in && is_trading_hub_category ? (
                                     <MobileDrawer.SubHeader
-                                        className={classNames({
+                                        className={classNames('header__menu--trading-hub', {
                                             'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
                                         })}
                                     >
@@ -452,6 +492,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             is_logging_in={is_logging_in}
                                             platform_config={platform_config}
                                             toggleDrawer={toggleDrawer}
+                                            is_pre_appstore={is_pre_appstore}
                                         />
                                     </MobileDrawer.SubHeader>
                                 )}
@@ -550,14 +591,16 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                     onClickLink={toggleDrawer}
                                                 />
                                             </MobileDrawer.Item>
-                                            <MobileDrawer.Item>
-                                                <MenuLink
-                                                    link_to={getStaticUrl('/regulatory')}
-                                                    icon='IcRegulatoryInformation'
-                                                    text={localize('Regulatory information')}
-                                                    onClickLink={toggleDrawer}
-                                                />
-                                            </MobileDrawer.Item>
+                                            {is_eu && show_eu_related_content && !is_virtual && (
+                                                <MobileDrawer.Item>
+                                                    <MenuLink
+                                                        link_to={getStaticUrl('/regulatory')}
+                                                        icon='IcRegulatoryInformation'
+                                                        text={localize('Regulatory information')}
+                                                        onClickLink={toggleDrawer}
+                                                    />
+                                                </MobileDrawer.Item>
+                                            )}
                                             <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
                                                 <MenuLink
                                                     link_to={getStaticUrl('/')}

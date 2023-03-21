@@ -25,17 +25,11 @@ const shouldShowIdentityInformation = ({ account_settings, residence, residence_
     return !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported;
 };
 
-export const getItems = props => {
-    return [
-        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
-            ? [currencySelectorConfig(props, CurrencySelector)]
-            : []),
-        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
-            ? [personalDetailsConfig(props, PersonalDetails)]
-            : []),
-        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
-        ...(isMaltaAccount(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
-        ...(shouldShowIdentityInformation(props) ? [proofOfIdentityConfig(props, ProofOfIdentityFormOnSignup)] : []),
-        termsOfUseConfig(props, TermsOfUse),
-    ];
-};
+export const getItems = props => [
+    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [currencySelectorConfig(props, CurrencySelector)] : []),
+    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [personalDetailsConfig(props, PersonalDetails)] : []),
+    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
+    ...(isMaltaAccount(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
+    ...(shouldShowIdentityInformation(props) ? [proofOfIdentityConfig(props, ProofOfIdentityFormOnSignup)] : []),
+    termsOfUseConfig(props, TermsOfUse),
+];

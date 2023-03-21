@@ -5,9 +5,11 @@ import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card
 import { localize } from 'Components/i18next';
 import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods, touched }) => {
     const { my_ads_store, my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     const onClickPaymentMethodCard = payment_method => {
         if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
@@ -38,7 +40,11 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
             return (
                 <SellAdPaymentMethodsList
                     selected_methods={selected_methods}
-                    onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
+                    onClickAdd={() =>
+                        showModal({
+                            key: 'CreateAdAddPaymentMethodModal',
+                        })
+                    }
                     onClickPaymentMethodCard={onClickPaymentMethodCard}
                 />
             );
@@ -49,7 +55,11 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
                 is_add={true}
                 label={localize('Payment method')}
                 medium
-                onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethodModal(true)}
+                onClickAdd={() =>
+                    showModal({
+                        key: 'CreateAdAddPaymentMethodModal',
+                    })
+                }
             />
         );
     }

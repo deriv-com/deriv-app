@@ -10,9 +10,6 @@ export default class DepositStore {
             error: observable,
             onMountDeposit: action.bound,
         });
-
-        this.root_store = root_store;
-        this.WS = WS;
     }
 
     container = Constants.containers.deposit;

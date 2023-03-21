@@ -154,7 +154,7 @@ const addressDetailsConfig = (
             is_svg,
             is_mf,
         },
-        passthrough: ['residence_list', 'is_fully_authenticated'],
+        passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardAddress',
     };
 };

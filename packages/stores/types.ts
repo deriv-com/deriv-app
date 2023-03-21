@@ -1,4 +1,5 @@
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
+import type { TEmailVerificationType } from '@deriv/hooks';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -167,7 +168,9 @@ type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    sent_verify_emails_data: TSentVerifyEmailsData;
     email: string;
+    setSentVerifyEmailsData: (sent_verify_emails_data: TSentVerifyEmailsData) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
@@ -178,6 +181,16 @@ type TClientStore = {
     should_allow_authentication: boolean;
     is_crypto: boolean;
 };
+
+type TSentVerifyEmailsData = Partial<
+    Record<
+        TEmailVerificationType,
+        {
+            last_time_sent_seconds: number;
+            sent_count: number;
+        }
+    >
+>;
 
 type TCommonStoreError = {
     header: string | JSX.Element;
@@ -198,9 +211,11 @@ type TCommonStore = {
     is_from_derivgo: boolean;
     is_network_online: boolean;
     platform: string;
+    current_language: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
 };
 
 type TUiStore = {
@@ -213,8 +228,8 @@ type TUiStore = {
     is_closing_create_real_account_modal: boolean;
     is_mobile: boolean;
     sub_section_index: number;
-    notification_messages_ui: JSX.Element | null;
-    openRealAccountSignup: (value: string) => void;
+    notification_messages_ui: React.FC | null;
+    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
@@ -224,6 +239,8 @@ type TUiStore = {
     toggleCashier: () => void;
     toggleSetCurrencyModal: () => void;
     setSubSectionIndex: (index: number) => void;
+    toggleReadyToDepositModal: () => void;
+    is_ready_to_deposit_modal_visible: boolean;
 };
 
 type TMenuStore = {
@@ -239,6 +256,7 @@ type TNotificationStore = {
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
 };
 
@@ -246,6 +264,7 @@ type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
+    is_eu_user: boolean;
 };
 
 export type TRootStore = {

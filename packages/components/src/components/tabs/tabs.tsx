@@ -166,7 +166,8 @@ const Tabs = ({
                     >
                         {React.Children.map(children, (child, index) => {
                             if (!child) return null;
-                            const { count, header_content, icon, label, id } = child.props;
+                            const { count, icon, label, id } = child.props;
+                            const header_content = child.props['data-header-content'];
                             return (
                                 <Tab
                                     active_icon_color={active_icon_color}

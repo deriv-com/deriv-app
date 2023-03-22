@@ -144,7 +144,7 @@ export default class TradeStore extends BaseStore {
     is_trade_params_expanded = true;
 
     //Toastbox
-    contract_purchase_toast_box = undefined;
+    contract_purchase_toast_box;
 
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);

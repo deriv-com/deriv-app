@@ -35,6 +35,7 @@ import {
     routes,
     WS,
     useIsMounted,
+    validName,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
@@ -314,8 +315,6 @@ export const PersonalDetailsForm = ({
         }
 
         validateValues(val => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name'];
-        validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const residence_fields = ['citizen'];
         const validateResidence = val => getLocation(residence_list, val, 'value');
@@ -351,12 +350,19 @@ export const PersonalDetailsForm = ({
 
         const min_name = 2;
         const max_name = 50;
-        if (values.first_name && !validLength(values.first_name.trim(), { min: min_name, max: max_name })) {
-            errors.first_name = localize('You should enter 2-50 characters.');
-        }
-        if (values.last_name && !validLength(values.last_name.trim(), { min: min_name, max: max_name })) {
-            errors.last_name = localize('You should enter 2-50 characters.');
-        }
+        const validateName = (name, field) => {
+            if (name) {
+                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
+                    errors[field] = localize('You should enter 2-50 characters.');
+                } else if (!validName(name)) {
+                    // validName() has the exact regex used at the backend for allowing non digit characters including accented unicode characters.
+                    // two or more space between name not allowed.
+                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
+                }
+            }
+        };
+        validateName(values.first_name, 'first_name');
+        validateName(values.last_name, 'last_name');
 
         if (values.phone) {
             // minimum characters required is 9 numbers (excluding +- signs or space)

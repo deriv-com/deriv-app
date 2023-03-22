@@ -9,6 +9,9 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 import { setShouldReloadWorkspace } from '../../../store/ui-slice.js';
 import useLogout from '../../../../../../common/hooks/useLogout.js';
 import config from '../../../../../../app.config';
+import LowRisk from './low-risk.jsx';
+import HighRisk from './high-risk.jsx';
+import classNames from 'classnames';
 
 const Separator = () => <div className='account__switcher-seperator'></div>;
 const getTotalDemo = accounts => {
@@ -24,8 +27,9 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     const { setIsAccDropdownOpen, virtual } = props;
     const [activeTab, setActiveTab] = React.useState(virtual ? 'demo' : 'real');
     const [show_logout_modal, updaetShowLogoutModal] = React.useState(false);
-    const { accounts, balance, currency } = useSelector(state => state.client);
+    const { accounts, balance, currency, account_type } = useSelector(state => state.client);
     const { is_bot_running, show_bot_unavailable_page } = useSelector(state => state.ui);
+    const { url } = config.add_account;
     const container_ref = React.useRef();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -39,6 +43,20 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         window.addEventListener('click', handleClickOutside);
         return () => window.removeEventListener('click', handleClickOutside);
     }, []);
+
+    const { low_risk_without_account, high_risk_without_account } = account_type;
+    const obj = account_type;
+    const keys = Object.keys(obj).filter(get_key => {
+        return obj[get_key] === true;
+    });
+
+    const getComponent = type => {
+        if (type === 'low_risk_without_account') {
+            return <LowRisk />;
+        } else if (type === 'high_risk_without_account' || type === 'high_risk_or_eu') {
+            return <HighRisk type={type} />;
+        }
+    };
 
     const onLogout = () => {
         if (location.pathname.includes('endpoint')) {
@@ -67,12 +85,19 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <a>{translate('Demo')}</a>
                         </li>
                     </ul>
-                    <TabContent
-                        tab='real'
-                        isActive={activeTab === 'real'}
-                        setIsAccDropdownOpen={setIsAccDropdownOpen}
-                        accounts={accounts}
-                    />
+                    {(keys[0] === 'low_risk_without_account' ||
+                        keys[0] === 'high_risk_without_account' ||
+                        keys[0] === 'high_risk_or_eu') &&
+                    activeTab === 'real' ? (
+                        <>{getComponent(keys[0])}</>
+                    ) : (
+                        <TabContent
+                            tab='real'
+                            isActive={activeTab === 'real'}
+                            setIsAccDropdownOpen={setIsAccDropdownOpen}
+                            accounts={accounts}
+                        />
+                    )}
                     <TabContent
                         tab='demo'
                         isActive={activeTab === 'demo'}
@@ -87,6 +112,8 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         <span className='account__switcher-total-balance-amount account__switcher-balance'>
                             {activeTab === 'demo'
                                 ? getTotalDemo(accounts)
+                                : low_risk_without_account || high_risk_without_account
+                                ? 0
                                 : balance.toLocaleString(undefined, {
                                       minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
                                   })}
@@ -94,16 +121,37 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         </span>
                     </div>
                     <Separator />
+                    {/* only if we have real account */}
+                    <a href={config.tradershub.url} className={'account__switcher-total--link'}>
+                        <span>Looking for CFD accounts? Go to Trader's hub</span>
+                    </a>
+                    <Separator />
                     <div
-                        id='deriv__logout-btn'
-                        className='account__switcher-logout logout'
-                        onClick={() => {
-                            if (show_bot_unavailable_page) onLogout();
-                            else updaetShowLogoutModal(true);
-                        }}
+                        className={classNames('account__switcher-footer', {
+                            'account__switcher-footer--demo': activeTab === 'demo',
+                        })}
                     >
-                        <span className='account__switcher-logout-text'>{translate('Log out')}</span>
-                        <img className='account__switcher-logout-icon logout-icon' src='image/deriv/ic-logout.svg' />
+                        {activeTab === 'real' && (
+                            <a href={url} rel='noopener noreferrer'>
+                                <div>
+                                    <button>Manage Accounts</button>
+                                </div>
+                            </a>
+                        )}
+                        <div
+                            id='deriv__logout-btn'
+                            className='account__switcher-logout logout'
+                            onClick={() => {
+                                if (show_bot_unavailable_page) onLogout();
+                                else updaetShowLogoutModal(true);
+                            }}
+                        >
+                            <span className='account__switcher-logout-text'>{translate('Log out')}</span>
+                            <img
+                                className='account__switcher-logout-icon logout-icon'
+                                src='image/deriv/ic-logout.svg'
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

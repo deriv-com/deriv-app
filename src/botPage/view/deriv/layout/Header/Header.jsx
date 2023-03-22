@@ -18,11 +18,13 @@ import {
     updateActiveToken,
 } from '../../store/client-slice';
 import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
+import { updateAccountType } from '../../store/client-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
 import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
 import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
+import { checkSwitcherType } from '../../../../../common/footer-checks';
 
 const AccountSwitcher = () => {
     const { account_switcher_loader } = useSelector(state => state.ui);
@@ -59,6 +61,14 @@ const Header = () => {
     const { is_bot_running } = useSelector(state => state.ui);
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
+
+    React.useEffect(() => {
+        checkSwitcherType()
+            .then(data => {
+                dispatch(updateAccountType(data));
+            })
+            .catch(error => console.log(error));
+    }, []);
 
     React.useEffect(() => {
         api.onMessage().subscribe(({ data }) => {

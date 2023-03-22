@@ -167,6 +167,11 @@ export default {
         label: translate('Add Deriv account'),
         url: generateDerivLink('redirect', 'action=add_account'),
     },
+    add_account_multiplier: {
+        visible: true,
+        label: translate('Add Deriv account'),
+        url: generateDerivLink('redirect', 'action=add_account_multiplier'),
+    },
     help_center: {
         visible: true,
         url: `https://deriv.${related_deriv_origin.extension}/help-centre`,
@@ -196,6 +201,11 @@ export default {
         visible: true,
         url: generateDerivLink('cashier/deposit'),
         label: translate('Cashier'),
+    },
+    tradershub: {
+        visible: true,
+        url: generateDerivLink('appstore/traders-hub'),
+        label: translate("Trader's Hub"),
     },
     deposit: {
         visible: true,

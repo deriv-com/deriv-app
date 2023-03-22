@@ -36,6 +36,7 @@ import {
     WS,
     useIsMounted,
     validName,
+    Jurisdiction,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
@@ -1366,7 +1367,7 @@ export default connect(({ client, notifications, ui, common }) => ({
     getChangeableFields: client.getChangeableFields,
     current_landing_company: client.current_landing_company,
     is_eu: client.is_eu,
-    is_mf: client.landing_company_shortcode === 'maltainvest',
+    is_mf: client.landing_company_shortcode === Jurisdiction.MALTA_INVEST,
     is_svg: client.is_svg,
     is_uk: client.is_uk,
     is_virtual: client.is_virtual,

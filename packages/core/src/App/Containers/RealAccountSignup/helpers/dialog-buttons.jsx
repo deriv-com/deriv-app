@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { Jurisdiction } from '@deriv/shared';
 import { EXPERIAN } from './constants';
 
 const getDismissButton = ({ status, landing_company_shortcode, closeModal, switchToVirtual }) => {
@@ -66,7 +67,7 @@ const getActionButton = ({
                 label: localize('Deposit'),
                 action: closeModalAndOpenCashier,
             };
-        case 'maltainvest':
+        case Jurisdiction.MALTA_INVEST:
             if (is_fully_authenticated) {
                 return {
                     label: localize('Deposit'),
@@ -77,7 +78,7 @@ const getActionButton = ({
                 label: localize('Submit proof'),
                 action: closeModalAndOpenPOI,
             };
-        case 'svg':
+        case Jurisdiction.SVG:
         case 'malta':
         default:
             return {

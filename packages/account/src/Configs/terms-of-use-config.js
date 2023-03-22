@@ -1,14 +1,14 @@
-import { getDefaultFields, isDesktop } from '@deriv/shared';
+import { getDefaultFields, isDesktop, Jurisdiction } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 
 const terms_of_use_config = {
     agreed_tos: {
-        supported_in: ['svg', 'maltainvest'],
+        supported_in: [Jurisdiction.SVG, Jurisdiction.MALTA_INVEST],
         default_value: false,
     },
     agreed_tnc: {
-        supported_in: ['svg', 'maltainvest'],
+        supported_in: [Jurisdiction.SVG, Jurisdiction.MALTA_INVEST],
         default_value: false,
     },
 };

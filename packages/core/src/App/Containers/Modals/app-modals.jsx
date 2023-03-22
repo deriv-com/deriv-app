@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ContentFlag, moduleLoader } from '@deriv/shared';
+import { ContentFlag, moduleLoader, Jurisdiction } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
@@ -125,7 +125,7 @@ const AppModals = ({
 
     if (
         is_logged_in &&
-        active_account_landing_company === 'maltainvest' &&
+        active_account_landing_company === Jurisdiction.MALTA_INVEST &&
         !is_trading_assessment_for_new_user_enabled &&
         is_trading_experience_incomplete &&
         content_flag !== ContentFlag.LOW_RISK_CR_EU &&

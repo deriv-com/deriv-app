@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { Jurisdiction } from '@deriv/shared';
 import { CFDAccountCard } from '../cfd-account-card';
 import { TCFDAccountCard } from '../props.types';
 
@@ -48,7 +49,7 @@ describe('CFDAccountCard', () => {
         platform: 'mt5',
         display_balance: '10000.00',
         display_login: '20103240',
-        landing_company_short: 'svg',
+        landing_company_short: Jurisdiction.SVG,
         login: 'MTD20103240',
         market_type: 'financial',
     };
@@ -59,7 +60,7 @@ describe('CFDAccountCard', () => {
         platform: 'dxtrade',
         display_balance: '10000.00',
         display_login: '20103240',
-        landing_company_short: 'svg',
+        landing_company_short: Jurisdiction.SVG,
         login: 'MTD20103240',
         market_type: 'financial',
     };
@@ -70,7 +71,7 @@ describe('CFDAccountCard', () => {
         platform: 'mt5',
         display_balance: '10000.00',
         display_login: '20103240',
-        landing_company_short: 'labuan',
+        landing_company_short: Jurisdiction.LABUAN,
         login: 'MTD20103240',
         market_type: 'financial',
     };

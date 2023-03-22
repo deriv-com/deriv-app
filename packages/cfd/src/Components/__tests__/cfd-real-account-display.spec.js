@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
+import { Jurisdiction } from '@deriv/shared';
 import { CFDRealAccountDisplay } from '../cfd-real-account-display';
 
 const mock_connect_props = {
@@ -51,8 +52,8 @@ describe('<CFDRealAccountDisplay />', () => {
             residence: 'id',
             should_enable_add_button: false,
             standpoint: {
-                financial_company: 'svg',
-                gaming_company: 'svg',
+                financial_company: Jurisdiction.SVG,
+                gaming_company: Jurisdiction.SVG,
                 iom: false,
                 malta: false,
                 maltainvest: false,
@@ -120,7 +121,7 @@ describe('<CFDRealAccountDisplay />', () => {
         legal_default_currency: 'USD',
         name: 'Deriv (SVG) LLC',
         requirements: {},
-        shortcode: 'svg',
+        shortcode: Jurisdiction.SVG,
         support_professional_client: 0,
     };
 
@@ -133,7 +134,7 @@ describe('<CFDRealAccountDisplay />', () => {
         display_login: '41165492',
         email: 'name@domain.com',
         group: 'real\\p01_ts03\\synthetic\\svg_std_usd\\03',
-        landing_company_short: 'svg',
+        landing_company_short: Jurisdiction.SVG,
         leverage: 500,
         login: 'MTR41165492',
         market_type: 'synthetic',
@@ -161,7 +162,7 @@ describe('<CFDRealAccountDisplay />', () => {
         display_login: '1927245',
         email: 'name@domain.com',
         group: 'real\\p01_ts01\\financial\\svg_std-hr_usd',
-        landing_company_short: 'svg',
+        landing_company_short: Jurisdiction.SVG,
         leverage: 1000,
         login: 'MTR1927245',
         market_type: 'financial',
@@ -188,7 +189,7 @@ describe('<CFDRealAccountDisplay />', () => {
         display_balance: '0.00',
         display_login: 'DXR1095',
         enabled: 1,
-        landing_company_short: 'svg',
+        landing_company_short: Jurisdiction.SVG,
         login: '374',
         market_type: 'synthetic',
         platform: 'dxtrade',

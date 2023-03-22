@@ -1,8 +1,8 @@
-import { getDefaultFields } from '@deriv/shared';
+import { getDefaultFields, Jurisdiction } from '@deriv/shared';
 
 const accept_risk_config = {
     accept_risk: {
-        supported_in: ['maltainvest'],
+        supported_in: [Jurisdiction.MALTA_INVEST],
         default_value: 1,
     },
 };

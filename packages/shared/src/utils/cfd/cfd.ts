@@ -1,5 +1,6 @@
 import { CFD_PLATFORMS } from '../platform';
 import { LandingCompany, GetAccountStatus, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Jurisdiction } from '../constants/jurisdiction';
 import { localize } from '@deriv/translations';
 
 let CFD_text_translated: { [key: string]: () => void };
@@ -46,11 +47,11 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
     if (market_type === 'gaming' || market_type === 'synthetic') {
         if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {
-                case 'svg':
+                case Jurisdiction.SVG:
                     return 'synthetic_svg';
-                case 'bvi':
+                case Jurisdiction.BVI:
                     return 'synthetic_bvi';
-                case 'vanuatu':
+                case Jurisdiction.VANUATU:
                     return 'synthetic_v';
                 default:
                     return 'synthetic';
@@ -64,13 +65,13 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
             sub_account_type === 'financial_stp'
         ) {
             switch (shortcode) {
-                case 'svg':
+                case Jurisdiction.SVG:
                     return 'financial_svg';
-                case 'bvi':
+                case Jurisdiction.BVI:
                     return 'financial_bvi';
-                case 'labuan':
+                case Jurisdiction.LABUAN:
                     return 'financial_fx';
-                case 'vanuatu':
+                case Jurisdiction.VANUATU:
                     return 'financial_v';
                 default:
                     return 'financial';

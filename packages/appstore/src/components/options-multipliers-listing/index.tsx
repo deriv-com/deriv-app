@@ -6,7 +6,7 @@ import ListingContainer from 'Components/containers/listing-container';
 import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { useStores } from 'Stores/index';
-import { isMobile, ContentFlag } from '@deriv/shared';
+import { isMobile, ContentFlag, Jurisdiction } from '@deriv/shared';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 
@@ -83,7 +83,7 @@ const OptionsAndMultipliersListing = () => {
                                 if (real_account_creation_unlock_date) {
                                     setShouldShowCooldownModal(true);
                                 } else {
-                                    openRealAccountSignup('maltainvest');
+                                    openRealAccountSignup(Jurisdiction.MALTA_INVEST);
                                 }
                             } else {
                                 openRealAccountSignup();

@@ -4,6 +4,7 @@ import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
+import { Jurisdiction } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
@@ -75,7 +76,7 @@ const CFDMT5DemoAccountDisplay = ({
 
     const openCFDAccount = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
+            openAccountNeededModal(Jurisdiction.MALTA_INVEST, localize('Deriv Multipliers'), localize('demo CFDs'));
         } else {
             onSelectAccount({
                 category: 'demo',

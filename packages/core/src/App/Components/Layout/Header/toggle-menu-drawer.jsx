@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
 import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
+import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag, Jurisdiction } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -260,9 +260,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
-                return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                return is_virtual || (active_account_landing_company === Jurisdiction.MALTA_INVEST && !is_risky_client);
             } else if (/trading-assessment/.test(route_path)) {
-                return is_virtual || active_account_landing_company !== 'maltainvest';
+                return is_virtual || active_account_landing_company !== Jurisdiction.MALTA_INVEST;
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                 return !should_allow_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {

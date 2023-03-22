@@ -1,5 +1,11 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
+import {
+    generateValidationFunction,
+    getDefaultFields,
+    getErrorMessages,
+    regex_checks,
+    Jurisdiction,
+} from '@deriv/shared';
 
 const address_details_config = ({ account_settings, is_svg }) => {
     const is_gb = account_settings.country_code === 'gb';
@@ -9,7 +15,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
 
     const base_case = {
         address_line_1: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.address_line_1 ?? '',
             rules: [
                 ['req', localize('First line of address is required')],
@@ -25,7 +31,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_line_2: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
                 ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
@@ -40,7 +46,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
         address_city: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.address_city ?? '',
             rules: [
                 ['req', localize('City is required')],
@@ -55,7 +61,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             ],
         },
         address_state: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.address_state ?? '',
             rules: [
                 ['req', localize('State is required')],
@@ -69,7 +75,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             ],
         },
         address_postcode: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.address_postcode ?? '',
             rules: [
                 [
@@ -96,7 +102,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
         const gb_case = {
             ...base_case,
             address_postcode: {
-                supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+                supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
                 default_value: account_settings.address_postcode ?? '',
                 rules: [
                     [
@@ -135,9 +141,9 @@ const addressDetailsConfig = (
     AddressDetails,
     is_appstore = false
 ) => {
-    const is_svg = upgrade_info?.can_upgrade_to === 'svg';
+    const is_svg = upgrade_info?.can_upgrade_to === Jurisdiction.SVG;
     const config = address_details_config({ account_settings, is_svg });
-    const is_mf = real_account_signup_target === 'maltainvest';
+    const is_mf = real_account_signup_target === Jurisdiction.MALTA_INVEST;
 
     return {
         header: {
@@ -180,7 +186,7 @@ const transformForResidence = (rules, residence) => {
 
 const transformConfig = (config, { real_account_signup_target }) => {
     // Remove required rule for svg clients
-    if (!real_account_signup_target || real_account_signup_target === 'svg') {
+    if (!real_account_signup_target || real_account_signup_target === Jurisdiction.SVG) {
         config.address_state.rules.shift();
     }
 

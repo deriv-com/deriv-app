@@ -16,6 +16,7 @@ import {
     platform_name,
     routes,
     unique,
+    Jurisdiction,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
@@ -181,7 +182,7 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    (notification.key && notification.key.includes('svg')) ||
+                    (notification.key && notification.key.includes(Jurisdiction.SVG)) ||
                     notification.key === 'p2p_daily_limit_increase' ||
                     (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
@@ -301,9 +302,9 @@ export default class NotificationStore extends BaseStore {
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
-        const malta_account = landing_company_shortcode === 'maltainvest';
+        const malta_account = landing_company_shortcode === Jurisdiction.MALTA_INVEST;
         const virtual_account = landing_company_shortcode === 'virtual';
-        const cr_account = landing_company_shortcode === 'svg';
+        const cr_account = landing_company_shortcode === Jurisdiction.SVG;
         const is_website_up = website_status.site_status === 'up';
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot.key
@@ -1500,7 +1501,7 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            (message.key && message.key.includes('svg')) || message.key === 'p2p_daily_limit_increase'
+            (message.key && message.key.includes(Jurisdiction.SVG)) || message.key === 'p2p_daily_limit_increase'
                 ? message
                 : excluded_notifications && !excluded_notifications.includes(message.key)
         );

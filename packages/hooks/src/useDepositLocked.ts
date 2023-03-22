@@ -1,4 +1,5 @@
 import { useStore } from '@deriv/stores';
+import { Jurisdiction } from '@deriv/shared';
 import useNeedAuthentication from './useNeedAuthentication';
 import useNeedFinancialAssessment from './useNeedFinancialAssessment';
 import useNeedTNC from './useNeedTNC';
@@ -9,7 +10,7 @@ const useDepositLocked = () => {
     const is_need_authentication = useNeedAuthentication();
     const is_need_tnc = useNeedTNC();
     const is_need_financial_assessment = useNeedFinancialAssessment();
-    const is_malta_invest = landing_company_shortcode === 'maltainvest';
+    const is_malta_invest = landing_company_shortcode === Jurisdiction.MALTA_INVEST;
     const is_trading_experience_incomplete_or_need_financial_assessment = is_malta_invest
         ? is_trading_experience_incomplete
         : is_need_financial_assessment;

@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { Jurisdiction } from '@deriv/shared';
 
 /**
  * Experian result is defined by client's information validity.
@@ -34,7 +35,7 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
     }
 
     switch (landing_company_shortcode) {
-        case 'svg':
+        case Jurisdiction.SVG:
             return localize('Options & Multipliers');
         case 'iom':
             if (country_standpoint.is_united_kingdom) {
@@ -50,7 +51,7 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
                 return localize('Options');
             }
             return localize('Derived');
-        case 'maltainvest':
+        case Jurisdiction.MALTA_INVEST:
             return localize('Multipliers');
         default:
             return localize('Deriv');
@@ -81,7 +82,7 @@ export const getExperianResult = status => {
         return EXPERIAN.DANGER;
     };
 
-    if (landing_company_shortcode === 'svg' || is_isle_of_man_residence || is_belgium_residence)
+    if (landing_company_shortcode === Jurisdiction.SVG || is_isle_of_man_residence || is_belgium_residence)
         return EXPERIAN.SUCCESS;
     if (landing_company_shortcode === 'iom') return getIOMStatus({ is_fully_authenticated, is_age_verified });
 

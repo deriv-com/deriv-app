@@ -248,7 +248,7 @@ const CFDAccountCardComponent = ({
     const checkMultipleSvgAcc = () => {
         const all_svg_acc: DetailsOfEachMT5Loginid[] = [];
         existing_accounts_data?.map(acc => {
-            if (acc.landing_company_short === 'svg') {
+            if (acc.landing_company_short === Jurisdiction.SVG) {
                 if (all_svg_acc.length) {
                     all_svg_acc.forEach(svg_acc => {
                         if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
@@ -433,15 +433,17 @@ const CFDAccountCardComponent = ({
                             existing_accounts_data?.length &&
                             existing_accounts_data?.map((acc, index) => (
                                 <div className='cfd-account-card__item' key={index}>
-                                    {acc?.display_balance && is_logged_in && acc.landing_company_short === 'labuan' && (
-                                        <div className='cfd-account-card__item--banner'>
-                                            <Localize i18n_default_text={'Labuan'} />
-                                        </div>
-                                    )}
+                                    {acc?.display_balance &&
+                                        is_logged_in &&
+                                        acc.landing_company_short === Jurisdiction.LABUAN && (
+                                            <div className='cfd-account-card__item--banner'>
+                                                <Localize i18n_default_text={'Labuan'} />
+                                            </div>
+                                        )}
                                     {(acc as TTradingPlatformAccounts)?.display_login && (
                                         <div
                                             className={`cfd-account-card--login-id${
-                                                acc.landing_company_short === 'labuan' ? '' : '-demo'
+                                                acc.landing_company_short === Jurisdiction.LABUAN ? '' : '-demo'
                                             }`}
                                         >
                                             <Text size='xxxs' weight='bold'>
@@ -573,7 +575,7 @@ const CFDAccountCardComponent = ({
                                                 />
                                             </Text>
                                             {checkMultipleSvgAcc()?.length > 1 &&
-                                                acc.landing_company_short === 'svg' && (
+                                                acc.landing_company_short === Jurisdiction.SVG && (
                                                     <Text
                                                         className='cfd-account-card__balance--region'
                                                         color='colored-background'

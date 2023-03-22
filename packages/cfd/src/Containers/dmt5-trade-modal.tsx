@@ -10,6 +10,7 @@ import {
     getPlatformSettings,
     getUrlBase,
     getCFDAccountKey,
+    Jurisdiction,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
@@ -99,7 +100,7 @@ const DMT5TradeModal = ({
         if (
             (mt5_trade_account.account_type === 'demo' &&
                 mt5_trade_account.market_type === 'financial' &&
-                mt5_trade_account.landing_company_short === 'labuan') ||
+                mt5_trade_account.landing_company_short === Jurisdiction.LABUAN) ||
             mt5_trade_account.account_type === 'real'
         ) {
             return mt5_trade_account.landing_company_short;

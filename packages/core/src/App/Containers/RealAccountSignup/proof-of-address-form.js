@@ -1,10 +1,10 @@
 import { localize } from '@deriv/translations';
 import { ProofOfAddressContainer } from '@deriv/account';
-import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields, Jurisdiction } from '@deriv/shared';
 
 const proof_of_address_config = {
     poi_state: {
-        supported_in: ['maltainvest', 'malta', 'svg', 'iom'],
+        supported_in: [Jurisdiction.MALTA_INVEST, 'malta', Jurisdiction.SVG, 'iom'],
         default_value: '',
         rules: [],
     },

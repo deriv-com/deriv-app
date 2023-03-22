@@ -135,8 +135,8 @@ export default class CFDStore extends BaseStore {
         this.root_store.client.mt5_login_list
             .filter(acc =>
                 show_eu_related_content
-                    ? acc.landing_company_short === 'maltainvest'
-                    : acc.landing_company_short !== 'maltainvest'
+                    ? acc.landing_company_short === Jurisdiction.MALTA_INVEST
+                    : acc.landing_company_short !== Jurisdiction.MALTA_INVEST
             )
             .forEach(account => {
                 // e.g. mt5.real.financial_stp
@@ -233,8 +233,8 @@ export default class CFDStore extends BaseStore {
                 this.toggleJurisdictionModal();
             } else {
                 if (this.root_store.traders_hub.show_eu_related_content) {
-                    this.setJurisdictionSelectedShortcode('maltainvest');
-                } else this.setJurisdictionSelectedShortcode('svg');
+                    this.setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
+                } else this.setJurisdictionSelectedShortcode(Jurisdiction.SVG);
                 this.demoCFDSignup();
             }
         }
@@ -649,9 +649,9 @@ export default class CFDStore extends BaseStore {
 
         return (
             financial_available_accounts.length === 1 &&
-            financial_available_accounts.every(acc => acc.shortcode === 'svg') &&
+            financial_available_accounts.every(acc => acc.shortcode === Jurisdiction.SVG) &&
             synthetic_available_accounts.length === 1 &&
-            synthetic_available_accounts.every(acc => acc.shortcode === 'svg')
+            synthetic_available_accounts.every(acc => acc.shortcode === Jurisdiction.SVG)
         );
     }
 }

@@ -1,4 +1,11 @@
-import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
+import {
+    toMoment,
+    getErrorMessages,
+    generateValidationFunction,
+    getDefaultFields,
+    validLength,
+    Jurisdiction,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const personal_details_config = ({ residence_list, account_settings, is_appstore, real_account_signup_target }) => {
@@ -14,17 +21,17 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
 
     const config = {
         account_opening_reason: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.account_opening_reason ?? '',
             rules: [['req', localize('Account opening reason is required.')]],
         },
         salutation: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.salutation ?? '',
             rules: [['req', localize('Salutation is required.')]],
         },
         first_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.first_name ?? '',
             rules: [
                 ['req', localize('First name is required.')],
@@ -33,7 +40,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             ],
         },
         last_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.last_name ?? '',
             rules: [
                 ['req', localize('Last name is required.')],
@@ -42,7 +49,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             ],
         },
         date_of_birth: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.date_of_birth
                 ? toMoment(account_settings.date_of_birth).format('YYYY-MM-DD')
                 : '',
@@ -55,21 +62,21 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             ],
         },
         place_of_birth: {
-            supported_in: ['maltainvest', 'iom', 'malta'],
+            supported_in: [Jurisdiction.MALTA_INVEST, 'iom', 'malta'],
             default_value: account_settings.place_of_birth
                 ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
                 : '',
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.citizen
                 ? residence_list.find(item => item.value === account_settings.citizen)?.text
                 : '',
             rules: [['req', localize('Citizenship is required')]],
         },
         phone: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: [Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST],
             default_value: account_settings.phone ?? '',
             rules: [
                 ['req', localize('Phone is required.')],
@@ -89,15 +96,15 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
         },
         tax_residence: {
             default_value:
-                real_account_signup_target === 'maltainvest'
+                real_account_signup_target === Jurisdiction.MALTA_INVEST
                     ? account_settings.residence
                     : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
-            supported_in: ['maltainvest'],
+            supported_in: [Jurisdiction.MALTA_INVEST],
             rules: [['req', localize('Tax residence is required.')]],
         },
         tax_identification_number: {
             default_value: account_settings.tax_identification_number ?? '',
-            supported_in: ['maltainvest'],
+            supported_in: [Jurisdiction.MALTA_INVEST],
             rules: [
                 ['req', localize('Tax Identification Number is required.')],
                 [
@@ -135,12 +142,12 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
         },
         employment_status: {
             default_value: '',
-            supported_in: ['maltainvest'],
+            supported_in: [Jurisdiction.MALTA_INVEST],
             rules: [['req', localize('Employment status is required.')]],
         },
         tax_identification_confirm: {
             default_value: false,
-            supported_in: ['maltainvest'],
+            supported_in: [Jurisdiction.MALTA_INVEST],
             rules: [['confirm', localize('Please confirm your tax information.')]],
         },
     };
@@ -184,8 +191,8 @@ const personalDetailsConfig = (
                 real_account_signup_target,
                 transformConfig(config, { real_account_signup_target })
             ),
-            is_svg: upgrade_info?.can_upgrade_to === 'svg',
-            is_mf: real_account_signup_target === 'maltainvest',
+            is_svg: upgrade_info?.can_upgrade_to === Jurisdiction.SVG,
+            is_mf: real_account_signup_target === Jurisdiction.MALTA_INVEST,
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

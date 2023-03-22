@@ -64,16 +64,16 @@ const JurisdictionModal = ({
         available_account =>
             available_account.market_type === 'financial' &&
             (show_eu_related_content
-                ? available_account.shortcode === 'maltainvest'
-                : available_account.shortcode !== 'maltainvest')
+                ? available_account.shortcode === Jurisdiction.MALTA_INVEST
+                : available_account.shortcode !== Jurisdiction.MALTA_INVEST)
     );
 
     const synthetic_available_accounts = trading_platform_available_accounts.filter(
         available_account =>
             available_account.market_type === 'gaming' &&
             (show_eu_related_content
-                ? available_account.shortcode === 'maltainvest'
-                : available_account.shortcode !== 'maltainvest')
+                ? available_account.shortcode === Jurisdiction.MALTA_INVEST
+                : available_account.shortcode !== Jurisdiction.MALTA_INVEST)
     );
 
     const modal_title = show_eu_related_content

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, FormProgress, Wizard, Text } from '@deriv/components';
-import { toMoment, getLocation, makeCancellablePromise, WS } from '@deriv/shared';
+import { toMoment, getLocation, makeCancellablePromise, WS, Jurisdiction } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingModal from './real-account-signup-loader.jsx';
@@ -255,7 +255,7 @@ const AccountWizard = props => {
         submitForm(payload)
             .then(response => {
                 props.setIsRiskWarningVisible(false);
-                if (props.real_account_signup_target === 'maltainvest') {
+                if (props.real_account_signup_target === Jurisdiction.MALTA_INVEST) {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
                 } else if (props.real_account_signup_target === 'samoa') {
                     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());

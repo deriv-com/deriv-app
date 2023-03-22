@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext, Jurisdiction } from '@deriv/shared';
 import TermsOfUse from '../terms-of-use';
 
 jest.mock('@deriv/shared', () => ({
@@ -48,7 +48,7 @@ describe('<TermsOfUse/>', () => {
     };
 
     it('should render TermsOfUse component for svg accounts', () => {
-        mock_props.real_account_signup_target = 'svg';
+        mock_props.real_account_signup_target = Jurisdiction.SVG;
 
         render(<TermsOfUse {...mock_props} />);
 
@@ -99,7 +99,7 @@ describe('<TermsOfUse/>', () => {
     });
 
     it('should render TermsOfUse component for maltainvest accounts and show "Add account" button', () => {
-        mock_props.real_account_signup_target = 'maltainvest';
+        mock_props.real_account_signup_target = Jurisdiction.MALTA_INVEST;
 
         render(<TermsOfUse {...mock_props} />);
 
@@ -122,7 +122,7 @@ describe('<TermsOfUse/>', () => {
         isMobile.mockReturnValue(true);
         isDesktop.mockReturnValue(false);
 
-        mock_props.real_account_signup_target = 'maltainvest';
+        mock_props.real_account_signup_target = Jurisdiction.MALTA_INVEST;
 
         render(<TermsOfUse {...mock_props} />);
 

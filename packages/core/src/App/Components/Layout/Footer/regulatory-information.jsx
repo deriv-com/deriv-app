@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Modal, Popover, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { deriv_urls, getLegalEntityName } from '@deriv/shared';
+import { deriv_urls, getLegalEntityName, Jurisdiction } from '@deriv/shared';
 import MGALogo from 'Assets/SvgComponents/footer/mga.svg';
 
 const MLTRegulatoryInformation = () => (
@@ -84,7 +84,7 @@ const MFRegulatoryInformation = () => (
                     />,
                 ]}
                 values={{
-                    legal_entity_name: getLegalEntityName('maltainvest'),
+                    legal_entity_name: getLegalEntityName(Jurisdiction.MALTA_INVEST),
                 }}
             />
         </p>
@@ -96,7 +96,7 @@ export const RegulatoryInformation = ({ landing_company, is_eu, show_eu_related_
     if (!is_eu || (is_eu && !show_eu_related_content)) return null;
     const is_mx = landing_company === 'iom';
     const is_mlt = landing_company === 'malta';
-    const is_mf = landing_company === 'maltainvest';
+    const is_mf = landing_company === Jurisdiction.MALTA_INVEST;
 
     return (
         <div className='footer__link'>

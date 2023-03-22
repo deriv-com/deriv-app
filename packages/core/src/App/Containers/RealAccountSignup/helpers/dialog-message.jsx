@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { Jurisdiction } from '@deriv/shared';
 import { EXPERIAN } from './constants';
 
 /**
@@ -16,7 +17,7 @@ export const DialogMessage = ({
     status = EXPERIAN.SUCCESS,
 }) => {
     let message = '';
-    if (landing_company_shortcode === 'maltainvest') {
+    if (landing_company_shortcode === Jurisdiction.MALTA_INVEST) {
         if (is_fully_authenticated) {
             message = [
                 <Localize key={0} i18n_default_text='You have added a Deriv Financial account.' />,

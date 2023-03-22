@@ -2,7 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
-import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
+import {
+    routes as shared_routes,
+    isMobile,
+    matchRoute,
+    getSelectedRoute,
+    PlatformContext,
+    Jurisdiction,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
@@ -151,11 +158,11 @@ const Account = ({
 
             if (route.path === shared_routes.financial_assessment) {
                 route.is_disabled =
-                    is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                    is_virtual || (active_account_landing_company === Jurisdiction.MALTA_INVEST && !is_risky_client);
             }
 
             if (route.path === shared_routes.trading_assessment) {
-                route.is_disabled = is_virtual || active_account_landing_company !== 'maltainvest';
+                route.is_disabled = is_virtual || active_account_landing_company !== Jurisdiction.MALTA_INVEST;
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {

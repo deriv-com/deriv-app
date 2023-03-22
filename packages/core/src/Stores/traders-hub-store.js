@@ -1,5 +1,12 @@
 import { action, makeObservable, observable, reaction, computed, runInAction } from 'mobx';
-import { getCFDAvailableAccount, CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms } from '@deriv/shared';
+import {
+    getCFDAvailableAccount,
+    CFD_PLATFORMS,
+    ContentFlag,
+    formatMoney,
+    getAppstorePlatforms,
+    Jurisdiction,
+} from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
 import { isEuCountry } from '_common/utility';
@@ -194,7 +201,7 @@ export default class TradersHubStore extends BaseStore {
 
     get no_CR_account() {
         const { active_accounts } = this.root_store.client;
-        const result = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+        const result = active_accounts.some(acc => acc.landing_company_shortcode === Jurisdiction.SVG);
         return !result && this.selected_region === 'Non-EU';
     }
 
@@ -250,8 +257,8 @@ export default class TradersHubStore extends BaseStore {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
         return (
             this.content_flag === ContentFlag.CR_DEMO &&
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg'
+            financial_company?.shortcode === Jurisdiction.MALTA_INVEST &&
+            gaming_company?.shortcode === Jurisdiction.SVG
         );
     }
 
@@ -260,21 +267,23 @@ export default class TradersHubStore extends BaseStore {
         const { financial_company, gaming_company } = landing_companies;
 
         //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
-        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
+        const restricted_countries =
+            financial_company?.shortcode === Jurisdiction.SVG || gaming_company?.shortcode === Jurisdiction.SVG;
 
         if (!is_logged_in) return '';
-        if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
+        if (!gaming_company?.shortcode && financial_company?.shortcode === Jurisdiction.MALTA_INVEST) {
             if (this.is_demo) return ContentFlag.EU_DEMO;
             return ContentFlag.EU_REAL;
         } else if (
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg' &&
+            financial_company?.shortcode === Jurisdiction.MALTA_INVEST &&
+            gaming_company?.shortcode === Jurisdiction.SVG &&
             this.is_real
         ) {
             if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
             return ContentFlag.LOW_RISK_CR_NON_EU;
         } else if (
-            ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') || restricted_countries) &&
+            ((financial_company?.shortcode === Jurisdiction.SVG && gaming_company?.shortcode === Jurisdiction.SVG) ||
+                restricted_countries) &&
             this.is_real
         ) {
             return ContentFlag.HIGH_RISK_CR;
@@ -330,7 +339,10 @@ export default class TradersHubStore extends BaseStore {
             ContentFlag.CR_DEMO,
         ].includes(this.content_flag);
         const { active_accounts } = this.root_store.client;
-        return is_low_risk_cr_client && active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
+        return (
+            is_low_risk_cr_client &&
+            active_accounts.some(acc => acc.landing_company_shortcode === Jurisdiction.MALTA_INVEST)
+        );
     }
 
     toggleRegulatorsCompareModal() {
@@ -386,7 +398,7 @@ export default class TradersHubStore extends BaseStore {
     get financial_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
-        return gaming_company?.shortcode === 'svg' && !financial_company;
+        return gaming_company?.shortcode === Jurisdiction.SVG && !financial_company;
     }
 
     getAvailableMt5Accounts() {
@@ -434,7 +446,7 @@ export default class TradersHubStore extends BaseStore {
         const selected_account_type = this.selected_account_type;
         const existing_accounts = current_list_keys
             .filter(key => {
-                const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
+                const maltainvest_account = current_list[key].landing_company_short === Jurisdiction.MALTA_INVEST;
 
                 if (platform === CFD_PLATFORMS.MT5 && !this.is_eu_user && !maltainvest_account) {
                     return key.startsWith(`${platform}.${selected_account_type}.${market_type}`);
@@ -508,7 +520,7 @@ export default class TradersHubStore extends BaseStore {
         const { openAccountNeededModal } = ui;
         const { is_eu } = client;
         if (is_eu && !has_maltainvest_account && standpoint?.iom) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
+            openAccountNeededModal(Jurisdiction.MALTA_INVEST, localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
         }
         createCFDAccount({ ...account_type, platform });
@@ -589,7 +601,7 @@ export default class TradersHubStore extends BaseStore {
     hasMultipleSVGAccounts = () => {
         const all_svg_acc = [];
         this.combined_cfd_mt5_accounts.map(acc => {
-            if (acc.landing_company_short === 'svg' && acc.market_type === 'synthetic') {
+            if (acc.landing_company_short === Jurisdiction.SVG && acc.market_type === 'synthetic') {
                 if (all_svg_acc.length) {
                     all_svg_acc.forEach(svg_acc => {
                         if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
@@ -607,15 +619,15 @@ export default class TradersHubStore extends BaseStore {
         if (this.is_real && !this.is_eu_user) {
             const short_code =
                 account.landing_company_short &&
-                account.landing_company_short !== 'svg' &&
-                account.landing_company_short !== 'bvi'
+                account.landing_company_short !== Jurisdiction.SVG &&
+                account.landing_company_short !== Jurisdiction.BVI
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 
             let region = '';
             if (this.hasMultipleSVGAccounts()) {
                 region =
-                    account.market_type !== 'financial' && account.landing_company_short !== 'bvi'
+                    account.market_type !== 'financial' && account.landing_company_short !== Jurisdiction.BVI
                         ? ` - ${this.getServerName(account)}`
                         : '';
             }
@@ -688,8 +700,8 @@ export default class TradersHubStore extends BaseStore {
             account =>
                 !account.is_virtual &&
                 (this.is_eu_user
-                    ? account.landing_company_shortcode === 'maltainvest'
-                    : account.landing_company_shortcode !== 'maltainvest')
+                    ? account.landing_company_shortcode === Jurisdiction.MALTA_INVEST
+                    : account.landing_company_shortcode !== Jurisdiction.MALTA_INVEST)
         );
         if (platform_real_accounts?.length) {
             this.platform_real_balance = await this.getTotalBalance(
@@ -710,8 +722,8 @@ export default class TradersHubStore extends BaseStore {
             account =>
                 account.account_type === 'real' &&
                 (this.is_eu_user
-                    ? account.landing_company_short === 'maltainvest'
-                    : account.landing_company_short !== 'maltainvest')
+                    ? account.landing_company_short === Jurisdiction.MALTA_INVEST
+                    : account.landing_company_short !== Jurisdiction.MALTA_INVEST)
         );
         if (cfd_real_accounts?.length) {
             this.cfd_real_balance = await this.getTotalBalance(cfd_real_accounts, cfd_real_accounts[0]?.currency);

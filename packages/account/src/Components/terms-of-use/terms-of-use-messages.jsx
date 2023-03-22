@@ -1,16 +1,16 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { getLegalEntityName } from '@deriv/shared';
+import { getLegalEntityName, Jurisdiction } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
 export const Hr = () => <div className='terms-of-use__hr' />;
 
 export const BrokerSpecificMessage = ({ target }) => (
     <React.Fragment>
-        {target === 'svg' && <SVGDescription />}
+        {target === Jurisdiction.SVG && <SVGDescription />}
         {target === 'iom' && <IOMDescription />}
         {target === 'malta' && <MaltaDescription />}
-        {target === 'maltainvest' && <MaltaInvestDescription />}
+        {target === Jurisdiction.MALTA_INVEST && <MaltaInvestDescription />}
         {target === 'samoa' && <SamoaDescription />}
     </React.Fragment>
 );
@@ -26,7 +26,7 @@ export const SVGDescription = () => (
                     'Your account will be opened with {{legal_entity_name}}, and will be subject to the laws of Saint Vincent and the Grenadines.'
                 }
                 values={{
-                    legal_entity_name: getLegalEntityName('svg'),
+                    legal_entity_name: getLegalEntityName(Jurisdiction.SVG),
                 }}
             />
         </p>
@@ -91,7 +91,7 @@ export const MaltaInvestDescription = () => (
                     'Your account will be opened with {{legal_entity_name}}, regulated by the Malta Financial Services Authority (MFSA), and will be subject to the laws of Malta.'
                 }
                 values={{
-                    legal_entity_name: getLegalEntityName('maltainvest'),
+                    legal_entity_name: getLegalEntityName(Jurisdiction.MALTA_INVEST),
                 }}
             />
         </p>

@@ -16,6 +16,7 @@ import {
     isEmptyObject,
     isMarketClosed,
     isMobile,
+    Jurisdiction,
     pickDefaultSymbol,
     removeBarrier,
     resetEndTimeOnVolatilityIndices,
@@ -419,7 +420,7 @@ export default class TradeStore extends BaseStore {
     }
 
     async setActiveSymbols() {
-        const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
+        const is_on_mf_account = this.root_store.client.landing_company_shortcode === Jurisdiction.MALTA_INVEST;
         const hide_close_mx_mlt_storage_flag = !!parseInt(
             localStorage.getItem('hide_close_mx_mlt_account_notification')
         );

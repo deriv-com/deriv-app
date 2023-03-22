@@ -43,6 +43,9 @@ const ServicesErrorModal = ({
         case 'InsufficientBalance':
             return (
                 <InsufficientBalanceModal
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    // TODO: This component needs to be TS migrated so error isn't there
                     is_virtual={is_virtual}
                     is_visible={is_visible}
                     message={message}

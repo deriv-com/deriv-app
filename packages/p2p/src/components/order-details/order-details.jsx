@@ -23,7 +23,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
-    const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store } = useStores();
     const { hideModal, isCurrentModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const {
@@ -86,10 +86,22 @@ const OrderDetails = observer(() => {
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
 
-        if (order_channel_url) {
-            sendbird_store.setChatChannelUrl(order_channel_url);
+        const handleChatChannelCreation = () => {
+            if (order_channel_url) {
+                sendbird_store.setChatChannelUrl(order_channel_url);
+            } else {
+                sendbird_store.createChatForNewOrder(order_store.order_id);
+            }
+        };
+
+        // TODO: remove condition check and settimeout once access chat_channel_url from p2p_order_create is activated in BO, since chat channel url response is always delayed
+        // Added delay only for first time order creation, since response is delayed. To be removed after feature release.
+        if (buy_sell_store.is_create_order_subscribed) {
+            setTimeout(() => {
+                handleChatChannelCreation();
+            }, 1250);
         } else {
-            sendbird_store.createChatForNewOrder(order_store.order_id);
+            handleChatChannelCreation();
         }
 
         return () => {
@@ -103,6 +115,8 @@ const OrderDetails = observer(() => {
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
                 setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
             });
+            buy_sell_store.setIsCreateOrderSubscribed(false);
+            buy_sell_store.unsubscribeCreateOrder();
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -112,10 +126,12 @@ const OrderDetails = observer(() => {
             !is_buy_order_for_user &&
             status_string !== 'Expired' &&
             order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
-        )
+        ) {
             showModal({ key: 'EmailLinkExpiredModal' });
+        }
 
-        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal')) hideModal();
+        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal'))
+            hideModal({ should_hide_all_modals: true });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [verification_pending, status_string]);

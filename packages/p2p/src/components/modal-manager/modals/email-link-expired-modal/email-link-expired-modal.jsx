@@ -10,7 +10,7 @@ const EmailLinkExpiredModal = () => {
     const { confirmOrderRequest, order_information } = order_store;
 
     const onClickHandler = () => {
-        hideModal();
+        hideModal({ should_hide_all_modals: true });
         confirmOrderRequest(order_information.id);
     };
 
@@ -20,7 +20,7 @@ const EmailLinkExpiredModal = () => {
             has_close_icon
             is_open={is_modal_open}
             renderTitle={() => <></>}
-            toggleModal={hideModal}
+            toggleModal={() => hideModal({ should_hide_all_modals: true })}
             width='440px'
         >
             <Modal.Body className='email-link-expired-modal--body'>

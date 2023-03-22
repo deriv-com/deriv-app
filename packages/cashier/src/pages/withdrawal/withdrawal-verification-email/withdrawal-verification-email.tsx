@@ -21,7 +21,7 @@ const WithdrawalVerificationEmail = observer(() => {
 
     if (verify.error) return <Error error={verify.error} />;
 
-    if (verify.has_been_sent) return <EmailVerificationEmptyState type={'payment_withdraw'} />;
+    if (verify.has_been_sent) return <EmailVerificationEmptyState verify={verify} />;
 
     return (
         <>

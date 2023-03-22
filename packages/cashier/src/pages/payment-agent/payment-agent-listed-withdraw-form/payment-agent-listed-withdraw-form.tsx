@@ -20,6 +20,10 @@ type TValidateWithdrawalProps = {
     payment_agent: TPaymentAgent;
 };
 
+type TPaymentAgentListedWithdrawForm = {
+    payment_agent: TPaymentAgent;
+};
+
 const validateWithdrawal = (
     values: TValidateWithdrawalValueProps,
     { balance, currency, payment_agent }: TValidateWithdrawalProps
@@ -44,10 +48,6 @@ const validateWithdrawal = (
     }
 
     return errors;
-};
-
-type TPaymentAgentListedWithdrawForm = {
-    payment_agent: TPaymentAgent;
 };
 
 const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgentListedWithdrawForm) => {
@@ -160,7 +160,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                                         })}
                                         type='text'
                                         label={localize('Enter amount')}
-                                        error={touched.amount && errors.amount}
+                                        error={(touched.amount && errors.amount) || undefined}
                                         required
                                         autoComplete='off'
                                         maxLength={30}

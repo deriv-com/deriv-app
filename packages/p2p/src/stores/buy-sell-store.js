@@ -531,6 +531,7 @@ export default class BuySellStore extends BaseStore {
                         </Text>
                     </div>
                 ),
+                display_name,
                 has_adverts,
                 is_default,
                 text: symbol,

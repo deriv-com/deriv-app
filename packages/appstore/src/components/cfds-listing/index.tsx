@@ -30,6 +30,7 @@ const CFDsListing = () => {
     } = useStores();
     const {
         available_dxtrade_accounts,
+        available_ctrader_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
         has_any_real_account,
@@ -218,17 +219,7 @@ const CFDsListing = () => {
             </div>
 
             {is_landing_company_loaded ? (
-                [
-                    {
-                        platform: 'ctrader',
-                        market_type: 'all',
-                        icon: 'CTrader',
-                        name: 'Deriv cTrader',
-                        key: 'ctrader',
-                        description:
-                            'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.',
-                    },
-                ].map((account: any) => {
+                available_ctrader_accounts.map((account: AvailableAccount) => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
                     return has_existing_accounts ? (

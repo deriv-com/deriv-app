@@ -10,6 +10,7 @@ export default class TradersHubStore extends BaseStore {
     available_cfd_accounts = [];
     available_mt5_accounts = [];
     available_dxtrade_accounts = [];
+    available_ctrader_accounts = [];
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
@@ -41,6 +42,7 @@ export default class TradersHubStore extends BaseStore {
             account_type_card: observable,
             available_cfd_accounts: observable,
             available_dxtrade_accounts: observable,
+            available_ctrader_accounts: observable,
             available_mt5_accounts: observable,
             available_platforms: observable,
             cfd_demo_balance: observable,
@@ -67,6 +69,7 @@ export default class TradersHubStore extends BaseStore {
             getAccount: action.bound,
             getAvailableCFDAccounts: action.bound,
             getAvailableDxtradeAccounts: action.bound,
+            getAvailableCTraderAccounts: action.bound,
             getExistingAccounts: action.bound,
             handleTabItemClick: action.bound,
             has_any_real_account: computed,
@@ -376,6 +379,7 @@ export default class TradersHubStore extends BaseStore {
             };
         });
         this.getAvailableDxtradeAccounts();
+        this.getAvailableCTraderAccounts();
         this.getAvailableMt5Accounts();
         this.setCombinedCFDMT5Accounts();
     }
@@ -406,6 +410,21 @@ export default class TradersHubStore extends BaseStore {
             account => account.platform === CFD_PLATFORMS.DXTRADE
         );
     }
+
+    getAvailableCTraderAccounts() {
+        if (this.is_eu_user && !this.is_demo_low_risk) {
+            this.available_ctrader_accounts = this.available_cfd_accounts.filter(
+                account =>
+                    ['EU', 'All'].some(region => region === account.availability) &&
+                    account.platform === CFD_PLATFORMS.CTRADER
+            );
+            return;
+        }
+        this.available_ctrader_accounts = this.available_cfd_accounts.filter(
+            account => account.platform === CFD_PLATFORMS.CTRADER
+        );
+    }
+
     hasCFDAccount(platform, category, type) {
         const current_list_keys = Object.keys(this.root_store.modules.cfd.current_list);
         return current_list_keys.some(key => key.startsWith(`${platform}.${category}.${type}`));

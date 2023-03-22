@@ -73,10 +73,10 @@
             display: inherit;
             background-color: var(--general-main-1);
             max-width: calc(100vw - 1.6rem);
-            left: 1.2rem;
+            position: absolute;
             width: calc(100vw - 1.2rem);
             top: 0.4rem;
-            position: absolute;
+            left: 1.2rem;
             right: 1.2rem;
         }
     }

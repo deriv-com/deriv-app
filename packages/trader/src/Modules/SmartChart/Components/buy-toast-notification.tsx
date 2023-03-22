@@ -26,7 +26,7 @@ const BuyToastNotification = observer(() => {
         };
     }, [clearContractPurchaseToastBox, contract_purchase_toast_box]);
 
-    if (!portal || !contract_purchase_toast_box) return <></>;
+    if (!portal || !contract_purchase_toast_box) return <React.Fragment />;
 
     const { buy_price, currency, contract_type, list } = contract_purchase_toast_box;
     const active_trade_type = { value: contract_type };

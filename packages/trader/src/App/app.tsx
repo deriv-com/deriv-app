@@ -32,14 +32,12 @@ const App = ({ passthrough }: Apptypes) => {
     return (
         <MobxContentProvider store={root_store}>
             <StoreProvider store={root_store}>
-                <React.Fragment>
-                    <Routes />
-                    <TradeModals />
-                    <NetworkStatusToastErrorPopup />
-                    <TradeHeaderExtensions store={root_store} />
-                    <TradeFooterExtensions />
-                    <TradeSettingsExtensions store={root_store} />
-                </React.Fragment>
+                <Routes />
+                <TradeModals />
+                <NetworkStatusToastErrorPopup />
+                <TradeHeaderExtensions store={root_store} />
+                <TradeFooterExtensions />
+                <TradeSettingsExtensions store={root_store} />
             </StoreProvider>
         </MobxContentProvider>
     );

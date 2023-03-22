@@ -86,6 +86,11 @@ export default class NotificationStore extends BaseStore {
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
+        // because we don't know how much time we need to update notification we use debounce
+        const setIsNotificationsLoadingCompletedToTrue = debounce(
+            () => (this.is_notifications_loading_completed = true),
+            4000
+        );
 
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
@@ -132,12 +137,10 @@ export default class NotificationStore extends BaseStore {
         );
         reaction(
             () => this.notifications,
-            (new_notifications, old_notifications) => {
-                // added new notifications so right now update in progress
-                if (new_notifications?.length > old_notifications?.length)
-                    this.is_notifications_loading_completed = false;
-                // another way it means the notifications updating has ended
-                else this.is_notifications_loading_completed = true;
+            () => {
+                this.is_notifications_loading_completed = false;
+                // set TRUE only after X seconds after reaction has ended
+                setIsNotificationsLoadingCompletedToTrue();
             }
         );
     }
@@ -591,10 +594,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-
-        // set notifications updating completed for case
-        // when new notifications count is equal to filtered notifications count
-        this.is_notifications_loading_completed = true;
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {

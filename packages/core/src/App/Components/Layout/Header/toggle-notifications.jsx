@@ -4,6 +4,7 @@ import { Counter, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/co
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import 'Sass/app/modules/notifications-dialog.scss';
 import { useStore } from '@deriv/stores';
+import { observer } from 'mobx-react';
 
 const ToggleNotificationsDrawer = ({
     count,
@@ -56,4 +57,4 @@ const ToggleNotificationsDrawer = ({
     );
 };
 
-export default ToggleNotificationsDrawer;
+export default observer(ToggleNotificationsDrawer);

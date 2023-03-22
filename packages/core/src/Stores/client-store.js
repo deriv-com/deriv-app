@@ -1280,6 +1280,7 @@ export default class ClientStore extends BaseStore {
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
         // delete all notifications key when set new account except notifications for this account
+        // need this because when the user switchs accounts we don't use logout
         const notification_messages = LocalStore.getObject('notification_messages');
         const messages = notification_messages[this.loginid] ?? [];
         LocalStore.setObject('notification_messages', {

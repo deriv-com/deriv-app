@@ -121,8 +121,6 @@ export default class NotificationStore extends BaseStore {
                     (Object.keys(root_store.client.account_status).length > 0 &&
                         Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
-                    // console.log('Reaction');
-                    this.is_notifications_loading_completed = false;
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
@@ -130,6 +128,16 @@ export default class NotificationStore extends BaseStore {
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
                 }
+            }
+        );
+        reaction(
+            () => this.notifications,
+            (new_notifications, old_notifications) => {
+                // added new notifications so right now update in progress
+                if (new_notifications?.length > old_notifications?.length)
+                    this.is_notifications_loading_completed = false;
+                // another way it means the notifications updating has ended
+                else this.is_notifications_loading_completed = true;
             }
         );
     }
@@ -584,6 +592,8 @@ export default class NotificationStore extends BaseStore {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
 
+        // set notifications updating completed for case
+        // when new notifications count is equal to filtered notifications count
         this.is_notifications_loading_completed = true;
     }
 

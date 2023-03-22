@@ -447,7 +447,7 @@ export default class OrderStore {
 
         if (get_order_status.is_completed_order && !get_order_status.is_reviewable) {
             // Remove notification once order review period is finished
-            const notification_key = `order-${p2p_order_info.id}`;
+            const notification_key = `p2p_order_${p2p_order_info.id}`;
             general_store.props.removeNotificationMessage({ key: notification_key });
             general_store.props.removeNotificationByKey({ key: notification_key });
         }

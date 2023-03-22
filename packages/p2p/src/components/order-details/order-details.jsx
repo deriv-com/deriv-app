@@ -135,10 +135,10 @@ const OrderDetails = observer(() => {
             onClickDone: () => {
                 order_store.setOrderRating(id);
                 general_store.props.removeNotificationMessage({
-                    key: `order-${id}`,
+                    key: `p2p_order_${id}`,
                 });
                 general_store.props.removeNotificationByKey({
-                    key: `order-${id}`,
+                    key: `p2p_order_${id}`,
                 });
             },
             onClickSkip: () => {

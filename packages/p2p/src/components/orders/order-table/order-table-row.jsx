@@ -92,8 +92,8 @@ const OrderRow = ({ row: order }) => {
                     hideModal();
                     should_show_order_details.current = true;
                     order_store.setRatingValue(0);
-                    general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                    general_store.props.removeNotificationByKey({ key: `order-${id}` });
+                    general_store.props.removeNotificationMessage({ key: `p2p_order_${id}` });
+                    general_store.props.removeNotificationByKey({ key: `p2p_order_${id}` });
                     order_store.setIsLoading(true);
                     order_store.setOrders([]);
                     order_store.loadMoreOrders({ startIndex: 0 });

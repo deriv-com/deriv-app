@@ -20,16 +20,7 @@ import {
 } from '@deriv/components';
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import {
-    getLegalEntityName,
-    isDesktop,
-    isMobile,
-    routes,
-    toMoment,
-    PlatformContext,
-    validPhone,
-    Jurisdiction,
-} from '@deriv/shared';
+import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext, validPhone } from '@deriv/shared';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
@@ -680,9 +671,7 @@ const PersonalDetails = ({
                                                         label={localize(
                                                             'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
                                                             {
-                                                                legal_entity_name: getLegalEntityName(
-                                                                    Jurisdiction.MALTA_INVEST
-                                                                ),
+                                                                legal_entity_name: getLegalEntityName('maltainvest'),
                                                             }
                                                         )}
                                                         renderlabel={title => (

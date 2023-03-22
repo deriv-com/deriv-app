@@ -4,7 +4,6 @@ import { connect } from 'Stores/connect';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
 import { isMobile, routes, ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { Jurisdiction } from '@deriv/shared/src/utils/constants/jurisdiction';
 
 const ExitTradersHubModal = ({
     disableApp,
@@ -47,7 +46,7 @@ const ExitTradersHubModal = ({
     const onClickExitButton = async () => {
         setIsPreAppStore(false);
         setIsLoggingIn(true);
-        const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === Jurisdiction.SVG);
+        const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();
 
         if (content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.LOW_RISK_CR_NON_EU) {

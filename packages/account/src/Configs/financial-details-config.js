@@ -1,91 +1,91 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields, Jurisdiction } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 
 const financial_details_config = ({ financial_assessment }) => {
     return {
         account_turnover: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.account_turnover ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         binary_options_trading_experience: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.binary_options_trading_experience ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         binary_options_trading_frequency: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.binary_options_trading_frequency ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         cfd_trading_experience: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.cfd_trading_experience ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         cfd_trading_frequency: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.cfd_trading_frequency ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         education_level: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.education_level ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         forex_trading_experience: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.forex_trading_experience ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         forex_trading_frequency: {
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             default_value: financial_assessment?.forex_trading_frequency ?? '',
             rules: [['req', localize('Please select an option')]],
         },
         employment_industry: {
             default_value: financial_assessment?.employment_industry ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         employment_status: {
             default_value: financial_assessment?.employment_status ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         estimated_worth: {
             default_value: financial_assessment?.estimated_worth ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         income_source: {
             default_value: financial_assessment?.income_source ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         net_income: {
             default_value: financial_assessment?.net_income ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         occupation: {
             default_value: financial_assessment?.occupation ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         other_instruments_trading_experience: {
             default_value: financial_assessment?.other_instruments_trading_experience ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         other_instruments_trading_frequency: {
             default_value: financial_assessment?.other_instruments_trading_frequency ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
         source_of_wealth: {
             default_value: financial_assessment?.source_of_wealth ?? '',
-            supported_in: [Jurisdiction.MALTA_INVEST],
+            supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
     };

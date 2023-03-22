@@ -1,10 +1,8 @@
-import { Jurisdiction } from '@deriv/shared';
-
 export default class AccountLimits {
     constructor(store) {
         this.ws = store.ws;
     }
-    getStakePayoutLimits(currency = 'AUD', landing_company_shortcode = Jurisdiction.SVG, selected_market) {
+    getStakePayoutLimits(currency = 'AUD', landing_company_shortcode = 'svg', selected_market) {
         return this.ws
             .send({
                 landing_company_details: landing_company_shortcode,

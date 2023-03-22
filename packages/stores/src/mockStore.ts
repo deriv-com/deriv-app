@@ -1,5 +1,4 @@
 import merge from 'lodash.merge';
-import { Jurisdiction } from '../../shared/src/utils/constants';
 import type { TRootStore } from '../types';
 
 const mock = (): TRootStore => {
@@ -14,7 +13,7 @@ const mock = (): TRootStore => {
                     is_virtual: 0,
                     trading: {},
                     excluded_until: 0,
-                    landing_company_name: Jurisdiction.SVG,
+                    landing_company_name: 'svg',
                 },
             },
             active_account_landing_company: '',

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog } from '@deriv/components';
-import { Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import './deriv-real-account-required-modal.scss';
@@ -18,7 +17,7 @@ const DerivRealAccountRequiredModal = ({
     const createAccount = () => {
         if (is_eu_user) {
             onClose();
-            openRealAccountSignup(Jurisdiction.MALTA_INVEST);
+            openRealAccountSignup('maltainvest');
         } else {
             onClose();
             openRealAccountSignup();

@@ -16,7 +16,6 @@ import {
     isProduction,
     isStaging,
     isTestLink,
-    Jurisdiction,
     redirectToLogin,
     routes,
     setCurrencies,
@@ -481,7 +480,7 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_company_shortcode) {
             return false;
         }
-        return this.landing_company_shortcode === Jurisdiction.SVG || this.landing_company_shortcode === 'costarica';
+        return this.landing_company_shortcode === 'svg' || this.landing_company_shortcode === 'costarica';
     }
 
     get reality_check_duration() {
@@ -499,7 +498,7 @@ export default class ClientStore extends BaseStore {
     }
 
     get has_maltainvest_account() {
-        return this.active_accounts.some(acc => acc.landing_company_shortcode === Jurisdiction.MALTA_INVEST);
+        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'maltainvest');
     }
 
     get has_malta_account() {
@@ -516,7 +515,7 @@ export default class ClientStore extends BaseStore {
 
     get first_switchable_real_loginid() {
         const result = this.active_accounts.find(
-            acc => acc.is_virtual === 0 && acc.landing_company_shortcode === Jurisdiction.SVG
+            acc => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg'
         );
         return result.loginid || undefined;
     }
@@ -554,8 +553,7 @@ export default class ClientStore extends BaseStore {
         ) {
             return this.current_landing_company.legal_allowed_currencies;
         }
-        const target =
-            this.root_store.ui.real_account_signup_target === Jurisdiction.MALTA_INVEST ? 'financial' : 'gaming';
+        const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
         if (this.landing_companies[`${target}_company`]) {
             return this.landing_companies[`${target}_company`].legal_allowed_currencies;
@@ -842,13 +840,13 @@ export default class ClientStore extends BaseStore {
 
     get should_restrict_bvi_account_creation() {
         return !!this.mt5_login_list.filter(
-            item => item?.landing_company_short === Jurisdiction.BVI && item?.status === 'poa_failed'
+            item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
         ).length;
     }
 
     get should_restrict_vanuatu_account_creation() {
         return !!this.mt5_login_list.filter(
-            item => item?.landing_company_short === Jurisdiction.VANUATU && item?.status === 'poa_failed'
+            item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
     }
 
@@ -862,11 +860,11 @@ export default class ClientStore extends BaseStore {
         const financial_shortcode = financial_company?.shortcode;
         const gaming_shortcode = gaming_company?.shortcode;
         const mt_gaming_shortcode = mt_gaming_company?.financial.shortcode || mt_gaming_company?.swap_free.shortcode;
-        const is_current_mf = this.landing_company_shortcode === Jurisdiction.MALTA_INVEST;
+        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
         return (
             is_current_mf || //is_currently logged in mf account via trdaershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
-                ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== Jurisdiction.SVG) ||
+                ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
                   eu_shortcode_regex.test(gaming_shortcode)
                 : eu_excluded_regex.test(this.residence))
         );
@@ -1017,8 +1015,8 @@ export default class ClientStore extends BaseStore {
             this.trading_platform_available_accounts.some(
                 account =>
                     (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
-                    account.shortcode === Jurisdiction.SVG
-            ) && existing_demo_accounts.every(account => !(account.landing_company_short === Jurisdiction.SVG))
+                    account.shortcode === 'svg'
+            ) && existing_demo_accounts.every(account => !(account.landing_company_short === 'svg'))
         );
     }
 
@@ -1030,7 +1028,7 @@ export default class ClientStore extends BaseStore {
             .filter(
                 account =>
                     (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
-                    account.shortcode !== Jurisdiction.MALTA_INVEST
+                    account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
 
@@ -1074,7 +1072,7 @@ export default class ClientStore extends BaseStore {
     isBotAllowed = () => {
         // Stop showing Bot, DBot, DSmartTrader for logged out EU IPs
         if (!this.is_logged_in && this.is_eu_country) return false;
-        const is_mf = this.landing_company_shortcode === Jurisdiction.MALTA_INVEST;
+        const is_mf = this.landing_company_shortcode === 'maltainvest';
         return this.is_virtual ? this.is_eu_or_multipliers_only : !is_mf && !this.is_options_blocked;
     };
 
@@ -1133,9 +1131,9 @@ export default class ClientStore extends BaseStore {
                         landing_company !== this.accounts[this.loginid].landing_company_shortcode &&
                         upgradeable_landing_companies.indexOf(landing_company) !== -1
                 );
-            can_upgrade_to = canUpgrade(Jurisdiction.SVG, 'iom', 'malta', Jurisdiction.MALTA_INVEST);
+            can_upgrade_to = canUpgrade('svg', 'iom', 'malta', 'maltainvest');
             if (can_upgrade_to) {
-                type = can_upgrade_to === Jurisdiction.MALTA_INVEST ? 'financial' : 'real';
+                type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
             }
         }
 
@@ -1351,7 +1349,7 @@ export default class ClientStore extends BaseStore {
 
     async realAccountSignup(form_values) {
         const DEFAULT_CRYPTO_ACCOUNT_CURRENCY = 'BTC';
-        const is_maltainvest_account = this.root_store.ui.real_account_signup_target === Jurisdiction.MALTA_INVEST;
+        const is_maltainvest_account = this.root_store.ui.real_account_signup_target === 'maltainvest';
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
@@ -1647,7 +1645,7 @@ export default class ClientStore extends BaseStore {
             if (!this.is_virtual) {
                 this.setPrevRealAccountLoginid(this.loginid);
             }
-            const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === Jurisdiction.SVG);
+            const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
 
             if (!no_cr_account && this.is_low_risk) {
                 this.switchAccount(this.virtual_account_loginid);
@@ -2555,24 +2553,21 @@ export default class ClientStore extends BaseStore {
 
         // This is a conditional check for countries like Australia/Norway which fulfil one of these following conditions.
         const restricted_countries =
-            financial_company?.shortcode === Jurisdiction.SVG ||
-            (gaming_company?.shortcode === Jurisdiction.SVG &&
-                financial_company?.shortcode !== Jurisdiction.MALTA_INVEST);
+            financial_company?.shortcode === 'svg' ||
+            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
 
-        const high_risk_landing_company =
-            financial_company?.shortcode === Jurisdiction.SVG && gaming_company?.shortcode === Jurisdiction.SVG;
+        const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
         return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
     get is_low_risk() {
         const { gaming_company, financial_company } = this.landing_companies;
         const low_risk_landing_company =
-            financial_company?.shortcode === Jurisdiction.MALTA_INVEST &&
-            gaming_company?.shortcode === Jurisdiction.SVG;
+            financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
         return (
             low_risk_landing_company ||
-            (this.upgradeable_landing_companies?.includes(Jurisdiction.SVG) &&
-                this.upgradeable_landing_companies?.includes(Jurisdiction.MALTA_INVEST))
+            (this.upgradeable_landing_companies?.includes('svg') &&
+                this.upgradeable_landing_companies?.includes('maltainvest'))
         );
     }
 

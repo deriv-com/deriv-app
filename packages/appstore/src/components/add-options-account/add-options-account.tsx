@@ -4,7 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import { isMobile, ContentFlag, Jurisdiction } from '@deriv/shared';
+import { isMobile, ContentFlag } from '@deriv/shared';
 
 const AddOptions = () => {
     const { client, traders_hub, ui } = useStores();
@@ -34,7 +34,7 @@ const AddOptions = () => {
                             if (real_account_creation_unlock_date) {
                                 setShouldShowCooldownModal(true);
                             } else {
-                                openRealAccountSignup(Jurisdiction.MALTA_INVEST);
+                                openRealAccountSignup('maltainvest');
                             }
                         } else {
                             openRealAccountSignup();

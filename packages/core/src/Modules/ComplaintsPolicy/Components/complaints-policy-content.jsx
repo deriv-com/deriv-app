@@ -1,14 +1,14 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import { getLegalEntityName, Jurisdiction } from '@deriv/shared';
+import { getLegalEntityName } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/complaints-policy.scss';
 
 const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
     // * mt5_login_list returns these:
     // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
-    const has_vanuatu = mt5_login_list.some(item => item.landing_company_short === Jurisdiction.VANUATU);
-    const has_labuan = mt5_login_list.some(item => item.landing_company_short === Jurisdiction.LABUAN);
+    const has_vanuatu = mt5_login_list.some(item => item.landing_company_short === 'vanuatu');
+    const has_labuan = mt5_login_list.some(item => item.landing_company_short === 'labuan');
 
     switch (landing_company_shortcode) {
         case 'iom':
@@ -21,11 +21,11 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                     }}
                 />
             );
-        case Jurisdiction.MALTA_INVEST:
+        case 'maltainvest':
             return localize(
                 'This complaints policy, which may change from time to time, applies to your account registered with {{legal_entity_name}}.',
                 {
-                    legal_entity_name: getLegalEntityName(Jurisdiction.MALTA_INVEST),
+                    legal_entity_name: getLegalEntityName('maltainvest'),
                 }
             );
         case 'malta':
@@ -43,7 +43,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                 return localize(
                     'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}}, {{legal_entity_name_fx}}, and {{legal_entity_name_v}}.',
                     {
-                        legal_entity_name_svg: getLegalEntityName(Jurisdiction.SVG),
+                        legal_entity_name_svg: getLegalEntityName('svg'),
                         legal_entity_name_fx: getLegalEntityName('fx'),
                         legal_entity_name_v: getLegalEntityName('v'),
                     }
@@ -52,7 +52,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                 return localize(
                     'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}} and {{legal_entity_name_v}}.',
                     {
-                        legal_entity_name_svg: getLegalEntityName(Jurisdiction.SVG),
+                        legal_entity_name_svg: getLegalEntityName('svg'),
                         legal_entity_name_v: getLegalEntityName('v'),
                     }
                 );
@@ -60,7 +60,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
                 return localize(
                     'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}} and {{legal_entity_name_fx}}.',
                     {
-                        legal_entity_name_svg: getLegalEntityName(Jurisdiction.SVG),
+                        legal_entity_name_svg: getLegalEntityName('svg'),
                         legal_entity_name_fx: getLegalEntityName('fx'),
                     }
                 );
@@ -68,7 +68,7 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
             return localize(
                 'This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name_svg}}.',
                 {
-                    legal_entity_name_svg: getLegalEntityName(Jurisdiction.SVG),
+                    legal_entity_name_svg: getLegalEntityName('svg'),
                 }
             );
     }
@@ -174,7 +174,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                     ]}
                 />
             );
-            if (landing_company_shortcode === Jurisdiction.MALTA_INVEST) {
+            if (landing_company_shortcode === 'maltainvest') {
                 texts.push(
                     <Localize
                         key={texts.length}

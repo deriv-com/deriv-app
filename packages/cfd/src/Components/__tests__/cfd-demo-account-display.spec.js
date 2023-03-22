@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import React from 'react';
-import { Jurisdiction } from '@deriv/shared';
 import { CFDDemoAccountDisplay } from '../cfd-demo-account-display';
 
 const mock_connect_props = {
@@ -46,8 +45,8 @@ describe('<CFDDemoAccountDisplay />', () => {
             platform: 'mt5',
             residence: 'id',
             standpoint: {
-                financial_company: Jurisdiction.SVG,
-                gaming_company: Jurisdiction.SVG,
+                financial_company: 'svg',
+                gaming_company: 'svg',
                 iom: false,
                 malta: false,
                 maltainvest: false,
@@ -65,7 +64,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         display_login: '20103240',
         email: 'name@domain.com',
         group: 'demo\\p01_ts02\\financial\\svg_std_usd',
-        landing_company_short: Jurisdiction.SVG,
+        landing_company_short: 'svg',
         leverage: 1000,
         login: 'MTD20103240',
         market_type: 'financial',
@@ -92,7 +91,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         display_balance: '10000.00',
         display_login: 'DXD1096',
         enabled: 1,
-        landing_company_short: Jurisdiction.SVG,
+        landing_company_short: 'svg',
         login: '374',
         market_type: 'synthetic',
         platform: 'dxtrade',
@@ -156,11 +155,7 @@ describe('<CFDDemoAccountDisplay />', () => {
         expect(add_demo_account_button).toBeEnabled();
 
         fireEvent.click(add_demo_account_button);
-        expect(props.openAccountNeededModal).toHaveBeenCalledWith(
-            Jurisdiction.MALTA_INVEST,
-            'Deriv Multipliers',
-            'demo CFDs'
-        );
+        expect(props.openAccountNeededModal).toHaveBeenCalledWith('maltainvest', 'Deriv Multipliers', 'demo CFDs');
     });
 
     it('should render a CFDs card only without "Add demo account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {

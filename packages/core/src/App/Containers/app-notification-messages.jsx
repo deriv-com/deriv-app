@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname, getPlatformSettings, routes, Jurisdiction } from '@deriv/shared';
+import { isMobile, getPathname, getPlatformSettings, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
 import Notification, {
@@ -149,7 +149,7 @@ const AppNotificationMessages = ({
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
     const filtered_excluded_notifications = notifications.filter(message =>
-        message.key.includes(Jurisdiction.SVG) || message.key.includes('p2p_daily_limit_increase')
+        message.key.includes('svg') || message.key.includes('p2p_daily_limit_increase')
             ? message
             : excluded_notifications.includes(message.key)
     );

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StoreProvider } from '@deriv/stores';
 import type { TStores } from '@deriv/stores';
-import { Jurisdiction } from '@deriv/shared';
 import { renderHook } from '@testing-library/react-hooks';
 import useDepositLocked from '../useDepositLocked';
 import useNeedAuthentication from '../useNeedAuthentication';
@@ -19,7 +18,7 @@ describe('useDepositLocked', () => {
                 is_financial_account: false,
                 is_financial_information_incomplete: false,
                 is_trading_experience_incomplete: false,
-                landing_company_shortcode: Jurisdiction.SVG,
+                landing_company_shortcode: 'svg',
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -47,7 +46,7 @@ describe('useDepositLocked', () => {
                 is_financial_account: false,
                 is_financial_information_incomplete: false,
                 is_trading_experience_incomplete: false,
-                landing_company_shortcode: Jurisdiction.SVG,
+                landing_company_shortcode: 'svg',
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -75,7 +74,7 @@ describe('useDepositLocked', () => {
                 is_financial_account: false,
                 is_financial_information_incomplete: false,
                 is_trading_experience_incomplete: false,
-                landing_company_shortcode: Jurisdiction.SVG,
+                landing_company_shortcode: 'svg',
                 mt5_login_list: [
                     {
                         account_type: 'real',
@@ -103,7 +102,7 @@ describe('useDepositLocked', () => {
                 is_financial_account: true,
                 is_financial_information_incomplete: true,
                 is_trading_experience_incomplete: false,
-                landing_company_shortcode: Jurisdiction.SVG,
+                landing_company_shortcode: 'svg',
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -131,7 +130,7 @@ describe('useDepositLocked', () => {
                 is_financial_account: false,
                 is_financial_information_incomplete: false,
                 is_trading_experience_incomplete: false,
-                landing_company_shortcode: Jurisdiction.SVG,
+                landing_company_shortcode: 'svg',
                 mt5_login_list: [
                     {
                         account_type: 'real',
@@ -159,7 +158,7 @@ describe('useDepositLocked', () => {
                 is_financial_account: true,
                 is_financial_information_incomplete: true,
                 is_trading_experience_incomplete: false,
-                landing_company_shortcode: Jurisdiction.SVG,
+                landing_company_shortcode: 'svg',
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -187,7 +186,7 @@ describe('useDepositLocked', () => {
                 is_financial_account: false,
                 is_financial_information_incomplete: false,
                 is_trading_experience_incomplete: true,
-                landing_company_shortcode: Jurisdiction.MALTA_INVEST,
+                landing_company_shortcode: 'maltainvest',
                 mt5_login_list: [
                     {
                         account_type: 'demo',

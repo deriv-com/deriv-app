@@ -22,7 +22,7 @@ const JurisdictionModalContent = ({
             : financial_available_accounts?.some(account => account.shortcode === type_of_card);
 
     const disableCard = (type_of_card: string) => {
-        if (is_virtual && type_of_card !== Jurisdiction.SVG) {
+        if (is_virtual && type_of_card !== 'svg') {
             return true;
         }
         return account_type === 'synthetic'

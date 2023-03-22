@@ -1,5 +1,5 @@
 import React from 'react';
-import { Jurisdiction, PlatformContext, WS } from '@deriv/shared';
+import { PlatformContext, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion.jsx';
 import 'Components/self-exclusion/self-exclusion.scss';
@@ -17,7 +17,7 @@ export default connect(({ client, ui }) => ({
     is_cr: client.standpoint.svg,
     is_eu: client.is_eu,
     is_mlt: client.landing_company_shortcode === 'malta',
-    is_mf: client.landing_company_shortcode === Jurisdiction.MALTA_INVEST,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
     is_mx: client.landing_company_shortcode === 'iom',
     is_uk: client.is_uk,
     is_wrapper_bypassed: false,

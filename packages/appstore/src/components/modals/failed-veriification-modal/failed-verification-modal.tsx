@@ -4,7 +4,7 @@ import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Dialog } from '@deriv/components';
-import { isMobile, getAuthenticationStatusInfo, routes, Jurisdiction } from '@deriv/shared';
+import { isMobile, getAuthenticationStatusInfo, routes } from '@deriv/shared';
 
 type TFailedVerificationModal = {
     should_resubmit_poi: boolean;
@@ -90,8 +90,8 @@ const FailedVerificationModal = () => {
     const should_resubmit_poi = () => {
         if (
             is_from_multipliers ||
-            open_failed_verification_for === Jurisdiction.VANUATU ||
-            open_failed_verification_for === Jurisdiction.MALTA_INVEST
+            open_failed_verification_for === 'vanuatu' ||
+            open_failed_verification_for === 'maltainvest'
         ) {
             return poi_resubmit_for_vanuatu_maltainvest;
         }

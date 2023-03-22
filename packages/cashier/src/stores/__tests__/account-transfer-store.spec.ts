@@ -1,6 +1,6 @@
 import AccountTransferStore from '../account-transfer-store';
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
-import { getCurrencies, validNumber, CFD_PLATFORMS, Jurisdiction } from '@deriv/shared';
+import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { configure } from 'mobx';
 import type { TTransferAccount, TRootStore, TWebSocket } from 'Types';
 
@@ -147,7 +147,7 @@ beforeEach(() => {
             is_financial_information_incomplete: true,
             is_logged_in: true,
             is_trading_experience_incomplete: true,
-            landing_company_shortcode: Jurisdiction.MALTA_INVEST,
+            landing_company_shortcode: 'maltainvest',
             loginid: 'CR90000103',
             residence: 'pl',
             responseMt5LoginList: jest.fn(),

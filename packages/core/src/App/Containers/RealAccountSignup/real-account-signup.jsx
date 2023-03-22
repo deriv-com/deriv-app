@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, Jurisdiction } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -38,7 +38,7 @@ const WizardHeading = ({
     is_pre_appstore,
     real_account_signup_target,
 }) => {
-    const maltainvest_signup = real_account_signup_target === Jurisdiction.MALTA_INVEST;
+    const maltainvest_signup = real_account_signup_target === 'maltainvest';
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
@@ -74,7 +74,7 @@ const WizardHeading = ({
                 return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
             }
             return <Localize i18n_default_text='Add a Derived account' />;
-        case Jurisdiction.MALTA_INVEST:
+        case 'maltainvest':
             if (
                 country_standpoint.is_united_kingdom ||
                 country_standpoint.is_france ||
@@ -425,7 +425,7 @@ const RealAccountSignup = ({
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
             } else {
                 active_modal_index_no =
-                    !currency && real_account_signup_target !== Jurisdiction.MALTA_INVEST
+                    !currency && real_account_signup_target !== 'maltainvest'
                         ? modal_pages_indices.set_currency
                         : modal_pages_indices.account_wizard;
             }
@@ -449,7 +449,7 @@ const RealAccountSignup = ({
         try {
             setShouldShowAppropriatenessWarningModal(false);
             const response = await realAccountSignup({ ...real_account_form_data, accept_risk: 1 });
-            if (real_account_signup_target === Jurisdiction.MALTA_INVEST) {
+            if (real_account_signup_target === 'maltainvest') {
                 showStatusDialog(response.new_account_maltainvest.currency.toLowerCase());
             }
         } catch (sign_up_error) {

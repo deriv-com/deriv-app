@@ -6,7 +6,6 @@ import specifications, { TSpecifications } from '../Constants/cfd-specifications
 import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
-import { Jurisdiction } from '@deriv/shared';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
 type TStandPoint = {
@@ -70,7 +69,7 @@ const CFDDemoAccountDisplay = ({
 
     const openCFDAccount = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
-            openAccountNeededModal(Jurisdiction.MALTA_INVEST, localize('Deriv Multipliers'), localize('demo CFDs'));
+            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
         } else {
             onSelectAccount({
                 category: 'demo',

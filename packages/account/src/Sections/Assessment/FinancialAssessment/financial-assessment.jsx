@@ -15,7 +15,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, platforms, PlatformContext, WS, Jurisdiction } from '@deriv/shared';
+import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -1025,7 +1025,7 @@ FinancialAssessment.propTypes = {
 export default connect(({ client, common, notifications }) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
-    is_mf: client.landing_company_shortcode === Jurisdiction.MALTA_INVEST,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
     is_svg: client.is_svg,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,

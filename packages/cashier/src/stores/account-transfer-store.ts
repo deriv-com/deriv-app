@@ -3,7 +3,6 @@ import {
     formatMoney,
     isEmptyObject,
     isCryptocurrency,
-    Jurisdiction,
     getCurrencies,
     getCurrencyDisplayCode,
     getDecimalPlaces,
@@ -392,8 +391,8 @@ export default class AccountTransferStore {
             })}`;
             const non_eu_accounts =
                 account.landing_company_short &&
-                account.landing_company_short !== Jurisdiction.SVG &&
-                account.landing_company_short !== Jurisdiction.BVI
+                account.landing_company_short !== 'svg' &&
+                account.landing_company_short !== 'bvi'
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 

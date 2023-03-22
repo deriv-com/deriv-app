@@ -1,4 +1,4 @@
-import { generateValidationFunction, getDefaultFields, Jurisdiction } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export const trading_assessment_questions = () => [
@@ -253,7 +253,7 @@ export const trading_assessment_questions = () => [
 ];
 
 const default_form_config = {
-    supported_in: [Jurisdiction.MALTA_INVEST],
+    supported_in: ['maltainvest'],
     default_value: '',
 };
 

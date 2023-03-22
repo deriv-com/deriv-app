@@ -1,10 +1,10 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields, Jurisdiction } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import ProofOfIdentityForm from './proof-of-identity.jsx';
 
 const proof_of_identity_config = {
     poi_state: {
-        supported_in: [Jurisdiction.MALTA_INVEST, 'malta', Jurisdiction.SVG, 'iom'],
+        supported_in: ['maltainvest', 'malta', 'svg', 'iom'],
         default_value: '',
         rules: [],
     },

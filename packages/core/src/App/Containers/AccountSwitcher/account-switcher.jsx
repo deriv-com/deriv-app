@@ -22,7 +22,6 @@ import {
     getPlatformSettings,
     CFD_PLATFORMS,
     ContentFlag,
-    Jurisdiction,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -94,16 +93,14 @@ const AccountSwitcher = props => {
                 account => !account.is_virtual && account.loginid.startsWith('CR')
             );
             setFilteredRealAccounts(real_accounts);
-            const remaining_real_accounts = getRemainingRealAccounts().filter(account => account === Jurisdiction.SVG);
+            const remaining_real_accounts = getRemainingRealAccounts().filter(account => account === 'svg');
             setFilteredRemainingRealAccounts(remaining_real_accounts);
         } else if (props.is_eu) {
             const real_accounts = getSortedAccountList(props.account_list, props.accounts).filter(
                 account => !account.is_virtual && account.loginid.startsWith('MF')
             );
             setFilteredRealAccounts(real_accounts);
-            const remaining_real_accounts = getRemainingRealAccounts().filter(
-                account => account === Jurisdiction.MALTA_INVEST
-            );
+            const remaining_real_accounts = getRemainingRealAccounts().filter(account => account === 'maltainvest');
             setFilteredRemainingRealAccounts(remaining_real_accounts);
         }
     }, []);
@@ -225,11 +222,7 @@ const AccountSwitcher = props => {
     const openMt5DemoAccount = account_type => {
         if (props.show_eu_related_content && !props.has_maltainvest_account && props.standpoint.iom) {
             closeAccountsDialog();
-            props.openAccountNeededModal(
-                Jurisdiction.MALTA_INVEST,
-                localize('Deriv Multipliers'),
-                localize('demo CFDs')
-            );
+            props.openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
         }
         sessionStorage.setItem('open_cfd_account_type', `demo.${CFD_PLATFORMS.MT5}.${account_type}`);
@@ -380,7 +373,7 @@ const AccountSwitcher = props => {
         const low_risk_non_eu = props.content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
         if (low_risk_non_eu) {
             return getSortedCFDList(props.mt5_login_list).filter(
-                account => !isDemo(account) && account.landing_company_short !== Jurisdiction.MALTA_INVEST
+                account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
             );
         }
         return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
@@ -566,7 +559,7 @@ const AccountSwitcher = props => {
     const checkMultipleSvgAcc = () => {
         const all_svg_acc = [];
         getRealMT5().map(acc => {
-            if (acc.landing_company_short === Jurisdiction.SVG && acc.market_type === 'synthetic') {
+            if (acc.landing_company_short === 'svg' && acc.market_type === 'synthetic') {
                 if (all_svg_acc.length) {
                     all_svg_acc.forEach(svg_acc => {
                         if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
@@ -685,7 +678,7 @@ const AccountSwitcher = props => {
                                                 platform={CFD_PLATFORMS.MT5}
                                                 shortcode={
                                                     account.market_type === 'financial' &&
-                                                    account.landing_company_short === Jurisdiction.LABUAN &&
+                                                    account.landing_company_short === 'labuan' &&
                                                     account.landing_company_short
                                                 }
                                             />
@@ -1125,7 +1118,7 @@ const AccountSwitcher = props => {
                             </div>
                             {!has_cr_account &&
                                 getRemainingRealAccounts()
-                                    .filter(account => account === Jurisdiction.SVG)
+                                    .filter(account => account === 'svg')
                                     .map((account, index) => (
                                         <div key={index} className='acc-switcher__new-account'>
                                             <Icon icon='IcDeriv' size={24} />
@@ -1197,7 +1190,7 @@ const AccountSwitcher = props => {
                                 })}
                         </div>
                         {getRemainingRealAccounts()
-                            .filter(account => account === Jurisdiction.MALTA_INVEST)
+                            .filter(account => account === 'maltainvest')
                             .map((account, index) => {
                                 return (
                                     <div key={index} className='acc-switcher__new-account'>

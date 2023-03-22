@@ -3,7 +3,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CFDDashboard, { TCFDDashboardProps } from '../cfd-dashboard';
 import { BrowserRouter } from 'react-router-dom';
-import { CFD_PLATFORMS, getCFDPlatformLabel, routes, Jurisdiction } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDPlatformLabel, routes } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 
 type TMockConnectProps = {
@@ -183,8 +183,8 @@ describe('<CFDDashboard />', () => {
         setIsAcuityModalOpen: jest.fn(),
         setCurrentAccount: jest.fn(),
         standpoint: {
-            financial_company: Jurisdiction.SVG,
-            gaming_company: Jurisdiction.SVG,
+            financial_company: 'svg',
+            gaming_company: 'svg',
             iom: false,
             malta: false,
             maltainvest: false,
@@ -193,7 +193,7 @@ describe('<CFDDashboard />', () => {
         toggleAccountsDialog: jest.fn(),
         toggleShouldShowRealAccountsList: jest.fn(),
         toggleResetTradingPasswordModal: jest.fn(),
-        upgradeable_landing_companies: [Jurisdiction.SVG],
+        upgradeable_landing_companies: ['svg'],
     };
     beforeEach(() => {
         mock_connect_props.landing_companies = {
@@ -223,7 +223,7 @@ describe('<CFDDashboard />', () => {
                 display_login: '40005073',
                 email: 'ma+1@deriv.com',
                 group: 'real\\p01_ts03\\synthetic\\svg_std_usd\\02',
-                landing_company_short: Jurisdiction.SVG,
+                landing_company_short: 'svg',
                 leverage: 500,
                 login: 'MTR40005073',
                 market_type: 'synthetic',
@@ -250,7 +250,7 @@ describe('<CFDDashboard />', () => {
                 display_login: '20104105',
                 email: 'ma+1@deriv.com',
                 group: 'demo\\p01_ts02\\synthetic\\svg_std_usd',
-                landing_company_short: Jurisdiction.SVG,
+                landing_company_short: 'svg',
                 leverage: 500,
                 login: 'MTD20104105',
                 market_type: 'synthetic',
@@ -276,7 +276,7 @@ describe('<CFDDashboard />', () => {
                 display_balance: '0.00',
                 display_login: 'DXR1000',
                 enabled: 1,
-                landing_company_short: Jurisdiction.SVG,
+                landing_company_short: 'svg',
                 login: '9',
                 market_type: 'synthetic',
                 platform: 'dxtrade',
@@ -379,7 +379,7 @@ describe('<CFDDashboard />', () => {
                     legal_default_currency: 'EUR',
                     name: 'Deriv Investments (Europe) Limited',
                     requirements: {},
-                    shortcode: Jurisdiction.MALTA_INVEST,
+                    shortcode: 'maltainvest',
                     support_professional_client: 1,
                 },
             },

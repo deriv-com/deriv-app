@@ -2,7 +2,6 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { Jurisdiction } from '@deriv/shared';
 import './ready-to-deposit-modal.scss';
 
 const ReadyToDepositModal = observer(() => {
@@ -18,7 +17,7 @@ const ReadyToDepositModal = observer(() => {
 
     const createAccount = () => {
         onClose();
-        return is_eu_user ? openRealAccountSignup(Jurisdiction.MALTA_INVEST) : openRealAccountSignup();
+        return is_eu_user ? openRealAccountSignup('maltainvest') : openRealAccountSignup();
     };
 
     return (

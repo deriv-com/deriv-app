@@ -1,14 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv/components';
-import {
-    formatMoney,
-    getCurrencyName,
-    getCFDAccountDisplay,
-    getCurrencyDisplayCode,
-    isBot,
-    Jurisdiction,
-} from '@deriv/shared';
+import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -185,7 +178,7 @@ const AccountDisplay = ({
                 {server?.server_info?.geolocation &&
                     should_show_server_name &&
                     market_type === 'synthetic' &&
-                    shortcode === Jurisdiction.SVG && (
+                    shortcode === 'svg' && (
                         <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
                             {getServerName(server)}
                         </Text>
@@ -201,7 +194,7 @@ const AccountDisplay = ({
             {server?.server_info?.geolocation &&
                 should_show_server_name &&
                 market_type === 'synthetic' &&
-                shortcode === Jurisdiction.SVG && (
+                shortcode === 'svg' && (
                     <Text
                         color={is_dark_mode_on ? 'general' : 'colored-background'}
                         size='xxs'

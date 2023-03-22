@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
-import { ContentFlag, Jurisdiction } from '@deriv/shared';
+import { ContentFlag } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
@@ -55,10 +55,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
 
     const is_fiat_currency_banner_visible_for_MF_clients =
-        landing_company_shortcode === Jurisdiction.MALTA_INVEST &&
-        !is_crypto &&
-        !can_change_fiat_currency &&
-        !!iframe_height;
+        landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();

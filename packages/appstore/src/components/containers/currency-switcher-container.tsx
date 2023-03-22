@@ -1,7 +1,6 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
-import { Jurisdiction } from '@deriv/shared';
 import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import './currency-switcher-container.scss';
 import { useStores } from 'Stores/index';
@@ -33,7 +32,7 @@ const CurrentSwitcherContainer = ({
 
     const has_mf_mt5_account = Object.keys(current_list)
         .map(key => current_list[key])
-        .some(account => account.landing_company_short === Jurisdiction.MALTA_INVEST);
+        .some(account => account.landing_company_short === 'maltainvest');
 
     const Dropdown = () => {
         const icon_dropdown = (

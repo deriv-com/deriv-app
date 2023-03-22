@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName, routes, Jurisdiction } from '@deriv/shared';
+import { formatMoney, getCurrencyName, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
@@ -23,7 +23,7 @@ const RealAccountCard = () => {
 
     const has_mf_mt5_account = Object.keys(current_list)
         .map(key => current_list[key])
-        .some(account => account.landing_company_short === Jurisdiction.MALTA_INVEST);
+        .some(account => account.landing_company_short === 'maltainvest');
 
     return (
         <CurrencySwitcherContainer

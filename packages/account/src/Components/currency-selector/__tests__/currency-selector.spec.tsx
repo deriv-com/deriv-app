@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
-import { isDesktop, isMobile, PlatformContext, Jurisdiction } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import CurrencySelector, { TCurrencySelector } from '../currency-selector';
 
 jest.mock('@deriv/shared', () => ({
@@ -269,20 +269,20 @@ describe('<CurrencySelector/>', () => {
                     currency: 'USD',
                     is_disabled: 0,
                     is_virtual: 1,
-                    landing_company_shortcode: Jurisdiction.SVG,
+                    landing_company_shortcode: 'svg',
                     trading: {},
                     token: 'a1-sLGGrhfYPkeEprxEop2T591cLKbuN',
                     email: 'test+qw@deriv.com',
                     session_start: 1651059038,
                     excluded_until: '',
-                    landing_company_name: Jurisdiction.SVG,
+                    landing_company_name: 'svg',
                     residence: 'es',
                     balance: 10000,
                     accepted_bch: 0,
                 },
             },
             has_real_account: true,
-            real_account_signup_target: Jurisdiction.SVG,
+            real_account_signup_target: 'svg',
         };
 
         render(<CurrencySelector {...new_props} />);

@@ -30,7 +30,7 @@ const IdvSubmitComplete = ({ needs_poa, is_from_external, redirect_button }: TId
                     {poa_button}
                 </React.Fragment>
             ) : (
-                redirect_button
+                <div className='proof-of-identity__redirection'>{redirect_button}</div>
             )}
         </div>
     );

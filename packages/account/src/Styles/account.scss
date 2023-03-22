@@ -2277,7 +2277,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 z-index: 5;
             }
         }
+    }
 
+    &__redirection {
         .dc-btn {
             margin-top: 3.2rem;
             height: 4rem;
@@ -2285,6 +2287,7 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 margin: 1.6rem 0;
                 padding: 1.6rem;
+                width: 100%;
             }
         }
     }

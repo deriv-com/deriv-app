@@ -361,6 +361,13 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
+        reaction(
+            () => [this.root_store.client.preferred_language],
+            () => {
+                this.validation_rules = getValidationRules();
+                this.validateAllProperties();
+            }
+        );
     }
 
     get is_symbol_in_active_symbols() {

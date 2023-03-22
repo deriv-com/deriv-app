@@ -1,23 +1,24 @@
 import React from 'react';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile, routes } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
+import { TStores, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
+jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => <div>PaymentAgentDisclaimer</div>));
 
 describe('<PaymentAgentReceipt />', () => {
-    let history, mockRootStore;
+    let history: BrowserHistory, mockRootStore: TStores;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'USD',
             },
@@ -39,7 +40,7 @@ describe('<PaymentAgentReceipt />', () => {
                     },
                 },
             },
-        };
+        }) as TStores;
 
         history = createBrowserHistory();
     });
@@ -99,7 +100,7 @@ describe('<PaymentAgentReceipt />', () => {
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         renderPaymentAgentReceipt();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();

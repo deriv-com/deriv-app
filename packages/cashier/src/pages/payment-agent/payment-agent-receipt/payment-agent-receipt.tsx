@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Text } from '@deriv/components';
@@ -11,13 +10,28 @@ import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import SideNote from 'Components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-receipt.scss';
+import { BrowserHistory } from 'history';
 
-const openStatement = (history, resetPaymentAgent) => {
+const openStatement = (history: BrowserHistory, resetPaymentAgent: VoidFunction) => {
     history.push(routes.statement);
     resetPaymentAgent();
 };
 
-const PaymentAgentDetails = ({ payment_agent_email, payment_agent_phones, payment_agent_urls }) => {
+type TPaymentAgentDetails = {
+    payment_agent_email: string;
+    payment_agent_phones: Array<{ phone_number: string }>;
+    payment_agent_urls: Array<{ url: string }>;
+};
+
+type TPaymentAgentReceipt = {
+    history: BrowserHistory;
+};
+
+const PaymentAgentDetails = ({
+    payment_agent_email,
+    payment_agent_phones,
+    payment_agent_urls,
+}: TPaymentAgentDetails) => {
     return (
         <div className='payment-agent-receipt__transferred-contact'>
             {payment_agent_phones && (
@@ -39,7 +53,7 @@ const PaymentAgentDetails = ({ payment_agent_email, payment_agent_phones, paymen
     );
 };
 
-const PaymentAgentReceipt = observer(({ history }) => {
+const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
     const { client, common } = useStore();
     const { payment_agent: payment_agent_store } = useCashierStore();
     const { currency } = client;
@@ -136,9 +150,5 @@ const PaymentAgentReceipt = observer(({ history }) => {
         </div>
     );
 });
-
-PaymentAgentReceipt.propTypes = {
-    history: PropTypes.object,
-};
 
 export default withRouter(PaymentAgentReceipt);

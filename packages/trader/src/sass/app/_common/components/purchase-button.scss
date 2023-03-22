@@ -314,6 +314,7 @@
     }
     &--multiplier,
     &--accumulator {
+        margin: 0;
         .btn-purchase__info--left {
             width: 35%;
             flex: none;

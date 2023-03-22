@@ -3,6 +3,7 @@ import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -14,23 +15,20 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('Pages/payment-agent/payment-agent-unlisted-withdraw-form', () => () => (
-    <div>PaymentAgentUnlistedWithdrawForm</div>
-));
-jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () => () => <div>PaymentAgentWithdrawConfirm</div>);
-jest.mock('Pages/payment-agent/payment-agent-receipt', () => () => <div>PaymentAgentReceipt</div>);
-jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
-jest.mock('Pages/payment-agent/payment-agent-search-box', () => () => <div>PaymentAgentSearchBox</div>);
+jest.mock('Pages/payment-agent/payment-agent-unlisted-withdraw-form', () =>
+    jest.fn(() => <div>PaymentAgentUnlistedWithdrawForm</div>)
+);
+jest.mock('Pages/payment-agent/payment-agent-withdraw-confirm', () =>
+    jest.fn(() => <div>PaymentAgentWithdrawConfirm</div>)
+);
+jest.mock('Pages/payment-agent/payment-agent-receipt', () => jest.fn(() => <div>PaymentAgentReceipt</div>));
+jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => <div>PaymentAgentDisclaimer</div>));
+jest.mock('Pages/payment-agent/payment-agent-search-box', () => jest.fn(() => <div>PaymentAgentSearchBox</div>));
 
 describe('<PaymentAgentContainer />', () => {
-    let mockRootStore;
+    let mockRootStore: TStores;
     beforeEach(() => {
-        mockRootStore = {
-            ui: {
-                app_contents_scroll_ref: {
-                    current: {},
-                },
-            },
+        mockRootStore = mockStore({
             modules: {
                 cashier: {
                     payment_agent: {
@@ -78,7 +76,7 @@ describe('<PaymentAgentContainer />', () => {
                     },
                 },
             },
-        };
+        }) as TStores;
     });
 
     const renderPaymentAgentContainer = (is_deposit = true) => {
@@ -139,7 +137,7 @@ describe('<PaymentAgentContainer />', () => {
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         renderPaymentAgentContainer();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();

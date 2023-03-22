@@ -157,4 +157,15 @@ export const shouldShowExpiration = (symbol: string) => /^cry/.test(symbol);
 
 export const shouldShowCancellation = (symbol: string) => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);
 
-export const getTurbosSubtype = (type: string) => type[6] + type.toLowerCase().slice(7);
+export const getContractSubtype = (type: string) => {
+    switch (type) {
+        case 'VANILLALONGCALL':
+        case 'VANILLALONGPUT':
+            return type[11] + type.toLowerCase().slice(12);
+        case 'TURBOSLONG':
+        case 'TURBOSSHORT':
+            return type[6] + type.toLowerCase().slice(7);
+        default:
+            return '';
+    }
+};

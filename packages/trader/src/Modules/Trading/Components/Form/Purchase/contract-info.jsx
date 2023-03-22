@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getLocalizedBasis, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, getLocalizedBasis, getContractSubtype, isMobile } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_turbos, is_vanilla }) => (
@@ -18,6 +18,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                     })}
                     currency={currency}
                     show_currency
+                    should_format={!is_turbos}
                 />
             )}
         </div>
@@ -77,30 +78,31 @@ const ContractInfo = ({
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {
-        if (['VANILLALONGCALL', 'VANILLALONGPUT'].includes(type)) {
+        if (is_vanilla) {
             return (
                 <Localize
                     i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
                     components={[<strong key={0} />]}
                     values={{
-                        trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
-                        title: type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                        trade_type: type === 'VANILLALONGCALL' ? 'above' : 'below',
+                        title: getContractSubtype(type),
                     }}
                 />
             );
         }
-        if (['TURBOSLONG', 'TURBOSSHORT'].includes(type)) {
+        if (is_turbos) {
             return (
                 <Localize
                     i18n_default_text='<0>For {{title}}:</0> {{message}}'
                     components={[<Text key={0} weight='bold' size='xxs' />]}
                     values={{
-                        title: type === 'TURBOSLONG' ? localize('Long') : localize('Short'),
+                        title: getContractSubtype(type),
                         message,
                     }}
                 />
             );
         }
+
         return message;
     };
 
@@ -169,12 +171,8 @@ const ContractInfo = ({
                                                 i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
                                                 components={[<strong key={0} />]}
                                                 values={{
-                                                    trade_type:
-                                                        type === 'VANILLALONGCALL'
-                                                            ? localize('above')
-                                                            : localize('below'),
-                                                    title:
-                                                        type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
+                                                    trade_type: type === 'VANILLALONGCALL' ? 'above' : 'below',
+                                                    title: getContractSubtype(type),
                                                 }}
                                             />
                                         }

@@ -32,7 +32,7 @@ describe('<PayoutPerPoint/>', () => {
         expect(screen.getByText('Payout per point')).toBeInTheDocument();
     });
     it('should render amount correctly', () => {
-        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/10/i)).toBeInTheDocument();
     });
     it('should render currency correctly', () => {
         expect(screen.getByText(/EUR/i)).toBeInTheDocument();

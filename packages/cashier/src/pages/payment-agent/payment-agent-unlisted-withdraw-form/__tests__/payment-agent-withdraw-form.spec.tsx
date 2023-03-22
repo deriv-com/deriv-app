@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import { isMobile, validNumber } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -11,10 +12,10 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => () => <div>PaymentAgentDisclaimer</div>);
+jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => 'PaymentAgentDisclaimer'));
 
 describe('<PaymentAgentUnlistedWithdrawForm />', () => {
-    let mockRootStore, setIsUnlistedWithdraw;
+    let mockRootStore: TStores, setIsUnlistedWithdraw: (value: boolean) => void;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
@@ -23,11 +24,11 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     });
 
     afterAll(() => {
-        ReactDOM.createPortal.mockClear();
+        (ReactDOM.createPortal as jest.Mock).mockClear();
     });
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             ui: { disableApp: jest.fn(), enableApp: jest.fn() },
             client: {
                 balance: '1000',
@@ -38,11 +39,11 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
                     payment_agent: {
                         error: {},
                         onMountPaymentAgentWithdraw: jest.fn(),
-                        requestTryPaymentAgentWithdraw: jest.fn().mockResolvedValue(),
+                        requestTryPaymentAgentWithdraw: jest.fn().mockResolvedValue(''),
                     },
                 },
             },
-        };
+        });
 
         setIsUnlistedWithdraw = jest.fn();
     });
@@ -82,7 +83,7 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     });
 
     it('should show different error messages', async () => {
-        validNumber.mockReturnValue({ is_ok: false, message: 'error_message' });
+        (validNumber as jest.Mock).mockReturnValue({ is_ok: false, message: 'error_message' });
         const { rerender } = renderPaymentAgentUnlistedWithdrawForm();
 
         const el_input_account_number = screen.getByLabelText('Enter the payment agent account number');
@@ -94,7 +95,7 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
         await waitFor(() => {
             expect(screen.getByText('error_message')).toBeInTheDocument();
         });
-        validNumber.mockReturnValue({ is_ok: true, message: '' });
+        (validNumber as jest.Mock).mockReturnValue({ is_ok: true, message: '' });
 
         rerender(renderPaymentAgentUnlistedWithdrawForm(true));
         fireEvent.change(el_input_account_number, { target: { value: 'CR56656565' } });
@@ -134,7 +135,7 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     });
 
     it('should show PaymentAgentDisclaimer in mobile view', () => {
-        isMobile.mockReturnValue(true);
+        (isMobile as jest.Mock).mockReturnValue(true);
         renderPaymentAgentUnlistedWithdrawForm();
 
         expect(screen.getByText('PaymentAgentDisclaimer')).toBeInTheDocument();

@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import CashierProviders from '../../../../cashier-providers';
+import { TStores, mockStore } from '@deriv/stores';
 
 describe('<PaymentAgentWithdrawConfirm />', () => {
-    let mockRootStore, verification_code;
+    let mockRootStore: TStores, verification_code: string;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
@@ -14,11 +15,11 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
     });
 
     afterAll(() => {
-        ReactDOM.createPortal.mockClear();
+        (ReactDOM.createPortal as jest.Mock).mockClear();
     });
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             ui: { disableApp: jest.fn(), enableApp: jest.fn() },
             client: { loginid: 'CR90000100' },
             modules: {
@@ -36,7 +37,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
                     },
                 },
             },
-        };
+        }) as TStores;
 
         verification_code = 'ABCdef';
     });

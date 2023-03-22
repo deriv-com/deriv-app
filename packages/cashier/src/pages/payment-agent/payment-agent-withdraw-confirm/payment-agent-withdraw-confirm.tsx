@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Money } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -6,7 +5,11 @@ import { localize } from '@deriv/translations';
 import TransferConfirm from 'Components/transfer-confirm';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
-const PaymentAgentWithdrawConfirm = observer(({ verification_code }) => {
+type TPaymentAgentWithdrawConfirm = {
+    verification_code: string;
+};
+
+const PaymentAgentWithdrawConfirm = observer(({ verification_code }: TPaymentAgentWithdrawConfirm) => {
     const { client } = useStore();
     const { loginid: client_loginid } = client;
     const { payment_agent } = useCashierStore();
@@ -43,9 +46,5 @@ const PaymentAgentWithdrawConfirm = observer(({ verification_code }) => {
         />
     );
 });
-
-PaymentAgentWithdrawConfirm.propTypes = {
-    verification_code: PropTypes.string,
-};
 
 export default PaymentAgentWithdrawConfirm;

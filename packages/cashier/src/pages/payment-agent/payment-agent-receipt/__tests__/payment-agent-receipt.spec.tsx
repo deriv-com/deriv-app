@@ -12,7 +12,7 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => <div>PaymentAgentDisclaimer</div>));
+jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => 'PaymentAgentDisclaimer'));
 
 describe('<PaymentAgentReceipt />', () => {
     let history: BrowserHistory, mockRootStore: TStores;

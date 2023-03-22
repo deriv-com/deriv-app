@@ -647,7 +647,7 @@ const CFDPasswordModal = ({
     show_eu_related_content,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
-    const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
+    const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === Jurisdiction.BVI;
     const has_mt5_account = Boolean(mt5_login_list?.length);
     const should_set_trading_password =
         Array.isArray(account_status?.status) &&

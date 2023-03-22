@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
+import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop, Jurisdiction } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
@@ -545,7 +545,9 @@ const CFDAccountCardComponent = ({
                                             <Localize
                                                 i18n_default_text={
                                                     acc.landing_company_short &&
-                                                    !['svg', 'bvi'].includes(acc?.landing_company_short)
+                                                    ![Jurisdiction.SVG, Jurisdiction.BVI].includes(
+                                                        acc?.landing_company_short
+                                                    )
                                                         ? acc.landing_company_short?.charAt(0).toUpperCase() +
                                                           acc.landing_company_short.slice(1)
                                                         : acc.landing_company_short?.toUpperCase()

@@ -26,7 +26,6 @@ const PageOverlay = ({
     header_classname,
 }: React.PropsWithChildren<TPageOverlay>) => {
     const page_overlay_ref = React.useRef<HTMLDivElement>(null);
-    useOnClickOutside(page_overlay_ref, onClickClose, () => !!(is_open && portal_id));
 
     const el_page_overlay = (
         <div

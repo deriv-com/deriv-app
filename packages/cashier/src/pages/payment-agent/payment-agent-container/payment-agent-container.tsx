@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
@@ -14,6 +13,11 @@ import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-container.scss';
 
+type TPaymentAgentContainer = {
+    is_deposit: boolean;
+    verification_code: string;
+};
+
 const PaymentAgentSearchWarning = () => {
     return (
         <div className='payment-agent-list__search-warning cashier__wrapper--align-center'>
@@ -28,7 +32,7 @@ const PaymentAgentSearchWarning = () => {
     );
 };
 
-const PaymentAgentContainer = observer(({ is_deposit, verification_code }) => {
+const PaymentAgentContainer = observer(({ is_deposit, verification_code }: TPaymentAgentContainer) => {
     const { ui } = useStore();
     const { app_contents_scroll_ref, is_dark_mode_on } = ui;
     const { payment_agent: payment_agent_store } = useCashierStore();
@@ -134,6 +138,7 @@ const PaymentAgentContainer = observer(({ is_deposit, verification_code }) => {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <SelectNative
+                                hide_top_placeholder={false}
                                 placeholder={localize('All payment methods')}
                                 name='payment_methods'
                                 list_items={supported_banks}
@@ -176,10 +181,5 @@ const PaymentAgentContainer = observer(({ is_deposit, verification_code }) => {
         </React.Fragment>
     );
 });
-
-PaymentAgentContainer.propTypes = {
-    is_deposit: PropTypes.bool,
-    verification_code: PropTypes.string,
-};
 
 export default PaymentAgentContainer;

@@ -111,6 +111,7 @@ ContractCardHeader.propTypes = {
     onClickSell: PropTypes.func,
     server_time: PropTypes.object,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    is_sold: PropTypes.bool,
 };
 
 export default ContractCardHeader;

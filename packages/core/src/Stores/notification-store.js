@@ -42,6 +42,7 @@ export default class NotificationStore extends BaseStore {
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
+    is_notifications_loading_completed = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -81,6 +82,7 @@ export default class NotificationStore extends BaseStore {
             updateNotifications: action.bound,
             p2p_completed_orders: observable,
             getP2pCompletedOrders: action.bound,
+            is_notifications_loading_completed: observable,
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
@@ -119,6 +121,8 @@ export default class NotificationStore extends BaseStore {
                     (Object.keys(root_store.client.account_status).length > 0 &&
                         Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
+                    // console.log('Reaction');
+                    this.is_notifications_loading_completed = false;
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
@@ -579,6 +583,8 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
+
+        this.is_notifications_loading_completed = true;
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {

@@ -1,3 +1,4 @@
+import React from 'react';
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
@@ -197,6 +198,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    app_contents_scroll_ref: React.RefObject<HTMLElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;

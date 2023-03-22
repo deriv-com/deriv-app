@@ -1,6 +1,10 @@
 @import '../../../shared/src/styles/reset.scss';
 @import '../../../shared/src/styles/themes.scss';
 
+.notification-messages {
+    display: none;
+}
+
 .p2p-cashier {
     background: transparent;
     height: 100%;
@@ -9,6 +13,10 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
+    .notification-messages {
+        display: unset;
+    }
 
     &__barred-user {
         .dc-hint-box {

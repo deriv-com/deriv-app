@@ -92,9 +92,6 @@ export default class PaymentAgentStore {
     }
 
     async getPaymentAgentList() {
-        // wait for get_settings so residence gets populated in client-store
-        // TODO: set residence in client-store from authorize so it's faster
-        await this.WS.wait('get_settings');
         const { residence, currency } = this.root_store.client;
         return this.WS.authorized.paymentAgentList(residence, currency);
     }
@@ -371,7 +368,6 @@ export default class PaymentAgentStore {
     }
 
     async getAllPaymentAgentList() {
-        await this.WS.wait('get_settings');
         return this.WS.allPaymentAgentList(this.root_store.client.residence);
     }
 

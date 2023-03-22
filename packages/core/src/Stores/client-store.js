@@ -1272,7 +1272,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
         this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
-        this.accounts[this.loginid].country = response.country;
+        this.accounts[this.loginid].country = response.authorize.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
@@ -1445,7 +1445,7 @@ export default class ClientStore extends BaseStore {
 
     get residence() {
         if (this.is_logged_in) {
-            return this.account_settings.country_code ?? '';
+            return this.accounts[this.loginid].country ?? '';
         }
         return '';
     }

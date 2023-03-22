@@ -239,9 +239,6 @@ export default class GeneralStore extends BaseStore {
             } = this.root_store;
             const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
 
-            // wait for client settings to be populated in client-store
-            await this.WS.wait('get_settings');
-
             if (is_logged_in) {
                 await this.getAdvertizerError();
                 if (!switched) {

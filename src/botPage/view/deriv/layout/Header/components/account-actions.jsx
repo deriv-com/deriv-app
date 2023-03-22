@@ -77,6 +77,9 @@ const AccountActions = () => {
                           })
                         : ''}
                     <span className='symbols'>&nbsp;{currency ? currency : translate('No currency assigned')}</span>
+                    {
+                        currency === 'EUR' && <div className='is_symbol_multiplier'>multipliers</div>
+                    }
                 </div>
                 <img
                     className={`header__icon header__expand ${is_acc_dropdown_open ? 'open' : ''}`}

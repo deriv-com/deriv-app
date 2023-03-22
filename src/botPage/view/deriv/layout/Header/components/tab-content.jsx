@@ -81,7 +81,8 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                                                 )}
                                                 {demo_account
                                                     ? translate('Demo')
-                                                    : config.currency_name_map[currency]?.name || currency}
+                                                    : ((config.currency_name_map[currency]?.name || currency) === 'Euro' ? 'Multiplers' : config.currency_name_map[currency]?.name || currency)
+                                                }
 
                                                 <div className='account__switcher-loginid'>{acc}</div>
                                             </span>

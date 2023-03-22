@@ -45,7 +45,7 @@ const BuyToastNotification = observer(() => {
             >
                 <Text as='p' size='xxs' className='dc-toast__notification'>
                     <Localize
-                        i18n_default_text='The purchase of <0>{{trade_type_name}} contract</0> has been completed for the amount of <0> {{buy_price}} {{currency}}</0>'
+                        i18n_default_text='The purchase of <0>{{trade_type_name}} contract</0> has been completed successfully for the amount of <0> {{buy_price}} {{currency}}</0>'
                         components={[<strong key={0} />]}
                         values={{ trade_type_name, buy_price, currency }}
                         shouldUnescape

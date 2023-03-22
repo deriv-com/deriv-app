@@ -209,6 +209,8 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
             default:
                 return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
+    } else if (platform === CFD_PLATFORMS.DERIVEZ) {
+        return <Icon icon='IcBrandDerivez' size={128} />;
     }
 
     switch (type) {

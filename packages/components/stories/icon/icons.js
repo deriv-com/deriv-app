@@ -61,6 +61,7 @@ export const icons =
         'IcBrandDbot',
         'IcBrandDerivApps',
         'IcBrandDeriv',
+        'IcBrandDerivez',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',

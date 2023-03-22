@@ -2040,6 +2040,15 @@ export default class ClientStore extends BaseStore {
     }
 
     cleanUp() {
+        // delete all notifications keys for this account when logout
+        const notification_messages = LocalStore.getObject('notification_messages');
+        if (notification_messages && this.loginid) {
+            delete notification_messages[this.loginid];
+            LocalStore.setObject('notification_messages', {
+                ...notification_messages,
+            });
+        }
+
         this.root_store.gtm.pushDataLayer({
             event: 'log_out',
         });

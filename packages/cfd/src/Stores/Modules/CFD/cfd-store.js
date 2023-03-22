@@ -237,6 +237,11 @@ export default class CFDStore extends BaseStore {
                 } else this.setJurisdictionSelectedShortcode('svg');
                 this.demoCFDSignup();
             }
+        } else if (platform === CFD_PLATFORMS.DERIVEZ) {
+            this.has_cfd_error = false;
+            this.is_cfd_password_modal_enabled = true;
+            this.is_password_modal_exited = true;
+            this.is_cfd_success_dialog_enabled = true;
         }
     }
 

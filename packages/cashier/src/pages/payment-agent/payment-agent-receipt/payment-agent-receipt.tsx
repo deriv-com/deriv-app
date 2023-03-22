@@ -11,42 +11,35 @@ import SideNote from 'Components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-receipt.scss';
 import { BrowserHistory } from 'history';
+import { TPaymentAgent } from '../../../types';
 
 const openStatement = (history: BrowserHistory, resetPaymentAgent: VoidFunction) => {
     history.push(routes.statement);
     resetPaymentAgent();
 };
 
-type TPaymentAgentDetails = {
-    payment_agent_email: string;
-    payment_agent_phones: Array<{ phone_number: string }>;
-    payment_agent_urls: Array<{ url: string }>;
-};
+type TPaymentAgentDetails = Pick<TPaymentAgent, 'email' | 'phone_numbers' | 'urls'>;
 
 type TPaymentAgentReceipt = {
     history: BrowserHistory;
 };
 
-const PaymentAgentDetails = ({
-    payment_agent_email,
-    payment_agent_phones,
-    payment_agent_urls,
-}: TPaymentAgentDetails) => {
+const PaymentAgentDetails = ({ email, phone_numbers, urls }: TPaymentAgentDetails) => {
     return (
         <div className='payment-agent-receipt__transferred-contact'>
-            {payment_agent_phones && (
+            {phone_numbers && (
                 <PaymentAgentDetail action='tel' icon='IcPhone'>
-                    {payment_agent_phones.map(phone => phone.phone_number)}
+                    {phone_numbers.map(phone => phone.phone_number)}
                 </PaymentAgentDetail>
             )}
-            {payment_agent_email && (
+            {email && (
                 <PaymentAgentDetail action='mailto' icon='IcEmailOutlineNew' rel='noopener noreferrer' target='_blank'>
-                    {payment_agent_email}
+                    {email}
                 </PaymentAgentDetail>
             )}
-            {payment_agent_urls && (
+            {urls && (
                 <PaymentAgentDetail icon='IcWebsite' is_link rel='noopener noreferrer' target='_blank'>
-                    {payment_agent_urls.map(url => url.url)}
+                    {urls.map(url => url.url)}
                 </PaymentAgentDetail>
             )}
         </div>
@@ -66,7 +59,7 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
 
     return (
         <div className='cashier__wrapper--align-center payment-agent-receipt'>
-            <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
+            <SideNote className='payment-agent-list__side-note' is_mobile>
                 <PaymentAgentDisclaimer />
             </SideNote>
             <Text
@@ -121,9 +114,9 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
                         />
                     </Text>
                     <PaymentAgentDetails
-                        payment_agent_email={receipt.payment_agent_email}
-                        payment_agent_phones={receipt.payment_agent_phone}
-                        payment_agent_urls={receipt.payment_agent_url}
+                        email={receipt.payment_agent_email}
+                        phone_numbers={receipt.payment_agent_phone}
+                        urls={receipt.payment_agent_url}
                     />
                 </div>
             )}

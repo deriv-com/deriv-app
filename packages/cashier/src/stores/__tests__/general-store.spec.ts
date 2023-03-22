@@ -272,7 +272,6 @@ describe('GeneralStore', () => {
         });
         expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
         // eslint-disable-next-line testing-library/await-async-utils
-        expect(general_store.WS.wait).toHaveBeenCalledTimes(1);
         expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
     });
 

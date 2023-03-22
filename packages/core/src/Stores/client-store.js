@@ -28,7 +28,6 @@ import { action, computed, makeObservable, observable, reaction, runInAction, to
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
-import { changeLanguage } from 'Utils/Language';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -1641,7 +1640,7 @@ export default class ClientStore extends BaseStore {
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
-                changeLanguage(language);
+                await this.root_store.common.changeSelectedLanguage(language);
             }
             if (this.citizen) this.onSetCitizen(this.citizen);
             if (!this.is_virtual) {

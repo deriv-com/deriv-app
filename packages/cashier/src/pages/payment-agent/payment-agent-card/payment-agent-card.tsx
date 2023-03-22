@@ -1,20 +1,28 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ExpansionPanel } from '@deriv/components';
-import PaymentAgentCardDescription from './payment-agent-card-description.jsx';
+import PaymentAgentCardDescription from './payment-agent-card-description';
 import PaymentAgentDepositDetails from '../payment-agent-deposit-details';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import './payment-agent-card.scss';
+import { TPaymentAgent } from '../../../types';
 
-const PaymentAgentCard = ({ is_dark_mode_on, is_deposit, payment_agent }) => {
+type TPaymentAgentCard = {
+    is_dark_mode_on?: boolean;
+    is_deposit?: boolean;
+    payment_agent: TPaymentAgent;
+};
+
+const PaymentAgentCard = ({ is_dark_mode_on, is_deposit, payment_agent }: TPaymentAgentCard) => {
     const message = {
         header: <PaymentAgentCardDescription is_dark_mode_on={is_dark_mode_on} payment_agent={payment_agent} />,
-        content: is_deposit ? (
-            <PaymentAgentDepositDetails payment_agent={payment_agent} />
-        ) : (
-            <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
-        ),
+        content: [
+            (is_deposit ? (
+                <PaymentAgentDepositDetails payment_agent={payment_agent} />
+            ) : (
+                <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
+            )) as ReactNode,
+        ],
     };
     return (
         <div
@@ -25,12 +33,6 @@ const PaymentAgentCard = ({ is_dark_mode_on, is_deposit, payment_agent }) => {
             <ExpansionPanel message={message} />
         </div>
     );
-};
-
-PaymentAgentCard.propTypes = {
-    is_dark_mode_on: PropTypes.bool,
-    is_deposit: PropTypes.bool,
-    payment_agent: PropTypes.object,
 };
 
 export default PaymentAgentCard;

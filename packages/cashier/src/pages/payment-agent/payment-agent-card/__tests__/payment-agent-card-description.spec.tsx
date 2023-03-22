@@ -1,13 +1,24 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PaymentAgentCardDescription from '../payment-agent-card-description';
+import { TPaymentAgent } from '../../../../types';
 
 describe('<PaymentAgentCardDescription />', () => {
-    const mocked_payment_agent = {
+    const mocked_payment_agent: TPaymentAgent = {
+        currencies: 'USD',
+        deposit_commission: '',
+        email: '',
         further_information: 'further information',
+        max_withdrawal: '',
+        min_withdrawal: '',
         name: 'Payment Agent of CR90000000',
+        paymentagent_loginid: '',
+        phone_numbers: [],
+        summary: '',
         supported_banks: [{ payment_method: 'Visa' }],
+        supported_payment_methods: [],
         urls: [{ url: 'http://www.MyPAMyAdventure2.com/' }, { url: 'http://www.MyPAMyAdventure.com/' }],
+        withdrawal_commission: '',
     };
 
     it('should show proper description details and icon', () => {

@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ContractCard } from '@deriv/components';
+import { isCryptocurrency } from '@deriv/shared';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -25,7 +26,9 @@ const SummaryCard = ({
     server_time,
     setCurrentFocus,
 }: TSummaryCardProps) => {
-    const is_cryptocurrency = contract_info?.underlying.startsWith('cry') || false;
+    const currency = contract_info?.display_name.split('/')[0];
+    const is_cryptocurrency = contract_info?.display_name ? isCryptocurrency(currency as string) : false;
+
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}

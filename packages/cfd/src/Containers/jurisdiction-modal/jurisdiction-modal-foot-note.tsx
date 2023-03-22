@@ -36,7 +36,7 @@ const FooterNote = ({
         ) : (
             <Localize i18n_default_text='To create this account first we need you to resubmit your proof of address.' />
         );
-    } else if (jurisdiction_selected_shortcode === 'bvi') {
+    } else if (jurisdiction_selected_shortcode === Jurisdiction.BVI) {
         return (
             <Localize
                 i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'

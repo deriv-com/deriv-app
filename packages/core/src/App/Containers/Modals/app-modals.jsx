@@ -1,16 +1,17 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { ContentFlag, moduleLoader } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
-import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import CooldownWarningModal from './cooldown-warning-modal.jsx';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
+import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import ExitTradersHubModal from './exit-traders-hub-modal';
+import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
+import React from 'react';
 import ReadyToDepositModal from './ready-to-deposit-modal';
+import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import { connect } from 'Stores/connect';
+import { useLocation } from 'react-router-dom';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -72,7 +73,7 @@ const AppModals = ({
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
-    setIsCFDScoreAvailable,
+    // setIsCFDScoreAvailable,
     content_flag,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
@@ -91,7 +92,7 @@ const AppModals = ({
         if (is_logged_in) {
             fetchFinancialAssessment().then(response => {
                 setCFDScore(response?.cfd_score ?? 0);
-                setIsCFDScoreAvailable(true);
+                // setIsCFDScoreAvailable(true);
             });
         }
     }, [is_logged_in]);
@@ -163,7 +164,6 @@ const AppModals = ({
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;
     }
-
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />

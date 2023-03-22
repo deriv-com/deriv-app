@@ -1,23 +1,25 @@
-/* eslint-disable react/display-name */
-import classNames from 'classnames';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import 'Sass/account-wizard.scss';
+import 'Sass/real-account-signup.scss';
+
+import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+
 import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
-import SetCurrency from './set-currency.jsx';
 import FinishedAddCurrency from './finished-add-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import React from 'react';
+import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
-import 'Sass/account-wizard.scss';
-import 'Sass/real-account-signup.scss';
+/* eslint-disable react/display-name */
+import classNames from 'classnames';
+import { connect } from 'Stores/connect';
+import { routes } from '@deriv/shared';
+import { withRouter } from 'react-router-dom';
 
 const modal_pages_indices = {
     account_wizard: 0,
@@ -123,6 +125,7 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
+    is_trading_experience_incomplete,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -336,7 +339,9 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
-        return () => setIsTradingAssessmentForNewUserEnabled(false);
+        return () => {
+            setIsTradingAssessmentForNewUserEnabled(is_trading_experience_incomplete);
+        };
     }, []);
 
     // setCurrentAction callback useEffect to set error details
@@ -667,4 +672,5 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
 }))(withRouter(RealAccountSignup));

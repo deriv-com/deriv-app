@@ -1,18 +1,19 @@
-import React from 'react';
-import { connect } from 'Stores/connect';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
+import React from 'react';
+import { connect } from 'Stores/connect';
+
 const TradingExperienceModal = ({
     cfd_score,
-    is_cfd_score_available,
+    // is_cfd_score_available,
     is_trading_experience_incomplete,
     setShouldShowTradingAssessmentModal,
     should_show_trading_assessment_modal,
     setShouldShowTradeAssessmentForm,
 }) => {
     React.useEffect(() => {
-        setShouldShowTradingAssessmentModal(cfd_score === 0 && is_cfd_score_available);
+        setShouldShowTradingAssessmentModal(cfd_score === 0);
     }, []);
 
     const handleOnSubmit = () => {

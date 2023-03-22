@@ -5,11 +5,12 @@ import {
     LocalStore,
     State,
     deriv_urls,
-    filterUrlQuery,
     excludeParamsFromUrlQuery,
+    filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
+    isCryptocurrency,
     isDesktopOs,
     isEmptyObject,
     isLocal,
@@ -21,13 +22,12 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
+import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';

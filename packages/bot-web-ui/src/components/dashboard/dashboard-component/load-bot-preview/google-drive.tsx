@@ -9,8 +9,8 @@ import RootStore from 'Stores/root-store';
 type TGoogleDriveProps = {
     is_authorised: boolean;
     is_open_button_loading: boolean;
-    onDriveConnect: VoidFunction;
-    onDriveOpen: VoidFunction;
+    onDriveConnect: () => void;
+    onDriveOpen: () => void;
     setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
 };
 

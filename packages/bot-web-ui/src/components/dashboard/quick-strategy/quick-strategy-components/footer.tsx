@@ -12,6 +12,7 @@ const QuickStrategyFooter = ({
     submitForm,
     setActiveTab,
     toggleStopBotDialog,
+    loadDataStrategy,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
@@ -41,7 +42,7 @@ const QuickStrategyFooter = ({
                 <Button
                     type='button'
                     id='db-quick-strategy__button-edit'
-                    text={localize('Create and edit')}
+                    text={localize('Edit')}
                     is_disabled={!is_submit_enabled}
                     secondary
                     large

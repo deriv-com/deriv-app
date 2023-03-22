@@ -109,9 +109,7 @@ export default class FloatingRateStore extends BaseStore {
     }
 
     setIsMarketRateChanged(value) {
-        if (this.root_store.buy_sell_store.show_rate_change_popup) {
-            this.is_market_rate_changed = value;
-        }
+        this.is_market_rate_changed = value;
     }
 
     setOverrideExchangeRate(override_exchange_rate) {
@@ -129,8 +127,8 @@ export default class FloatingRateStore extends BaseStore {
                 ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
                 this.setExchangeRate(0);
             } else {
-                const { rates } = response.exchange_rates;
-                const rate = rates[client?.local_currency_config?.currency] ?? rates[selected_local_currency];
+                const rates = response.exchange_rates?.rates;
+                const rate = rates?.[client?.local_currency_config?.currency] ?? rates?.[selected_local_currency];
                 this.setExchangeRate(rate);
                 this.setApiErrorMessage(null);
             }

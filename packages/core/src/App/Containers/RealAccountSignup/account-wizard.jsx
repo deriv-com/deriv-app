@@ -198,7 +198,6 @@ const AccountWizard = props => {
                 ...payload,
             };
         }
-
         return props.realAccountSignup(clone);
     };
 
@@ -237,10 +236,11 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const submitIDVData = async (document_type, document_number, country_code) => {
+    const submitIDVData = async (document_type, document_number, document_additional = '', country_code) => {
         const idv_submit_data = {
             identity_verification_document_add: 1,
             document_number,
+            document_additional,
             document_type: document_type.id,
             issuing_country: country_code,
         };
@@ -260,11 +260,10 @@ const AccountWizard = props => {
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
-
-                const { document_type, document_number } = { ...form_values() };
+                const { document_type, document_number, document_additional } = { ...form_values() };
                 if (document_type && document_number) {
                     const country_code = props.account_settings.citizen || props.residence;
-                    submitIDVData(document_type, document_number, country_code);
+                    submitIDVData(document_type, document_number, document_additional, country_code);
                 }
             })
             .catch(error => {

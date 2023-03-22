@@ -130,6 +130,9 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
+    //warn user if they want to close create real account modal
+    is_closing_create_real_account_modal = false;
+
     // MT5 account needed modal
     is_account_needed_modal_on = false;
     account_needed_modal_props = {
@@ -241,6 +244,7 @@ export default class UIStore extends BaseStore {
             duration_d: observable,
             purchase_states: observable,
             is_app_disabled: observable,
+            is_closing_create_real_account_modal: observable,
             is_route_modal_on: observable,
             is_real_acc_signup_on: observable,
             real_account_signup_target: observable,
@@ -372,6 +376,7 @@ export default class UIStore extends BaseStore {
             setShouldShowCooldownModal: action.bound,
             setShouldShowTradingAssessmentModal: action.bound,
             setShouldShowTradeAssessmentForm: action.bound,
+            setIsClosingCreateRealAccountModal: action.bound,
             setIsRealTabEnabled: action.bound,
             setCFDPasswordResetModal: action.bound,
             setSubSectionIndex: action.bound,
@@ -399,6 +404,10 @@ export default class UIStore extends BaseStore {
             !this.has_read_scam_message &&
             !this.is_new_account
         );
+    }
+
+    setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
+        this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;
     }
 
     setIsRealTabEnabled(is_real_tab_enabled) {

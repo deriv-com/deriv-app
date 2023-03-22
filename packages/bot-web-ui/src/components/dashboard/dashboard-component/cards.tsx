@@ -10,14 +10,15 @@ import Recent from './load-bot-preview/recent';
 import GoogleDrive from './load-bot-preview/google-drive';
 
 type TCardProps = {
-    closeResetDialog: VoidFunction;
     dialog_options: { [key: string]: string };
-    handleFileChange: (e: React.ChangeEvent, flag?: boolean) => boolean;
     has_dashboard_strategies: boolean;
     is_dialog_open: boolean;
     is_mobile: boolean;
-    loadFileFromLocal: VoidFunction;
     save_modal: SaveModalStore;
+    closeResetDialog: () => void;
+    handleFileChange: (e: React.ChangeEvent, flag?: boolean) => boolean;
+    loadFileFromLocal: () => void;
+    loadDataStrategy: () => void;
     setActiveTab: (active_tab: number) => void;
     setFileLoaded: (param: boolean) => void;
     setPreviewOnPopup: (show: boolean) => void;
@@ -28,10 +29,10 @@ type TCardProps = {
 type TCardArray = {
     icon: string;
     content: string;
-    method: VoidFunction;
+    method: () => void;
 };
 
-const Card = ({
+const Cards = ({
     closeResetDialog,
     dialog_options,
     handleFileChange,
@@ -44,6 +45,7 @@ const Card = ({
     setPreviewOnPopup,
     setOpenSettings,
     showVideoDialog,
+    loadDataStrategy,
 }: TCardProps) => {
     /* eslint-disable no-unused-expressions */
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
@@ -78,7 +80,10 @@ const Card = ({
         {
             icon: 'IcQuickStrategy',
             content: localize('Quick Strategy'),
-            method: () => setActiveTab(2),
+            method: () => {
+                setActiveTab(1);
+                loadDataStrategy();
+            },
         },
     ];
 
@@ -169,7 +174,7 @@ const Card = ({
     );
 };
 
-export default connect(({ load_modal, dashboard }: RootStore) => ({
+export default connect(({ load_modal, dashboard, quick_strategy }: RootStore) => ({
     closeResetDialog: dashboard.onCloseDialog,
     dialog_options: dashboard.dialog_options,
     handleFileChange: load_modal.handleFileChange,
@@ -182,4 +187,5 @@ export default connect(({ load_modal, dashboard }: RootStore) => ({
     setPreviewOnPopup: dashboard.setPreviewOnPopup,
     setOpenSettings: dashboard.setOpenSettings,
     showVideoDialog: dashboard.showVideoDialog,
-}))(Card);
+    loadDataStrategy: quick_strategy.loadDataStrategy,
+}))(Cards);

@@ -7,6 +7,7 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import SearchBox from './search-box';
 import { isMobile } from '@deriv/shared';
+import ToolbarButton from '../toolbar/toolbar-button';
 
 type TToolbox = {
     hasSubCategory: (param: HTMLCollection) => boolean;
@@ -24,6 +25,7 @@ type TToolbox = {
     sub_category_index: number[];
     toggleDrawer: () => void;
     toolbox_dom: HTMLElement;
+    loadDataStrategy: () => void;
 };
 
 const Toolbox = ({
@@ -40,6 +42,7 @@ const Toolbox = ({
     setVisibility,
     sub_category_index,
     toolbox_dom,
+    loadDataStrategy,
 }: TToolbox) => {
     const toolbox_ref = React.useRef(ToolboxItems);
     const [is_open, setOpen] = React.useState(true);
@@ -52,6 +55,13 @@ const Toolbox = ({
     if (!isMobile()) {
         return (
             <div className='dashboard__toolbox'>
+                <ToolbarButton
+                    popover_message={localize('Click here to start building your DBot.')}
+                    button_id='db-toolbar__get-started-button'
+                    button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
+                    buttonOnClick={loadDataStrategy}
+                    button_text={localize('Quick strategies')}
+                />
                 <div id='gtm-toolbox' className='db-toolbox__content'>
                     <div className='db-toolbox__header'>
                         <div
@@ -150,7 +160,7 @@ const Toolbox = ({
     return null;
 };
 
-export default connect(({ toolbox, flyout }: RootStore) => ({
+export default connect(({ toolbox, flyout, quick_strategy }: RootStore) => ({
     hasSubCategory: toolbox.hasSubCategory,
     is_search_loading: toolbox.is_search_loading,
     is_toolbox_open: toolbox.is_toolbox_open,
@@ -166,4 +176,5 @@ export default connect(({ toolbox, flyout }: RootStore) => ({
     sub_category_index: toolbox.sub_category_index,
     toggleDrawer: toolbox.toggleDrawer,
     toolbox_dom: toolbox.toolbox_dom,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
 }))(Toolbox);

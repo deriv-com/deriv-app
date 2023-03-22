@@ -34,6 +34,7 @@ const QuickStrategyForm = ({
     setCurrentFocus,
     setActiveTab,
     toggleStopBotDialog,
+    loadDataStrategy,
 }: TQuickStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
@@ -86,18 +87,13 @@ const QuickStrategyForm = ({
                             'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
                         })}
                     >
-                        <ThemedScrollbars height='calc(100vh - 23.9rem)' autohide is_bypassed={is_mobile}>
+                        <ThemedScrollbars height='63rem' autohide is_bypassed={is_mobile}>
                             <div
                                 className={classNames('quick-strategy__form-content', {
                                     'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
                                     'quick-strategy__form-content--safari-fix': isSafari(),
                                 })}
                             >
-                                <div className='quick-strategy__text'>
-                                    <Text size={is_mobile ? 's' : 'sm'} weight='bold' line_height='s'>
-                                        {localize('Quick strategy')}
-                                    </Text>
-                                </div>
                                 <div className='quick-strategy__text'>
                                     <Text weight='normal'>
                                         {localize('Choose a template and set your trade parameters.')}
@@ -138,6 +134,7 @@ const QuickStrategyForm = ({
                             setActiveTab={setActiveTab}
                             toggleStopBotDialog={toggleStopBotDialog}
                             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
+                            loadDataStrategy={loadDataStrategy}
                         />
                     </Form>
                 );

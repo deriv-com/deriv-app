@@ -27,7 +27,7 @@ const CurrentSwitcherContainer = ({
     const { client, modules, traders_hub }: TRootStore = store;
 
     const { document_status } = client.authentication_status;
-    const { is_eu_user, is_demo, is_currency_switcher_disabled_for_mf } = traders_hub;
+    const { is_eu_user, is_demo } = traders_hub;
     const { current_list } = modules.cfd;
 
     const has_mf_mt5_account = Object.keys(current_list)
@@ -41,9 +41,7 @@ const CurrentSwitcherContainer = ({
             </div>
         );
 
-        if ((is_eu_user && has_mf_mt5_account) || is_currency_switcher_disabled_for_mf) {
-            return null;
-        } else if (is_demo) {
+        if ((is_eu_user && has_mf_mt5_account) || is_demo) {
             return null;
         }
         return icon_dropdown;

@@ -14,6 +14,7 @@ type TStopBotModal = {
     onOkButtonClick: () => void;
     toggleStopBotDialog: () => void;
     stopMyBot: () => void;
+    loadDataStrategy: () => void;
 };
 
 const StopBotModalContent = ({
@@ -97,6 +98,7 @@ const StopBotModal = ({
     closeMultiplierContract,
     stopMyBot,
     toggleStopBotDialog,
+    loadDataStrategy,
 }: TStopBotModal) =>
     isMobile() ? (
         <MobileFullPageModal
@@ -121,11 +123,15 @@ const StopBotModal = ({
         <StopBotModalContent
             is_running={is_running}
             onOkButtonClick={stopMyBot}
-            toggleStopBotDialog={toggleStopBotDialog}
             is_contract_dialog_open={is_contract_dialog_open}
             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
             is_multiplier={is_multiplier}
             closeMultiplierContract={closeMultiplierContract}
+            is_dialog_open={is_dialog_open}
+            toggleStopBotDialog={() => {
+                toggleStopBotDialog();
+                loadDataStrategy();
+            }}
         />
     );
 
@@ -139,4 +145,5 @@ export default connect(({ run_panel, toolbar, quick_strategy, summary_card }: Ro
     onOkButtonClick: run_panel.onOkButtonClick,
     stopMyBot: run_panel.stopMyBot,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
 }))(StopBotModal);

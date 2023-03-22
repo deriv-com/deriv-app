@@ -45,14 +45,14 @@ type TDashboard = {
     is_dialog_open: boolean;
     is_drawer_open: boolean;
     is_tour_dialog_visible: boolean;
-    onCancelButtonClick: VoidFunction;
-    onCloseDialog: VoidFunction;
-    onEntered: VoidFunction;
-    onOkButtonClick: VoidFunction;
+    onCancelButtonClick: () => void;
+    onCloseDialog: () => void;
+    onEntered: () => void;
+    onOkButtonClick: () => void;
     setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    loadDataStrategy: VoidFunction;
+    loadDataStrategy: () => void;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
@@ -84,11 +84,6 @@ const Dashboard = ({
     setTourDialogVisibility,
     setHasTourEnded,
 }: TDashboard) => {
-    const handleClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        loadDataStrategy();
-    };
-
     const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
@@ -275,20 +270,6 @@ const Dashboard = ({
                             <DashboardComponent />
                         </div>
                         <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
-                        <div
-                            icon='IcQuickStrategyIcon'
-                            label={localize('Quick Strategy')}
-                            id='id-quick-strategy'
-                            onClick={handleClick}
-                        >
-                            <div
-                                className={classNames('quick-strategy', {
-                                    'quick-strategy--open': is_drawer_open,
-                                })}
-                            >
-                                <QuickStrategy />
-                            </div>
-                        </div>
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
                         </div>

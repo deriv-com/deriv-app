@@ -79,8 +79,7 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    // This TS error will be fixed when the constants.js migrated to the TS
-    active_container: string = Constants.containers.deposit;
+    active_container = Constants.containers.deposit;
     cashier_route_tab_index = 0;
     deposit_target = '';
     has_set_currency = false;
@@ -371,9 +370,8 @@ export default class GeneralStore extends BaseStore {
 
     accountSwitcherListener() {
         const { client, modules } = this.root_store;
-        const { iframe, payment_agent, general_store } = modules.cashier;
-        const { active_container } = general_store;
-        const container = Constants.map_action[active_container];
+        const { iframe, payment_agent } = modules.cashier;
+        const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
 
         client.setVerificationCode('', container);
         iframe.clearIframe();

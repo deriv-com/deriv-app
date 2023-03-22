@@ -19,7 +19,7 @@ type TAccountTransferReceipt = RouteComponentProps & {
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
-    const { ui, common, client } = useStore();
+    const { common, client } = useStore();
     const { account_transfer } = useCashierStore();
     const { is_from_derivgo } = common;
     const { is_pre_appstore, loginid, switchAccount } = client;

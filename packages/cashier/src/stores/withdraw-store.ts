@@ -62,7 +62,7 @@ export default class WithdrawStore {
             const { client, modules } = this.root_store;
             // TODO: remove this unused container
             const { active_container } = modules.cashier?.general_store;
-            const container = Constants.map_action[active_container];
+            const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
             client.setVerificationCode('', container);
         }
@@ -115,7 +115,7 @@ export default class WithdrawStore {
                     const { client, modules } = this.root_store;
                     // TODO: remove this unused container
                     const { active_container } = modules.cashier?.general_store;
-                    const container = Constants.map_action[active_container];
+                    const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
                     client.setVerificationCode('', container);
                 }
@@ -131,7 +131,7 @@ export default class WithdrawStore {
         const { client, modules } = this.root_store;
         // TODO: remove this unused container
         const { active_container } = modules.cashier.general_store;
-        const container = Constants.map_action[active_container];
+        const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
         this.setBlockchainAddress('');
         setConverterFromAmount('');
@@ -148,7 +148,7 @@ export default class WithdrawStore {
             const { client, modules } = this.root_store;
             // TODO: remove this unused container
             const { active_container } = modules.cashier?.general_store;
-            const container = Constants.map_action[active_container];
+            const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
             client.setVerificationCode('', container);
         }
@@ -208,7 +208,7 @@ export default class WithdrawStore {
             clearTimeoutCashierUrl();
             if (verification_code) {
                 // TODO: remove this unused container
-                const container = Constants.map_action[active_container];
+                const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
                 client.setVerificationCode('', container);
             }
@@ -250,7 +250,7 @@ export default class WithdrawStore {
                 const { client, modules } = this.root_store;
                 // TODO: remove this unused container
                 const { active_container } = modules.cashier?.general_store;
-                const container = Constants.map_action[active_container];
+                const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
                 client.setVerificationCode('', container);
             }

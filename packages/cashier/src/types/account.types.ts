@@ -22,7 +22,9 @@ export type TAccount = {
     value?: string;
 };
 
-// TODO: CHECK THIS TYPE ERROR
+// This error will be removed when api-types get updated and then we can will import the correct type
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export type TTransferAccount = TransferBetweenAccountsResponse['accounts'][number] & {
     sub_account_type?: string;
 };

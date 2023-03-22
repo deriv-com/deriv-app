@@ -156,8 +156,10 @@ export default class BaseStore {
         }
 
         if (properties && properties.length) {
-            // TODO: CHECK THIS TYPE ERROR
-            snapshot = properties.reduce((result, p) => Object.assign(result, { [p]: snapshot[p as keyof this] }), {});
+            snapshot = properties.reduce(
+                (result, p) => Object.assign(result, { [p]: (snapshot as Record<string, unknown>)[p] }),
+                {} as this
+            );
         }
 
         return snapshot;

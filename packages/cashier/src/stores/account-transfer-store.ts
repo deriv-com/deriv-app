@@ -15,8 +15,8 @@ import {
 } from '@deriv/shared';
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
-import Constants from 'Constants/constants';
+import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
+import Constants from '../constants/constants';
 import ErrorStore from './error-store';
 import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
@@ -142,7 +142,7 @@ export default class AccountTransferStore {
             this.has_no_accounts_balance &&
             Object.keys(active_accounts).find(
                 // TODO: CHECK THIS TYPE ERROR
-                account => !active_accounts[account].is_virtual && active_accounts[account].balance
+                account => !active_accounts[Number(account)].is_virtual && active_accounts[Number(account)].balance
             );
         if (has_updated_account_balance) {
             this.setHasNoAccountsBalance(false);
@@ -354,8 +354,8 @@ export default class AccountTransferStore {
                     if (a.market_type === 'synthetic') {
                         return -1;
                     }
-                    // TODO: CHECK THIS TYPE ERROR
-                    if (a.sub_account_type === 'financial') {
+                    // Remove ('sub_account_type' in a) when api-types is updated
+                    if ('sub_account_type' in a && a.sub_account_type === 'financial') {
                         return b.market_type === 'synthetic' ? 1 : -1;
                     }
                     return 1;

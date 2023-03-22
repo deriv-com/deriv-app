@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { getSignupFormFields } from './helpers/constants';
 
 const Heading = ({ code }) => {
     switch (code) {
@@ -43,33 +44,9 @@ const Heading = ({ code }) => {
 };
 
 const Message = ({ code, message, details }) => {
-    const getInvalidFields = () => {
-        if (code === 'PoBoxInAddress') {
-            return (
-                <div className='invalid_fields_input'>
-                    <Text size='xs' weight='bold'>
-                        <Localize i18n_default_text={'address_line_1'} />
-                    </Text>
-                    <Text size='xs' weight='bold'>
-                        {' : '}
-                    </Text>
-                    <Text size='xs'>{details.address_line_1}</Text>
-                </div>
-            );
-        }
-        return Object.keys(details.error_details).map(item => (
-            <div key={item} className='invalid_fields_input'>
-                <Text size='xs' weight='bold'>
-                    <Localize i18n_default_text={item} />
-                </Text>
-                <Text size='xs' weight='bold'>
-                    {' : '}
-                </Text>
-                <Text size='xs'>{details[item]}</Text>
-            </div>
-        ));
-    };
-    console.log('code', code);
+    if (code === 'PoBoxInAddress') {
+        details.error_details = { address_line_1: 'P.O. Box is not accepted in address' };
+    }
     switch (code) {
         case 'DuplicateAccount':
             return (
@@ -97,7 +74,17 @@ const Message = ({ code, message, details }) => {
                     <Text align='center' weight='normal' line_height='xxl'>
                         <Localize i18n_default_text='We don’t accept the following inputs for:' />
                     </Text>
-                    {getInvalidFields()}
+                    {Object.keys(details?.error_details).map(item => (
+                        <div key={item} className='invalid_fields_input'>
+                            <Text size='xs' weight='bold'>
+                                <Localize i18n_default_text={getSignupFormFields[item]} />
+                            </Text>
+                            <Text size='xs' weight='bold'>
+                                {' : '}
+                            </Text>
+                            <Text size='xs'>{details[item]}</Text>
+                        </div>
+                    ))}
                 </div>
             );
 

@@ -580,9 +580,11 @@ export const icons =
         'IcContractExitTime',
         'IcContractFlag',
         'IcContractId',
+        'IcContractPayout',
         'IcContractSafeguard',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
+        'IcContractStrike',
         'IcContractTarget',
     ],
     'currency': [

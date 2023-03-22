@@ -4,6 +4,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import { validNumber } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
+import { TPaymentAgent } from '../../../../types';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -16,7 +18,7 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () 
 }));
 
 describe('<PaymentAgentListedWithdrawForm />', () => {
-    let mockRootStore, payment_agent;
+    let mockRootStore: TStores, payment_agent: TPaymentAgent;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
@@ -25,11 +27,11 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     });
 
     afterAll(() => {
-        ReactDOM.createPortal.mockClear();
+        (ReactDOM.createPortal as jest.Mock).mockClear();
     });
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             ui: {
                 is_dark_mode_on: false,
                 toggleAccountsDialog: jest.fn(),
@@ -78,10 +80,11 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
                     },
                 },
             },
-        };
+        }) as TStores;
 
         payment_agent = {
             currency: 'USD',
+            currencies: 'USD',
             deposit_commission: '0',
             email: 'MyPaScript@example.com',
             further_information: 'Test Info',
@@ -89,8 +92,10 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
             min_withdrawal: '10',
             name: 'Payment Agent of CR90000102 (Created from Script)',
             paymentagent_loginid: 'CR90000102',
-            phones: [{ phone_number: '+12345678' }],
+            phone_numbers: [{ phone_number: '+12345678' }],
+            summary: '',
             supported_banks: [{ payment_method: 'MasterCard' }, { payment_method: 'Visa' }],
+            supported_payment_methods: [],
             urls: [{ url: 'http://www.MyPAMyAdventure.com/' }, { url: 'http://www.MyPAMyAdventure2.com/' }],
             withdrawal_commission: '0',
         };
@@ -131,7 +136,7 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     });
 
     it('should show error message, if amount is not valid', async () => {
-        validNumber.mockReturnValue({ is_ok: false, message: 'error_message' });
+        (validNumber as jest.Mock).mockReturnValue({ is_ok: false, message: 'error_message' });
         renderPaymentAgentListedWithdrawForm();
 
         const el_input_amount = screen.getByLabelText('Enter amount');
@@ -142,7 +147,7 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
         await waitFor(() => {
             expect(screen.getByText('error_message')).toBeInTheDocument();
         });
-        validNumber.mockReturnValue({ is_ok: true, message: '' });
+        (validNumber as jest.Mock).mockReturnValue({ is_ok: true, message: '' });
     });
 
     it('should show Insufficient balance error', async () => {

@@ -110,7 +110,7 @@ describe('PaymentAgentStore', () => {
                     Promise.resolve({ paymentagent_withdraw: '2', paymentagent_name: 'name' })
                 ),
             },
-            wait: () => Promise.resolve(),
+            wait: () => Promise.resolve({ get_settings: { country_code: 'id' } }),
         };
 
         payment_agent_store = new PaymentAgentStore({ root_store, WS });

@@ -21,6 +21,7 @@ import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { api_error_codes } from '../../constants/api-error-codes.js';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -51,8 +52,17 @@ const CreateAdForm = () => {
             JSON.stringify(should_not_show_auto_archive_message_again.current)
         );
         my_ads_store.setIsAdCreatedModalVisible(false);
-        if (my_ads_store.advert_details?.visibility_status?.includes('advertiser_daily_limit'))
-            general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });
+        if (my_ads_store.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
+            general_store.showModal({
+                key: 'AdVisibilityErrorModal',
+                props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
+            });
+        } else if (my_ads_store.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)) {
+            general_store.showModal({
+                key: 'AdVisibilityErrorModal',
+                props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
+            });
+        }
 
         my_ads_store.setShowAdForm(false);
     };

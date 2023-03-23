@@ -129,6 +129,7 @@ export default class ClientStore extends BaseStore {
 
     account_limits = {};
     self_exclusion = {};
+    sent_verify_emails_data = {};
 
     local_currency_config = {
         currency: '',
@@ -143,7 +144,6 @@ export default class ClientStore extends BaseStore {
     is_cfd_poi_completed = false;
 
     cfd_score = 0;
-    is_cfd_score_available = false;
 
     is_mt5_account_list_updated = false;
 
@@ -200,12 +200,12 @@ export default class ClientStore extends BaseStore {
             dxtrade_disabled_signup_types: observable,
             statement: observable,
             cfd_score: observable,
-            is_cfd_score_available: observable,
             obj_total_balance: observable,
             verification_code: observable,
             new_email: observable,
             account_limits: observable,
             self_exclusion: observable,
+            sent_verify_emails_data: observable,
             local_currency_config: observable,
             has_cookie_account: observable,
             financial_assessment: observable,
@@ -309,7 +309,7 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
-            setIsCFDScoreAvailable: action.bound,
+            setSentVerifyEmailsData: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -1180,6 +1180,11 @@ export default class ClientStore extends BaseStore {
         LocalStore.setObject(LANGUAGE_KEY, lang);
     };
 
+    setSentVerifyEmailsData(sent_verify_emails_data) {
+        this.sent_verify_emails_data = sent_verify_emails_data;
+        LocalStore.setObject('sent_verify_emails_data', sent_verify_emails_data);
+    }
+
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
 
@@ -1222,9 +1227,6 @@ export default class ClientStore extends BaseStore {
     // CFD score is the computed points based on the CFD related questions that the user answers in trading-assessment.
     setCFDScore(score) {
         this.cfd_score = score;
-    }
-    setIsCFDScoreAvailable(is_set) {
-        this.is_cfd_score_set = is_set;
     }
 
     getSelfExclusion() {
@@ -1317,7 +1319,7 @@ export default class ClientStore extends BaseStore {
                     new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
                     runInAction(() => (client_accounts[client_id] = new_data));
                     this.setLoginInformation(client_accounts, client_id);
-                    WS.authorized.storage.getSettings().then(get_settings_response => {
+                    WS.authorized.getSettings().then(get_settings_response => {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
@@ -1589,6 +1591,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
+        this.setSentVerifyEmailsData(LocalStore.getObject('sent_verify_emails_data'));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1659,14 +1662,16 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
+
+            if (Object.keys(this.account_settings).length === 0) {
+                this.setAccountSettings((await WS.authorized.getSettings()).get_settings);
+            }
+            if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            if (account_settings && !account_settings.residence) {
+            if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 

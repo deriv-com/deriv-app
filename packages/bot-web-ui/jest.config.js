@@ -12,11 +12,5 @@ module.exports = {
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
-    coveragePathIgnorePatterns: [
-        '<rootDir>/.eslintrc.js',
-        '<rootDir>/jest.config.js',
-        '<rootDir>/coverage/lcov-report',
-        '<rootDir>/dist',
-        '<rootDir>/docs',
-    ],
+    collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
 };

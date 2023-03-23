@@ -53,7 +53,8 @@ export default class QuickStrategyStore {
             trade_type_dropdown: observable,
             duration_unit_dropdown: observable,
             description: observable,
-            is_dialog_open: observable,
+            is_contract_dialog_open: observable,
+            is_stop_bot_dialog_open: observable,
             initial_values: computed,
             types_strategies_dropdown: observable,
             onScrollStopDropdownList: action.bound,
@@ -103,6 +104,8 @@ export default class QuickStrategyStore {
     symbol_dropdown: TSymbolDropdown = [];
     trade_type_dropdown: TTradeTypeDropdown = [];
     duration_unit_dropdown: TDurationUnitDropdown = [];
+    is_contract_dialog_open = false;
+    is_stop_bot_dialog_open = false;
     is_strategy_modal_open = false;
     is_dialog_open = false;
 
@@ -614,6 +617,7 @@ export default class QuickStrategyStore {
     };
 
     toggleStopBotDialog = (): void => {
-        this.is_dialog_open = !this.is_dialog_open;
+        this.is_contract_dialog_open = !this.is_contract_dialog_open;
+        this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
     };
 }

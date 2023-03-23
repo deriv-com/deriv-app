@@ -169,6 +169,9 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     symbol_dropdown: TSymbolDropdown;
     trade_type_dropdown: TTradeTypeDropdown;
     is_dialog_open: boolean;
+    is_running: boolean;
+    is_contract_dialog_open: boolean;
+    is_stop_bot_dialog_open: boolean;
     createStrategy: TCreateStrategy;
     getSizeDesc: TGetSizeDesc;
     onChangeDropdownItem: TOnChangeDropdownItem;

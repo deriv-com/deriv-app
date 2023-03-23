@@ -18,6 +18,9 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
         selected_duration_unit,
         selected_type_strategy,
         is_dialog_open,
+        is_running,
+        is_contract_dialog_open,
+        is_stop_bot_dialog_open,
         createStrategy,
         getSizeDesc,
         onChangeDropdownItem,
@@ -75,6 +78,9 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
             setCurrentFocus={setCurrentFocus}
             setActiveTab={setActiveTab}
             toggleStopBotDialog={toggleStopBotDialog}
+            is_running={is_running}
+            is_contract_dialog_open={is_contract_dialog_open}
+            is_stop_bot_dialog_open={is_stop_bot_dialog_open}
             loadDataStrategy={loadDataStrategy}
         />
     );

@@ -1,15 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { liveChatInitialization } from './live-chat';
 import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
+
+type TQueryParams = {
+    lang: string;
+    dark: string;
+};
 
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
-    const search_params = window.location.search;
+    const { lang, dark } = useParams<TQueryParams>();
 
     const liveChatDeletion = () =>
         new Promise<void>(resolve => {
@@ -104,7 +109,7 @@ const useLiveChat = (has_cookie_account = false) => {
 
     useEffect(() => {
         onHistoryChange();
-    }, [search_params, onHistoryChange]);
+    }, [lang, dark, onHistoryChange]);
 
     useEffect(() => {
         history.listen(onHistoryChange);

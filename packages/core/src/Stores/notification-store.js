@@ -181,9 +181,9 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    notification.key.includes('svg') ||
+                    (notification.key && notification.key.includes('svg')) ||
                     notification.key === 'p2p_daily_limit_increase' ||
-                    !excluded_notifications.includes(notification.key)
+                    (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
                 }
@@ -311,6 +311,7 @@ export default class NotificationStore extends BaseStore {
         const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.acuity_mt5_download.key
         );
+
         let has_missing_required_field;
 
         if (is_logged_in) {
@@ -1523,9 +1524,9 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            message.key.includes('svg') || message.key === 'p2p_daily_limit_increase'
+            (message.key && message.key.includes('svg')) || message.key === 'p2p_daily_limit_increase'
                 ? message
-                : !excluded_notifications.includes(message.key)
+                : excluded_notifications && !excluded_notifications.includes(message.key)
         );
     }
 
@@ -1574,6 +1575,23 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
+        });
+    };
+
+    showAccountSwitchToRealNotification = (loginid, currency) => {
+        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
+
+        this.addNotificationMessage({
+            key: 'switched_to_real',
+            header: localize('Switched to real account'),
+            message: (
+                <Localize
+                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
+                    values={{ loginid, currency, regulation }}
+                />
+            ),
+            type: 'info',
+            should_show_again: true,
         });
     };
 

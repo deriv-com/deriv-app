@@ -72,7 +72,6 @@ const AppModals = ({
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
-    setIsCFDScoreAvailable,
     content_flag,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
@@ -91,7 +90,6 @@ const AppModals = ({
         if (is_logged_in) {
             fetchFinancialAssessment().then(response => {
                 setCFDScore(response?.cfd_score ?? 0);
-                setIsCFDScoreAvailable(true);
             });
         }
     }, [is_logged_in]);

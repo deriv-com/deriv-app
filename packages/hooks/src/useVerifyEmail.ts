@@ -4,7 +4,7 @@ import useCountdown from './useCountdown';
 
 const RESEND_COUNTDOWN = 60;
 
-const useVerifyEmail = (type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['send']>[0]['type']) => {
+const useVerifyEmail = (type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0][0]['type']) => {
     const WS = useRequest('verify_email');
     const { client } = useStore();
     const { setSentVerifyEmailsData, sent_verify_emails_data } = client;
@@ -32,11 +32,11 @@ const useVerifyEmail = (type: Parameters<ReturnType<typeof useRequest<'verify_em
         };
         setSentVerifyEmailsData(sent_emails_data);
 
-        WS.send({ verify_email: client.email, type });
+        WS.mutate([{ verify_email: client.email, type }]);
     };
 
     return {
-        is_loading: WS.is_loading,
+        is_loading: WS.isLoading,
         error: WS.error,
         data: WS.data,
         counter: counter.count,

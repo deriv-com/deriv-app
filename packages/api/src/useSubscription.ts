@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useWS } from '@deriv/shared';
-import { TSocketSubscribableEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
+import type { TSocketSubscribableEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
 
 const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
     const [is_loading, setIsLoading] = useState(false);

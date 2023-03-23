@@ -1,15 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRequest } from '@deriv/api';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import './funds-protection.scss';
 
 const FundsProtection = () => {
-    const { data, send } = useRequest('tnc_approval');
-
-    useEffect(() => {
-        if (data) location.reload();
-    }, [data]);
+    const { mutate } = useRequest('tnc_approval', { onSuccess: () => location.reload() });
 
     return (
         <div className='funds-protection'>
@@ -34,7 +30,7 @@ const FundsProtection = () => {
                     />
                 }
             </p>
-            <Button onClick={() => send({ ukgc_funds_protection: 1 })} primary large type='submit'>
+            <Button onClick={() => mutate([{ ukgc_funds_protection: 1 }])} primary large type='submit'>
                 {localize('Deposit now')}
             </Button>
         </div>

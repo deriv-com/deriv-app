@@ -1,35 +1,11 @@
-import { useCallback, useState } from 'react';
-import { useWS } from '@deriv/shared';
-import { TSocketEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
+import { useMutation } from 'react-query';
+import { send } from './utils';
+import type { TSocketEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
 
-const useRequest = <T extends TSocketEndpointNames>(name: T) => {
-    const [is_loading, setIsLoading] = useState(false);
-    const [error, setError] = useState<unknown>();
-    const [data, setData] = useState<TSocketResponseData<T>>();
-    const WS = useWS();
-
-    const send = useCallback(
-        async (...props: TSocketAcceptableProps<T>) => {
-            setIsLoading(true);
-
-            try {
-                const response = await WS.send({ [name]: 1, ...(props[0] || {}) });
-
-                if (response.error) {
-                    setError(response.error);
-                } else {
-                    setData(response[name]);
-                }
-            } catch (e) {
-                setError(e);
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        [WS, name]
-    );
-
-    return { send, is_loading, error, data };
-};
+// Todo: Get rid of redundant array wrapper for the props argument.
+const useRequest = <T extends TSocketEndpointNames>(
+    name: T,
+    options?: Parameters<typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>>[2]
+) => useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>(props => send(name, ...props), options);
 
 export default useRequest;

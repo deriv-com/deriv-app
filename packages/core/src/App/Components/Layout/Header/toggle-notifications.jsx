@@ -3,8 +3,6 @@ import React from 'react';
 import { Counter, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import 'Sass/app/modules/notifications-dialog.scss';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react';
 
 const ToggleNotificationsDrawer = ({
     count,
@@ -13,10 +11,6 @@ const ToggleNotificationsDrawer = ({
     tooltip_message,
     should_disable_pointer_events = false,
 }) => {
-    const {
-        notifications: { is_notifications_loading_completed },
-    } = useStore();
-
     const notifications_toggler_el = (
         <div
             className={classNames('notifications-toggle__icon-wrapper', {
@@ -25,9 +19,7 @@ const ToggleNotificationsDrawer = ({
             onClick={toggleDialog}
         >
             <Icon className='notifications-toggle__icon' icon='IcBell' />
-            {is_notifications_loading_completed && !!count && (
-                <Counter count={count} className='notifications-toggle__step' />
-            )}
+            {!!count && <Counter count={count} className='notifications-toggle__step' />}
         </div>
     );
 
@@ -57,4 +49,4 @@ const ToggleNotificationsDrawer = ({
     );
 };
 
-export default observer(ToggleNotificationsDrawer);
+export default ToggleNotificationsDrawer;

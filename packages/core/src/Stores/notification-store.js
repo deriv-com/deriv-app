@@ -42,7 +42,6 @@ export default class NotificationStore extends BaseStore {
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
-    is_notifications_loading_completed = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -82,15 +81,9 @@ export default class NotificationStore extends BaseStore {
             updateNotifications: action.bound,
             p2p_completed_orders: observable,
             getP2pCompletedOrders: action.bound,
-            is_notifications_loading_completed: observable,
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
-        // because we don't know how much time we need to update notification we use debounce
-        const setIsNotificationsLoadingCompletedToTrue = debounce(
-            () => (this.is_notifications_loading_completed = true),
-            4000
-        );
 
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
@@ -133,14 +126,6 @@ export default class NotificationStore extends BaseStore {
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
                 }
-            }
-        );
-        reaction(
-            () => this.notifications,
-            () => {
-                this.is_notifications_loading_completed = false;
-                // set TRUE only after X seconds after reaction has ended
-                setIsNotificationsLoadingCompletedToTrue();
             }
         );
     }

@@ -47,7 +47,8 @@ const TradeModals = ({
     };
 
     const unsupportedContractOnClose = () => {
-        window.open(urlFor('user/portfoliows', { legacy: true }), '_blank');
+        const portfoliows_url = urlFor('user/portfoliows', { legacy: true });
+        window.open(portfoliows_url, '_blank');
         unsupportedContractOnConfirm(false);
     };
 

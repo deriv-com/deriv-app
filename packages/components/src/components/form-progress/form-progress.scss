@@ -1,5 +1,6 @@
 .dc-form-progress {
     width: 100%;
+    position: relative;
 
     &__header {
         align-items: center;
@@ -54,13 +55,23 @@
         }
         &--after {
             border-top: 2px solid var(--brand-red-coral);
-            bottom: 0;
-            content: '';
-            left: 0;
-            margin: 0 auto; /* this centers the line to the full width specified */
-            position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-            top: 1.7rem;
             transition: width 0.3s ease;
+            @include desktop {
+                bottom: 0;
+                content: '';
+                left: 0;
+                margin: 0 auto; /* this centers the line to the full width specified */
+                position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+                top: 1.7rem;
+            }
+            @include mobile {
+                position: absolute;
+                top: 0;
+            }
         }
+    }
+
+    &--initial {
+        border-top: 2px solid var(--checkbox-disabled-grey);
     }
 }

@@ -8,7 +8,6 @@ import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
-import CancelAddPaymentMethodModal from '../my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';
 import NoAds from './no-ads/no-ads.jsx';
 
 const BuySellRowRendererComponent = row_props => {
@@ -31,7 +30,7 @@ const BuySellTable = ({ onScroll }) => {
 
     React.useEffect(
         () => {
-            my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+            my_profile_store.getPaymentMethodsList();
             reaction(
                 () => buy_sell_store.is_buy,
                 () => buy_sell_store.fetchAdvertiserAdverts(),
@@ -53,7 +52,6 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <>
-                <CancelAddPaymentMethodModal is_floating />
                 <Table className='buy-sell__table'>
                     <Modal
                         name='sort'

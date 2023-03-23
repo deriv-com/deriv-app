@@ -98,7 +98,7 @@ const StaticDashboard = ({
     }, [index]);
 
     const is_eu_title = eu_user ? localize('Multipliers') : localize('Options & Multipliers');
-    const is_eu_account_title = eu_user ? 'Multipliers account' : 'Deriv account';
+    const is_eu_account_title = eu_user ? localize('Multipliers account') : localize('Deriv account');
     const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
@@ -219,7 +219,7 @@ const StaticDashboard = ({
                                     actions={
                                         <Button
                                             secondary
-                                            className={classNames('', {
+                                            className={classNames('static-dashboard--deposit-button', {
                                                 'static-dashboard--deposit-button-animated':
                                                     is_onboarding_animated.topup,
                                                 'static-dashboard--deposit-button-blurry': is_blurry.topup,
@@ -239,7 +239,9 @@ const StaticDashboard = ({
                                     type='all'
                                     platform='options'
                                     appname={is_eu_account_title}
-                                    description='Get a real Deriv account, start trading and manage your funds.'
+                                    description={localize(
+                                        'Get a real Deriv account, start trading and manage your funds.'
+                                    )}
                                     currency={currency}
                                     has_account={has_account}
                                     is_blurry={is_blurry}
@@ -261,7 +263,7 @@ const StaticDashboard = ({
                                     <StaticTradingAppCard
                                         icon='DTrader'
                                         name='DTrader'
-                                        description='Multipliers trading platform.'
+                                        description={localize('Multipliers trading platform.')}
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
@@ -272,7 +274,7 @@ const StaticDashboard = ({
                                     <StaticTradingAppCard
                                         icon='DTrader'
                                         name='DTrader'
-                                        description='Options and multipliers trading platform.'
+                                        description={localize('Options and multipliers trading platform.')}
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
@@ -287,7 +289,7 @@ const StaticDashboard = ({
                                         <StaticTradingAppCard
                                             icon='DBot'
                                             name='DBot'
-                                            description='Automate your trading, no coding needed.'
+                                            description={localize('Automate your trading, no coding needed.')}
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
@@ -298,7 +300,7 @@ const StaticDashboard = ({
                                         <StaticTradingAppCard
                                             icon='SmartTrader'
                                             name='SmartTrader'
-                                            description='Automate your trading, no coding needed.'
+                                            description={localize('Automate your trading, no coding needed.')}
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
@@ -309,7 +311,7 @@ const StaticDashboard = ({
                                         <StaticTradingAppCard
                                             icon='BinaryBot'
                                             name='BinaryBot'
-                                            description='Our legacy automated trading platform.'
+                                            description={localize('Our legacy automated trading platform.')}
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
@@ -318,8 +320,8 @@ const StaticDashboard = ({
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon='DerivGo'
-                                            name='DerivGo'
-                                            description='Trade on the go with our mobile app.'
+                                            name='Deriv GO'
+                                            description={localize('Trade on the go with our mobile app.')}
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
                                             is_item_blurry={is_blurry.platformlauncher}
@@ -436,8 +438,10 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
-                                    appname='Derived'
-                                    description='Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
+                                    appname={localize('Derived')}
+                                    description={localize(
+                                        'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
+                                    )}
                                     loginid={loginid}
                                     currency={currency}
                                     has_account={has_account}
@@ -453,8 +457,10 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname='CFDs'
-                                    description='Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                                    appname={localize('CFDs')}
+                                    description={localize(
+                                        'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                                    )}
                                     loginid={loginid}
                                     currency={is_eu_user ? mf_currency : currency}
                                     has_account={has_account}
@@ -469,8 +475,10 @@ const StaticDashboard = ({
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
-                                    appname='Financial'
-                                    description='Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                    appname={localize('Financial')}
+                                    description={localize(
+                                        'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                    )}
                                     financial_amount={financial_amount}
                                     derived_amount={derived_amount}
                                     loginid={loginid}
@@ -516,8 +524,10 @@ const StaticDashboard = ({
                             <StaticCFDAccountManager
                                 type='all'
                                 platform='dxtrade'
-                                appname='Deriv X'
-                                description='Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                appname={localize('Deriv X')}
+                                description={localize(
+                                    'Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                )}
                                 loginid={loginid}
                                 currency={currency}
                                 has_account={has_account}

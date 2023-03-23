@@ -21,6 +21,10 @@
         @media screen and (min-height: 821px) {
             min-height: 535px;
         }
+        @include mobile {
+            min-height: calc(100vh - 140px);
+            padding: 0;
+        }
     }
     &__content {
         overflow: hidden;
@@ -53,12 +57,26 @@
         width: 100%;
         height: 148px;
         border-radius: 4px;
+
+        @include mobile {
+            width: 32.8rem;
+            height: 14.1rem;
+            background-color: var(--general-section-1);
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
     }
     &__action-bar {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
+
+        @include mobile {
+            gap: 2.4rem;
+        }
     }
     &__title {
         margin: auto;
@@ -106,5 +124,10 @@
     }
     &__button {
         margin-top: 2.4rem;
+        @include mobile {
+            width: 27.2rem;
+            padding: 1.5rem 0;
+            align-self: center;
+        }
     }
 }

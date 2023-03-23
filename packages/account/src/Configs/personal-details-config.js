@@ -1,7 +1,7 @@
 import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const personal_details_config = ({ residence_list, account_settings, is_appstore }) => {
+const personal_details_config = ({ residence_list, account_settings, is_appstore, real_account_signup_target }) => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -29,7 +29,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             rules: [
                 ['req', localize('First name is required.')],
                 ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
-                ['letter_symbol', getErrorMessages().letter_symbol()],
+                ['name', getErrorMessages().name()],
             ],
         },
         last_name: {
@@ -38,7 +38,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             rules: [
                 ['req', localize('Last name is required.')],
                 ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
-                ['letter_symbol', getErrorMessages().letter_symbol()],
+                ['name', getErrorMessages().name()],
             ],
         },
         date_of_birth: {
@@ -88,9 +88,10 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             ],
         },
         tax_residence: {
-            default_value: account_settings.tax_residence
-                ? residence_list.find(item => item.value === account_settings.tax_residence)?.text
-                : '',
+            default_value:
+                real_account_signup_target === 'maltainvest'
+                    ? account_settings.residence
+                    : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },
@@ -165,7 +166,12 @@ const personalDetailsConfig = (
     PersonalDetails,
     is_appstore = false
 ) => {
-    const [config, disabled_items] = personal_details_config({ residence_list, account_settings, is_appstore });
+    const [config, disabled_items] = personal_details_config({
+        residence_list,
+        account_settings,
+        is_appstore,
+        real_account_signup_target,
+    });
     return {
         header: {
             active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
@@ -207,7 +213,7 @@ const personalDetailsConfig = (
             ],
             disabled_items,
         },
-        passthrough: ['residence_list', 'is_fully_authenticated'],
+        passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',
     };
 };

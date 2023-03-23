@@ -181,9 +181,9 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    notification.key.includes('svg') ||
+                    (notification.key && notification.key.includes('svg')) ||
                     notification.key === 'p2p_daily_limit_increase' ||
-                    !excluded_notifications.includes(notification.key)
+                    (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
                 }
@@ -1500,9 +1500,9 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            message.key.includes('svg') || message.key === 'p2p_daily_limit_increase'
+            (message.key && message.key.includes('svg')) || message.key === 'p2p_daily_limit_increase'
                 ? message
-                : !excluded_notifications.includes(message.key)
+                : excluded_notifications && !excluded_notifications.includes(message.key)
         );
     }
 

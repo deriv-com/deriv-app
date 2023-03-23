@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import { Text, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { platform_config } from 'Constants/platform-config';
+import { getAppstorePlatforms } from 'Constants/platform-config';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 
@@ -18,7 +18,7 @@ const StaticTradingAppCard = ({
     has_applauncher_account,
     is_item_blurry,
 }: AvailableAccount & TDetailsOfEachMT5Loginid & { has_divider?: boolean }) => {
-    const { app_desc } = platform_config.find(config => config.name === name) || {
+    const { app_desc } = getAppstorePlatforms().find(config => config.name === name) || {
         app_desc: description,
         link_to: '',
     };
@@ -63,7 +63,7 @@ const StaticTradingAppCard = ({
             <div className={classNames('static-trading-app-card__actions')}>
                 <Button
                     primary
-                    className={classNames('', {
+                    className={classNames('static-trading-app-card__actions--active', {
                         'static-trading-app-card__actions--blurry': is_item_blurry,
                         'static-trading-app-card__button--hidden': !has_applauncher_account,
                     })}

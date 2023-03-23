@@ -1,8 +1,8 @@
-import React from 'react';
 import classNames from 'classnames';
-import RootStore from 'Stores/index';
+import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import React from 'react';
 import { connect } from 'Stores/connect';
-import { DASHBOARD_TABS } from '../../constants/bot-contents';
+import RootStore from 'Stores/index';
 
 interface TBotNotificationMessagesProps {
     is_drawer_open: boolean;
@@ -11,7 +11,7 @@ interface TBotNotificationMessagesProps {
     Notifications: React.ComponentType;
 }
 
-const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
+const { BOT_BUILDER, CHART } = DASHBOARD_TABS;
 
 const BotNotificationMessages = ({
     is_drawer_open,
@@ -22,8 +22,7 @@ const BotNotificationMessages = ({
     <div
         className={classNames('notifications-container', {
             'notifications-container__dashboard': active_tab === 0 && is_info_panel_visible,
-            'notifications-container--panel-open':
-                [BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) && is_drawer_open,
+            'notifications-container--panel-open': [BOT_BUILDER, CHART].includes(active_tab) && is_drawer_open,
         })}
     >
         <Notifications />

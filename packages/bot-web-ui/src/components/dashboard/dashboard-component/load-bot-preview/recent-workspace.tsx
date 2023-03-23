@@ -1,14 +1,15 @@
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import classnames from 'classnames';
+import { DASHBOARD_TABS } from 'Constants/bot-contents';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import './index.scss';
-import { isMobile, isDesktop } from '@deriv/shared';
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';
-import { STRATEGY, MENU_DESKTOP, CONTEXT_MENU_MOBILE } from './constants';
+import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
+import './index.scss';
 
 type TRecentWorkspace = {
     active_tab: number;
@@ -77,7 +78,7 @@ const RecentWorkspace = ({
         switch (type) {
             case 'edit': {
                 loadFileFromRecent();
-                setActiveTab(1);
+                setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
                 break;
             }
             case 'save': {

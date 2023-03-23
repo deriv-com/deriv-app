@@ -1,7 +1,8 @@
-import React from 'react';
 import { Button } from '@deriv/components';
-import classNames from 'classnames';
 import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import React from 'react';
 import { TQuickStrategyFooter } from './components.types';
 
 const QuickStrategyFooter = ({
@@ -12,16 +13,15 @@ const QuickStrategyFooter = ({
     submitForm,
     setActiveTab,
     toggleStopBotDialog,
-    loadDataStrategy,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
         submitForm();
-        setActiveTab(1);
+        setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
     }, [is_submit_enabled]);
 
     const handleRun = React.useCallback(() => {
-        setActiveTab(1);
+        setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
         if (is_running) {
             toggleStopBotDialog();
             setFieldValue('button', 'edit');

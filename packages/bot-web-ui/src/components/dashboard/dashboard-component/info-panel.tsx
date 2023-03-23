@@ -1,9 +1,10 @@
-import React from 'react';
-import { DesktopWrapper, Icon, Text, Modal, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import classNames from 'classnames';
+import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import classNames from 'classnames';
 import { SIDEBAR_INTRO } from './constants';
 
 type TInfoPanel = {
@@ -23,7 +24,7 @@ const InfoPanel = ({
 }: TInfoPanel) => {
     const is_mobile = isMobile();
     const switchTab = (link: boolean, label: string) => {
-        const tutorial_link = link ? setActiveTab(4) : null;
+        const tutorial_link = link ? setActiveTab(DASHBOARD_TABS.TUTORIAL as number) : null;
         const tutorial_label = label === 'Guide' ? setActiveTabTutorial(0) : setActiveTabTutorial(1);
         return {
             tutorial_link,

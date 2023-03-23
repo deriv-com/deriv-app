@@ -1,13 +1,14 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
-import React from 'react';
-import { Icon, Dialog, Text, MobileFullPageModal, MobileWrapper, DesktopWrapper } from '@deriv/components';
+import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import SaveModalStore from 'Stores/save-modal-store';
-import classNames from 'classnames';
-import Recent from './load-bot-preview/recent';
 import GoogleDrive from './load-bot-preview/google-drive';
+import Recent from './load-bot-preview/recent';
 
 type TCardProps = {
     dialog_options: { [key: string]: string };
@@ -75,13 +76,13 @@ const Cards = ({
         {
             icon: 'IcBotBuilder',
             content: localize('Bot Builder'),
-            method: () => setActiveTab(1),
+            method: () => setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number),
         },
         {
             icon: 'IcQuickStrategy',
             content: localize('Quick Strategy'),
             method: () => {
-                setActiveTab(1);
+                setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
                 loadDataStrategy();
             },
         },

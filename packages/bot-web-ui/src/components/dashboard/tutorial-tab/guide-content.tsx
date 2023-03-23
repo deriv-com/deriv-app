@@ -1,10 +1,11 @@
-import React from 'react';
-import { Icon, Dialog, Text } from '@deriv/components';
+import { Dialog, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import React from 'react';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import { removeKeyValue } from '../../../utils/settings';
 import { tour_type } from '../joyride-config';
 
@@ -51,7 +52,7 @@ const GuideContent = ({
             } else {
                 setTourDialogVisibility(true);
             }
-            setActiveTab(0);
+            setActiveTab(DASHBOARD_TABS.DASHBOARD as number);
         } else {
             if (storage.bot_builder_token) {
                 removeKeyValue('bot_builder_token');
@@ -61,7 +62,7 @@ const GuideContent = ({
             tour_type.key = 'bot_builder';
             setHasTourEnded(false);
             setTourDialogVisibility(true);
-            setActiveTab(1);
+            setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
         }
     };
     const is_mobile = isMobile();

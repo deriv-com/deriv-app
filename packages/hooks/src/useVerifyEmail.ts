@@ -11,7 +11,7 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
     const WS = useWS('verify_email');
     const { client } = useStore();
     const { setSentVerifyEmailsData, sent_verify_emails_data } = client;
-    const { last_time_sent_seconds = 0, sent_count = 0 } = sent_verify_emails_data[type] || {};
+    const { last_time_sent_seconds = 0, sent_count = 0 } = sent_verify_emails_data?.[type] || {};
     const time_now_seconds = Math.floor(Date.now() / 1000);
     const seconds_left = last_time_sent_seconds + RESEND_COUNTDOWN - time_now_seconds;
     const should_not_allow_resend =
@@ -24,14 +24,19 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
     }
 
     const send = () => {
-        if (!client.email) return;
-        if (counter.is_running) return;
+        if (!client.email || counter.is_running) return;
 
-        counter.reset();
-        counter.start();
+        if (sent_count > 0) {
+            counter.reset();
+            counter.start();
+        }
+
         const sent_emails_data = {
             ...sent_verify_emails_data,
-            [type]: { last_time_sent_seconds: time_now_seconds, sent_count: sent_count + 1 },
+            [type]: {
+                last_time_sent_seconds: sent_count && time_now_seconds,
+                sent_count: sent_count + 1,
+            },
         };
         setSentVerifyEmailsData(sent_emails_data);
 

@@ -22,9 +22,9 @@ const EmailVerificationEmptyState = ({ verify }: TEmailVerificationEmptyStatePro
                 icon='IcEmailSent'
                 title={localize("We've sent you an email.")}
                 description={localize('Please check your email for the verification link to complete the process.')}
-                action={verify.has_been_sent ? undefined : action}
+                action={verify.sent_count > 1 ? undefined : action}
             />
-            {verify.has_been_sent && (
+            {verify.sent_count > 1 && (
                 <EmailVerificationResendEmptyState
                     is_counter_running={verify.is_counter_running}
                     counter={verify.counter}

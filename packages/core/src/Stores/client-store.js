@@ -1182,7 +1182,7 @@ export default class ClientStore extends BaseStore {
 
     setSentVerifyEmailsData(sent_verify_emails_data) {
         this.sent_verify_emails_data = sent_verify_emails_data;
-        LocalStore.setObject('sent_verify_emails_data', sent_verify_emails_data);
+        sessionStorage.setItem('sent_verify_emails_data', JSON.stringify(sent_verify_emails_data));
     }
 
     setCookieAccount() {
@@ -1591,7 +1591,7 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-        this.setSentVerifyEmailsData(LocalStore.getObject('sent_verify_emails_data'));
+        this.setSentVerifyEmailsData(JSON.parse(sessionStorage.getItem('sent_verify_emails_data')));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login

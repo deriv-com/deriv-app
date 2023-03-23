@@ -15,7 +15,6 @@ import MyProfile from './my-profile';
 import NicknameForm from './nickname-form';
 import Orders from './orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
-import Verification from './verification/verification.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const AppContent = ({ order_id }) => {
@@ -45,6 +44,7 @@ const AppContent = ({ order_id }) => {
                 }
             }
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (general_store.is_loading) {
@@ -57,10 +57,6 @@ const AppContent = ({ order_id }) => {
 
     if (general_store.should_show_popup) {
         return <NicknameForm />;
-    }
-
-    if (/verification/.test(location.hash)) {
-        return <Verification should_wrap />;
     }
 
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {

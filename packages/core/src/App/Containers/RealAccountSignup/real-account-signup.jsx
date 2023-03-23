@@ -375,7 +375,7 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         if (!error) return;
         setParams({
-            active_modal_index: ['InputValidationFailed', 'PoBoxInAddress'].includes(error.code)
+            active_modal_index: ['InputValidationFailed', 'PoBoxInAddress', 'InvalidPhone'].includes(error.code)
                 ? modal_pages_indices.invalid_input_error
                 : modal_pages_indices.signup_error,
             error_message: error.message,

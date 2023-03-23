@@ -56,6 +56,7 @@ export type TRealAccount = {
     previous_currency: string;
     success_message: string;
     error_code: number;
+    error_details?: Record<string, string>;
 };
 
 export type TApiContext = {

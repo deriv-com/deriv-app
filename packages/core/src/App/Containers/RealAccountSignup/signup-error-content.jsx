@@ -1,19 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { isMobile } from '@deriv/shared';
+import { isMobile, signup_form_fields } from '@deriv/shared';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getSignupFormFields } from './helpers/constants';
 
 const Heading = ({ code }) => {
     switch (code) {
-        case 'InvalidPhone':
-            return (
-                <Text as='h1' align='center' weight='bold'>
-                    <Localize i18n_default_text='Let’s try that again' />
-                </Text>
-            );
         case 'DuplicateAccount':
             return (
                 <Text as='h1' align='center' weight='bold'>
@@ -28,6 +21,7 @@ const Heading = ({ code }) => {
             );
         case 'InputValidationFailed':
         case 'PoBoxInAddress':
+        case 'InvalidPhone':
             return (
                 <Text as='h1' align='center' weight='bold' line_height='xxl'>
                     <Localize i18n_default_text='Invalid inputs' />
@@ -45,7 +39,9 @@ const Heading = ({ code }) => {
 
 const Message = ({ code, message, details }) => {
     if (code === 'PoBoxInAddress') {
-        details.error_details = { address_line_1: 'P.O. Box is not accepted in address' };
+        details.error_details = { address_line_1: message };
+    } else if (code === 'InvalidPhone') {
+        details.error_details = { phone: message };
     }
     switch (code) {
         case 'DuplicateAccount':
@@ -69,6 +65,7 @@ const Message = ({ code, message, details }) => {
             );
         case 'InputValidationFailed':
         case 'PoBoxInAddress':
+        case 'InvalidPhone':
             return (
                 <div className='input_validation_failed'>
                     <Text align='center' weight='normal' line_height='xxl'>
@@ -77,7 +74,7 @@ const Message = ({ code, message, details }) => {
                     {Object.keys(details?.error_details).map(item => (
                         <div key={item} className='invalid_fields_input'>
                             <Text size='xs' weight='bold'>
-                                <Localize i18n_default_text={getSignupFormFields[item]} />
+                                <Localize i18n_default_text={signup_form_fields[item]} />
                             </Text>
                             <Text size='xs' weight='bold'>
                                 {' : '}
@@ -103,12 +100,11 @@ const ErrorCTA = ({ code, onConfirm }) => {
     switch (code) {
         case 'CurrencyTypeNotAllowed':
             return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
-        case 'InvalidPhone':
-            return <TryAgain text={localize('Try a different phone number')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':
             return null;
         case 'InputValidationFailed':
         case 'PoBoxInAddress':
+        case 'InvalidPhone':
             return <TryAgain text={localize('Let’s try again')} onConfirm={onConfirm} />;
         case 'InvalidAccount':
             return <TryAgain text={localize('OK')} onConfirm={onConfirm} />;
@@ -129,7 +125,7 @@ const ErrorCTA = ({ code, onConfirm }) => {
 };
 
 const SignupErrorContent = ({ message, code, onConfirm, className, error_field = {} }) => {
-    const is_invalid_field_error = ['InputValidationFailed', 'PoBoxInAddress'].includes(code);
+    const is_invalid_field_error = ['InputValidationFailed', 'PoBoxInAddress', 'InvalidPhone'].includes(code);
     const getIconSize = () => {
         if (is_invalid_field_error) return '64';
         else if (code === 'InvalidAccount') return '96';

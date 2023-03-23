@@ -642,6 +642,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         position: relative;
         min-height: 460px;
         width: $SIDEBAR_WIDTH;
+        height: 100%;
 
         &:after {
             transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);

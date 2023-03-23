@@ -1,15 +1,16 @@
-import classNames from 'classnames';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
+import { ButtonToggle, Dropdown, InputField, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+
+import AllowEquals from './allow-equals.jsx';
+import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
+import Multiplier from './Multiplier/multiplier.jsx';
+import MultipliersInfo from './Multiplier/info.jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
-import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import classNames from 'classnames';
 import { connect } from 'Stores/connect';
-import { Localize, localize } from '@deriv/translations';
-import AllowEquals from './allow-equals.jsx';
-import MultipliersInfo from './Multiplier/info.jsx';
-import Multiplier from './Multiplier/multiplier.jsx';
 
 const Input = ({
     amount,
@@ -68,6 +69,8 @@ const Amount = ({
     onChange,
     setCurrentFocus,
     validation_errors,
+    stake_boundary,
+    vanilla_trade_type,
 }) => {
     if (is_minimized) {
         return (
@@ -92,15 +95,24 @@ const Amount = ({
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
+    const setTooltipContent = () => {
+        if (is_multiplier) {
+            return (
+                <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
+            );
+        } else if (contract_type === 'vanilla') {
+            return (
+                <Localize i18n_default_text='Your stake is a non-refundable one-time premium to purchase this contract. Your total profit/loss equals the contract value minus your stake.' />
+            );
+        }
+        return null;
+    };
+
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
-            header={is_multiplier ? localize('Stake') : undefined}
-            header_tooltip={
-                is_multiplier ? (
-                    <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
-                ) : undefined
-            }
+            header={is_multiplier || ['high_low', 'vanilla'].includes(contract_type) ? localize('Stake') : undefined}
+            header_tooltip={setTooltipContent()}
         >
             {basis_list.length > 1 && (
                 <ButtonToggle
@@ -170,6 +182,22 @@ const Amount = ({
                     />
                 </React.Fragment>
             )}
+            {contract_type === 'vanilla' && (
+                <section className='trade-container__stake-field'>
+                    <div className='trade-container__stake-field--min'>
+                        <Text size='xxxs'>{localize('Min. stake')}</Text>
+                        <Text size='xxs'>
+                            {stake_boundary[vanilla_trade_type].min_stake} {currency}
+                        </Text>
+                    </div>
+                    <div className='trade-container__stake-field--max'>
+                        <Text size='xxxs'>{localize('Max. stake')}</Text>
+                        <Text size='xxs'>
+                            {stake_boundary[vanilla_trade_type].max_stake} {currency}
+                        </Text>
+                    </div>
+                </section>
+            )}
         </Fieldset>
     );
 };
@@ -195,6 +223,8 @@ Amount.propTypes = {
     setCurrentFocus: PropTypes.func,
     onChange: PropTypes.func,
     validation_errors: PropTypes.object,
+    stake_boundary: PropTypes.object,
+    vanilla_trade_type: PropTypes.object,
 };
 
 export default connect(({ modules, client, ui }) => ({
@@ -216,5 +246,7 @@ export default connect(({ modules, client, ui }) => ({
     stop_out: modules.trade.stop_out,
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,
+    vanilla_trade_type: ui.vanilla_trade_type,
     validation_errors: modules.trade.validation_errors,
+    stake_boundary: modules.trade.stake_boundary,
 }))(Amount);

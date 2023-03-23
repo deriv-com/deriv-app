@@ -14,6 +14,7 @@ import {
     unsupported_contract_types_list,
     getContractCategoriesConfig,
     getContractTypesConfig,
+    getContractSubtype,
     getLocalizedBasis,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
@@ -109,21 +110,30 @@ export const ContractType = (() => {
             start_date,
             cancellation_duration,
             symbol,
+            short_barriers,
+            long_barriers,
         } = store;
 
         if (!contract_type) return {};
+
+        let barriers_options = [];
+        if (getContractSubtype(contract_type) === 'Short') {
+            barriers_options = short_barriers;
+        } else if (getContractSubtype(contract_type) === 'Long') {
+            barriers_options = long_barriers;
+        }
 
         const form_components = getComponents(contract_type);
         const obj_basis = getBasis(contract_type, basis);
         const obj_trade_types = getTradeTypes(contract_type);
         const obj_start_dates = getStartDates(contract_type, start_date);
         const obj_start_type = getStartType(obj_start_dates.start_date);
-        const obj_barrier = getBarriers(contract_type, contract_expiry_type);
+        const obj_barrier = getBarriers(contract_type, contract_expiry_type, barriers_options[0]);
         const obj_duration_unit = getDurationUnit(duration_unit, contract_type, obj_start_type.contract_start_type);
 
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
-        const obj_turbos_barrier_choices = getTurbosBarrierChoices(contract_type);
+        const obj_turbos_barrier_choices = getTurbosBarrierChoices(contract_type, barriers_options);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
@@ -473,14 +483,14 @@ export const ContractType = (() => {
         trade_types: getPropertyValue(available_contract_types, [contract_type, 'config', 'trade_types']),
     });
 
-    const getBarriers = (contract_type, expiry_type) => {
+    const getBarriers = (contract_type, expiry_type, stored_barrier_value) => {
         const barriers = getPropertyValue(available_contract_types, [contract_type, 'config', 'barriers']) || {};
         const barrier_values = barriers[expiry_type] || {};
         const barrier_1 = barrier_values.barrier || barrier_values.high_barrier || '';
         const barrier_2 = barrier_values.low_barrier || '';
         return {
             barrier_count: barriers.count || 0,
-            barrier_1: barrier_1.toString(),
+            barrier_1: stored_barrier_value || barrier_1.toString(),
             barrier_2: barrier_2.toString(),
         };
     };
@@ -496,9 +506,10 @@ export const ContractType = (() => {
         };
     };
 
-    const getTurbosBarrierChoices = contract_type => ({
-        turbos_barrier_choices:
-            getPropertyValue(available_contract_types, [contract_type, 'config', 'barrier_choices']) || [],
+    const getTurbosBarrierChoices = (contract_type, stored_turbos_barriers) => ({
+        turbos_barrier_choices: stored_turbos_barriers.length
+            ? stored_turbos_barriers
+            : getPropertyValue(available_contract_types, [contract_type, 'config', 'barrier_choices']) || [],
     });
 
     const getMultiplierRange = (contract_type, multiplier) => {

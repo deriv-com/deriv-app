@@ -6,6 +6,7 @@ import {
     LocalStore,
     switch_to_tick_chart,
     isCallPut,
+    isTurbosContract,
     getContractTypesConfig,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
@@ -82,6 +83,11 @@ export default class ContractTradeStore extends BaseStore {
             // treat CALLE/PUTE and CALL/PUT the same
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
         }
+        if (isTurbosContract(trade_type)) {
+            //to show both Long and Short recent contracts on DTrader chart
+            trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
+        }
+
         return this.contracts
             .filter(c => c.contract_info.underlying === underlying)
             .filter(c => {

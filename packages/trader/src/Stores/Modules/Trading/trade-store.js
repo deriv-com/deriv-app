@@ -10,6 +10,7 @@ import {
     getMinPayout,
     getPlatformSettings,
     getPropertyValue,
+    getContractSubtype,
     isBarrierSupported,
     isCryptocurrency,
     isDesktop,
@@ -139,6 +140,8 @@ export default class TradeStore extends BaseStore {
     // Turbos trade params
     number_of_contracts = 0;
     turbos_barrier_choices = [];
+    short_barriers = [];
+    long_barriers = [];
     min_stake = 0;
     max_stake = 0;
 
@@ -175,6 +178,8 @@ export default class TradeStore extends BaseStore {
             'has_stop_loss',
             'has_cancellation',
             'hovered_barrier',
+            'short_barriers',
+            'long_barriers',
             'is_equal',
             'last_digit',
             'multiplier',
@@ -224,6 +229,8 @@ export default class TradeStore extends BaseStore {
             has_stop_loss: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
+            short_barriers: observable,
+            long_barriers: observable,
             hovered_contract_type: observable,
             is_chart_loading: observable,
             is_equal: observable,
@@ -1075,7 +1082,11 @@ export default class TradeStore extends BaseStore {
             const contract_key = this.contract_type.toUpperCase();
             if (this.proposal_info[contract_key]) {
                 const { barrier_choices, number_of_contracts, max_stake, min_stake } = this.proposal_info[contract_key];
-
+                if (getContractSubtype(contract_key) === 'Short') {
+                    this.short_barriers = barrier_choices;
+                } else {
+                    this.long_barriers = barrier_choices;
+                }
                 this.turbos_barrier_choices = barrier_choices || [];
                 this.number_of_contracts = number_of_contracts ?? 0;
                 this.max_stake = max_stake ?? 0;

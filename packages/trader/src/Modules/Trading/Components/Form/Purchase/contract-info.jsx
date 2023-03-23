@@ -18,7 +18,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                     })}
                     currency={currency}
                     show_currency
-                    should_format={!is_turbos}
+                    decimals={is_turbos ? 5 : 0}
                 />
             )}
         </div>
@@ -109,7 +109,7 @@ const ContractInfo = ({
     return (
         <div
             className={classNames('trade-container__price', {
-                'trade-container__price-turbos': is_turbos,
+                'trade-container__price--turbos': is_turbos,
             })}
         >
             <div

@@ -6,7 +6,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { getContractSubtype } from '@deriv/shared';
 
-const PayoutPerPoint = observer(() => {
+const PayoutPerPointMobile = observer(() => {
     const {
         modules: { trade },
     } = useStore();
@@ -43,10 +43,10 @@ const PayoutPerPoint = observer(() => {
                 />
             </div>
             <Text size='xs' weight='bold' className='payout-per-point__currency'>
-                <Money amount={stake} currency={currency} show_currency should_format={false} />
+                <Money amount={stake} currency={currency} show_currency decimals={5} />
             </Text>
         </Fieldset>
     );
 });
 
-export default PayoutPerPoint;
+export default PayoutPerPointMobile;

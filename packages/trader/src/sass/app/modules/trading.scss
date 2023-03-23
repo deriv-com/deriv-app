@@ -321,8 +321,9 @@
                 position: relative;
             }
         }
-        &-turbos {
+        &--turbos {
             align-items: center;
+            margin-bottom: 0.3rem;
         }
     }
     &__price-info {
@@ -763,9 +764,9 @@
     position: relative;
 
     &__option {
-        padding: 0.8rem;
-        &--vanilla {
-            padding: 1.6rem 0.8rem;
+        padding: 1.6rem 0.8rem;
+        &--turbos {
+            padding: 0.8rem;
         }
         &:not(:only-child) {
             &:nth-last-child(2) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import PayoutPerPoint from '../payout-per-point';
+import PayoutPerPointMobile from '../payout-per-point-mobile';
 import { useStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 
@@ -24,9 +24,9 @@ jest.mock('@deriv/stores', () => ({
     useStore: () => mocked_root_store,
 }));
 
-describe('<PayoutPerPoint/>', () => {
+describe('<PayoutPerPointMobile/>', () => {
     beforeEach(() => {
-        render(<PayoutPerPoint />);
+        render(<PayoutPerPointMobile />);
     });
     it('should render label name correctly', () => {
         expect(screen.getByText('Payout per point')).toBeInTheDocument();

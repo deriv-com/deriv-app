@@ -49,14 +49,12 @@ export const TurbosTradeDescription = () => {
     return (
         <React.Fragment>
             {content.map(({ type, text }, index) =>
-                /* We're using the array’s indexes as keys in this “static” list, which is never re-ordered, for better performance. https://www.developerway.com/posts/react-key-attribute
-            We're not using text itself as keys here because text will update each time platform language is changed. */
                 type === 'heading' ? (
-                    <Text as='h2' key={index} weight='bold'>
+                    <Text as='h2' key={index.toString() + type} weight='bold'>
                         {text}
                     </Text>
                 ) : (
-                    <Text as='p' key={index}>
+                    <Text as='p' key={index.toString() + type}>
                         {text}
                     </Text>
                 )

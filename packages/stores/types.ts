@@ -184,7 +184,7 @@ type TSentVerifyEmailsData = Partial<
     Record<
         TEmailVerificationType,
         {
-            last_time_sent_seconds: number;
+            resend_email_requested_time: number;
             sent_count: number;
         }
     >

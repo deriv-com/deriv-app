@@ -145,7 +145,6 @@ export default class ClientStore extends BaseStore {
     is_cfd_poi_completed = false;
 
     cfd_score = 0;
-    is_cfd_score_available = false;
 
     is_mt5_account_list_updated = false;
 
@@ -203,7 +202,6 @@ export default class ClientStore extends BaseStore {
             dxtrade_disabled_signup_types: observable,
             statement: observable,
             cfd_score: observable,
-            is_cfd_score_available: observable,
             obj_total_balance: observable,
             verification_code: observable,
             new_email: observable,
@@ -313,7 +311,6 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
-            setIsCFDScoreAvailable: action.bound,
             setSentVerifyEmailsData: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
@@ -1233,9 +1230,6 @@ export default class ClientStore extends BaseStore {
     // CFD score is the computed points based on the CFD related questions that the user answers in trading-assessment.
     setCFDScore(score) {
         this.cfd_score = score;
-    }
-    setIsCFDScoreAvailable(is_set) {
-        this.is_cfd_score_set = is_set;
     }
 
     getSelfExclusion() {

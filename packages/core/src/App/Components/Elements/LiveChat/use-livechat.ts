@@ -104,7 +104,6 @@ const useLiveChat = (has_cookie_account = false) => {
 
     useEffect(() => {
         if (isReady && !widget) {
-            setIsReady(false);
             onHistoryChange();
         }
     }, [widget, isReady, onHistoryChange]);

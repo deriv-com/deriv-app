@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field, FormikProps, FormikValues, FormikHelpers } from 'formik';
@@ -58,8 +57,6 @@ const IdvDocumentSubmit = ({
     selected_country,
     is_from_external,
 }: Partial<FormikProps<FormikValues>> & TIdvDocumentSubmit) => {
-    const location = useLocation();
-    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState<object[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);

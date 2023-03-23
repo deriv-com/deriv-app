@@ -1,5 +1,14 @@
 import extend from 'extend';
-import { isUserSold, isMultiplierContract, isDigitContract, getEndTime, isMobile } from '@deriv/shared';
+import {
+    formatMoney,
+    getEndTime,
+    isDesktop,
+    isDigitContract,
+    isMobile,
+    isMultiplierContract,
+    isUserSold,
+    isVanillaContract,
+} from '@deriv/shared';
 
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 
@@ -81,6 +90,8 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
 
     const should_show_spot_exit = !is_user_sold || isMultiplierContract(contract_info.contract_type);
 
+    const should_show_profit_label = isVanillaContract(contract_info.contract_type) && isDesktop();
+
     const marker_spot_type = should_show_spot_exit
         ? MARKER_TYPES_CONFIG.SPOT_EXIT.type
         : MARKER_TYPES_CONFIG.SPOT_SELL.type;
@@ -90,8 +101,11 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
               spot_value: `${exit_tick}`,
               spot_epoch: `${contract_info.exit_tick_time}`,
               status: `${+contract_info.profit >= 0 ? 'won' : 'lost'}`,
-              align_label,
+              align_label: should_show_profit_label ? 'middle' : align_label,
               spot_count,
+              spot_profit:
+                  should_show_profit_label &&
+                  `${formatMoney(contract_info.currency, contract_info.profit, true)} ${contract_info.currency}`,
           }
         : {};
 

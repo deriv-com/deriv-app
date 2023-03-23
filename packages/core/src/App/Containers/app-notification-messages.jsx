@@ -135,6 +135,7 @@ const AppNotificationMessages = ({
                   'poa_address_mismatch_failure',
                   'svg_needs_poi_poa',
                   'svg_needs_poa',
+                  'has_changed_two_fa',
                   'svg_needs_poi',
                   'svg_poi_expired',
                   'switched_to_real',

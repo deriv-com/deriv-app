@@ -5,7 +5,7 @@ import { Input, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getPropertyValue, WS } from '@deriv/shared';
 
-const DigitForm = ({ is_enabled, setTwoFAStatus }) => {
+const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus }) => {
     const [is_success, setSuccess] = React.useState(false);
     const button_text = is_enabled ? localize('Disable') : localize('Enable');
 
@@ -50,6 +50,7 @@ const DigitForm = ({ is_enabled, setTwoFAStatus }) => {
             setSuccess(true);
             resetForm();
             setTwoFAStatus(is_enabled_response);
+            setTwoFAChangedStatus(true);
         }
     };
 
@@ -71,6 +72,8 @@ const DigitForm = ({ is_enabled, setTwoFAStatus }) => {
                                     onBlur={handleBlur}
                                     required
                                     error={touched.digit_code && errors.digit_code}
+                                    maxLength='6'
+                                    autoComplete='off'
                                 />
                             )}
                         </Field>

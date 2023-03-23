@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
@@ -21,6 +21,7 @@ const App = () => {
     const { setP2POrderProps } = notifications;
 
     const history = useHistory();
+    const location = useLocation();
 
     const { general_store, order_store } = useStores();
 
@@ -70,6 +71,7 @@ const App = () => {
 
     React.useEffect(() => {
         const url_params = new URLSearchParams(location.search);
+
         let passed_order_id;
 
         setActionParam(url_params.get('action'));

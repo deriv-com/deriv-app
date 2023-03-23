@@ -2,12 +2,13 @@ import React from 'react';
 import { useStore, observer } from '@deriv/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, routes } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -73,6 +74,8 @@ const OrderRow = ({ row: order }) => {
     const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);
 
+    const history = useHistory();
+
     const isOrderSeen = order_id => {
         const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
@@ -80,6 +83,16 @@ const OrderRow = ({ row: order }) => {
 
     const onRowClick = () => {
         if (should_show_order_details.current) {
+            const current_query_params = new URLSearchParams(location.search);
+
+            current_query_params.append('order', order.id);
+
+            history.replace({
+                pathname: routes.cashier_p2p,
+                search: current_query_params.toString(),
+                hash: location.hash,
+            });
+
             return order_store.setOrderId(order.id);
         }
 

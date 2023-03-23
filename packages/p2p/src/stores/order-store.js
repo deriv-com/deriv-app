@@ -277,10 +277,13 @@ export default class OrderStore {
     }
 
     onOrderIdUpdate() {
+        const { buy_sell_store } = this.root_store;
         this.unsubscribeFromCurrentOrder();
 
         if (this.order_id) {
-            this.subscribeToCurrentOrder();
+            if (!buy_sell_store.is_create_order_subscribed) {
+                this.subscribeToCurrentOrder();
+            }
         }
     }
 

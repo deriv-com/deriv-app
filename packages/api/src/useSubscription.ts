@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useWS } from '@deriv/shared';
-import type { TSocketSubscribableEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
+import type {
+    TSocketSubscribableEndpointNames,
+    TSocketAcceptableProps,
+    TSocketResponseData,
+    TSocketRequestCleaned,
+} from '../types';
 
 const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
     const [is_loading, setIsLoading] = useState(false);
@@ -12,6 +17,9 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
 
     const subscribe = useCallback(
         (...props: TSocketAcceptableProps<T>) => {
+            const prop = props?.[0];
+            const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestCleaned<T>) : undefined;
+
             setIsLoading(true);
             setSubscribed(true);
 
@@ -28,7 +36,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
             };
 
             try {
-                subscriber.current = WS.subscribe({ [name]: 1, subscribe: 1, ...(props[0] || {}) }).subscribe(
+                subscriber.current = WS.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }).subscribe(
                     onData,
                     onError
                 );

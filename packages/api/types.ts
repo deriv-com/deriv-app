@@ -689,20 +689,27 @@ export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketRespons
 
 type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
-type TSocketRequestCleaned<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
-    Omit<
-        TSocketRequest<T>,
-        (T extends KeysMatching<TSocketRequest<T>, 1> ? T : never) | 'passthrough' | 'req_id' | 'subscribe'
-    > & { options?: Parameters<typeof useQuery<TSocketResponseData<T>, unknown>>[2] },
-    O extends false ? 'options' : never
+type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
+
+export type TSocketRequestCleaned<T extends TSocketEndpointNames> = {
+    payload: Omit<TSocketRequest<T>, TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'>;
+};
+
+export type TSocketRequestOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useQuery<TSocketResponseData<T>, unknown>
+>[2];
+
+type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
+    TSocketRequestCleaned<T> & { options?: TSocketRequestOptions<T> },
+    | (TSocketRequestCleaned<T>['payload'] extends Record<string, never> ? 'payload' : never)
+    | (O extends true ? never : 'options')
 >;
 
-type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestCleaned<
-    T,
-    O
-> extends Record<string, never>
-    ? never
-    : TSocketRequestCleaned<T, O>;
+type TNever<T> = T extends Record<string, never> ? never : T;
+
+type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TNever<
+    TSocketRequestWithOptions<T, O>
+>;
 
 export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestProps<
     T,

@@ -36,7 +36,7 @@ describe('useSubscription', () => {
         expect(result.current.data).toBe(undefined);
 
         act(() => {
-            result.current.subscribe({ id: '2' });
+            result.current.subscribe({ payload: { id: '2' } });
         });
 
         await waitForNextUpdate();

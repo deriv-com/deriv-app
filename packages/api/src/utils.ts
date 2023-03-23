@@ -1,13 +1,11 @@
 import { WS } from '@deriv/shared';
-import { TSocketAcceptableProps, TSocketEndpointNames, TSocketResponseData } from '../types';
+import { TSocketEndpointNames, TSocketRequestCleaned, TSocketResponseData } from '../types';
 
 export const send = async <T extends TSocketEndpointNames>(
     name: T,
-    ...props: TSocketAcceptableProps<T, true> | TSocketAcceptableProps<T>
+    payload?: TSocketRequestCleaned<T>
 ): Promise<TSocketResponseData<T>> => {
-    const request = props[0];
-    if (request && 'options' in request) delete request?.options;
-    const response = await WS.send({ [name]: 1, ...(request || {}) });
+    const response = await WS.send({ [name]: 1, ...(payload || {}) });
 
     if (response.error) {
         throw response.error;
@@ -16,7 +14,9 @@ export const send = async <T extends TSocketEndpointNames>(
     return response[name];
 };
 
-export const getQueryKeys = (props: { [k: string]: unknown }, name?: string) => {
+export const getQueryKeys = (name: string, props?: Record<string, unknown>) => {
+    if (!props) return [name];
+
     delete props.req_id;
     if (name && props[name] === 1) delete props[name];
 

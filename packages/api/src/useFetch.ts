@@ -1,12 +1,19 @@
 import { useQuery } from 'react-query';
 import { getQueryKeys, send } from './utils';
-import type { TSocketEndpointNames, TSocketAcceptableProps, TSocketResponseData } from '../types';
+import type {
+    TSocketEndpointNames,
+    TSocketAcceptableProps,
+    TSocketResponseData,
+    TSocketRequestCleaned,
+    TSocketRequestOptions,
+} from '../types';
 
-const useFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcceptableProps<T, true>) =>
-    useQuery<TSocketResponseData<T>, unknown>(
-        getQueryKeys(props[0] || {}, name),
-        () => send(name, ...props),
-        props[0]?.options
-    );
+const useFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcceptableProps<T, true>) => {
+    const prop = props?.[0];
+    const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestCleaned<T>) : undefined;
+    const options = prop && 'options' in prop ? (prop.options as TSocketRequestOptions<T>) : undefined;
+
+    return useQuery<TSocketResponseData<T>, unknown>(getQueryKeys(name, payload), () => send(name, payload), options);
+};
 
 export default useFetch;

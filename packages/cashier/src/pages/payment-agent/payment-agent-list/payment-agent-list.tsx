@@ -13,6 +13,14 @@ import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
+// TODO: Remove this declaration after changing label to data-label in Tabs component
+declare module 'react' {
+    interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
+        label?: string;
+        hash?: string;
+    }
+}
+
 type TProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
@@ -49,6 +57,19 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
                     onTabItemClick={payment_agent.setActiveTab}
                     top
                     header_fit_content={isDesktop()}
+                    center={false}
+                    bottom={false}
+                    active_icon_color={''}
+                    background_color={''}
+                    fit_content={false}
+                    icon_color={''}
+                    icon_size={0}
+                    is_100vw={false}
+                    is_full_width={false}
+                    is_overflow_hidden={false}
+                    is_scrollable={false}
+                    should_update_hash={false}
+                    single_tab_has_no_label={false}
                 >
                     <div label={localize('Deposit')}>
                         <DepositTab />

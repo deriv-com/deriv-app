@@ -249,6 +249,8 @@ const mock = (): TRootStore => {
             setSubSectionIndex: jest.fn(),
             sub_section_index: 0,
             toggleShouldShowRealAccountsList: jest.fn(),
+            toggleReadyToDepositModal: jest.fn(),
+            is_ready_to_deposit_modal_visible: false,
         },
         traders_hub: {
             closeModal: jest.fn(),

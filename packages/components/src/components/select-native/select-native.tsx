@@ -152,7 +152,7 @@ const SelectNative = ({
                     {!suffix_icon ? (
                         <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
                     ) : (
-                        <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} />
+                        <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} />
                     )}
                     <select
                         className='dc-select-native__picker'

@@ -184,7 +184,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
-    setIsCFDScoreAvailable: client.setIsCFDScoreAvailable,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,

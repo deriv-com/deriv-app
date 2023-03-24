@@ -43,7 +43,7 @@ const SetCitizenshipForm = ({ class_prefix, errors, touched, setFieldTouched, se
             )}
         </Field>
         <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
-            <Localize i18n_default_text='Select your citizenship/nationality as it appears on your passport or other government-issued ID.' />
+            <Localize i18n_default_text='Country of citizenship or nationality is the country that issues your passport or other national identity document.' />
         </Text>
     </div>
 );

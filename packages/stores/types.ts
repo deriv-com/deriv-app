@@ -178,6 +178,10 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    has_enabled_two_fa: boolean;
+    setTwoFAStatus: (status: boolean) => void;
+    has_changed_two_fa: boolean;
+    setTwoFAChangedStatus: (status: boolean) => void;
 };
 
 type TSentVerifyEmailsData = Partial<

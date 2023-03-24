@@ -1,4 +1,5 @@
 import React from 'react';
+// import { useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field, FormikProps, FormikValues, FormikHelpers } from 'formik';
@@ -28,7 +29,7 @@ type TIdvDocumentSubmit = {
                     has_visual_sample: boolean;
                     documents_supported: Record<
                         string,
-                        { display_name: string; format: string; additional: { display_name: string; format: string } }
+                        { display_name: string; format: string; additional?: { display_name: string; format: string } }
                     >;
                 };
             };
@@ -45,7 +46,7 @@ type TFormValues = {
         | {
               example_format?: string;
               id: string;
-              additional: { display_name: string; format: string; example_format: string };
+              additional?: { display_name: string; format: string; example_format: string };
           };
     document_number?: string;
     document_additional?: string;
@@ -57,6 +58,8 @@ const IdvDocumentSubmit = ({
     selected_country,
     is_from_external,
 }: Partial<FormikProps<FormikValues>> & TIdvDocumentSubmit) => {
+    // const location = useLocation();
+    // const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState<object[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -114,7 +117,7 @@ const IdvDocumentSubmit = ({
         const example_format =
             document_name === 'document_number'
                 ? typeof values.document_type === 'object' && values.document_type?.example_format
-                : typeof values.document_type === 'object' && values.document_type.additional.example_format;
+                : typeof values.document_type === 'object' && values.document_type.additional?.example_format;
         let current_input = '';
         if (typeof example_format === 'string' && example_format.includes('-')) {
             current_input = formatInput(example_format, current_input || e.target.value, '-');

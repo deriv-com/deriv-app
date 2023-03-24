@@ -244,6 +244,13 @@ const mock = (): TRootStore => {
             openModal: jest.fn(),
             content_flag: '',
             is_eu_user: false,
+            selected_account_type: 'real',
+            platform_real_balance: { balance: 0, currency: 'USD' },
+            cfd_demo_balance: { balance: 0, currency: 'USD' },
+            platform_demo_balance: { balance: 0, currency: 'USD' },
+            cfd_real_balance: { balance: 0, currency: 'USD' },
+            no_CR_account: true,
+            no_MF_account: true,
         },
         menu: {
             attach: jest.fn(),

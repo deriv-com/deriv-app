@@ -1,6 +1,8 @@
 import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
+type TBalance = { balance: number; currency: string };
+
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
 type TAccountsList = {
@@ -250,6 +252,13 @@ type TTradersHubStore = {
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
+    selected_account_type: 'real' | 'demo';
+    platform_real_balance: TBalance;
+    cfd_demo_balance: TBalance;
+    platform_demo_balance: TBalance;
+    cfd_real_balance: TBalance;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
 };
 
 export type TRootStore = {

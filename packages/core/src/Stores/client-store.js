@@ -2336,7 +2336,7 @@ export default class ClientStore extends BaseStore {
 
     fetchAccountSettings() {
         return new Promise(resolve => {
-            WS.authorized.storage.getSettings().then(response => {
+            WS.authorized.getSettings().then(response => {
                 this.setAccountSettings(response.get_settings);
                 resolve(response);
             });

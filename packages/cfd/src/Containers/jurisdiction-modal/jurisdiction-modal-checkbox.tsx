@@ -11,12 +11,14 @@ const JurisdictionCheckBox = ({
     onCheck,
     context,
     should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation,
 }: TJurisdictionCheckBoxProps) => {
     const shouldShowCheckBox = () => {
         if (jurisdiction_selected_shortcode) {
             if (
                 jurisdiction_selected_shortcode === 'svg' ||
-                (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation)
+                (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation) ||
+                (jurisdiction_selected_shortcode === 'vanuatu' && should_restrict_vanuatu_account_creation)
             ) {
                 return false;
             }

@@ -597,9 +597,11 @@ export const icons =
         'IcContractExitTime',
         'IcContractFlag',
         'IcContractId',
+        'IcContractPayout',
         'IcContractSafeguard',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
+        'IcContractStrike',
         'IcContractTarget',
     ],
     'currency': [
@@ -792,6 +794,8 @@ export const icons =
         'IcTradetypeTickhigh',
         'IcTradetypeTicklow',
         'IcTradetypeUpordown',
+        'IcTradetypeVanillaLongCall',
+        'IcTradetypeVanillaLongPut',
     ],
     'underlying': [
         'IcUnderlying1HZ100V',

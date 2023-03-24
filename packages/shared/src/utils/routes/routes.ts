@@ -52,6 +52,7 @@ export const routes = {
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
+    cashier_p2p_profile: '/cashier/p2p/profile',
     cashier_p2p_verification: '/cashier/p2p/verification',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),

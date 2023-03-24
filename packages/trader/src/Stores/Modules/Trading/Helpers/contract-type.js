@@ -36,10 +36,8 @@ export const ContractType = (() => {
             if (!has_contracts || has_only_forward_starting_contracts) return;
             const contract_categories = getContractCategoriesConfig();
             contract_types = getContractTypesConfig(symbol);
-
             available_contract_types = {};
             available_categories = cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
-
             r.contracts_for.available.forEach(contract => {
                 const type = Object.keys(contract_types).find(
                     key =>
@@ -49,53 +47,6 @@ export const ContractType = (() => {
                 );
 
                 if (!type) return; // ignore unsupported contract types
-
-                /*
-            add to this config if a value you are looking for does not exist yet
-            accordingly create a function to retrieve the value
-            config: {
-                has_spot: 1,
-                durations: {
-                    min_max: {
-                        spot: {
-                            tick    : { min: 5,     max: 10 },    // value in ticks, as cannot convert to seconds
-                            intraday: { min: 18000, max: 86400 }, // all values converted to seconds
-                            daily   : { min: 86400, max: 432000 },
-                        },
-                        forward: {
-                            intraday: { min: 18000, max: 86400 },
-                        },
-                    },
-                    units_display: {
-                        spot: [
-                            { text: 'ticks',   value: 't' },
-                            { text: 'seconds', value: 's' },
-                            { text: 'minutes', value: 'm' },
-                            { text: 'hours',   value: 'h' },
-                            { text: 'days',    value: 'd' },
-                        ],
-                        forward: [
-                            { text: 'days',    value: 'd' },
-                        ],
-                    },
-                },
-                forward_starting_dates: [
-                    { text: 'Mon - 19 Mar, 2018', value: 1517356800, sessions: [{ open: obj_moment, close: obj_moment }] },
-                    { text: 'Tue - 20 Mar, 2018', value: 1517443200, sessions: [{ open: obj_moment, close: obj_moment }] },
-                    { text: 'Wed - 21 Mar, 2018', value: 1517529600, sessions: [{ open: obj_moment, close: obj_moment }] },
-                ],
-                trade_types: {
-                    'CALL': 'Higher',
-                    'PUT' : 'Lower',
-                },
-                barriers: {
-                    count   : 2,
-                    tick    : { high_barrier: '+1.12', low_barrier : '-1.12' },
-                    intraday: { high_barrier: '+2.12', low_barrier : '-2.12' },
-                    daily   : { high_barrier: 1111,    low_barrier : 1093 },
-                },
-            }
-            */
 
                 if (!available_contract_types[type]) {
                     // extend contract_categories to include what is needed to create the contract list
@@ -206,16 +157,22 @@ export const ContractType = (() => {
     };
 
     const getComponents = c_type => {
+        let check = [];
+        if (contract_types[c_type]?.config?.should_override) {
+            check = [...contract_types[c_type].components];
+        } else {
+            check = ['duration', 'amount', ...contract_types[c_type].components].filter(
+                component =>
+                    !(
+                        component === 'duration' &&
+                        contract_types[c_type].config &&
+                        contract_types[c_type].config.hide_duration
+                    )
+            );
+        }
         return (
             contract_types && {
-                form_components: ['duration', 'amount', ...contract_types[c_type].components].filter(
-                    component =>
-                        !(
-                            component === 'duration' &&
-                            contract_types[c_type].config &&
-                            contract_types[c_type].config.hide_duration
-                        )
-                ),
+                form_components: check,
             }
         );
     };

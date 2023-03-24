@@ -76,7 +76,7 @@ const BinarySocketGeneral = (() => {
                 client_store.setAccountStatus(response.get_account_status);
                 break;
             case 'payout_currencies':
-                client_store.responsePayoutCurrencies(response.payout_currencies);
+                client_store.responsePayoutCurrencies(response?.payout_currencies);
                 break;
             case 'transaction':
                 gtm_store.pushTransactionData(response);
@@ -244,10 +244,10 @@ const BinarySocketGeneral = (() => {
         WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
-    const authorizeAccount = response => {
+    const authorizeAccount = async response => {
         client_store.responseAuthorize(response);
         subscribeBalances();
-        WS.storage.getSettings();
+        client_store.setAccountSettings((await WS.storage.getSettings()).get_settings);
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
         if (!client_store.is_virtual) {

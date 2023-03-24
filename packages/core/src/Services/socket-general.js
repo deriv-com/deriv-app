@@ -244,10 +244,10 @@ const BinarySocketGeneral = (() => {
         WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
-    const authorizeAccount = async response => {
+    const authorizeAccount = response => {
         client_store.responseAuthorize(response);
         subscribeBalances();
-        client_store.setAccountSettings((await WS.storage.getSettings()).get_settings);
+        WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
         if (!client_store.is_virtual) {

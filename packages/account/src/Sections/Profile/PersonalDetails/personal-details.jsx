@@ -126,7 +126,6 @@ export const PersonalDetailsForm = ({
     updateAccountStatus,
     has_poa_address_mismatch,
     is_language_changing,
-    fetchAccountSettings,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -172,7 +171,6 @@ export const PersonalDetailsForm = ({
             getSettings();
         }
         initializeFormValues();
-        return () => fetchAccountSettings();
     }, [account_settings, is_eu, is_mf, is_social_signup]);
 
     React.useEffect(() => {
@@ -1359,7 +1357,6 @@ PersonalDetailsForm.propTypes = {
     updateAccountStatus: PropTypes.func,
     has_poa_address_mismatch: PropTypes.bool,
     is_language_changing: PropTypes.bool,
-    fetchAccountSettings: PropTypes.func,
 };
 
 export default connect(({ client, notifications, ui, common }) => ({
@@ -1385,5 +1382,4 @@ export default connect(({ client, notifications, ui, common }) => ({
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
     is_language_changing: common.is_language_changing,
-    fetchAccountSettings: client.fetchAccountSettings,
 }))(withRouter(PersonalDetailsForm));

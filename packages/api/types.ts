@@ -1,4 +1,4 @@
-import type { useMutation, useQuery } from 'react-query';
+import type { useMutation, useQuery } from '@tanstack/react-query';
 import type {
     ActiveSymbolsResponse,
     ActiveSymbolsRequest,

@@ -1319,7 +1319,7 @@ export default class ClientStore extends BaseStore {
                     new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
                     runInAction(() => (client_accounts[client_id] = new_data));
                     this.setLoginInformation(client_accounts, client_id);
-                    WS.authorized.getSettings().then(get_settings_response => {
+                    WS.authorized.storage.getSettings().then(get_settings_response => {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
@@ -1662,16 +1662,14 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-
-            if (Object.keys(this.account_settings).length === 0) {
-                this.setAccountSettings((await WS.authorized.getSettings()).get_settings);
-            }
-            if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
+            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
+            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            if (this.account_settings && !this.account_settings.residence) {
+            if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 

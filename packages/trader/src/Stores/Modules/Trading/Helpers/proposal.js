@@ -25,9 +25,10 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const stake = proposal.display_value;
     const basis_list = store.basis_list;
 
-    const contract_basis = store.is_vanilla
-        ? { text: 'Payout', value: 'number_of_contracts' }
-        : basis_list.find(o => o.value !== store.basis) || {};
+    const contract_basis =
+        store.is_vanilla || store.is_turbos
+            ? { text: 'Payout', value: 'number_of_contracts' }
+            : basis_list.find(o => o.value !== store.basis) || {};
 
     const is_stake = contract_basis.text === 'Stake';
     const price = is_stake ? stake : proposal[contract_basis.value];

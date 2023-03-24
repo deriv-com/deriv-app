@@ -18,19 +18,18 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                     })}
                     currency={currency}
                     show_currency
-                    decimals={is_turbos ? 5 : 0}
+                    should_format={!is_turbos && !is_vanilla}
                 />
             )}
         </div>
-        {!is_turbos && (
-            <div className='trade-container__price-info-movement'>
-                {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
-                    <Icon icon='IcProfit' />
-                ) : (
-                    <Icon icon='IcLoss' />
-                )}
-            </div>
-        )}
+
+        <div className='trade-container__price-info-movement'>
+            {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
+                <Icon icon='IcProfit' />
+            ) : (
+                <Icon icon='IcLoss' />
+            )}
+        </div>
     </div>
 );
 
@@ -47,11 +46,10 @@ const ContractInfo = ({
     type,
 }) => {
     const localized_basis = getLocalizedBasis();
-
     const stakeOrPayout = () => {
         switch (basis) {
             case 'stake': {
-                if (is_vanilla) {
+                if (is_vanilla || is_turbos) {
                     return localize('Payout per point');
                 }
                 return localized_basis.payout;
@@ -78,19 +76,7 @@ const ContractInfo = ({
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {
-        if (is_vanilla) {
-            return (
-                <Localize
-                    i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
-                    components={[<strong key={0} />]}
-                    values={{
-                        trade_type: type === 'VANILLALONGCALL' ? 'above' : 'below',
-                        title: getContractSubtype(type),
-                    }}
-                />
-            );
-        }
-        if (is_turbos) {
+        if (is_turbos || is_vanilla) {
             return (
                 <Localize
                     i18n_default_text='<0>For {{title}}:</0> {{message}}'
@@ -168,11 +154,11 @@ const ContractInfo = ({
                                         zIndex={9999}
                                         message={
                                             <Localize
-                                                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
-                                                components={[<strong key={0} />]}
+                                                i18n_default_text='<0>For {{title}}:</0> {{message}}'
+                                                components={[<Text key={0} weight='bold' size='xxs' />]}
                                                 values={{
-                                                    trade_type: type === 'VANILLALONGCALL' ? 'above' : 'below',
                                                     title: getContractSubtype(type),
+                                                    message,
                                                 }}
                                             />
                                         }

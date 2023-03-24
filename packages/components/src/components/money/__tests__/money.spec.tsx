@@ -46,9 +46,4 @@ describe('Money', () => {
         render(<Money amount={0} show_currency />);
         expect(screen.getByText('0.00 USD')).toBeInTheDocument();
     });
-
-    it('should return correctly formatted text based on the props when "decimals" is 5', () => {
-        render(<Money amount={10} decimals={5} />);
-        expect(screen.getByText('10.00000')).toBeInTheDocument();
-    });
 });

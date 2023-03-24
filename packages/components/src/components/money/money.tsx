@@ -8,7 +8,6 @@ type TMoneyProps = {
     has_sign: boolean;
     should_format: boolean;
     show_currency: boolean; // if true, append currency symbol
-    decimals?: number;
 };
 
 const Money = ({
@@ -18,7 +17,6 @@ const Money = ({
     has_sign,
     should_format = true,
     show_currency = false,
-    decimals = 0,
 }: Partial<TMoneyProps>) => {
     let sign = '';
     if (+amount && (amount < 0 || has_sign)) {
@@ -27,7 +25,7 @@ const Money = ({
 
     // if it's formatted already then don't make any changes unless we should remove extra -/+ signs
     const value = has_sign || should_format ? Math.abs(Number(amount)) : amount;
-    const final_amount = should_format ? formatMoney(currency, value, true, decimals, 0) : value;
+    const final_amount = should_format ? formatMoney(currency, value, true, 0, 0) : value;
 
     return (
         <React.Fragment>

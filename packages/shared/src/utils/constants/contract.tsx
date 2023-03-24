@@ -454,12 +454,12 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
     },
     TURBOSLONG: {
         name: <Localize i18n_default_text='Turbos' />,
-        button_name: <Localize i18n_default_text='Buy' />,
+        button_name: <Localize i18n_default_text='Long' />,
         position: 'top',
     },
     TURBOSSHORT: {
         name: <Localize i18n_default_text='Turbos' />,
-        button_name: <Localize i18n_default_text='Buy' />,
+        button_name: <Localize i18n_default_text='Short' />,
         position: 'bottom',
     },
     VANILLALONGCALL: {

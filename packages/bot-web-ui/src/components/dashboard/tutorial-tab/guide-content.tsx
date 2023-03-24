@@ -52,7 +52,7 @@ const GuideContent = ({
             } else {
                 setTourDialogVisibility(true);
             }
-            setActiveTab(DASHBOARD_TABS.DASHBOARD as number);
+            setActiveTab(DASHBOARD_TABS.DASHBOARD);
         } else {
             if (storage.bot_builder_token) {
                 removeKeyValue('bot_builder_token');
@@ -62,7 +62,7 @@ const GuideContent = ({
             tour_type.key = 'bot_builder';
             setHasTourEnded(false);
             setTourDialogVisibility(true);
-            setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
+            setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
         }
     };
     const is_mobile = isMobile();

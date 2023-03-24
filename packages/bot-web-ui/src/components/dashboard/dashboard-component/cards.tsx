@@ -76,13 +76,13 @@ const Cards = ({
         {
             icon: 'IcBotBuilder',
             content: localize('Bot Builder'),
-            method: () => setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number),
+            method: () => setActiveTab(DASHBOARD_TABS.BOT_BUILDER),
         },
         {
             icon: 'IcQuickStrategy',
             content: localize('Quick Strategy'),
             method: () => {
-                setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
+                setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
                 loadDataStrategy();
             },
         },

@@ -24,7 +24,7 @@ const InfoPanel = ({
 }: TInfoPanel) => {
     const is_mobile = isMobile();
     const switchTab = (link: boolean, label: string) => {
-        const tutorial_link = link ? setActiveTab(DASHBOARD_TABS.TUTORIAL as number) : null;
+        const tutorial_link = link ? setActiveTab(DASHBOARD_TABS.TUTORIAL) : null;
         const tutorial_label = label === 'Guide' ? setActiveTabTutorial(0) : setActiveTabTutorial(1);
         return {
             tutorial_link,

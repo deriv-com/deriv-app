@@ -78,7 +78,7 @@ const RecentWorkspace = ({
         switch (type) {
             case 'edit': {
                 loadFileFromRecent();
-                setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
+                setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
                 break;
             }
             case 'save': {

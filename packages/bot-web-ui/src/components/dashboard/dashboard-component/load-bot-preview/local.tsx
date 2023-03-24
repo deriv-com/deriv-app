@@ -62,7 +62,7 @@ const LocalComponent = ({
             onClick={() => {
                 setPreviewOnDialog(false);
                 loadFileFromRecent();
-                setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
+                setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
             }}
         >
             {localize('Open')}
@@ -86,7 +86,7 @@ const LocalComponent = ({
                         <div className='tab__dashboard__preview__retrigger'>
                             <button
                                 onClick={() => {
-                                    setActiveTab(DASHBOARD_TABS.TUTORIAL as number);
+                                    setActiveTab(DASHBOARD_TABS.TUTORIAL);
                                 }}
                             >
                                 <Icon

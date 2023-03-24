@@ -17,11 +17,11 @@ const QuickStrategyFooter = ({
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
         submitForm();
-        setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
+        setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
     }, [is_submit_enabled]);
 
     const handleRun = React.useCallback(() => {
-        setActiveTab(DASHBOARD_TABS.BOT_BUILDER as number);
+        setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
         if (is_running) {
             toggleStopBotDialog();
             setFieldValue('button', 'edit');

@@ -34,7 +34,6 @@ const QuickStrategyForm = ({
     setCurrentFocus,
     setActiveTab,
     toggleStopBotDialog,
-    loadDataStrategy,
 }: TQuickStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
@@ -123,7 +122,6 @@ const QuickStrategyForm = ({
                             </div>
                         </ThemedScrollbars>
                         <QuickStrategyFooter
-                            is_onscreen_keyboard_active={is_onscreen_keyboard_active}
                             is_submit_enabled={is_submit_enabled}
                             is_stop_button_visible={is_stop_button_visible}
                             setFieldValue={setFieldValue}
@@ -134,7 +132,6 @@ const QuickStrategyForm = ({
                             setActiveTab={setActiveTab}
                             toggleStopBotDialog={toggleStopBotDialog}
                             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
-                            loadDataStrategy={loadDataStrategy}
                         />
                     </Form>
                 );

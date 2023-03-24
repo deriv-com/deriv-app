@@ -1,5 +1,5 @@
-import merge from 'lodash.merge';
 import type { TRootStore } from '../types';
+import merge from 'lodash.merge';
 
 const mock = (): TRootStore => {
     return {
@@ -179,7 +179,6 @@ const mock = (): TRootStore => {
                 identity_status: '',
             },
             mt5_login_list: [],
-            is_risky_client: false,
             logout: jest.fn(),
             should_allow_authentication: false,
             active_accounts: [],

@@ -1,53 +1,52 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Formik, Field } from 'formik';
-import classNames from 'classnames';
 import {
     Autocomplete,
-    Checkbox,
     Button,
-    FormSubmitErrorMessage,
-    Input,
+    Checkbox,
+    DateOfBirthPicker,
     DesktopWrapper,
-    Dropdown,
+    FormSubmitErrorMessage,
+    HintBox,
+    Input,
     Loading,
     MobileWrapper,
     SelectNative,
-    DateOfBirthPicker,
     Text,
     useStateCallback,
-    HintBox,
 } from '@deriv/components';
+import { Field, Formik } from 'formik';
+import { Localize, localize } from '@deriv/translations';
 import {
-    toMoment,
-    isMobile,
-    validAddress,
-    validPostCode,
-    validPhone,
-    validLetterSymbol,
-    validLength,
+    PlatformContext,
+    WS,
+    filterObjProperties,
     getBrandWebsiteName,
     getLocation,
-    removeObjProperties,
-    filterObjProperties,
-    PlatformContext,
+    isMobile,
     regex_checks,
+    removeObjProperties,
     routes,
-    WS,
+    toMoment,
     useIsMounted,
+    validAddress,
+    validLength,
+    validLetterSymbol,
     validName,
+    validPhone,
+    validPostCode,
 } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import { withRouter } from 'react-router';
-import { connect } from 'Stores/connect';
-import LeaveConfirm from 'Components/leave-confirm';
-import FormFooter from 'Components/form-footer';
+
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
+import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
+import LeaveConfirm from 'Components/leave-confirm';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
+import PropTypes from 'prop-types';
+import React from 'react';
+import classNames from 'classnames';
+import { connect } from 'Stores/connect';
+import { withRouter } from 'react-router';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -310,7 +309,7 @@ export const PersonalDetailsForm = ({
             required_fields.push('citizen');
         }
         if (is_mf) {
-            const required_tax_fields = ['tax_residence', 'tax_identification_number', 'employment_status'];
+            const required_tax_fields = ['tax_residence', 'tax_identification_number'];
             required_fields.push(...required_tax_fields);
         }
 
@@ -475,7 +474,6 @@ export const PersonalDetailsForm = ({
                 'allow_copiers',
                 !is_mf && 'tax_residence',
                 !is_mf && 'tax_identification_number',
-                !is_mf && 'employment_status',
                 'client_tnc_status',
                 'country_code',
                 'has_secret_answer',
@@ -554,7 +552,7 @@ export const PersonalDetailsForm = ({
             form_initial_values.tax_residence = '';
         }
         if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
-        if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
+        // if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
 
     const is_poa_verified = authentication_status?.document_status === 'verified';
@@ -892,32 +890,6 @@ export const PersonalDetailsForm = ({
                                     </React.Fragment>
                                 )}
                                 <React.Fragment>
-                                    {/* Hide Account Opening Reason, uncomment block below to re-enable */}
-                                    {/* <fieldset className='account-form__fieldset'> */}
-                                    {/*    {account_opening_reason && is_fully_authenticated ? ( */}
-                                    {/*        <Input */}
-                                    {/*            data-lpignore='true' */}
-                                    {/*            type='text' */}
-                                    {/*            name='account_opening_reason' */}
-                                    {/*            label={localize('Account opening reason')} */}
-                                    {/*            value={values.account_opening_reason} */}
-                                    {/*            disabled */}
-                                    {/*        /> */}
-                                    {/*    ) : ( */}
-                                    {/*        <Dropdown */}
-                                    {/*            placeholder={'Account opening reason'} */}
-                                    {/*            is_align_text_left */}
-                                    {/*            name='account_opening_reason' */}
-                                    {/*            list={account_opening_reason_list} */}
-                                    {/*            value={values.account_opening_reason} */}
-                                    {/*            onChange={handleChange} */}
-                                    {/*            handleBlur={handleBlur} */}
-                                    {/*            error={ */}
-                                    {/*                errors.account_opening_reason */}
-                                    {/*            } */}
-                                    {/*        /> */}
-                                    {/*    )} */}
-                                    {/* </fieldset> */}
                                     {is_mf && (
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
@@ -984,43 +956,6 @@ export const PersonalDetailsForm = ({
                                                             disabled={!isChangeableField('tax_identification_number')}
                                                             required
                                                         />
-                                                    </fieldset>
-                                                )}
-                                                {'employment_status' in values && (
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <DesktopWrapper>
-                                                            <Dropdown
-                                                                placeholder={localize('Employment status')}
-                                                                is_align_text_left
-                                                                name='employment_status'
-                                                                list={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                onChange={handleChange}
-                                                                handleBlur={handleBlur}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                className={'emp-status'}
-                                                                placeholder={localize('Please select')}
-                                                                name='employment_status'
-                                                                label={localize('Employment status')}
-                                                                list_items={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                                onChange={e => {
-                                                                    setFieldTouched('employment_status', true);
-                                                                    handleChange(e);
-                                                                }}
-                                                            />
-                                                        </MobileWrapper>
                                                     </fieldset>
                                                 )}
                                             </FormBodySection>
@@ -1307,7 +1242,6 @@ export const PersonalDetailsForm = ({
                                                   (is_mf && !values.tax_identification_number) ||
                                                   (!is_svg && errors.place_of_birth) ||
                                                   (!is_svg && !values.place_of_birth) ||
-                                                  // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                   errors.address_line_1 ||
                                                   !values.address_line_1 ||
                                                   errors.address_line_2 ||

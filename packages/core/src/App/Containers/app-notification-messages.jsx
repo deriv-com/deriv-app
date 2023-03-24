@@ -1,16 +1,18 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname, getPlatformSettings, routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
+import 'Sass/app/_common/components/app-notification-message.scss';
+
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
-import 'Sass/app/_common/components/app-notification-message.scss';
+import { getPathname, getPlatformSettings, isMobile, routes } from '@deriv/shared';
+
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
+import { connect } from 'Stores/connect';
+import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -112,7 +114,7 @@ const AppNotificationMessages = ({
                   'dp2p',
                   'install_pwa',
                   'tnc',
-                  'risk_client',
+                  'need_fa',
                   'deriv_go',
                   'close_mx_mlt_account',
                   'trustpilot',

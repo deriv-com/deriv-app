@@ -1,19 +1,20 @@
-import classNames from 'classnames';
-import React from 'react';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
+import { Button, Div100vhContainer, Icon, MobileDrawer, Text, ToggleSwitch } from '@deriv/components';
+import { ContentFlag, PlatformContext, getStaticUrl, routes, whatsapp_url } from '@deriv/shared';
+import { getAllowedLanguages, getLanguage, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
-import NetworkStatus from 'App/Components/Layout/Footer';
-import ServerTime from 'App/Containers/server-time.jsx';
+import { useAccountTransferVisible, useOnrampVisible } from '@deriv/hooks';
+import { useHistory, useLocation } from 'react-router-dom';
+
 import { BinaryLink } from 'App/Components/Routes';
-import getRoutesConfig from 'App/Constants/routes-config';
-import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import { useLocation, useHistory } from 'react-router-dom';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
+import NetworkStatus from 'App/Components/Layout/Footer';
 import PlatformSwitcher from './platform-switcher';
+import React from 'react';
+import ServerTime from 'App/Containers/server-time.jsx';
+import { changeLanguage } from 'Utils/Language';
+import classNames from 'classnames';
+import getRoutesConfig from 'App/Constants/routes-config';
+import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
@@ -157,7 +158,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_virtual,
         logout: logoutClient,
         should_allow_authentication,
-        is_risky_client,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_pre_appstore,
@@ -260,7 +260,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
-                return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                return is_virtual || active_account_landing_company === 'maltainvest';
             } else if (/trading-assessment/.test(route_path)) {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {

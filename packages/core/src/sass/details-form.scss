@@ -161,3 +161,13 @@
         }
     }
 }
+
+.financial-assessment {
+    gap: 1.6rem;
+    &__form {
+        width: auto;
+        @include desktop {
+            padding: 0 13.1rem;
+        }
+    }
+}

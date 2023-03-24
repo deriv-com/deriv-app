@@ -5,13 +5,11 @@ import type {
     TSocketAcceptableProps,
     TSocketResponseData,
     TSocketRequestCleaned,
+    TSocketRequestMutationOptions,
 } from '../types';
 
 // Todo: Get rid of redundant array wrapper for the props argument.
-const useRequest = <T extends TSocketEndpointNames>(
-    name: T,
-    options?: Parameters<typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>>[2]
-) =>
+const useRequest = <T extends TSocketEndpointNames>(name: T, options?: TSocketRequestMutationOptions<T>) =>
     useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>(props => {
         const prop = props?.[0];
         const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestCleaned<T>) : undefined;

@@ -1,4 +1,4 @@
-import type { useQuery } from 'react-query';
+import type { useMutation, useQuery } from 'react-query';
 import type {
     ActiveSymbolsResponse,
     ActiveSymbolsRequest,
@@ -156,6 +156,8 @@ import type {
     PaymentAgentTransferResponse,
     PaymentAgentWithdrawRequest,
     PaymentAgentWithdrawResponse,
+    PaymentAgentWithdrawJustificationRequest,
+    PaymentAgentWithdrawJustificationResponse,
     PayoutCurrenciesRequest,
     PayoutCurrenciesResponse,
     PingRequest,
@@ -539,6 +541,10 @@ type TSocketEndpoints = {
         request: PaymentAgentWithdrawRequest;
         response: PaymentAgentWithdrawResponse;
     };
+    paymentagent_withdraw_justification: {
+        request: PaymentAgentWithdrawJustificationRequest;
+        response: PaymentAgentWithdrawJustificationResponse;
+    };
     payout_currencies: {
         request: PayoutCurrenciesRequest;
         response: PayoutCurrenciesResponse;
@@ -695,12 +701,16 @@ export type TSocketRequestCleaned<T extends TSocketEndpointNames> = {
     payload: Omit<TSocketRequest<T>, TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'>;
 };
 
-export type TSocketRequestOptions<T extends TSocketEndpointNames> = Parameters<
+export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useQuery<TSocketResponseData<T>, unknown>
 >[2];
 
+export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>
+>[2];
+
 type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
-    TSocketRequestCleaned<T> & { options?: TSocketRequestOptions<T> },
+    TSocketRequestCleaned<T> & { options?: TSocketRequestQueryOptions<T> },
     | (TSocketRequestCleaned<T>['payload'] extends Record<string, never> ? 'payload' : never)
     | (O extends true ? never : 'options')
 >;

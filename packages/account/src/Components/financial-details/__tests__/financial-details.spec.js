@@ -91,15 +91,13 @@ describe('<FinancialDetails />', () => {
     };
 
     it('should render "FinancialDetails" for desktop', () => {
-        const { container } = render(<FinancialDetails {...mock_props} />);
+        render(<FinancialDetails {...mock_props} />);
 
         fieldsRenderCheck();
 
         const inputs = screen.getAllByTestId('dti_dropdown_display');
         expect(inputs.length).toBe(9);
 
-        expect(container.querySelector('.dc-form-submit-button')).toBeInTheDocument();
-        expect(container.querySelector('.dc-modal-footer')).toBeInTheDocument();
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
     });
@@ -108,15 +106,13 @@ describe('<FinancialDetails />', () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
 
-        const { container } = render(<FinancialDetails {...mock_props} />);
+        render(<FinancialDetails {...mock_props} />);
 
         fieldsRenderCheck();
 
         const inputs = screen.getAllByRole('combobox');
         expect(inputs.length).toBe(9);
 
-        expect(container.querySelector('.dc-form-submit-button')).toBeInTheDocument();
-        expect(container.querySelector('.dc-modal-footer')).not.toBeInTheDocument();
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
     });

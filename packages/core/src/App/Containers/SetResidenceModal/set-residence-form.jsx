@@ -63,9 +63,7 @@ const SetResidenceForm = ({
             </Field>
             {!errors?.residence?.length > 0 ? (
                 <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
-                    {localize(
-                        'Select the country where you currently live, work, pay taxes, and receive government services.'
-                    )}
+                    {localize('Select the country where you currently live.')}
                 </Text>
             ) : null}
         </div>

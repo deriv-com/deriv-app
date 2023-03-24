@@ -1,10 +1,14 @@
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
-import React from 'react';
-import { TJurisdictionCardSectionTitleIndicators } from 'Components/props.types';
+import React, { SyntheticEvent } from 'react';
+import { TClickableDescription, TJurisdictionCardSectionTitleIndicators } from 'Components/props.types';
 import { TJurisdictionCardSectionProps } from '../props.types';
 
 const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionProps) => {
+    const handleCardFlip = (event: SyntheticEvent, linkData?: string) => {
+        event.stopPropagation();
+    };
+
     const renderTitleIndicator = (titleIndicators: TJurisdictionCardSectionTitleIndicators) => {
         switch (titleIndicators.type) {
             case 'displayText':
@@ -19,10 +23,34 @@ const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionPr
                     </div>
                 );
             case 'displayIcons':
-                return null;
+                return '';
             default:
-                return null;
+                return '';
         }
+    };
+
+    const renderClickableDescription = (clickableDescription: Array<TClickableDescription>) => {
+        return clickableDescription.map(descriptionPart => {
+            switch (descriptionPart.type) {
+                case 'link':
+                    return (
+                        <span onClick={event => handleCardFlip(event, descriptionPart.linkData)}>
+                            <Text as='span' size='xxs' className='clickable-description-link'>
+                                {descriptionPart.text}
+                            </Text>
+                            &nbsp;
+                        </span>
+                    );
+                case 'text':
+                    return (
+                        <Text as='span' size='xxs'>
+                            {descriptionPart.text}
+                        </Text>
+                    );
+                default:
+                    return '';
+            }
+        });
     };
 
     return (
@@ -35,11 +63,14 @@ const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionPr
                 </div>
                 {cardSectionItem.titleIndicators && renderTitleIndicator(cardSectionItem.titleIndicators)}
             </div>
-
-            {cardSectionItem.description && (
-                <Text as='span' size='xxs'>
-                    {cardSectionItem.description}
-                </Text>
+            {cardSectionItem.clickableDescription ? (
+                <div>{renderClickableDescription(cardSectionItem.clickableDescription)}</div>
+            ) : (
+                cardSectionItem.description && (
+                    <Text as='span' size='xxs'>
+                        {cardSectionItem.description}
+                    </Text>
+                )
             )}
         </div>
     );

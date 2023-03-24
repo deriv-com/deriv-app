@@ -22,6 +22,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         header: localize('St. Vincent & Grenadines'),
         synthetic_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Synthetics, Basket indices and Derived FX')}`,
                 titleIndicators: {
@@ -31,6 +32,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -39,18 +41,21 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
                 description: `${localize(
                     'You will need to submit proof of identity and address once you reach certain thresholds.'
                 )}`,
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
             },
         ],
         financial_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')}`,
                 titleIndicators: {
@@ -60,6 +65,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -68,6 +74,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -76,12 +83,14 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
                 description: `${localize(
                     'You will need to submit proof of identity and address once you reach certain thresholds.'
                 )}`,
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
             },
@@ -92,6 +101,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         header: localize('British Virgin Islands'),
         synthetic_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Synthetics, Basket indices and Derived FX')}`,
                 titleIndicators: {
@@ -101,6 +111,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -109,10 +120,15 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize(
                     'British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114)'
@@ -121,6 +137,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
         financial_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')}`,
                 titleIndicators: {
@@ -130,6 +147,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -138,6 +156,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -146,10 +165,15 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize(
                     'British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114)'
@@ -162,6 +186,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         header: localize('Vanuatu'),
         synthetic_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Synthetics, Basket indices and Derived FX')}`,
                 titleIndicators: {
@@ -171,6 +196,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -179,16 +205,22 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Vanuatu Financial Services Commission')}`,
             },
         ],
         financial_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex, Stock indices, Commodities and Cryptocurrencies')}`,
                 titleIndicators: {
@@ -198,6 +230,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -206,6 +239,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -214,10 +248,15 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Vanuatu Financial Services Commission')}`,
             },
@@ -228,22 +267,29 @@ export const jurisdiction_contents: TJurisdictionContent = {
         is_over_header_available: true,
         header: localize('Labuan'),
         synthetic_contents: [
-            { title: `${localize('Assets')}`, description: `${localize('Forex and Cryptocurrencies')}` },
-            { title: `${localize('Leverage')}` },
+            { key: 'assets', title: `${localize('Assets')}`, description: `${localize('Forex and Cryptocurrencies')}` },
+            { key: 'leverage', title: `${localize('Leverage')}` },
             {
+                key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
             },
         ],
         financial_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex and Cryptocurrencies')}`,
                 titleIndicators: {
@@ -253,6 +299,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -261,6 +308,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -269,10 +317,15 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
             },
@@ -283,6 +336,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         header: localize('Malta'),
         synthetic_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize(
                     'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'
@@ -294,6 +348,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -302,6 +357,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -310,16 +366,22 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             },
         ],
         financial_contents: [
             {
+                key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize(
                     'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'
@@ -331,6 +393,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'leverage',
                 title: `${localize('Leverage')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -339,6 +402,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
                 titleIndicators: {
                     type: 'displayText',
@@ -347,10 +411,15 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 },
             },
             {
+                key: 'verifications',
                 title: `${localize('Verifications')}`,
-                description: `${localize('Learn more about verifications needed.')}`,
+                clickableDescription: [
+                    { type: 'link', text: `${localize('Learn more')}` },
+                    { type: 'text', text: `${localize('about verifications needed.')}` },
+                ],
             },
             {
+                key: 'regulatorEdr',
                 title: `${localize('Regulator/EDR')}`,
                 description: `${localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             },

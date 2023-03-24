@@ -495,7 +495,7 @@
     justify-content: space-between;
     flex-direction: column;
     min-height: 38rem;
-    width: 26em;
+    width: 26rem;
     position: relative;
     cursor: pointer;
     @include mobile {
@@ -516,13 +516,13 @@
     }
 
     &__wrapper {
-        margin: 4em 6em 0em 6em;
+        margin: 4rem 6rem 0rem 6rem;
         display: flex;
         justify-content: center;
-        gap: 2.2rem;
+        gap: 1.8rem;
         @include mobile {
             margin: 0;
-            padding: 2em 4em;
+            padding: 2rem 4rem;
             flex-direction: column;
             align-items: center;
             overflow-y: scroll;
@@ -579,29 +579,29 @@
         display: flex;
         background: var(--text-info-blue-bg);
         color: var(--text-info-blue);
-        height: 4em;
+        height: 4rem;
         width: 100%;
         justify-content: center;
         font-weight: bold;
         align-items: center;
-        border-radius: 1.6em 1.6em 0em 0em;
+        border-radius: 1.6rem 1.6rem 0rem 0rem;
     }
 
     &__card-content-over-header-blank {
-        height: 4em;
+        height: 4rem;
         width: 100%;
-        border-radius: 1.6em;
+        border-radius: 1.6rem;
         @include mobile {
-            height: 2em;
+            height: 2rem;
         }
     }
 
     &__h2-header {
         text-align: center;
-        min-height: 4em;
-        margin: 0em 2em;
+        min-height: 8rem;
+        margin: 0em 2rem;
         @include mobile {
-            margin-bottom: 1em;
+            margin-bottom: 2rem;
             min-height: auto;
         }
     }
@@ -617,7 +617,7 @@
         flex-direction: column;
         gap: 1.2rem;
         height: 100%;
-        margin: 0em 2em 2em 2em;
+        margin: 0rem 2rem 2rem 2rem;
     }
 
     &__footer-wrapper {
@@ -657,7 +657,7 @@
     &__jurisdiction-checkbox {
         display: flex;
         justify-content: center;
-        margin-bottom: 2em;
+        margin-bottom: 2rem;
         @include mobile {
             padding: 0.8rem;
         }
@@ -719,6 +719,13 @@
     }
     &__brown-dark {
         background: var(--modal-indicator-brown-dark);
+    }
+}
+
+.clickable-description-link {
+    color: var(--text-red);
+    &:hover {
+        text-decoration: underline;
     }
 }
 

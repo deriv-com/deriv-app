@@ -619,9 +619,10 @@ export default class QuickStrategyStore {
     };
 
     toggleStopBotDialog = (): void => {
-        console.log('toggleStopBotDialog');
+        console.log('toggleStopBotDialog', 'this.is_contract_dialog_open', this.is_contract_dialog_open, 'this.is_stop_bot_dialog_open', this.is_stop_bot_dialog_open);
         
         this.is_contract_dialog_open = !this.is_contract_dialog_open;
         this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
+        console.log('after toggleStopBotDialog', 'this.is_contract_dialog_open', this.is_contract_dialog_open, 'this.is_stop_bot_dialog_open', this.is_stop_bot_dialog_open);
     };
 }

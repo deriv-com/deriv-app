@@ -29,8 +29,8 @@ const NeedRealAccountForCashierModal = observer(() => {
     };
 
     const onClose = async () => {
-        await switchRegulation();
         toggleNeedRealAccountForCashierModal();
+        await switchRegulation();
         history.push(routes.cashier_deposit);
     };
 

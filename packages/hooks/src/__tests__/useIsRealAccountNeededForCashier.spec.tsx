@@ -1,22 +1,18 @@
 import * as React from 'react';
-import { StoreProvider } from '@deriv/stores';
-import type { TStores } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useIsRealAccountNeededForCashier from '../useIsRealAccountNeededForCashier';
 
 describe('useIsRealAccountNeededForCashier', () => {
     test('should return false if user is not in real account', async () => {
-        const mockRootStore: DeepPartial<TStores> = {
-            traders_hub: {
-                is_real: false,
-            },
+        const mock = mockStore({
             client: {
                 active_accounts: [{ landing_company_shortcode: 'svg' }],
             },
-        };
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useIsRealAccountNeededForCashier(), { wrapper });
 
@@ -24,17 +20,10 @@ describe('useIsRealAccountNeededForCashier', () => {
     });
 
     test('should return false if user has no real account', async () => {
-        const mockRootStore: DeepPartial<TStores> = {
-            traders_hub: {
-                is_real: false,
-            },
-            client: {
-                active_accounts: [{}],
-            },
-        };
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useIsRealAccountNeededForCashier(), { wrapper });
 
@@ -42,17 +31,17 @@ describe('useIsRealAccountNeededForCashier', () => {
     });
 
     test('should return true if client is in real and has a real account', async () => {
-        const mockRootStore: DeepPartial<TStores> = {
+        const mock = mockStore({
             client: {
                 active_accounts: [{ landing_company_shortcode: 'maltainvest' }],
             },
             traders_hub: {
                 is_real: true,
             },
-        };
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useIsRealAccountNeededForCashier(), { wrapper });
 
@@ -60,17 +49,17 @@ describe('useIsRealAccountNeededForCashier', () => {
     });
 
     test('should return false if client has svg and maltainvest account', async () => {
-        const mockRootStore: DeepPartial<TStores> = {
+        const mock = mockStore({
             client: {
                 active_accounts: [{ landing_company_shortcode: 'maltainvest' }, { landing_company_shortcode: 'svg' }],
             },
             traders_hub: {
                 is_real: true,
             },
-        };
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useIsRealAccountNeededForCashier(), { wrapper });
 

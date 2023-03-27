@@ -27,11 +27,13 @@ const TradeParams = ({ form_components, is_minimized }) => {
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
-            <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--no-padding')}>
-                {isVisible('vanilla_trade_type') && <VanillaTradeTypes key={'vanilla_trade_type'} />}
-                {isVisible('strike') && <Strike key={'strike'} />}
-                {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
-            </Fieldset>
+            {(isVisible('vanilla_trade_type') || isVisible('strike')) && (
+                <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--no-padding')}>
+                    {isVisible('vanilla_trade_type') && <VanillaTradeTypes key={'vanilla_trade_type'} />}
+                    {isVisible('strike') && <Strike key={'strike'} />}
+                </Fieldset>
+            )}
+            {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
             {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
             {isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
             {isVisible('cancellation') && <CancelDeal key={'cancellation'} />}

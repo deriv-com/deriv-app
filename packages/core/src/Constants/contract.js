@@ -218,12 +218,12 @@ export const getSupportedContracts = is_high_low => ({
         position: 'bottom',
     },
     TURBOSLONG: {
-        button_name: 'Buy',
+        button_name: localize('Long'),
         name: 'Turbos',
         position: 'top',
     },
     TURBOSSHORT: {
-        button_name: 'Buy',
+        button_name: localize('Short'),
         name: 'Turbos',
         position: 'bottom',
     },

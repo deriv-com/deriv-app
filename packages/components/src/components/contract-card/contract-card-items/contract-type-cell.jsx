@@ -13,11 +13,9 @@ const ContractTypeCell = ({ displayed_trade_param, getContractTypeDisplay, is_hi
             />
         </div>
         <div className='dc-contract-type__type-label'>
+            <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
             {!!displayed_trade_param && (
-                <React.Fragment>
-                    <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
-                    <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
-                </React.Fragment>
+                <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
             )}
         </div>
     </div>

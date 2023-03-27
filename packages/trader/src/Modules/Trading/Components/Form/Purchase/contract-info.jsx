@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getLocalizedBasis, getContractSubtype, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, getLocalizedBasis, getContractSubtype } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_turbos, is_vanilla }) => (
-    <div className='strike--value-container'>
-        <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
+    <div className='price-info--value-container'>
+        <div className='trade-container__price-info-value'>
             {!has_error_or_not_loaded && (
                 <Money
-                    amount={is_turbos ? proposal_info.number_of_contracts : proposal_info.obj_contract_basis.value}
+                    amount={proposal_info.obj_contract_basis.value}
                     className={classNames('trade-container__price-info-currency', {
-                        'strike--info__value': is_vanilla,
-                        'trade-container__price-info-currency--turbos': is_turbos,
+                        'trade-container__price-info-currency--payout-per-point': is_vanilla || is_turbos,
                     })}
                     currency={currency}
                     show_currency
@@ -22,7 +21,6 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                 />
             )}
         </div>
-
         <div className='trade-container__price-info-movement'>
             {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
                 <Icon icon='IcProfit' />
@@ -50,7 +48,7 @@ const ContractInfo = ({
         switch (basis) {
             case 'stake': {
                 if (is_vanilla || is_turbos) {
-                    return localize('Payout per point');
+                    return localized_basis.payout_per_point;
                 }
                 return localized_basis.payout;
             }
@@ -62,16 +60,11 @@ const ContractInfo = ({
         }
     };
 
-    const setBasisText = () => {
-        if (is_vanilla || is_turbos) {
-            return 'Payout per point';
-        }
-        return proposal_info.obj_contract_basis.text;
-    };
-
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
 
-    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : localize('{{value}}', { value: setBasisText() });
+    const basis_text = has_error_or_not_loaded
+        ? stakeOrPayout()
+        : localize('{{value}}', { value: proposal_info.obj_contract_basis.text });
 
     const { message, obj_contract_basis, stake } = proposal_info;
 
@@ -122,61 +115,10 @@ const ContractInfo = ({
                             </div>
                         </MobileWrapper>
                     </React.Fragment>
-                ) : is_vanilla && isMobile() ? (
-                    <React.Fragment>
-                        <MobileWrapper>
-                            <div
-                                className={classNames('trade-container__price-info-basis', {
-                                    'trade-container__price-info-strike': is_vanilla,
-                                })}
-                            >
-                                {basis_text}
-                                <div className='trade-container__price-info-vanilla'>
-                                    <div
-                                        className={classNames('trade-container__price-info-wrapper', {
-                                            'strike--info__wrapper': is_vanilla,
-                                        })}
-                                    >
-                                        <ValueMovement
-                                            has_error_or_not_loaded={has_error_or_not_loaded}
-                                            proposal_info={proposal_info}
-                                            currency={getCurrencyDisplayCode(currency)}
-                                            has_increased={has_increased}
-                                            is_vanilla={is_vanilla}
-                                        />
-                                    </div>
-                                    <Popover
-                                        alignment='left'
-                                        classNameBubble='trade-container__price-info-modal--vanilla'
-                                        classNameWrapper='trade-container__price-info-modal-wrapper'
-                                        icon='info'
-                                        id='dt_vanilla-stake__tooltip'
-                                        zIndex={9999}
-                                        message={
-                                            <Localize
-                                                i18n_default_text='<0>For {{title}}:</0> {{message}}'
-                                                components={[<Text key={0} weight='bold' size='xxs' />]}
-                                                values={{
-                                                    title: getContractSubtype(type),
-                                                    message,
-                                                }}
-                                            />
-                                        }
-                                    />
-                                </div>
-                            </div>
-                        </MobileWrapper>
-                    </React.Fragment>
                 ) : (
                     obj_contract_basis && (
                         <React.Fragment>
-                            <div
-                                className={classNames('trade-container__price-info-basis', {
-                                    'trade-container__price-info-strike': is_vanilla,
-                                })}
-                            >
-                                {basis_text}
-                            </div>
+                            <div className='trade-container__price-info-basis'>{basis_text}</div>
                             <DesktopWrapper>
                                 <ValueMovement
                                     has_error_or_not_loaded={has_error_or_not_loaded}
@@ -188,11 +130,7 @@ const ContractInfo = ({
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>
-                                <div
-                                    className={classNames('trade-container__price-info-wrapper', {
-                                        'strike--info': is_vanilla,
-                                    })}
-                                >
+                                <div className='trade-container__price-info-wrapper'>
                                     <ValueMovement
                                         has_error_or_not_loaded={has_error_or_not_loaded}
                                         proposal_info={proposal_info}

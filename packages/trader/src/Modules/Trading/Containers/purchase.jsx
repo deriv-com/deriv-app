@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isEmptyObject, isMobile } from '@deriv/shared';
+import { isEmptyObject } from '@deriv/shared';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
-import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 const Purchase = ({
     basis,
@@ -46,44 +45,30 @@ const Purchase = ({
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
         const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
         const purchase_fieldset = (
-            <div className='trade-params--mobile__payout-container'>
-                {is_vanilla && isMobile() && (
-                    <ContractInfo
-                        basis={basis}
-                        currency={currency}
-                        has_increased={info.has_increased}
-                        is_loading={isLoading(info)}
-                        is_multiplier={is_multiplier}
-                        is_vanilla={is_vanilla}
-                        proposal_info={info}
-                        type={type}
-                    />
-                )}
-                <PurchaseFieldset
-                    basis={basis}
-                    buy_info={purchase_info}
-                    currency={currency}
-                    info={info}
-                    key={index}
-                    index={getSortedIndex(index, type)}
-                    has_cancellation={has_cancellation}
-                    is_disabled={is_disabled}
-                    is_high_low={is_high_low}
-                    is_loading={isLoading(info)}
-                    is_market_closed={is_market_closed}
-                    is_mobile={is_mobile}
-                    is_multiplier={is_multiplier}
-                    is_turbos={is_turbos}
-                    is_vanilla={is_vanilla}
-                    is_proposal_empty={is_proposal_empty}
-                    is_proposal_error={is_proposal_error}
-                    purchased_states_arr={purchased_states_arr}
-                    onHoverPurchase={onHoverPurchase}
-                    onClickPurchase={onClickPurchase}
-                    setPurchaseState={setPurchaseState}
-                    type={type}
-                />
-            </div>
+            <PurchaseFieldset
+                basis={basis}
+                buy_info={purchase_info}
+                currency={currency}
+                info={info}
+                key={index}
+                index={getSortedIndex(index, type)}
+                has_cancellation={has_cancellation}
+                is_disabled={is_disabled}
+                is_high_low={is_high_low}
+                is_loading={isLoading(info)}
+                is_market_closed={is_market_closed}
+                is_mobile={is_mobile}
+                is_multiplier={is_multiplier}
+                is_turbos={is_turbos}
+                is_vanilla={is_vanilla}
+                is_proposal_empty={is_proposal_empty}
+                is_proposal_error={is_proposal_error}
+                purchased_states_arr={purchased_states_arr}
+                onHoverPurchase={onHoverPurchase}
+                onClickPurchase={onClickPurchase}
+                setPurchaseState={setPurchaseState}
+                type={type}
+            />
         );
 
         if (!is_vanilla) {

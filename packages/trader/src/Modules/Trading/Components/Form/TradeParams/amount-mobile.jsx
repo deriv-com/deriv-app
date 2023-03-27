@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
-import { Money, Numpad, Tabs, Text } from '@deriv/components';
+import { Money, Numpad, Tabs } from '@deriv/components';
 import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
-import TurbosInfo from './Turbos/turbos-info';
+import MinMaxStakeInfo from './min-max-stake-info';
 
 const Basis = ({
     addToast,
@@ -15,17 +15,16 @@ const Basis = ({
     duration_value,
     has_duration_error,
     is_turbos,
+    is_vanilla,
     onChangeMultiple,
     selected_basis,
     setSelectedAmount,
     setAmountError,
-    stake_boundary,
     toggleModal,
     trade_amount,
     trade_basis,
     trade_duration,
     trade_duration_unit,
-    vanilla_trade_type,
 }) => {
     const user_currency_decimal_places = getDecimalPlaces(currency);
     const onNumberChange = num => {
@@ -71,28 +70,8 @@ const Basis = ({
 
     return (
         <React.Fragment>
-            {is_turbos && (
-                <div className='trade-params__stake-container'>
-                    <TurbosInfo className='trade-container__turbos-trade-info' />
-                </div>
-            )}
-            <div className='trade-params__strike'>
-                {contract_type === 'vanilla' && (
-                    <section className='trade-container__stake-field'>
-                        <div className='trade-container__stake-field--min'>
-                            <Text size='xxs'>{localize('Min. stake')}</Text>
-                            <Text size='xxs'>
-                                {stake_boundary[vanilla_trade_type].min_stake} {currency}
-                            </Text>
-                        </div>
-                        <div className='trade-container__stake-field--max'>
-                            <Text size='xxs'>{localize('Max. stake')}</Text>
-                            <Text size='xxs'>
-                                {stake_boundary[vanilla_trade_type].max_stake} {currency}
-                            </Text>
-                        </div>
-                    </section>
-                )}
+            <div className='trade-params__stake-container'>
+                {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
                 <div
                     className={classNames('trade-params__amount-keypad', { strike__pos: contract_type === 'vanilla' })}
                 >
@@ -132,13 +111,12 @@ const AmountWrapper = connect(({ modules, client, ui }) => ({
     contract_type: modules.trade.contract_type,
     currency: client.currency,
     is_turbos: modules.trade.is_turbos,
+    is_vanilla: modules.trade.is_vanilla,
     onChangeMultiple: modules.trade.onChangeMultiple,
-    stake_boundary: modules.trade.stake_boundary,
     trade_amount: modules.trade.amount,
     trade_basis: modules.trade.basis,
     trade_duration_unit: modules.trade.duration_unit,
     trade_duration: modules.trade.duration,
-    vanilla_trade_type: ui.vanilla_trade_type,
 }))(Basis);
 
 const Amount = ({

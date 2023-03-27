@@ -15,7 +15,7 @@ const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
                 }
             }),
             setHoveredBarrier: jest.fn(),
-            turbos_barrier_choices: ['16', '33', '40'],
+            barrier_choices: ['16', '33', '40'],
         },
     },
 };
@@ -66,7 +66,7 @@ describe('<BarrierSelector/>', () => {
 
         expect(screen.getByText(barriers_list_header)).toBeInTheDocument();
     });
-    it('should render all available barrier values from turbos_barrier_choices in barrier list when it is expanded', () => {
+    it('should render all available barrier values from barrier_choices in barrier list when it is expanded', () => {
         userEvent.click(current_barrier);
 
         ['16', '33', '40'].forEach(barrier => expect(screen.getByTestId(barrier)).toBeInTheDocument());

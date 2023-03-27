@@ -18,7 +18,7 @@ import { BarrierMobile, LastDigitMobile } from '../../Containers/trade-params-mo
 import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
-import PayoutPerPointMobile from '../Elements/Turbos/payout-per-point-mobile';
+import PayoutPerPointMobile from '../Elements/payout-per-point-mobile';
 import TradeTypeTabs from './TradeParams/Turbos/trade-type-tabs';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
@@ -86,18 +86,15 @@ const CollapsibleTradeParams = ({
                     <RiskManagementInfo />
                 </div>
             )}
-            {is_turbos && <PayoutPerPointMobile />}
-            {is_vanilla ? (
+            {(is_turbos || is_vanilla) && <PayoutPerPointMobile />}
+            <div
+                className={classNames({
+                    'purchase-container': !is_vanilla,
+                    'purchase-container__turbos': is_turbos,
+                })}
+            >
                 <Purchase />
-            ) : (
-                <div
-                    className={classNames('purchase-container', {
-                        'purchase-container__turbos': is_turbos,
-                    })}
-                >
-                    <Purchase />
-                </div>
-            )}
+            </div>
         </Collapsible>
     );
 };

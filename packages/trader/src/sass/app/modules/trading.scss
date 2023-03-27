@@ -292,16 +292,6 @@
                     color: var(--text-colored-background);
                 }
             }
-            &-strike {
-                @include mobile {
-                    color: var(--text-less-prominent);
-                    font-size: var(--text-size-xxs);
-                    display: flex;
-                    gap: 0.8rem;
-                    justify-content: space-between;
-                    padding: 1rem 0;
-                }
-            }
             &-currency {
                 margin-left: 4px;
                 margin-right: 1px;
@@ -309,7 +299,7 @@
                 position: relative;
                 font-weight: bold;
 
-                &--turbos {
+                &--payout-per-point {
                     margin-left: 0;
                 }
             }
@@ -323,20 +313,13 @@
         }
         &--turbos {
             align-items: center;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.8rem;
         }
     }
     &__price-info {
         &-currency {
             @include mobile {
                 font-size: 0.9rem;
-            }
-        }
-        &-modal {
-            @include mobile {
-                &--vanilla {
-                    max-width: 33rem;
-                }
             }
         }
     }
@@ -666,8 +649,7 @@
             }
         }
     }
-    &__multipliers-trade-info,
-    &__turbos-trade-info {
+    &__multipliers-trade-info {
         display: flex;
         justify-content: space-around;
         gap: 2.8rem;
@@ -681,15 +663,6 @@
 
             span {
                 border-bottom: 1px dotted var(--text-general);
-            }
-        }
-    }
-    &__turbos-trade-info {
-        justify-content: space-between;
-
-        &-tooltip-text {
-            span {
-                border-bottom: none;
             }
         }
     }
@@ -764,10 +737,7 @@
     position: relative;
 
     &__option {
-        padding: 1.6rem 0.8rem;
-        &--turbos {
-            padding: 0.8rem;
-        }
+        padding: 0.8rem;
         &:not(:only-child) {
             &:nth-last-child(2) {
                 border-bottom-width: 0;
@@ -893,18 +863,21 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.6rem;
-    &__text {
+    &__label {
         position: relative;
         bottom: 0.3rem;
 
-        &-popover {
+        &-wrapper {
             display: flex;
             gap: 0.6rem;
         }
     }
-    &__currency {
+    &__value {
         position: relative;
         bottom: 0.2rem;
+        .trade-container__price-info-movement {
+            top: 0.3rem;
+        }
     }
 }
 
@@ -942,17 +915,7 @@
     }
 }
 
-.strike {
-    &--info {
-        color: var(--text-general);
-        &__value {
-            font-size: var(--text-size-xxs);
-            margin-left: unset;
-        }
-        &__wrapper {
-            padding-right: 1rem;
-        }
-    }
+.price-info {
     &--value-container {
         display: flex;
     }

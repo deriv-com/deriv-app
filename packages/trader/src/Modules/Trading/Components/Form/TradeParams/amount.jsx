@@ -1,5 +1,5 @@
 import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
-import { ButtonToggle, Dropdown, InputField, Text } from '@deriv/components';
+import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
 import AllowEquals from './allow-equals.jsx';
@@ -7,7 +7,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import Multiplier from './Multiplier/multiplier.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
-import TurbosInfo from './Turbos/turbos-info';
+import MinMaxStakeInfo from './min-max-stake-info';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
@@ -67,12 +67,11 @@ const Amount = ({
     is_nativepicker,
     is_single_currency,
     is_turbos,
+    is_vanilla,
     has_equals_only,
     onChange,
     setCurrentFocus,
     validation_errors,
-    stake_boundary,
-    vanilla_trade_type,
 }) => {
     if (is_minimized) {
         return (
@@ -188,23 +187,7 @@ const Amount = ({
                     />
                 </React.Fragment>
             )}
-            {is_turbos && <TurbosInfo className='trade-container__turbos-trade-info' />}
-            {contract_type === 'vanilla' && (
-                <section className='trade-container__stake-field'>
-                    <div className='trade-container__stake-field--min'>
-                        <Text size='xxxs'>{localize('Min. stake')}</Text>
-                        <Text size='xxs'>
-                            {stake_boundary[vanilla_trade_type].min_stake} {currency}
-                        </Text>
-                    </div>
-                    <div className='trade-container__stake-field--max'>
-                        <Text size='xxxs'>{localize('Max. stake')}</Text>
-                        <Text size='xxs'>
-                            {stake_boundary[vanilla_trade_type].max_stake} {currency}
-                        </Text>
-                    </div>
-                </section>
-            )}
+            {(is_turbos || is_vanilla) && <MinMaxStakeInfo />}
         </Fieldset>
     );
 };
@@ -227,12 +210,11 @@ Amount.propTypes = {
     is_nativepicker: PropTypes.bool,
     is_single_currency: PropTypes.bool,
     is_turbos: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     has_equals_only: PropTypes.bool,
     setCurrentFocus: PropTypes.func,
     onChange: PropTypes.func,
     validation_errors: PropTypes.object,
-    stake_boundary: PropTypes.object,
-    vanilla_trade_type: PropTypes.object,
 };
 
 export default connect(({ modules, client, ui }) => ({
@@ -251,11 +233,10 @@ export default connect(({ modules, client, ui }) => ({
     is_single_currency: client.is_single_currency,
     is_multiplier: modules.trade.is_multiplier,
     is_turbos: modules.trade.is_turbos,
+    is_vanilla: modules.trade.is_vanilla,
     has_equals_only: modules.trade.has_equals_only,
     stop_out: modules.trade.stop_out,
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,
-    vanilla_trade_type: ui.vanilla_trade_type,
     validation_errors: modules.trade.validation_errors,
-    stake_boundary: modules.trade.stake_boundary,
 }))(Amount);

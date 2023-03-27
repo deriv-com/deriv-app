@@ -10,9 +10,10 @@ const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
         trade: {
             currency: 'EUR',
             proposal_info: {
-                TURBOSLONG: { number_of_contracts: 10, message: 'test' },
+                TURBOSLONG: { obj_contract_basis: { text: 'Payout per point', value: 10 }, message: 'test' },
             },
             contract_type: 'turboslong',
+            vanilla_trade_type: 'VANILLALONGCALL',
         },
     },
 };

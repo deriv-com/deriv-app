@@ -27,7 +27,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     const contract_basis =
         store.is_vanilla || store.is_turbos
-            ? { text: 'Payout', value: 'number_of_contracts' }
+            ? { text: 'Payout per point', value: 'number_of_contracts' }
             : basis_list.find(o => o.value !== store.basis) || {};
 
     const is_stake = contract_basis.text === 'Stake';
@@ -45,12 +45,6 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     const commission = proposal.commission;
     const cancellation = proposal.cancellation;
-    const turbos_details = {
-        barrier_choices: proposal.barrier_choices || response?.error?.details?.barrier_choices,
-        number_of_contracts: proposal.number_of_contracts,
-        max_stake: proposal.max_stake,
-        min_stake: proposal.min_stake,
-    };
 
     return {
         commission,
@@ -68,7 +62,6 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         profit: profit.toFixed(getDecimalPlaces(store.currency)),
         returns: `${returns.toFixed(2)}%`,
         stake,
-        ...turbos_details,
     };
 };
 

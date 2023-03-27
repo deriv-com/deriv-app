@@ -185,7 +185,7 @@
                 }
             }
         }
-        &__strike {
+        &__stake-container {
             display: flex;
             flex-direction: column;
             .trade-container__stake-field {
@@ -196,18 +196,7 @@
                 margin-top: unset;
             }
         }
-        &__amount,
-        &__stake {
-            &-container {
-                margin: 0.4rem 0 -0.7rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                .trade-container__turbos-trade-info {
-                    width: 24rem;
-                }
-            }
+        &__amount {
             &-keypad {
                 width: 100%;
                 padding: 1.6rem;

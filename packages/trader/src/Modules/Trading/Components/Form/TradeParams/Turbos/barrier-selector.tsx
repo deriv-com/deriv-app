@@ -11,7 +11,7 @@ const BarrierSelector = observer(() => {
     const {
         modules: { trade },
     } = useStore();
-    const { barrier_1, onChange, setHoveredBarrier, turbos_barrier_choices } = trade;
+    const { barrier_1, onChange, setHoveredBarrier, barrier_choices } = trade;
     const [is_barriers_table_expanded, setIsBarriersTableExpanded] = React.useState(false);
     const [is_mobile_tooltip_visible, setIsMobileTooltipVisible] = React.useState(false);
     const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);
@@ -94,7 +94,7 @@ const BarrierSelector = observer(() => {
                         active_item_classname='trade-container__barriers-table__item--selected'
                         base_classname='trade-container__barriers-table__item'
                         className='trade-container__barriers-table__list'
-                        list={turbos_barrier_choices}
+                        list={barrier_choices}
                         selected_item={selected_barrier}
                         onClick={onBarrierClick}
                         onHover={(barrier: string | null) => setHoveredBarrier(barrier)}
@@ -148,7 +148,7 @@ const BarrierSelector = observer(() => {
                                 active_item_classname='trade-container__barriers-table__item--selected'
                                 base_classname='trade-container__barriers-table__item'
                                 className='trade-container__barriers-table__list'
-                                list={turbos_barrier_choices}
+                                list={barrier_choices}
                                 selected_item={selected_barrier}
                                 onClick={onBarrierClick}
                                 onHover={(barrier: string | null) => setHoveredBarrier(barrier)}

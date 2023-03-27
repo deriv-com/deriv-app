@@ -4,6 +4,7 @@ import { shouldShowCancellation, shouldShowExpiration } from '../contract';
 
 export const getLocalizedBasis = () => ({
     payout: localize('Payout'),
+    payout_per_point: localize('Payout per point'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
     turbos: localize('Turbos'),

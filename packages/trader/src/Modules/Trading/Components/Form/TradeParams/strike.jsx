@@ -160,7 +160,7 @@ export default connect(({ modules, ui, common }) => ({
     onChange: modules.trade.onChange,
     validation_errors: modules.trade.validation_errors,
     advanced_duration_unit: ui.advanced_duration_unit,
-    strike_price_choices: modules.trade.strike_price_choices,
+    strike_price_choices: modules.trade.barrier_choices,
     expiry_type: modules.trade.expiry_type,
     start_date: modules.trade.start_date,
     expiry_date: modules.trade.expiry_date,

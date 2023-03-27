@@ -371,7 +371,13 @@ export default class SendbirdStore extends BaseStore {
     }
 
     progressHandler(progress) {
+        const { order_id } = this.root_store.order_store;
         this.setIsUploadComplete(progress.loaded === progress.total);
+        if (progress.loaded === progress.total && !this.should_show_chat_on_orders && !order_id) {
+            setTimeout(() => {
+                this.terminateChatWsConnection();
+            }, 1000);
+        }
     }
 
     sendFile(file) {

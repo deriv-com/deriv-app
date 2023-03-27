@@ -341,7 +341,6 @@ const FinancialAssessment = ({
         if (!is_mf) {
             return form_data;
         }
-        delete form_data.income_source;
         delete form_data.employment_status;
         return form_data;
     };
@@ -409,36 +408,34 @@ const FinancialAssessment = ({
                                             'We’re legally obliged to ask for your financial information.'
                                         )}
                                     >
-                                        {!is_mf && (
-                                            <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
-                                                    <Dropdown
-                                                        placeholder={localize('Source of income')}
-                                                        is_align_text_left
-                                                        name='income_source'
-                                                        list={getIncomeSourceList()}
-                                                        value={values.income_source}
-                                                        onChange={handleChange}
-                                                        handleBlur={handleBlur}
-                                                        error={touched.income_source && errors.income_source}
-                                                    />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
-                                                    <SelectNative
-                                                        placeholder={localize('Please select')}
-                                                        name='income_source'
-                                                        label={localize('Source of income')}
-                                                        list_items={getIncomeSourceList()}
-                                                        value={values.income_source}
-                                                        error={touched.income_source && errors.income_source}
-                                                        onChange={e => {
-                                                            setFieldTouched('income_source', true);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                </MobileWrapper>
-                                            </fieldset>
-                                        )}
+                                        <fieldset className='account-form__fieldset'>
+                                            <DesktopWrapper>
+                                                <Dropdown
+                                                    placeholder={localize('Source of income')}
+                                                    is_align_text_left
+                                                    name='income_source'
+                                                    list={getIncomeSourceList()}
+                                                    value={values.income_source}
+                                                    onChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    error={touched.income_source && errors.income_source}
+                                                />
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    placeholder={localize('Please select')}
+                                                    name='income_source'
+                                                    label={localize('Source of income')}
+                                                    list_items={getIncomeSourceList()}
+                                                    value={values.income_source}
+                                                    error={touched.income_source && errors.income_source}
+                                                    onChange={e => {
+                                                        setFieldTouched('income_source', true);
+                                                        handleChange(e);
+                                                    }}
+                                                />
+                                            </MobileWrapper>
+                                        </fieldset>
                                         {!is_mf && (
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>

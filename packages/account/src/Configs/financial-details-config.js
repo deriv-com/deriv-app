@@ -24,6 +24,11 @@ const financial_details_config = ({ financial_assessment }) => {
             supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
+        income_source: {
+            default_value: financial_assessment?.income_source ?? '',
+            supported_in: ['maltainvest'],
+            rules: [['req', localize('Please select an option')]],
+        },
         net_income: {
             default_value: financial_assessment?.net_income ?? '',
             supported_in: ['maltainvest'],
@@ -65,6 +70,7 @@ const financialDetailsConfig = ({ real_account_signup_target, financial_assessme
             forex_trading_experience_enum: forex_trading_experience_enum(),
             forex_trading_frequency_enum: forex_trading_frequency_enum(),
             estimated_worth_enum: estimated_worth_enum(),
+            income_source_enum: income_source_enum(),
             net_income_enum: net_income_enum(),
             occupation_enum: occupation_enum(),
             other_instruments_trading_experience_enum: other_instruments_trading_experience_enum(),
@@ -248,7 +254,32 @@ const estimated_worth_enum = () => [
 ];
 const forex_trading_experience_enum = binary_options_trading_experience_enum; // Keeping alias to have a uniform readability
 const forex_trading_frequency_enum = binary_options_trading_frequency_enum;
-
+const income_source_enum = () => [
+    {
+        value: 'Salaried Employee',
+        text: localize('Salaried Employee'),
+    },
+    {
+        value: 'Self-Employed',
+        text: localize('Self-Employed'),
+    },
+    {
+        value: 'Investments & Dividends',
+        text: localize('Investments & Dividends'),
+    },
+    {
+        value: 'Pension',
+        text: localize('Pension'),
+    },
+    {
+        value: 'State Benefits',
+        text: localize('State Benefits'),
+    },
+    {
+        value: 'Savings & Inheritance',
+        text: localize('Savings & Inheritance'),
+    },
+];
 const net_income_enum = account_turnover_enum;
 const occupation_enum = () => [
     {

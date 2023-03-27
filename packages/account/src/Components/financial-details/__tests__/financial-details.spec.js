@@ -19,7 +19,6 @@ const fields_enums = {
         { value: 'account turnover 1', text: 'account turnover 1' },
         { value: 'account turnover 2', text: 'account turnover 2' },
     ],
-
     education_level_enum: [
         { value: 'education level 1', text: 'education level 1' },
         { value: 'education level 2', text: 'education level 2' },
@@ -31,6 +30,10 @@ const fields_enums = {
     estimated_worth_enum: [
         { value: 'estimated worth 1', text: 'estimated worth 1' },
         { value: 'estimated worth 2', text: 'estimated worth 2' },
+    ],
+    income_source_enum: [
+        { value: 'income source 1', text: 'income source 1' },
+        { value: 'income source 2', text: 'income source 2' },
     ],
     net_income_enum: [
         { value: 'net income 1', text: 'net income 1' },
@@ -66,11 +69,11 @@ describe('<FinancialDetails />', () => {
     const fieldsRenderCheck = () => {
         expect(screen.getByText('Anticipated annual turnover')).toBeInTheDocument();
         expect(screen.getByText('Estimated net worth')).toBeInTheDocument();
-
         expect(screen.getByText('Industry of employment')).toBeInTheDocument();
         expect(screen.getByText('Level of education')).toBeInTheDocument();
         expect(screen.getByText('Net annual income')).toBeInTheDocument();
         expect(screen.getByText('Occupation')).toBeInTheDocument();
+        expect(screen.getByText('Source of income')).toBeInTheDocument();
         expect(screen.getByText('Source of wealth')).toBeInTheDocument();
     };
 
@@ -80,7 +83,7 @@ describe('<FinancialDetails />', () => {
         fieldsRenderCheck();
 
         const inputs = screen.getAllByTestId('dti_dropdown_display');
-        expect(inputs.length).toBe(7);
+        expect(inputs.length).toBe(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
@@ -95,7 +98,7 @@ describe('<FinancialDetails />', () => {
         fieldsRenderCheck();
 
         const inputs = screen.getAllByRole('combobox');
-        expect(inputs.length).toBe(7);
+        expect(inputs.length).toBe(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
@@ -128,7 +131,7 @@ describe('<FinancialDetails />', () => {
         const education_level_select = select_inputs.find(option => option.name === 'education_level');
         const employment_indystry_select = select_inputs.find(option => option.name === 'employment_industry');
         const estimated_worth_select = select_inputs.find(option => option.name === 'estimated_worth');
-
+        const income_source_select = select_inputs.find(option => option.name === 'income_source');
         const net_income_select = select_inputs.find(option => option.name === 'net_income');
         const occuppation_select = select_inputs.find(option => option.name === 'occupation');
 
@@ -139,6 +142,7 @@ describe('<FinancialDetails />', () => {
         fireEvent.change(education_level_select, { target: { value: 'education level 2' } });
         fireEvent.change(employment_indystry_select, { target: { value: 'employment industry 1' } });
         fireEvent.change(estimated_worth_select, { target: { value: 'estimated worth 2' } });
+        fireEvent.change(income_source_select, { target: { value: 'income source 1' } });
         fireEvent.change(net_income_select, { target: { value: 'net income 1' } });
         fireEvent.change(occuppation_select, { target: { value: 'occupation 2' } });
 

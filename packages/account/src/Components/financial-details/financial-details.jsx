@@ -13,6 +13,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import {
     AccountTurnover,
+    IncomeSource,
     EducationLevel,
     EmploymentIndustry,
     EstimatedWorth,
@@ -24,6 +25,7 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 
 const FinancialInformation = ({
     shared_props,
+    income_source_enum,
     employment_industry_enum,
     occupation_enum,
     source_of_wealth_enum,
@@ -33,6 +35,7 @@ const FinancialInformation = ({
     account_turnover_enum,
 }) => (
     <React.Fragment>
+        <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
         <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
         <Occupation {...shared_props} occupation_enum={occupation_enum} />
         <SourceOfWealth {...shared_props} source_of_wealth_enum={source_of_wealth_enum} />
@@ -99,6 +102,7 @@ const FinancialDetails = props => {
                                         >
                                             <FinancialInformation
                                                 shared_props={shared_props}
+                                                income_source_enum={props.income_source_enum}
                                                 employment_industry_enum={props.employment_industry_enum}
                                                 occupation_enum={props.occupation_enum}
                                                 source_of_wealth_enum={props.source_of_wealth_enum}

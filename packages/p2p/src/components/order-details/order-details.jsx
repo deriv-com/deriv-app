@@ -127,7 +127,7 @@ const OrderDetails = observer(() => {
             status_string !== 'Expired' &&
             order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
         ) {
-            showModal({ key: 'EmailLinkExpiredModal' });
+            showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: isMobile() });
         }
 
         if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal'))

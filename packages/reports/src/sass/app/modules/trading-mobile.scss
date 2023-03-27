@@ -64,9 +64,6 @@
                 font-weight: bold;
                 border: none;
 
-                &--is-offset {
-                    pointer-events: none;
-                }
                 &:focus,
                 &:active,
                 &:hover {

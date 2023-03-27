@@ -143,10 +143,7 @@ const Barrier = ({
                                 classNameInput={classNames(
                                     'barrier__fields-input',
                                     'barrier__fields-barriers-input',
-                                    `barrier__fields-barriers-${input_class}-input`,
-                                    {
-                                        'barrier__fields-input--is-offset': !is_absolute_barrier,
-                                    }
+                                    `barrier__fields-barriers-${input_class}-input`
                                 )}
                                 current_focus={current_focus}
                                 format={format}

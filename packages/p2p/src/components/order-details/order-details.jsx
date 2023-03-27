@@ -21,6 +21,7 @@ import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import 'Components/order-details/order-details.scss';
+import EmailVerificationModal from 'Components/modal-manager/modals/email-verification-modal/email-verification-modal.jsx';
 
 const OrderDetails = observer(() => {
     const { general_store, my_profile_store, order_store, sendbird_store, buy_sell_store } = useStores();
@@ -160,6 +161,7 @@ const OrderDetails = observer(() => {
 
     return (
         <OrderDetailsWrapper page_title={page_title}>
+            <EmailVerificationModal />
             {should_show_lost_funds_banner && (
                 <div className='order-details--warning'>
                     <HintBox

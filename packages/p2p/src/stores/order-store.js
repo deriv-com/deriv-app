@@ -126,14 +126,13 @@ export default class OrderStore {
             p2p_order_confirm: 1,
             id,
         }).then(response => {
-            this.root_store.general_store.hideModal();
+            if (!this.root_store.general_store.isCurrentModal('EmailVerificationModal'))
+                this.root_store.general_store.hideModal();
 
             if (response) {
                 if (response.error) {
                     if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
-                        setTimeout(() =>
-                            this.root_store.general_store.showModal({ key: 'EmailVerificationModal', props: {} })
-                        );
+                        this.root_store.general_store.showModal({ key: 'EmailVerificationModal', props: {} });
                     } else if (
                         response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS

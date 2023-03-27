@@ -60,9 +60,7 @@ export const modals = {
     ),
     EmailVerificationModal: React.lazy(() =>
         import(
-            /* webpackChunkName: "email-verification-modal" */
-            /* webpackMode: eager */
-            'Components/modal-manager/modals/email-verification-modal'
+            /* webpackChunkName: "email-verification-modal" */ 'Components/modal-manager/modals/email-verification-modal'
         )
     ),
     ErrorModal: React.lazy(() =>

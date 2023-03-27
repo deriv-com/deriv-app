@@ -22,22 +22,19 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-describe('<ServicesErrorModel />', () => {
+describe('<ServicesErrorModal />', () => {
+    const modal_props = {
+        is_visible: true,
+        onConfirm: jest.fn(),
+    };
     it('Should return null if code or message is missing', () => {
-        const onConfirm = jest.fn();
         const services_error_mock = {
             code: '',
             message: '',
             type: '',
         };
         const { container } = render(
-            <ServicesErrorModal
-                services_error={services_error_mock}
-                is_logged_in
-                is_virtual
-                is_visible
-                onConfirm={onConfirm}
-            />
+            <ServicesErrorModal services_error={services_error_mock} {...modal_props} is_logged_in is_virtual />
         );
         expect(container).toBeEmptyDOMElement();
     });
@@ -47,12 +44,7 @@ describe('<ServicesErrorModel />', () => {
             code: 'AuthorizationRequired',
             message: 'AuthorizationRequired',
         };
-        const authorization_props = {
-            is_logged_in: true,
-            is_visible: true,
-            onConfirm: jest.fn(),
-        };
-        render(<ServicesErrorModal services_error={services_error_mock} {...authorization_props} />);
+        render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} is_logged_in />);
         expect(screen.getByText('AuthorizationRequiredModal')).toBeInTheDocument();
     });
 
@@ -61,12 +53,7 @@ describe('<ServicesErrorModel />', () => {
             code: 'InsufficientBalance',
             message: 'InsufficientBalance',
         };
-        const insufficient_balance_props = {
-            is_virtual: true,
-            is_visible: true,
-            onConfirm: jest.fn(),
-        };
-        render(<ServicesErrorModal services_error={services_error_mock} {...insufficient_balance_props} />);
+        render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} is_virtual />);
         expect(screen.getByText('InsufficientBalanceModal')).toBeInTheDocument();
     });
 
@@ -75,11 +62,7 @@ describe('<ServicesErrorModel />', () => {
             code: 'CompanyWideLimitExceeded',
             message: 'CompanyWideLimitExceeded',
         };
-        const limit_exceeded_props = {
-            is_visible: true,
-            onConfirm: jest.fn(),
-        };
-        render(<ServicesErrorModal services_error={services_error_mock} {...limit_exceeded_props} />);
+        render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} />);
         expect(screen.getByText('CompanyWideLimitExceededModal')).toBeInTheDocument();
     });
 
@@ -88,11 +71,7 @@ describe('<ServicesErrorModel />', () => {
             code: 'PleaseAuthenticate',
             message: 'PleaseAuthenticate',
         };
-        const account_verification_required_props = {
-            is_visible: true,
-            onConfirm: jest.fn(),
-        };
-        render(<ServicesErrorModal services_error={services_error_mock} {...account_verification_required_props} />);
+        render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} />);
         expect(screen.getByText('AccountVerificationRequiredModal')).toBeInTheDocument();
     });
 
@@ -102,11 +81,7 @@ describe('<ServicesErrorModel />', () => {
             message: 'Default Error',
             title: 'Default Error',
         };
-        const default_case_props = {
-            is_visible: true,
-            onConfirm: jest.fn(),
-        };
-        render(<ServicesErrorModal services_error={services_error_mock} {...default_case_props} />);
+        render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} />);
         expect(screen.getByText('Modal')).toBeInTheDocument();
     });
 });

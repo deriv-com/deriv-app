@@ -169,6 +169,7 @@ export default class UIStore extends BaseStore {
     is_deriv_account_needed_modal_visible = false;
     is_exit_traders_hub_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
+    is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
@@ -208,6 +209,7 @@ export default class UIStore extends BaseStore {
             has_read_scam_message: observable,
             is_exit_traders_hub_modal_visible: observable,
             is_ready_to_deposit_modal_visible: observable,
+            is_need_real_account_for_cashier_modal_visible: observable,
             is_services_error_visible: observable,
             is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
@@ -349,6 +351,7 @@ export default class UIStore extends BaseStore {
             toggleWelcomeModal: action.bound,
             toggleExitTradersHubModal: action.bound,
             toggleReadyToDepositModal: action.bound,
+            toggleNeedRealAccountForCashierModal: action.bound,
             toggleShouldShowRealAccountsList: action.bound,
             toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
@@ -902,6 +905,10 @@ export default class UIStore extends BaseStore {
 
     toggleReadyToDepositModal() {
         this.is_ready_to_deposit_modal_visible = !this.is_ready_to_deposit_modal_visible;
+    }
+
+    toggleNeedRealAccountForCashierModal() {
+        this.is_need_real_account_for_cashier_modal_visible = !this.is_need_real_account_for_cashier_modal_visible;
     }
 
     setCFDPasswordResetModal(val) {

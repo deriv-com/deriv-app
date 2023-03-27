@@ -74,6 +74,7 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             is_eu_selected: computed,
             is_real: computed,
+            real_account_needed_for_cashier: computed,
             is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
@@ -476,6 +477,12 @@ export default class TradersHubStore extends BaseStore {
     }
     get is_eu_user() {
         return this.selected_region === 'EU';
+    }
+
+    get real_account_needed_for_cashier() {
+        const { has_svg_account, has_maltainvest_account } = this.root_store.client;
+
+        return ((has_svg_account && this.is_eu_user) || (has_maltainvest_account && !this.is_eu_user)) && this.is_real;
     }
 
     get multipliers_account_status() {

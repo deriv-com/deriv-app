@@ -239,6 +239,8 @@ type TUiStore = {
     setSubSectionIndex: (index: number) => void;
     toggleReadyToDepositModal: () => void;
     is_ready_to_deposit_modal_visible: boolean;
+    is_need_real_account_for_cashier_modal_visible: boolean;
+    toggleNeedRealAccountForCashierModal: () => void;
 };
 
 type TMenuStore = {

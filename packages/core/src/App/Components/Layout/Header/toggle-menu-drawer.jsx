@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { useOnrampVisible, useAccountTransferVisible, useRealAccountNeededForCashier } from '@deriv/hooks';
+import { useOnrampVisible, useAccountTransferVisible, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
@@ -23,7 +23,7 @@ const MenuLink = observer(
         const history = useHistory();
         const { has_any_real_account, is_virtual } = client;
         const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
-        const real_account_needed_for_cashier = useRealAccountNeededForCashier();
+        const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
         const cashier_link =
             link_to === routes.cashier_deposit ||

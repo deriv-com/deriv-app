@@ -4,7 +4,7 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useRealAccountNeededForCashier } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 
@@ -40,7 +40,7 @@ const CashierTab = observer(() => {
     const { has_any_real_account, is_virtual } = client;
     const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
-    const real_account_needed_for_cashier = useRealAccountNeededForCashier();
+    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
     const history = useHistory();
 
@@ -56,9 +56,7 @@ const CashierTab = observer(() => {
     };
 
     const handleClickCashier = () => {
-        if (!has_any_real_account && is_virtual) {
-            toggleModal();
-        } else if (real_account_needed_for_cashier) {
+        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
             toggleModal();
         } else {
             history.push(routes.cashier_deposit);

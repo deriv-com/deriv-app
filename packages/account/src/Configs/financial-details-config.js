@@ -24,11 +24,6 @@ const financial_details_config = ({ financial_assessment }) => {
             supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
-        // income_source: {
-        //     default_value: financial_assessment?.income_source ?? '',
-        //     supported_in: ['maltainvest'],
-        //     rules: [['req', localize('Please select an option')]],
-        // },
         net_income: {
             default_value: financial_assessment?.net_income ?? '',
             supported_in: ['maltainvest'],

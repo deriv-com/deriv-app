@@ -14,7 +14,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-container.scss';
 
 type TPaymentAgentContainer = {
-    is_deposit: boolean;
+    is_deposit?: boolean;
     verification_code: string;
 };
 
@@ -63,7 +63,7 @@ const PaymentAgentContainer = observer(({ is_deposit, verification_code }: TPaym
     }, [onChangePaymentMethod]);
 
     React.useEffect(() => {
-        if (app_contents_scroll_ref) app_contents_scroll_ref.current.scrollTop = 0;
+        if (app_contents_scroll_ref && app_contents_scroll_ref.current) app_contents_scroll_ref.current.scrollTop = 0;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_try_withdraw_successful, is_withdraw_successful]);
 
@@ -148,7 +148,7 @@ const PaymentAgentContainer = observer(({ is_deposit, verification_code }: TPaym
                                     onChangePaymentMethod({
                                         target: {
                                             name: 'payment_methods',
-                                            value: e.target.value ? e.target.value.toLowerCase() : 0,
+                                            value: e.target.value ? e.target.value.toLowerCase() : '0',
                                         },
                                     })
                                 }

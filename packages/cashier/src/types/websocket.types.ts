@@ -7,8 +7,10 @@ import {
     DetailsOfEachMT5Loginid,
     P2PAdvertInfo,
     TransferBetweenAccountsResponse,
+    PaymentAgentWithdrawResponse,
+    PaymentAgentDetailsResponse,
 } from '@deriv/api-types';
-import type { TTransactionItem } from 'Types';
+import type { TPaymentAgentWithdrawRequest, TTransactionItem, TExtendedPaymentAgentListResponse } from 'Types';
 
 export type TCashierPayments = {
     provider?: string;
@@ -30,6 +32,10 @@ export type TServerError = {
     message: string;
     details?: { [key: string]: string };
     fields?: string[];
+};
+
+type TPassthrough = {
+    [k: string]: unknown;
 };
 
 type TServiceTokenRequest = {
@@ -62,9 +68,19 @@ type TWebSocketCall = {
         currency?: string,
         amount?: number
     ) => Promise<TransferBetweenAccountsResponse & { error: TServerError }>;
+    paymentAgentDetails: (passthrough?: TPassthrough, req_id?: number) => Promise<PaymentAgentDetailsResponse>;
+    paymentAgentList: (residence: string, currency: string) => Promise<TExtendedPaymentAgentListResponse>;
+    paymentAgentWithdraw: ({
+        loginid,
+        currency,
+        amount,
+        verification_code,
+        dry_run,
+    }: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
 };
 
 export type TWebSocket = {
+    allPaymentAgentList: (residence: string) => Promise<TExtendedPaymentAgentListResponse>;
     authorized: TWebSocketCall;
     balanceAll: () => Promise<Balance>;
     cancelCryptoTransaction?: (transaction_id: string) => Promise<{ error: TServerError }>;

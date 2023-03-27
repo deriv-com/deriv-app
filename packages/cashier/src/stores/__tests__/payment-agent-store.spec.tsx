@@ -5,7 +5,7 @@ import { configure } from 'mobx';
 configure({ safeDescriptors: false });
 
 describe('PaymentAgentStore', () => {
-    let payment_agent_store;
+    let payment_agent_store: PaymentAgentStore, spyWindow;
     const mocked_payment_agent_list = {
         list: [
             {
@@ -41,28 +41,28 @@ describe('PaymentAgentStore', () => {
     const mocked_payment_agents = [
         {
             currency: 'USD',
-            deposit_commission: 0,
+            deposit_commission: '0',
             email: 'pa@example.com',
             further_information: 'further information',
             max_withdrawal: '2000',
             min_withdrawal: '10',
             name: 'Payment Agent of CR90000000',
             paymentagent_loginid: 'CR90000000',
-            phones: [{ phone_number: '+12345678' }],
+            phone_numbers: [{ phone_number: '+12345678' }],
             supported_banks: [{ payment_method: 'Visa' }],
             urls: [{ url: 'http://www.pa.com' }],
             withdrawal_commission: 0,
         },
         {
             currency: 'USD',
-            deposit_commission: 0,
+            deposit_commission: '0',
             email: 'pa@example.com',
             further_information: 'further information',
             max_withdrawal: '2000',
             min_withdrawal: '10',
             name: 'Payment Agent of CR90000002',
             paymentagent_loginid: 'CR90000002',
-            phones: [{ phone_number: '+12345678' }],
+            phone_numbers: [{ phone_number: '+12345678' }],
             supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
             urls: [{ url: 'http://www.pa.com' }],
             withdrawal_commission: 0,
@@ -113,11 +113,11 @@ describe('PaymentAgentStore', () => {
             wait: () => Promise.resolve(),
         };
 
-        payment_agent_store = new PaymentAgentStore({ root_store, WS });
+        payment_agent_store = new PaymentAgentStore(WS, root_store);
     });
 
     beforeAll(() => {
-        const spyWindow = jest.spyOn(window, 'window', 'get');
+        spyWindow = jest.spyOn(window, 'window', 'get');
         spyWindow.mockImplementation(() => ({
             location: {
                 pathname: routes.cashier_pa,
@@ -158,7 +158,7 @@ describe('PaymentAgentStore', () => {
     });
 
     it('should clear the list of supported banks', () => {
-        payment_agent_store.clearSuppertedBanks();
+        payment_agent_store.clearSupportedBanks();
         expect(payment_agent_store.supported_banks.length).toBe(0);
     });
 
@@ -176,24 +176,20 @@ describe('PaymentAgentStore', () => {
 
     it('should add payment agent to list', () => {
         payment_agent_store.setList(mocked_payment_agents[0]);
-        expect(payment_agent_store.list).toEqual(
-            expect.arrayContaining([
-                {
-                    currency: 'USD',
-                    deposit_commission: 0,
-                    email: 'pa@example.com',
-                    further_information: 'further information',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    name: 'Payment Agent of CR90000000',
-                    paymentagent_loginid: 'CR90000000',
-                    phones: [{ phone_number: '+12345678' }],
-                    supported_banks: [{ payment_method: 'Visa' }],
-                    urls: [{ url: 'http://www.pa.com' }],
-                    withdrawal_commission: 0,
-                },
-            ])
-        );
+        expect(payment_agent_store.list).toContainEqual({
+            currency: 'USD',
+            deposit_commission: '0',
+            email: 'pa@example.com',
+            further_information: 'further information',
+            max_withdrawal: '2000',
+            min_withdrawal: '10',
+            name: 'Payment Agent of CR90000000',
+            paymentagent_loginid: 'CR90000000',
+            phone_numbers: [{ phone_number: '+12345678' }],
+            supported_banks: [{ payment_method: 'Visa' }],
+            urls: [{ url: 'http://www.pa.com' }],
+            withdrawal_commission: 0,
+        });
     });
 
     it('should clear the list of payment agents', () => {
@@ -205,45 +201,72 @@ describe('PaymentAgentStore', () => {
         const spySortSupportedBanks = jest.spyOn(payment_agent_store, 'sortSupportedBanks');
 
         await payment_agent_store.setPaymentAgentList();
-        expect(payment_agent_store.list).toEqual(expect.arrayContaining(mocked_payment_agents));
+        expect(payment_agent_store.list).toContainEqual([
+            {
+                currency: 'USD',
+                deposit_commission: '0',
+                email: 'pa@example.com',
+                further_information: 'further information',
+                max_withdrawal: '2000',
+                min_withdrawal: '10',
+                name: 'Payment Agent of CR90000000',
+                paymentagent_loginid: 'CR90000000',
+                phone_numbers: [{ phone_number: '+12345678' }],
+                supported_banks: [{ payment_method: 'Visa' }],
+                urls: [{ url: 'http://www.pa.com' }],
+                withdrawal_commission: 0,
+            },
+            {
+                currency: 'USD',
+                deposit_commission: '0',
+                email: 'pa@example.com',
+                further_information: 'further information',
+                max_withdrawal: '2000',
+                min_withdrawal: '10',
+                name: 'Payment Agent of CR90000002',
+                paymentagent_loginid: 'CR90000002',
+                phone_numbers: [{ phone_number: '+12345678' }],
+                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                urls: [{ url: 'http://www.pa.com' }],
+                withdrawal_commission: 0,
+            },
+        ]);
         expect(spySortSupportedBanks).toHaveBeenCalled();
     });
 
     it('should filter payment agent list by selected bank', async () => {
         await payment_agent_store.setPaymentAgentList();
         payment_agent_store.filterPaymentAgentList('card');
-        expect(payment_agent_store.filtered_list).toEqual(
-            expect.arrayContaining([
-                {
-                    currency: 'USD',
-                    deposit_commission: 0,
-                    email: 'pa@example.com',
-                    further_information: 'further information',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    name: 'Payment Agent of CR90000002',
-                    paymentagent_loginid: 'CR90000002',
-                    phones: [{ phone_number: '+12345678' }],
-                    supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-                    urls: [{ url: 'http://www.pa.com' }],
-                    withdrawal_commission: 0,
-                },
-                {
-                    currency: 'USD',
-                    deposit_commission: 0,
-                    email: 'pa@example.com',
-                    further_information: 'further information',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    name: 'Payment Agent of CR90000000',
-                    paymentagent_loginid: 'CR90000000',
-                    phones: [{ phone_number: '+12345678' }],
-                    supported_banks: [{ payment_method: 'Visa' }],
-                    urls: [{ url: 'http://www.pa.com' }],
-                    withdrawal_commission: 0,
-                },
-            ])
-        );
+        expect(payment_agent_store.filtered_list).toContainEqual([
+            {
+                currency: 'USD',
+                deposit_commission: 0,
+                email: 'pa@example.com',
+                further_information: 'further information',
+                max_withdrawal: '2000',
+                min_withdrawal: '10',
+                name: 'Payment Agent of CR90000002',
+                paymentagent_loginid: 'CR90000002',
+                phone_numbers: [{ phone_number: '+12345678' }],
+                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                urls: [{ url: 'http://www.pa.com' }],
+                withdrawal_commission: 0,
+            },
+            {
+                currency: 'USD',
+                deposit_commission: 0,
+                email: 'pa@example.com',
+                further_information: 'further information',
+                max_withdrawal: '2000',
+                min_withdrawal: '10',
+                name: 'Payment Agent of CR90000000',
+                paymentagent_loginid: 'CR90000000',
+                phone_numbers: [{ phone_number: '+12345678' }],
+                supported_banks: [{ payment_method: 'Visa' }],
+                urls: [{ url: 'http://www.pa.com' }],
+                withdrawal_commission: 0,
+            },
+        ]);
     });
 
     it('should filter payment agent list by search term', async () => {
@@ -251,24 +274,20 @@ describe('PaymentAgentStore', () => {
         await payment_agent_store.setPaymentAgentList();
         payment_agent_store.filterPaymentAgentList();
         expect(payment_agent_store.filtered_list.length).toBe(1);
-        expect(payment_agent_store.filtered_list).toEqual(
-            expect.arrayContaining([
-                {
-                    currency: 'USD',
-                    deposit_commission: 0,
-                    email: 'pa@example.com',
-                    further_information: 'further information',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    name: 'Payment Agent of CR90000002',
-                    paymentagent_loginid: 'CR90000002',
-                    phones: [{ phone_number: '+12345678' }],
-                    supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
-                    urls: [{ url: 'http://www.pa.com' }],
-                    withdrawal_commission: 0,
-                },
-            ])
-        );
+        expect(payment_agent_store.filtered_list).toContainEqual({
+            currency: 'USD',
+            deposit_commission: 0,
+            email: 'pa@example.com',
+            further_information: 'further information',
+            max_withdrawal: '2000',
+            min_withdrawal: '10',
+            name: 'Payment Agent of CR90000002',
+            paymentagent_loginid: 'CR90000002',
+            phone_numbers: [{ phone_number: '+12345678' }],
+            supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+            urls: [{ url: 'http://www.pa.com' }],
+            withdrawal_commission: 0,
+        });
     });
 
     it('should set has_payment_agent_search_warning to true when there is no matches for the search term', async () => {
@@ -319,7 +338,7 @@ describe('PaymentAgentStore', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
 
         payment_agent_store.setIsTryWithdrawSuccessful(true);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_store.is_try_withdraw_successful).toBeTruthy();
     });
 
@@ -366,19 +385,15 @@ describe('PaymentAgentStore', () => {
         };
 
         payment_agent_store.addPaymentAgent(payment_agent);
-        expect(payment_agent_store.agents).toEqual(
-            expect.arrayContaining([
-                {
-                    text: 'Payment Agent of CR90000003',
-                    value: 'CR90000003',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    email: 'pa@example.com',
-                    phone: [{ phone_number: '+12345678' }],
-                    url: [{ url: 'http://www.pa.com' }],
-                },
-            ])
-        );
+        expect(payment_agent_store.agents).toContainEqual({
+            text: 'Payment Agent of CR90000003',
+            value: 'CR90000003',
+            max_withdrawal: '2000',
+            min_withdrawal: '10',
+            email: 'pa@example.com',
+            phone_numbers: [{ phone_number: '+12345678' }],
+            url: [{ url: 'http://www.pa.com' }],
+        });
     });
 
     it('should mount payment agent withdraw', async () => {
@@ -387,23 +402,21 @@ describe('PaymentAgentStore', () => {
         expect(payment_agent_store.is_withdraw).toBeTruthy();
         expect(payment_agent_store.is_withdraw_successful).toBeFalsy();
         expect(payment_agent_store.receipt).toEqual({});
-        expect(payment_agent_store.agents).toEqual(
-            expect.arrayContaining([
-                {
-                    text: 'Payment Agent of CR90000000',
-                    value: 'CR90000000',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    email: 'pa@example.com',
-                    phone: [{ phone_number: '+12345678' }],
-                    url: [{ url: 'http://www.pa.com' }],
-                },
-            ])
-        );
+        expect(payment_agent_store.agents).toContainEqual({
+            text: 'Payment Agent of CR90000000',
+            value: 'CR90000000',
+            max_withdrawal: '2000',
+            min_withdrawal: '10',
+            email: 'pa@example.com',
+            phone_numbers: [{ phone_number: '+12345678' }],
+            url: [{ url: 'http://www.pa.com' }],
+        });
     });
 
     it('should redirect to deposit page if there is no available payment agent upon accessing PA withdrawal', async () => {
-        payment_agent_store.WS.authorized.paymentAgentList.mockResolvedValueOnce({ paymentagent_list: { list: [] } });
+        (payment_agent_store.WS.authorized.paymentAgentList as jest.Mock).mockResolvedValueOnce({
+            paymentagent_list: { list: [] },
+        });
         await payment_agent_store.onMountPaymentAgentWithdraw();
         expect(payment_agent_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
@@ -413,7 +426,7 @@ describe('PaymentAgentStore', () => {
 
         await payment_agent_store.onMountPaymentAgentWithdraw();
         await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
-        expect(spySetErrorMessage).toHaveBeenCalledWith('');
+        expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_store.confirm).toEqual({
             amount: '200',
             currency: 'USD',
@@ -427,7 +440,9 @@ describe('PaymentAgentStore', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
         const error_message = { message: 'Sorry, an error occurred.' };
 
-        payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
+        (payment_agent_store.WS.authorized.paymentAgentWithdraw as jest.Mock).mockResolvedValueOnce({
+            error: error_message,
+        });
         await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
         expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
         expect(payment_agent_store.is_try_withdraw_successful).toBeFalsy();
@@ -437,7 +452,7 @@ describe('PaymentAgentStore', () => {
     //     const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
 
     //     payment_agent_store.resetPaymentAgent();
-    //     expect(spySetErrorMessage).toHaveBeenLastCalledWith('');
+    //     expect(spySetErrorMessage).toHaveBeenLastCalledWith({ code: '', message: '' });
     //     expect(payment_agent_store.is_withdraw).toBeFalsy();
     //     expect(payment_agent_store.active_tab_index).toBe(0);
     // });
@@ -467,7 +482,9 @@ describe('PaymentAgentStore', () => {
     });
 
     it('should request for payment agent withdraw', async () => {
-        payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ paymentagent_withdraw: 1 });
+        (payment_agent_store.WS.authorized.paymentAgentWithdraw as jest.Mock).mockResolvedValueOnce({
+            paymentagent_withdraw: 1,
+        });
         await payment_agent_store.onMountPaymentAgentWithdraw();
         await payment_agent_store.requestPaymentAgentWithdraw(mocked_withdrawal_request);
         expect(payment_agent_store.receipt).toEqual({
@@ -487,7 +504,9 @@ describe('PaymentAgentStore', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_store.error, 'setErrorMessage');
         const error_message = { message: 'Sorry, an error occurred.' };
 
-        payment_agent_store.WS.authorized.paymentAgentWithdraw.mockResolvedValueOnce({ error: error_message });
+        (payment_agent_store.WS.authorized.paymentAgentWithdraw as jest.Mock).mockResolvedValueOnce({
+            error: error_message,
+        });
         await payment_agent_store.requestPaymentAgentWithdraw(mocked_withdrawal_request);
         expect(spySetErrorMessage).toHaveBeenLastCalledWith(error_message, payment_agent_store.resetPaymentAgent);
         expect(payment_agent_store.is_withdraw_successful).toBeFalsy();

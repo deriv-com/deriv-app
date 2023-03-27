@@ -28,7 +28,7 @@ const validateWithdrawal = (
     values: TValidateWithdrawalValueProps,
     { balance, currency, payment_agent }: TValidateWithdrawalProps
 ) => {
-    const errors = { amount: '' };
+    const errors: { amount?: string } = {};
 
     const { is_ok, message } = validNumber(values.amount, {
         type: 'float',
@@ -129,7 +129,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                                             amount={
                                                 payment_agent_list.find(
                                                     pa => pa.value === payment_agent.paymentagent_loginid
-                                                ).min_withdrawal
+                                                )?.min_withdrawal || undefined
                                             }
                                             currency={payment_agent.currency}
                                             show_currency
@@ -139,7 +139,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                                             amount={
                                                 payment_agent_list.find(
                                                     pa => pa.value === payment_agent.paymentagent_loginid
-                                                ).max_withdrawal
+                                                )?.max_withdrawal || undefined
                                             }
                                             currency={payment_agent.currency}
                                             show_currency

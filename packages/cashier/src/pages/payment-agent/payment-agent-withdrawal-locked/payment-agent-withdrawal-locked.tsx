@@ -1,13 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { withRouter } from 'react-router-dom';
 import Error from 'Components/error';
 import './payment-agent-withdrawal-locked.scss';
+import { RouteComponentProps } from 'react-router';
+import { TServerError } from 'Types';
+import ErrorStore from 'Stores/error-store';
 
-const PaymentAgentWithdrawalLockedItem = ({ item }) => {
+type PaymentAgentWithdrawalLockedItemProps = {
+    item: {
+        btn_confirm_text: string;
+        content: string | JSX.Element;
+        onConfirm: () => void;
+        title?: string;
+    };
+};
+
+type PaymentAgentWithdrawalLockedProps = RouteComponentProps & {
+    error: TServerError & {
+        onClickButton?: () => void;
+    };
+};
+
+const PaymentAgentWithdrawalLockedItem = ({ item }: PaymentAgentWithdrawalLockedItemProps) => {
     return (
         <div className='cashier__wrapper--align-center payment-agent-withdrawal-locked'>
             {item.title && (
@@ -31,7 +48,7 @@ const PaymentAgentWithdrawalLockedItem = ({ item }) => {
     );
 };
 
-const PaymentAgentWithdrawalLocked = ({ error, history }) => {
+const PaymentAgentWithdrawalLocked = ({ error, history }: PaymentAgentWithdrawalLockedProps) => {
     const items = [
         ...(error.code === 'PaymentAgentWithdrawSameMethod'
             ? [
@@ -63,10 +80,9 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
 
     if (
         error.onClickButton ||
-        error.code !== 'PaymentAgentWithdrawSameMethod' ||
-        error.code !== 'PaymentAgentUseOtherMethod'
+        (error.code !== 'PaymentAgentWithdrawSameMethod' && error.code !== 'PaymentAgentUseOtherMethod')
     ) {
-        return <Error error={error} />;
+        return <Error error={error as unknown as ErrorStore} />;
     }
 
     return (
@@ -76,15 +92,6 @@ const PaymentAgentWithdrawalLocked = ({ error, history }) => {
             })}
         </React.Fragment>
     );
-};
-
-PaymentAgentWithdrawalLocked.propTypes = {
-    error: PropTypes.object,
-    history: PropTypes.object,
-};
-
-PaymentAgentWithdrawalLockedItem.propTypes = {
-    item: PropTypes.object,
 };
 
 export default withRouter(PaymentAgentWithdrawalLocked);

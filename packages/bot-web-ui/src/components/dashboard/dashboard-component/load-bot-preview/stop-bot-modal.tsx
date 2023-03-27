@@ -130,7 +130,6 @@ const StopBotModal = ({
             is_dialog_open={is_dialog_open}
             toggleStopBotDialog={() => {
                 toggleStopBotDialog();
-                loadDataStrategy();
             }}
         />
     );

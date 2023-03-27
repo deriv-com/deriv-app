@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import './static-currency-switcher-container.scss';
-import { Icon, CurrencyIcon } from '@deriv/components';
+import { Icon } from '@deriv/components';
+import CurrencyIcon from 'Components/currency';
 
 type CurrentSwitcherContainerProps = {
     actions?: ReactNode;

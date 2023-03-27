@@ -1,51 +1,50 @@
+import classNames from 'classnames';
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { Formik } from 'formik';
+import { useHistory, withRouter } from 'react-router';
 import {
-    Button,
-    DesktopWrapper,
-    Dropdown,
     FormSubmitErrorMessage,
-    Icon,
     Loading,
-    MobileWrapper,
+    Button,
+    Dropdown,
     Modal,
+    Icon,
+    DesktopWrapper,
+    MobileWrapper,
     SelectNative,
     Text,
 } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { PlatformContext, WS, isDesktop, isMobile, platforms, routes } from '@deriv/shared';
+import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import LeaveConfirm from 'Components/leave-confirm';
+import IconMessageContent from 'Components/icon-message-content';
+import DemoMessage from 'Components/demo-message';
+import LoadErrorMessage from 'Components/load-error-message';
+import FormBody from 'Components/form-body';
+import FormBodySection from 'Components/form-body-section';
+import FormSubHeader from 'Components/form-sub-header';
+import FormFooter from 'Components/form-footer';
 import {
     getAccountTurnoverList,
-    getBinaryOptionsTradingExperienceList,
-    getBinaryOptionsTradingFrequencyList,
-    getCfdTradingExperienceList,
-    getCfdTradingFrequencyList,
     getEducationLevelList,
     getEmploymentIndustryList,
     getEmploymentStatusList,
     getEstimatedWorthList,
-    getForexTradingExperienceList,
-    getForexTradingFrequencyList,
     getIncomeSourceList,
     getNetIncomeList,
     getOccupationList,
+    getSourceOfWealthList,
+    getBinaryOptionsTradingExperienceList,
+    getBinaryOptionsTradingFrequencyList,
+    getCfdTradingExperienceList,
+    getCfdTradingFrequencyList,
+    getForexTradingExperienceList,
+    getForexTradingFrequencyList,
     getOtherInstrumentsTradingExperienceList,
     getOtherInstrumentsTradingFrequencyList,
-    getSourceOfWealthList,
 } from './financial-information-list';
-import { useHistory, withRouter } from 'react-router';
-
-import DemoMessage from 'Components/demo-message';
-import FormBody from 'Components/form-body';
-import FormBodySection from 'Components/form-body-section';
-import FormFooter from 'Components/form-footer';
-import FormSubHeader from 'Components/form-sub-header';
-import { Formik } from 'formik';
-import IconMessageContent from 'Components/icon-message-content';
-import LeaveConfirm from 'Components/leave-confirm';
-import LoadErrorMessage from 'Components/load-error-message';
-import { PropTypes } from 'prop-types';
-import React from 'react';
-import classNames from 'classnames';
-import { connect } from 'Stores/connect';
 
 const ConfirmationContent = ({ className }) => {
     return (

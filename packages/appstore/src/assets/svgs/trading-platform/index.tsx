@@ -16,7 +16,7 @@ import Options from 'Assets/svgs/trading-platform/ic-appstore-options.svg';
 import SmartTrader from 'Assets/svgs/trading-platform/ic-brand-smarttrader.svg';
 import SmartTraderBlue from 'Assets/svgs/trading-platform/ic-appstore-smarttrader-blue.svg';
 import CFDs from 'Assets/svgs/trading-platform/ic-appstore-cfds.svg';
-import SwapFree from 'Assets/svgs/trading-platform/ic-appstore-swapfree.svg';
+import SwapFree from 'Assets/svgs/trading-platform/ic-appstore-swap-free.svg';
 import { IconProps } from '../icon-types';
 
 export const PlatformIcons = {

@@ -493,9 +493,9 @@ const StaticDashboard = ({
                                     />
                                     <>{isMobile() && !has_account && <Divider />}</>
                                     <StaticCFDAccountManager
-                                        type='swapfree'
+                                        type='swap_free'
                                         platform='mt5'
-                                        appname={localize('Swap Free')}
+                                        appname={localize('Swap-Free')}
                                         description={localize(
                                             'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
                                         )}

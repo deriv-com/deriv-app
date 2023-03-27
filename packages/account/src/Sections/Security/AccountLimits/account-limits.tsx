@@ -1,8 +1,9 @@
 import AccountLimits from 'Components/account-limits/account-limits.jsx';
 import 'Components/account-limits/account-limits.scss';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
-export default connect(({ client, common, ui }) => ({
+export default connect(({ client, common, ui }: RootStore) => ({
     account_limits: client.account_limits,
     currency: client.currency,
     getLimits: client.getLimits,

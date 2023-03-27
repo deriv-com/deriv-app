@@ -1,9 +1,10 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-const currency_name_map = {
+type TCurrency_name_map = Record<string, { display_code: string; name: string }>;
+
+const currency_name_map: TCurrency_name_map = {
     BTC: { display_code: 'BTC', name: localize('Bitcoin') },
     BCH: { display_code: 'BCH', name: localize('Bitcoin Cash') },
     ETH: { display_code: 'ETH', name: localize('Ether') },
@@ -17,7 +18,12 @@ const currency_name_map = {
     GBP: { display_code: 'GBP', name: localize('Pound Sterling') },
 };
 
-const AccountLimitsInfo = ({ currency, is_virtual }) => (
+type TAccountLimitsInfo = {
+    currency?: string;
+    is_virtual?: boolean;
+};
+
+const AccountLimitsInfo = ({ currency, is_virtual }: TAccountLimitsInfo) => (
     <>
         {!is_virtual && (
             <>
@@ -42,10 +48,5 @@ const AccountLimitsInfo = ({ currency, is_virtual }) => (
         )}
     </>
 );
-
-AccountLimitsInfo.propTypes = {
-    currency: PropTypes.string,
-    is_virtual: PropTypes.bool,
-};
 
 export default AccountLimitsInfo;

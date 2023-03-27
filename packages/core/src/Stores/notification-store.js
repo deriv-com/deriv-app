@@ -1,3 +1,7 @@
+import debounce from 'lodash.debounce';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import React from 'react';
+import { StaticUrl } from '@deriv/components';
 import {
     LocalStore,
     daysSince,
@@ -16,7 +20,8 @@ import {
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { BinaryLink } from 'App/Components/Routes';
+import { WS } from 'Services';
 import {
     excluded_notifications,
     getCashierValidations,
@@ -24,13 +29,7 @@ import {
     hasMissingRequiredField,
 } from './Helpers/client-notifications';
 import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
-
 import BaseStore from './base-store';
-import { BinaryLink } from 'App/Components/Routes';
-import React from 'react';
-import { StaticUrl } from '@deriv/components';
-import { WS } from 'Services';
-import debounce from 'lodash.debounce';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;

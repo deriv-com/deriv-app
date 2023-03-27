@@ -1,3 +1,16 @@
+import classNames from 'classnames';
+import { Formik } from 'formik';
+import React from 'react';
+import {
+    AutoHeightWrapper,
+    Div100vhContainer,
+    FormSubmitButton,
+    Modal,
+    Text,
+    ThemedScrollbars,
+} from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import {
     AccountTurnover,
     EducationLevel,
@@ -8,20 +21,6 @@ import {
     Occupation,
     SourceOfWealth,
 } from './financial-details-partials';
-import {
-    AutoHeightWrapper,
-    Div100vhContainer,
-    FormSubmitButton,
-    Modal,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared';
-
-import { Formik } from 'formik';
-import React from 'react';
-import classNames from 'classnames';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 const FinancialInformation = ({

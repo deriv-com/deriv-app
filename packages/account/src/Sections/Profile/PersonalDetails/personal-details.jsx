@@ -1,3 +1,8 @@
+import classNames from 'classnames';
+import { Field, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router';
 import {
     Autocomplete,
     Button,
@@ -14,8 +19,6 @@ import {
     Text,
     useStateCallback,
 } from '@deriv/components';
-import { Field, Formik } from 'formik';
-import { Localize, localize } from '@deriv/translations';
 import {
     PlatformContext,
     WS,
@@ -35,7 +38,7 @@ import {
     validPhone,
     validPostCode,
 } from '@deriv/shared';
-
+import { Localize, localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import FormFooter from 'Components/form-footer';
@@ -43,12 +46,8 @@ import FormSubHeader from 'Components/form-sub-header';
 import LeaveConfirm from 'Components/leave-confirm';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
-import PropTypes from 'prop-types';
-import React from 'react';
-import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-import { withRouter } from 'react-router';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {

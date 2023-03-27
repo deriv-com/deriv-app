@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Field, Formik } from 'formik';
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
     AutoHeightWrapper,
     Autocomplete,
@@ -20,8 +20,8 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
 import { PlatformContext, getLegalEntityName, isDesktop, isMobile, routes, toMoment, validPhone } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import FormSubHeader from '../form-sub-header';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';

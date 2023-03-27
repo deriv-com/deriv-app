@@ -1,17 +1,15 @@
-import 'Sass/app/_common/components/app-notification-message.scss';
-
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { getPathname, getPlatformSettings, isMobile, routes } from '@deriv/shared';
+import 'Sass/app/_common/components/app-notification-message.scss';
+import { connect } from 'Stores/connect';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
-import { getPathname, getPlatformSettings, isMobile, routes } from '@deriv/shared';
-
-import PropTypes from 'prop-types';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import classNames from 'classnames';
-import { connect } from 'Stores/connect';
 import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
 
 const Portal = ({ children }) =>

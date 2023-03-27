@@ -8,7 +8,7 @@ import './need-real-account-for-cashier-modal.scss';
 
 const NeedRealAccountForCashierModal = observer(() => {
     const { ui, traders_hub } = useStore();
-    const { is_eu_user } = traders_hub;
+    const { is_eu_user, selectRegion } = traders_hub;
     const {
         is_need_real_account_for_cashier_modal_visible: is_open,
         toggleNeedRealAccountForCashierModal,
@@ -24,7 +24,12 @@ const NeedRealAccountForCashierModal = observer(() => {
         return is_eu_user ? openRealAccountSignup('maltainvest') : openRealAccountSignup();
     };
 
-    const onClose = () => {
+    const switchRegulation = () => {
+        return is_eu_user ? selectRegion('Non-EU') : selectRegion('EU');
+    };
+
+    const onClose = async () => {
+        await switchRegulation();
         toggleNeedRealAccountForCashierModal();
         history.push(routes.cashier_deposit);
     };

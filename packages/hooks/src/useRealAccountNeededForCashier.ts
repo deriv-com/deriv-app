@@ -9,8 +9,8 @@ const useRealAccountNeededForCashier = () => {
     const has_svg_account = useHasSvgAccount();
     const has_maltainvest_account = useHasMaltaInvestAccount();
 
-    const no_real_mf_account = has_svg_account && is_eu_user;
-    const no_real_cr_account = has_maltainvest_account && !is_eu_user;
+    const no_real_mf_account = has_svg_account && !has_maltainvest_account && is_eu_user;
+    const no_real_cr_account = !has_svg_account && has_maltainvest_account && !is_eu_user;
 
     return (no_real_mf_account || no_real_cr_account) && is_real;
 };

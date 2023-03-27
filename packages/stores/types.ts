@@ -253,6 +253,7 @@ type TTradersHubStore = {
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
     is_real: boolean;
+    selectRegion: (region: string) => void;
 };
 
 export type TRootStore = {

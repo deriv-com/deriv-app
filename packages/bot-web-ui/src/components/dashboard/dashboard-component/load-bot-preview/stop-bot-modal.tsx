@@ -93,7 +93,6 @@ const StopBotModalContent = ({
 
 const StopBotModal = ({
     is_running,
-    is_dialog_open,
     is_contract_dialog_open,
     is_stop_bot_dialog_open,
     is_multiplier,
@@ -101,13 +100,14 @@ const StopBotModal = ({
     stopMyBot,
     toggleStopBotDialog,
     loadDataStrategy,
+    is_strategy_modal_open,
 }: TStopBotModal) =>
     {
         console.log('StopBotModal');
         
         return isMobile() ? (
             <MobileFullPageModal
-                is_modal_open={is_dialog_open}
+                is_modal_open={is_strategy_modal_open}
                 className='save-modal__wrapper'
                 header={localize('Save strategy')}
                 onClickClose={toggleStopBotDialog}
@@ -131,15 +131,11 @@ const StopBotModal = ({
                 is_stop_bot_dialog_open={is_stop_bot_dialog_open}
                 is_multiplier={is_multiplier}
                 closeMultiplierContract={closeMultiplierContract}
-                is_dialog_open={is_dialog_open}
-                toggleStopBotDialog={() => {
-                    toggleStopBotDialog();
-                } } />
+                toggleStopBotDialog={toggleStopBotDialog} />
         );
     };
 
-export default connect(({ run_panel, toolbar, quick_strategy, summary_card }: RootStore) => ({
-    is_dialog_open: quick_strategy.is_dialog_open,
+export default connect(({ run_panel, quick_strategy, summary_card }: RootStore) => ({
     is_running: run_panel.is_running,
     is_multiplier: summary_card.is_multiplier,
     is_contract_dialog_open: quick_strategy.is_contract_dialog_open,
@@ -149,4 +145,5 @@ export default connect(({ run_panel, toolbar, quick_strategy, summary_card }: Ro
     stopMyBot: run_panel.stopMyBot,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
     loadDataStrategy: quick_strategy.loadDataStrategy,
+    is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
 }))(StopBotModal);

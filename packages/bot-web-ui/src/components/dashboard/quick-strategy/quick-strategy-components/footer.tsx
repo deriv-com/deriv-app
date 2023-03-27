@@ -20,9 +20,9 @@ const QuickStrategyFooter = ({
 
     const handleRun = React.useCallback(async () => {
         if (is_running) {
-            await toggleStopBotDialog();
-            setFieldValue('button', 'edit');
-            submitForm();
+            await setFieldValue('button', 'edit');
+            await submitForm();
+            toggleStopBotDialog();
         } else {
             setFieldValue('button', 'run');
             submitForm();

@@ -1,17 +1,16 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import AccountSwitchModal from './account-switch-modal.jsx';
-import { translate } from '../../../../../../common/utils/tools';
-import TabContent from './tab-content.jsx';
-import Modal from '../../../components/modal';
-import { observer as globalObserver } from '../../../../../../common/utils/observer';
-import { setShouldReloadWorkspace } from '../../../store/ui-slice.js';
-import useLogout from '../../../../../../common/hooks/useLogout.js';
-import config from '../../../../../../app.config';
-import LowRisk from './low-risk.jsx';
-import HighRisk from './high-risk.jsx';
 import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import config from '../../../../../../app.config';
+import useLogout from '../../../../../../common/hooks/useLogout.js';
+import { observer as globalObserver } from '../../../../../../common/utils/observer';
+import { translate } from '../../../../../../common/utils/tools';
+import Modal from '../../../components/modal';
+import { setShouldReloadWorkspace } from '../../../store/ui-slice.js';
+import AccountSwitchModal from './account-switch-modal.jsx';
+import TabContent from './tab-content.jsx';
+import RiskComponent from './risk-component.jsx';
 
 const Separator = () => <div className='account__switcher-seperator'></div>;
 const getTotalDemo = accounts => {
@@ -45,17 +44,14 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     }, []);
 
     const { low_risk_without_account, high_risk_without_account } = account_type;
+
     const obj = account_type;
     const keys = Object.keys(obj).filter(get_key => {
         return obj[get_key] === true;
     });
 
     const getComponent = type => {
-        if (type === 'low_risk_without_account') {
-            return <LowRisk />;
-        } else if (type === 'high_risk_without_account' || type === 'high_risk_or_eu') {
-            return <HighRisk type={type} />;
-        }
+        return <RiskComponent type={type} />;
     };
 
     const onLogout = () => {
@@ -134,7 +130,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         {activeTab === 'real' && (
                             <a href={url} rel='noopener noreferrer'>
                                 <div>
-                                    <button>Manage Accounts</button>
+                                    <button className='account__switcher-footer__manage'>Manage Accounts</button>
                                 </div>
                             </a>
                         )}

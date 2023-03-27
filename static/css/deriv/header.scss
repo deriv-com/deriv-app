@@ -1,6 +1,11 @@
 @import "./devices.scss";
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
 
+@mixin position_center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .header {
     left: 0px;
@@ -616,7 +621,6 @@
             }
 
 
-
             &-footer {
                 display: flex;
                 justify-content: space-around;
@@ -624,10 +628,26 @@
 
                 button {
                     color: #333333;
-                    font-size: 14px;
-                    border: 1px solid #999999;
-                    border-radius: 4px;
+                    font-size: 1.4rem;
+                    border: 0.1rem solid #999999;
+                    border-radius: 0.4rem;
                     background: transparent;
+                }
+                &__manage{
+                        color: #333333;
+                        font-size: 1.4rem;
+                        border: 0.1rem solid #999999;
+                        border-radius: 0.4rem;
+                        background: transparent;
+                        font-size: 12px;
+                        border: 1px solid #999999;
+                        border-radius: 4px;
+                        background: transparent;
+                        color: #333333;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 12px !important;
                 }
 
                 &--demo {
@@ -828,9 +848,7 @@
                     padding-top: 6px;
 
                     &__high-risk {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
+                        @include position_center;
 
                         img {
                             margin-right: 0.8rem;
@@ -838,9 +856,7 @@
                     }
 
                     &__low-risk {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
+                        @include position_center;
 
                         img {
                             margin-right: 0.8rem;
@@ -859,9 +875,7 @@
                         border-radius: 4px;
                         background: transparent;
                         color: #333333;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
+                        @include position_center;
                         padding: 3px 8px 3px 8px;
                     }
                 }
@@ -1227,4 +1241,10 @@
     @include mobile {
         height: unset;
     }
+}
+
+.is_symbol_multiplier{
+    font-size: 12px;
+    font-weight: normal;
+    color: #333;
 }

@@ -11,12 +11,13 @@ import config from '../../../../../../app.config';
 const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
-    const { accounts, active_account_name } = useSelector(state => state.client);
+    const { accounts, active_account_name, account_type } = useSelector(state => state.client);
     const { show_bot_unavailable_page } = useSelector(state => state.ui);
     const item_ref = React.useRef([]);
     const isReal = tab === 'real';
     const token_list = getTokenList();
     const { visible, url, label } = config.add_account;
+    const { is_multiplier } = account_type;
     const onChangeAccount = acc => {
         const account_token = token_list.find(token => token.accountName === acc);
         if (account_token?.token && acc !== active_account_name) {
@@ -81,8 +82,9 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                                                 )}
                                                 {demo_account
                                                     ? translate('Demo')
-                                                    : ((config.currency_name_map[currency]?.name || currency) === 'Euro' ? 'Multiplers' : config.currency_name_map[currency]?.name || currency)
-                                                }
+                                                    : is_multiplier
+                                                    ? 'Multiplers'
+                                                    : config.currency_name_map[currency]?.name || currency}
 
                                                 <div className='account__switcher-loginid'>{acc}</div>
                                             </span>

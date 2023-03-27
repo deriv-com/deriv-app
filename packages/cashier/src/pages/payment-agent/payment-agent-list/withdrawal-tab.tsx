@@ -23,7 +23,8 @@ const WithdrawalTab = observer(() => {
     // match the behavior of the `Withdrawal` page and first inform the user.
 
     if (verify.error && 'code' in verify.error) return <PaymentAgentWithdrawalLocked error={verify.error} />;
-    if (!verify.is_loading && verify.has_been_sent) return <EmailVerificationEmptyState verify={verify} />;
+    if (!verify.is_loading && verify.has_been_sent)
+        return <EmailVerificationEmptyState type={'paymentagent_withdraw'} />;
     if (verification_code || payment_agent.is_withdraw)
         return <PaymentAgentContainer verification_code={verification_code} />;
 

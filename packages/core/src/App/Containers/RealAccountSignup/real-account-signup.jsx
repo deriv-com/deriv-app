@@ -123,6 +123,7 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
+    is_trading_experience_incomplete,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -336,7 +337,7 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
-        return () => setIsTradingAssessmentForNewUserEnabled(false);
+        return () => setIsTradingAssessmentForNewUserEnabled(is_trading_experience_incomplete);
     }, []);
 
     // setCurrentAction callback useEffect to set error details

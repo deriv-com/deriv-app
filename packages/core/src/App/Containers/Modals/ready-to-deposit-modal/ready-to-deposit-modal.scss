@@ -1,0 +1,10 @@
+.ready-to-deposit-dialog {
+    @include mobile {
+        .dc-dialog {
+            &__content,
+            &__button {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

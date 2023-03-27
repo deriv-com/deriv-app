@@ -472,24 +472,45 @@ const StaticDashboard = ({
                                 />
                             )}
                             {!is_eu_user && (
-                                <StaticCFDAccountManager
-                                    type='financial'
-                                    platform='mt5'
-                                    appname={localize('Financial')}
-                                    description={localize(
-                                        'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
-                                    )}
-                                    financial_amount={financial_amount}
-                                    derived_amount={derived_amount}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    is_last_step={is_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_financial_last_step={is_financial_last_step}
-                                    is_eu_user={is_eu_user}
-                                />
+                                <React.Fragment>
+                                    <StaticCFDAccountManager
+                                        type='financial'
+                                        platform='mt5'
+                                        appname={localize('Financial')}
+                                        description={localize(
+                                            'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                        )}
+                                        financial_amount={financial_amount}
+                                        derived_amount={derived_amount}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                    <>{isMobile() && !has_account && <Divider />}</>
+                                    <StaticCFDAccountManager
+                                        type='swap_free'
+                                        platform='mt5'
+                                        appname={localize('Swap-Free')}
+                                        description={localize(
+                                            'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
+                                        )}
+                                        financial_amount={financial_amount}
+                                        derived_amount={derived_amount}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                </React.Fragment>
                             )}
                             {isDesktop() && has_account && !eu_user && (
                                 <StaticGetMoreAccounts

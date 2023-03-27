@@ -4,7 +4,6 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { observer } from 'mobx-react-lite';
 
 const EmailVerificationModal = (
     {
@@ -111,4 +110,4 @@ EmailVerificationModal.propTypes = {
     // verification_link_expiry_time: PropTypes.number,
 };
 
-export default observer(EmailVerificationModal);
+export default EmailVerificationModal;

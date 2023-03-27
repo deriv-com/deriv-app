@@ -256,6 +256,8 @@ export default class QuickStrategyStore {
     }
 
     async loadDataStrategy() {
+        console.log('loadDataStrategy');
+        
         this.root_store.flyout.setVisibility(false);
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
 
@@ -617,6 +619,8 @@ export default class QuickStrategyStore {
     };
 
     toggleStopBotDialog = (): void => {
+        console.log('toggleStopBotDialog');
+        
         this.is_contract_dialog_open = !this.is_contract_dialog_open;
         this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
     };

@@ -32,7 +32,6 @@ const QuickStrategyForm = ({
     onHideDropdownList,
     onScrollStopDropdownList,
     setCurrentFocus,
-    setActiveTab,
     toggleStopBotDialog,
     loadDataStrategy,
 }: TQuickStrategyForm) => {
@@ -131,7 +130,6 @@ const QuickStrategyForm = ({
                             is_dialog_open={is_dialog_open}
                             is_running={is_running}
                             is_contract_dialog_open={is_contract_dialog_open}
-                            setActiveTab={setActiveTab}
                             toggleStopBotDialog={toggleStopBotDialog}
                             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
                             loadDataStrategy={loadDataStrategy}

@@ -10,21 +10,18 @@ const QuickStrategyFooter = ({
     is_running,
     setFieldValue,
     submitForm,
-    setActiveTab,
     toggleStopBotDialog,
     loadDataStrategy,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
         submitForm();
-        setActiveTab(1);
     }, [is_submit_enabled]);
 
-    const handleRun = React.useCallback(() => {
-        setActiveTab(1);
+    const handleRun = React.useCallback(async() => {
+        await loadDataStrategy();
         if (is_running) {
-            loadDataStrategy();
-            toggleStopBotDialog();
+            await toggleStopBotDialog();
             setFieldValue('button', 'edit');
             submitForm();
         } else {

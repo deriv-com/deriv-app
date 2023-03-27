@@ -28,7 +28,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
         onHideDropdownList,
         onScrollStopDropdownList,
         setCurrentFocus,
-        setActiveTab,
         toggleStopBotDialog,
         loadDataStrategy,
     } = props;
@@ -76,7 +75,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
             onHideDropdownList={onHideDropdownList}
             onScrollStopDropdownList={onScrollStopDropdownList}
             setCurrentFocus={setCurrentFocus}
-            setActiveTab={setActiveTab}
             toggleStopBotDialog={toggleStopBotDialog}
             is_running={is_running}
             is_contract_dialog_open={is_contract_dialog_open}

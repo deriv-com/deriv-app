@@ -220,7 +220,6 @@ export default class ClientStore extends BaseStore {
             reality_check_duration: computed,
             reality_check_dismissed: computed,
             has_active_real_account: computed,
-            has_svg_account: computed,
             has_maltainvest_account: computed,
             has_malta_account: computed,
             has_any_real_account: computed,
@@ -490,10 +489,6 @@ export default class ClientStore extends BaseStore {
 
     get has_active_real_account() {
         return this.active_accounts.some(acc => acc.is_virtual === 0);
-    }
-
-    get has_svg_account() {
-        return this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
     }
 
     get has_maltainvest_account() {

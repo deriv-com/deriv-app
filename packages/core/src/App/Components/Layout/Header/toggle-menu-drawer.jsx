@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text, Button } from '@deriv/components';
-import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
+import { useOnrampVisible, useAccountTransferVisible, useRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url, ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, getLanguage } from '@deriv/translations';
@@ -17,13 +17,13 @@ import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common, ui, client, traders_hub } = useStore();
+        const { common, ui, client } = useStore();
         const { changeCurrentLanguage } = common;
         const deriv_static_url = getStaticUrl(link_to);
         const history = useHistory();
         const { has_any_real_account, is_virtual } = client;
         const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
-        const { real_account_needed_for_cashier } = traders_hub;
+        const real_account_needed_for_cashier = useRealAccountNeededForCashier();
 
         const cashier_link =
             link_to === routes.cashier_deposit ||

@@ -4,7 +4,7 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount } from '@deriv/hooks';
+import { useP2PNotificationCount, useRealAccountNeededForCashier } from '@deriv/hooks';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 
@@ -36,11 +36,11 @@ const ReportTab = () => (
 );
 
 const CashierTab = observer(() => {
-    const { client, ui, traders_hub } = useStore();
+    const { client, ui } = useStore();
     const { has_any_real_account, is_virtual } = client;
     const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
-    const { real_account_needed_for_cashier } = traders_hub;
+    const real_account_needed_for_cashier = useRealAccountNeededForCashier();
 
     const history = useHistory();
 

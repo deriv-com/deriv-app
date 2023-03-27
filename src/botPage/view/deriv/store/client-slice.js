@@ -31,6 +31,7 @@ export const clientSlice = createSlice({
                 low_risk: action.payload.low_risk,
                 low_risk_without_account: action.payload.low_risk_without_account,
                 high_risk_without_account: action.payload.high_risk_without_account,
+                is_multiplier: action.payload.is_multiplier,
             };
         },
         updateIsLogged: (state, action) => {

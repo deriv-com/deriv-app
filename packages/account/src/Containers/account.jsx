@@ -6,7 +6,7 @@ import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, Platfo
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
+import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info';
 import 'Styles/account.scss';
 import { useHistory } from 'react-router';
 

@@ -5,16 +5,25 @@ import ServicesErrorModal from '../services-error-modal';
 jest.mock('../authorization-required-modal.jsx', () => jest.fn(() => 'AuthorizationRequiredModal'));
 jest.mock('../insufficient-balance-modal.jsx', () => jest.fn(() => 'InsufficientBalanceModal'));
 jest.mock('../company-wide-limit-exceeded-modal.jsx', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
+jest.mock('../account-verification-required-modal', () => jest.fn(() => 'AccountVerificationRequiredModal'));
+type TModal = {
+    (): JSX.Element;
+    Body?: React.FC;
+    Footer?: React.FC;
+};
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
+    const Modal: TModal = jest.fn(() => <div>Modal</div>);
+    Modal.Body = jest.fn(() => <div />);
+    Modal.Footer = jest.fn(() => <div />);
     return {
         ...original_module,
-        Modal: jest.fn(() => <div data-testid='dt_mocked_modal' />),
+        Modal,
     };
 });
 
-describe('ServicesErrorModel component test cases', () => {
-    test('Should return null if code or message is missing', () => {
+describe('<ServicesErrorModel />', () => {
+    it('Should return null if code or message is missing', () => {
         const onConfirm = jest.fn();
         const services_error_mock = {
             code: '',
@@ -33,7 +42,7 @@ describe('ServicesErrorModel component test cases', () => {
         expect(container).toBeEmptyDOMElement();
     });
 
-    test('AuthorizationRequiredModal should render when code is AuthorizationRequired', () => {
+    it('AuthorizationRequiredModal should render when code is AuthorizationRequired', () => {
         const services_error_mock = {
             code: 'AuthorizationRequired',
             message: 'AuthorizationRequired',
@@ -47,7 +56,7 @@ describe('ServicesErrorModel component test cases', () => {
         expect(screen.getByText('AuthorizationRequiredModal')).toBeInTheDocument();
     });
 
-    test('InsufficientBalanceModal should render when code is InsufficientBalance', () => {
+    it('InsufficientBalanceModal should render when code is InsufficientBalance', () => {
         const services_error_mock = {
             code: 'InsufficientBalance',
             message: 'InsufficientBalance',
@@ -61,7 +70,7 @@ describe('ServicesErrorModel component test cases', () => {
         expect(screen.getByText('InsufficientBalanceModal')).toBeInTheDocument();
     });
 
-    test('CompanyWideLimitExceededModal should render when code is CompanyWideLimitExceeded', () => {
+    it('CompanyWideLimitExceededModal should render when code is CompanyWideLimitExceeded', () => {
         const services_error_mock = {
             code: 'CompanyWideLimitExceeded',
             message: 'CompanyWideLimitExceeded',
@@ -74,7 +83,20 @@ describe('ServicesErrorModel component test cases', () => {
         expect(screen.getByText('CompanyWideLimitExceededModal')).toBeInTheDocument();
     });
 
-    test('CompanyWideLimitExceededModal should render when code is CompanyWideLimitExceeded', () => {
+    it('AccountVerificationRequiredModal should render when code is PleaseAuthenticate', () => {
+        const services_error_mock = {
+            code: 'PleaseAuthenticate',
+            message: 'PleaseAuthenticate',
+        };
+        const account_verification_required_props = {
+            is_visible: true,
+            onConfirm: jest.fn(),
+        };
+        render(<ServicesErrorModal services_error={services_error_mock} {...account_verification_required_props} />);
+        expect(screen.getByText('AccountVerificationRequiredModal')).toBeInTheDocument();
+    });
+
+    it('Default case should render when code is not specified in switch case', () => {
         const services_error_mock = {
             code: 'Default Error',
             message: 'Default Error',
@@ -85,6 +107,6 @@ describe('ServicesErrorModel component test cases', () => {
             onConfirm: jest.fn(),
         };
         render(<ServicesErrorModal services_error={services_error_mock} {...default_case_props} />);
-        expect(screen.getByTestId('dt_mocked_modal')).toBeInTheDocument();
+        expect(screen.getByText('Modal')).toBeInTheDocument();
     });
 });

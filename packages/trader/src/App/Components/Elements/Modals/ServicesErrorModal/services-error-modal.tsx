@@ -5,6 +5,7 @@ import { getTitle } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
 import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal.jsx';
+import AccountVerificationRequiredModal from './account-verification-required-modal';
 
 type TServicesError = {
     code: string;
@@ -29,7 +30,7 @@ const ServicesErrorModal = ({
 }: TPropServicesErrorModel) => {
     const { code, message, type } = services_error;
 
-    if (!code || !message) return null;
+    if (!code || !message) return <React.Fragment />;
 
     switch (code) {
         case 'AuthorizationRequired':
@@ -54,6 +55,8 @@ const ServicesErrorModal = ({
             );
         case 'CompanyWideLimitExceeded':
             return <CompanyWideLimitExceededModal is_visible={is_visible} onConfirm={onConfirm} />;
+        case 'PleaseAuthenticate':
+            return <AccountVerificationRequiredModal is_visible={is_visible} onConfirm={onConfirm} />;
         default:
             return (
                 <Modal is_open={is_visible} small title={getTitle(type)} toggleModal={onConfirm}>

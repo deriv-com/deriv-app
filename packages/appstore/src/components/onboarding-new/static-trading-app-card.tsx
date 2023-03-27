@@ -63,7 +63,7 @@ const StaticTradingAppCard = ({
             <div className={classNames('static-trading-app-card__actions')}>
                 <Button
                     primary
-                    className={classNames('', {
+                    className={classNames('static-trading-app-card__actions--active', {
                         'static-trading-app-card__actions--blurry': is_item_blurry,
                         'static-trading-app-card__button--hidden': !has_applauncher_account,
                     })}

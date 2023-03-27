@@ -720,6 +720,7 @@ export default class NotificationStore extends BaseStore {
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
         const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const has_enabled_two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
@@ -1303,10 +1304,11 @@ export default class NotificationStore extends BaseStore {
             has_changed_two_fa: {
                 key: 'has_changed_two_fa',
                 header: localize('Logging out on other devices'),
-                message: has_enabled_two_fa ? (
-                    <Localize i18n_default_text="You've enabled 2FA on this device. You'll be logged out of your account on other devices (if any). Use your password and a 2FA code to log back in." />
-                ) : (
-                    <Localize i18n_default_text="You've disabled 2FA on this device. You'll be logged out of your account on other devices (if any). Use your password and a 2FA code to log back in." />
+                message: (
+                    <Localize
+                        i18n_default_text="You've {{has_enabled_two_fa_status}} 2FA on this device. You'll be logged out of your account on other devices (if any). Use your password and a 2FA code to log back in."
+                        values={{ has_enabled_two_fa_status }}
+                    />
                 ),
                 type: 'info',
                 delay: 4000,

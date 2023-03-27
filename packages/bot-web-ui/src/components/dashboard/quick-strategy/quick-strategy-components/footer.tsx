@@ -22,6 +22,7 @@ const QuickStrategyFooter = ({
 
     const handleRun = React.useCallback(() => {
         setActiveTab(1);
+        loadDataStrategy();
         if (is_running) {
             toggleStopBotDialog();
             setFieldValue('button', 'edit');

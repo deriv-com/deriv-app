@@ -392,8 +392,8 @@ export default class SendbirdStore extends BaseStore {
                     // eslint-disable-next-line no-console
                     console.warn(error);
                 } else if (channel_message.channelUrl === this.chat_channel_url) {
-                        this.addChannelMessage(convertFromChannelMessage(channel_message));
-                    }
+                    this.addChannelMessage(convertFromChannelMessage(channel_message));
+                }
             }
         );
     }
@@ -446,11 +446,9 @@ export default class SendbirdStore extends BaseStore {
 
     terminateChatWsConnection() {
         if (
-            (this.sendbird_api &&
-                typeof this.sendbird_api.disconnect === 'function' &&
-                this.file_upload_properties &&
-                this.is_upload_complete) ||
-            !this.file_upload_properties
+            this.sendbird_api &&
+            typeof this.sendbird_api.disconnect === 'function' &&
+            ((this.file_upload_properties && this.is_upload_complete) || !this.file_upload_properties)
         ) {
             // eslint-disable-next-line no-console
             this.sendbird_api.disconnect().catch(error => console.warn(error));

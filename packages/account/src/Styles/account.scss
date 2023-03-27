@@ -2553,9 +2553,18 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__input {
-            margin: 16px 0 0;
+            margin: 8px 0 0;
             max-width: 400px;
             text-overflow: ellipsis;
+            .dc-input {
+                &__container {
+                    height: 9.8rem;
+                    padding: 0.5rem 1rem;
+                }
+                &__field[type='textarea'] {
+                    height: 8rem;
+                }
+            }
 
             > input {
                 min-height: 96px;

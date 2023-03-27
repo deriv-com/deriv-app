@@ -1,6 +1,10 @@
 .floating-rate {
     display: flex;
     flex-direction: column;
+    margin-top: 2.1rem;
+    @include mobile {
+        margin-bottom: 6.5rem !important;
+    }
     &__field {
         display: flex;
         align-items: center;

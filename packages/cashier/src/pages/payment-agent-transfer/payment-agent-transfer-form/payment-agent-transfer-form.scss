@@ -5,14 +5,28 @@
         display: block !important;
     }
     &__input {
-        margin-bottom: 5.1rem;
+        margin-bottom: 2.55rem;
+
+        .dc-input {
+            &__container {
+                padding: 0.5rem 1rem;
+            }
+        }
 
         &-area {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
 
-            .dc-input__counter {
-                top: 9.7rem;
-                right: 0;
+            .dc-input {
+                &__counter {
+                    top: 9.7rem;
+                    right: 0;
+                }
+                &__container {
+                    height: 9.8rem;
+                }
+                &__field[type='textarea'] {
+                    height: 8.6rem;
+                }
             }
         }
     }

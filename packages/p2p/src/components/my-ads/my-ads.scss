@@ -35,7 +35,7 @@
 
     .dc-input__wrapper {
         max-width: 67.2rem; // TODO: Kill these fixed widths.
-        margin-top: 2rem;
+        margin-top: 2.1rem;
 
         @include mobile {
             max-width: 90vw;
@@ -170,12 +170,24 @@
                 &__container {
                     padding: 0 1rem;
                 }
+                &--hint {
+                    margin-bottom: 0;
+                }
+                &__wrapper {
+                    margin-top: 0;
+                }
             }
 
             @include mobile {
                 flex-direction: column;
                 height: unset;
                 width: unset;
+
+                .dc-input {
+                    &__wrapper {
+                        margin-bottom: 5rem;
+                    }
+                }
             }
         }
         &-field {
@@ -184,6 +196,13 @@
             margin-left: 0;
             width: 32.4rem;
 
+            &--contact-details {
+                margin-bottom: 5.9rem;
+
+                @include mobile {
+                    margin-bottom: 3.7rem;
+                }
+            }
             &--single {
                 width: 18.9rem;
             }
@@ -197,16 +216,22 @@
                     width: 90vw;
                 }
 
-                .dc-input__hint {
-                    top: 9.7rem;
-                }
-                .dc-input__counter {
-                    top: 9.7rem;
-                    right: 0rem;
+                .dc-input {
+                    &__hint {
+                        top: 9.7rem;
+                    }
+                    &___counter {
+                        top: 9.7rem;
+                        right: 0rem;
 
-                    @include mobile {
-                        display: flex;
-                        right: 0;
+                        @include mobile {
+                            display: flex;
+                            right: 0;
+                        }
+                    }
+                    &__textarea {
+                        padding-top: 1rem;
+                        padding-left: 0;
                     }
                 }
             }

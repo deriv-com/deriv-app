@@ -19,6 +19,12 @@
         height: 9.8rem;
         margin-bottom: 4rem;
 
+        .dc-input {
+            &__field[type='textarea'] {
+                height: 8.6rem;
+            }
+        }
+
         @include mobile {
             margin: 0 2vw;
             width: 96vw;

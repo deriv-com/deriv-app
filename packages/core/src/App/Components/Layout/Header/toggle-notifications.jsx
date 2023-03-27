@@ -15,7 +15,29 @@ const ToggleNotificationsDrawer = ({
 }) => {
     const {
         notifications: { is_notifications_loading_completed },
+        // client: {
+        //     is_switching,
+        //     is_logging_in,
+        //     is_landing_company_loaded,
+        //     is_account_setting_loaded,
+        //     is_website_status_ready,
+        // },
     } = useStore();
+
+    // console.log(
+    //     'is_notifications_loading_completed = ',
+    //     is_notifications_loading_completed,
+    //     ', is_switching = ',
+    //     is_switching,
+    //     ', is_logging_in = ',
+    //     is_logging_in,
+    //     ', is_landing_company_loaded = ',
+    //     is_landing_company_loaded,
+    //     ', is_account_setting_loaded = ',
+    //     is_account_setting_loaded,
+    //     ', is_website_status_ready = ',
+    //     is_website_status_ready
+    // );
 
     const notifications_toggler_el = (
         <div

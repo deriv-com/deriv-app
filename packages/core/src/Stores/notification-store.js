@@ -86,6 +86,11 @@ export default class NotificationStore extends BaseStore {
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
+        // because we don't know how much time we need to update notification we use debounce
+        const setIsNotificationsLoadingCompletedToTrue = debounce(
+            () => (this.is_notifications_loading_completed = true),
+            1000
+        );
 
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
@@ -128,8 +133,16 @@ export default class NotificationStore extends BaseStore {
                     this.handleClientNotifications();
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
-                    this.is_notifications_loading_completed = true;
                 }
+            }
+        );
+        reaction(
+            () => this.notifications,
+            () => {
+                // console.log('reaction: notifications.length = ', this.notifications.length);
+                this.is_notifications_loading_completed = false;
+                // set TRUE only after X seconds after reaction has ended
+                setIsNotificationsLoadingCompletedToTrue();
             }
         );
     }
@@ -583,6 +596,11 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
+
+        // runInAction(() => {
+        //     console.log('run in action: notifications.length = ', this.notifications.length);
+        //     this.is_notifications_loading_completed = true;
+        // });
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {

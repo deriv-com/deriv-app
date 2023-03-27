@@ -28,10 +28,6 @@ const fields_enums = {
         { value: 'employment industry 1', text: 'employment industry 1' },
         { value: 'employment industry 2', text: 'employment industry 2' },
     ],
-    employment_status_enum: [
-        { value: 'employment status 1', text: 'employment status 1' },
-        { value: 'employment status 2', text: 'employment status 2' },
-    ],
     estimated_worth_enum: [
         { value: 'estimated worth 1', text: 'estimated worth 1' },
         { value: 'estimated worth 2', text: 'estimated worth 2' },
@@ -74,7 +70,6 @@ describe('<FinancialDetails />', () => {
 
     const fieldsRenderCheck = () => {
         expect(screen.getByText('Anticipated annual turnover')).toBeInTheDocument();
-        expect(screen.getByText('Employment Status')).toBeInTheDocument();
         expect(screen.getByText('Estimated net worth')).toBeInTheDocument();
 
         expect(screen.getByText('Industry of employment')).toBeInTheDocument();
@@ -96,7 +91,7 @@ describe('<FinancialDetails />', () => {
         fieldsRenderCheck();
 
         const inputs = screen.getAllByTestId('dti_dropdown_display');
-        expect(inputs.length).toBe(9);
+        expect(inputs.length).toBe(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
@@ -111,7 +106,7 @@ describe('<FinancialDetails />', () => {
         fieldsRenderCheck();
 
         const inputs = screen.getAllByRole('combobox');
-        expect(inputs.length).toBe(9);
+        expect(inputs.length).toBe(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.getByText('Previous')).toBeInTheDocument();
@@ -143,7 +138,6 @@ describe('<FinancialDetails />', () => {
 
         const education_level_select = select_inputs.find(option => option.name === 'education_level');
         const employment_indystry_select = select_inputs.find(option => option.name === 'employment_industry');
-        const employment_status_select = select_inputs.find(option => option.name === 'employment_status');
         const estimated_worth_select = select_inputs.find(option => option.name === 'estimated_worth');
 
         const income_source_select = select_inputs.find(option => option.name === 'income_source');
@@ -156,7 +150,6 @@ describe('<FinancialDetails />', () => {
 
         fireEvent.change(education_level_select, { target: { value: 'education level 2' } });
         fireEvent.change(employment_indystry_select, { target: { value: 'employment industry 1' } });
-        fireEvent.change(employment_status_select, { target: { value: 'employment status 2' } });
         fireEvent.change(estimated_worth_select, { target: { value: 'estimated worth 2' } });
 
         fireEvent.change(income_source_select, { target: { value: 'income source 1' } });

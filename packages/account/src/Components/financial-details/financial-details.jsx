@@ -2,7 +2,6 @@ import {
     AccountTurnover,
     EducationLevel,
     EmploymentIndustry,
-    EmploymentStatus,
     EstimatedWorth,
     IncomeSource,
     NetIncome,
@@ -28,7 +27,6 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 const FinancialInformation = ({
     shared_props,
     income_source_enum,
-    employment_status_enum,
     employment_industry_enum,
     occupation_enum,
     source_of_wealth_enum,
@@ -39,7 +37,6 @@ const FinancialInformation = ({
 }) => (
     <React.Fragment>
         <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
-        <EmploymentStatus {...shared_props} employment_status_enum={employment_status_enum} />
         <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
         <Occupation {...shared_props} occupation_enum={occupation_enum} />
         <SourceOfWealth {...shared_props} source_of_wealth_enum={source_of_wealth_enum} />
@@ -107,7 +104,6 @@ const FinancialDetails = props => {
                                             <FinancialInformation
                                                 shared_props={shared_props}
                                                 income_source_enum={props.income_source_enum}
-                                                employment_status_enum={props.employment_status_enum}
                                                 employment_industry_enum={props.employment_industry_enum}
                                                 occupation_enum={props.occupation_enum}
                                                 source_of_wealth_enum={props.source_of_wealth_enum}

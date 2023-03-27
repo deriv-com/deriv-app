@@ -4,6 +4,7 @@ import {
     Checkbox,
     DateOfBirthPicker,
     DesktopWrapper,
+    Dropdown,
     FormSubmitErrorMessage,
     HintBox,
     Input,
@@ -46,6 +47,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
+import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { withRouter } from 'react-router';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
@@ -297,19 +299,12 @@ export const PersonalDetailsForm = ({
 
         if (is_virtual) return errors;
 
-        const required_fields = [
-            'first_name',
-            'last_name',
-            'phone',
-            // 'account_opening_reason',
-            'address_line_1',
-            'address_city',
-        ];
+        const required_fields = ['first_name', 'last_name', 'phone', 'address_line_1', 'address_city'];
         if (is_eu) {
             required_fields.push('citizen');
         }
         if (is_mf) {
-            const required_tax_fields = ['tax_residence', 'tax_identification_number'];
+            const required_tax_fields = ['tax_residence', 'tax_identification_number', 'employment_status'];
             required_fields.push(...required_tax_fields);
         }
 
@@ -474,6 +469,7 @@ export const PersonalDetailsForm = ({
                 'allow_copiers',
                 !is_mf && 'tax_residence',
                 !is_mf && 'tax_identification_number',
+                !is_mf && 'employment_status',
                 'client_tnc_status',
                 'country_code',
                 'has_secret_answer',
@@ -552,7 +548,7 @@ export const PersonalDetailsForm = ({
             form_initial_values.tax_residence = '';
         }
         if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
-        // if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
+        if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
 
     const is_poa_verified = authentication_status?.document_status === 'verified';
@@ -956,6 +952,43 @@ export const PersonalDetailsForm = ({
                                                             disabled={!isChangeableField('tax_identification_number')}
                                                             required
                                                         />
+                                                    </fieldset>
+                                                )}
+                                                {'employment_status' in values && (
+                                                    <fieldset className='account-form__fieldset'>
+                                                        <DesktopWrapper>
+                                                            <Dropdown
+                                                                placeholder={localize('Employment status')}
+                                                                is_align_text_left
+                                                                name='employment_status'
+                                                                list={getEmploymentStatusList()}
+                                                                value={values.employment_status}
+                                                                onChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
+                                                            />
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                className={'emp-status'}
+                                                                placeholder={localize('Please select')}
+                                                                name='employment_status'
+                                                                label={localize('Employment status')}
+                                                                list_items={getEmploymentStatusList()}
+                                                                value={values.employment_status}
+                                                                error={
+                                                                    touched.employment_status &&
+                                                                    errors.employment_status
+                                                                }
+                                                                onChange={e => {
+                                                                    setFieldTouched('employment_status', true);
+                                                                    handleChange(e);
+                                                                }}
+                                                            />
+                                                        </MobileWrapper>
                                                     </fieldset>
                                                 )}
                                             </FormBodySection>

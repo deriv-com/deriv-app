@@ -398,7 +398,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 toggleDrawer();
                 toggleExitTradersHubModal();
             } else {
-                setIsPreAppStore(false);
+                await setIsPreAppStore(false);
                 if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
                     await switchToCRAccount();
                 }
@@ -406,7 +406,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 history.push(routes.root);
             }
         } else {
-            setIsPreAppStore(true);
+            await setIsPreAppStore(true);
             toggleDrawer();
             history.push(routes.traders_hub);
         }

@@ -44,7 +44,7 @@ const ExitTradersHubModal = ({
     };
 
     const onClickExitButton = async () => {
-        setIsPreAppStore(false);
+        await setIsPreAppStore(false);
         setIsLoggingIn(true);
         const cr_account = active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
         toggleExitTradersHubModal();

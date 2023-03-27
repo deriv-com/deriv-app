@@ -98,7 +98,7 @@ const ProofOfIdentityContainer = ({
         return <NotRequired />;
     }
 
-    const redirect_button = should_show_redirect_btn && (
+    const redirect_button = should_show_redirect_btn ? (
         <Button
             primary
             className='proof-of-identity__redirect'
@@ -113,7 +113,7 @@ const ProofOfIdentityContainer = ({
         >
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
-    );
+    ) : null;
 
     if (
         identity_status === identity_status_codes.none ||

@@ -1,16 +1,14 @@
-import 'Styles/account.scss';
-
-import { FadeWrapper, Icon, Loading, PageOverlay, Text, VerticalTab } from '@deriv/components';
-import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
-
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
+import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
-import { localize } from '@deriv/translations';
+import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
+import 'Styles/account.scss';
 import { useHistory } from 'react-router';
-import { withRouter } from 'react-router-dom';
 
 const AccountLogout = ({ logout, history }) => {
     return (

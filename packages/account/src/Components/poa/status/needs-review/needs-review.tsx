@@ -22,17 +22,15 @@ export const NeedsReview = ({ needs_poi, redirect_button }: TPoaStatusProps) => 
     }
     return (
         <IconMessageContent message={message} icon={<Icon icon='IcPoaVerified' size={128} />}>
-            <React.Fragment>
-                <div className='account-management__text-container'>
-                    <Text align='center' size='xs' as='p'>
-                        {localize('Your document is being reviewed, please check back in 1-3 days.')}
-                    </Text>
-                    <Text align='center' size='xs' as='p'>
-                        {localize('You must also submit a proof of identity.')}
-                    </Text>
-                </div>
-                <PoiButton />
-            </React.Fragment>
+            <div className='account-management__text-container'>
+                <Text align='center' size='xs' as='p'>
+                    {localize('Your document is being reviewed, please check back in 1-3 days.')}
+                </Text>
+                <Text align='center' size='xs' as='p'>
+                    {localize('You must also submit a proof of identity.')}
+                </Text>
+            </div>
+            <PoiButton />
         </IconMessageContent>
     );
 };

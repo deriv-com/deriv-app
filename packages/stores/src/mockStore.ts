@@ -1,5 +1,5 @@
-import type { TRootStore } from '../types';
 import merge from 'lodash.merge';
+import type { TRootStore } from '../types';
 
 const mock = (): TRootStore => {
     return {

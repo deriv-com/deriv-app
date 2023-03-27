@@ -19,11 +19,6 @@ const financial_details_config = ({ financial_assessment }) => {
             supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
-        // employment_status: {
-        //     default_value: financial_assessment?.employment_status ?? '',
-        //     supported_in: ['maltainvest'],
-        //     rules: [['req', localize('Please select an option')]],
-        // },
         estimated_worth: {
             default_value: financial_assessment?.estimated_worth ?? '',
             supported_in: ['maltainvest'],

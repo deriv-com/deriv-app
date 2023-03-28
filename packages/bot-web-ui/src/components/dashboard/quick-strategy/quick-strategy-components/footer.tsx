@@ -17,16 +17,16 @@ const QuickStrategyFooter = ({
         submitForm();
     }, [is_submit_enabled]);
 
-    const handleRun = React.useCallback(async () => {
+    const handleRun = React.useCallback(() => {
         if (is_running) {
-            await setFieldValue('button', 'edit');
-            await submitForm();
+            setFieldValue('button', 'edit');
+            submitForm();
             toggleStopBotDialog();
         } else {
             setFieldValue('button', 'run');
             submitForm();
         }
-    }, [is_submit_enabled]);
+    }, [is_submit_enabled, setFieldValue, submitForm]);
 
     return (
         <div

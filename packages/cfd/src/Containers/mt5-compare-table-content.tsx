@@ -35,6 +35,8 @@ const Row = ({
     is_pre_appstore_setting,
     content_flag,
     is_high_risk_for_mt5,
+    financial_restricted_countries,
+    is_preappstore_restricted_cr_demo_account,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
@@ -48,6 +50,15 @@ const Row = ({
     if (is_platform_row && !is_pre_appstore_setting) {
         return null;
     }
+
+    if (is_platform_row && is_pre_appstore_setting && financial_restricted_countries) {
+        values.synthetic_bvi = { text: 'MT5' };
+    }
+
+    if (is_pre_appstore_setting && is_preappstore_restricted_cr_demo_account) {
+        delete values.synthetic_bvi;
+    }
+
     if (is_platform_row && content_flag === ContentFlag.HIGH_RISK_CR && is_high_risk_for_mt5) {
         // needed to adjust the design for high risk
         values.financial_svg = { text: 'MT5' };
@@ -144,6 +155,7 @@ const DMT5CompareModalContent = ({
     is_logged_in,
     is_pre_appstore_setting,
     is_preappstore_cr_demo_account,
+    is_preappstore_restricted_cr_demo_account,
     is_real_enabled,
     is_virtual,
     openDerivRealAccountNeededModal,
@@ -156,6 +168,7 @@ const DMT5CompareModalContent = ({
     setJurisdictionSelectedShortcode,
     setShouldShowCooldownModal,
     should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation,
     should_show_derivx,
     show_eu_related_content,
     toggleCFDVerificationModal,
@@ -166,6 +179,7 @@ const DMT5CompareModalContent = ({
     no_CR_account,
     is_eu_user,
     no_MF_account,
+    financial_restricted_countries,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
@@ -308,12 +322,14 @@ const DMT5CompareModalContent = ({
                     toggleCFDVerificationModal();
                 }
                 break;
+            case 'synthetic_vanuatu':
             case 'financial_vanuatu':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (
                     poi_acknowledged_for_vanuatu_maltainvest &&
                     !poi_or_poa_not_submitted &&
+                    !should_restrict_vanuatu_account_creation &&
                     has_submitted_personal_details &&
                     poa_acknowledged
                 ) {
@@ -420,7 +436,10 @@ const DMT5CompareModalContent = ({
             return false;
         } else if (type === 'bvi' && should_restrict_bvi_account_creation && poa_pending) {
             return true;
+        } else if (type === 'vanuatu' && should_restrict_vanuatu_account_creation && poa_pending) {
+            return true;
         }
+
         return false;
     };
 
@@ -444,7 +463,9 @@ const DMT5CompareModalContent = ({
                                 classname_for_demo_and_eu ??
                                 classNames(`cfd-accounts-compare-modal__table-header${pre_appstore_class}`, {
                                     [`cfd-accounts-compare-modal__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}${pre_appstore_class}`]:
-                                        available_accounts_count < 6,
+                                        available_accounts_count < 6 && !financial_restricted_countries,
+                                    [`cfd-accounts-compare-modal__table-header-for-synthetic-${synthetic_accounts_count}${pre_appstore_class}`]:
+                                        financial_restricted_countries,
                                 })
                             }
                         >
@@ -454,7 +475,7 @@ const DMT5CompareModalContent = ({
                                     {localize('Derived')}
                                 </Table.Head>
                             )}
-                            {financial_accounts_count > 0 && (
+                            {!financial_restricted_countries && financial_accounts_count > 0 && (
                                 <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
                                     {show_eu_related_content ? localize('CFDs') : localize('Financial')}
                                 </Table.Head>
@@ -479,6 +500,10 @@ const DMT5CompareModalContent = ({
                                     is_pre_appstore_setting={is_pre_appstore_setting}
                                     content_flag={content_flag}
                                     is_high_risk_for_mt5={is_high_risk_for_mt5}
+                                    financial_restricted_countries={financial_restricted_countries}
+                                    is_preappstore_restricted_cr_demo_account={
+                                        is_preappstore_restricted_cr_demo_account
+                                    }
                                 />
                             ))}
                         </Table.Body>
@@ -554,6 +579,7 @@ export default connect(({ modules, client, common, ui, traders_hub }: RootStore)
     setAccountType: modules.cfd.setAccountType,
     setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
+    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
     updateMT5Status: client.updateMT5Status,
@@ -562,4 +588,5 @@ export default connect(({ modules, client, common, ui, traders_hub }: RootStore)
     no_CR_account: traders_hub.no_CR_account,
     is_eu_user: traders_hub.is_eu_user,
     no_MF_account: traders_hub.no_MF_account,
+    financial_restricted_countries: traders_hub.financial_restricted_countries,
 }))(DMT5CompareModalContent);

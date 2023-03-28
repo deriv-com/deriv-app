@@ -14,8 +14,8 @@ describe('<UnsupportedFailed />', () => {
     const error = 'error';
     it('should render <UnsupportedFailed /> component with its content', () => {
         render(<UnsupportedFailed error={error} />);
-        expect(screen.getByText(/proof of identity documents upload failed/i)).toBeInTheDocument();
-        expect(screen.getByText(/error/i)).toBeInTheDocument();
-        expect(screen.getByText(/mocked icon/i)).toBeInTheDocument;
+        expect(screen.getByText('Proof of identity documents upload failed')).toBeInTheDocument();
+        expect(screen.getByText('error')).toBeInTheDocument();
+        expect(screen.getByText('Mocked Icon')).toBeInTheDocument;
     });
 });

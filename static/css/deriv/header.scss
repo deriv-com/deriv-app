@@ -844,8 +844,9 @@
                 &__content {
                     display: flex;
                     justify-content: space-between;
-                    padding: 16px;
-                    padding-top: 6px;
+                    padding: 5px 8px;
+                    padding-top: 5px;
+                    align-items: center;
 
                     &__high-risk {
                         @include position_center;
@@ -865,6 +866,7 @@
 
                     &__option {
                         font-size: 14px;
+                        margin-left: 10px;
                     }
 
                     &__action {

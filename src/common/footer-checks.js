@@ -65,16 +65,13 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
 export const isMultiplier = async landing_company_list => {
     const multiplier_account = landing_company_list?.financial_company?.legal_allowed_contract_categories;
     const is_multiplier = multiplier_account?.includes('multiplier');
-    if (multiplier_account.length === 1) {
-        return is_multiplier;
-    }
-    return false;
+    return multiplier_account.length === 1 && is_multiplier;
 };
 
 export const checkSwitcherType = async () => {
-    const token_list = await getTokenList();
     const is_eu = await isEuCountry();
-    const { landing_company } = await api.send({ landing_company: token_list[0].loginInfo.country });
+    const token_list = await getTokenList();
+    const { landing_company } = await api.send({ landing_company: token_list[0]?.loginInfo.country });
 
     const is_multiplier = await isMultiplier(landing_company);
 

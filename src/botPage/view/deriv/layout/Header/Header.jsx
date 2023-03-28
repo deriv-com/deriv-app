@@ -16,9 +16,8 @@ import {
     updateActiveAccount,
     updateBalance,
     updateActiveToken,
-} from '../../store/client-slice';
+ updateAccountType } from '../../store/client-slice';
 import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
-import { updateAccountType } from '../../store/client-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
 import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
@@ -57,7 +56,7 @@ const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
     const platformDropdownRef = React.useRef();
-    const { is_logged, active_token } = useSelector(state => state.client);
+    const { is_logged, active_token, account_type } = useSelector(state => state.client);
     const { is_bot_running } = useSelector(state => state.ui);
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
@@ -68,7 +67,7 @@ const Header = () => {
                 dispatch(updateAccountType(data));
             })
             .catch(error => console.log(error));
-    }, []);
+    }, [account_type]);
 
     React.useEffect(() => {
         api.onMessage().subscribe(({ data }) => {
@@ -125,7 +124,7 @@ const Header = () => {
                 });
             syncWithDerivApp();
         }
-    }, [active_token]);
+    }, [active_token, account_type]);
 
     React.useEffect(() => {
         dispatch(updateIsLogged(isLoggedIn()));

@@ -1,30 +1,30 @@
-import classNames from 'classnames';
-import { Field, Formik } from 'formik';
+import { Formik, Field } from 'formik';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
-    AutoHeightWrapper,
+    Modal,
     Autocomplete,
+    AutoHeightWrapper,
     Checkbox,
-    DateOfBirthPicker,
-    DesktopWrapper,
-    Div100vhContainer,
     Dropdown,
+    DesktopWrapper,
+    MobileWrapper,
+    DateOfBirthPicker,
+    Div100vhContainer,
     FormSubmitButton,
     Input,
-    MobileWrapper,
-    Modal,
     Popover,
     RadioGroup,
     SelectNative,
-    Text,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
-import { PlatformContext, getLegalEntityName, isDesktop, isMobile, routes, toMoment, validPhone } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Link } from 'react-router-dom';
+import { localize, Localize } from '@deriv/translations';
+import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext, validPhone } from '@deriv/shared';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-import FormSubHeader from '../form-sub-header';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import FormSubHeader from '../form-sub-header';
+import classNames from 'classnames';
 
 const DateOfBirthField = props => (
     <Field name={props.name}>

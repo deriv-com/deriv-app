@@ -1,6 +1,5 @@
-import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 
 const financial_details_config = ({ financial_assessment }) => {
     return {

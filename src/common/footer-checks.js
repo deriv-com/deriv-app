@@ -62,9 +62,6 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
     return high_risk_landing_company || risk_classification === 'high' || restricted_countries;
 };
 
-// eslint-disable-next-line import/no-mutable-exports
-export let is_acc_mult;
-
 export const isMultiplier = async landing_company_list => {
     const multiplier_account = landing_company_list?.financial_company?.legal_allowed_contract_categories;
     const is_multiplier = multiplier_account?.includes('multiplier');

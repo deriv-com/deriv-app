@@ -368,17 +368,6 @@ export default class TradeStore extends BaseStore {
             }
         );
         reaction(
-            () => [this.amount],
-            () => {
-                if (this.amount === '0') {
-                    this.validation_errors.amount = [];
-                }
-                if (!this.amount) {
-                    this.validation_rules.amount = [];
-                }
-            }
-        );
-        reaction(
             () => [this.contract_type],
             () => {
                 this.root_store.portfolio.setContractType(this.contract_type);
@@ -392,6 +381,13 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
+            }
+        );
+        reaction(
+            () => this.root_store.common.is_language_changing,
+            () => {
+                this.setValidationRules(getValidationRules());
+                this.changeDurationValidationRules();
             }
         );
         when(

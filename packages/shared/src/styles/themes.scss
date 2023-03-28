@@ -64,6 +64,15 @@
     --app-card-virtual: #{$gradient-virtual};
     --app-card-virtual-swap-free: #{$gradient-virtual-swap-free};
 
+    // Modal
+    --modal-indicator-red-darker: #{$color-red-8};
+    --modal-indicator-red-dark: #{$color-red-9};
+    --modal-indicator-red-light: #{$color-red-10};
+    --modal-indicator-yellow-dark: #{$color-yellow-1};
+    --modal-indicator-yellow-light: #{$color-yellow-2};
+    --modal-indicator-violet-dark: #{$color-violet};
+    --modal-indicator-brown-dark: #{$color-brown};
+
     .theme--light {
         // General
         --general-main-1: #{$color-white};
@@ -135,6 +144,7 @@
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-grey-3};
+        --border-divider: #{$color-grey-2};
         // Fill
         --fill-normal: #{$color-white};
         --fill-hover: #{$color-grey-1};
@@ -188,14 +198,6 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
-        // Modal
-        --modal-indicator-red-darker: #{$color-red-8};
-        --modal-indicator-red-dark: #{$color-red-9};
-        --modal-indicator-red-light: #{$color-red-10};
-        --modal-indicator-yellow-dark: #{$color-yellow-1};
-        --modal-indicator-yellow-light: #{$color-yellow-2};
-        --modal-indicator-violet-dark: #{$color-violet};
-        --modal-indicator-brown-dark: #{$color-brown};
     }
     .theme--dark {
         // General
@@ -220,6 +222,8 @@
         --text-loss-danger: #{$color-red-2};
         --text-red: #{$color-red};
         --text-colored-background: #{$color-white};
+        --text-info-blue: #{$color-blue-6};
+        --text-info-blue-bg: #{$color-blue-7};
         --text-status-info-blue: #{$color-blue};
         --text-hint: #{$color-grey};
         --icon-light-background: #{$color-black-9};
@@ -264,6 +268,7 @@
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-black-4};
+        --border-divider: #{$color-grey-12};
         // Fill
         --fill-normal: #{$color-black};
         --fill-hover: #{$color-grey-7};

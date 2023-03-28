@@ -170,7 +170,7 @@ export default class PaymentAgentStore {
         this.clearSupportedBanks();
         // TODO: Once telephone, url and supported_banks removed from paymentagent_list.list we can remove them and just use the plural ones
         try {
-            payment_agent_list.forEach(payment_agent => {
+            payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
                 this.setList({
                     currency: payment_agent.currencies,
                     deposit_commission: payment_agent.deposit_commission,
@@ -218,18 +218,18 @@ export default class PaymentAgentStore {
             this.list.forEach(payment_agent => {
                 const supported_banks = payment_agent?.supported_banks;
                 if (supported_banks) {
-                    const bank_index = supported_banks
-                        .map(supported_bank =>
+                    let to_include = false;
+                    supported_banks.forEach(supported_bank => {
+                        if (
+                            !to_include &&
                             supported_bank.payment_method
-                                ? getNormalizedPaymentMethod(
-                                      supported_bank.payment_method,
-                                      Constants.payment_methods
-                                  ).toLowerCase()
-                                : ''
-                        )
-                        .indexOf((bank || this.selected_bank).toString());
-
-                    if (bank_index !== -1) this.filtered_list.push(payment_agent);
+                                ?.toLowerCase()
+                                .indexOf((bank || this.selected_bank) as string) !== -1
+                        ) {
+                            to_include = true;
+                        }
+                    });
+                    if (to_include) this.filtered_list.push(payment_agent);
                 }
             });
         } else {
@@ -238,7 +238,7 @@ export default class PaymentAgentStore {
         if (this.search_term) {
             this.filtered_list = this.filtered_list.filter(payment_agent => {
                 return payment_agent.name?.toLocaleLowerCase().includes(this.search_term.toLocaleLowerCase());
-            });
+            }) as IObservableArray<TPartialPaymentAgentList>;
 
             if (this.filtered_list.length === 0) {
                 this.setPaymentAgentSearchWarning(true);

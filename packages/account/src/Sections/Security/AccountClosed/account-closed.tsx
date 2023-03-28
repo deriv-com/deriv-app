@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Modal, Text } from '@deriv/components';
+import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import type { TRootStore } from '@deriv/stores/types';
 
@@ -25,7 +25,7 @@ const AccountClosed = ({ logout }: TAccountClosed) => {
     }, [is_appstore, timer]);
 
     React.useEffect(() => {
-        history.push('/');
+        history.push(routes.root);
         logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {

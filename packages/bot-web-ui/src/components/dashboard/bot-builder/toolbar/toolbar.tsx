@@ -34,7 +34,7 @@ const Toolbar = (props: TToolbar) => {
 
     return (
         <React.Fragment>
-            <div className='toolbar dashboard__toolbar'>
+            <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
                 <div className='toolbar__section'>
                     <WorkspaceGroup {...props} />
                 </div>

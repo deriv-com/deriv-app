@@ -15,12 +15,12 @@ export default class SendbirdStore extends BaseStore {
     should_show_chat_modal = false;
     should_show_chat_on_orders = false;
 
-    messages_ref = null;
-    sendbird_api = null;
-    service_token_timeout = null;
-    scroll_debounce = null;
     file_upload_properties = null;
     is_upload_complete = false;
+    messages_ref = null;
+    scroll_debounce = null;
+    sendbird_api = null;
+    service_token_timeout = null;
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -141,6 +141,7 @@ export default class SendbirdStore extends BaseStore {
         this.sendbird_api
             .connect(sendbird_user_id, service_token, (user, error) => {
                 if (error) {
+                    // TODO: remove console statement and better presentation of warnings to user.
                     // eslint-disable-next-line no-console
                     console.warn(error);
                     this.setChatError();
@@ -373,9 +374,11 @@ export default class SendbirdStore extends BaseStore {
     progressHandler(progress) {
         const { order_id } = this.root_store.order_store;
         this.setIsUploadComplete(progress.loaded === progress.total);
-        if (progress.loaded === progress.total && !this.should_show_chat_on_orders && !order_id) {
+        if (progress.loaded === progress.total) {
             setTimeout(() => {
-                this.terminateChatWsConnection();
+                if (!this.should_show_chat_on_orders && !order_id) {
+                    this.terminateChatWsConnection();
+                }
             }, 1000);
         }
     }

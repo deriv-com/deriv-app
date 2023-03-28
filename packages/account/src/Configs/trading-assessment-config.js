@@ -254,55 +254,73 @@ export const trading_assessment_questions = () => [
 
 const default_form_config = {
     supported_in: ['maltainvest'],
-    default_value: '',
 };
 
-export const trading_assessment_form_config = {
-    risk_tolerance: {
-        ...default_form_config,
-    },
-    source_of_experience: {
-        ...default_form_config,
-    },
-    cfd_experience: {
-        ...default_form_config,
-    },
-    cfd_frequency: {
-        ...default_form_config,
-    },
-    trading_experience_financial_instruments: {
-        ...default_form_config,
-    },
-    trading_frequency_financial_instruments: {
-        ...default_form_config,
-    },
-    cfd_trading_definition: {
-        ...default_form_config,
-    },
-    leverage_impact_trading: {
-        ...default_form_config,
-    },
-    leverage_trading_high_risk_stop_loss: {
-        ...default_form_config,
-    },
-    required_initial_margin: {
-        ...default_form_config,
-    },
+export const getTradingAssessmentFormConfig = financial_assessment => {
+    return {
+        risk_tolerance: {
+            ...default_form_config,
+            default_value: financial_assessment?.risk_tolerance ?? '',
+        },
+        source_of_experience: {
+            ...default_form_config,
+            default_value: financial_assessment?.source_of_experience ?? '',
+        },
+        cfd_experience: {
+            ...default_form_config,
+            default_value: financial_assessment?.cfd_experience ?? '',
+        },
+        cfd_frequency: {
+            ...default_form_config,
+            default_value: financial_assessment?.cfd_frequency ?? '',
+        },
+        trading_experience_financial_instruments: {
+            ...default_form_config,
+            default_value: financial_assessment?.trading_experience_financial_instruments ?? '',
+        },
+        trading_frequency_financial_instruments: {
+            ...default_form_config,
+            default_value: financial_assessment?.trading_frequency_financial_instruments ?? '',
+        },
+        cfd_trading_definition: {
+            ...default_form_config,
+            default_value: financial_assessment?.cfd_trading_definition ?? '',
+        },
+        leverage_impact_trading: {
+            ...default_form_config,
+            default_value: financial_assessment?.leverage_impact_trading ?? '',
+        },
+        leverage_trading_high_risk_stop_loss: {
+            ...default_form_config,
+            default_value: financial_assessment?.leverage_trading_high_risk_stop_loss ?? '',
+        },
+        required_initial_margin: {
+            ...default_form_config,
+            default_value: financial_assessment?.required_initial_margin ?? '',
+        },
+    };
 };
 
-const tradingAssessmentConfig = ({ real_account_signup_target, setSubSectionIndex }, TradingAssessmentNewUser) => ({
-    header: {
-        active_title: localize('Complete your trading assessment'),
-        title: localize('Trading assessment'),
-    },
-    body: TradingAssessmentNewUser,
-    form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
-    props: {
-        validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
-        assessment_questions: trading_assessment_questions(),
-        setSubSectionIndex,
-    },
-    sub_step_count: trading_assessment_questions().length,
-});
+const tradingAssessmentConfig = (
+    { real_account_signup_target, financial_assessment, account_settings, setSubSectionIndex },
+    TradingAssessmentNewUser
+) => {
+    const trading_assessment_form_config = getTradingAssessmentFormConfig(financial_assessment);
+    return {
+        header: {
+            active_title: localize('Complete your trading assessment'),
+            title: localize('Trading assessment'),
+        },
+        body: TradingAssessmentNewUser,
+        form_value: getDefaultFields(real_account_signup_target, trading_assessment_form_config),
+        props: {
+            validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
+            assessment_questions: trading_assessment_questions(),
+            disabled_items: account_settings.immutable_fields,
+            setSubSectionIndex,
+        },
+        sub_step_count: trading_assessment_questions().length,
+    };
+};
 
 export default tradingAssessmentConfig;

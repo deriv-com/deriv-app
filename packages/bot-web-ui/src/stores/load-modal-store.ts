@@ -1,11 +1,10 @@
-import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types } from '@deriv/bot-skeleton';
+import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import React from 'react';
 import RootStore from './root-store';
-import { setColors } from '../../../bot-skeleton/src/scratch/hooks/colours';
 
 export type TWorkspace = {
     id: string;

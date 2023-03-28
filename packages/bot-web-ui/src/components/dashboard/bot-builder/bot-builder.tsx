@@ -35,10 +35,11 @@ const BotBuilder = ({
     is_preview_on_popup,
     is_dark_mode_on,
     selected_strategy_id,
+    loadFileFromRecent,
     previewRecentStrategy,
 }: TBotBuilder) => {
     const [is_tour_running] = React.useState<boolean>(true);
-    const { onMount, onUnmount, reinitializeWorkspace } = app;
+    const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     React.useEffect(() => {
         setTimeout(() => {
@@ -46,17 +47,9 @@ const BotBuilder = ({
         }, 0); // made this async to give it a split second delay
         if (active_tab === 1) {
             setColors(is_dark_mode_on);
-            reinitializeWorkspace(false);
-            const elements = document.getElementsByClassName('injectionDiv');
-            if (elements.length > 0) {
-                elements[0].parentNode.removeChild(elements[0]);
-            }
             setTimeout(() => {
-                previewRecentStrategy(selected_strategy_id);
-            }, 100); // made this async to give it a split second delay
-            //stop the bot when we switch theme becuase we have to load only one file to the interpreter
-            DBot.terminateBot();
-            DBot.terminateConnection();
+                loadFileFromRecent();
+            }, 100);
         }
     }, [is_dark_mode_on, active_tab]);
 

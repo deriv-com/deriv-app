@@ -53,6 +53,7 @@ const Trade = ({
     symbol,
     is_synthetics_available,
     is_synthetics_trading_market_available,
+    is_trade_params_expanded,
     is_vanilla,
 }) => {
     const [digits, setDigits] = React.useState([]);
@@ -187,6 +188,7 @@ const Trade = ({
                                 should_show_active_symbols_loading
                             }
                             className={classNames({ 'vanilla-trade-chart': is_vanilla })}
+                            is_trade_params_expanded={is_trade_params_expanded}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <ChartTrade
@@ -234,6 +236,7 @@ export default connect(({ client, common, modules, ui }) => ({
     should_show_active_symbols_loading: modules.trade.should_show_active_symbols_loading,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
+    is_trade_params_expanded: modules.trade.is_trade_params_expanded,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
     prepareTradeStore: modules.trade.prepareTradeStore,

@@ -6,8 +6,6 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
         return {};
     }
 
-    const disabled_items = account_settings.immutable_fields; // immutable fields set by BE
-
     // minimum characters required is 9 numbers (excluding +- signs or space)
     const min_phone_number = 9;
     const max_phone_number = 35;
@@ -134,7 +132,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             ],
         },
         employment_status: {
-            default_value: '',
+            default_value: account_settings.employment_status ?? '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Employment status is required.')]],
         },
@@ -158,7 +156,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
         return config;
     };
 
-    return [getConfig(), disabled_items];
+    return [getConfig()];
 };
 
 const personalDetailsConfig = (
@@ -166,12 +164,13 @@ const personalDetailsConfig = (
     PersonalDetails,
     is_appstore = false
 ) => {
-    const [config, disabled_items] = personal_details_config({
+    const [config] = personal_details_config({
         residence_list,
         account_settings,
         is_appstore,
         real_account_signup_target,
     });
+    const disabled_items = account_settings.immutable_fields;
     return {
         header: {
             active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),

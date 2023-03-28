@@ -5,6 +5,7 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
+import { generatePlaceholderText } from 'Helpers/utils';
 
 import {
     documentAdditionalError,
@@ -283,7 +284,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                     errors.error_message
                                                 }
                                                 autoComplete='off'
-                                                placeholder='Enter your document number'
+                                                placeholder={generatePlaceholderText(selected_doc)}
                                                 value={values.document_number}
                                                 onPaste={preventEmptyClipboardPaste}
                                                 onBlur={handleBlur}

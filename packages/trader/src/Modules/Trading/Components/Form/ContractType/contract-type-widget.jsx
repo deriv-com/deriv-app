@@ -118,7 +118,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             categories.push({
                 label: localize('Options'),
                 contract_categories: options_category,
-                component: options_category.includes('Vanillas') && (
+                component: options_category.some(category => category.key === 'Vanillas') && (
                     <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
                 ),
                 key: 'Options',

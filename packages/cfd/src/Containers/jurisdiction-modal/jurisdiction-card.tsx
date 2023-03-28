@@ -1,8 +1,8 @@
-import { Text } from '@deriv/components';
+import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import React from 'react';
-import { jurisdiction_contents } from '../../Constants/jurisdiction-contents';
+import React, { useState } from 'react';
+import { jurisdiction_contents, jurisdiction_verification_contents } from '../../Constants/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardSection from './jurisdiction-card-section';
 
@@ -20,24 +20,80 @@ const JurisdictionCard = ({
     const is_synthetic = account_type === 'synthetic';
     const card_values = jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents];
     const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
+    const verification_docs = is_synthetic
+        ? card_values?.synthetic_verification_docs
+        : card_values.financial_verification_docs;
+    const [isCardFlipped, setIsCardFlipped] = useState(false);
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
 
+    const flipCard = () => {
+        setIsCardFlipped(!isCardFlipped);
+    };
+
     return (
-        <React.Fragment>
-            <div
-                className={classNames(card_classname, {
-                    [`${card_classname}--selected selected-card`]: jurisdiction_selected_shortcode === type_of_card,
-                })}
-                onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
-            >
+        <div
+            className={classNames(card_classname, {
+                [`${card_classname}--selected selected-card`]: jurisdiction_selected_shortcode === type_of_card,
+            })}
+            onClick={disabled || isCardFlipped ? () => undefined : () => cardSelection(type_of_card)}
+        >
+            {isCardFlipped ? (
+                <div
+                    className={classNames(
+                        `${card_classname}__card-content-container`,
+                        `${card_classname}__card-flipped-container`
+                    )}
+                >
+                    <div onClick={flipCard}>
+                        <Icon icon='IcBackButton' size={20} />
+                    </div>
+                    <Text as='div' size='xxs'>
+                        {jurisdiction_verification_contents.shortDescription}
+                    </Text>
+                    <div className='cfd-card-back-section-items-container'>
+                        {verification_docs?.map(verificationItem => (
+                            <div className='cfd-card-back-section-items-sub-container' key={verificationItem}>
+                                <div>
+                                    <Icon
+                                        icon={
+                                            jurisdiction_verification_contents.requiredVerificationDocs[
+                                                verificationItem
+                                            ]?.icon
+                                        }
+                                    />
+                                </div>
+                                <Text as='span' size='xxs'>
+                                    {
+                                        jurisdiction_verification_contents.requiredVerificationDocs[verificationItem]
+                                            ?.text
+                                    }
+                                </Text>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='cfd-card-section-divider' />
+                    <div className='cfd-card-back-section-items-container'>
+                        {jurisdiction_verification_contents.statusReferences.map(statusItem => (
+                            <div className='cfd-card-back-section-items-sub-container' key={statusItem.color}>
+                                <div>
+                                    <Icon icon={statusItem.icon} />
+                                </div>
+                                <Text as='span' size='xxs'>
+                                    {statusItem.text}
+                                </Text>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : (
                 <div className={`${card_classname}__card-content-container`}>
                     {card_values.is_over_header_available ? (
-                        <div className={`${card_classname}__card-content-over-header`}>
+                        <Text as='div' size='xxs' className={`${card_classname}__card-content-over-header`}>
                             <Localize i18n_default_text={card_values.over_header} />
-                        </div>
+                        </Text>
                     ) : (
                         <div className={`${card_classname}__card-content-over-header-blank`} />
                     )}
@@ -46,15 +102,15 @@ const JurisdictionCard = ({
                     </Text>
                     <div className={`${card_classname}__card-section-container`}>
                         {card_data.map((item, index) => (
-                            <React.Fragment key={index}>
-                                <JurisdictionCardSection cardSectionItem={item} />
-                                {index < card_data.length - 1 && <div className={'cfd-card-section-divider'} />}
+                            <React.Fragment key={item.key}>
+                                <JurisdictionCardSection cardSectionItem={item} flipCard={flipCard} />
+                                {index < card_data.length - 1 && <div className='cfd-card-section-divider' />}
                             </React.Fragment>
                         ))}
                     </div>
                 </div>
-            </div>
-        </React.Fragment>
+            )}
+        </div>
     );
 };
 

@@ -1,5 +1,52 @@
 import { localize } from '@deriv/translations';
-import { TJurisdictionCardSection } from 'Components/props.types';
+import {
+    TJurisdictionCardBackSectionRequiredDocs,
+    TJurisdictionCardBackSectionStatusReferences,
+    TJurisdictionCardSection,
+} from 'Components/props.types';
+
+export type TJurisdictionCardBackSectionContent = {
+    shortDescription: string;
+    requiredVerificationDocs: TJurisdictionCardBackSectionRequiredDocs;
+    statusReferences: Array<TJurisdictionCardBackSectionStatusReferences>;
+};
+
+export const jurisdiction_verification_contents: TJurisdictionCardBackSectionContent = {
+    shortDescription: `${localize('We need you to submit these in order to get this account:')}`,
+    requiredVerificationDocs: {
+        documentNumber: {
+            icon: 'IcDocumentNumberVerification',
+            text: `${localize('Document number (identity card, passport)')}`,
+        },
+        selfie: {
+            icon: 'IcSelfieVerification',
+            text: `${localize('A selfie of yourself.')}`,
+        },
+        identityDocument: {
+            icon: 'IcIdentityDocumentVerification',
+            text: `${localize('A copy of your identity document (identity card, passport)')}`,
+        },
+        nameAndAddress: {
+            icon: 'IcNameAndAddressVerification',
+            text: `${localize(
+                'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
+            )}`,
+        },
+    },
+    statusReferences: [
+        {
+            icon: 'IcVerificationStatusYellow',
+            text: `${localize('Your document is pending for verification.')}`,
+            color: 'yellow',
+        },
+        {
+            icon: 'IcVerificationStatusRed',
+            text: `${localize('Verification failed. Resubmit during account creation.')}`,
+            color: 'red',
+        },
+        { icon: 'IcVerificationStatusGreen', text: `${localize('Your document is verified.')}`, color: 'green' },
+    ],
+};
 
 type TJurisdictionCardItems = {
     header: string;
@@ -7,7 +54,10 @@ type TJurisdictionCardItems = {
     synthetic_contents: Array<TJurisdictionCardSection>;
     financial_contents: Array<TJurisdictionCardSection>;
     is_over_header_available: boolean;
+    synthetic_verification_docs?: Array<'documentNumber' | 'selfie' | 'identityDocument' | 'nameAndAddress'>;
+    financial_verification_docs?: Array<'documentNumber' | 'selfie' | 'identityDocument' | 'nameAndAddress'>;
 };
+
 type TJurisdictionContent = {
     svg: TJurisdictionCardItems;
     vanuatu: TJurisdictionCardItems;
@@ -180,6 +230,8 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 )}`,
             },
         ],
+        synthetic_verification_docs: ['documentNumber', 'nameAndAddress'],
+        financial_verification_docs: ['documentNumber', 'nameAndAddress'],
     },
     vanuatu: {
         is_over_header_available: false,
@@ -261,6 +313,8 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize('Vanuatu Financial Services Commission')}`,
             },
         ],
+        synthetic_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
+        financial_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
     },
     labuan: {
         over_header: localize('Straight-through processing'),
@@ -330,6 +384,8 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize('Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
             },
         ],
+        synthetic_verification_docs: ['documentNumber', 'nameAndAddress'],
+        financial_verification_docs: ['documentNumber', 'nameAndAddress'],
     },
     maltainvest: {
         is_over_header_available: false,
@@ -424,5 +480,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             },
         ],
+        synthetic_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
+        financial_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
     },
 };

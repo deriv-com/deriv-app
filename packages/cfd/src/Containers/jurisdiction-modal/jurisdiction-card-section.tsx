@@ -4,9 +4,10 @@ import React, { SyntheticEvent } from 'react';
 import { TClickableDescription, TJurisdictionCardSectionTitleIndicators } from 'Components/props.types';
 import { TJurisdictionCardSectionProps } from '../props.types';
 
-const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionProps) => {
-    const handleCardFlip = (event: SyntheticEvent, linkData?: string) => {
+const JurisdictionCardSection = ({ cardSectionItem, flipCard }: TJurisdictionCardSectionProps) => {
+    const handleCardFlip = (event: SyntheticEvent) => {
         event.stopPropagation();
+        flipCard();
     };
 
     const renderTitleIndicator = (titleIndicators: TJurisdictionCardSectionTitleIndicators) => {
@@ -34,7 +35,7 @@ const JurisdictionCardSection = ({ cardSectionItem }: TJurisdictionCardSectionPr
             switch (descriptionPart.type) {
                 case 'link':
                     return (
-                        <span onClick={event => handleCardFlip(event, descriptionPart.linkData)}>
+                        <span onClick={event => handleCardFlip(event)}>
                             <Text as='span' size='xxs' className='clickable-description-link'>
                                 {descriptionPart.text}
                             </Text>

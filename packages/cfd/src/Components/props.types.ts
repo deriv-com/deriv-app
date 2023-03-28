@@ -89,6 +89,24 @@ export type TJurisdictionCardSection = {
     clickableDescription?: Array<TClickableDescription>;
 };
 
+export type TJurisdictionCardBackRequiredDocsItem = {
+    icon: string;
+    text: string;
+};
+
+export type TJurisdictionCardBackSectionRequiredDocs = {
+    documentNumber?: TJurisdictionCardBackRequiredDocsItem;
+    selfie?: TJurisdictionCardBackRequiredDocsItem;
+    identityDocument?: TJurisdictionCardBackRequiredDocsItem;
+    nameAndAddress?: TJurisdictionCardBackRequiredDocsItem;
+};
+
+export type TJurisdictionCardBackSectionStatusReferences = {
+    icon: string;
+    text: string;
+    color: 'yellow' | 'red' | 'green';
+};
+
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
 
 export type TCFDAccountCard = {

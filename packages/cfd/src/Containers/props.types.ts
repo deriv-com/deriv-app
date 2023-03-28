@@ -176,6 +176,7 @@ export type TJurisdictionCardProps = {
 
 export type TJurisdictionCardSectionProps = {
     cardSectionItem: TJurisdictionCardSection;
+    flipCard: () => void;
 };
 
 export type TVerificationStatusBannerProps = {

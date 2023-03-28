@@ -1,3 +1,4 @@
+import React from 'react';
 import merge from 'lodash.merge';
 import type { TRootStore } from '../types';
 
@@ -211,6 +212,7 @@ const mock = (): TRootStore => {
             is_network_online: false,
         },
         ui: {
+            app_contents_scroll_ref: React.createRef<HTMLElement>(),
             current_focus: null,
             is_cashier_visible: false,
             is_dark_mode_on: false,

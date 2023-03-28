@@ -1311,6 +1311,10 @@ export default class ClientStore extends BaseStore {
                     new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
                     runInAction(() => (client_accounts[client_id] = new_data));
                     this.setLoginInformation(client_accounts, client_id);
+
+                    // set updating for notifications
+                    this.root_store.notifications.notifications_updated.account_settings = false;
+
                     WS.authorized.storage.getSettings().then(get_settings_response => {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
@@ -1661,6 +1665,9 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
 
+            // set updating for notifications
+            this.root_store.notifications.notifications_updated.landing_companies = false;
+
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
@@ -1719,6 +1726,9 @@ export default class ClientStore extends BaseStore {
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+
+        // set updated for notifications
+        this.root_store.notifications.notifications_updated.landing_companies = true;
     }
 
     setP2pAdvertiserInfo(response) {
@@ -1998,13 +2008,22 @@ export default class ClientStore extends BaseStore {
             this.account_settings = settings;
             this.is_account_setting_loaded = true;
         }
+
+        // set updated for notifications
+        this.root_store.notifications.notifications_updated.account_settings = true;
     }
 
     setAccountStatus(status) {
         this.account_status = status;
+
+        // set updated for notifications
+        this.root_store.notifications.notifications_updated.account_status = true;
     }
 
     async updateAccountStatus() {
+        // set updating for notifications
+        this.root_store.notifications.notifications_updated.account_status = false;
+
         const account_status_response = await WS.authorized.getAccountStatus();
         if (!account_status_response.error) {
             this.setAccountStatus(account_status_response.get_account_status);
@@ -2268,6 +2287,10 @@ export default class ClientStore extends BaseStore {
             if (response.error) {
                 cb(response.error.message);
             } else {
+                // set updating for notifications
+                this.root_store.notifications.notifications_updated.account_settings = false;
+                this.root_store.notifications.notifications_updated.landing_companies = false;
+
                 await this.setResidence(residence);
                 await WS.authorized.storage
                     .landingCompany(this.accounts[this.loginid].residence)
@@ -2327,6 +2350,9 @@ export default class ClientStore extends BaseStore {
 
     fetchAccountSettings() {
         return new Promise(resolve => {
+            // set updating for notifications
+            this.root_store.notifications.notifications_updated.account_settings = false;
+
             WS.authorized.storage.getSettings().then(response => {
                 this.setAccountSettings(response.get_settings);
                 resolve(response);

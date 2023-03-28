@@ -248,12 +248,6 @@ type TNotificationStore = {
         client_account_settings: boolean;
         client_account_status: boolean;
         client_landing_companies: boolean;
-        modules_cashier_general_store_is_p2p_visible: boolean;
-        common_selected_contract_type: boolean;
-        client_is_eu: boolean;
-        client_has_enabled_two_fa: boolean;
-        p2p_order_props_order_id: boolean;
-        client_p2p_advertiser_info: boolean;
     };
 };
 

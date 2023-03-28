@@ -43,15 +43,9 @@ export default class NotificationStore extends BaseStore {
     p2p_redirect_to = {};
     p2p_completed_orders = null;
     notifications_updated = {
-        client_account_settings: true,
-        client_account_status: true,
-        client_landing_companies: true,
-        modules_cashier_general_store_is_p2p_visible: true,
-        common_selected_contract_type: true,
-        client_is_eu: true,
-        client_has_enabled_two_fa: true,
-        p2p_order_props_order_id: true,
-        client_p2p_advertiser_info: true,
+        client_account_settings: true, // ok
+        client_account_status: true, // ok
+        client_landing_companies: true, // ok
     };
 
     constructor(root_store) {
@@ -93,14 +87,10 @@ export default class NotificationStore extends BaseStore {
             p2p_completed_orders: observable,
             getP2pCompletedOrders: action.bound,
             is_notifications_loading_completed: computed,
+            notifications_updated: observable,
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
-        // // because we don't know how much time we need to update notification we use debounce
-        // const setIsNotificationsLoadingCompletedToTrue = debounce(
-        //     () => (this.is_notifications_loading_completed = true),
-        //     1000
-        // );
 
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
@@ -136,7 +126,6 @@ export default class NotificationStore extends BaseStore {
                     (Object.keys(root_store.client.account_status).length > 0 &&
                         Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
-                    // this.is_notifications_loading_completed = false;
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
@@ -146,25 +135,11 @@ export default class NotificationStore extends BaseStore {
                 }
             }
         );
-        // reaction(
-        //     () => this.notifications,
-        //     () => {
-        //         // console.log('reaction: notifications.length = ', this.notifications.length);
-        //         this.is_notifications_loading_completed = false;
-        //         // set TRUE only after X seconds after reaction has ended
-        //         setIsNotificationsLoadingCompletedToTrue();
-        //     }
-        // );
     }
 
     get is_notifications_loading_completed() {
-        const {
-            is_switching,
-            is_logging_in,
-            is_landing_company_loaded,
-            is_account_setting_loaded,
-            // is_website_status_ready,
-        } = this.root_store.client;
+        const { is_switching, is_logging_in, is_landing_company_loaded, is_account_setting_loaded } =
+            this.root_store.client;
 
         // check switching, logging, landing_company, and account_setting
         if (is_switching || is_logging_in || !is_landing_company_loaded || !is_account_setting_loaded) return false;

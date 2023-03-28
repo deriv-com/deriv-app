@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Counter, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import 'Sass/app/modules/notifications-dialog.scss';
@@ -15,30 +15,19 @@ const ToggleNotificationsDrawer = ({
 }) => {
     const {
         notifications: { is_notifications_loading_completed },
-        // client: {
-        //     is_switching,
-        //     is_logging_in,
-        //     is_landing_company_loaded,
-        //     is_account_setting_loaded,
-        //     is_website_status_ready,
-        // },
     } = useStore();
 
-    // console.log(
-    //     'is_notifications_loading_completed = ',
-    //     is_notifications_loading_completed,
-    //     ', is_switching = ',
-    //     is_switching,
-    //     ', is_logging_in = ',
-    //     is_logging_in,
-    //     ', is_landing_company_loaded = ',
-    //     is_landing_company_loaded,
-    //     ', is_account_setting_loaded = ',
-    //     is_account_setting_loaded,
-    //     ', is_website_status_ready = ',
-    //     is_website_status_ready
-    // );
-    // console.log('is_notifications_loading_completed = ', is_notifications_loading_completed);
+    const [counter, setCounter] = useState(null);
+
+    // don't hide count when 'is_notifications_loading_completed' = false
+    useEffect(() => {
+        // show count if loading completed and count more than 0
+        if (is_notifications_loading_completed && !!count)
+            setCounter(<Counter count={count} className='notifications-toggle__step' />);
+        // set null only if loading completed and count == 0
+        else if (is_notifications_loading_completed && !count) setCounter(null);
+        // another way when loading is in progress doesn't change the counter
+    }, [is_notifications_loading_completed, count]);
 
     const notifications_toggler_el = (
         <div
@@ -48,9 +37,7 @@ const ToggleNotificationsDrawer = ({
             onClick={toggleDialog}
         >
             <Icon className='notifications-toggle__icon' icon='IcBell' />
-            {is_notifications_loading_completed && !!count && (
-                <Counter count={count} className='notifications-toggle__step' />
-            )}
+            {counter}
         </div>
     );
 

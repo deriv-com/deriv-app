@@ -17,6 +17,7 @@ import {
 } from '@deriv/components';
 import {
     urlFor,
+    isAccumulatorContract,
     isMobile,
     isMultiplierContract,
     isVanillaContract,
@@ -25,6 +26,7 @@ import {
     getTotalProfit,
     getContractPath,
     getCurrentTick,
+    getGrowthRatePercentage,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -33,6 +35,7 @@ import { getContractDurationType } from '../Helpers/market-underlying';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 import {
     getOpenPositionsColumnsTemplate,
+    getAccumulatorOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
@@ -97,7 +100,7 @@ const MobileRowRenderer = ({
     const duration_type = getContractDurationType(contract_info.longcode);
     const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 
-    if (isMultiplierContract(type)) {
+    if (isMultiplierContract(type) || isAccumulatorContract(type)) {
         return (
             <PositionsDrawerCard
                 contract_info={contract_info}
@@ -109,6 +112,7 @@ const MobileRowRenderer = ({
                 onClickSell={onClickSell}
                 server_time={server_time}
                 status={status}
+                measure={measure}
                 {...props}
             />
         );
@@ -252,7 +256,7 @@ const getRowAction = row_obj =>
  */
 const isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
 
-const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected) => {
+const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected, is_accumulator_selected) => {
     let totals;
 
     if (is_multiplier_selected) {
@@ -288,6 +292,33 @@ const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selecte
                 ask_price,
             };
         }
+    } else if (is_accumulator_selected) {
+        let buy_price = 0;
+        let bid_price = 0;
+        let take_profit = 0;
+        let profit = 0;
+
+        active_positions_filtered?.forEach(({ contract_info }) => {
+            buy_price += +contract_info.buy_price;
+            bid_price += +contract_info.bid_price;
+            take_profit += contract_info.limit_order?.take_profit?.order_amount;
+            if (contract_info) {
+                profit += getTotalProfit(contract_info);
+            }
+        });
+        totals = {
+            contract_info: {
+                buy_price,
+                bid_price,
+                profit,
+                limit_order: {
+                    take_profit: {
+                        order_amount: take_profit,
+                    },
+                },
+            },
+            purchase: buy_price,
+        };
     } else {
         let indicative = 0;
         let purchase = 0;
@@ -316,6 +347,7 @@ const OpenPositions = ({
     currency,
     error,
     getPositionById,
+    is_accumulator,
     is_loading,
     is_multiplier,
     is_vanilla,
@@ -326,19 +358,44 @@ const OpenPositions = ({
     server_time,
     ...props
 }) => {
-    const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
-    const [contract_type_value, setContractTypeValue] = React.useState(is_multiplier ? 'Multipliers' : 'Options');
+    const [has_accumulator_contract, setHasAccumulatorContract] = React.useState(false);
+    const [has_multiplier_contract, setHasMultiplierContract] = React.useState(false);
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
-        {
-            text: localize('Options'),
-            value: 'Options',
-        },
-        {
-            text: localize('Multipliers'),
-            value: 'Multipliers',
-        },
+        { text: localize('Options'), is_default: !is_multiplier && !is_accumulator },
+        { text: localize('Multipliers'), is_default: is_multiplier },
+        { text: localize('Accumulators'), is_default: is_accumulator },
     ];
+    const [contract_type_value, setContractTypeValue] = React.useState(
+        contract_types.find(type => type.is_default)?.text || localize('Options')
+    );
+    const accumulator_rates = [localize('All rates'), '1%', '2%', '3%', '4%', '5%'];
+    const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
+    const is_accumulator_selected = contract_type_value === contract_types[2].text;
+    const is_multiplier_selected = contract_type_value === contract_types[1].text;
+    const contract_types_list = contract_types.map(({ text }) => ({ text, value: text }));
+    const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
+    const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
+        if (contract_info) {
+            if (is_multiplier_selected) return isMultiplierContract(contract_info.contract_type);
+            if (is_accumulator_selected)
+                return (
+                    isAccumulatorContract(contract_info.contract_type) &&
+                    (`${getGrowthRatePercentage(contract_info.growth_rate)}%` === accumulator_rate ||
+                        !accumulator_rate.includes('%'))
+                );
+            return (
+                !isMultiplierContract(contract_info.contract_type) &&
+                !isAccumulatorContract(contract_info.contract_type)
+            );
+        }
+        return true;
+    });
+    const active_positions_filtered_totals = getOpenPositionsTotals(
+        active_positions_filtered,
+        is_multiplier_selected,
+        is_accumulator_selected
+    );
 
     React.useEffect(() => {
         /*
@@ -347,47 +404,52 @@ const OpenPositions = ({
          */
 
         onMount();
-        checkForMultiplierContract();
-
+        checkForAccuAndMultContracts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        checkForMultiplierContract(previous_active_positions);
+        checkForAccuAndMultContracts(previous_active_positions);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
-    const checkForMultiplierContract = (prev_active_positions = []) => {
-        if (!has_multiplier_contract && active_positions !== prev_active_positions) {
-            setMultiplierContract(active_positions.some(p => isMultiplierContract(p.contract_info?.contract_type)));
+    const checkForAccuAndMultContracts = (prev_active_positions = []) => {
+        if (active_positions === prev_active_positions) return;
+        if (!has_accumulator_contract) {
+            setHasAccumulatorContract(
+                active_positions.some(({ contract_info }) => isAccumulatorContract(contract_info?.contract_type))
+            );
+        }
+        if (!has_multiplier_contract) {
+            setHasMultiplierContract(
+                active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type))
+            );
         }
     };
 
     if (error) return <p>{error}</p>;
 
-    const is_multiplier_selected = contract_type_value === 'Multipliers';
-    const is_options_selected = contract_type_value === 'Options';
-
-    const active_positions_filtered = active_positions?.filter(p => {
-        if (p.contract_info) {
-            return is_multiplier_selected
-                ? isMultiplierContract(p.contract_info.contract_type)
-                : !isMultiplierContract(p.contract_info.contract_type);
+    const getColumns = () => {
+        if (is_multiplier_selected) {
+            return getMultiplierOpenPositionsColumnsTemplate({
+                currency,
+                onClickCancel,
+                onClickSell,
+                getPositionById,
+                server_time,
+            });
         }
-        return true;
-    });
+        if (is_accumulator_selected) {
+            return getAccumulatorOpenPositionsColumnsTemplate({
+                currency,
+                onClickSell,
+                getPositionById,
+            });
+        }
+        return getOpenPositionsColumnsTemplate(currency);
+    };
 
-    const active_positions_filtered_totals = getOpenPositionsTotals(active_positions_filtered, is_multiplier_selected);
-
-    const columns = is_multiplier_selected
-        ? getMultiplierOpenPositionsColumnsTemplate({
-              currency,
-              onClickCancel,
-              onClickSell,
-              getPositionById,
-              server_time,
-          })
-        : getOpenPositionsColumnsTemplate(currency);
+    const columns = getColumns();
 
     const columns_map = columns.reduce((map, item) => {
         map[item.col_index] = item;
@@ -416,8 +478,27 @@ const OpenPositions = ({
         totals: active_positions_filtered_totals,
     };
 
-    const handleChange = e => {
-        setContractTypeValue(e.target.value);
+    const getOpenPositionsTable = () => {
+        let classname = 'open-positions';
+        let row_size = isMobile() ? 5 : 63;
+
+        if (is_accumulator_selected) {
+            classname = 'open-positions-accumulator open-positions';
+            row_size = isMobile() ? 3 : 68;
+        } else if (is_multiplier_selected) {
+            classname = 'open-positions-multiplier open-positions';
+            row_size = isMobile() ? 3 : 68;
+        }
+
+        return (
+            <OpenPositionsTable
+                className={classname}
+                columns={columns}
+                is_empty={active_positions_filtered.length === 0}
+                row_size={row_size}
+                {...shared_props}
+            />
+        );
     };
 
     return (
@@ -426,48 +507,64 @@ const OpenPositions = ({
             {active_positions.length !== 0 && (
                 <React.Fragment>
                     <DesktopWrapper>
-                        <div className='open-positions__contract-types-selector__container'>
-                            <Dropdown
-                                is_align_text_left
-                                name='contract_types'
-                                list={contract_types}
-                                value={contract_type_value}
-                                onChange={handleChange}
-                            />
+                        <div
+                            className={
+                                is_accumulator_selected
+                                    ? 'open-positions__accumulator-container'
+                                    : 'open-positions__contract-types-selector-container'
+                            }
+                        >
+                            <div className='open-positions__accumulator-container__contract-dropdown'>
+                                <Dropdown
+                                    is_align_text_left
+                                    name='contract_types'
+                                    list={contract_types_list}
+                                    value={contract_type_value}
+                                    onChange={e => setContractTypeValue(e.target.value)}
+                                />
+                            </div>
+                            {is_accumulator_selected && (
+                                <div className='open-positions__accumulator-container__rates-dropdown'>
+                                    <Dropdown
+                                        is_align_text_left
+                                        name='accumulator_rates'
+                                        list={accumulators_rates_list}
+                                        value={accumulator_rate}
+                                        onChange={e => setAccumulatorRate(e.target.value)}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <SelectNative
-                            className='open-positions__contract-types-selector'
-                            list_items={contract_types.map(option => ({
-                                text: option.text,
-                                value: option.value,
-                            }))}
-                            value={contract_type_value}
-                            should_show_empty_option={false}
-                            onChange={handleChange}
-                        />
+                        <div
+                            className={
+                                is_accumulator_selected
+                                    ? 'open-positions__accumulator-container--mobile'
+                                    : 'open-positions__contract-types-selector-container--mobile'
+                            }
+                        >
+                            <SelectNative
+                                className='open-positions__accumulator-container-mobile__contract-dropdown'
+                                list_items={contract_types_list}
+                                value={contract_type_value}
+                                should_show_empty_option={false}
+                                onChange={e => setContractTypeValue(e.target.value)}
+                            />
+                            {is_accumulator_selected && (
+                                <SelectNative
+                                    className='open-positions__accumulator-container--mobile__rates-dropdown'
+                                    list_items={accumulators_rates_list}
+                                    value={accumulator_rate}
+                                    should_show_empty_option={false}
+                                    onChange={e => setAccumulatorRate(e.target.value)}
+                                />
+                            )}
+                        </div>
                     </MobileWrapper>
                 </React.Fragment>
             )}
-
-            {is_options_selected ? (
-                <OpenPositionsTable
-                    is_empty={active_positions_filtered.length === 0}
-                    className='open-positions'
-                    columns={columns}
-                    {...shared_props}
-                    row_size={isMobile() ? 5 : 63}
-                />
-            ) : (
-                <OpenPositionsTable
-                    className='open-positions-multiplier open-positions'
-                    columns={columns}
-                    row_size={isMobile() ? 3 : 68}
-                    is_empty={active_positions_filtered.length === 0}
-                    {...shared_props}
-                />
-            )}
+            {getOpenPositionsTable()}
         </React.Fragment>
     );
 };
@@ -478,8 +575,10 @@ OpenPositions.propTypes = {
     currency: PropTypes.string,
     error: PropTypes.string,
     getPositionById: PropTypes.func,
+    is_accumulator: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     NotificationMessages: PropTypes.func,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
@@ -502,6 +601,7 @@ export default connect(({ client, common, ui, portfolio, contract_trade }) => ({
     currency: client.currency,
     error: portfolio.error,
     getPositionById: portfolio.getPositionById,
+    is_accumulator: portfolio.is_accumulator,
     is_loading: portfolio.is_loading,
     is_multiplier: portfolio.is_multiplier,
     NotificationMessages: ui.notification_messages_ui,

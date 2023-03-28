@@ -35,13 +35,13 @@
                         margin-top: 1.9rem;
                     }
                 }
-                &__invalid-input-error{
+                &__invalid-input-error {
                     margin: 2.4rem auto;
                     padding-top: unset;
                     .dc-btn {
                         margin-top: 1.9rem;
                     }
-                    .invalid_fields_input{
+                    .invalid_fields_input {
                         display: list-item;
                         margin: 0.5rem auto;
                         list-style: disc;
@@ -49,7 +49,6 @@
                     }
                 }
             }
-            
 
             & > svg {
                 width: 12.8rem;
@@ -179,6 +178,7 @@
     position: relative;
     width: 100%;
     @include desktop {
+        transform: translateY(0);
         &--deriv-crypto {
             grid-template-rows: 0 !important;
         }
@@ -377,20 +377,21 @@
             flex-direction: column;
             align-items: center;
 
-            &__restricted-country-error , &__invalid-input-error{
+            &__restricted-country-error,
+            &__invalid-input-error {
                 margin: auto 2.4rem;
                 height: calc(100vh - 84px);
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 gap: 0.8rem;
-                
+
                 .dc-btn {
                     margin-top: 1.9rem;
-                    width:100%
+                    width: 100%;
                 }
-                .invalid_fields_input{
-                    display:list-item;
+                .invalid_fields_input {
+                    display: list-item;
                     margin: 0.5rem auto;
                     list-style: disc;
                     list-style-position: inside;

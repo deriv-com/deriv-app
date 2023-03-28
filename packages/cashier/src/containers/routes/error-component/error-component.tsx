@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageError } from '@deriv/components';
+import { PageError, UnhandledErrorModal } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { TStores } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 const ErrorComponent = ({
     header,
@@ -32,27 +32,20 @@ const ErrorComponent = ({
         ''
     );
 
-    return (
-        <PageError
-            header={header || <Localize i18n_default_text='Something’s not right' />}
-            messages={
-                message
-                    ? [message, refresh_message]
-                    : [
-                          <Localize
-                              key={0}
-                              i18n_default_text='Sorry, an error occured while processing your request.'
-                          />,
-                          refresh_message,
-                      ]
-            }
-            redirect_urls={[redirect_to]}
-            redirect_labels={[redirect_label || <Localize i18n_default_text='Refresh' />]}
-            buttonOnClick={redirectOnClick || (() => location.reload())}
-            should_clear_error_on_click={should_clear_error_on_click}
-            setError={setError}
-        />
-    );
+    if (header && message) {
+        return (
+            <PageError
+                header={header}
+                messages={[message, refresh_message]}
+                redirect_urls={[redirect_to]}
+                redirect_labels={[redirect_label || localize('Refresh')]}
+                buttonOnClick={redirectOnClick || (() => location.reload())}
+                should_clear_error_on_click={should_clear_error_on_click}
+                setError={setError}
+            />
+        );
+    }
+    return <UnhandledErrorModal />;
 };
 
 export default ErrorComponent;

@@ -123,6 +123,7 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
+    is_trading_experience_incomplete,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -336,7 +337,7 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
-        return () => setIsTradingAssessmentForNewUserEnabled(false);
+        return () => setIsTradingAssessmentForNewUserEnabled(is_trading_experience_incomplete);
     }, []);
 
     // setCurrentAction callback useEffect to set error details
@@ -487,10 +488,9 @@ const RealAccountSignup = ({
     if (assessment_decline) {
         return (
             <RiskToleranceWarningModal
-                has_icon={false}
                 show_risk_modal={assessment_decline}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the risk of losing your money. <0/><0/>
@@ -503,10 +503,9 @@ const RealAccountSignup = ({
     } else if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
-                has_icon={true}
                 show_risk_modal={should_show_risk_warning_modal}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, kindly note that you would need to wait 24 hours before you can proceed further.'

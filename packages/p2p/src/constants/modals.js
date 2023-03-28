@@ -1,14 +1,19 @@
 import React from 'react';
 
 export const modals = {
-    AdExceedsDailyLimitModal: React.lazy(() =>
+    AdErrorTooltipModal: React.lazy(() =>
         import(
-            /* webpackChunkName: "ad-exceeds-daily-limit-modal" */ 'Components/modal-manager/modals/ad-exceeds-daily-limit-modal'
+            /* webpackChunkName: "ad-error-tooltip-modal" */ 'Components/modal-manager/modals/ad-error-tooltip-modal'
         )
     ),
     AddPaymentMethodErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "add-payment-method-error-modal" */ 'Components/modal-manager/modals/add-payment-method-error-modal'
+        )
+    ),
+    AdVisibilityErrorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "ad-visibility-error-modal" */ 'Components/modal-manager/modals/ad-visibility-error-modal'
         )
     ),
     BuySellModal: React.lazy(() =>

@@ -117,6 +117,7 @@ const AppNotificationMessages = ({
                   'close_mx_mlt_account',
                   'trustpilot',
                   'close_uk_account',
+                  'p2p_daily_limit_increase',
                   'document_needs_action',
                   'identity',
                   'poi_name_mismatch',
@@ -136,6 +137,7 @@ const AppNotificationMessages = ({
                   'svg_needs_poa',
                   'svg_needs_poi',
                   'svg_poi_expired',
+                  'switched_to_real',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
@@ -147,17 +149,26 @@ const AppNotificationMessages = ({
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
     const filtered_excluded_notifications = notifications.filter(message =>
-        message.key.includes('svg') ? message : excluded_notifications.includes(message.key)
+        message.key.includes('svg') || message.key.includes('p2p_daily_limit_increase')
+            ? message
+            : excluded_notifications.includes(message.key)
     );
-    const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
+    const getNotificationSublist = () => {
+        if (window.location.pathname === routes.cashier_deposit) {
+            return filtered_excluded_notifications.filter(message =>
+                message.key.includes('switched_to_real') ? message : null
+            );
+        }
+        return filtered_excluded_notifications.slice(0, notifications_limit);
+    };
 
     if (!should_show_popups) return null;
 
-    return notifications_sublist.length ? (
+    return getNotificationSublist().length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={notifications_sublist}
+                    notifications={getNotificationSublist()}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}

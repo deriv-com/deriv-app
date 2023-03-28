@@ -16,7 +16,8 @@ import {
     updateActiveAccount,
     updateBalance,
     updateActiveToken,
- updateAccountType } from '../../store/client-slice';
+    updateAccountType,
+} from '../../store/client-slice';
 import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
 import { queryToObjectArray } from '../../../../../common/appId';

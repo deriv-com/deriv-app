@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import ContractCard from '../contract-card';
 import {
     getContractPath,
+    isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
     isTurbosContract,
@@ -27,6 +28,7 @@ const PositionsDrawerCard = ({
     is_sell_requested,
     is_unsupported,
     is_link_disabled,
+    measure,
     profit_loss,
     onClickCancel,
     onClickSell,
@@ -44,15 +46,17 @@ const PositionsDrawerCard = ({
     toggleCancellationWarning,
     toggleUnsupportedContractModal,
 }) => {
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
+    const has_regular_style = !is_accumulator && !is_multiplier && !is_turbos;
     const contract_card_classname = classNames('dc-contract-card', {
-        'dc-contract-card--green': !is_turbos && !is_multiplier && profit_loss > 0 && !result,
-        'dc-contract-card--red': !is_turbos && !is_multiplier && profit_loss < 0 && !result,
+        'dc-contract-card--green': has_regular_style && profit_loss > 0 && !result,
+        'dc-contract-card--red': has_regular_style && profit_loss < 0 && !result,
     });
 
     const loader_el = (
@@ -86,6 +90,7 @@ const PositionsDrawerCard = ({
             onMouseLeave={() => {
                 if (typeof onMouseLeave === 'function') onMouseLeave();
             }}
+            is_accumulator={is_accumulator}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_positions
@@ -109,6 +114,7 @@ const PositionsDrawerCard = ({
             is_multiplier={is_multiplier}
             is_positions
             is_sell_requested={is_sell_requested}
+            measure={measure}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             onFooterEntered={onFooterEntered}
@@ -199,6 +205,7 @@ PositionsDrawerCard.propTypes = {
     is_sell_requested: PropTypes.bool,
     is_unsupported: PropTypes.bool,
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    measure: PropTypes.func,
     onClickRemove: PropTypes.func,
     onClickSell: PropTypes.func,
     onClickCancel: PropTypes.func,

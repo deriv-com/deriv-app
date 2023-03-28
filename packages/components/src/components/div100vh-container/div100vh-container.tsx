@@ -42,7 +42,6 @@ const Div100vhContainer = ({
         // forcing resize event to make Div100vh re-render when height_offset has changed:
         window.dispatchEvent(new Event('resize'));
     }, [height_offset]);
-
     if (is_bypassed) return children as JSX.Element;
     return (
         <Div100vh id={id} className={className} style={is_disabled ? {} : height_style} data-testid='dt_div_100_vh'>

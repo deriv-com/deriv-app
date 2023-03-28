@@ -20,7 +20,7 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
 
             return true;
         });
-        const is_new = contract_category.key === 'Vanillas' || contract_category.key === 'Turbos';
+        const is_new = /(Accumulators|Turbos|Vanillas)/i.test(contract_category.key);
 
         return (
             <div key={key} className='contract-type-list' data-testid='contract_list'>

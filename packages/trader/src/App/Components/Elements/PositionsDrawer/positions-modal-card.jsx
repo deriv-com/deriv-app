@@ -6,6 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     getContractPath,
+    isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
     isTurbosContract,
@@ -64,6 +65,7 @@ const PositionsModalCard = ({
         </div>
     );
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
@@ -329,7 +331,7 @@ const PositionsModalCard = ({
             display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={!is_mobile && has_progress_slider}
+            has_progress_slider={(!is_mobile && has_progress_slider) || is_accumulator}
             is_mobile={is_mobile}
             is_sell_requested={is_sell_requested}
             onClickSell={onClickSell}
@@ -347,6 +349,7 @@ const PositionsModalCard = ({
             current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
+            is_accumulator={is_accumulator}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_turbos={is_turbos}
@@ -392,7 +395,7 @@ const PositionsModalCard = ({
     );
 
     const options_el = is_vanilla ? contract_vanilla_el : contract_options_el;
-    const contract_el = is_multiplier || is_turbos ? custom_contract_el : options_el;
+    const contract_el = is_multiplier || is_accumulator || is_turbos ? custom_contract_el : options_el;
 
     return (
         <div id={`dt_drawer_card_${id}`} className={classNames('positions-modal-card__wrapper', className)}>

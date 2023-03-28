@@ -67,6 +67,7 @@
                 margin-bottom: 1.6rem;
             }
             /* postcss-bem-linter: ignore */
+            p,
             ul li {
                 @include typeface(--small-left-normal-black, none);
             }

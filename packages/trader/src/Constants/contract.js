@@ -17,25 +17,26 @@ export const getCardLabels = () => ({
     DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
     ENTRY_SPOT: localize('Entry spot:'),
     INCREMENT_VALUE: localize('Increment value'),
-    INDICATIVE_PRICE: localize('Indicative price:'),
-    LOST: localize('Lost'),
     NOT_AVAILABLE: localize('N/A'),
-    PAYOUT: localize('Sell price:'),
-    POTENTIAL_PAYOUT: localize('Payout limit:'),
-    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
-    PROFIT_LOSS: localize('Profit/Loss:'),
-    PURCHASE_PRICE: localize('Buy price:'),
     RESALE_NOT_OFFERED: localize('Resale not offered'),
     SELL: localize('Sell'),
     STAKE: localize('Stake:'),
     STOP_LOSS: localize('Stop loss:'),
     STRIKE: localize('Strike:'),
+    TICK: localize('Tick '),
+    TICKS: localize('Ticks'),
+    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
+    PROFIT_LOSS: localize('Profit/Loss:'),
+    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
+    INDICATIVE_PRICE: localize('Indicative price:'),
+    LOST: localize('Lost'),
+    PAYOUT: localize('Sell price:'),
+    PURCHASE_PRICE: localize('Buy price:'),
+    POTENTIAL_PAYOUT: localize('Payout limit:'),
+    TAKE_PROFIT: localize('Take profit:'),
     TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
         'Take profit and/or stop loss are not available while deal cancellation is active.'
     ),
-    TAKE_PROFIT: localize('Take profit:'),
-    TICK: localize('Tick '),
-    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
     WON: localize('Won'),
 });
 
@@ -209,6 +210,11 @@ export const getUnsupportedContracts = () => ({
 
 // Config to display trade button and their position
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        button_name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Accumulator' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',

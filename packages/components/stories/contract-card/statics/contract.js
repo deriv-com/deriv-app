@@ -20,6 +20,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: 'Buy price:',
     POTENTIAL_PAYOUT: 'Payout limit:',
     TICK: 'Tick ',
+    TICKS: 'Ticks',
     WON: 'Won',
     LOST: 'Lost',
     DAYS: 'Days',
@@ -183,6 +184,11 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        button_name: 'Buy',
+        name: 'Accumulator',
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? 'Higher' : 'Rise',
         position: 'top',

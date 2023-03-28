@@ -306,6 +306,7 @@ export const icons =
         'IcCalendarForwardToday',
         'IcCalendarToday',
         'IcCalendar',
+        'IcCatAccumulator',
         'IcCatAll',
         'IcCatMultiplier',
         'IcCatOptions',
@@ -676,6 +677,7 @@ export const icons =
         'IcMt5TradeTypes',
     ],
     'option': [
+        'IcOptionAccumulators',
         'IcOptionCallPutReset',
         'IcOptionCallPutSpread',
         'IcOptionCloseToLow',
@@ -689,7 +691,6 @@ export const icons =
         'IcOptionOnlyUpDown',
         'IcOptionOverUnder',
         'IcOptionRaiseFall',
-        'IcOptionStayinGoesout',
         'IcOptionTouchNotouch',
         'IcOptionUpDownAsian',
     ],
@@ -744,6 +745,7 @@ export const icons =
         'IcStockZoom',
     ],
     'tradetype': [
+        'IcTradetypeAccu',
         'IcTradetypeAsiand',
         'IcTradetypeAsianu',
         'IcTradetypeCallBarrier',

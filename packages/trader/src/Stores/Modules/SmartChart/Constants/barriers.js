@@ -1,20 +1,23 @@
 export const CONTRACT_SHADES = {
-    CALL: 'ABOVE',
-    PUT: 'BELOW',
-    CALLE: 'ABOVE',
-    PUTE: 'BELOW',
-    EXPIRYRANGE: 'BETWEEN',
-    EXPIRYMISS: 'OUTSIDE',
-    RANGE: 'BETWEEN',
-    UPORDOWN: 'OUTSIDE',
-    ONETOUCH: 'NONE_SINGLE', // no shade
-    NOTOUCH: 'NONE_SINGLE', // no shade
+    ACCU: 'NONE_DOUBLE',
     ASIANU: 'ABOVE',
     ASIAND: 'BELOW',
-    MULTUP: 'ABOVE',
+    CALL: 'ABOVE',
+    CALLE: 'ABOVE',
+    EXPIRYMISS: 'OUTSIDE',
+    EXPIRYRANGE: 'BETWEEN',
     MULTDOWN: 'BELOW',
+    MULTUP: 'ABOVE',
+    NOTOUCH: 'NONE_SINGLE', // no shade
+    ONETOUCH: 'NONE_SINGLE', // no shade
+    PUT: 'BELOW',
+    PUTE: 'BELOW',
+    RANGE: 'BETWEEN',
     TURBOSLONG: 'ABOVE',
     TURBOSSHORT: 'BELOW',
+    UPORDOWN: 'OUTSIDE',
+    VANILLALONGCALL: 'NONE_SINGLE',
+    VANILLALONGPUT: 'NONE_SINGLE',
 };
 
 // Default non-shade according to number of barriers

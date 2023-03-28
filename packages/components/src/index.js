@@ -30,7 +30,6 @@ export { default as Counter } from './components/counter';
 export { default as CompositeCheckbox } from './components/composite-checkbox';
 export { default as ContractCard } from './components/contract-card';
 export { default as ContractCardSell } from './components/contract-card/contract-card-items/contract-card-sell';
-export { default as ContractCardBody } from './components/contract-card/contract-card-items/contract-card-body';
 export { default as CurrencyBadge } from './components/currency-badge';
 export { default as DatePicker } from './components/date-picker';
 export { default as DateOfBirthPicker } from './components/date-of-birth-picker';

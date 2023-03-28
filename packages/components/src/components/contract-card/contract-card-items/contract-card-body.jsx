@@ -10,6 +10,7 @@ import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
+import AccumulatorCardBody from './accumulator-card-body.jsx';
 import MultiplierCardBody from './multiplier-card-body.jsx';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body.jsx';
@@ -25,10 +26,12 @@ const ContractCardBody = ({
     getCardLabels,
     getContractById,
     has_progress_slider,
+    is_accumulator,
     is_mobile,
     is_multiplier,
-    is_turbos,
+    is_positions,
     is_sold,
+    is_turbos,
     is_vanilla,
     onMouseLeave,
     removeToast,
@@ -80,6 +83,27 @@ const ContractCardBody = ({
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
                 toggleCancellationWarning={toggleCancellationWarning}
+            />
+        );
+    } else if (is_accumulator) {
+        card_body = (
+            <AccumulatorCardBody
+                addToast={addToast}
+                connectWithContractUpdate={connectWithContractUpdate}
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                current_focus={current_focus}
+                error_message_alignment={error_message_alignment}
+                getCardLabels={getCardLabels}
+                getContractById={getContractById}
+                indicative={indicative}
+                is_sold={is_sold}
+                onMouseLeave={onMouseLeave}
+                status={status}
+                removeToast={removeToast}
+                setCurrentFocus={setCurrentFocus}
+                is_positions={is_positions}
             />
         );
     } else if (is_turbos) {
@@ -198,10 +222,13 @@ ContractCardBody.propTypes = {
     error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
+    is_accumulator: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_turbos: PropTypes.bool,
+    is_positions: PropTypes.bool,
     is_sold: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
     server_time: PropTypes.object,

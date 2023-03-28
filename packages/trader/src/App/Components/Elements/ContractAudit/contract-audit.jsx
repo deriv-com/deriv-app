@@ -9,6 +9,7 @@ import ContractHistory from './contract-history.jsx';
 const ContractAudit = ({
     contract_update_history,
     has_result,
+    is_accumulator,
     is_multiplier,
     is_turbos,
     toggleHistoryTab,
@@ -35,7 +36,7 @@ const ContractAudit = ({
 
     if (!has_result) return null;
 
-    if (!is_multiplier && !is_turbos) {
+    if (!is_multiplier && !is_accumulator && !is_turbos) {
         return (
             <div className='contract-audit__wrapper'>
                 <ContractDetails {...props} />
@@ -60,6 +61,7 @@ ContractAudit.propTypes = {
     contract_info: PropTypes.object,
     contract_update_history: PropTypes.array,
     has_result: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_turbos: PropTypes.bool,
     toggleHistoryTab: PropTypes.func,

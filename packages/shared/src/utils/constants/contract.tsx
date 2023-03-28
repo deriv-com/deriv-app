@@ -3,6 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
 
 export const getLocalizedBasis = () => ({
+    accumulator: localize('Accumulator'),
     payout: localize('Payout'),
     payout_per_point: localize('Payout per point'),
     stake: localize('Stake'),
@@ -125,6 +126,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: [],
         components: [],
     },
+    accumulator: {
+        title: localize('Accumulator'),
+        trade_types: ['ACCU'],
+        basis: ['stake'],
+        components: ['take_profit', 'accumulator', 'accu_info_display'],
+        barrier_count: 2,
+        config: { hide_duration: true },
+    },
     multiplier: {
         title: localize('Multipliers'),
         trade_types: ['MULTUP', 'MULTDOWN'],
@@ -174,6 +183,7 @@ export const getContractCategoriesConfig = () => ({
     'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
     Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
     Vanillas: { name: localize('Vanillas'), categories: ['vanilla'] },
+    Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
 });
 
 export const unsupported_contract_types_list = [
@@ -206,25 +216,26 @@ export const getCardLabels = () => ({
     DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
     ENTRY_SPOT: localize('Entry spot:'),
     INCREMENT_VALUE: localize('Increment value'),
-    INDICATIVE_PRICE: localize('Indicative price:'),
-    LOST: localize('Lost'),
     NOT_AVAILABLE: localize('N/A'),
-    PAYOUT: localize('Sell price:'),
-    POTENTIAL_PAYOUT: localize('Payout limit:'),
-    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
-    PROFIT_LOSS: localize('Profit/Loss:'),
-    PURCHASE_PRICE: localize('Buy price:'),
     RESALE_NOT_OFFERED: localize('Resale not offered'),
     SELL: localize('Sell'),
     STAKE: localize('Stake:'),
     STOP_LOSS: localize('Stop loss:'),
     STRIKE: localize('Strike:'),
+    TICK: localize('Tick '),
+    TICKS: localize('Ticks'),
+    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
+    PROFIT_LOSS: localize('Profit/Loss:'),
+    POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
+    INDICATIVE_PRICE: localize('Indicative price:'),
+    LOST: localize('Lost'),
+    PAYOUT: localize('Sell price:'),
+    PURCHASE_PRICE: localize('Buy price:'),
+    POTENTIAL_PAYOUT: localize('Payout limit:'),
+    TAKE_PROFIT: localize('Take profit:'),
     TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
         'Take profit and/or stop loss are not available while deal cancellation is active.'
     ),
-    TAKE_PROFIT: localize('Take profit:'),
-    TICK: localize('Tick '),
-    TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
     WON: localize('Won'),
 });
 
@@ -397,6 +408,11 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = (is_high_low?: boolean) => ({
+    ACCU: {
+        button_name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Accumulator' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -482,7 +498,6 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
-
 export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
     const contract_config = getContractConfig(is_high_low)[type] as TContractConfig;
     return (show_button_name && contract_config.button_name) || contract_config.name || '';

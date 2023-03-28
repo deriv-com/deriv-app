@@ -74,6 +74,7 @@ export const ContractType = (() => {
                 config.barriers = buildBarriersConfig(contract, config.barriers);
                 config.barrier_choices = contract.barrier_choices;
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
+                config.growth_rate_range = contract.growth_rate_range;
                 config.multiplier_range = contract.multiplier_range;
                 config.cancellation_range = contract.cancellation_range;
 
@@ -138,6 +139,7 @@ export const ContractType = (() => {
 
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
+        const obj_accumulator_range_list = getAccumulatorRange(contract_type);
         const obj_barrier_choices = getBarrierChoices(contract_type, stored_barrier_choices);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
@@ -155,6 +157,7 @@ export const ContractType = (() => {
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
             ...obj_expiry_type,
+            ...obj_accumulator_range_list,
             ...obj_barrier_choices,
             ...obj_multiplier_range_list,
             ...obj_cancellation,
@@ -510,6 +513,11 @@ export const ContractType = (() => {
             basis: getArrayDefaultValue(arr_basis, basis),
         };
     };
+
+    const getAccumulatorRange = contract_type => ({
+        accumulator_range_list:
+            getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate_range']) || [],
+    });
 
     const getBarrierChoices = (contract_type, stored_barrier_choices) => ({
         barrier_choices: stored_barrier_choices.length

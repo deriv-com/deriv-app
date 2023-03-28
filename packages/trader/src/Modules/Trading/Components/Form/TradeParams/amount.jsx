@@ -13,7 +13,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { connect } from 'Stores/connect';
 
-const Input = ({
+export const Input = ({
     amount,
     currency,
     current_focus,
@@ -61,6 +61,7 @@ const Amount = ({
     current_focus,
     duration_unit,
     expiry_type,
+    is_accumulator,
     is_equal,
     is_minimized,
     is_multiplier,
@@ -113,7 +114,7 @@ const Amount = ({
         <Fieldset
             className='trade-container__fieldset center-text'
             header={
-                is_multiplier || is_turbos || ['high_low', 'vanilla'].includes(contract_type)
+                is_multiplier || ['high_low', 'vanilla'].includes(contract_type) || is_accumulator || is_turbos
                     ? localize('Stake')
                     : undefined
             }
@@ -204,6 +205,7 @@ Amount.propTypes = {
     current_focus: PropTypes.string,
     duration_unit: PropTypes.string,
     expiry_type: PropTypes.string,
+    is_accumulator: PropTypes.bool,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_minimized: PropTypes.bool,
     is_multiplier: PropTypes.bool,
@@ -229,6 +231,7 @@ export default connect(({ modules, client, ui }) => ({
     current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     expiry_type: modules.trade.expiry_type,
+    is_accumulator: modules.trade.is_accumulator,
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
     is_multiplier: modules.trade.is_multiplier,

@@ -14,7 +14,7 @@ const ContractTypeCell = ({ displayed_trade_param, getContractTypeDisplay, is_hi
         </div>
         <div className='dc-contract-type__type-label'>
             <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
-            {!!displayed_trade_param && (
+            {displayed_trade_param && (
                 <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
             )}
         </div>

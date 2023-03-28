@@ -7,6 +7,7 @@ import {
     formatMoney,
     toGMTFormat,
     getCancellationPrice,
+    isAccumulatorContract,
     getCurrencyDisplayCode,
     isMobile,
     isMultiplierContract,
@@ -35,13 +36,16 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         profit,
         date_start,
         tick_count,
+        tick_passed,
         transaction_ids: { buy, sell } = {},
         number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
-
     const cancellation_price = getCancellationPrice(contract_info);
+    const ticks_duration_text = isAccumulatorContract(contract_type)
+        ? `${tick_passed}/${tick_count} ${localize('ticks')}`
+        : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
@@ -104,20 +108,16 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                 )}
             </React.Fragment>
         );
-    } else if (isTurbosContract(contract_type)) {
+    } else if (isAccumulatorContract(contract_type) || isTurbosContract(contract_type)) {
         unique_card_info = isNaN(contract_end_time) ? null : (
             <React.Fragment>
                 <ContractAuditItem
                     id='dt_duration_label'
                     icon={<Icon icon='IcContractDuration' size={24} />}
                     label={localize('Duration')}
-                    value={
-                        tick_count > 0
-                            ? `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`
-                            : `${duration} ${duration_unit}`
-                    }
+                    value={tick_count > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
                 />
-                {barrier_card_info}
+                {isTurbosContract(contract_type) && barrier_card_info}
             </React.Fragment>
         );
     } else {

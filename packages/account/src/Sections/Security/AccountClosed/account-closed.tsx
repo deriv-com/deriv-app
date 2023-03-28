@@ -3,7 +3,7 @@ import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import type { TRootStore } from '@deriv/stores/types';
 
 type TAccountClosed = {
     logout: () => void;
@@ -45,6 +45,6 @@ const AccountClosed = ({ logout }: TAccountClosed) => {
     );
 };
 
-export default connect(({ client }: RootStore) => ({
+export default connect(({ client }: TRootStore) => ({
     logout: client.logout,
 }))(AccountClosed);

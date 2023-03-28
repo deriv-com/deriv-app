@@ -2,9 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useDepositLocked } from '@deriv/hooks';
 import { ContentFlag } from '@deriv/shared';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 import Deposit from '../deposit';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -63,7 +64,7 @@ jest.mock('../deposit-locked', () => {
 
 describe('<Deposit />', () => {
     it('should render <Loading /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -102,7 +103,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -118,7 +119,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <Virtual /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -154,7 +155,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -166,7 +167,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <CashierLocked /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -202,7 +203,8 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
+
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
@@ -221,7 +223,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <FundsProtection /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -257,7 +259,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -269,7 +271,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <DepositLocked /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -306,7 +308,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -318,7 +320,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -355,7 +357,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -367,7 +369,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <Error /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -403,7 +405,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -415,7 +417,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <CryptoDeposit /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -452,7 +454,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.EU_REAL },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -464,7 +466,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <Real /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -500,7 +502,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -512,7 +514,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <CashierOnboarding /> component', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -548,7 +550,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
             wrapper: ({ children }) => (
@@ -560,7 +562,7 @@ describe('<Deposit />', () => {
     });
 
     it('should trigger "setSideNotes" callback', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -598,7 +600,7 @@ describe('<Deposit />', () => {
                 },
             },
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        };
+        });
 
         const setSideNotes = jest.fn();
 

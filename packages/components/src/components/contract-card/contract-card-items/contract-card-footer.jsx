@@ -12,6 +12,7 @@ const CardFooter = ({
     is_multiplier,
     is_positions,
     is_sell_requested,
+    measure,
     onClickCancel,
     onClickSell,
     onFooterEntered,
@@ -70,6 +71,7 @@ const CardFooter = ({
                             contract_info={contract_info}
                             is_sell_requested={is_sell_requested}
                             getCardLabels={getCardLabels}
+                            measure={measure}
                             onClickSell={onClickSell}
                         />
                     </div>
@@ -85,6 +87,7 @@ CardFooter.propTypes = {
     is_multiplier: PropTypes.bool,
     is_positions: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
+    measure: PropTypes.func,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
     onFooterEntered: PropTypes.func,

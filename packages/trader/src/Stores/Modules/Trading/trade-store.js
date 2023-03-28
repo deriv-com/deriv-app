@@ -23,20 +23,21 @@ import {
     showMxMltUnavailableError,
     showUnavailableLocationError,
 } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
+import ServerTime from '_common/base/server_time';
+import { processPurchase } from './Actions/purchase';
+
+import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
+import { processTradeParams } from './Helpers/process';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import { getMultiplierValidationRules, getValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
-import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-
 import { BARRIER_COLORS } from '../SmartChart/Constants/barriers';
 import BaseStore from '../../base-store';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
-import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
-import ServerTime from '_common/base/server_time';
 import debounce from 'lodash.debounce';
-import { localize } from '@deriv/translations';
-import { processPurchase } from './Actions/purchase';
-import { processTradeParams } from './Helpers/process';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
 const store_name = 'trade_store';
@@ -117,6 +118,14 @@ export default class TradeStore extends BaseStore {
     is_chart_loading;
     should_show_active_symbols_loading = false;
 
+    // Accumulator trade params
+    accumulator_range_list = [];
+    growth_rate = 0.03;
+    maximum_payout = 0;
+    maximum_ticks = 0;
+    ticks_history_stats = {};
+    tick_size_barrier = 0;
+
     // Multiplier trade params
     multiplier;
     multiplier_range_list = [];
@@ -162,6 +171,7 @@ export default class TradeStore extends BaseStore {
             'duration_unit',
             'expiry_date',
             'expiry_type',
+            'growth_rate',
             'has_take_profit',
             'has_stop_loss',
             'has_cancellation',
@@ -183,6 +193,7 @@ export default class TradeStore extends BaseStore {
         });
 
         makeObservable(this, {
+            accumulator_range_list: observable,
             active_symbols: observable,
             amount: observable,
             barrier_1: observable,
@@ -209,11 +220,13 @@ export default class TradeStore extends BaseStore {
             expiry_time: observable,
             expiry_type: observable,
             form_components: observable,
+            growth_rate: observable,
             has_cancellation: observable,
             has_equals_only: observable,
             has_stop_loss: observable,
             has_take_profit: observable,
             hovered_contract_type: observable,
+            is_accumulator: computed,
             is_chart_loading: observable,
             is_equal: observable,
             is_market_closed: observable,
@@ -226,12 +239,15 @@ export default class TradeStore extends BaseStore {
             main_barrier: observable,
             market_close_times: observable,
             market_open_times: observable,
+            maximum_payout: observable,
+            maximum_ticks: observable,
             multiplier_range_list: observable,
             multiplier: observable,
             previous_symbol: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
             sessions: observable,
+            setDefaultGrowthRate: action.bound,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
             stake_boundary: observable,
@@ -243,6 +259,8 @@ export default class TradeStore extends BaseStore {
             strike_price_choices: observable,
             symbol: observable,
             take_profit: observable,
+            ticks_history_stats: observable,
+            tick_size_barrier: observable,
             trade_types: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
@@ -285,6 +303,7 @@ export default class TradeStore extends BaseStore {
             requestProposal: action.bound,
             resetErrorServices: action.bound,
             resetPreviousSymbol: action.bound,
+            resetAccumulatorData: action.bound,
             setActiveSymbols: action.bound,
             setAllowEqual: action.bound,
             setChartStatus: action.bound,
@@ -327,6 +346,8 @@ export default class TradeStore extends BaseStore {
                 if (date) {
                     this.expiry_date = date;
                 }
+                this.setDefaultGrowthRate();
+                this.resetAccumulatorData();
             }
         );
         reaction(
@@ -350,7 +371,7 @@ export default class TradeStore extends BaseStore {
             () => [this.contract_type],
             () => {
                 this.root_store.portfolio.setContractType(this.contract_type);
-                if (this.contract_type === 'multiplier') {
+                if (this.is_multiplier || this.is_accumulator) {
                     // when switching back to Multiplier contract, re-apply Stop loss / Take profit validation rules
                     Object.assign(this.validation_rules, getMultiplierValidationRules());
                 } else {
@@ -359,7 +380,12 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.stop_loss;
                     delete this.validation_rules.take_profit;
                 }
+                this.resetAccumulatorData();
             }
+        );
+        when(
+            () => this.accumulator_range_list.length,
+            () => this.setDefaultGrowthRate()
         );
     }
 
@@ -367,6 +393,23 @@ export default class TradeStore extends BaseStore {
         return this.active_symbols.some(
             symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
         );
+    }
+
+    resetAccumulatorData() {
+        if (this.tick_size_barrier) this.tick_size_barrier = 0;
+        if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
+            this.root_store.contract_trade.clearAccumulatorBarriersData();
+        }
+    }
+
+    setDefaultGrowthRate() {
+        if (
+            this.is_accumulator &&
+            !this.accumulator_range_list.includes(this.growth_rate) &&
+            this.accumulator_range_list.length
+        ) {
+            this.growth_rate = this.accumulator_range_list[0];
+        }
     }
 
     setSkipPrePostLifecycle(should_skip) {
@@ -488,10 +531,23 @@ export default class TradeStore extends BaseStore {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
-                this.processNewValuesAsync({
-                    ...contract_categories,
-                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
-                });
+                //TODO yauheni, maryia - delete this 'if' statement when accumulators are allowed for real account, should leave 'else' box
+                if (
+                    this.is_accumulator &&
+                    !this.root_store.client.is_virtual &&
+                    contract_categories.contract_types_list.Accumulators
+                ) {
+                    delete contract_categories.contract_types_list.Accumulators;
+                    this.processNewValuesAsync({
+                        ...contract_categories,
+                        ...ContractType.getContractType(contract_categories.contract_types_list),
+                    });
+                } else {
+                    this.processNewValuesAsync({
+                        ...contract_categories,
+                        ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                    });
+                }
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
@@ -601,6 +657,7 @@ export default class TradeStore extends BaseStore {
     }
 
     onHoverPurchase(is_over, contract_type) {
+        if (this.is_accumulator) return;
         if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
         } else if (!is_over && this.main_barrier && !this.is_multiplier) {
@@ -769,7 +826,7 @@ export default class TradeStore extends BaseStore {
                                 this.root_store.ui.openPositionsDrawer();
                             } else if (isMobile()) {
                                 // TODO: Remove this when markers for multipliers are enabled
-                                if (this.is_multiplier) {
+                                if (this.is_multiplier || this.is_accumulator) {
                                     this.root_store.ui.openPositionsDrawer();
                                 }
                             }
@@ -853,6 +910,33 @@ export default class TradeStore extends BaseStore {
         if (obj_new_values.contract_type && obj_new_values.contract_type === 'rise_fall' && !!this.is_equal) {
             obj_new_values.contract_type = 'rise_fall_equal';
         }
+        // when accumulator is selected, we need to change chart type to mountain and granularity to 0
+        // and we need to restore previous chart type and granularity when accumulator is unselected
+        const {
+            clearAccumulatorBarriersData,
+            prev_chart_type,
+            prev_granularity,
+            chart_type,
+            granularity,
+            savePreviousChartMode,
+            updateChartType,
+            updateGranularity,
+        } = this.root_store.contract_trade || {};
+        if (obj_new_values.contract_type === 'accumulator') {
+            clearAccumulatorBarriersData();
+            savePreviousChartMode(chart_type, granularity);
+            updateGranularity(0);
+            updateChartType('mountain');
+        } else if (
+            (obj_new_values.contract_type || obj_new_values.symbol) &&
+            prev_chart_type &&
+            prev_granularity &&
+            (prev_chart_type !== chart_type || prev_granularity !== granularity)
+        ) {
+            updateGranularity(prev_granularity);
+            updateChartType(prev_chart_type);
+            savePreviousChartMode('', null);
+        }
 
         if (/\bduration\b/.test(Object.keys(obj_new_values))) {
             // TODO: fix this in input-field.jsx
@@ -926,6 +1010,11 @@ export default class TradeStore extends BaseStore {
                 this.validateAllProperties();
             }
             this.debouncedProposal();
+        }
+
+        //TODO yauheni, maryia - delete this 'if' statement when accumulators are allowed for real account
+        if (!this.root_store.client.is_virtual) {
+            delete this.contract_types_list.Accumulators;
         }
     }
 
@@ -1042,8 +1131,31 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
+        if (this.is_accumulator && this.proposal_info && this.proposal_info.ACCU) {
+            const { maximum_ticks, ticks_stayed_in, tick_size_barrier, last_tick_epoch, maximum_payout } =
+                this.proposal_info.ACCU;
+            this.ticks_history_stats = getUpdatedTicksHistoryStats({
+                previous_ticks_history_stats: this.ticks_history_stats,
+                new_ticks_history_stats: ticks_stayed_in,
+                last_tick_epoch,
+            });
+            this.maximum_ticks = maximum_ticks;
+            this.maximum_payout = maximum_payout;
+            this.tick_size_barrier = tick_size_barrier;
+            const accumulator_barriers_data =
+                this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
+            if (!accumulator_barriers_data.accumulators_high_barrier) {
+                this.root_store.contract_trade.updateAccumulatorBarriersAndSpots({
+                    ...accumulator_barriers_data,
+                    pip_size: this.pip_size,
+                    symbol: this.symbol,
+                    current_symbol: this.symbol,
+                    tick_size_barrier,
+                });
+            }
+        }
 
-        if (!this.main_barrier || !(this.main_barrier.shade !== 'NONE_SINGLE')) {
+        if (!this.main_barrier || this.main_barrier?.shade) {
             this.setMainBarrier(response.echo_req);
         }
 
@@ -1335,9 +1447,47 @@ export default class TradeStore extends BaseStore {
 
     // ---------- WS ----------
     wsSubscribe = (req, callback) => {
+        const passthrough_callback = (...args) => {
+            callback(...args);
+            if (this.is_accumulator) {
+                let accumulator_barriers_data = {
+                    current_symbol: this.symbol,
+                    tick_size_barrier: this.tick_size_barrier,
+                };
+                if ('tick' in args[0]) {
+                    const { current_spot, current_spot_time } =
+                        this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
+                    const { epoch, pip_size, quote, symbol } = args[0].tick;
+                    accumulator_barriers_data = {
+                        ...accumulator_barriers_data,
+                        previous_spot: current_spot,
+                        previous_spot_time: current_spot_time,
+                        current_spot: quote,
+                        current_spot_time: epoch,
+                        pip_size,
+                        symbol,
+                    };
+                } else if ('history' in args[0]) {
+                    const { prices, times } = args[0].history;
+                    const symbol = args[0].echo_req.ticks_history;
+                    accumulator_barriers_data = {
+                        ...accumulator_barriers_data,
+                        previous_spot: prices[prices.length - 2],
+                        previous_spot_time: times[times.length - 2],
+                        current_spot: prices[prices.length - 1],
+                        current_spot_time: times[times.length - 1],
+                        pip_size: args[0].pip_size,
+                        symbol,
+                    };
+                } else {
+                    return;
+                }
+                this.root_store.contract_trade.updateAccumulatorBarriersAndSpots(accumulator_barriers_data);
+            }
+        };
         if (req.subscribe === 1) {
             const key = JSON.stringify(req);
-            const subscriber = WS.subscribeTicksHistory(req, callback);
+            const subscriber = WS.subscribeTicksHistory(req, passthrough_callback);
             g_subscribers_map[key] = subscriber;
         }
     };
@@ -1395,6 +1545,10 @@ export default class TradeStore extends BaseStore {
 
     get has_alternative_source() {
         return this.is_multiplier && !!this.hovered_contract_type;
+    }
+
+    get is_accumulator() {
+        return this.contract_type === 'accumulator';
     }
 
     get is_multiplier() {

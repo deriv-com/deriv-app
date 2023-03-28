@@ -96,7 +96,6 @@ const FinancialDetails = props => {
                                         <div
                                             className={classNames(
                                                 'details-form__elements',
-                                                'details-form__elements--wide',
                                                 'financial-assessment__form'
                                             )}
                                         >

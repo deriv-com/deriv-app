@@ -121,9 +121,7 @@ const mock = (): TRootStore => {
             current_currency_type: '',
             current_fiat_currency: '',
             cfd_score: 0,
-            is_cfd_score_available: false,
             setCFDScore: jest.fn(),
-            setIsCFDScoreAvailable: jest.fn(),
             getLimits: jest.fn(),
             has_active_real_account: false,
             has_logged_out: false,
@@ -156,8 +154,6 @@ const mock = (): TRootStore => {
             residence: '',
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
-            sent_verify_emails_data: {},
-            setSentVerifyEmailsData: jest.fn(),
             standpoint: {
                 iom: '',
             },

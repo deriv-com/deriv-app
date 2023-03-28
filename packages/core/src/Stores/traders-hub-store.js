@@ -73,6 +73,7 @@ export default class TradersHubStore extends BaseStore {
             is_demo_low_risk: computed,
             is_demo: computed,
             is_eu_selected: computed,
+            is_eu_user: computed,
             is_real: computed,
             is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,

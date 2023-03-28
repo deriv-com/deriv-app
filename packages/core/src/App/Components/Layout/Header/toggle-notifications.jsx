@@ -38,6 +38,7 @@ const ToggleNotificationsDrawer = ({
     //     ', is_website_status_ready = ',
     //     is_website_status_ready
     // );
+    // console.log('is_notifications_loading_completed = ', is_notifications_loading_completed);
 
     const notifications_toggler_el = (
         <div

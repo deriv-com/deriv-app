@@ -340,6 +340,7 @@ export default class TradeStore extends BaseStore {
             updateLimitOrderBarriers: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
+            vanilla_trade_type: observable,
         });
 
         // Adds intercept to change min_max value of duration validation

@@ -25,10 +25,9 @@ import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
-import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
 import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
 import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
-import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/Turbos/trade-type-tabs';
+import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -70,7 +69,6 @@ const CollapsibleTradeParams = ({
                 {is_multiplier && <MultiplierOptionsWidget />}
                 {isVisible('trade_type_tabs') && <TradeTypeTabs />}
                 {is_accumulator && <AccumulatorOptionsWidget />}
-                {is_vanilla && <VanillaTradeTypes />}
             </div>
             {isVisible('last_digit') && (
                 <div collapsible='true'>

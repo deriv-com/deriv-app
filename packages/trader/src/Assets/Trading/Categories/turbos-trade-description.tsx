@@ -48,17 +48,11 @@ export const TurbosTradeDescription = () => {
 
     return (
         <React.Fragment>
-            {content.map(({ type, text }, index) =>
-                type === 'heading' ? (
-                    <Text as='h2' key={index.toString() + type} weight='bold'>
-                        {text}
-                    </Text>
-                ) : (
-                    <Text as='p' key={index.toString() + type}>
-                        {text}
-                    </Text>
-                )
-            )}
+            {content.map(({ type, text }, index) => (
+                <Text as='p' key={index.toString() + type}>
+                    {text}
+                </Text>
+            ))}
         </React.Fragment>
     );
 };

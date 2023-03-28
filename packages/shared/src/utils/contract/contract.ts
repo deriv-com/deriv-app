@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { unique } from '../object';
+import { capitalizeFirstLetter } from '../string/string_util';
 import {
     TContractInfo,
     TLimitOrder,
@@ -164,16 +165,7 @@ export const shouldShowExpiration = (symbol: string) => /^cry/.test(symbol);
 
 export const shouldShowCancellation = (symbol: string) => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);
 
-export const getContractSubtype = (type: string) => {
-    const contract_type = type.toUpperCase();
-    switch (contract_type) {
-        case 'VANILLALONGCALL':
-        case 'VANILLALONGPUT':
-            return contract_type[11] + type.toLowerCase().slice(12);
-        case 'TURBOSLONG':
-        case 'TURBOSSHORT':
-            return contract_type[6] + type.toLowerCase().slice(7);
-        default:
-            return '';
-    }
-};
+export const getContractSubtype = (type: string) =>
+    /(VANILLALONG|TURBOS)/.test(type)
+        ? capitalizeFirstLetter(type.replace(/(VANILLALONG|TURBOS)/, '').toLowerCase())
+        : '';

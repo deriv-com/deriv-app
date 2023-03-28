@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text, Icon } from '@deriv/components';
+import BarriersList from './barriers-list';
+import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
@@ -38,38 +39,6 @@ const Strike = ({
 
     const strike_price_list = strike_price_choices.map(strike_price => ({ text: strike_price, value: strike_price }));
 
-    if (should_open_dropdown) {
-        return (
-            <section className='strike-field'>
-                <div className='strike-field--header'>
-                    <Text weight='bold' size='xs'>
-                        {localize('Strike Prices')}
-                    </Text>
-                    <Icon icon='IcCross' onClick={() => setShouldOpenDropdown(false)} />
-                </div>
-                <div className='strike-field--body'>
-                    {strike_price_list.map(strike => (
-                        <Text
-                            size='xs'
-                            line_height='xl'
-                            key={strike.key}
-                            className={classNames('strike-field--body-item', {
-                                'dc-list__item--selected': selected_value === strike.value,
-                            })}
-                            onClick={() => {
-                                setSelectedValue(strike.value);
-                                setShouldOpenDropdown(false);
-                                onChange({ target: { name: 'barrier_1', value: strike.value } });
-                            }}
-                        >
-                            {strike.value}
-                        </Text>
-                    ))}
-                </div>
-            </section>
-        );
-    }
-
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -81,12 +50,8 @@ const Strike = ({
                             i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market price is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type:
-                                    vanilla_trade_type === 'VANILLALONGCALL'
-                                        ? localize('For Call')
-                                        : localize('For Put'),
-                                payout_status:
-                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+                                trade_type: vanilla_trade_type === 'VANILLALONGCALL' ? 'For Call' : 'For Put',
+                                payout_status: vanilla_trade_type === 'VANILLALONGCALL' ? 'above' : 'below',
                             }}
                         />
                     }
@@ -130,6 +95,23 @@ const Strike = ({
                         </div>
                     )}
                 </Fieldset>
+                {should_open_dropdown && (
+                    <BarriersList
+                        active_item_classname='trade-container__barriers-table__item--selected'
+                        base_classname='trade-container__barriers-table__item'
+                        className='trade-container__barriers-table__list'
+                        header='Strike Prices'
+                        list={strike_price_choices}
+                        selected_item={selected_value}
+                        show_table={should_open_dropdown}
+                        onClick={strike => {
+                            setSelectedValue(strike);
+                            setShouldOpenDropdown(false);
+                            onChange({ target: { name: 'barrier_1', value: strike } });
+                        }}
+                        onClickCross={() => setShouldOpenDropdown(false)}
+                    />
+                )}
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
@@ -165,5 +147,5 @@ export default connect(({ modules, ui, common }) => ({
     start_date: modules.trade.start_date,
     expiry_date: modules.trade.expiry_date,
     server_time: common.server_time,
-    vanilla_trade_type: ui.vanilla_trade_type,
+    vanilla_trade_type: modules.trade.vanilla_trade_type,
 }))(Strike);

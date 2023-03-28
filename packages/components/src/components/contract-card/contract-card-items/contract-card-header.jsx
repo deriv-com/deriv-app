@@ -50,6 +50,7 @@ const ContractCardHeader = ({
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
     const is_turbos = isTurbosContract(contract_type);
+
     const contract_type_list_info = React.useMemo(
         () => [
             {
@@ -67,6 +68,7 @@ const ContractCardHeader = ({
         ],
         [multiplier, growth_rate, is_accumulator, is_turbos, contract_type]
     );
+
     const displayed_trade_param =
         contract_type_list_info.find(contract_type_item_info => contract_type_item_info.is_param_displayed)
             ?.displayed_param || '';

@@ -8,6 +8,7 @@ const barrier_choices = ['16', '33', '40'];
 const classname = 'trade-container__barriers-table__item';
 const mockClickCallback = jest.fn();
 const mockHoverCallback = jest.fn();
+const mockClickCrossCallback = jest.fn();
 
 describe('<BarriersList/>', () => {
     beforeEach(() => {
@@ -15,10 +16,14 @@ describe('<BarriersList/>', () => {
             <BarriersList
                 active_item_classname={`${classname}--selected`}
                 base_classname={classname}
+                header='Barriers'
                 selected_item={barrier_choices[0]}
+                show_table
+                subheader='Distance to current spot'
                 className='trade-container__barriers-table__list'
                 list={barrier_choices}
                 onClick={mockClickCallback}
+                onClickCross={mockClickCrossCallback}
                 onHover={mockHoverCallback}
             />
         );

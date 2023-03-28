@@ -1,8 +1,6 @@
 import React from 'react';
-import BarriersList from './barriers-list';
-import TradeTypeTabs from './trade-type-tabs';
+import BarriersList from '../barriers-list';
 import { DesktopWrapper, Icon, MobileDialog, MobileWrapper, Text, Popover } from '@deriv/components';
-import { CSSTransition } from 'react-transition-group';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -94,15 +92,18 @@ const BarrierSelector = observer(() => {
                         active_item_classname='trade-container__barriers-table__item--selected'
                         base_classname='trade-container__barriers-table__item'
                         className='trade-container__barriers-table__list'
+                        header='Barriers'
                         list={barrier_choices}
                         selected_item={selected_barrier}
+                        show_table={is_barriers_table_expanded}
+                        subheader='Distance to current spot'
                         onClick={onBarrierClick}
+                        onClickCross={toggleBarriersTable}
                         onHover={(barrier: string | null) => setHoveredBarrier(barrier)}
                     />
                 </MobileDialog>
             </MobileWrapper>
             <DesktopWrapper>
-                <TradeTypeTabs />
                 <Fieldset
                     className='trade-container__fieldset trade-container__barriers'
                     header={localize('Barrier')}
@@ -120,41 +121,19 @@ const BarrierSelector = observer(() => {
                     </div>
                 </Fieldset>
                 {is_barriers_table_expanded && (
-                    <CSSTransition
-                        appear
-                        in={is_barriers_table_expanded}
-                        timeout={250}
-                        classNames={{
-                            appear: 'trade-container__barriers-table--enter',
-                            enter: 'trade-container__barriers-table--enter',
-                            enterDone: 'trade-container__barriers-table--enter-done',
-                            exit: 'trade-container__barriers-table--exit',
-                        }}
-                        unmountOnExit
-                    >
-                        <Fieldset className='trade-container__fieldset trade-container__barriers-table'>
-                            <div className='trade-container__barriers-table__header'>
-                                <Text color='prominent' weight='bold' size='xs'>
-                                    {localize('Barriers')}
-                                </Text>
-                                <div
-                                    className='trade-container__barriers-table__icon-close'
-                                    onClick={toggleBarriersTable}
-                                >
-                                    <Icon icon='IcCross' />
-                                </div>
-                            </div>
-                            <BarriersList
-                                active_item_classname='trade-container__barriers-table__item--selected'
-                                base_classname='trade-container__barriers-table__item'
-                                className='trade-container__barriers-table__list'
-                                list={barrier_choices}
-                                selected_item={selected_barrier}
-                                onClick={onBarrierClick}
-                                onHover={(barrier: string | null) => setHoveredBarrier(barrier)}
-                            />
-                        </Fieldset>
-                    </CSSTransition>
+                    <BarriersList
+                        active_item_classname='trade-container__barriers-table__item--selected'
+                        base_classname='trade-container__barriers-table__item'
+                        className='trade-container__barriers-table__list'
+                        header='Barriers'
+                        list={barrier_choices}
+                        selected_item={selected_barrier}
+                        show_table={is_barriers_table_expanded}
+                        subheader='Distance to current spot'
+                        onClick={onBarrierClick}
+                        onClickCross={toggleBarriersTable}
+                        onHover={(barrier: string | null) => setHoveredBarrier(barrier)}
+                    />
                 )}
             </DesktopWrapper>
         </React.Fragment>

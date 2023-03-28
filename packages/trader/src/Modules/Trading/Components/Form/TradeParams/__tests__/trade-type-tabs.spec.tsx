@@ -14,6 +14,7 @@ const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
                     mocked_root_store.modules.trade.contract_type = 'turbosshort';
                 }
             }),
+            vanilla_trade_type: '',
         },
     },
 };
@@ -26,7 +27,7 @@ jest.mock('@deriv/stores', () => ({
 }));
 
 describe('Trade Type Tabs', () => {
-    it('should render only if contract_type is turbosshort or turboslong', () => {
+    it('should render Long & Short tabs when contract_type is turboslong', () => {
         render(<TradeTypeTabs />);
         const long_tab = screen.getByText('Long');
         const short_tab = screen.getByText('Short');

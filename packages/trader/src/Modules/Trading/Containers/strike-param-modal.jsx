@@ -27,12 +27,8 @@ const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike
                             i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type:
-                                    vanilla_trade_type === 'VANILLALONGCALL'
-                                        ? localize('For Call')
-                                        : localize('For Put'),
-                                payout_status:
-                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+                                trade_type: vanilla_trade_type === 'VANILLALONGCALL' ? 'For Call' : 'For Put',
+                                payout_status: vanilla_trade_type === 'VANILLALONGCALL' ? 'above' : 'below',
                             }}
                         />
                     }

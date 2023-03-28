@@ -39,8 +39,6 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('../trade-type-tabs', () => jest.fn(() => <div>TradeTypeTabs</div>));
-
 describe('<BarrierSelector/>', () => {
     const barriers_list_header = 'Barriers';
     let current_barrier: HTMLElement;
@@ -48,11 +46,9 @@ describe('<BarrierSelector/>', () => {
         render(<BarrierSelector />);
         current_barrier = screen.getByTestId('current_barrier');
     });
-    it('should render properly with TradeTypeTabs and Barrier inside it', () => {
-        const trade_type_tabs = screen.getByText('TradeTypeTabs');
+    it('should render properly with Barrier inside it', () => {
         const barrier_title = screen.getByText('Barrier');
 
-        expect(trade_type_tabs).toBeInTheDocument();
         expect(barrier_title).toBeInTheDocument();
     });
     it('barrier_1 value is selected by default', () => {

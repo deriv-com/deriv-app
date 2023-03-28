@@ -14,7 +14,7 @@ import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/t
 import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display.jsx';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
-import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
+import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { connect } from 'Stores/connect';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 
@@ -27,13 +27,13 @@ const TradeParams = ({ form_components, is_minimized }) => {
         <React.Fragment>
             {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
-            {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('accumulator') && <Accumulator key={'accumulator'} />}
-            {(isVisible('vanilla_trade_type') || isVisible('strike')) && (
+            {(isVisible('trade_type_tabs') || isVisible('strike') || isVisible('barrier_selector')) && (
                 <Fieldset className={classNames('trade-container__fieldset', 'trade-container__fieldset--no-padding')}>
-                    {isVisible('vanilla_trade_type') && <VanillaTradeTypes key={'vanilla_trade_type'} />}
+                    {isVisible('trade_type_tabs') && <TradeTypeTabs key={'trade_type_tabs'} />}
                     {isVisible('strike') && <Strike key={'strike'} />}
+                    {isVisible('barrier_selector') && <BarrierSelector key={'barrier_selector'} />}
                 </Fieldset>
             )}
             {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}

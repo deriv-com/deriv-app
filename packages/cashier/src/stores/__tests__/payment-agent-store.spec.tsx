@@ -1,6 +1,7 @@
 import { routes } from '@deriv/shared';
 import PaymentAgentStore from '../payment-agent-store';
 import { configure } from 'mobx';
+import { TRootStore, TWebSocket } from '../../types';
 
 configure({ safeDescriptors: false });
 
@@ -113,7 +114,7 @@ describe('PaymentAgentStore', () => {
             wait: () => Promise.resolve(),
         };
 
-        payment_agent_store = new PaymentAgentStore(WS, root_store);
+        payment_agent_store = new PaymentAgentStore(WS as unknown as TWebSocket, root_store as unknown as TRootStore);
     });
 
     beforeAll(() => {
@@ -212,10 +213,10 @@ describe('PaymentAgentStore', () => {
                 further_information: 'further information',
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
-                name: 'Payment Agent of CR90000002',
-                paymentagent_loginid: 'CR90000002',
+                name: 'Payment Agent of CR90000000',
+                paymentagent_loginid: 'CR90000000',
                 phone_numbers: [{ phone_number: '+12345678' }],
-                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                supported_banks: [{ payment_method: 'Visa' }],
                 urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: '0',
             },
@@ -226,10 +227,10 @@ describe('PaymentAgentStore', () => {
                 further_information: 'further information',
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
-                name: 'Payment Agent of CR90000000',
-                paymentagent_loginid: 'CR90000000',
+                name: 'Payment Agent of CR90000002',
+                paymentagent_loginid: 'CR90000002',
                 phone_numbers: [{ phone_number: '+12345678' }],
-                supported_banks: [{ payment_method: 'Visa' }],
+                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                 urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: '0',
             },
@@ -269,10 +270,10 @@ describe('PaymentAgentStore', () => {
                 further_information: 'further information',
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
-                name: 'Payment Agent of CR90000000',
-                paymentagent_loginid: 'CR90000000',
+                name: 'Payment Agent of CR90000002',
+                paymentagent_loginid: 'CR90000002',
                 phone_numbers: [{ phone_number: '+12345678' }],
-                supported_banks: [{ payment_method: 'Visa' }],
+                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                 urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: '0',
             },
@@ -283,10 +284,10 @@ describe('PaymentAgentStore', () => {
                 further_information: 'further information',
                 max_withdrawal: '2000',
                 min_withdrawal: '10',
-                name: 'Payment Agent of CR90000002',
-                paymentagent_loginid: 'CR90000002',
+                name: 'Payment Agent of CR90000000',
+                paymentagent_loginid: 'CR90000000',
                 phone_numbers: [{ phone_number: '+12345678' }],
-                supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
+                supported_banks: [{ payment_method: 'Visa' }],
                 urls: [{ url: 'http://www.pa.com' }],
                 withdrawal_commission: '0',
             },

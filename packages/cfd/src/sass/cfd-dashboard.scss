@@ -692,9 +692,13 @@
     gap: 1rem;
 }
 
+.cfd-card-back-section-main {
+    height: 100%;
+}
+
 .cfd-card-back-section-items-sub-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
 }
 

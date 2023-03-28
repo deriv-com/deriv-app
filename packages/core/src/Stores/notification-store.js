@@ -43,9 +43,9 @@ export default class NotificationStore extends BaseStore {
     p2p_redirect_to = {};
     p2p_completed_orders = null;
     notifications_updated = {
-        client_account_settings: true, // ok
-        client_account_status: true, // ok
-        client_landing_companies: true, // ok
+        client_account_settings: true,
+        client_account_status: true,
+        client_landing_companies: true,
     };
 
     constructor(root_store) {

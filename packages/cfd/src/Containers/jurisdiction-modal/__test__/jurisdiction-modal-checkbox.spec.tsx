@@ -1,14 +1,22 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import JurisdictionModalCheckbox from '../jurisdiction-modal-checkbox';
+import RootStore from 'Stores/index';
 
 describe('JurisdictionModalCheckbox', () => {
+    const mock_store = {
+        client: {},
+        common: {},
+        ui: {},
+    };
+    const mockRootStore = new RootStore(mock_store);
+
     const mock_props = {
         class_name: '',
         is_checked: false,
         jurisdiction_selected_shortcode: '',
         onCheck: jest.fn(),
-        context: '',
+        context: mockRootStore,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };
@@ -18,7 +26,7 @@ describe('JurisdictionModalCheckbox', () => {
         is_checked: false,
         jurisdiction_selected_shortcode: 'labuan',
         onCheck: jest.fn(),
-        context: 'cfd',
+        context: mockRootStore,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };
@@ -28,7 +36,7 @@ describe('JurisdictionModalCheckbox', () => {
         is_checked: false,
         jurisdiction_selected_shortcode: 'svg',
         onCheck: jest.fn(),
-        context: 'cfd',
+        context: mockRootStore,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };
@@ -38,7 +46,7 @@ describe('JurisdictionModalCheckbox', () => {
         is_checked: false,
         jurisdiction_selected_shortcode: 'bvi',
         onCheck: jest.fn(),
-        context: 'cfd',
+        context: mockRootStore,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };
@@ -48,7 +56,7 @@ describe('JurisdictionModalCheckbox', () => {
         is_checked: false,
         jurisdiction_selected_shortcode: 'bvi',
         onCheck: jest.fn(),
-        context: 'cfd',
+        context: mockRootStore,
         should_restrict_bvi_account_creation: true,
         should_restrict_vanuatu_account_creation: false,
     };
@@ -58,7 +66,7 @@ describe('JurisdictionModalCheckbox', () => {
         is_checked: false,
         jurisdiction_selected_shortcode: 'vanuatu',
         onCheck: jest.fn(),
-        context: 'cfd',
+        context: mockRootStore,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };
@@ -68,8 +76,8 @@ describe('JurisdictionModalCheckbox', () => {
         is_checked: false,
         jurisdiction_selected_shortcode: 'vanuatu',
         onCheck: jest.fn(),
-        context: 'cfd',
-        should_restrict__account_creation: false,
+        context: mockRootStore,
+        should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: true,
     };
     it('should not render JurisdictionModalCheckbox', () => {

@@ -5,6 +5,14 @@ import Tab from './tab';
 import { useConstructor } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 
+// TODO: Remove this declaration after changing label to data-label in Tabs component
+declare module 'react' {
+    interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
+        label?: string;
+        hash?: string;
+    }
+}
+
 type TTabsProps = RouteComponentProps & {
     active_icon_color: string;
     active_index?: number;

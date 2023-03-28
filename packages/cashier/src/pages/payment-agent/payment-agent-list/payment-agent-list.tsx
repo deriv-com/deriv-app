@@ -13,14 +13,6 @@ import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
-// TODO: Remove this declaration after changing label to data-label in Tabs component
-declare module 'react' {
-    interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
-        label?: string;
-        hash?: string;
-    }
-}
-
 type TProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;
 };

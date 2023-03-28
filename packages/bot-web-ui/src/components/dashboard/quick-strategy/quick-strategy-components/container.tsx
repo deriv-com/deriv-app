@@ -29,7 +29,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
         onScrollStopDropdownList,
         setCurrentFocus,
         toggleStopBotDialog,
-        loadDataStrategy,
     } = props;
 
     const symbol_dropdown_options = React.useMemo(
@@ -79,7 +78,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
             is_running={is_running}
             is_contract_dialog_open={is_contract_dialog_open}
             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
-            loadDataStrategy={loadDataStrategy}
         />
     );
 };

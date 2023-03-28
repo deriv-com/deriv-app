@@ -33,7 +33,6 @@ const QuickStrategyForm = ({
     onScrollStopDropdownList,
     setCurrentFocus,
     toggleStopBotDialog,
-    loadDataStrategy,
 }: TQuickStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
@@ -132,7 +131,6 @@ const QuickStrategyForm = ({
                             is_contract_dialog_open={is_contract_dialog_open}
                             toggleStopBotDialog={toggleStopBotDialog}
                             is_stop_bot_dialog_open={is_stop_bot_dialog_open}
-                            loadDataStrategy={loadDataStrategy}
                         />
                     </Form>
                 );

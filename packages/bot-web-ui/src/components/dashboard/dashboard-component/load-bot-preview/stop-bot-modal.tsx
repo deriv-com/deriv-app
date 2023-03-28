@@ -10,11 +10,11 @@ type TStopBotModal = {
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
     is_multiplier: boolean;
+    is_strategy_modal_open?: boolean;
     closeMultiplierContract: () => void;
     onOkButtonClick: () => void;
     toggleStopBotDialog: () => void;
     stopMyBot: () => void;
-    loadDataStrategy: () => void;
 };
 
 const StopBotModalContent = ({
@@ -25,8 +25,6 @@ const StopBotModalContent = ({
     closeMultiplierContract,
     onOkButtonClick,
 }: TStopBotModal) => {
-    console.log('StopBotModalContent', 'is_stop_bot_dialog_open', is_stop_bot_dialog_open, 'is_contract_dialog_open', is_contract_dialog_open);
-    
     const confirm_button_text = is_running && is_multiplier ? localize('Keep my contract') : localize('Stop my bot');
     const cancel_button_text = is_running && is_multiplier ? localize('Close my contract') : localize('Back');
     const title_text =
@@ -99,41 +97,38 @@ const StopBotModal = ({
     closeMultiplierContract,
     stopMyBot,
     toggleStopBotDialog,
-    loadDataStrategy,
     is_strategy_modal_open,
 }: TStopBotModal) =>
-    {
-        console.log('StopBotModal');
-        
-        return isMobile() ? (
-            <MobileFullPageModal
-                is_modal_open={is_strategy_modal_open}
-                className='save-modal__wrapper'
-                header={localize('Save strategy')}
-                onClickClose={toggleStopBotDialog}
-                height_offset='80px'
-                page_overlay
-            >
-                <StopBotModalContent
-                    is_running={is_running}
-                    onOkButtonClick={stopMyBot}
-                    toggleStopBotDialog={toggleStopBotDialog}
-                    is_contract_dialog_open={is_contract_dialog_open}
-                    is_stop_bot_dialog_open={is_stop_bot_dialog_open}
-                    is_multiplier={is_multiplier}
-                    closeMultiplierContract={closeMultiplierContract} />
-            </MobileFullPageModal>
-        ) : (
+    isMobile() ? (
+        <MobileFullPageModal
+            is_modal_open={is_strategy_modal_open}
+            className='save-modal__wrapper'
+            header={localize('Save strategy')}
+            onClickClose={toggleStopBotDialog}
+            height_offset='80px'
+            page_overlay
+        >
             <StopBotModalContent
                 is_running={is_running}
                 onOkButtonClick={stopMyBot}
+                toggleStopBotDialog={toggleStopBotDialog}
                 is_contract_dialog_open={is_contract_dialog_open}
                 is_stop_bot_dialog_open={is_stop_bot_dialog_open}
                 is_multiplier={is_multiplier}
                 closeMultiplierContract={closeMultiplierContract}
-                toggleStopBotDialog={toggleStopBotDialog} />
-        );
-    };
+            />
+        </MobileFullPageModal>
+    ) : (
+        <StopBotModalContent
+            is_running={is_running}
+            onOkButtonClick={stopMyBot}
+            is_contract_dialog_open={is_contract_dialog_open}
+            is_stop_bot_dialog_open={is_stop_bot_dialog_open}
+            is_multiplier={is_multiplier}
+            closeMultiplierContract={closeMultiplierContract}
+            toggleStopBotDialog={toggleStopBotDialog}
+        />
+    );
 
 export default connect(({ run_panel, quick_strategy, summary_card }: RootStore) => ({
     is_running: run_panel.is_running,
@@ -144,6 +139,5 @@ export default connect(({ run_panel, quick_strategy, summary_card }: RootStore) 
     onOkButtonClick: run_panel.onOkButtonClick,
     stopMyBot: run_panel.stopMyBot,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
     is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
 }))(StopBotModal);

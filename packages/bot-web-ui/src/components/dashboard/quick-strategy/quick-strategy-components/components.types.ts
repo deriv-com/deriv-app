@@ -55,7 +55,6 @@ export type TQuickStrategyForm = {
     setCurrentFocus: TSetCurrentFocus;
     setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
-    loadDataStrategy: () => void;
 };
 
 export type TQuickStrategyFields = {
@@ -90,7 +89,6 @@ export type TQuickStrategyFooter = {
     setFieldValue: TSetFieldValue;
     submitForm: FormikProps<TFormValues>['submitForm'];
     toggleStopBotDialog: () => void;
-    loadDataStrategy: () => void;
 };
 
 export type TDropdownLists = Record<TDropdownItems, TDropdowns>;

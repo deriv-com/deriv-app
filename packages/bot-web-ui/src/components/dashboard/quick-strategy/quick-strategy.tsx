@@ -40,7 +40,7 @@ const QuickStrategy = (props: TQuickStrategyProps) => {
     );
 };
 
-export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore) => ({
+export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     active_index: quick_strategy.active_index,
     description: quick_strategy.description,
     createStrategy: quick_strategy.createStrategy,

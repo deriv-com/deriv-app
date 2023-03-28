@@ -255,9 +255,6 @@ export default class QuickStrategyStore {
     }
 
     async loadDataStrategy() {
-        console.log('2 loadDataStrategy', !this.is_strategy_modal_open);
-        
-        
         this.root_store.flyout.setVisibility(false);
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
 
@@ -268,8 +265,6 @@ export default class QuickStrategyStore {
     }
 
     async createStrategy({ button }: Record<'button', 'run' | 'edit'>) {
-        console.log('createStrategy');
-        
         const symbol = this.selected_symbol.value;
         const trade_type = this.selected_trade_type.value;
         const duration_unit = this.selected_duration_unit.value;
@@ -352,8 +347,6 @@ export default class QuickStrategyStore {
                 });
         }
         if (this.is_strategy_modal_open) {
-            console.log('1 is_strategy_modal_open, loadDataStrategy call, this.is_strategy_modal_open: ', this.is_strategy_modal_open);
-            
             this.loadDataStrategy();
         }
     }
@@ -625,6 +618,5 @@ export default class QuickStrategyStore {
     toggleStopBotDialog = (): void => {
         this.is_contract_dialog_open = !this.is_contract_dialog_open;
         this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
-        console.log('toggleStopBotDialog', 'this.is_contract_dialog_open', this.is_contract_dialog_open, 'this.is_stop_bot_dialog_open', this.is_stop_bot_dialog_open);
     };
 }

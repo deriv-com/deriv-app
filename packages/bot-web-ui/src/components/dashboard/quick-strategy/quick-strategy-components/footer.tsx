@@ -11,7 +11,6 @@ const QuickStrategyFooter = ({
     setFieldValue,
     submitForm,
     toggleStopBotDialog,
-    loadDataStrategy,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');

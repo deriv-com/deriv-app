@@ -8,6 +8,15 @@
 
     & .dc-carousel {
         width: 100%;
+
+        @include mobile {
+            &__wrapper {
+                padding: 1.6rem 0 0;
+            }
+            &__nav {
+                margin: 3.2rem 0 0;
+            }
+        }
     }
     &__card {
         min-height: calc(100vh - 210px);
@@ -50,6 +59,24 @@
             /* postcss-bem-linter: ignore */
             li {
                 margin-bottom: 0.8rem;
+            }
+        }
+        @include mobile {
+            width: 32rem;
+            /* postcss-bem-linter: ignore */
+            h2 {
+                @include typeface(--small-left-bold-black, none);
+                margin-bottom: 1.6rem;
+            }
+            /* postcss-bem-linter: ignore */
+            p,
+            ul li {
+                @include typeface(--small-left-normal-black, none);
+            }
+            h2,
+            p,
+            ul li {
+                line-height: 1.5;
             }
         }
     }

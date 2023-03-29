@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { withTranslation } from 'react-i18next';
-import { DesktopWrapper, UnhandledErrorModal } from '@deriv/components';
+import { DesktopWrapper } from '@deriv/components';
 import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTranslation } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -79,7 +79,6 @@ const AppWithoutTranslation = ({ root_store }) => {
                                         <Routes passthrough={platform_passthrough} />
                                     </AppContents>
                                 </ErrorBoundary>
-                                <UnhandledErrorModal />
                                 <DesktopWrapper>
                                     <Footer />
                                 </DesktopWrapper>

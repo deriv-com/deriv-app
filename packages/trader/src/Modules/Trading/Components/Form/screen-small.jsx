@@ -92,7 +92,11 @@ const CollapsibleTradeParams = ({
             )}
             {is_accumulator && [
                 <AccumulatorsAmountMobile key='accu_amount' />,
-                <div collapsible='true' key='accu_take_profit' className={classNames('take-profit', 'mobile-widget')}>
+                <div
+                    data-collapsible='true'
+                    key='accu_take_profit'
+                    className={classNames('take-profit', 'mobile-widget')}
+                >
                     <TakeProfit
                         take_profit={take_profit}
                         has_take_profit={has_take_profit}
@@ -100,7 +104,7 @@ const CollapsibleTradeParams = ({
                         has_info={false}
                     />
                 </div>,
-                <div collapsible='true' key='accu_info'>
+                <div data-collapsible='true' key='accu_info'>
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}

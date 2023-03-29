@@ -49,6 +49,7 @@ const CurrencySelectionModal = ({
     );
 
     const hasSetCurrency = useHasSetCurrency();
+    let timeout: ReturnType<typeof setTimeout>;
 
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
@@ -110,7 +111,8 @@ const CurrencySelectionModal = ({
                 <Button
                     className='block-button'
                     onClick={() => {
-                        setTimeout(() => {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
                             if (has_any_real_account && !hasSetCurrency) {
                                 toggleSetCurrencyModal();
                             } else openRealAccountSignup('manage');

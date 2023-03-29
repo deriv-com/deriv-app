@@ -42,14 +42,10 @@ const BotBuilder = ({
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     React.useEffect(() => {
-        setTimeout(() => {
-            previewRecentStrategy(selected_strategy_id);
-        }, 0); // made this async to give it a split second delay
+        previewRecentStrategy(selected_strategy_id);
         if (active_tab === 1) {
             setColors(is_dark_mode_on);
-            setTimeout(() => {
-                loadFileFromRecent();
-            }, 100);
+            loadFileFromRecent();
         }
     }, [is_dark_mode_on, active_tab]);
 

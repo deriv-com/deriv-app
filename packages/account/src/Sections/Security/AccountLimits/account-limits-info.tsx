@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
@@ -15,9 +14,14 @@ const currency_name_map = {
     AUD: { display_code: 'AUD', name: localize('Australian Dollar') },
     EUR: { display_code: 'EUR', name: localize('Euro') },
     GBP: { display_code: 'GBP', name: localize('Pound Sterling') },
+} as const;
+
+type TAccountLimitsInfo = {
+    currency?: keyof typeof currency_name_map;
+    is_virtual?: boolean;
 };
 
-const AccountLimitsInfo = ({ currency, is_virtual }) => (
+const AccountLimitsInfo = ({ currency, is_virtual = false }: TAccountLimitsInfo) => (
     <>
         {!is_virtual && (
             <>
@@ -30,8 +34,8 @@ const AccountLimitsInfo = ({ currency, is_virtual }) => (
                         <Localize
                             i18n_default_text='For your {{currency_name}} ({{currency}}) account'
                             values={{
-                                currency_name: currency_name_map[currency.toUpperCase()].name,
-                                currency: currency_name_map[currency.toUpperCase()].display_code,
+                                currency_name: currency_name_map[currency].name,
+                                currency: currency_name_map[currency].display_code,
                             }}
                         />
                     ) : (
@@ -42,10 +46,5 @@ const AccountLimitsInfo = ({ currency, is_virtual }) => (
         )}
     </>
 );
-
-AccountLimitsInfo.propTypes = {
-    currency: PropTypes.string,
-    is_virtual: PropTypes.bool,
-};
 
 export default AccountLimitsInfo;

@@ -1,22 +1,20 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Modal, Text } from '@deriv/components';
+import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import type { TRootStore } from '@deriv/stores/types';
 
-const AccountClosed = ({ logout }) => {
+type TAccountClosed = {
+    logout: () => void;
+};
+
+const AccountClosed = ({ logout }: TAccountClosed) => {
     const [is_modal_open, setModalState] = React.useState(true);
     const [timer, setTimer] = React.useState(10);
     const { is_appstore } = React.useContext(PlatformContext);
-
-    React.useEffect(() => {
-        window.history.pushState(null, null, '/');
-        logout();
-        const handleInterval = setInterval(() => counter(), 1000);
-        return () => {
-            if (handleInterval) clearInterval(handleInterval);
-        };
-    }, [timer, is_modal_open, logout, counter]);
+    const history = useHistory();
 
     const counter = React.useCallback(() => {
         if (timer > 0) {
@@ -25,6 +23,15 @@ const AccountClosed = ({ logout }) => {
             window.location.href = getStaticUrl('/', { is_appstore });
         }
     }, [is_appstore, timer]);
+
+    React.useEffect(() => {
+        history.push(routes.root);
+        logout();
+        const handleInterval = setInterval(() => counter(), 1000);
+        return () => {
+            if (handleInterval) clearInterval(handleInterval);
+        };
+    }, [timer, is_modal_open, logout, counter]);
 
     return (
         <Modal
@@ -40,6 +47,6 @@ const AccountClosed = ({ logout }) => {
     );
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client }: TRootStore) => ({
     logout: client.logout,
 }))(AccountClosed);

@@ -10,7 +10,7 @@ import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
-import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
+import { excluded_notifications, priority_toast_messages } from '../../Stores/Helpers/client-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -148,11 +148,11 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
+
     const filtered_excluded_notifications = notifications.filter(message =>
-        message.key.includes('svg') || message.key.includes('p2p_daily_limit_increase')
-            ? message
-            : excluded_notifications.includes(message.key)
+        priority_toast_messages.includes(message.key) ? message : excluded_notifications.includes(message.key)
     );
+
     const getNotificationSublist = () => {
         if (window.location.pathname === routes.cashier_deposit) {
             return filtered_excluded_notifications.filter(message =>

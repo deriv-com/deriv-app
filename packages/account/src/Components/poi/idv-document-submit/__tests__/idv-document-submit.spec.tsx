@@ -47,7 +47,6 @@ describe('<IdvDocumentSubmit/>', () => {
         handleViewComplete: jest.fn(),
         selected_country: {
             value: 'tc',
-            // text: 'Test country',
             identity: {
                 services: {
                     idv: {
@@ -56,7 +55,6 @@ describe('<IdvDocumentSubmit/>', () => {
                             document_2: { display_name: 'Test document 2 name', format: 'A54321' },
                         },
                         has_visual_sample: true,
-                        // is_country_supported: 0,
                     },
                 },
             },

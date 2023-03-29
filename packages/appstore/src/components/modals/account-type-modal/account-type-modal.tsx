@@ -21,6 +21,14 @@ const financial_account: TAccountType = {
     description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
 };
 
+const swapfree_account: TAccountType = {
+    title_and_type: localize('Swap-Free'),
+    icon: 'SwapFree',
+    description: localize(
+        'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
+    ),
+};
+
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
         selectAccountTypeCard(account_type_card === cardType ? '' : cardType);
@@ -54,6 +62,7 @@ const ModalContent = ({
     selectAccountTypeCard,
     is_financial_available,
     is_synthetic_available,
+    is_swapfree_available,
 }: TModalContent) => {
     return (
         <div className='account-type-card__wrapper'>
@@ -73,6 +82,15 @@ const ModalContent = ({
                     description={financial_account.description}
                     title_and_type={financial_account.title_and_type}
                     icon={financial_account.icon}
+                />
+            )}
+            {is_swapfree_available && (
+                <AccountCard
+                    account_type_card={account_type_card}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${swapfree_account.title_and_type}`)}
+                    description={swapfree_account.description}
+                    title_and_type={swapfree_account.title_and_type}
+                    icon={swapfree_account.icon}
                 />
             )}
         </div>
@@ -98,6 +116,9 @@ const MT5AccountTypeModal = () => {
 
     const is_synthetic_available = trading_platform_available_accounts.some(
         (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'gaming'
+    );
+    const is_swapfree_available = trading_platform_available_accounts.some(
+        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'all'
     );
 
     const set_account_type = () =>
@@ -126,6 +147,7 @@ const MT5AccountTypeModal = () => {
                             selectAccountTypeCard={selectAccountTypeCard}
                             is_financial_available={is_financial_available}
                             is_synthetic_available={is_synthetic_available}
+                            is_swapfree_available={is_swapfree_available}
                         />
                         <Modal.Footer has_separator>
                             <Button
@@ -155,6 +177,7 @@ const MT5AccountTypeModal = () => {
                             selectAccountTypeCard={selectAccountTypeCard}
                             is_financial_available={is_financial_available}
                             is_synthetic_available={is_synthetic_available}
+                            is_swapfree_available={is_swapfree_available}
                         />
                         <Modal.Footer has_separator>
                             <Button

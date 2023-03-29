@@ -38,7 +38,7 @@ import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 export type TCFDPasswordFormValues = { password: string };
 
 type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
-    market_type?: 'synthetic' | 'financial' | 'gaming';
+    market_type?: 'synthetic' | 'financial' | 'gaming' | 'all';
 };
 
 type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;

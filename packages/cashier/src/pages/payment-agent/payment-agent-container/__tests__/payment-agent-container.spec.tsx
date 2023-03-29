@@ -4,7 +4,6 @@ import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore, TStores } from '@deriv/stores';
-import { TRootStore } from '../../../../types';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -77,12 +76,12 @@ describe('<PaymentAgentContainer />', () => {
                     },
                 },
             },
-        }) as TStores;
+        });
     });
 
     const renderPaymentAgentContainer = (is_deposit = true) => {
         return render(
-            <CashierProviders store={mockRootStore as TRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <PaymentAgentContainer is_deposit={is_deposit} verification_code='ABCdef' />
             </CashierProviders>
         );

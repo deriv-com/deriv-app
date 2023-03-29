@@ -48,7 +48,7 @@ export const getUnitMap = () => {
     };
 };
 
-export const getDurationUnitText = (obj_duration: moment.Duration) => {
+export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore_end_time?: boolean) => {
     const unit_map = getUnitMap();
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
@@ -58,34 +58,14 @@ export const getDurationUnitText = (obj_duration: moment.Duration) => {
             const days_value = duration_ms / 86400000;
             return days_value <= 2 ? unit_map.d.name_singular : unit_map.d.name_plural;
         } else if (duration_ms >= 3600000 && duration_ms < 86400000) {
-            if (isEndTime(duration_ms / (1000 * 60 * 60))) return '';
+            if (!should_ignore_end_time && isEndTime(duration_ms / (1000 * 60 * 60))) return '';
             return duration_ms === 3600000 ? unit_map.h.name_singular : unit_map.h.name_plural;
         } else if (duration_ms >= 60000 && duration_ms < 3600000) {
-            if (isEndTime(duration_ms / (1000 * 60))) return '';
+            if (!should_ignore_end_time && isEndTime(duration_ms / (1000 * 60))) return '';
             return duration_ms === 60000 ? unit_map.m.name_singular : unit_map.m.name_plural;
         } else if (duration_ms >= 1000 && duration_ms < 60000) {
             return unit_map.s.name;
         }
-    }
-    return unit_map.s.name;
-};
-
-export const getTurbosDurationText = (obj_duration: moment.Duration) => {
-    const unit_map = getUnitMap();
-    const duration_ms = obj_duration.asMilliseconds() / 1000;
-
-    if (duration_ms >= 86400000) {
-        const days_value = duration_ms / 86400000;
-        return days_value <= 2 ? unit_map.d.name_singular : unit_map.d.name_plural;
-    }
-    if (duration_ms >= 3600000 && duration_ms < 86400000) {
-        return duration_ms === 3600000 ? unit_map.h.name_singular : unit_map.h.name_plural;
-    }
-    if (duration_ms >= 60000 && duration_ms < 3600000) {
-        return duration_ms === 60000 ? unit_map.m.name_singular : unit_map.m.name_plural;
-    }
-    if (duration_ms >= 1000 && duration_ms < 60000) {
-        return unit_map.s.name;
     }
     return unit_map.s.name;
 };

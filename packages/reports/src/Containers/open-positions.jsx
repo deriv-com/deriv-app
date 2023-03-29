@@ -28,8 +28,8 @@ import {
     getContractPath,
     getCurrentTick,
     getDurationPeriod,
+    getDurationUnitText,
     getGrowthRatePercentage,
-    getTurbosDurationText,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -100,7 +100,7 @@ const MobileRowRenderer = ({
     const { contract_info, contract_update, type, is_sell_requested } = row;
     const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
-    const turbos_duration_unit = tick_count ? 'ticks' : getTurbosDurationText(getDurationPeriod(contract_info));
+    const turbos_duration_unit = tick_count ? 'ticks' : getDurationUnitText(getDurationPeriod(contract_info), true);
     const duration_type = getContractDurationType(isTurbosContract ? turbos_duration_unit : contract_info.longcode);
     const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
 

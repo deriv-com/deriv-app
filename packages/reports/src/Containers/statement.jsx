@@ -57,7 +57,7 @@ const getRowAction = row_obj => {
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         const unsupported_contract_type = extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase();
         action =
-            getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
+            getSupportedContracts()[unsupported_contract_type] &&
             !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
                 ? getContractPath(row_obj.id)
                 : {

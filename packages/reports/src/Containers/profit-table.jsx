@@ -18,7 +18,7 @@ import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 
 const getRowAction = row_obj => {
     const unsupported_contract_type = extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase();
-    return getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
+    return getSupportedContracts()[unsupported_contract_type] &&
         !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
         ? getContractPath(row_obj.contract_id)
         : {

@@ -189,11 +189,24 @@ const AccountWizard = props => {
         clearError();
     };
 
+    const processInputData = data => {
+        if (data?.risk_tolerance === 'No') {
+            return Object.entries(data).reduce((accumulator, [key, val]) => {
+                if (val) {
+                    return { ...accumulator, [key]: val };
+                }
+                return { ...accumulator };
+            }, {});
+        }
+        return data;
+    };
+
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm;
         delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
+        clone = processInputData(clone);
         props.setRealAccountFormData(clone);
         if (payload) {
             clone = {

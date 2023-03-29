@@ -312,7 +312,9 @@
     &__shadow-wrapper:hover:after {
         opacity: 0;
     }
-    &--multiplier {
+    &--multiplier,
+    &--accumulator {
+        margin: 0;
         .btn-purchase__info--left {
             width: 35%;
             flex: none;
@@ -350,6 +352,48 @@
         @include mobile {
             &-deal-cancel {
                 height: 64px;
+            }
+        }
+    }
+    &--accumulator {
+        .btn-purchase {
+            &__info {
+                &--left {
+                    width: 65%;
+                    padding-left: 1.6rem;
+                }
+                &--right {
+                    width: 30%;
+                    padding-right: 1.6rem;
+                }
+            }
+            &__effect-detail--arrow {
+                left: 11rem;
+            }
+        }
+        &.btn-purchase--swoosh {
+            .btn-purchase {
+                &__effect-detail {
+                    transform: scale3d(11, 1, 1);
+                    &--arrow {
+                        transform: translate3d(120px, 0, 0) rotate(45deg);
+                    }
+                }
+                &__type-wrapper {
+                    transform: translate3d(72px, 0, 0);
+                }
+            }
+        }
+        @include mobile {
+            .btn-purchase {
+                &__bottom,
+                &__top {
+                    width: unset;
+                    gap: 0.3rem;
+                }
+                &__icon_wrapper {
+                    height: 1.6rem;
+                }
             }
         }
     }

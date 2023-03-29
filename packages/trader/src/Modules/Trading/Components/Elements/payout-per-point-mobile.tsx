@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -13,7 +12,7 @@ const PayoutPerPointMobile = observer(() => {
     const { currency, proposal_info, contract_type, vanilla_trade_type } = trade;
     const contract_key = isVanillaContract(contract_type) ? vanilla_trade_type : contract_type?.toUpperCase();
     const { has_error, has_increased, id, message, obj_contract_basis } = proposal_info?.[contract_key] || {};
-    const { text: label, value: payout_per_point = 0 } = obj_contract_basis || {};
+    const { text: label, value: payout_per_point } = obj_contract_basis || {};
     const has_error_or_not_loaded = has_error || !id;
     const tooltip_text = (
         <Localize
@@ -27,30 +26,34 @@ const PayoutPerPointMobile = observer(() => {
     );
 
     return (
-        <Fieldset className={classNames('payout-per-point')}>
-            <div className='payout-per-point__label-wrapper'>
-                <Text size='xs' color='less-prominent' className='payout-per-point__label'>
-                    {localize('{{label}}', { label })}
-                </Text>
-                <Popover
-                    alignment='top'
-                    icon='info'
-                    is_bubble_hover_enabled
-                    margin={0}
-                    zIndex='9999'
-                    message={message ? tooltip_text : ''}
-                />
-            </div>
-            <Text size='xs' weight='bold' className='payout-per-point__value'>
-                <Money amount={payout_per_point} currency={currency} show_currency should_format={false} />
-                <span className='trade-container__price-info-movement'>
-                    {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
-                        <Icon icon='IcProfit' />
-                    ) : (
-                        <Icon icon='IcLoss' />
-                    )}
-                </span>
-            </Text>
+        <Fieldset className='payout-per-point'>
+            {isNaN(payout_per_point) ? null : (
+                <React.Fragment>
+                    <div className='payout-per-point__label-wrapper'>
+                        <Text size='xs' color='less-prominent' className='payout-per-point__label'>
+                            {localize('{{label}}', { label })}
+                        </Text>
+                        <Popover
+                            alignment='top'
+                            icon='info'
+                            is_bubble_hover_enabled
+                            margin={0}
+                            zIndex='9999'
+                            message={message ? tooltip_text : ''}
+                        />
+                    </div>
+                    <Text size='xs' weight='bold' className='payout-per-point__value'>
+                        <Money amount={payout_per_point} currency={currency} show_currency should_format={false} />
+                        <span className='trade-container__price-info-movement'>
+                            {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
+                                <Icon icon='IcProfit' />
+                            ) : (
+                                <Icon icon='IcLoss' />
+                            )}
+                        </span>
+                    </Text>
+                </React.Fragment>
+            )}
         </Fieldset>
     );
 });

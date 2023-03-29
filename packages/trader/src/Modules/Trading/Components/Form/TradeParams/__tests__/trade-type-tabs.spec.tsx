@@ -14,7 +14,7 @@ const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
                     mocked_root_store.modules.trade.contract_type = 'turbosshort';
                 }
             }),
-            vanilla_trade_type: '',
+            vanilla_trade_type: 'VANILLALONGCALL',
         },
     },
 };
@@ -27,7 +27,7 @@ jest.mock('@deriv/stores', () => ({
 }));
 
 describe('Trade Type Tabs', () => {
-    it('should render Long & Short tabs when contract_type is turboslong', () => {
+    it('should render Long & Short tabs when contract_type = turboslong', () => {
         render(<TradeTypeTabs />);
         const long_tab = screen.getByText('Long');
         const short_tab = screen.getByText('Short');
@@ -36,7 +36,19 @@ describe('Trade Type Tabs', () => {
         });
     });
 
-    it('should not render if contract_type is other than turbosshort or turboslong', () => {
+    it('should render Call & Put tabs when contract_type = vanilla, and vanilla_trade_type = VANILLALONGCALL', () => {
+        if (mocked_root_store.modules) {
+            mocked_root_store.modules.trade.contract_type = 'vanilla';
+        }
+        render(<TradeTypeTabs />);
+        const call_tab = screen.getByText('Call');
+        const put_tab = screen.getByText('Put');
+        [call_tab, put_tab].forEach(tab => {
+            expect(tab).toBeInTheDocument();
+        });
+    });
+
+    it('should not render if contract_type is other than turbos or vanillas', () => {
         if (mocked_root_store.modules) {
             mocked_root_store.modules.trade.contract_type = 'invalid_type';
         }

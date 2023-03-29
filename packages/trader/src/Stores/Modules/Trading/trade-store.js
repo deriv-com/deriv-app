@@ -1605,6 +1605,6 @@ export default class TradeStore extends BaseStore {
     }
 
     setStakeBoundary(type, min_stake, max_stake) {
-        this.stake_boundary[type] = { min_stake, max_stake };
+        if (min_stake && max_stake) this.stake_boundary[type] = { min_stake, max_stake };
     }
 }

@@ -37,23 +37,18 @@ const BarrierSelector = observer(() => {
         setSelectedBarrier(barrier_1);
     }, [barrier_1]);
 
-    const header_tooltip_text = (
-        <React.Fragment>
-            <div className='trade-container__barriers-tooltip'>
-                <Localize
-                    i18n_default_text="<0>For Long: </0>You will earn profit if the market stays above the entry spot and doesn't cross the barrier."
-                    components={[<Text key={0} weight='bold' size='xxs' />]}
-                />
-            </div>
+    const header_tooltip_text = ['Long', 'Short'].map(type => (
+        <div key={type} className='trade-container__barriers-tooltip'>
             <Localize
-                i18n_default_text="<0>For Short: </0>You will earn profit if the market stays below the entry spot and doesn't cross the barrier."
+                i18n_default_text="<0>For {{type}}: </0>You will earn profit if the market stays {{payout_status}} the entry spot and doesn't cross the barrier."
                 components={[<Text key={0} weight='bold' size='xxs' />]}
+                values={{ type, payout_status: type === 'Long' ? 'above' : 'below' }}
             />
-        </React.Fragment>
-    );
+        </div>
+    ));
 
     const barriers_header_mobile = (
-        <div className='trade-container__barriers-table__header-tooltip'>
+        <div className='trade-container__barriers-table__header-wrapper'>
             <div>{localize('Barriers')}</div>
             <Popover
                 alignment='bottom'
@@ -89,11 +84,9 @@ const BarrierSelector = observer(() => {
                     header_classname='trade-container__barriers-table__header'
                 >
                     <BarriersList
-                        active_item_classname='trade-container__barriers-table__item--selected'
-                        base_classname='trade-container__barriers-table__item'
-                        className='trade-container__barriers-table__list'
+                        className='trade-container__barriers-table'
                         header='Barriers'
-                        list={barrier_choices}
+                        barriers_list={barrier_choices}
                         selected_item={selected_barrier}
                         show_table={is_barriers_table_expanded}
                         subheader='Distance to current spot'
@@ -122,11 +115,9 @@ const BarrierSelector = observer(() => {
                 </Fieldset>
                 {is_barriers_table_expanded && (
                     <BarriersList
-                        active_item_classname='trade-container__barriers-table__item--selected'
-                        base_classname='trade-container__barriers-table__item'
-                        className='trade-container__barriers-table__list'
+                        className='trade-container__barriers-table'
                         header='Barriers'
-                        list={barrier_choices}
+                        barriers_list={barrier_choices}
                         selected_item={selected_barrier}
                         show_table={is_barriers_table_expanded}
                         subheader='Distance to current spot'

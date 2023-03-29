@@ -376,7 +376,7 @@
         &-single {
             width: 100%;
         }
-        &-tooltip {
+        &-tooltip:first-child {
             margin-bottom: 0.8rem;
         }
         &-spot {
@@ -436,9 +436,9 @@
                 padding: 0 1.6rem;
                 border-bottom: 0.1rem solid var(--general-section-1);
             }
-            &-tooltip {
+            &-wrapper {
                 display: flex;
-                gap: 0.6rem;
+                gap: 0.8rem;
             }
         }
         &__icon-close {
@@ -722,6 +722,9 @@
         margin-top: 0.4rem;
         display: flex;
         justify-content: space-between;
+        @include desktop {
+            height: 2.8rem;
+        }
 
         &--min {
             display: flex;
@@ -928,13 +931,14 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.6rem;
+    height: 4.15rem;
+
     &__label {
         position: relative;
         bottom: 0.3rem;
-
         &-wrapper {
             display: flex;
-            gap: 0.6rem;
+            gap: 0.8rem;
         }
     }
     &__value {

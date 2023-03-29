@@ -3,11 +3,10 @@ import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared';
+import { getContractSubtype, toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
-import './strike-field.scss';
 
 const Strike = ({
     barrier_1,
@@ -47,10 +46,10 @@ const Strike = ({
                     header={localize('Strike price')}
                     header_tooltip={
                         <Localize
-                            i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market price is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
+                            i18n_default_text='<0>For {{trade_type}}:</0> You will get a payout if the market price is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: vanilla_trade_type === 'VANILLALONGCALL' ? 'For Call' : 'For Put',
+                                trade_type: getContractSubtype(vanilla_trade_type),
                                 payout_status: vanilla_trade_type === 'VANILLALONGCALL' ? 'above' : 'below',
                             }}
                         />
@@ -97,11 +96,9 @@ const Strike = ({
                 </Fieldset>
                 {should_open_dropdown && (
                     <BarriersList
-                        active_item_classname='trade-container__barriers-table__item--selected'
-                        base_classname='trade-container__barriers-table__item'
-                        className='trade-container__barriers-table__list'
+                        className='trade-container__barriers-table'
                         header='Strike Prices'
-                        list={strike_price_choices}
+                        barriers_list={strike_price_choices}
                         selected_item={selected_value}
                         show_table={should_open_dropdown}
                         onClick={strike => {

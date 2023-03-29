@@ -2,6 +2,7 @@ import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
 import classNames from 'classnames';
+import { getContractSubtype } from '@deriv/shared';
 
 const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike_price_list, vanilla_trade_type }) => (
     <Modal
@@ -24,10 +25,10 @@ const StrikeParamModal = ({ is_open, toggleModal, strike, onChange, name, strike
                     is_bubble_hover_enabled
                     message={
                         <Localize
-                            i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
+                            i18n_default_text='<0>For {{trade_type}}:</0> You will get a payout if the market is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: vanilla_trade_type === 'VANILLALONGCALL' ? 'For Call' : 'For Put',
+                                trade_type: getContractSubtype(vanilla_trade_type),
                                 payout_status: vanilla_trade_type === 'VANILLALONGCALL' ? 'above' : 'below',
                             }}
                         />

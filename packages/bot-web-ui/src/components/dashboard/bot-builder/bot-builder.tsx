@@ -41,13 +41,11 @@ const BotBuilder = ({
     const [is_tour_running] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
-    React.useEffect(() => {
-        previewRecentStrategy(selected_strategy_id);
-        if (active_tab === 1) {
-            setColors(is_dark_mode_on);
-            loadFileFromRecent();
-        }
-    }, [is_dark_mode_on, active_tab]);
+
+    //removed used effect here because dark mode is an observable and the component will rerender
+    setColors(is_dark_mode_on);
+    loadFileFromRecent();
+    previewRecentStrategy(selected_strategy_id);
 
     React.useEffect(() => {
         onMount();

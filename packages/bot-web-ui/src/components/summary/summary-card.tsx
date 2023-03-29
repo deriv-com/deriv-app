@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { ContractCard, ContractCard, Text } from '@deriv/components';
+import { ContractCard, Text } from '@deriv/components';
 import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractCardLoader from 'Components/contract-card-loading';
@@ -27,6 +27,7 @@ const SummaryCard = ({
 }: TSummaryCardProps) => {
     const currency = contract_info?.display_name.split('/')[0];
     const is_cryptocurrency = contract_info?.display_name ? isCryptocurrency(currency as string) : false;
+    const is_mobile = isMobile();
 
     const card_header = (
         <ContractCard.Header

@@ -96,7 +96,7 @@ const TradingHubFooter = ({
                     />
                 )}
                 <div className='footer__links--dark-mode'>
-                    <Popover zIndex='9999' alignment='top' message='Change theme'>
+                    <Popover zIndex='10' alignment='top' message='Change theme'>
                         {is_dark_mode ? (
                             <LightModeToggleIcon onClick={changeTheme} />
                         ) : (

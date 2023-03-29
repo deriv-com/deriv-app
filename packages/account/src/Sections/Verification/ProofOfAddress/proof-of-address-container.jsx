@@ -112,7 +112,7 @@ const ProofOfAddressContainer = ({
         (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
     )
         return <NotRequired />;
-    if (has_submitted_poa) return <Submitted needs_poi={needs_poi} />;
+    if (has_submitted_poa) return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
     if (
         resubmit_poa ||
         allow_poa_resubmission ||

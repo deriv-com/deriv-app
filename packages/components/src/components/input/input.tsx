@@ -162,12 +162,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 {warn && <Field className={classNameWarn} message={warn} type='warn' />}
                                 {!error && hint && !is_relative_hint && (
                                     <div className='dc-input__hint'>
-                                        <Text
-                                            as='p'
-                                            color='less-prominent'
-                                            size='xxs'
-                                            className={classNames(classNameHint)}
-                                        >
+                                        <Text as='p' color='less-prominent' size='xxs' className={classNameHint}>
                                             {hint}
                                         </Text>
                                     </div>

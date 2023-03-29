@@ -316,8 +316,7 @@ const PersonalDetails = ({
                                                             <Autocomplete
                                                                 {...field}
                                                                 disabled={
-                                                                    (!!props.value.place_of_birth &&
-                                                                        disabled_items.includes('place_of_birth')) ||
+                                                                    disabled_items.includes('place_of_birth') ||
                                                                     (props.value?.place_of_birth && has_real_account)
                                                                 }
                                                                 data-lpignore='true'
@@ -346,8 +345,7 @@ const PersonalDetails = ({
                                                                 placeholder={localize('Place of birth')}
                                                                 name={field.name}
                                                                 disabled={
-                                                                    (!!props.value.place_of_birth &&
-                                                                        disabled_items.includes('place_of_birth')) ||
+                                                                    disabled_items.includes('place_of_birth') ||
                                                                     (props.value?.place_of_birth && has_real_account)
                                                                 }
                                                                 label={
@@ -395,9 +393,8 @@ const PersonalDetails = ({
                                                                 }
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
-                                                                    (props.value.citizen && is_fully_authenticated) ||
-                                                                    (!!props.value.citizen &&
-                                                                        disabled_items.includes('citizen')) ||
+                                                                    (props.value?.citizen && is_fully_authenticated) ||
+                                                                    disabled_items.includes('citizen') ||
                                                                     (props.value?.citizen && has_real_account)
                                                                 }
                                                                 list_items={residence_list}
@@ -414,9 +411,8 @@ const PersonalDetails = ({
                                                                 placeholder={localize('Citizenship')}
                                                                 name={field.name}
                                                                 disabled={
-                                                                    (props.value.citizen && is_fully_authenticated) ||
-                                                                    (!!props.value.citizen &&
-                                                                        disabled_items.includes('citizen')) ||
+                                                                    (props.value?.citizen && is_fully_authenticated) ||
+                                                                    disabled_items.includes('citizen') ||
                                                                     (props.value?.citizen && has_real_account)
                                                                 }
                                                                 label={
@@ -500,6 +496,9 @@ const PersonalDetails = ({
                                                                         }
                                                                         list_portal_id='modal_root'
                                                                         data-testid='tax_residence'
+                                                                        disabled={disabled_items.includes(
+                                                                            'tax_residence'
+                                                                        )}
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
@@ -529,6 +528,9 @@ const PersonalDetails = ({
                                                                         {...field}
                                                                         required
                                                                         data_testid='tax_residence_mobile'
+                                                                        disabled={disabled_items.includes(
+                                                                            'tax_residence'
+                                                                        )}
                                                                     />
                                                                 </MobileWrapper>
                                                                 <div
@@ -630,6 +632,7 @@ const PersonalDetails = ({
                                                                     touched.employment_status &&
                                                                     errors.employment_status
                                                                 }
+                                                                disabled={disabled_items.includes('employment_status')}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -651,6 +654,7 @@ const PersonalDetails = ({
                                                                     setFieldTouched('employment_status', true);
                                                                     handleChange(e);
                                                                 }}
+                                                                disabled={disabled_items.includes('employment_status')}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -742,6 +746,9 @@ const PersonalDetails = ({
                                                                     {...field}
                                                                     required
                                                                     data_testid='account_opening_reason_mobile'
+                                                                    disabled={disabled_items.includes(
+                                                                        'account_opening_reason'
+                                                                    )}
                                                                 />
                                                             </MobileWrapper>
                                                         </React.Fragment>

@@ -137,6 +137,7 @@ const addressDetailsConfig = (
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
+    const disabled_items = account_settings.immutable_fields;
     const is_mf = real_account_signup_target === 'maltainvest';
 
     return {
@@ -152,6 +153,7 @@ const addressDetailsConfig = (
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
             is_svg,
+            disabled_items,
             is_mf,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],

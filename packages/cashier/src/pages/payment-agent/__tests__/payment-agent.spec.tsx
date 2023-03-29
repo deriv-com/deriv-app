@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore, TStores } from '@deriv/stores';
+import { TRootStore } from '../../../types';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -54,7 +55,7 @@ describe('<PaymentAgent />', () => {
     const renderPaymentAgent = () => {
         return render(
             <Router history={createBrowserHistory()}>
-                <CashierProviders store={mockRootStore}>
+                <CashierProviders store={mockRootStore as TRootStore}>
                     <PaymentAgent setSideNotes={jest.fn()} />
                 </CashierProviders>
             </Router>

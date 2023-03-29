@@ -26,12 +26,6 @@ type TContractTypesConfig = {
 
 type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
 
-type TContractConfig = {
-    button_name?: React.ReactNode;
-    name: React.ReactNode;
-    position: string;
-};
-
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
@@ -336,171 +330,175 @@ export const getMarketNamesMap = () => ({
     CRYLTCUSD: localize('LTC/USD'),
 });
 
-export const getUnsupportedContracts = () => ({
-    EXPIRYMISS: {
-        name: <Localize i18n_default_text='Ends Outside' />,
-        position: 'top',
-    },
-    EXPIRYRANGE: {
-        name: <Localize i18n_default_text='Ends Between' />,
-        position: 'bottom',
-    },
-    RANGE: {
-        name: <Localize i18n_default_text='Stays Between' />,
-        position: 'top',
-    },
-    UPORDOWN: {
-        name: <Localize i18n_default_text='Goes Outside' />,
-        position: 'bottom',
-    },
-    RESETCALL: {
-        name: <Localize i18n_default_text='Reset Call' />,
-        position: 'top',
-    },
-    RESETPUT: {
-        name: <Localize i18n_default_text='Reset Put' />,
-        position: 'bottom',
-    },
-    TICKHIGH: {
-        name: <Localize i18n_default_text='High Tick' />,
-        position: 'top',
-    },
-    TICKLOW: {
-        name: <Localize i18n_default_text='Low Tick' />,
-        position: 'bottom',
-    },
-    ASIANU: {
-        name: <Localize i18n_default_text='Asian Up' />,
-        position: 'top',
-    },
-    ASIAND: {
-        name: <Localize i18n_default_text='Asian Down' />,
-        position: 'bottom',
-    },
-    LBFLOATCALL: {
-        name: <Localize i18n_default_text='Close-to-Low' />,
-        position: 'top',
-    },
-    LBFLOATPUT: {
-        name: <Localize i18n_default_text='High-to-Close' />,
-        position: 'top',
-    },
-    LBHIGHLOW: {
-        name: <Localize i18n_default_text='High-to-Low' />,
-        position: 'top',
-    },
-    CALLSPREAD: {
-        name: <Localize i18n_default_text='Spread Up' />,
-        position: 'top',
-    },
-    PUTSPREAD: {
-        name: <Localize i18n_default_text='Spread Down' />,
-        position: 'bottom',
-    },
-    RUNHIGH: {
-        name: <Localize i18n_default_text='Only Ups' />,
-        position: 'top',
-    },
-    RUNLOW: {
-        name: <Localize i18n_default_text='Only Downs' />,
-        position: 'bottom',
-    },
-});
+export const getUnsupportedContracts = () =>
+    ({
+        EXPIRYMISS: {
+            name: <Localize i18n_default_text='Ends Outside' />,
+            position: 'top',
+        },
+        EXPIRYRANGE: {
+            name: <Localize i18n_default_text='Ends Between' />,
+            position: 'bottom',
+        },
+        RANGE: {
+            name: <Localize i18n_default_text='Stays Between' />,
+            position: 'top',
+        },
+        UPORDOWN: {
+            name: <Localize i18n_default_text='Goes Outside' />,
+            position: 'bottom',
+        },
+        RESETCALL: {
+            name: <Localize i18n_default_text='Reset Call' />,
+            position: 'top',
+        },
+        RESETPUT: {
+            name: <Localize i18n_default_text='Reset Put' />,
+            position: 'bottom',
+        },
+        TICKHIGH: {
+            name: <Localize i18n_default_text='High Tick' />,
+            position: 'top',
+        },
+        TICKLOW: {
+            name: <Localize i18n_default_text='Low Tick' />,
+            position: 'bottom',
+        },
+        ASIANU: {
+            name: <Localize i18n_default_text='Asian Up' />,
+            position: 'top',
+        },
+        ASIAND: {
+            name: <Localize i18n_default_text='Asian Down' />,
+            position: 'bottom',
+        },
+        LBFLOATCALL: {
+            name: <Localize i18n_default_text='Close-to-Low' />,
+            position: 'top',
+        },
+        LBFLOATPUT: {
+            name: <Localize i18n_default_text='High-to-Close' />,
+            position: 'top',
+        },
+        LBHIGHLOW: {
+            name: <Localize i18n_default_text='High-to-Low' />,
+            position: 'top',
+        },
+        CALLSPREAD: {
+            name: <Localize i18n_default_text='Spread Up' />,
+            position: 'top',
+        },
+        PUTSPREAD: {
+            name: <Localize i18n_default_text='Spread Down' />,
+            position: 'bottom',
+        },
+        RUNHIGH: {
+            name: <Localize i18n_default_text='Only Ups' />,
+            position: 'top',
+        },
+        RUNLOW: {
+            name: <Localize i18n_default_text='Only Downs' />,
+            position: 'bottom',
+        },
+    } as const);
 
-export const getSupportedContracts = (is_high_low?: boolean) => ({
-    ACCU: {
-        button_name: <Localize i18n_default_text='Buy' />,
-        name: <Localize i18n_default_text='Accumulator' />,
-        position: 'top',
-    },
-    CALL: {
-        name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
-        position: 'top',
-    },
-    PUT: {
-        name: is_high_low ? <Localize i18n_default_text='Lower' /> : <Localize i18n_default_text='Fall' />,
-        position: 'bottom',
-    },
-    CALLE: {
-        name: <Localize i18n_default_text='Rise' />,
-        position: 'top',
-    },
-    PUTE: {
-        name: <Localize i18n_default_text='Fall' />,
-        position: 'bottom',
-    },
-    DIGITMATCH: {
-        name: <Localize i18n_default_text='Matches' />,
-        position: 'top',
-    },
-    DIGITDIFF: {
-        name: <Localize i18n_default_text='Differs' />,
-        position: 'bottom',
-    },
-    DIGITEVEN: {
-        name: <Localize i18n_default_text='Even' />,
-        position: 'top',
-    },
-    DIGITODD: {
-        name: <Localize i18n_default_text='Odd' />,
-        position: 'bottom',
-    },
-    DIGITOVER: {
-        name: <Localize i18n_default_text='Over' />,
-        position: 'top',
-    },
-    DIGITUNDER: {
-        name: <Localize i18n_default_text='Under' />,
-        position: 'bottom',
-    },
-    ONETOUCH: {
-        name: <Localize i18n_default_text='Touch' />,
-        position: 'top',
-    },
-    NOTOUCH: {
-        name: <Localize i18n_default_text='No Touch' />,
-        position: 'bottom',
-    },
-    MULTUP: {
-        name: <Localize i18n_default_text='Up' />,
-        position: 'top',
-    },
-    MULTDOWN: {
-        name: <Localize i18n_default_text='Down' />,
-        position: 'bottom',
-    },
-    TURBOSLONG: {
-        name: <Localize i18n_default_text='Turbos' />,
-        button_name: <Localize i18n_default_text='Long' />,
-        position: 'top',
-    },
-    TURBOSSHORT: {
-        name: <Localize i18n_default_text='Turbos' />,
-        button_name: <Localize i18n_default_text='Short' />,
-        position: 'bottom',
-    },
-    VANILLALONGCALL: {
-        name: <Localize i18n_default_text='Call' />,
-        position: 'top',
-    },
-    VANILLALONGPUT: {
-        name: <Localize i18n_default_text='Put' />,
-        position: 'bottom',
-    },
-});
+export const getSupportedContracts = (is_high_low?: boolean) =>
+    ({
+        ACCU: {
+            button_name: <Localize i18n_default_text='Buy' />,
+            name: <Localize i18n_default_text='Accumulator' />,
+            position: 'top',
+        },
+        CALL: {
+            name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
+            position: 'top',
+        },
+        PUT: {
+            name: is_high_low ? <Localize i18n_default_text='Lower' /> : <Localize i18n_default_text='Fall' />,
+            position: 'bottom',
+        },
+        CALLE: {
+            name: <Localize i18n_default_text='Rise' />,
+            position: 'top',
+        },
+        PUTE: {
+            name: <Localize i18n_default_text='Fall' />,
+            position: 'bottom',
+        },
+        DIGITMATCH: {
+            name: <Localize i18n_default_text='Matches' />,
+            position: 'top',
+        },
+        DIGITDIFF: {
+            name: <Localize i18n_default_text='Differs' />,
+            position: 'bottom',
+        },
+        DIGITEVEN: {
+            name: <Localize i18n_default_text='Even' />,
+            position: 'top',
+        },
+        DIGITODD: {
+            name: <Localize i18n_default_text='Odd' />,
+            position: 'bottom',
+        },
+        DIGITOVER: {
+            name: <Localize i18n_default_text='Over' />,
+            position: 'top',
+        },
+        DIGITUNDER: {
+            name: <Localize i18n_default_text='Under' />,
+            position: 'bottom',
+        },
+        ONETOUCH: {
+            name: <Localize i18n_default_text='Touch' />,
+            position: 'top',
+        },
+        NOTOUCH: {
+            name: <Localize i18n_default_text='No Touch' />,
+            position: 'bottom',
+        },
+        MULTUP: {
+            name: <Localize i18n_default_text='Up' />,
+            position: 'top',
+        },
+        MULTDOWN: {
+            name: <Localize i18n_default_text='Down' />,
+            position: 'bottom',
+        },
+        TURBOSLONG: {
+            name: <Localize i18n_default_text='Turbos' />,
+            button_name: <Localize i18n_default_text='Long' />,
+            position: 'top',
+        },
+        TURBOSSHORT: {
+            name: <Localize i18n_default_text='Turbos' />,
+            button_name: <Localize i18n_default_text='Short' />,
+            position: 'bottom',
+        },
+        VANILLALONGCALL: {
+            name: <Localize i18n_default_text='Call' />,
+            position: 'top',
+        },
+        VANILLALONGPUT: {
+            name: <Localize i18n_default_text='Put' />,
+            position: 'bottom',
+        },
+    } as const);
 
-export const getContractConfig = (is_high_low?: boolean) => ({
-    ...getSupportedContracts(is_high_low),
-    ...getUnsupportedContracts(),
-});
+export const getContractConfig = (is_high_low?: boolean) =>
+    ({
+        ...getSupportedContracts(is_high_low),
+        ...getUnsupportedContracts(),
+    } as const);
 
 /*
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
 export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)[type] as TContractConfig;
-    return (show_button_name && contract_config.button_name) || contract_config.name || '';
+    const contract_config = getContractConfig(is_high_low)[type];
+    if (show_button_name && 'button_name' in contract_config) return contract_config.button_name;
+    return contract_config.name || '';
 };
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>

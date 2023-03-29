@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
 import { CSSTransition } from 'react-transition-group';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
@@ -36,7 +35,7 @@ const BarriersList = ({ className, header, onClickCross, show_table, ...props }:
                 <Fieldset className={classNames('trade-container__fieldset', className)}>
                     <div className={`${className}__header`}>
                         <Text color='prominent' weight='bold' size='xs'>
-                            {localize('{{header}}', { header })}
+                            {header}
                         </Text>
                         <div className={`${className}__icon-close`} onClick={onClickCross}>
                             <Icon icon='IcCross' />

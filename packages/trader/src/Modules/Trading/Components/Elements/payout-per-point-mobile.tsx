@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Money, Text, Popover } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { getContractSubtype, isVanillaContract } from '@deriv/shared';
@@ -31,7 +31,7 @@ const PayoutPerPointMobile = observer(() => {
                 <React.Fragment>
                     <div className='payout-per-point__label-wrapper'>
                         <Text size='xs' color='less-prominent' className='payout-per-point__label'>
-                            {localize('{{label}}', { label })}
+                            {label}
                         </Text>
                         <Popover
                             alignment='top'

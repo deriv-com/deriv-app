@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { getContractSubtype, getCurrencyDisplayCode, getGrowthRatePercentage, getLocalizedBasis } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
@@ -62,11 +62,7 @@ const ContractInfo = ({
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
-
-    const basis_text = has_error_or_not_loaded
-        ? stakeOrPayout()
-        : localize('{{value}}', { value: proposal_info.obj_contract_basis.text });
-
+    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : proposal_info.obj_contract_basis.text;
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {

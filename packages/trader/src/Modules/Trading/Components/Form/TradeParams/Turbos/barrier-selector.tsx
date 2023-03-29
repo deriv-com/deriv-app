@@ -85,11 +85,11 @@ const BarrierSelector = observer(() => {
                 >
                     <BarriersList
                         className='trade-container__barriers-table'
-                        header='Barriers'
+                        header={localize('Barriers')}
                         barriers_list={barrier_choices}
                         selected_item={selected_barrier}
                         show_table={is_barriers_table_expanded}
-                        subheader='Distance to current spot'
+                        subheader={localize('Distance to current spot')}
                         onClick={onBarrierClick}
                         onClickCross={toggleBarriersTable}
                         onHover={(barrier: string | null) => setHoveredBarrier(barrier)}
@@ -116,11 +116,11 @@ const BarrierSelector = observer(() => {
                 {is_barriers_table_expanded && (
                     <BarriersList
                         className='trade-container__barriers-table'
-                        header='Barriers'
+                        header={localize('Barriers')}
                         barriers_list={barrier_choices}
                         selected_item={selected_barrier}
                         show_table={is_barriers_table_expanded}
-                        subheader='Distance to current spot'
+                        subheader={localize('Distance to current spot')}
                         onClick={onBarrierClick}
                         onClickCross={toggleBarriersTable}
                         onHover={(barrier: string | null) => setHoveredBarrier(barrier)}

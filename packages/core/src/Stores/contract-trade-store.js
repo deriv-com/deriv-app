@@ -151,8 +151,7 @@ export default class ContractTradeStore extends BaseStore {
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
-        }
-        if (isTurbosContract(trade_type)) {
+        } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
             trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
         }

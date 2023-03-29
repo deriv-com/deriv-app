@@ -1,6 +1,5 @@
 import React from 'react';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { Text, ThemedScrollbars } from '@deriv/components';
 import classNames from 'classnames';
 
@@ -36,7 +35,7 @@ const BarriersListBody = ({
                     as='p'
                     className={`${className}__text`}
                 >
-                    {localize('{{subheader}}', { subheader })}
+                    {subheader}
                 </Text>
             )}
             <ThemedScrollbars autohide={false}>

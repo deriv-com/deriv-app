@@ -97,7 +97,7 @@ const Strike = ({
                 {should_open_dropdown && (
                     <BarriersList
                         className='trade-container__barriers-table'
-                        header='Strike Prices'
+                        header={localize('Strike Prices')}
                         barriers_list={strike_price_choices}
                         selected_item={selected_value}
                         show_table={should_open_dropdown}

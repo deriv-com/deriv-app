@@ -1,6 +1,7 @@
 import {
     convertToUnix,
     getDecimalPlaces,
+    getLocalizedBasis,
     getPropertyValue,
     isAccumulatorContract,
     isTurbosContract,
@@ -34,7 +35,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     const contract_basis =
         store.is_vanilla || store.is_turbos
-            ? { text: 'Payout per point', value: 'number_of_contracts' }
+            ? { text: getLocalizedBasis().payout_per_point, value: 'number_of_contracts' }
             : basis_list.find(o => o.value !== store.basis) || {};
 
     const is_stake = contract_basis.text === 'Stake';

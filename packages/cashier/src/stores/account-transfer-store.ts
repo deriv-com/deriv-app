@@ -474,7 +474,8 @@ export default class AccountTransferStore {
                     obj_values.error = AccountTransferGetSelectedError(obj_values.value);
                 }
 
-                const { account_id, login } = this.root_store.traders_hub?.selected_account;
+                const login = this.root_store.traders_hub?.selected_account.login;
+                const account_id = this.root_store.traders_hub?.selected_account.account_id;
 
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account
@@ -685,7 +686,8 @@ export default class AccountTransferStore {
     }
 
     validateTransferFromAmount() {
-        const { converter_from_amount, setConverterFromError } = this.root_store.modules.cashier?.crypto_fiat_converter;
+        const converter_from_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_from_amount;
+        const setConverterFromError = this.root_store.modules.cashier?.crypto_fiat_converter.setConverterFromError;
 
         if (!converter_from_amount) {
             setConverterFromError(localize('This field is required.'));
@@ -707,7 +709,8 @@ export default class AccountTransferStore {
     }
 
     validateTransferToAmount() {
-        const { converter_to_amount, setConverterToError } = this.root_store.modules.cashier?.crypto_fiat_converter;
+        const converter_to_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_to_amount;
+        const setConverterToError = this.root_store.modules.cashier?.crypto_fiat_converter.setConverterToError;
 
         if (converter_to_amount) {
             const currency = this.selected_to.currency;

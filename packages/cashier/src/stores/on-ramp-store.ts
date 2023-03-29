@@ -200,7 +200,7 @@ export default class OnRampStore extends BaseStore {
                     this.setApiError(response.error);
                     should_clear_interval = true;
                 } else if (typeof response.cashier !== 'string' && response.cashier?.deposit) {
-                    const { address } = response.cashier?.deposit;
+                    const address = response.cashier?.deposit.address;
 
                     if (address || should_allow_empty_address) {
                         this.setDepositAddress(address);

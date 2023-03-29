@@ -551,7 +551,8 @@ $side-padding: 1.2em;
         flex: 1;
         padding-top: 0.8rem;
 
-        &-multiplier {
+        &-multiplier,
+        &-accumulator {
             /* postcss-bem-linter: ignore */
             & .data-list__item {
                 background-color: var(--general-section-1);
@@ -813,6 +814,7 @@ $side-padding: 1.2em;
             padding-bottom: 0px;
         }
     }
+    .accumulator,
     .buy_price,
     .payout,
     .indicative,
@@ -856,8 +858,9 @@ $side-padding: 1.2em;
     }
 }
 
-/** @define open-positions-multiplier; weak */
-.open-positions-multiplier {
+/** @define open-positions-multiplier & open-positions-accumulator; weak */
+.open-positions-multiplier,
+.open-positions-accumulator {
     .open-positions {
         &__row {
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
@@ -917,6 +920,25 @@ $side-padding: 1.2em;
             }
             &--positive {
                 color: var(--text-profit-success);
+            }
+        }
+    }
+}
+
+.open-positions-accumulator {
+    .open-positions {
+        &__row {
+            /* icon accumulator currency stake take_profit bid_price total_profit_loss action */
+            /* stylelint-disable-next-line declaration-colon-space-after */
+            grid-template-columns:
+                minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr)
+                minmax(112px, 1fr) minmax(149px, 1fr) minmax(90px, 1fr);
+
+            .limit_order {
+                @include desktop {
+                    justify-content: center;
+                    align-items: center;
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
+import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -250,6 +251,7 @@ const TradingHubHeader = ({
                 </div>
                 <RealAccountSignup />
             </MobileWrapper>
+            <SetAccountCurrencyModal />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );

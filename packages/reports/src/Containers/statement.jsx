@@ -55,6 +55,7 @@ const DetailsComponent = ({ message = '', action_type = '' }) => {
 const getRowAction = row_obj => {
     let action;
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
+        const unsupported_contract_type = extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase();
         action =
             getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
             !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
@@ -64,7 +65,7 @@ const getRowAction = row_obj => {
                           <Localize
                               i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                               values={{
-                                  trade_type_name: getUnsupportedContracts()[row_obj.type]?.name,
+                                  trade_type_name: getUnsupportedContracts()[unsupported_contract_type]?.name,
                               }}
                           />
                       ),

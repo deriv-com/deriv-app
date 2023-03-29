@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ExpansionPanel } from '@deriv/components';
 import PaymentAgentCardDescription from './payment-agent-card-description';
 import PaymentAgentDepositDetails from '../payment-agent-deposit-details';
@@ -17,11 +17,11 @@ const PaymentAgentCard = ({ is_dark_mode_on, is_deposit, payment_agent }: TPayme
     const message = {
         header: <PaymentAgentCardDescription is_dark_mode_on={is_dark_mode_on} payment_agent={payment_agent} />,
         content: [
-            (is_deposit ? (
+            is_deposit ? (
                 <PaymentAgentDepositDetails payment_agent={payment_agent} />
             ) : (
                 <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
-            )) as ReactNode,
+            ),
         ],
     };
     return (

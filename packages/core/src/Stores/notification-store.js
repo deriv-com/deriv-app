@@ -597,11 +597,6 @@ export default class NotificationStore extends BaseStore {
         } else {
             this.removeNotificationMessageByKey({ key: this.client_notifications.deriv_go.key });
         }
-
-        // runInAction(() => {
-        //     console.log('run in action: notifications.length = ', this.notifications.length);
-        //     this.is_notifications_loading_completed = true;
-        // });
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {

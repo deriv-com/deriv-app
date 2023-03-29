@@ -4,7 +4,6 @@ import zhCn from './translations/zh_CN/i10n.json';
 import it from './translations/it_IT/i10n.json';
 import vi from './translations/vi_VN/i10n.json';
 import pl from './translations/pl_PL/i10n.json';
-import ru from './translations/ru_RU/i10n.json';
 import pt from './translations/pt_PT/i10n.json';
 import es from './translations/es_ES/i10n.json';
 import fr from './translations/fr_FR/i10n.json';
@@ -18,7 +17,6 @@ export const supportedLanguages = {
     it,
     vi,
     pl,
-    ru,
     pt,
     es,
     fr,

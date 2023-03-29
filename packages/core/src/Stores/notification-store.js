@@ -341,10 +341,10 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
-            if (is_financial_information_incomplete) {
+            if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
-                this.removeNotificationByKey({ key: this.client_notifications.need_fa });
+                this.removeNotificationByKey({ key: this.client_notifications.need_fa, should_show_again: false });
             }
 
             if (is_poi_dob_mismatch) {
@@ -1422,6 +1422,7 @@ export default class NotificationStore extends BaseStore {
                     route: routes.financial_assessment,
                     text: localize('Start assessment'),
                 },
+                should_show_again: true,
             },
             svg_needs_poi_poa: {
                 key: 'svg_needs_poi_poa',

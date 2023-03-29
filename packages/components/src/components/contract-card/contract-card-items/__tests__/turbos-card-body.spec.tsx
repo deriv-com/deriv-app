@@ -78,12 +78,12 @@ describe('TurbosCardBody', () => {
 
         const take_profit_header = screen.getByText(mockCardLabels().TAKE_PROFIT);
         expect(take_profit_header).toBeInTheDocument();
-        const take_profit_amount = screen.getByText('0.02');
+        const take_profit_amount = screen.getByText('-');
         expect(take_profit_amount).toBeInTheDocument();
 
         const total_profit_loss_header = screen.getByText(mockCardLabels().TOTAL_PROFIT_LOSS);
         expect(total_profit_loss_header).toBeInTheDocument();
-        const total_profit_loss_amount = screen.getByText('0.02');
+        const total_profit_loss_amount = screen.getByText('50.00');
         expect(total_profit_loss_amount).toBeInTheDocument();
     });
 

@@ -9,7 +9,6 @@ import {
     TDigitsInfo,
     TTickItem,
     TIsEnded,
-    TIsValidToSell,
     TGetTotalProfit,
     TGetDisplayStatus,
     TStatus,
@@ -44,8 +43,8 @@ export const isUserSold = (contract_info: TIsUserSold) => contract_info.status =
 
 export const isValidToCancel = (contract_info: TContractInfo) => !!contract_info.is_valid_to_cancel;
 
-export const isValidToSell = (contract_info: TIsValidToSell) =>
-    !isEnded(contract_info) && !isUserSold(contract_info) && +contract_info.is_valid_to_sell === 1;
+export const isValidToSell = (contract_info: TContractInfo) =>
+    !isEnded(contract_info) && !isUserSold(contract_info) && !!contract_info.is_valid_to_sell;
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 

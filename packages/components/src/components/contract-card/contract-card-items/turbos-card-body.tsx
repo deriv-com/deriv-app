@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isCryptocurrency, getLimitOrderAmount, getTotalProfit, isValidToSell } from '@deriv/shared';
+import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
 import Icon from '../../icon';
@@ -53,9 +53,16 @@ const TurbosCardBody = ({
     setCurrentFocus,
     status,
 }: TTurbosCardBody) => {
-    const total_profit = getTotalProfit(contract_info);
-    const { buy_price, profit, barrier, current_spot_display_value, sell_spot, entry_spot } = contract_info;
-    const { take_profit } = contract_update ? getLimitOrderAmount(contract_update) : { take_profit: null };
+    const {
+        buy_price,
+        profit,
+        barrier,
+        current_spot_display_value,
+        limit_order = {},
+        sell_spot,
+        entry_spot,
+    } = contract_info;
+    const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
     const { BARRIER_LEVEL, BUY_PRICE, CURRENT_PRICE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS, PAYOUT, PROFIT_LOSS } =
         getCardLabels();
@@ -67,8 +74,8 @@ const TurbosCardBody = ({
                     className='dc-contract-card__stake'
                     header={is_sold ? PROFIT_LOSS : STAKE}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={is_sold ? +profit < 0 : false}
-                    is_won={is_sold ? +profit > 0 : false}
+                    is_loss={is_sold && profit ? +profit < 0 : false}
+                    is_won={is_sold && profit ? +profit > 0 : false}
                 >
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
@@ -111,23 +118,23 @@ const TurbosCardBody = ({
                 )}
                 <MobileWrapper>
                     <div className='dc-contract-card__status'>
-                        {is_sold ? (
+                        {is_sold && profit ? (
                             <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={+profit > 0} />
                         ) : (
-                            progress_slider_mobile_el
+                            !is_sold && progress_slider_mobile_el
                         )}
                     </div>
                 </MobileWrapper>
             </div>
-            {!is_sold && (
+            {!is_sold && profit && (
                 <ContractCardItem
                     className='dc-contract-card-item__total-profit-loss'
                     header={TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={+total_profit < 0}
-                    is_won={+total_profit > 0}
+                    is_loss={+profit < 0}
+                    is_won={+profit > 0}
                 >
-                    <Money amount={total_profit} currency={currency} />
+                    <Money amount={profit} currency={currency} />
                     <div
                         className={classNames('dc-contract-card__indicative--movement', {
                             'dc-contract-card__indicative--movement-complete': is_sold,

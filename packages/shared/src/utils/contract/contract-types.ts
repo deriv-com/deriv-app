@@ -1,4 +1,4 @@
-import { ContractUpdate } from '@deriv/api-types';
+import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
 
 export type TStatus = 'open' | 'sold' | 'won' | 'lost' | 'cancelled';
 
@@ -14,56 +14,31 @@ export type TIsEnded = Partial<TGetFinalPrice> & {
     is_settleable?: 0 | 1;
 };
 
-export type TContractInfo = {
-    account_id?: number;
-    barrier?: string;
-    barrier_count?: number;
-    bid_price: number;
-    buy_price: number;
+export type TContractInfo = ProposalOpenContract & {
+    tick_stream?: TTickItem[];
     cancellation?: {
         ask_price?: number;
         date_expiry?: number;
     };
-    contract_id: number;
-    contract_type?: string;
-    currency?: string;
-    current_spot?: number;
-    current_spot_display_value?: string;
-    current_spot_time?: number;
-    date_expiry?: number;
-    date_settlement?: number;
-    date_start?: number;
-    display_name?: string;
-    entry_spot?: number;
-    entry_spot_display_value?: string;
-    entry_tick?: number;
-    entry_tick_display_value?: string;
-    entry_tick_time?: number;
-    exit_tick_time?: number;
-    expiry_time?: number;
-    id?: string;
-    is_expired?: 0 | 1;
-    is_forward_starting?: 0 | 1;
-    is_intraday?: number;
-    is_path_dependent?: 0 | 1;
-    is_settleable?: 0 | 1;
-    is_sold?: number;
-    is_valid_to_cancel?: 0 | 1;
-    is_valid_to_sell: 0 | 1;
-    longcode?: string;
-    profit: number;
-    profit_percentage?: number;
-    purchase_time?: number;
-    sell_time?: number | null;
-    sell_spot?: number;
-    shortcode?: string;
     status?: TStatus;
+    is_expired?: 0 | 1;
+    is_settleable?: 0 | 1;
+    is_valid_to_cancel?: 0 | 1;
+    entry_spot?: number;
+    profit?: number;
+    entry_tick_time?: number;
+    entry_tick?: number;
+    current_spot_time?: number;
+    current_spot?: number;
+    barrier?: string;
+    contract_type?: string;
+    exit_tick_time?: number;
+    date_expiry?: number;
+    is_path_dependent?: 0 | 1;
+    sell_time?: number | null;
     tick_count?: number;
-    tick_stream?: TTickItem[];
-    transaction_ids?: { buy?: number };
-    underlying?: string;
-    validation_error?: string;
-    validation_error_code?: string;
+    date_start?: number;
+    is_forward_starting?: 0 | 1;
 };
 
 export type TIsValidToSell = TIsEnded & {

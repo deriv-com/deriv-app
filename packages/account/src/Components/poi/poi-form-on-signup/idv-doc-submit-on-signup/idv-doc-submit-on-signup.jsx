@@ -24,6 +24,7 @@ import {
     isIDVWhitelistDocumentNumber,
 } from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
+import { generatePlaceholderText } from 'Helpers/utils';
 
 export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
     const [document_list, setDocumentList] = React.useState([]);
@@ -351,7 +352,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                             errors.error_message
                                                                         }
                                                                         autoComplete='off'
-                                                                        placeholder='Enter your document number'
+                                                                        placeholder={generatePlaceholderText(
+                                                                            selected_doc
+                                                                        )}
                                                                         value={values.document_number}
                                                                         onPaste={preventEmptyClipboardPaste}
                                                                         onBlur={handleBlur}

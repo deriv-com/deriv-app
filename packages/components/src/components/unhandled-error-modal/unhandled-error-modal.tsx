@@ -39,7 +39,7 @@ const ModalContent = () => (
 );
 
 const UnhandledErrorModal = () => {
-    const [is_page_error_modal_open, setPageErrorModalOpen] = React.useState(false);
+    const [is_page_error_modal_open, setPageErrorModalOpen] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         setPageErrorModalOpen(true);
@@ -48,6 +48,7 @@ const UnhandledErrorModal = () => {
     const togglePageErrorModal = () => {
         setPageErrorModalOpen(!is_page_error_modal_open);
     };
+
     return (
         <Modal
             has_close_icon

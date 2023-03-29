@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog } from '@deriv/components';
+import { Dialog, UnhandledErrorModal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
@@ -15,18 +15,22 @@ const CFDServerErrorDialog = observer(() => {
         error_type &&
         !['PasswordReset', 'PasswordError'].includes(error_type);
 
-    return (
-        <Dialog
-            title={localize('Something’s not right')}
-            confirm_button_text={localize('OK')}
-            onConfirm={clearCFDError}
-            disableApp={disableApp}
-            enableApp={enableApp}
-            is_visible={should_show_error}
-        >
-            {error_message || <Localize i18n_default_text='Sorry, an error occured while processing your request.' />}
-        </Dialog>
-    );
+    if (should_show_error) {
+        return error_message ? (
+            <Dialog
+                title={localize('Something’s not right')}
+                confirm_button_text={localize('OK')}
+                onConfirm={clearCFDError}
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_visible={should_show_error}
+            >
+                {error_message}
+            </Dialog>
+        ) : (
+            <UnhandledErrorModal />
+        );
+    }
+    return null;
 });
-
 export default CFDServerErrorDialog;

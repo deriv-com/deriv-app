@@ -7,6 +7,13 @@ import { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('../binary-routes', () => jest.fn(() => 'BinaryRoutes'));
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+    return {
+        ...original_module,
+        UnhandledErrorModal: jest.fn(() => <div>Sorry for the interruption</div>),
+    };
+});
 
 describe('<Routes />', () => {
     it('should show error messages when "has_error = true"', () => {
@@ -21,7 +28,7 @@ describe('<Routes />', () => {
                 error: {
                     header: '',
                     message: '',
-                    redirect_label: ['test label'],
+                    redirect_label: 'test label',
                     redirectOnClick: jest.fn(),
                     should_clear_error_on_click: true,
                     setError: jest.fn(),
@@ -42,9 +49,7 @@ describe('<Routes />', () => {
             }
         );
 
-        expect(screen.getByText('Something’s not right')).toBeInTheDocument();
-        expect(screen.getByText('Sorry, an error occured while processing your request.')).toBeInTheDocument();
-        expect(screen.getByText('Please refresh this page to continue.')).toBeInTheDocument();
+        expect(screen.getByText('Sorry for the interruption')).toBeInTheDocument();
     });
 
     it('should render <BinaryRoutes /> component when "has_error = false"', () => {

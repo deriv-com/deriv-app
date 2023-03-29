@@ -128,10 +128,10 @@ const CurrencySelector = ({
     }, []);
 
     React.useEffect(() => {
-        if (is_bypass_step && real_account_signup.error_details) {
+        if (is_bypass_step && real_account_signup?.error_details) {
             const keys = Object.keys(real_account_signup?.error_details);
             const route_to_address_details = Object.keys(address_details_fields).filter(item => keys.includes(item));
-            if (route_to_address_details.length > 0) goToStep(3);
+            if (route_to_address_details?.length > 0) goToStep(3);
             else {
                 goToNextStep();
             }

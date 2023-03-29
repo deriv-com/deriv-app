@@ -22,7 +22,7 @@ export const getQueryKeys = (name: string, props?: Record<string, unknown>) => {
 
     if (Object.keys(props).length === 0) return [name];
 
-    const orderedProps = Object.keys(props)
+    const ordered_props = Object.keys(props)
         .sort()
         .reduce((obj, key) => {
             obj[key] = props[key];
@@ -30,7 +30,7 @@ export const getQueryKeys = (name: string, props?: Record<string, unknown>) => {
             return obj;
         }, {} as { [k: string]: unknown });
 
-    const queryProps = JSON.stringify(orderedProps);
+    const query_props = JSON.stringify(ordered_props);
 
-    return [name, queryProps];
+    return [name, query_props];
 };

@@ -103,7 +103,7 @@
     },
     "dependencies": {
         "@deriv/deriv-api": "^1.0.9",
-        "@deriv/deriv-charts": "^0.3.43",
+        "@deriv/deriv-charts": "^0.3.44",
         "@reduxjs/toolkit": "^1.7.1",
         "binary-style": "^0.2.4",
         "blockly": "github:binary-com/blockly#fix-blockly",

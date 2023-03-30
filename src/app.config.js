@@ -10,7 +10,7 @@ export default {
     supported_languages: {
         en: 'English',
         // fr: 'Français',
-        id: 'Indonesia',
+        // id: 'Indonesia',
         // pl: 'Polish',
         pt: 'Português',
         // ru: 'Русский',

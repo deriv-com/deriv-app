@@ -14,6 +14,8 @@ type TIconWithMessage = {
 
 const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessage) => {
     const { client, ui } = useStore();
+    const { has_active_real_account } = client;
+    const { toggleAccountsDialog, toggleShouldShowRealAccountsList } = ui;
     const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
 
     return (
@@ -33,15 +35,13 @@ const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessag
                 <Button
                     primary
                     onClick={() => {
-                        ui.toggleShouldShowRealAccountsList(true);
-                        ui.toggleAccountsDialog();
+                        toggleShouldShowRealAccountsList(true);
+                        toggleAccountsDialog();
                     }}
                     className='account__demo-message-button'
                     data-testid='icon-with-message-button'
                 >
-                    {client.has_active_real_account
-                        ? localize('Switch to real account')
-                        : localize('Add a real account')}
+                    {has_active_real_account ? localize('Switch to real account') : localize('Add a real account')}
                 </Button>
             )}
         </div>

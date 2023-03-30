@@ -75,6 +75,7 @@ const max_allowed_reasons = 3;
 
 const ClosingAccountReason = observer(({ onBackClick }) => {
     const { client } = useStore();
+    const { dxtrade_accounts_list, mt5_login_list, account_list } = client;
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_account_closed, setIsAccountClosed] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -228,9 +229,9 @@ const ClosingAccountReason = observer(({ onBackClick }) => {
                 {which_modal_should_render === 'AccountHasPendingConditions' && (
                     <AccountHasPendingConditions
                         details={details}
-                        mt5_login_list={client.mt5_login_list}
-                        client_accounts={client.account_list}
-                        dxtrade_accounts_list={client.dxtrade_accounts_list}
+                        mt5_login_list={mt5_login_list}
+                        client_accounts={account_list}
+                        dxtrade_accounts_list={dxtrade_accounts_list}
                         onBackClick={onBackClick}
                     />
                 )}

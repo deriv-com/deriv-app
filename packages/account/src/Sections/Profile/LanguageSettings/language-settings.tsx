@@ -11,14 +11,15 @@ import LanguageRadioButton from 'Components/language-settings';
 const LanguageSettings = observer(() => {
     const { i18n } = useTranslation();
     const { common } = useStore();
+    const { changeLanguage, changeCurrentLanguage, current_language, isCurrentLanguage } = common;
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
-    const initial_values = { language_code: common.current_language };
+    const initial_values = { language_code: current_language };
     return (
         <Formik
             initialValues={initial_values}
             onSubmit={async (values: { language_code: any }) => {
                 const { language_code } = values;
-                await common.changeLanguage(language_code, common.changeCurrentLanguage);
+                await changeLanguage(language_code, changeCurrentLanguage);
                 await i18n.changeLanguage?.(language_code);
             }}
         >
@@ -55,7 +56,7 @@ const LanguageSettings = observer(() => {
                                 text={localize('Submit')}
                                 large
                                 primary
-                                is_disabled={common.isCurrentLanguage(values.language_code)}
+                                is_disabled={isCurrentLanguage(values.language_code)}
                             />
                         </FormFooter>
                     </form>

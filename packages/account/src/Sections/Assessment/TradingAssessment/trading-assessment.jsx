@@ -37,6 +37,7 @@ const populateData = form_data => {
 
 const TradingAssessment = observer(() => {
     const { client } = useStore();
+    const { is_virtual, setFinancialAndTradingAssessment } = client;
     const history = useHistory();
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
@@ -47,7 +48,7 @@ const TradingAssessment = observer(() => {
     const [form_data, setFormData] = React.useState({});
 
     React.useEffect(() => {
-        if (client.is_virtual) {
+        if (is_virtual) {
             setIsLoading(false);
             history.push(routes.personal_details);
         } else {
@@ -85,7 +86,7 @@ const TradingAssessment = observer(() => {
                     trading_frequency_financial_instruments: values.trading_frequency_financial_instruments,
                 },
             };
-            const data = await client.setFinancialAndTradingAssessment(form_payload);
+            const data = await setFinancialAndTradingAssessment(form_payload);
             const { trading_score } = data?.set_financial_assessment;
             setShouldShowWarningModal(prev_score > 0 && trading_score === 0);
 

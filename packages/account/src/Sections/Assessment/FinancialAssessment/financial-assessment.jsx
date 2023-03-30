@@ -176,6 +176,19 @@ const SubmittedPage = ({ platform, routeBackInApp }) => {
 
 const FinancialAssessment = observer(() => {
     const { client, common, notifications } = useStore();
+    const {
+        landing_company_shortcode,
+        is_virtual,
+        is_financial_account,
+        is_trading_experience_incomplete,
+        is_svg,
+        setFinancialAndTradingAssessment,
+        updateAccountStatus,
+        is_authentication_needed,
+        is_financial_information_incomplete,
+    } = client;
+    const { platform, routeBackInApp } = common;
+    const { refreshNotifications } = notifications;
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -208,16 +221,16 @@ const FinancialAssessment = observer(() => {
     } = initial_form_values;
 
     React.useEffect(() => {
-        if (client.is_virtual) {
+        if (is_virtual) {
             setIsLoading(false);
             history.push(routes.personal_details);
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 WS.wait('get_account_status').then(() => {
                     setHasTradingExperience(
-                        (client.is_financial_account || client.is_trading_experience_incomplete) &&
-                            !client.is_svg &&
-                            !(client.landing_company_shortcode === 'maltainvest')
+                        (is_financial_account || is_trading_experience_incomplete) &&
+                            !is_svg &&
+                            !(landing_company_shortcode === 'maltainvest')
                     );
                     if (data.error) {
                         setApiInitialLoadError(data.error.message);
@@ -238,12 +251,12 @@ const FinancialAssessment = observer(() => {
         const form_payload = {
             financial_information: { ...values },
         };
-        const data = await client.setFinancialAndTradingAssessment(form_payload);
+        const data = await setFinancialAndTradingAssessment(form_payload);
         if (data.error) {
             setIsBtnLoading(false);
             setStatus({ msg: data.error.message });
         } else {
-            await client.updateAccountStatus();
+            await updateAccountStatus();
             WS.authorized.storage.getFinancialAssessment().then(res_data => {
                 setInitialFormValues(res_data.get_financial_assessment);
                 setIsSubmitSuccess(true);
@@ -254,7 +267,7 @@ const FinancialAssessment = observer(() => {
                 }
             });
             setSubmitting(false);
-            notifications.refreshNotifications();
+            refreshNotifications();
         }
     };
 
@@ -282,7 +295,7 @@ const FinancialAssessment = observer(() => {
     };
 
     const onClickSubmit = handleSubmit => {
-        const is_confirmation_needed = has_trading_experience && client.is_trading_experience_incomplete;
+        const is_confirmation_needed = has_trading_experience && is_trading_experience_incomplete;
 
         if (is_confirmation_needed) {
             toggleConfirmationModal(true);
@@ -292,23 +305,18 @@ const FinancialAssessment = observer(() => {
     };
 
     const getScrollOffset = () => {
-        if (client.landing_company_shortcode === 'maltainvest') {
-            if (isMobile() && client.is_financial_information_incomplete) return '220px';
-            return client.is_financial_information_incomplete && !is_submit_success ? '165px' : '160px';
+        if (landing_company_shortcode === 'maltainvest') {
+            if (isMobile() && is_financial_information_incomplete) return '220px';
+            return is_financial_information_incomplete && !is_submit_success ? '165px' : '160px';
         } else if (isMobile()) return is_appstore ? '160px' : '200px';
         return '80px';
     };
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
-    if (client.is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
-    if (
-        isMobile() &&
-        client.is_authentication_needed &&
-        !(client.landing_company_shortcode === 'maltainvest') &&
-        is_submit_success
-    )
-        return <SubmittedPage platform={common.platform} routeBackInApp={common.routeBackInApp} />;
+    if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
+    if (isMobile() && is_authentication_needed && !(landing_company_shortcode === 'maltainvest') && is_submit_success)
+        return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
     const setInitialFormData = () => {
         const form_data = {
@@ -332,7 +340,7 @@ const FinancialAssessment = observer(() => {
                 other_instruments_trading_frequency,
             }),
         };
-        if (!(client.landing_company_shortcode === 'maltainvest')) {
+        if (!(landing_company_shortcode === 'maltainvest')) {
             return form_data;
         }
         delete form_data.employment_status;
@@ -373,8 +381,8 @@ const FinancialAssessment = observer(() => {
                         <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
-                                {client.landing_company_shortcode === 'maltainvest' &&
-                                    client.is_financial_information_incomplete &&
+                                {landing_company_shortcode === 'maltainvest' &&
+                                    is_financial_information_incomplete &&
                                     !is_submit_success && (
                                         <div className='financial-banner'>
                                             <div className='financial-banner__frame'>
@@ -432,7 +440,7 @@ const FinancialAssessment = observer(() => {
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
-                                        {!(client.landing_company_shortcode === 'maltainvest') && (
+                                        {!(landing_company_shortcode === 'maltainvest') && (
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Dropdown
@@ -968,17 +976,15 @@ const FinancialAssessment = observer(() => {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {isMobile() &&
-                                        !is_appstore &&
-                                        !(client.landing_company_shortcode === 'maltainvest') && (
-                                            <Text
-                                                align='center'
-                                                size='xxs'
-                                                className='account-form__footer-all-fields-required'
-                                            >
-                                                {localize('All fields are required')}
-                                            </Text>
-                                        )}
+                                    {isMobile() && !is_appstore && !(landing_company_shortcode === 'maltainvest') && (
+                                        <Text
+                                            align='center'
+                                            size='xxs'
+                                            className='account-form__footer-all-fields-required'
+                                        >
+                                            {localize('All fields are required')}
+                                        </Text>
+                                    )}
                                     <Button
                                         type='button'
                                         className={classNames('account-form__footer-btn', {

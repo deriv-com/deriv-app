@@ -111,6 +111,37 @@ export const PersonalDetailsForm = observer(({ history }) => {
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
     const { client, notifications, ui, common } = useStore();
+
+    const {
+        authentication_status,
+        is_eu,
+        landing_company_shortcode,
+        is_uk,
+        is_svg,
+        is_virtual,
+        residence_list,
+        states_list,
+        current_landing_company,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
+        account_settings,
+        getChangeableFields,
+        updateAccountStatus,
+        is_social_signup,
+        account_status,
+    } = client;
+
+    const {
+        refreshNotifications,
+        showPOAAddressMismatchSuccessNotification,
+        showPOAAddressMismatchFailureNotification,
+    } = notifications;
+
+    const { Notifications } = ui;
+    const { is_language_changing } = common;
+    const is_mf = landing_company_shortcode === 'maltainvest';
+    const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
@@ -123,7 +154,6 @@ export const PersonalDetailsForm = observer(({ history }) => {
     });
 
     const { is_appstore } = React.useContext(PlatformContext);
-
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
@@ -132,12 +162,12 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 // waits for residence to be populated
                 await WS.wait('get_settings');
 
-                client.fetchResidenceList();
+                fetchResidenceList();
 
-                if (client.has_residence) {
-                    if (!common.is_language_changing) {
+                if (has_residence) {
+                    if (!is_language_changing) {
                         setIsStateLoading(true, () => {
-                            client.fetchStatesList().then(() => {
+                            fetchStatesList().then(() => {
                                 setIsStateLoading(false);
                             });
                         });
@@ -147,12 +177,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
             getSettings();
         }
         initializeFormValues();
-    }, [
-        client.account_settings,
-        client.is_eu,
-        client.landing_company_shortcode === 'maltainvest',
-        client.is_social_signup,
-    ]);
+    }, [account_settings, is_eu, is_mf, is_social_signup]);
 
     React.useEffect(() => {
         let timeout_id;
@@ -168,7 +193,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     }, [start_on_submit_timeout.is_timeout_started]);
 
     const makeSettingsRequest = settings => {
-        if (client.is_virtual) return { email_consent: +settings.email_consent };
+        if (is_virtual) return { email_consent: +settings.email_consent };
         const request = filterObjProperties(settings, [...rest_state.changeable_fields]);
 
         request.email_consent = +request.email_consent; // checkbox is boolean but api expects number (1 or 0)
@@ -194,9 +219,9 @@ export const PersonalDetailsForm = observer(({ history }) => {
             request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         }
 
-        if (client.landing_company_shortcode === 'maltainvest') {
+        if (is_mf) {
             if (request.tax_residence) {
-                request.tax_residence = getLocation(client.residence_list, request.tax_residence, 'value');
+                request.tax_residence = getLocation(residence_list, request.tax_residence, 'value');
             }
 
             if (request.tax_identification_number) {
@@ -205,18 +230,18 @@ export const PersonalDetailsForm = observer(({ history }) => {
         }
 
         if (request.citizen) {
-            request.citizen = getLocation(client.residence_list, request.citizen, 'value');
+            request.citizen = getLocation(residence_list, request.citizen, 'value');
         }
 
         if (request.place_of_birth) {
-            request.place_of_birth = getLocation(client.residence_list, request.place_of_birth, 'value');
+            request.place_of_birth = getLocation(residence_list, request.place_of_birth, 'value');
         } else {
             delete request.place_of_birth;
         }
 
         if (request.address_state) {
-            request.address_state = client.states_list.length
-                ? getLocation(client.states_list, request.address_state, 'value')
+            request.address_state = states_list.length
+                ? getLocation(states_list, request.address_state, 'value')
                 : request.address_state;
         }
 
@@ -237,9 +262,9 @@ export const PersonalDetailsForm = observer(({ history }) => {
             // Adding a delay to show the notification after the page reload
             setTimeout(() => {
                 if (data.set_settings.notification) {
-                    notifications.showPOAAddressMismatchSuccessNotification();
-                } else if (client.has_poa_address_mismatch) {
-                    notifications.showPOAAddressMismatchFailureNotification();
+                    showPOAAddressMismatchSuccessNotification();
+                } else if (has_poa_address_mismatch) {
+                    showPOAAddressMismatchFailureNotification();
                 }
             }, 2000);
 
@@ -250,10 +275,10 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 return;
             }
             // Fetches the status of the account after update
-            client.updateAccountStatus();
+            updateAccountStatus();
             setRestState({ ...rest_state, ...response.get_settings });
             setIsLoading(false);
-            notifications.refreshNotifications();
+            refreshNotifications();
             setIsBtnLoading(false);
             setIsSubmitSuccess(true);
             setStartOnSubmitTimeout({
@@ -277,7 +302,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         const errors = {};
         const validateValues = validate(errors, values);
 
-        if (client.is_virtual) return errors;
+        if (is_virtual) return errors;
 
         const required_fields = [
             'first_name',
@@ -287,10 +312,10 @@ export const PersonalDetailsForm = observer(({ history }) => {
             'address_line_1',
             'address_city',
         ];
-        if (client.is_eu) {
+        if (is_eu) {
             required_fields.push('citizen');
         }
-        if (client.landing_company_shortcode === 'maltainvest') {
+        if (is_mf) {
             const required_tax_fields = ['tax_residence', 'tax_identification_number', 'employment_status'];
             required_fields.push(...required_tax_fields);
         }
@@ -298,7 +323,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         validateValues(val => val, required_fields, localize('This field is required'));
 
         const residence_fields = ['citizen'];
-        const validateResidence = val => getLocation(client.residence_list, val, 'value');
+        const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 
         const min_tax_identification_number = 0;
@@ -383,7 +408,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
             errors.address_city = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
         }
 
-        const state_is_input_element = values.address_state && !client.states_list.length;
+        const state_is_input_element = values.address_state && !states_list.length;
         if (state_is_input_element) {
             if (!validLength(values.address_state, { min: 0, max: 35 })) {
                 errors.address_state = localize('You should enter 0-35 characters.');
@@ -395,7 +420,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         // Not allowing Jersey postcodes with a UK residence.
         if (
             !regex_checks.address_details.non_jersey_postcode.test(values.address_postcode) &&
-            (client.is_uk || values.citizen === 'United Kingdom')
+            (is_uk || values.citizen === 'United Kingdom')
         ) {
             errors.address_postcode = localize('Our accounts and services are unavailable for the Jersey postal code');
         }
@@ -421,7 +446,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
         const warnings = {};
         const active_errors = rest_state.errors;
 
-        const filter_tin_regex = client.residence_list.filter(residence => {
+        const filter_tin_regex = residence_list.filter(residence => {
             return residence.text === values.tax_residence && residence.tin_format;
         });
 
@@ -450,26 +475,26 @@ export const PersonalDetailsForm = observer(({ history }) => {
     const initializeFormValues = () => {
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             // Convert to boolean
-            client.account_settings.email_consent = !!client.account_settings.email_consent;
+            account_settings.email_consent = !!account_settings.email_consent;
             const hidden_settings = [
                 'account_opening_reason',
                 'allow_copiers',
-                !(client.landing_company_shortcode === 'maltainvest') && 'tax_residence',
-                !(client.landing_company_shortcode === 'maltainvest') && 'tax_identification_number',
-                !(client.landing_company_shortcode === 'maltainvest') && 'employment_status',
+                !is_mf && 'tax_residence',
+                !is_mf && 'tax_identification_number',
+                !is_mf && 'employment_status',
                 'client_tnc_status',
                 'country_code',
                 'has_secret_answer',
                 'is_authenticated_payment_agent',
                 'user_hash',
                 'country',
-                (!is_appstore || !client.is_eu) && 'salutation',
+                (!is_appstore || !is_eu) && 'salutation',
                 'immutable_fields',
             ];
-            const form_initial_values = removeObjProperties(hidden_settings, client.account_settings);
+            const form_initial_values = removeObjProperties(hidden_settings, account_settings);
             setRestState({
                 ...rest_state,
-                changeable_fields: client.is_virtual ? [] : client.getChangeableFields(),
+                changeable_fields: is_virtual ? [] : getChangeableFields(),
                 form_initial_values,
             });
             setIsLoading(false);
@@ -491,30 +516,30 @@ export const PersonalDetailsForm = observer(({ history }) => {
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_state_loading || !client.residence_list.length) {
+    if (is_loading || is_state_loading || !residence_list.length) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
     form_initial_values.citizen = form_initial_values.citizen
-        ? getLocation(client.residence_list, form_initial_values.citizen, 'text')
+        ? getLocation(residence_list, form_initial_values.citizen, 'text')
         : '';
     form_initial_values.place_of_birth = form_initial_values.place_of_birth
-        ? getLocation(client.residence_list, form_initial_values.place_of_birth, 'text')
+        ? getLocation(residence_list, form_initial_values.place_of_birth, 'text')
         : '';
     if (form_initial_values.address_state) {
-        form_initial_values.address_state = client.states_list.length
-            ? getLocation(client.states_list, form_initial_values.address_state, 'text')
+        form_initial_values.address_state = states_list.length
+            ? getLocation(states_list, form_initial_values.address_state, 'text')
             : form_initial_values.address_state;
     } else {
         form_initial_values.address_state = '';
     }
-    if (client.landing_company_shortcode === 'maltainvest') {
+    if (is_mf) {
         if (form_initial_values.tax_residence) {
             const is_single_tax_value = form_initial_values.tax_residence.indexOf(',') < 0;
             // if there's only one tax residence set, show it in drop-down
             if (is_single_tax_value) {
                 form_initial_values.tax_residence = getLocation(
-                    client.residence_list,
+                    residence_list,
                     form_initial_values.tax_residence,
                     'text'
                 );
@@ -522,12 +547,12 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 // if there are multiple tax residences and user is allowed to update it
                 // select the first tax residence in drop-down
                 const first_tax_residence = form_initial_values.tax_residence.split(',')[0];
-                form_initial_values.tax_residence = getLocation(client.residence_list, first_tax_residence, 'text');
+                form_initial_values.tax_residence = getLocation(residence_list, first_tax_residence, 'text');
             } else {
                 // otherwise show all tax residences in a disabled input field
                 const tax_residences = [];
                 form_initial_values.tax_residence.split(',').forEach(residence => {
-                    tax_residences.push(getLocation(client.residence_list, residence, 'text'));
+                    tax_residences.push(getLocation(residence_list, residence, 'text'));
                 });
                 form_initial_values.tax_residence = tax_residences;
             }
@@ -538,8 +563,8 @@ export const PersonalDetailsForm = observer(({ history }) => {
         if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
 
-    const is_poa_verified = client.authentication_status?.document_status === 'verified';
-    const is_poi_verified = client.authentication_status?.identity_status === 'verified';
+    const is_poa_verified = authentication_status?.document_status === 'verified';
+    const is_poi_verified = authentication_status?.identity_status === 'verified';
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
@@ -570,7 +595,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                 dirty,
             }) => (
                 <>
-                    {ui.notification_messages_ui && <ui.notification_messages_ui />}
+                    {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <form
@@ -582,7 +607,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                         >
                             <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
-                                {!client.is_virtual && (
+                                {!is_virtual && (
                                     <React.Fragment>
                                         <FormBodySection
                                             has_side_note={is_appstore}
@@ -590,7 +615,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                 'We use the information you give us only for verification purposes. All information is kept confidential.'
                                             )}
                                         >
-                                            {is_appstore && client.is_eu && (
+                                            {is_appstore && is_eu && (
                                                 <fieldset className='account-form__fieldset'>
                                                     <DesktopWrapper>
                                                         <Field name='salutation'>
@@ -705,15 +730,15 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={
-                                                                    client.is_svg
+                                                                    is_svg
                                                                         ? localize('Place of birth')
                                                                         : localize('Place of birth*')
                                                                 }
                                                                 error={errors.place_of_birth}
                                                                 id='birth_place'
-                                                                required={!client.is_svg}
+                                                                required={!is_svg}
                                                                 disabled={!isChangeableField('place_of_birth')}
-                                                                list_items={client.residence_list}
+                                                                list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue(
                                                                         'place_of_birth',
@@ -729,14 +754,14 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         label={
-                                                            client.is_svg
+                                                            is_svg
                                                                 ? localize('Place of birth')
                                                                 : localize('Place of birth*')
                                                         }
-                                                        required={!client.is_svg}
+                                                        required={!is_svg}
                                                         disabled={!isChangeableField('place_of_birth')}
                                                         value={values.place_of_birth}
-                                                        list_items={client.residence_list}
+                                                        list_items={residence_list}
                                                         use_text={true}
                                                         error={errors.place_of_birth}
                                                         onChange={e =>
@@ -777,18 +802,18 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={
-                                                                    client.is_eu
+                                                                    is_eu
                                                                         ? localize('Citizenship*')
                                                                         : localize('Citizenship')
                                                                 }
                                                                 error={errors.citizen}
                                                                 disabled={!isChangeableField('citizen')}
-                                                                list_items={client.residence_list}
+                                                                list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
                                                                 id={'password'}
-                                                                required={client.is_eu}
+                                                                required={is_eu}
                                                             />
                                                         )}
                                                     </Field>
@@ -798,15 +823,15 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                         <SelectNative
                                                             placeholder={localize('Please select')}
                                                             label={
-                                                                client.is_eu
+                                                                is_eu
                                                                     ? localize('Citizenship*')
                                                                     : localize('Citizenship')
                                                             }
                                                             id={'citizen_ship'}
-                                                            required={client.is_eu}
+                                                            required={is_eu}
                                                             disabled={!isChangeableField('citizen')}
                                                             value={values.citizen}
-                                                            list_items={client.residence_list}
+                                                            list_items={residence_list}
                                                             error={errors.citizen}
                                                             use_text={true}
                                                             onChange={e =>
@@ -835,7 +860,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                             onChange={handleChange}
                                         />
                                     </fieldset>
-                                    {client.is_social_signup && (
+                                    {is_social_signup && (
                                         <fieldset className='account-form__fieldset'>
                                             <Input
                                                 data-lpignore='true'
@@ -852,7 +877,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                         </fieldset>
                                     )}
                                 </FormBodySection>
-                                {!client.is_virtual && (
+                                {!is_virtual && (
                                     <React.Fragment>
                                         <FormBodySection has_side_note={is_appstore}>
                                             <fieldset className='account-form__fieldset'>
@@ -899,7 +924,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                     {/*        /> */}
                                     {/*    )} */}
                                     {/* </fieldset> */}
-                                    {client.landing_company_shortcode === 'maltainvest' && (
+                                    {is_mf && (
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
                                             <FormBodySection
@@ -936,7 +961,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                             errors={errors}
                                                                             setFieldValue={setFieldValue}
                                                                             values={values}
-                                                                            residence_list={client.residence_list}
+                                                                            residence_list={residence_list}
                                                                         />
                                                                     )}
                                                                 </React.Fragment>
@@ -1007,9 +1032,9 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                             </FormBodySection>
                                         </React.Fragment>
                                     )}
-                                    {!is_appstore && !client.is_virtual && (
+                                    {!is_appstore && !is_virtual && (
                                         <React.Fragment>
-                                            {client.has_poa_address_mismatch && <POAAddressMismatchHintBox />}
+                                            {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                             <FormSubHeader title={localize('Address')} />
                                             <FormBodySection has_side_note={is_appstore}>
                                                 <div className='account-address__details-section'>
@@ -1064,7 +1089,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
-                                                        {client.states_list.length ? (
+                                                        {states_list.length ? (
                                                             <>
                                                                 <DesktopWrapper>
                                                                     <Field name='address_state'>
@@ -1079,7 +1104,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                                 )}
                                                                                 id={'state_province'}
                                                                                 error={errors.address_state}
-                                                                                list_items={client.states_list}
+                                                                                list_items={states_list}
                                                                                 onItemSelection={({ value, text }) =>
                                                                                     setFieldValue(
                                                                                         'address_state',
@@ -1099,7 +1124,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                                         placeholder={localize('Please select')}
                                                                         label={localize('State/Province (optional)')}
                                                                         value={values.address_state}
-                                                                        list_items={client.states_list}
+                                                                        list_items={states_list}
                                                                         id={'state_province_mobile'}
                                                                         error={errors.address_state}
                                                                         use_text={true}
@@ -1150,7 +1175,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                         </React.Fragment>
                                     )}
                                 </React.Fragment>
-                                {!!client.current_landing_company?.support_professional_client && (
+                                {!!current_landing_company?.support_professional_client && (
                                     <>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
@@ -1195,7 +1220,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                             id='request_professional_status'
                                                             defaultChecked={!!values.request_professional_status}
                                                             disabled={
-                                                                client.is_virtual ||
+                                                                is_virtual ||
                                                                 !!form_initial_values.request_professional_status
                                                             }
                                                             greyDisabled
@@ -1250,7 +1275,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                             label={localize('Get updates about Deriv products, services and events.')}
                                             id='email_consent'
                                             defaultChecked={!!values.email_consent}
-                                            disabled={!isChangeableField('email_consent') && !client.is_virtual}
+                                            disabled={!isChangeableField('email_consent') && !is_virtual}
                                             className={classNames({ 'dc-checkbox-blue': is_appstore })}
                                         />
                                     </fieldset>
@@ -1258,14 +1283,13 @@ export const PersonalDetailsForm = observer(({ history }) => {
                             </FormBody>
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                {!client.is_virtual &&
-                                    !(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                        <Text className='account-form__footer-note' size='xxxs'>
-                                            {localize(
-                                                'Please make sure your information is correct or it may affect your trading experience.'
-                                            )}
-                                        </Text>
-                                    )}
+                                {!is_virtual && !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                    <Text className='account-form__footer-note' size='xxxs'>
+                                        {localize(
+                                            'Please make sure your information is correct or it may affect your trading experience.'
+                                        )}
+                                    </Text>
+                                )}
                                 <Button
                                     className={classNames('account-form__footer-btn', {
                                         'dc-btn--green': is_submit_success,
@@ -1274,7 +1298,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                     is_disabled={
                                         isSubmitting ||
                                         !dirty ||
-                                        (client.is_virtual
+                                        (is_virtual
                                             ? false
                                             : !!(
                                                   errors.first_name ||
@@ -1283,16 +1307,12 @@ export const PersonalDetailsForm = observer(({ history }) => {
                                                   !values.last_name ||
                                                   errors.phone ||
                                                   !values.phone ||
-                                                  (client.landing_company_shortcode === 'maltainvest' &&
-                                                      errors.tax_residence) ||
-                                                  (client.landing_company_shortcode === 'maltainvest' &&
-                                                      !values.tax_residence) ||
-                                                  (client.landing_company_shortcode === 'maltainvest' &&
-                                                      errors.tax_identification_number) ||
-                                                  (client.landing_company_shortcode === 'maltainvest' &&
-                                                      !values.tax_identification_number) ||
-                                                  (!client.is_svg && errors.place_of_birth) ||
-                                                  (!client.is_svg && !values.place_of_birth) ||
+                                                  (is_mf && errors.tax_residence) ||
+                                                  (is_mf && !values.tax_residence) ||
+                                                  (is_mf && errors.tax_identification_number) ||
+                                                  (is_mf && !values.tax_identification_number) ||
+                                                  (!is_svg && errors.place_of_birth) ||
+                                                  (!is_svg && !values.place_of_birth) ||
                                                   // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                   errors.address_line_1 ||
                                                   !values.address_line_1 ||

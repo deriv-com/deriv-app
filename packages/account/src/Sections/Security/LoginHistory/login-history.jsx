@@ -169,6 +169,7 @@ const ListCell = ({ title, text, className, right }) => (
 
 const LoginHistory = observer(() => {
     const { client } = useStore();
+    const { is_switching } = client;
     const [is_loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState('');
     const [data, setData] = React.useState([]);
@@ -188,7 +189,7 @@ const LoginHistory = observer(() => {
         fetchData();
     }, []);
 
-    if (client.is_switching) return <Loading />;
+    if (is_switching) return <Loading />;
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (error) return <LoadErrorMessage error_message={error} />;
 

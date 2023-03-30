@@ -55,6 +55,8 @@ const UploaderSideNote = () => (
 
 const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
     const { client, notifications } = useStore();
+    const { fetchResidenceList, fetchStatesList, account_settings, is_eu, states_list } = client;
+    const { removeNotificationMessage, removeNotificationByKey, addNotificationMessage } = notifications;
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [is_loading, setIsLoading] = React.useState(true);
     const [form_values, setFormValues] = useStateCallback({});
@@ -62,19 +64,19 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
 
     React.useEffect(() => {
-        client.fetchResidenceList().then(() => {
-            Promise.all([client.fetchStatesList(), WS.wait('get_settings')]).then(() => {
-                const { citizen, tax_identification_number, tax_residence } = client.account_settings;
+        fetchResidenceList().then(() => {
+            Promise.all([fetchStatesList(), WS.wait('get_settings')]).then(() => {
+                const { citizen, tax_identification_number, tax_residence } = account_settings;
                 setFormValues(
                     {
-                        ...client.account_settings,
-                        ...(client.is_eu ? { citizen, tax_identification_number, tax_residence } : {}),
+                        ...account_settings,
+                        ...(is_eu ? { citizen, tax_identification_number, tax_residence } : {}),
                     },
                     () => setIsLoading(false)
                 );
             });
         });
-    }, [client.account_settings, client.fetchResidenceList, client.fetchStatesList, client.is_eu, setFormValues]);
+    }, [account_settings, fetchResidenceList, fetchStatesList, is_eu, setFormValues]);
 
     const validateFields = values => {
         Object.entries(values).forEach(([key, value]) => (values[key] = value.trim()));
@@ -111,7 +113,7 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
         }
 
         // only add state/province validation for countries that don't have states list fetched from API
-        if (values.address_state && !validLetterSymbol(values.address_state) && client.states_list?.length < 1) {
+        if (values.address_state && !validLetterSymbol(values.address_state) && states_list?.length < 1) {
             errors.address_state = validation_letter_symbol_message;
         }
 
@@ -140,11 +142,11 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
         setFormState({ ...form_state, ...{ is_btn_loading: true } });
         let settings_values = { ...values };
 
-        if (values.address_state && client.states_list.length) {
-            settings_values.address_state = getLocation(client.states_list, values.address_state, 'value') || '';
+        if (values.address_state && states_list.length) {
+            settings_values.address_state = getLocation(states_list, values.address_state, 'value') || '';
         }
 
-        if (client.is_eu) {
+        if (is_eu) {
             const { citizen, tax_residence, tax_identification_number } = form_values;
             settings_values = removeEmptyPropertiesFromObject({
                 ...settings_values,
@@ -206,14 +208,14 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                                                     needs_verification.length &&
                                                     needs_verification.includes('identity');
                                                 onSubmit({ has_poi });
-                                                notifications.removeNotificationMessage({ key: 'authenticate' });
-                                                notifications.removeNotificationByKey({ key: 'authenticate' });
-                                                notifications.removeNotificationMessage({ key: 'needs_poa' });
-                                                notifications.removeNotificationByKey({ key: 'needs_poa' });
-                                                notifications.removeNotificationMessage({ key: 'poa_expired' });
-                                                notifications.removeNotificationByKey({ key: 'poa_expired' });
+                                                removeNotificationMessage({ key: 'authenticate' });
+                                                removeNotificationByKey({ key: 'authenticate' });
+                                                removeNotificationMessage({ key: 'needs_poa' });
+                                                removeNotificationByKey({ key: 'needs_poa' });
+                                                removeNotificationMessage({ key: 'poa_expired' });
+                                                removeNotificationByKey({ key: 'poa_expired' });
                                                 if (needs_poi) {
-                                                    notifications.addNotificationMessage('needs_poi');
+                                                    addNotificationMessage('needs_poi');
                                                 }
                                             }
                                         );
@@ -250,8 +252,8 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
     const mobile_scroll_offset = status && status.msg ? '200px' : '154px';
 
     if (form_initial_values.address_state) {
-        form_initial_values.address_state = client.states_list.length
-            ? getLocation(client.states_list, form_initial_values.address_state, 'text')
+        form_initial_values.address_state = states_list.length
+            ? getLocation(states_list, form_initial_values.address_state, 'text')
             : form_initial_values.address_state;
     } else {
         form_initial_values.address_state = '';
@@ -338,7 +340,7 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                {client.states_list.length ? (
+                                                {states_list.length ? (
                                                     <React.Fragment>
                                                         <DesktopWrapper>
                                                             <Field name='address_state'>
@@ -353,7 +355,7 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                                                                             touched.address_state &&
                                                                             errors.address_state
                                                                         }
-                                                                        list_items={client.states_list}
+                                                                        list_items={states_list}
                                                                         onItemSelection={({ value, text }) =>
                                                                             setFieldValue(
                                                                                 'address_state',
@@ -370,7 +372,7 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                                                                 placeholder={localize('Please select')}
                                                                 label={localize('State/Province')}
                                                                 value={values.address_state}
-                                                                list_items={client.states_list}
+                                                                list_items={states_list}
                                                                 error={touched.address_state && errors.address_state}
                                                                 use_text={true}
                                                                 onChange={e =>

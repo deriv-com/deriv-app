@@ -8,6 +8,7 @@ import { PlatformContext } from '@deriv/shared';
 
 const ClosingAccountSteps = observer(({ redirectToReasons }) => {
     const { common } = useStore();
+    const { is_from_derivgo } = common;
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
@@ -45,7 +46,7 @@ const ClosingAccountSteps = observer(({ redirectToReasons }) => {
                     />
                 </Text>
             </div>
-            {common.is_from_derivgo ? (
+            {is_from_derivgo ? (
                 <div className='closing-account__buttons-container'>
                     <Button
                         className={classNames('closing-account__button--close-account', {

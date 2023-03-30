@@ -83,6 +83,9 @@ type TNotification =
     | ((excluded_until: number) => TNotificationMessage);
 
 type TClientStore = {
+    fetchResidenceList: () => any;
+    fetchStatesList: () => any;
+    getChangeableFields: () => any;
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
     account_settings: object;
@@ -105,6 +108,12 @@ type TClientStore = {
     setCFDScore: (score: number) => void;
     setIsCFDScoreAvailable: (is_set: boolean) => void;
     currency: string;
+    residence_list: [
+        {
+            text: string;
+            value: string;
+        }
+    ];
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => { get_limits?: GetLimits };

@@ -12,6 +12,7 @@ import { observer, useStore } from '@deriv/stores';
 
 const DerivEmail = observer(({ email, social_identity_provider, is_social_signup }) => {
     const { common } = useStore();
+    const { is_from_derivgo } = common;
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = React.useState(false);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
 
@@ -58,7 +59,7 @@ const DerivEmail = observer(({ email, social_identity_provider, is_social_signup
                             />
                         </fieldset>
                     </Formik>
-                    {!common.is_from_derivgo && (
+                    {!is_from_derivgo && (
                         <Button
                             className='email-change_button'
                             type='submit'

@@ -6,13 +6,19 @@ import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Componen
 import { Loading } from '@deriv/components';
 import { POO_STATUSES } from './constants/constants';
 import paymentMethodConfig from './payment-method-config.js';
+// account_status: client.account_status,
+//     client_email: client.email,
+//     is_dark_mode: ui.is_dark_mode_on,
+//     refreshNotifications: notifications.refreshNotifications,
+//     updateAccountStatus: client.updateAccountStatus,
 
 export const ProofOfOwnership = observer(() => {
     const { client, notifications, ui } = useStore();
-    const cards = client.account_status?.authentication?.ownership?.requests;
-    const needs_verification = client.account_status?.authentication?.needs_verification?.includes?.(
-        POO_STATUSES.ownership
-    );
+    const { email, account_status, updateAccountStatus } = client;
+    const { is_dark_mode_on } = ui;
+    const { refreshNotifications } = notifications;
+    const cards = account_status?.authentication?.ownership?.requests;
+    const needs_verification = account_status?.authentication?.needs_verification?.includes?.(POO_STATUSES.ownership);
     const [status, setStatus] = useState(POO_STATUSES.none);
     const grouped_payment_method_data = React.useMemo(() => {
         const groups = {};
@@ -25,7 +31,7 @@ export const ProofOfOwnership = observer(() => {
             } else {
                 total_documents_required += card?.documents_required;
                 groups[card?.payment_method?.toLowerCase()] = {
-                    icon: ui.is_dark_mode_on ? card_details?.icon_dark : card_details?.icon_light,
+                    icon: is_dark_mode_on ? card_details?.icon_dark : card_details?.icon_light,
                     payment_method: card?.payment_method,
                     items: [card],
                     instructions: card_details.instructions,
@@ -36,20 +42,21 @@ export const ProofOfOwnership = observer(() => {
             }
         });
         return { groups, total_documents_required };
-    }, [cards, ui.is_dark_mode_on]);
+    }, [cards, is_dark_mode_on]);
     useEffect(() => {
-        setStatus(client.account_status?.authentication?.ownership?.status?.toLowerCase());
-    }, [client.account_status]);
+        setStatus(account_status?.authentication?.ownership?.status?.toLowerCase());
+    }, [account_status]);
     const onTryAgain = () => {
         setStatus(POO_STATUSES.none);
     };
+    // console.log("status value",account_status)
     if (needs_verification && status !== POO_STATUSES.rejected) {
         return (
             <ProofOfOwnershipForm
                 grouped_payment_method_data={grouped_payment_method_data.groups}
-                updateAccountStatus={client.updateAccountStatus}
-                refreshNotifications={notifications.refreshNotifications}
-                client_email={client.client_email}
+                updateAccountStatus={updateAccountStatus}
+                refreshNotifications={refreshNotifications}
+                client_email={email}
                 total_documents_required={grouped_payment_method_data.total_documents_required}
             />
         ); // Proof of ownership is required.

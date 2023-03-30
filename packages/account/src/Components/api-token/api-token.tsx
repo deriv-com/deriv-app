@@ -45,8 +45,9 @@ export type TApiToken = {
 
 const ApiToken = observer(({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TApiToken) => {
     const { client } = useStore();
+    const { is_switching } = client;
     const isMounted = useIsMounted();
-    const prev_is_switching = React.useRef(client.is_switching);
+    const prev_is_switching = React.useRef(is_switching);
     const [state, setState] = React.useReducer(
         (prev_state: Partial<AptTokenState>, value: Partial<AptTokenState>) => ({
             ...prev_state,
@@ -73,12 +74,12 @@ const ApiToken = observer(({ footer_ref, is_app_settings, overlay_ref, setIsOver
     }, []);
 
     React.useEffect(() => {
-        if (prev_is_switching.current !== client.is_switching) {
-            prev_is_switching.current = client.is_switching;
+        if (prev_is_switching.current !== is_switching) {
+            prev_is_switching.current = is_switching;
             getApiTokens();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [client.is_switching]);
+    }, [is_switching]);
 
     React.useEffect(() => {
         if (typeof setIsOverlayShown === 'function') {
@@ -182,7 +183,7 @@ const ApiToken = observer(({ footer_ref, is_app_settings, overlay_ref, setIsOver
 
     const { api_tokens, is_loading, is_success, error_message, is_overlay_shown } = state;
 
-    if (is_loading || client.is_switching) {
+    if (is_loading || is_switching) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 

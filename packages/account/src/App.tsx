@@ -19,12 +19,10 @@ const App = ({ passthrough }: TAppProps) => {
     initStore(root_store, WS);
 
     return (
-        <MobxContentProvider store={root_store}>
-            <StoreProvider store={root_store}>
-                <Routes />
-                <ResetTradingPassword />
-            </StoreProvider>
-        </MobxContentProvider>
+        <StoreProvider store={root_store}>
+            <Routes />
+            <ResetTradingPassword />
+        </StoreProvider>
     );
 };
 

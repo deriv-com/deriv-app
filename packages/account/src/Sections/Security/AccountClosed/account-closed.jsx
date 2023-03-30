@@ -6,18 +6,19 @@ import { observer, useStore } from '@deriv/stores';
 
 const AccountClosed = observer(() => {
     const { client } = useStore();
+    const { logout } = client;
     const [is_modal_open, setModalState] = React.useState(true);
     const [timer, setTimer] = React.useState(10);
     const { is_appstore } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         window.history.pushState(null, null, '/');
-        client.logout();
+        logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {
             if (handleInterval) clearInterval(handleInterval);
         };
-    }, [timer, is_modal_open, client.logout, counter]);
+    }, [timer, is_modal_open, logout, counter]);
 
     const counter = React.useCallback(() => {
         if (timer > 0) {

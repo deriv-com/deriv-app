@@ -28,15 +28,12 @@ const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, over
         six_weeks: 60480, // in minutes
     });
     const { client, ui } = useStore();
-    const is_tablet = ui.is_tablet;
-    const is_eu = client.is_eu;
-    const currency = client.currency;
-    const is_mf = client.landing_company_shortcode === 'maltainvest';
-    const is_mlt = client.landing_company_shortcode === 'malta';
-    const is_mx = client.landing_company_shortcode === 'iom';
-    const is_uk = client.is_uk;
+    const { is_eu, currency, landing_company_shortcode, is_uk, logout, is_virtual, is_switching, standpoint } = client;
+    const { is_tablet } = ui;
+    const is_mf = landing_company_shortcode === 'maltainvest';
+    const is_mlt = landing_company_shortcode === 'malta';
+    const is_mx = landing_company_shortcode === 'iom';
     const is_wrapper_bypassed = false;
-    const logout = client.logout;
 
     const exclusion_texts = {
         max_deposit: localize('Max. deposit limit per day'),
@@ -92,7 +89,7 @@ const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, over
     const [state, setState] = React.useReducer((prev_state, value) => ({ ...prev_state, ...value }), initial_state);
 
     React.useEffect(() => {
-        if (client.is_virtual) {
+        if (is_virtual) {
             setState({ is_loading: false });
         } else {
             getLimits();
@@ -106,15 +103,15 @@ const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, over
     }, []);
 
     React.useEffect(() => {
-        if (prev_is_switching.current !== client.is_switching) {
-            prev_is_switching.current = client.is_switching;
+        if (prev_is_switching.current !== is_switching) {
+            prev_is_switching.current = is_switching;
 
             resetState();
             getLimits();
             getSelfExclusion();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [client.is_switching]);
+    }, [is_switching]);
 
     React.useEffect(() => {
         if (typeof setIsOverlayShown === 'function') {
@@ -183,7 +180,7 @@ const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, over
                 });
                 if (!is_ok) errors[item] = message;
             }
-            if (state.self_exclusions[item] && !values[item] && !client.standpoint.svg) {
+            if (state.self_exclusions[item] && !values[item] && !standpoint.svg) {
                 errors[item] = more_than_zero_message;
             }
         });
@@ -222,7 +219,7 @@ const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, over
         }
 
         custom_validation.forEach(item => {
-            if (state.self_exclusions[item] && !values[item] && !client.standpoint.svg) {
+            if (state.self_exclusions[item] && !values[item] && !standpoint.svg) {
                 errors[item] = more_than_zero_message;
             }
         });
@@ -342,17 +339,13 @@ const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, over
         const getLength = value =>
             value.toString().length + (isIntegerField(field) || decimals_length === 0 ? 0 : decimals_length + 1); // add 1 to allow typing dot
 
-        if (
-            /max_open_bets/.test(field) &&
-            exclusion_limits.current.get_limits?.open_positions &&
-            !client.standpoint.svg
-        )
+        if (/max_open_bets/.test(field) && exclusion_limits.current.get_limits?.open_positions && !standpoint.svg)
             return getLength(exclusion_limits.current.get_limits.open_positions);
 
-        if (/max_balance/.test(field) && exclusion_limits.current.get_limits?.account_balance && !client.standpoint.svg)
+        if (/max_balance/.test(field) && exclusion_limits.current.get_limits?.account_balance && !standpoint.svg)
             return getLength(exclusion_limits.current.get_limits.account_balance);
 
-        if (!state.self_exclusions[field] || client.standpoint.svg) {
+        if (!state.self_exclusions[field] || standpoint.svg) {
             if (/max_open_bets/.test(field)) return 9; // TODO: remove when the error is fixed on BE
             return getLength(exclusion_fields_settings.max_number);
         }
@@ -360,11 +353,11 @@ const SelfExclusion = observer(({ footer_ref, is_app_settings, is_appstore, over
         return getLength(state.self_exclusions[field]);
     };
 
-    if (client.is_virtual) {
+    if (is_virtual) {
         return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
     }
 
-    if (state.is_loading || client.is_switching) {
+    if (state.is_loading || is_switching) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 

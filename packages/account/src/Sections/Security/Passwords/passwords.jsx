@@ -8,16 +8,28 @@ import PasswordsPlatform from './passwords-platform.jsx';
 const Passwords = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
     const { client, ui, common } = useStore();
-
+    const {
+        is_populating_mt5_account_list,
+        is_populating_dxtrade_account_list,
+        is_social_signup,
+        email,
+        social_identity_provider,
+        mt5_login_list,
+        is_mt5_password_not_set,
+        dxtrade_accounts_list,
+        is_dxtrade_password_not_set,
+    } = client;
+    const { is_dark_mode_on } = ui;
+    const { is_from_derivgo } = common;
     React.useEffect(() => {
         if (
-            client.is_populating_mt5_account_list === false &&
-            client.is_populating_dxtrade_account_list === false &&
-            client.is_social_signup !== undefined
+            is_populating_mt5_account_list === false &&
+            is_populating_dxtrade_account_list === false &&
+            is_social_signup !== undefined
         ) {
             setIsLoading(false);
         }
-    }, [client.is_populating_mt5_account_list, client.is_populating_dxtrade_account_list, client.is_social_signup]);
+    }, [is_populating_mt5_account_list, is_populating_dxtrade_account_list, is_social_signup]);
 
     if (is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -26,31 +38,28 @@ const Passwords = observer(() => {
     return (
         <div className='account__passwords'>
             <DerivEmail
-                email={client.email}
-                social_identity_provider={client.social_identity_provider}
-                is_social_signup={client.is_social_signup}
+                email={email}
+                social_identity_provider={social_identity_provider}
+                is_social_signup={is_social_signup}
             />
             <DerivPassword
-                email={client.email}
-                is_dark_mode_on={ui.is_dark_mode_on}
-                is_social_signup={client.is_social_signup}
-                social_identity_provider={client.social_identity_provider}
+                email={email}
+                is_dark_mode_on={is_dark_mode_on}
+                is_social_signup={is_social_signup}
+                social_identity_provider={social_identity_provider}
             />
-            {!common.is_from_derivgo && (client.mt5_login_list?.length > 0 || !client.is_mt5_password_not_set) && (
+            {!is_from_derivgo && (mt5_login_list?.length > 0 || !is_mt5_password_not_set) && (
                 <PasswordsPlatform
-                    email={client.email}
-                    has_mt5_accounts={client.mt5_login_list?.length > 0 || !client.is_mt5_password_not_set}
+                    email={email}
+                    has_mt5_accounts={mt5_login_list?.length > 0 || !is_mt5_password_not_set}
                 />
             )}
-            {!common.is_from_derivgo &&
-                (client.dxtrade_accounts_list?.length > 0 || !client.is_dxtrade_password_not_set) && (
-                    <PasswordsPlatform
-                        email={client.email}
-                        has_dxtrade_accounts={
-                            client.dxtrade_accounts_list?.length > 0 || !client.is_dxtrade_password_not_set
-                        }
-                    />
-                )}
+            {!is_from_derivgo && (dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set) && (
+                <PasswordsPlatform
+                    email={email}
+                    has_dxtrade_accounts={dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set}
+                />
+            )}
         </div>
     );
 });

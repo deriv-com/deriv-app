@@ -4,6 +4,15 @@ import type { TRootStore } from '../types';
 const mock = (): TRootStore => {
     return {
         client: {
+            fetchResidenceList: jest.fn(() => Promise.resolve()),
+            fetchStatesList: jest.fn(() => Promise.resolve()),
+            getChangeableFields: jest.fn(),
+            residence_list: [
+                {
+                    text: 'Text',
+                    value: 'value',
+                },
+            ],
             accounts: {
                 loginid: {
                     account_type: 'trading',
@@ -61,6 +70,7 @@ const mock = (): TRootStore => {
                     document: {
                         status: 'verified',
                     },
+
                     identity: {
                         services: {
                             idv: {
@@ -95,7 +105,7 @@ const mock = (): TRootStore => {
                     needs_verification: [],
                     ownership: {
                         requests: [],
-                        status: 'none',
+                        status: 'verified',
                     },
                 },
                 currency_config: {

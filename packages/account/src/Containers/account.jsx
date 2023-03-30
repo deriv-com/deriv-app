@@ -111,6 +111,19 @@ const PageOverlayWrapper = ({
 
 const Account = observer(({ history, location, routes }) => {
     const { client, common, ui } = useStore();
+    const {
+        is_pre_appstore,
+        is_virtual,
+        landing_company_shortcode,
+        is_risky_client,
+        should_allow_authentication,
+        currency,
+        is_logged_in,
+        is_logging_in,
+        logout,
+    } = client;
+    const { is_from_derivgo, routeBackInApp, platform } = common;
+    const { toggleAccountSettings, is_account_settings_visible } = ui;
     const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
@@ -120,34 +133,32 @@ const Account = observer(({ history, location, routes }) => {
         subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
     }));
     let selected_content = subroutes.find(r => matchRoute(r, location.pathname));
-    const onClickClose = React.useCallback(() => common.routeBackInApp(history), [common.routeBackInApp, history]);
+    const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
 
     React.useEffect(() => {
-        ui.toggleAccountSettings(true);
-    }, [ui.toggleAccountSettings]);
+        toggleAccountSettings(true);
+    }, [toggleAccountSettings]);
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.languages) {
-                route.is_hidden = !client.is_pre_appstore;
+                route.is_hidden = !is_pre_appstore;
             }
 
             if (route.path === shared_routes.financial_assessment) {
-                route.is_disabled =
-                    client.is_virtual ||
-                    (client.landing_company_shortcode === 'maltainvest' && !client.is_risky_client);
+                route.is_disabled = is_virtual || (landing_company_shortcode === 'maltainvest' && !is_risky_client);
             }
 
             if (route.path === shared_routes.trading_assessment) {
-                route.is_disabled = client.is_virtual || client.landing_company_shortcode !== 'maltainvest';
+                route.is_disabled = is_virtual || landing_company_shortcode !== 'maltainvest';
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
-                route.is_disabled = !client.should_allow_authentication;
+                route.is_disabled = !should_allow_authentication;
             }
 
             if (route.path === shared_routes.proof_of_ownership) {
-                route.is_disabled = client.is_virtual;
+                route.is_disabled = is_virtual;
             }
         });
     });
@@ -161,7 +172,7 @@ const Account = observer(({ history, location, routes }) => {
     const action_bar_items = [
         {
             onClick: () => {
-                common.routeBackInApp(history);
+                routeBackInApp(history);
             },
             icon: 'IcCross',
             title: localize('Close'),
@@ -173,11 +184,11 @@ const Account = observer(({ history, location, routes }) => {
     if (is_account_limits_route) {
         action_bar_items.push({
             // eslint-disable-next-line react/display-name
-            component: () => <AccountLimitInfo currency={client.currency} is_virtual={client.is_virtual} />,
+            component: () => <AccountLimitInfo currency={currency} is_virtual={is_virtual} />,
         });
     }
 
-    if (!client.is_logged_in && client.is_logging_in) {
+    if (!is_logged_in && is_logging_in) {
         return <Loading is_fullscreen className='account__initial-loader' />;
     }
 
@@ -185,19 +196,19 @@ const Account = observer(({ history, location, routes }) => {
 
     return (
         <FadeWrapper
-            is_visible={ui.is_account_settings_visible}
+            is_visible={is_account_settings_visible}
             className='account-page-wrapper'
             keyname='account-page-wrapper'
         >
             <div className='account'>
                 <PageOverlayWrapper
-                    is_from_derivgo={common.is_from_derivgo}
+                    is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
-                    is_pre_appstore={client.is_pre_appstore}
+                    is_pre_appstore={is_pre_appstore}
                     list_groups={list_groups}
-                    logout={client.logout}
+                    logout={logout}
                     onClickClose={onClickClose}
-                    platform={common.platform}
+                    platform={platform}
                     selected_route={selected_route}
                     subroutes={subroutes}
                     history={history}

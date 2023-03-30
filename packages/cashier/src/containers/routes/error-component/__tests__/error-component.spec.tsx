@@ -4,14 +4,6 @@ import ErrorComponent from '../error-component';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-    return {
-        ...original_module,
-        UnhandledErrorModal: jest.fn(() => <div>Sorry for the interruption</div>),
-    };
-});
-
 describe('<ErrorComponent/>', () => {
     let history;
     const renderWithRouter = component => {
@@ -38,12 +30,6 @@ describe('<ErrorComponent/>', () => {
         should_show_refresh: true,
         app_routing_history: [{ pathname: '/cashier' }],
     };
-
-    it('should show the default message when message is not passed', () => {
-        const message = '';
-        renderWithRouter(<ErrorComponent {...mock_props} message={message} />);
-        expect(screen.getByText('Sorry for the interruption')).toBeInTheDocument();
-    });
 
     it('should show the actual error message when header and message is passed', () => {
         renderWithRouter(<ErrorComponent {...mock_props} />);

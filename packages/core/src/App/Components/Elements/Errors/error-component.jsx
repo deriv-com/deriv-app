@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageError, UnhandledErrorModal } from '@deriv/components';
+import { PageError, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -68,21 +68,18 @@ const ErrorComponent = ({
         );
     }
 
-    if (header && message) {
-        return (
-            <PageError
-                header={header}
-                messages={[message, refresh_message]}
-                redirect_urls={[redirect_to]}
-                redirect_labels={[redirect_label || localize('Refresh')]}
-                buttonOnClick={redirectOnClick || (() => location.reload())}
-                should_clear_error_on_click={should_clear_error_on_click}
-                setError={setError}
-                has_malta_account={has_malta_account}
-            />
-        );
-    }
-    return <UnhandledErrorModal />;
+    return (
+        <PageErrorContainer
+            error_header={header ?? ''}
+            error_messages={message ? message[(message, refresh_message)] : []}
+            redirect_urls={[redirect_to]}
+            redirect_labels={[redirect_label || localize('Refresh')]}
+            buttonOnClick={redirectOnClick || (() => location.reload())}
+            should_clear_error_on_click={should_clear_error_on_click}
+            setError={setError}
+            has_malta_account={has_malta_account}
+        />
+    );
 };
 
 ErrorComponent.propTypes = {

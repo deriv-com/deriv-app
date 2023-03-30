@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageError, UnhandledErrorModal } from '@deriv/components';
+import { PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { TStores } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -32,20 +32,17 @@ const ErrorComponent = ({
         ''
     );
 
-    if (header && message) {
-        return (
-            <PageError
-                header={header}
-                messages={[message, refresh_message]}
-                redirect_urls={[redirect_to]}
-                redirect_labels={[redirect_label || localize('Refresh')]}
-                buttonOnClick={redirectOnClick || (() => location.reload())}
-                should_clear_error_on_click={should_clear_error_on_click}
-                setError={setError}
-            />
-        );
-    }
-    return <UnhandledErrorModal />;
+    return (
+        <PageErrorContainer
+            error_header={header ?? ''}
+            error_messages={message ? [message, refresh_message] : []}
+            redirect_urls={[redirect_to]}
+            redirect_labels={[redirect_label || localize('Refresh')]}
+            buttonOnClick={redirectOnClick || (() => location.reload())}
+            should_clear_error_on_click={should_clear_error_on_click}
+            setError={setError}
+        />
+    );
 };
 
 export default ErrorComponent;

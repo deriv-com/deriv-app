@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { PageError, Dialog, UnhandledErrorModal } from '@deriv/components';
+import { Dialog, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -25,19 +25,16 @@ const ErrorComponent = ({
                 {message || localize('Sorry, an error occured while processing your request.')}
             </Dialog>
         );
-    } else if (header && message) {
-        return (
-            <PageError
-                header={header}
-                messages={[message, refresh_message]}
-                redirect_urls={[routes.trade]}
-                redirect_labels={[redirect_label || localize('Refresh')]}
-                buttonOnClick={redirectOnClick || (() => location.reload())}
-            />
-        );
     }
-
-    return <UnhandledErrorModal />;
+    return (
+        <PageErrorContainer
+            error_header={header ?? ''}
+            error_messages={message ? message[(message, refresh_message)] : []}
+            redirect_urls={[routes.trade]}
+            redirect_labels={[redirect_label || localize('Refresh')]}
+            buttonOnClick={redirectOnClick || (() => location.reload())}
+        />
+    );
 };
 
 ErrorComponent.propTypes = {

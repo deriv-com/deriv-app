@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 
 export const getDefaultError = () => ({
-    header: localize('Something went wrong'),
-    description: localize('Please try again later.'),
-    cta_label: localize('Back to homepage'),
+    header: localize('Sorry for the interruption'),
+    description: localize('Our servers hit a bump. Let’s refresh to move on.'),
+    cta_label: localize('Refresh'),
 });

@@ -11,7 +11,7 @@ jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {
         ...original_module,
-        UnhandledErrorModal: jest.fn(() => <div>Sorry for the interruption</div>),
+        PageErrorContainer: jest.fn(() => <div>An error occured</div>),
     };
 });
 
@@ -49,7 +49,7 @@ describe('<Routes />', () => {
             }
         );
 
-        expect(screen.getByText('Sorry for the interruption')).toBeInTheDocument();
+        expect(screen.getByText('An error occured')).toBeInTheDocument();
     });
 
     it('should render <BinaryRoutes /> component when "has_error = false"', () => {

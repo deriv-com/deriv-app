@@ -40,7 +40,7 @@ describe('<PaymentAgentReceipt />', () => {
                     },
                 },
             },
-        }) as TStores;
+        });
 
         history = createBrowserHistory();
     });

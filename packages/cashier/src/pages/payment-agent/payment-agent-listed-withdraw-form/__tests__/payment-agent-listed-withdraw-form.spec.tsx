@@ -80,7 +80,7 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
                     },
                 },
             },
-        }) as TStores;
+        });
 
         payment_agent = {
             currency: 'USD',

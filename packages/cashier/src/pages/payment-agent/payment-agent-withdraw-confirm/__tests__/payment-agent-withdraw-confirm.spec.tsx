@@ -37,7 +37,7 @@ describe('<PaymentAgentWithdrawConfirm />', () => {
                     },
                 },
             },
-        }) as TStores;
+        });
 
         verification_code = 'ABCdef';
     });

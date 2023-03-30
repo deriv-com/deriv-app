@@ -165,12 +165,10 @@ export default class PaymentAgentStore {
 
     async setPaymentAgentList(pa_list?: Array<TPaymentAgent>) {
         const { setLoading } = this.root_store.modules.cashier.general_store;
-        const payment_agent_list = pa_list || (await this.getPaymentAgentList());
         this.clearList();
         this.clearSupportedBanks();
-        // TODO: Once telephone, url and supported_banks removed from paymentagent_list.list we can remove them and just use the plural ones
         try {
-            payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
+            (pa_list || (await this.getPaymentAgentList()).paymentagent_list?.list)?.forEach(payment_agent => {
                 this.setList({
                     currency: payment_agent.currencies,
                     deposit_commission: payment_agent.deposit_commission,
@@ -180,9 +178,9 @@ export default class PaymentAgentStore {
                     min_withdrawal: payment_agent.min_withdrawal,
                     name: payment_agent.name,
                     paymentagent_loginid: payment_agent.paymentagent_loginid,
-                    phone_numbers: payment_agent?.phone_numbers || payment_agent?.telephone,
-                    supported_banks: payment_agent?.supported_payment_methods,
-                    urls: payment_agent?.urls || payment_agent?.url,
+                    phone_numbers: payment_agent.phone_numbers,
+                    supported_banks: payment_agent.supported_payment_methods,
+                    urls: payment_agent?.urls,
                     withdrawal_commission: payment_agent.withdrawal_commission,
                 });
                 const supported_banks_array = payment_agent?.supported_payment_methods
@@ -380,7 +378,7 @@ export default class PaymentAgentStore {
     resetPaymentAgent = () => {
         const { client, modules } = this.root_store;
         const { active_container } = modules.cashier.general_store;
-        const container = Constants.map_action[active_container];
+        const container = Constants.map_action[active_container as 'withdraw' | 'payment_agent'];
 
         client.setVerificationCode('', container);
         this.error.setErrorMessage({ code: '', message: '' });

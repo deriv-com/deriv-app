@@ -113,11 +113,13 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
                             options={{ interpolation: { escapeValue: false } }}
                         />
                     </Text>
-                    <PaymentAgentDetails
-                        email={receipt.payment_agent_email}
-                        phone_numbers={receipt.payment_agent_phone}
-                        urls={receipt.payment_agent_url}
-                    />
+                    {receipt.payment_agent_email && receipt.payment_agent_phone && receipt.payment_agent_url && (
+                        <PaymentAgentDetails
+                            email={receipt.payment_agent_email}
+                            phone_numbers={receipt.payment_agent_phone}
+                            urls={receipt.payment_agent_url}
+                        />
+                    )}
                 </div>
             )}
             <div className='cashier__form-submit'>

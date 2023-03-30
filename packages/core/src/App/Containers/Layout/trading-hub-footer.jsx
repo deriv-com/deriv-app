@@ -53,7 +53,6 @@ const TradingHubFooter = ({
     settings_extension,
     setDarkMode,
     is_dark_mode,
-    is_pre_appstore,
     show_eu_related_content,
 }) => {
     let footer_extensions_left = [];
@@ -117,13 +116,11 @@ const TradingHubFooter = ({
                         disableApp={disableApp}
                         enableApp={enableApp}
                         settings_extension={settings_extension}
-                        is_pre_appstore={is_pre_appstore}
                     />
                 )}
                 <ToggleLanguageSettings
                     is_settings_visible={is_language_settings_modal_on}
                     toggleSettings={toggleLanguageSettingsModal}
-                    is_pre_appstore={is_pre_appstore}
                     lang={current_language}
                 />
                 <ToggleFullScreen />
@@ -150,7 +147,6 @@ TradingHubFooter.propTypes = {
     footer_extensions: PropTypes.array,
     is_dark_mode: PropTypes.bool,
     setDarkMode: PropTypes.func,
-    is_pre_appstore: PropTypes.bool,
     show_eu_related_content: PropTypes.bool,
 };
 
@@ -174,7 +170,6 @@ export default withRouter(
         toggleLanguageSettingsModal: ui.toggleLanguageSettingsModal,
         is_dark_mode: ui.is_dark_mode_on,
         setDarkMode: ui.setDarkMode,
-        is_pre_appstore: client.is_pre_appstore,
         show_eu_related_content: traders_hub.show_eu_related_content,
     }))(TradingHubFooter)
 );

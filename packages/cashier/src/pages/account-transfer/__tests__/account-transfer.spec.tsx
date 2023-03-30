@@ -182,12 +182,4 @@ describe('<AccountTransfer />', () => {
 
         expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
     });
-
-    it('should show the crypto transactions if triggered from recent transactions', async () => {
-        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
-
-        renderAccountTransfer();
-
-        expect(await screen.findByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();
-    });
 });

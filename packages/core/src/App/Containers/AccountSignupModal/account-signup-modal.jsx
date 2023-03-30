@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, Loading } from '@deriv/components';
+import { Button, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-import SameCitizenshipModal from '../CitizenshipModal/same-citizenship-modal.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
@@ -22,24 +21,12 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const [country, setCountry] = React.useState('');
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
-    const [selected_residence, setSelectedResidence] = React.useState('');
-    const [selected_citizenship, setSelectedCitizenship] = React.useState('');
-    const [is_citizenship_modal, setIsCitizenshipModal] = React.useState(false);
-    const [is_same_citizenship_modal, setIsSameCitizenshipModal] = React.useState(false);
-    const [is_pasword_modal, setIsPasswordModal] = React.useState(false);
+    const [is_password_modal, setIsPasswordModal] = React.useState(false);
+    const disableBtn = (values, errors) =>
+        !values.residence || !!errors.residence || !values.citizenship || !!errors.citizenship;
 
     const updatePassword = new_password => {
         setPWInput(new_password);
-    };
-
-    const onResidenceSelection = residence => {
-        setSelectedResidence(residence);
-        setIsSameCitizenshipModal(true);
-    };
-
-    const onCitizenshipSelection = citizenship => {
-        setSelectedCitizenship(citizenship);
-        setIsPasswordModal(true);
     };
 
     // didMount lifecycle hook
@@ -78,7 +65,6 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             enableApp();
         }
     };
-
     return (
         <div className='account-signup'>
             {is_loading ? (
@@ -101,89 +87,60 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                         touched,
                     }) => (
                         <Form>
-                            {!selected_residence || !is_same_citizenship_modal ? (
-                                <ResidenceForm
-                                    header_text={localize('Thanks for verifying your email')}
-                                    class_prefix='account-signup'
-                                    errors={errors}
-                                    touched={touched}
-                                    setFieldTouched={setFieldTouched}
-                                    setFieldValue={setFieldValue}
-                                    residence_list={residence_list}
-                                    default_value={country}
-                                    history_value={history_value.current}
-                                >
-                                    <Button
-                                        className={classNames('account-signup__btn', {
-                                            'account-signup__btn--disabled': !values.residence || errors.residence,
-                                        })}
-                                        type='button'
-                                        is_disabled={!values.residence || !!errors.residence}
-                                        onClick={() => {
-                                            onResidenceSelection(values.residence);
-                                            history_value.current = values.residence;
-                                        }}
-                                        primary
-                                        large
-                                        text={localize('Next')}
+                            {!is_password_modal ? (
+                                <div className='account-signup__main'>
+                                    <Text as='h1' weight='bold' className='account-signup__heading'>
+                                        {localize('Select your country and citizenship:')}
+                                    </Text>
+                                    <ResidenceForm
+                                        class_prefix='account-signup'
+                                        errors={errors}
+                                        touched={touched}
+                                        setFieldTouched={setFieldTouched}
+                                        setFieldValue={setFieldValue}
+                                        residence_list={residence_list}
+                                        default_value={country}
+                                        history_value={history_value.current}
                                     />
-                                </ResidenceForm>
-                            ) : (
-                                <>
-                                    {!is_pasword_modal && !is_citizenship_modal ? (
-                                        <SameCitizenshipModal
-                                            onCitizenshipSelection={onCitizenshipSelection}
-                                            residence={values.residence}
-                                            setFieldValue={setFieldValue}
-                                            setIsCitizenshipModal={setIsCitizenshipModal}
-                                            setIsPasswordModal={setIsPasswordModal}
-                                            setIsSameCitizenshipModal={setIsSameCitizenshipModal}
+                                    <CitizenshipForm
+                                        class_prefix='account-signup'
+                                        errors={errors}
+                                        touched={touched}
+                                        setFieldTouched={setFieldTouched}
+                                        setFieldValue={setFieldValue}
+                                        citizenship_list={residence_list}
+                                    />
+                                    <div className='account-signup__footer'>
+                                        <Button
+                                            className={classNames('account-signup__btn', {
+                                                'account-signup__btn--disabled': disableBtn(values, errors),
+                                            })}
+                                            type='button'
+                                            onClick={() => {
+                                                history_value.current = values;
+                                                setIsPasswordModal(true);
+                                            }}
+                                            primary
+                                            large
+                                            text={localize('Next')}
                                         />
-                                    ) : (
-                                        <>
-                                            {selected_citizenship && is_pasword_modal ? (
-                                                <PasswordSelectionModal
-                                                    api_error={api_error}
-                                                    errors={errors}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                    is_appstore={is_appstore}
-                                                    isModalVisible={isModalVisible}
-                                                    isSubmitting={isSubmitting}
-                                                    touched={touched}
-                                                    pw_input={pw_input}
-                                                    setFieldTouched={setFieldTouched}
-                                                    updatePassword={updatePassword}
-                                                    values={values}
-                                                />
-                                            ) : (
-                                                <CitizenshipForm
-                                                    class_prefix='account-signup'
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    setFieldTouched={setFieldTouched}
-                                                    setFieldValue={setFieldValue}
-                                                    citizenship_list={residence_list}
-                                                >
-                                                    <Button
-                                                        className={classNames('account-signup__btn', {
-                                                            'account-signup__btn--disabled':
-                                                                !values.citizenship || errors.citizenship,
-                                                        })}
-                                                        type='button'
-                                                        is_disabled={!values.citizenship || !!errors.citizenship}
-                                                        onClick={() => {
-                                                            onCitizenshipSelection(values.citizenship);
-                                                        }}
-                                                        primary
-                                                        large
-                                                        text={localize('Next')}
-                                                    />
-                                                </CitizenshipForm>
-                                            )}
-                                        </>
-                                    )}
-                                </>
+                                    </div>
+                                </div>
+                            ) : (
+                                <PasswordSelectionModal
+                                    api_error={api_error}
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    is_appstore={is_appstore}
+                                    isModalVisible={isModalVisible}
+                                    isSubmitting={isSubmitting}
+                                    touched={touched}
+                                    pw_input={pw_input}
+                                    setFieldTouched={setFieldTouched}
+                                    updatePassword={updatePassword}
+                                    values={values}
+                                />
                             )}
                         </Form>
                     )}

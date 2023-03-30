@@ -1,3 +1,4 @@
+export { default as useAccountPlatformDetails } from './useAccountPlatformDetails';
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
 export { default as useCountdown } from './useCountdown';
 export { default as useDepositLocked } from './useDepositLocked';

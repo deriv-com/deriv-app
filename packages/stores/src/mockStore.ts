@@ -136,7 +136,6 @@ const mock = (): TRootStore => {
             is_landing_company_loaded: false,
             is_logged_in: false,
             is_logging_in: false,
-            is_pre_appstore: false,
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,

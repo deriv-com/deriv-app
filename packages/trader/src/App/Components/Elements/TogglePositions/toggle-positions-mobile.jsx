@@ -116,7 +116,9 @@ const TogglePositionsMobile = ({
                             className='dc-btn dc-btn--secondary dc-btn__large positions-modal__footer-btn'
                             to={routes.positions}
                         >
-                            <span className='dc-btn__text'>{localize('Go to Reports')}</span>
+                            <Text size='xs' weight='bold'>
+                                {localize('Go to Reports')}
+                            </Text>
                         </NavLink>
                     </div>
                 </Div100vhContainer>

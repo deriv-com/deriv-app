@@ -1,12 +1,14 @@
-import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-import { getAllowedLanguages, changeLanguage } from '@deriv/translations';
-import { action, computed, observable, makeObservable } from 'mobx';
-import { currentLanguage } from 'Utils/Language/index';
-import ServerTime from '_common/base/server_time';
-import BinarySocket from '_common/base/socket_base';
-import BaseStore from './base-store';
-import WS from 'Services/ws-methods';
 import * as SocketCache from '_common/base/socket_cache';
+
+import { action, computed, makeObservable, observable } from 'mobx';
+import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
+
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import ServerTime from '_common/base/server_time';
+import WS from 'Services/ws-methods';
+import { currentLanguage } from 'Utils/Language/index';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {

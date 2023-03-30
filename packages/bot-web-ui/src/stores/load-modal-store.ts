@@ -26,8 +26,8 @@ interface ILoadModalStore {
     selected_strategy_id: string[] | string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
-    refreshStratagies: () => void;
-    refreshStratagiesTheme: () => void;
+    refreshStrategies: () => void;
+    refreshStrategiesTheme: () => void;
     preview_workspace: () => void;
     handleFileChange: (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
@@ -73,8 +73,8 @@ export default class LoadModalStore implements ILoadModalStore {
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
-            refreshStratagies: action.bound,
-            refreshStratagiesTheme: action.bound,
+            refreshStrategies: action.bound,
+            refreshStrategiesTheme: action.bound,
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
             loadFileFromLocal: action.bound,
@@ -196,7 +196,7 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-    refreshStratagiesTheme = (): void => {
+    refreshStrategiesTheme = (): void => {
         load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
     };
     loadFileFromRecent = (): void => {
@@ -344,7 +344,7 @@ export default class LoadModalStore implements ILoadModalStore {
         }
         const dark_mode = document.body.classList.contains('theme--dark');
         setColors(dark_mode);
-        this.refreshStratagiesTheme();
+        this.refreshStrategiesTheme();
         const {
             save_modal: { updateBotName },
         } = this.root_store;
@@ -363,7 +363,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.recent_strategies = recent_strategies;
     };
 
-    refreshStratagies = (): void => {
+    refreshStrategies = (): void => {
         this.setRecentStrategies(this.recent_strategies);
     };
 

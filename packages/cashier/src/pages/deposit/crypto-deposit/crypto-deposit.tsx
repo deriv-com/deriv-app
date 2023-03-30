@@ -3,6 +3,7 @@ import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import CashierBreadcrumb from '../../../components/cashier-breadcrumb';
 import QRCode from 'qrcode.react';
 import RecentTransaction from '../../../components/recent-transaction';
 import { useCashierStore } from '../../../stores/useCashierStores';
@@ -128,6 +129,7 @@ const CryptoDeposit = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
+            <CashierBreadcrumb is_crypto_deposit />
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text

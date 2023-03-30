@@ -342,8 +342,6 @@ const BinarySocketBase = (() => {
 
     const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
 
-    const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
-
     const fetchLoginHistory = limit =>
         deriv_api.send({
             login_history: 1,
@@ -444,7 +442,6 @@ const BinarySocketBase = (() => {
         newAccountVirtual,
         newAccountReal,
         newAccountRealMaltaInvest,
-        p2pAdvertiserInfo,
         p2pSubscribe,
         profitTable,
         statement,

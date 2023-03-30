@@ -15,8 +15,74 @@ describe('JurisdictionModalContent', () => {
         is_virtual: false,
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),
-        synthetic_available_accounts: [],
-        financial_available_accounts: [],
+        synthetic_available_accounts: [
+            {
+                market_type: 'gaming',
+                name: '',
+                requirements: {
+                    after_first_deposit: {
+                        financial_assessment: [''],
+                    },
+                    compliance: {
+                        mt5: [''],
+                        tax_information: [''],
+                    },
+                    signup: [''],
+                },
+                shortcode: 'svg',
+                sub_account_type: '',
+            },
+            {
+                market_type: 'gaming',
+                name: '',
+                requirements: {
+                    after_first_deposit: {
+                        financial_assessment: [''],
+                    },
+                    compliance: {
+                        mt5: [''],
+                        tax_information: [''],
+                    },
+                    signup: [''],
+                },
+                shortcode: 'bvi',
+                sub_account_type: '',
+            },
+        ],
+        financial_available_accounts: [
+            {
+                market_type: 'financial',
+                name: '',
+                requirements: {
+                    after_first_deposit: {
+                        financial_assessment: [''],
+                    },
+                    compliance: {
+                        mt5: [''],
+                        tax_information: [''],
+                    },
+                    signup: [''],
+                },
+                shortcode: 'svg',
+                sub_account_type: '',
+            },
+            {
+                market_type: 'financial',
+                name: '',
+                requirements: {
+                    after_first_deposit: {
+                        financial_assessment: [''],
+                    },
+                    compliance: {
+                        mt5: [''],
+                        tax_information: [''],
+                    },
+                    signup: [''],
+                },
+                shortcode: 'bvi',
+                sub_account_type: '',
+            },
+        ],
         context: mock_context,
         real_synthetic_accounts_existing_data: [],
         real_financial_accounts_existing_data: [],

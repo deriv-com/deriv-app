@@ -152,8 +152,6 @@ const mock = (): TRootStore => {
             residence: '',
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
-            sent_verify_emails_data: {},
-            setSentVerifyEmailsData: jest.fn(),
             standpoint: {
                 iom: '',
             },
@@ -177,7 +175,6 @@ const mock = (): TRootStore => {
                 identity_status: '',
             },
             mt5_login_list: [],
-            is_risky_client: false,
             logout: jest.fn(),
             should_allow_authentication: false,
             active_accounts: [],

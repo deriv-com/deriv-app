@@ -9,7 +9,12 @@ import {
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
-import { TTradingPlatformAvailableAccount, TExistingData, TJurisdictionCardSection } from '../Components/props.types';
+import {
+    TTradingPlatformAvailableAccount,
+    TExistingData,
+    TJurisdictionCardSection,
+    TCardFlipStatus,
+} from '../Components/props.types';
 import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsContainerProps = {
@@ -170,8 +175,10 @@ export type TJurisdictionCardProps = {
     financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
-    type_of_card: string;
+    type_of_card: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
     disabled: boolean;
+    cardFlipStatus: TCardFlipStatus;
+    flipCard: (cardName: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest') => void;
 };
 
 export type TJurisdictionCardSectionProps = {
@@ -244,6 +251,8 @@ export type TJurisdictionModalContentProps = {
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;
+    cardFlipStatus: TCardFlipStatus;
+    flipCard: (cardName: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest') => void;
 };
 
 export type TJurisdictionModalFootNoteProps = {

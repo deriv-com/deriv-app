@@ -68,6 +68,14 @@ export type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+export type TCardFlipStatus = {
+    svg: boolean;
+    bvi: boolean;
+    labuan: boolean;
+    vanuatu: boolean;
+    maltainvest: boolean;
+};
+
 export type TClickableDescription = {
     type: 'text' | 'link';
     text: string;

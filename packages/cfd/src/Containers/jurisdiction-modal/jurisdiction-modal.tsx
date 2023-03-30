@@ -33,6 +33,13 @@ const JurisdictionModal = ({
     has_submitted_cfd_personal_details,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
+    const [cardFlipStatus, setCardFlipStatus] = React.useState({
+        svg: false,
+        bvi: false,
+        vanuatu: false,
+        labuan: false,
+        maltainvest: false,
+    });
 
     const {
         poi_or_poa_not_submitted,
@@ -160,6 +167,11 @@ const JurisdictionModal = ({
             }
         }
     };
+
+    const flipCard = (cardName: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest') => {
+        setCardFlipStatus({ ...cardFlipStatus, [cardName]: !cardFlipStatus[cardName] });
+    };
+
     const ModalContent = () => (
         <React.Fragment>
             <JurisdictionModalContent
@@ -172,6 +184,8 @@ const JurisdictionModal = ({
                 context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
+                cardFlipStatus={cardFlipStatus}
+                flipCard={flipCard}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
                 <JurisdictionModalFootNote

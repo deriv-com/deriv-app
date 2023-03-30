@@ -24,6 +24,7 @@ export default class UIStore extends BaseStore {
 
     is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     is_settings_modal_on = false;
+    is_language_settings_modal_on = false;
     is_accounts_switcher_on = false;
     account_switcher_disabled_message = '';
 
@@ -167,7 +168,6 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
-    is_exit_traders_hub_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
@@ -207,7 +207,6 @@ export default class UIStore extends BaseStore {
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
             has_read_scam_message: observable,
-            is_exit_traders_hub_modal_visible: observable,
             is_ready_to_deposit_modal_visible: observable,
             is_need_real_account_for_cashier_modal_visible: observable,
             is_services_error_visible: observable,
@@ -260,17 +259,15 @@ export default class UIStore extends BaseStore {
 
             is_history_tab_active: observable,
             is_landscape: observable,
+            is_language_settings_modal_on: observable,
             is_nativepicker_visible: observable,
 
             is_positions_drawer_on: observable,
             is_real_acc_signup_on: observable,
             is_real_tab_enabled: observable,
             is_reports_visible: observable,
-
             is_route_modal_on: observable,
-
             is_set_currency_modal_visible: observable,
-
             is_settings_modal_on: observable,
             is_switch_to_deriv_account_modal_visible: observable,
             is_top_up_virtual_in_progress: observable,
@@ -349,7 +346,6 @@ export default class UIStore extends BaseStore {
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
-            toggleExitTradersHubModal: action.bound,
             toggleReadyToDepositModal: action.bound,
             toggleNeedRealAccountForCashierModal: action.bound,
             toggleShouldShowRealAccountsList: action.bound,
@@ -396,6 +392,7 @@ export default class UIStore extends BaseStore {
             toggleSetCurrencyModal: action.bound,
             toggleSetResidenceModal: action.bound,
             toggleSettingsModal: action.bound,
+            toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
         });
@@ -607,6 +604,10 @@ export default class UIStore extends BaseStore {
 
     toggleSettingsModal() {
         this.is_settings_modal_on = !this.is_settings_modal_on;
+    }
+
+    toggleLanguageSettingsModal() {
+        this.is_language_settings_modal_on = !this.is_language_settings_modal_on;
     }
 
     openPositionsDrawer() {
@@ -897,10 +898,6 @@ export default class UIStore extends BaseStore {
 
     openSwitchToRealAccountModal() {
         this.is_switch_to_deriv_account_modal_visible = !this.is_switch_to_deriv_account_modal_visible;
-    }
-
-    toggleExitTradersHubModal() {
-        this.is_exit_traders_hub_modal_visible = !this.is_exit_traders_hub_modal_visible;
     }
 
     toggleReadyToDepositModal() {

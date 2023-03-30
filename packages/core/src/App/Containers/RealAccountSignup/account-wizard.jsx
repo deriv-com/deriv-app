@@ -359,6 +359,7 @@ const AccountWizard = props => {
 
 AccountWizard.propTypes = {
     account_settings: PropTypes.object,
+    account_status: PropTypes.object,
     closeRealAccountSignup: PropTypes.func,
     content_flag: PropTypes.string,
     fetchFinancialAssessment: PropTypes.func,
@@ -385,6 +386,7 @@ AccountWizard.propTypes = {
 
 export default connect(({ client, notifications, ui, traders_hub }) => ({
     account_settings: client.account_settings,
+    account_status: client.account_status,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     content_flag: traders_hub.content_flag,
     fetchAccountSettings: client.fetchAccountSettings,

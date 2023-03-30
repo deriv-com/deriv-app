@@ -9,6 +9,7 @@ const useLiveChat = (has_cookie_account = false) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
+    const widget = window.LiveChatWidget;
 
     const liveChatDeletion = () =>
         new Promise<void>(resolve => {
@@ -100,6 +101,12 @@ const useLiveChat = (has_cookie_account = false) => {
             }
         });
     };
+
+    useEffect(() => {
+        if (isReady && !widget) {
+            onHistoryChange();
+        }
+    }, [widget, isReady, onHistoryChange]);
 
     useEffect(() => {
         history.listen(onHistoryChange);

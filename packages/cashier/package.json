@@ -44,6 +44,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/ui": "^0.6.0",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "loadjs": "^4.2.0",

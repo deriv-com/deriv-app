@@ -61,7 +61,6 @@ describe('<CFDPasswordModal/>', () => {
         is_cfd_password_modal_enabled: true,
         is_cfd_success_dialog_enabled: false,
         is_dxtrade_allowed: false,
-        is_pre_appstore: false,
         jurisdiction_selected_shortcode: 'svg',
         platform: 'mt5',
         has_cfd_error: false,
@@ -276,7 +275,6 @@ describe('<CFDPasswordModal/>', () => {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'synthetic' },
-            is_pre_appstore: true,
         };
         render(
             <Router history={history}>
@@ -284,7 +282,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
     });
 
     it('should display Financial icon in Success Dialog', async () => {

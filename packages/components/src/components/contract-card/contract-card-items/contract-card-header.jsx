@@ -65,8 +65,17 @@ const ContractCardHeader = ({
                     'dc-contract-card__grid-underlying-trade--trader--accumulator-sold': is_accumulator && is_sold,
                 })}
             >
-                <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
-                    <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
+                <div
+                    id='dc-contract_card_underlying_label'
+                    className={classNames('dc-contract-card__underlying-name', {
+                        'dc-contract-card__underlying-name--accumulator': is_accumulator,
+                    })}
+                >
+                    <Icon
+                        icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'}
+                        width={is_accumulator ? 46 : 40}
+                        size={32}
+                    />
                     <Text size='xxs' className='dc-contract-card__symbol' weight='bold'>
                         {display_name || contract_info.display_name}
                     </Text>
@@ -111,14 +120,14 @@ const ContractCardHeader = ({
                         </CSSTransition>
                     ) : null}
                 </MobileWrapper>
-                {!is_sold && is_accumulator && (
-                    <TickCounterBar
-                        current_tick={tick_passed}
-                        max_ticks_duration={tick_count}
-                        label={getCardLabels().TICKS}
-                    />
-                )}
             </div>
+            {!is_sold && is_accumulator && (
+                <TickCounterBar
+                    current_tick={tick_passed}
+                    max_ticks_duration={tick_count}
+                    label={getCardLabels().TICKS}
+                />
+            )}
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />
             </MobileWrapper>

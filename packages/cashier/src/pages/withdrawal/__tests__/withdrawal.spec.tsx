@@ -4,9 +4,11 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
+import { useWithdrawLocked } from '@deriv/hooks';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 
+jest.mock('@deriv/hooks');
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
 jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
@@ -30,6 +32,7 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 describe('<Withdrawal />', () => {
     let history, mockRootStore, setSideNotes;
     beforeEach(() => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(false);
         history = createBrowserHistory();
         mockRootStore = mockStore({
             client: {
@@ -82,9 +85,9 @@ describe('<Withdrawal />', () => {
     };
 
     it('should render <CashierLocked /> component', () => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         mockRootStore.client.current_currency_type = 'crypto';
         mockRootStore.modules.cashier.general_store.is_system_maintenance = true;
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
         renderWithdrawal();
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
@@ -112,7 +115,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         renderWithdrawal();
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();

@@ -471,7 +471,8 @@ export default class AccountTransferStore {
                     obj_values.error = AccountTransferGetSelectedError(obj_values.value);
                 }
 
-                const { account_id, login } = this.root_store.traders_hub?.selected_account;
+                const login = this.root_store.traders_hub?.selected_account.login;
+                const account_id = this.root_store.traders_hub?.selected_account.account_id;
 
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account

@@ -27,7 +27,7 @@ import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -38,6 +38,7 @@ import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
 
 const LANGUAGE_KEY = 'i18n_language';
+const DEFAULT_LANGUAGE = 'EN';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -146,6 +147,7 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
+    p2p_advertiser_info = {};
     prev_account_type = 'demo';
 
     constructor(root_store) {
@@ -209,6 +211,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
+            p2p_advertiser_info: observable,
             prev_account_type: observable,
             balance: computed,
             account_open_date: computed,
@@ -275,6 +278,7 @@ export default class ClientStore extends BaseStore {
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
+            should_restrict_vanuatu_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -386,6 +390,7 @@ export default class ClientStore extends BaseStore {
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             setIsPreAppStore: action.bound,
+            setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
         });
 
@@ -409,13 +414,11 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const { trading_hub } = this.account_settings;
-                const lang_from_url = window.location.search.slice(-2);
+                const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
                 this.is_pre_appstore = !!trading_hub;
                 localStorage.setItem('is_pre_appstore', !!trading_hub);
-                if (lang_from_url) {
-                    this.setPreferredLanguage(lang_from_url);
-                    localStorage.setItem(LANGUAGE_KEY, lang_from_url);
-                }
+                this.setPreferredLanguage(lang_from_url);
+                LocalStore.set(LANGUAGE_KEY, lang_from_url);
             }
         );
         // TODO: Remove this after setting trading_hub enabled for all users
@@ -532,7 +535,9 @@ export default class ClientStore extends BaseStore {
             return [];
         };
 
-        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.landing_companies || !this.root_store.ui) {
+            return [];
+        }
         if (!this.root_store.ui.real_account_signup_target) {
             return getDefaultAllowedCurrencies();
         }
@@ -830,6 +835,12 @@ export default class ClientStore extends BaseStore {
     get should_restrict_bvi_account_creation() {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
+        ).length;
+    }
+
+    get should_restrict_vanuatu_account_creation() {
+        return !!this.mt5_login_list.filter(
+            item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
     }
 
@@ -1168,6 +1179,7 @@ export default class ClientStore extends BaseStore {
 
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1194,9 +1206,11 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
+            Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
+            Cookies.remove('region', { domain });
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }
@@ -1234,7 +1248,7 @@ export default class ClientStore extends BaseStore {
 
     responsePayoutCurrencies(response) {
         const list = response?.payout_currencies || response;
-        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
+        this.currencies_list = buildCurrenciesList(Array.isArray(list) ? list : []);
         this.selectCurrency('');
     }
 
@@ -1328,7 +1342,7 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
-        const { document_number, document_type, ...required_form_values } = form_values;
+        const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
@@ -1616,6 +1630,11 @@ export default class ClientStore extends BaseStore {
             if (!this.is_virtual) {
                 this.setPrevRealAccountLoginid(this.loginid);
             }
+            const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+
+            if (!no_cr_account && this.is_low_risk) {
+                this.switchAccount(this.virtual_account_loginid);
+            }
         }
 
         this.selectCurrency('');
@@ -1644,6 +1663,8 @@ export default class ClientStore extends BaseStore {
 
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
+
+            await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1698,6 +1719,10 @@ export default class ClientStore extends BaseStore {
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+    }
+
+    setP2pAdvertiserInfo(response) {
+        this.p2p_advertiser_info = response.p2p_advertiser_info;
     }
 
     setStandpoint(landing_companies) {
@@ -1968,8 +1993,11 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccountSettings(settings) {
-        this.account_settings = settings;
-        this.is_account_setting_loaded = true;
+        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
+        if (!is_equal_settings) {
+            this.account_settings = settings;
+            this.is_account_setting_loaded = true;
+        }
     }
 
     setAccountStatus(status) {
@@ -2505,8 +2533,14 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         const { gaming_company, financial_company } = this.landing_companies;
+
+        // This is a conditional check for countries like Australia/Norway which fulfil one of these following conditions.
+        const restricted_countries =
+            financial_company?.shortcode === 'svg' ||
+            (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
+
         const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
-        return high_risk_landing_company || this.account_status.risk_classification === 'high';
+        return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
     get is_low_risk() {

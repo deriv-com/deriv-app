@@ -3,6 +3,21 @@
         max-width: 67.2rem;
     }
 
+    &__input {
+        padding-bottom: 2rem;
+        & .dc-input__field {
+            padding-left: 3rem;
+        }
+
+        & .dc-input__leading-icon {
+            top: auto;
+        }
+
+        &::placeholder {
+            padding-left: 3rem;
+        }
+    }
+
     &__icon {
         cursor: pointer;
     }

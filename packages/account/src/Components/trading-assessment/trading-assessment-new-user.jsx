@@ -3,6 +3,7 @@ import TradingAssessmentForm from './trading-assessment-form';
 
 const TradingAssessmentNewUser = ({
     assessment_questions,
+    disabled_items,
     goToNextStep,
     goToPreviousStep,
     onSave,
@@ -10,6 +11,7 @@ const TradingAssessmentNewUser = ({
     onSubmit,
     getCurrentStep,
     value,
+    setSubSectionIndex,
 }) => {
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
@@ -37,7 +39,8 @@ const TradingAssessmentNewUser = ({
             form_value={value}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
-            is_header_navigation
+            setSubSectionIndex={setSubSectionIndex}
+            disabled_items={disabled_items}
         />
     );
 };

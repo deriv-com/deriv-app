@@ -16,6 +16,7 @@ import {
     DateOfBirthPicker,
     Text,
     useStateCallback,
+    HintBox,
 } from '@deriv/components';
 import {
     toMoment,
@@ -34,6 +35,7 @@ import {
     routes,
     WS,
     useIsMounted,
+    validName,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
@@ -101,6 +103,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
 );
 
 export const PersonalDetailsForm = ({
+    authentication_status,
     is_eu,
     is_mf,
     is_uk,
@@ -122,6 +125,7 @@ export const PersonalDetailsForm = ({
     is_social_signup,
     updateAccountStatus,
     has_poa_address_mismatch,
+    is_language_changing,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -153,12 +157,15 @@ export const PersonalDetailsForm = ({
                 await WS.wait('get_settings');
 
                 fetchResidenceList();
+
                 if (has_residence) {
-                    setIsStateLoading(true, () => {
-                        fetchStatesList().then(() => {
-                            setIsStateLoading(false);
+                    if (!is_language_changing) {
+                        setIsStateLoading(true, () => {
+                            fetchStatesList().then(() => {
+                                setIsStateLoading(false);
+                            });
                         });
-                    });
+                    }
                 }
             };
             getSettings();
@@ -308,8 +315,6 @@ export const PersonalDetailsForm = ({
         }
 
         validateValues(val => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name'];
-        validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const residence_fields = ['citizen'];
         const validateResidence = val => getLocation(residence_list, val, 'value');
@@ -345,12 +350,19 @@ export const PersonalDetailsForm = ({
 
         const min_name = 2;
         const max_name = 50;
-        if (values.first_name && !validLength(values.first_name.trim(), { min: min_name, max: max_name })) {
-            errors.first_name = localize('You should enter 2-50 characters.');
-        }
-        if (values.last_name && !validLength(values.last_name.trim(), { min: min_name, max: max_name })) {
-            errors.last_name = localize('You should enter 2-50 characters.');
-        }
+        const validateName = (name, field) => {
+            if (name) {
+                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
+                    errors[field] = localize('You should enter 2-50 characters.');
+                } else if (!validName(name)) {
+                    // validName() has the exact regex used at the backend for allowing non digit characters including accented unicode characters.
+                    // two or more space between name not allowed.
+                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
+                }
+            }
+        };
+        validateName(values.first_name, 'first_name');
+        validateName(values.last_name, 'last_name');
 
         if (values.phone) {
             // minimum characters required is 9 numbers (excluding +- signs or space)
@@ -544,6 +556,21 @@ export const PersonalDetailsForm = ({
         if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
         if (!form_initial_values.employment_status) form_initial_values.employment_status = '';
     }
+
+    const is_poa_verified = authentication_status?.document_status === 'verified';
+    const is_poi_verified = authentication_status?.identity_status === 'verified';
+
+    const is_account_verified = is_poa_verified && is_poi_verified;
+
+    //Generate Redirection Link to user based on verifiction status
+    const getRedirectionLink = () => {
+        if (!is_poi_verified) {
+            return '/account/proof-of-identity';
+        } else if (!is_poa_verified) {
+            return '/account/proof-of-address';
+        }
+        return null;
+    };
 
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
@@ -1166,30 +1193,60 @@ export const PersonalDetailsForm = ({
                                                             <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
                                                         </Text>
                                                     </div>
-                                                    <Checkbox
-                                                        name='request_professional_status'
-                                                        value={values.request_professional_status}
-                                                        onChange={() => {
-                                                            setFieldValue(
-                                                                'request_professional_status',
-                                                                !values.request_professional_status
-                                                            );
-                                                            setFieldTouched('request_professional_status', true, true);
-                                                        }}
-                                                        label={localize(
-                                                            'I would like to be treated as a professional client.'
-                                                        )}
-                                                        id='request_professional_status'
-                                                        defaultChecked={!!values.request_professional_status}
-                                                        disabled={
-                                                            is_virtual ||
-                                                            !!form_initial_values.request_professional_status
-                                                        }
-                                                        greyDisabled
-                                                        className={classNames({
-                                                            'dc-checkbox-blue': is_appstore,
-                                                        })}
-                                                    />
+                                                    {is_account_verified ? (
+                                                        <Checkbox
+                                                            name='request_professional_status'
+                                                            value={values.request_professional_status}
+                                                            onChange={() => {
+                                                                setFieldValue(
+                                                                    'request_professional_status',
+                                                                    !values.request_professional_status
+                                                                );
+                                                                setFieldTouched(
+                                                                    'request_professional_status',
+                                                                    true,
+                                                                    true
+                                                                );
+                                                            }}
+                                                            label={localize(
+                                                                'I would like to be treated as a professional client.'
+                                                            )}
+                                                            id='request_professional_status'
+                                                            defaultChecked={!!values.request_professional_status}
+                                                            disabled={
+                                                                is_virtual ||
+                                                                !!form_initial_values.request_professional_status
+                                                            }
+                                                            greyDisabled
+                                                            className={classNames({
+                                                                'dc-checkbox-blue': is_appstore,
+                                                            })}
+                                                        />
+                                                    ) : (
+                                                        <HintBox
+                                                            icon='IcInfoBlue'
+                                                            icon_height={20}
+                                                            icon_width={30}
+                                                            message={
+                                                                <Text as='p' size='xs'>
+                                                                    <Localize
+                                                                        i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
+                                                                        components={[
+                                                                            <a
+                                                                                key={0}
+                                                                                className='link--no-bold'
+                                                                                rel='noopener noreferrer'
+                                                                                target='_blank'
+                                                                                href={getRedirectionLink()}
+                                                                            />,
+                                                                        ]}
+                                                                    />
+                                                                </Text>
+                                                            }
+                                                            is_info
+                                                            is_inline
+                                                        />
+                                                    )}
                                                 </fieldset>
                                             </FormBodySection>
                                         </div>
@@ -1277,6 +1334,7 @@ export const PersonalDetailsForm = ({
 };
 
 PersonalDetailsForm.propTypes = {
+    authentication_status: PropTypes.object,
     is_eu: PropTypes.bool,
     is_mf: PropTypes.bool,
     is_uk: PropTypes.bool,
@@ -1298,10 +1356,12 @@ PersonalDetailsForm.propTypes = {
     is_social_signup: PropTypes.bool,
     updateAccountStatus: PropTypes.func,
     has_poa_address_mismatch: PropTypes.bool,
+    is_language_changing: PropTypes.bool,
 };
 
-export default connect(({ client, notifications, ui }) => ({
+export default connect(({ client, notifications, ui, common }) => ({
     account_settings: client.account_settings,
+    authentication_status: client.authentication_status,
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
     current_landing_company: client.current_landing_company,
@@ -1321,4 +1381,5 @@ export default connect(({ client, notifications, ui }) => ({
     Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
+    is_language_changing: common.is_language_changing,
 }))(withRouter(PersonalDetailsForm));

@@ -4,7 +4,7 @@ import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { requestWS } from 'Utils/websocket';
+import { requestWS, subscribeWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
@@ -19,7 +19,6 @@ export default class BuySellStore extends BaseStore {
     has_more_items_to_load = false;
     has_payment_methods = false;
     is_filter_modal_loading = false;
-    is_filter_modal_open = false;
     is_loading = true;
     is_sort_dropdown_open = false;
     is_submit_disabled = true;
@@ -34,17 +33,15 @@ export default class BuySellStore extends BaseStore {
     selected_payment_method_value = [];
     selected_payment_method_text = [];
     selected_value = 'rate';
-    should_show_currency_selector_modal = false;
-    should_show_popup = false;
     should_show_verification = false;
     should_use_client_limits = false;
     show_advertiser_page = false;
     show_filter_payment_methods = false;
-    show_rate_change_popup = false;
     sort_by = 'rate';
     submitForm = () => {};
     table_type = buy_sell.BUY;
     form_props = {};
+    is_create_order_subscribed = false;
 
     initial_values = {
         amount: this.advert?.min_order_amount_limit,
@@ -66,7 +63,6 @@ export default class BuySellStore extends BaseStore {
             has_more_items_to_load: observable,
             has_payment_methods: observable,
             is_filter_modal_loading: observable,
-            is_filter_modal_open: observable,
             is_loading: observable,
             is_sort_dropdown_open: observable,
             is_submit_disabled: observable,
@@ -81,17 +77,15 @@ export default class BuySellStore extends BaseStore {
             selected_payment_method_value: observable,
             selected_payment_method_text: observable,
             selected_value: observable,
-            should_show_currency_selector_modal: observable,
-            should_show_popup: observable,
             should_show_verification: observable,
             should_use_client_limits: observable,
             show_advertiser_page: observable,
             show_filter_payment_methods: observable,
-            show_rate_change_popup: observable,
             sort_by: observable,
             submitForm: observable,
             table_type: observable,
             form_props: observable,
+            is_create_order_subscribed: observable,
             account_currency: computed,
             advert: computed,
             has_payment_info: computed,
@@ -106,10 +100,8 @@ export default class BuySellStore extends BaseStore {
             handleChange: action.bound,
             handleSubmit: action.bound,
             hideAdvertiserPage: action.bound,
-            hidePopup: action.bound,
             hideVerification: action.bound,
             loadMoreItems: action.bound,
-            onCancelClick: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
             onClickReset: action.bound,
@@ -123,7 +115,6 @@ export default class BuySellStore extends BaseStore {
             setHasMoreItemsToLoad: action.bound,
             setHasPaymentMethods: action.bound,
             setIsFilterModalLoading: action.bound,
-            setIsFilterModalOpen: action.bound,
             setIsLoading: action.bound,
             setIsSortDropdownOpen: action.bound,
             setIsSubmitDisabled: action.bound,
@@ -139,8 +130,6 @@ export default class BuySellStore extends BaseStore {
             setSelectedPaymentMethodValue: action.bound,
             setSelectedPaymentMethodText: action.bound,
             setSelectedValue: action.bound,
-            setShouldShowCurrencySelectorModal: action.bound,
-            setShouldShowPopup: action.bound,
             setShouldShowVerification: action.bound,
             setShouldUseClientLimits: action.bound,
             setShowAdvertiserPage: action.bound,
@@ -154,9 +143,12 @@ export default class BuySellStore extends BaseStore {
             validatePopup: action.bound,
             sort_list: computed,
             fetchAdvertiserAdverts: action.bound,
-            setShowRateChangePopup: action.bound,
+            handleResponse: action.bound,
+            setIsCreateOrderSubscribed: action.bound,
         });
     }
+
+    create_order_subscription = {};
 
     get account_currency() {
         return this.advert?.account_currency;
@@ -274,6 +266,33 @@ export default class BuySellStore extends BaseStore {
         this.setIsSortDropdownOpen(false);
     }
 
+    handleResponse = async order => {
+        const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
+        const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
+        if (order.error) {
+            setErrorMessage(order.error.message);
+            this.setFormErrorCode(order.error.code);
+        } else {
+            if (order?.subscription?.id && !this.is_create_order_subscribed) {
+                this.setIsCreateOrderSubscribed(true);
+            }
+            setErrorMessage(null);
+            general_store.hideModal();
+            floating_rate_store.setIsMarketRateChanged(false);
+            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
+            if (order?.p2p_order_create?.id) {
+                const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
+                handleConfirm(response?.p2p_order_info);
+            }
+            handleClose();
+            this.payment_method_ids = [];
+        }
+        if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
+            sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
+            order_store.setOrderDetails(order);
+        }
+    };
+
     handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
         if (isMountedFn()) {
             setSubmitting(true);
@@ -298,20 +317,7 @@ export default class BuySellStore extends BaseStore {
             payload.rate = values.rate;
         }
 
-        const order = await requestWS({ ...payload });
-
-        if (order.error) {
-            this.form_props.setErrorMessage(order.error.message);
-            this.setFormErrorCode(order.error.code);
-        } else {
-            this.form_props.setErrorMessage(null);
-            this.setShowRateChangePopup(false);
-            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
-            const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
-            this.form_props.handleConfirm(response.p2p_order_info);
-            this.form_props.handleClose();
-            this.payment_method_ids = [];
-        }
+        this.create_order_subscription = subscribeWS({ ...payload }, [this.handleResponse]);
 
         if (isMountedFn()) {
             setSubmitting(false);
@@ -320,10 +326,6 @@ export default class BuySellStore extends BaseStore {
 
     hideAdvertiserPage() {
         this.setShowAdvertiserPage(false);
-    }
-
-    hidePopup() {
-        this.should_show_popup = false;
     }
 
     hideVerification() {
@@ -408,10 +410,6 @@ export default class BuySellStore extends BaseStore {
         });
     }
 
-    onCancelClick() {
-        this.setShouldShowPopup(false);
-    }
-
     onChangeTableType(event) {
         this.setTableType(event.target.value);
     }
@@ -422,7 +420,6 @@ export default class BuySellStore extends BaseStore {
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
-        this.setIsFilterModalOpen(false);
     }
 
     onClickReset() {
@@ -437,11 +434,14 @@ export default class BuySellStore extends BaseStore {
     }
 
     onLocalCurrencySelect(local_currency) {
+        const { floating_rate_store } = this.root_store;
         this.setSelectedLocalCurrency(local_currency);
         this.setLocalCurrency(local_currency);
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
+        floating_rate_store.previous_exchange_rate = null;
+        floating_rate_store.setIsMarketRateChanged(false);
     }
 
     registerIsListedReaction() {
@@ -491,10 +491,6 @@ export default class BuySellStore extends BaseStore {
         this.is_filter_modal_loading = is_filter_modal_loading;
     }
 
-    setIsFilterModalOpen(is_filter_modal_open) {
-        this.is_filter_modal_open = is_filter_modal_open;
-    }
-
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
     }
@@ -535,6 +531,7 @@ export default class BuySellStore extends BaseStore {
                         </Text>
                     </div>
                 ),
+                display_name,
                 has_adverts,
                 is_default,
                 text: symbol,
@@ -581,17 +578,6 @@ export default class BuySellStore extends BaseStore {
         this.selected_value = selected_value;
     }
 
-    setShouldShowCurrencySelectorModal(should_show_currency_selector_modal) {
-        this.should_show_currency_selector_modal = should_show_currency_selector_modal;
-    }
-
-    setShouldShowPopup(should_show_popup) {
-        this.should_show_popup = should_show_popup;
-        if (!this.should_show_popup) {
-            this.fetchAdvertiserAdverts();
-        }
-    }
-
     setShouldShowVerification(should_show_verification) {
         this.should_show_verification = should_show_verification;
     }
@@ -617,14 +603,19 @@ export default class BuySellStore extends BaseStore {
     }
 
     setSelectedAdvert(selected_advert) {
+        const { general_store } = this.root_store;
         if (!this.root_store.general_store.is_advertiser) {
             this.setShouldShowVerification(true);
         } else if (this.is_sell_advert) {
             this.setSelectedAdState(selected_advert);
-            this.setShouldShowPopup(true);
+            general_store.showModal({
+                key: 'BuySellModal',
+            });
         } else {
             this.setSelectedAdState(selected_advert);
-            this.setShouldShowPopup(true);
+            general_store.showModal({
+                key: 'BuySellModal',
+            });
         }
     }
 
@@ -632,13 +623,13 @@ export default class BuySellStore extends BaseStore {
         this.submitForm = submitFormFn;
     }
 
+    setIsCreateOrderSubscribed(is_create_order_subscribed) {
+        this.is_create_order_subscribed = is_create_order_subscribed;
+    }
+
     showAdvertiserPage(selected_advert) {
         this.setSelectedAdState(selected_advert);
         this.setShowAdvertiserPage(true);
-    }
-
-    setShowRateChangePopup(show_rate_change_popup) {
-        this.show_rate_change_popup = show_rate_change_popup;
     }
 
     showVerification() {
@@ -754,4 +745,10 @@ export default class BuySellStore extends BaseStore {
 
         return () => disposeAdvertIntervalReaction();
     }
+
+    unsubscribeCreateOrder = () => {
+        if (this.create_order_subscription.unsubscribe) {
+            this.create_order_subscription.unsubscribe();
+        }
+    };
 }

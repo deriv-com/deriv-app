@@ -52,6 +52,8 @@ const DetailsComponent = ({ message = '', action_type = '' }) => {
     );
 };
 
+const statementws_href = urlFor('user/statementws', { legacy: true });
+
 const getRowAction = row_obj => {
     let action;
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
@@ -72,7 +74,7 @@ const getRowAction = row_obj => {
                                       className='link link--orange'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={urlFor('user/statementws', { legacy: true })}
+                                      href={statementws_href}
                                   />,
                               ]}
                           />

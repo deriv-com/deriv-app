@@ -1,4 +1,4 @@
-import { getUrlBase } from '@deriv/shared';
+import { getPlatformFromUrl, getUrlBase } from '@deriv/shared';
 
 const PATTERN_SIZE = 5;
 
@@ -21,6 +21,20 @@ const createDocumentPatterns = () => {
     return pattern_array;
 };
 
+export const documentAdditionalError = (document_additional, document_additional_format) => {
+    let error_message = null;
+    if (!document_additional) {
+        error_message = 'Please enter your document number. ';
+    } else {
+        const format_regex = getRegex(document_additional_format);
+        if (!format_regex.test(document_additional)) {
+            error_message = 'Please enter the correct format. ';
+        }
+    }
+
+    return error_message;
+};
+
 export const isSequentialNumber = document_number => {
     const trimmed_document_number = document_number.replace(/[.-]*/g, '');
     const pattern_results = [];
@@ -34,6 +48,15 @@ export const isSequentialNumber = document_number => {
     return pattern_results.includes(true);
 };
 
+// function for skipping validation of exact document numbers for QA smileidentity sandbox testing
+export const isIDVWhitelistDocumentNumber = (country, document_type, document_number) => {
+    const is_whitelisted_number =
+        idv_test_document_whitelist.has(country) &&
+        idv_test_document_whitelist.get(country)[document_type] === document_number;
+
+    return is_whitelisted_number && (getPlatformFromUrl().is_test_link || getPlatformFromUrl().is_staging);
+};
+
 export const getRegex = target_regex => {
     const output_regex = regex.find(r => r.regex_string === target_regex);
     if (output_regex) {
@@ -43,13 +66,23 @@ export const getRegex = target_regex => {
 };
 
 export const getDocumentData = (country_code, document_type) => {
-    if (Object.keys(idv_document_data).includes(country_code)) {
-        return idv_document_data[country_code][document_type];
-    }
-    return null;
+    return (
+        (Object.keys(idv_document_data).includes(country_code) && idv_document_data[country_code][document_type]) || {
+            new_display_name: '',
+            example_format: '',
+            sample_image: '',
+        }
+    );
 };
 
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);
+
+export const preventEmptyClipboardPaste = e => {
+    const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
+    if (clipboardData.length === 0) {
+        e.preventDefault();
+    }
+};
 
 // Unsupported Regex List
 const regex = [
@@ -182,3 +215,10 @@ const idv_document_data = {
         },
     },
 };
+
+export const idv_test_document_whitelist = new Map([
+    ['gh', { drivers_license: 'B0000000', passport: 'G0000000', ssnit: 'C000000000000', voter_id: '0000000000' }],
+    ['ke', { alien_card: '000000', passport: 'A00000000', national_id: '00000000' }],
+    ['ng', { drivers_license: 'ABC000000000', nin_slip: '00000000000', voter_id: '0000000000000000000' }],
+    ['za', { national_id: '0000000000000', national_id_no_photo: '0000000000000' }],
+]);

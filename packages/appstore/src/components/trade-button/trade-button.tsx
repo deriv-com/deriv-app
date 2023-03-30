@@ -10,7 +10,8 @@ const TradeButton = ({
     onAction,
     is_external,
     is_buttons_disabled,
-}: Pick<Actions, 'link_to' | 'onAction' | 'is_external' | 'is_buttons_disabled'>) => {
+    new_tab,
+}: Pick<Actions, 'link_to' | 'onAction' | 'is_external' | 'new_tab' | 'is_buttons_disabled'>) => {
     const { traders_hub, modules } = useStores();
     const { is_demo } = traders_hub;
     const { dxtrade_tokens } = modules.cfd;
@@ -19,6 +20,13 @@ const TradeButton = ({
 
     if (link_to) {
         if (is_external) {
+            if (new_tab) {
+                return (
+                    <a href={link_to} target='_blank' rel='noopener noreferrer'>
+                        <Button primary>{localize('Trade')}</Button>
+                    </a>
+                );
+            }
             return (
                 <a href={link_to}>
                     <Button primary>{localize('Trade')}</Button>

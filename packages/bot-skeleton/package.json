@@ -35,7 +35,7 @@
         "eslint-plugin-react-hooks": "^4.2.0"
     },
     "dependencies": {
-        "@deriv/deriv-api": "^1.0.8",
+        "@deriv/deriv-api": "^1.0.11",
         "@deriv/indicators": "^1.0.0",
         "@deriv/js-interpreter": "^3.0.0",
         "@deriv/shared": "^1.0.0",

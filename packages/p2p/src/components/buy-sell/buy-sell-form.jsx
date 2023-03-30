@@ -14,12 +14,14 @@ import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     buy_sell_store.setFormProps(props);
+    const { showModal } = useModalManagerContext();
 
     const { setPageFooterParent } = props;
     const {
@@ -80,12 +82,25 @@ const BuySellForm = props => {
             }
 
             advertiser_page_store.setFormErrorMessage('');
-            buy_sell_store.setShowRateChangePopup(rate_type === ad_type.FLOAT);
+            const disposeRateChangeModal = reaction(
+                () => floating_rate_store.is_market_rate_changed,
+                is_market_rate_changed => {
+                    if (is_market_rate_changed && rate_type === ad_type.FLOAT) {
+                        showModal({
+                            key: 'RateChangeModal',
+                            props: {
+                                currency: buy_sell_store.local_currency,
+                            },
+                        });
+                    }
+                }
+            );
             buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {
                 buy_sell_store.payment_method_ids = [];
                 disposeReceiveAmountReaction();
+                disposeRateChangeModal();
             };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps

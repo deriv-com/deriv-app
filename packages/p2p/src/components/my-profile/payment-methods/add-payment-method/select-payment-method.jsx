@@ -31,7 +31,7 @@ const SelectPaymentMethod = () => {
                                 label={localize('Payment method')}
                                 list_items={my_profile_store.payment_methods_list_items}
                                 onItemSelection={({ value }) => {
-                                    my_profile_store.setSelectedPaymentMethod(value);
+                                    setTimeout(() => my_profile_store.setSelectedPaymentMethod(value), 0);
                                 }}
                                 required
                                 trailing_icon={<Icon icon='IcSearch' />}

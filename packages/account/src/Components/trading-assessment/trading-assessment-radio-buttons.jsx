@@ -2,7 +2,15 @@ import React from 'react';
 import { Field } from 'formik';
 import { Text, RadioGroup } from '@deriv/components';
 
-const TradingAssessmentRadioButton = ({ text, list, onChange, values, form_control, setEnableNextSection }) => {
+const TradingAssessmentRadioButton = ({
+    disabled_items,
+    text,
+    list,
+    onChange,
+    values,
+    form_control,
+    setEnableNextSection,
+}) => {
     React.useEffect(() => {
         setEnableNextSection(!!values[form_control]);
     }, [form_control]);
@@ -31,6 +39,7 @@ const TradingAssessmentRadioButton = ({ text, list, onChange, values, form_contr
                                 key={answer.value}
                                 label={answer?.text}
                                 value={answer?.value}
+                                disabled={disabled_items.includes(form_control)}
                             />
                         ))}
                     </RadioGroup>

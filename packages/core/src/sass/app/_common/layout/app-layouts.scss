@@ -90,15 +90,14 @@
     font-size: 1.6rem;
     z-index: 9999;
     font-weight: bold;
+    gap: 2.4rem;
 
     &__icon {
-        width: 59px;
-        height: 64px;
+        width: 8rem;
+        height: 6.2rem;
     }
     &__message {
         padding: 1.6rem 11rem;
-        line-height: 1.4;
-
         &--landscape {
             @media screen and (orientation: portrait) {
                 display: none;
@@ -107,7 +106,7 @@
 
         &--portrait {
             text-align: center;
-            margin-top: 2rem;
+            line-height: var(--text-lh-m);
             @media screen and (orientation: landscape) {
                 display: none;
             }

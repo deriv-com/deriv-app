@@ -17,16 +17,11 @@ const ToggleNotificationsDrawer = ({
         notifications: { is_notifications_loading_completed },
     } = useStore();
 
-    const [counter, setCounter] = useState(null);
+    const [counter, setCounter] = useState(0);
 
-    // don't hide count when 'is_notifications_loading_completed' = false
     useEffect(() => {
-        // show count if loading completed and count more than 0
-        if (is_notifications_loading_completed && !!count)
-            setCounter(<Counter count={count} className='notifications-toggle__step' />);
-        // set null only if loading completed and count == 0
-        else if (is_notifications_loading_completed && !count) setCounter(null);
-        // another way when loading is in progress doesn't change the counter
+        if (is_notifications_loading_completed && !!count) setCounter(count);
+        else if (is_notifications_loading_completed && !count) setCounter(0);
     }, [is_notifications_loading_completed, count]);
 
     const notifications_toggler_el = (
@@ -37,7 +32,7 @@ const ToggleNotificationsDrawer = ({
             onClick={toggleDialog}
         >
             <Icon className='notifications-toggle__icon' icon='IcBell' />
-            {counter}
+            {!!counter && <Counter count={counter} className='notifications-toggle__step' />}
         </div>
     );
 

@@ -19,6 +19,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: localize('Buy price:'),
     POTENTIAL_PAYOUT: localize('Payout limit:'),
     TICK: localize('Tick '),
+    TICKS: localize('Ticks'),
     WON: localize('Won'),
     LOST: localize('Lost'),
     DAYS: localize('days'),
@@ -94,11 +95,11 @@ export const getMarketNamesMap = () => ({
     RDBEAR: localize('Bear Market Index'),
     RDBULL: localize('Bull Market Index'),
     STPRNG: localize('Step Index'),
-    WLDAUD: localize('AUD Index'),
-    WLDEUR: localize('EUR Index'),
-    WLDGBP: localize('GBP Index'),
-    WLDXAU: localize('Gold Index'),
-    WLDUSD: localize('USD Index'),
+    WLDAUD: localize('AUD Basket'),
+    WLDEUR: localize('EUR Basket'),
+    WLDGBP: localize('GBP Basket'),
+    WLDXAU: localize('Gold Basket'),
+    WLDUSD: localize('USD Basket'),
     '1HZ10V': localize('Volatility 10 (1s) Index'),
     '1HZ100V': localize('Volatility 100 (1s) Index'),
     '1HZ150V': localize('Volatility 150 (1s) Index'),
@@ -203,6 +204,11 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        button_name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Accumulator' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -274,8 +280,9 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type];
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
 export const getContractTypePosition = (type, is_high_low = false) =>

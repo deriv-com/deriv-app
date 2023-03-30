@@ -1,10 +1,10 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
-import { PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import PoaButton from 'Components/poa/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
+import { PlatformContext } from '@deriv/shared';
+import PoaButton from 'Components/poa/poa-button';
+import { PropTypes } from 'prop-types';
+import React from 'react';
+import { localize } from '@deriv/translations';
 
 export const Verified = ({ needs_poa, redirect_button, is_from_external }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -42,7 +42,6 @@ export const Verified = ({ needs_poa, redirect_button, is_from_external }) => {
             {!is_from_external && (
                 <React.Fragment>
                     <PoaButton />
-                    {redirect_button}
                 </React.Fragment>
             )}
         </IconMessageContent>

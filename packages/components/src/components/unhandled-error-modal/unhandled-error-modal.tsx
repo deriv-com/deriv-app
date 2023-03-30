@@ -6,7 +6,7 @@ import Modal from '../modal';
 import Text from '../text';
 import Button from '../button';
 import MobileDialog from '../mobile-dialog';
-import { localize, Localize } from '@deriv/translations';
+import { getDefaultError } from '@deriv/shared';
 
 const ModalContent = () => (
     <div className='unhandled-error'>
@@ -20,7 +20,7 @@ const ModalContent = () => (
             align='center'
             weight='bold'
         >
-            {localize('Sorry for the interruption')}
+            {getDefaultError().header}
         </Text>
         <Text
             className='da-icon-with-message__text__desc'
@@ -30,11 +30,9 @@ const ModalContent = () => (
             line_height='xxs'
             align='center'
         >
-            {localize('Our servers hit a bump. Let’s refresh to move on.')}
+            {getDefaultError().description}
         </Text>
-        <Button onClick={() => location.reload()} has_effect primary large>
-            <Localize i18n_default_text='Refresh' />
-        </Button>
+        <Button onClick={() => location.reload()} has_effect primary large text={getDefaultError().cta_label} />
     </div>
 );
 

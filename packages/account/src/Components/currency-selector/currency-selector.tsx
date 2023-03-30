@@ -8,7 +8,7 @@ import {
     isDesktop,
     reorderCurrencies,
     PlatformContext,
-    address_details_fields,
+    getAddressDetailsFields,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group';
@@ -130,7 +130,7 @@ const CurrencySelector = ({
     React.useEffect(() => {
         if (is_bypass_step && real_account_signup?.error_details) {
             const keys = Object.keys(real_account_signup?.error_details);
-            const route_to_address_details = Object.keys(address_details_fields).filter(item => keys.includes(item));
+            const route_to_address_details = Object.keys(getAddressDetailsFields()).filter(item => keys.includes(item));
             if (route_to_address_details?.length > 0) goToStep(3);
             else {
                 goToNextStep();

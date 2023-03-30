@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const address_details_fields = Object.freeze({
+export const getAddressDetailsFields = () => ({
     address_line_1: localize('First line of address'),
     address_line_2: localize('Second line of address'),
     address_city: localize('Town/City'),
@@ -8,7 +8,7 @@ export const address_details_fields = Object.freeze({
     address_postcode: localize('Postal/ZIP code'),
 });
 
-export const personal_details_fields = Object.freeze({
+export const getPersonalDetailsFields = () => ({
     salutation: localize('Title and name'),
     first_name: localize('First name'),
     last_name: localize('Last name'),
@@ -23,4 +23,4 @@ export const personal_details_fields = Object.freeze({
     employment_status: localize('Employment status'),
 });
 
-export const signup_form_fields = { ...personal_details_fields, ...address_details_fields };
+export const signup_form_fields = { ...getPersonalDetailsFields(), ...getAddressDetailsFields() };

@@ -9,7 +9,7 @@ import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
 
-type TLanguageSettings = {
+export type TLanguageSettings = {
     current_language: string;
     changeSelectedLanguage: (lang: string) => void;
     isCurrentLanguage: (lang: string) => boolean;

@@ -2,7 +2,14 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick, isBot, isMobile } from '@deriv/shared';
+import {
+    isHighLow,
+    getCurrentTick,
+    getGrowthRatePercentage,
+    isBot,
+    isAccumulatorContract,
+    isMobile,
+} from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -10,6 +17,7 @@ import Text from '../../text';
 import ProgressSlider from '../../progress-slider';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
+import TickCounterBar from './tick-counter-bar.jsx';
 
 const ContractCardHeader = ({
     contract_info,
@@ -19,21 +27,49 @@ const ContractCardHeader = ({
     has_progress_slider,
     id,
     is_sell_requested,
+    is_sold: is_contract_sold,
     is_valid_to_sell,
     onClickSell,
     server_time,
 }) => {
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
-    const { underlying, multiplier, contract_type, shortcode, purchase_time, date_expiry, tick_count, is_sold } =
-        contract_info;
+    const {
+        growth_rate,
+        underlying,
+        multiplier,
+        contract_type,
+        shortcode,
+        purchase_time,
+        date_expiry,
+        tick_count,
+        tick_passed,
+    } = contract_info;
     const { is_pathname_bot } = isBot();
+    const is_sold = !!contract_info.is_sold || is_contract_sold;
+    const is_accumulator = isAccumulatorContract(contract_type);
+    const is_mobile = isMobile();
+    const contract_type_list_info = [
+        {
+            is_param_displayed: multiplier,
+            displayed_param: `x${multiplier}`,
+        },
+        {
+            is_param_displayed: is_accumulator,
+            displayed_param: `${getGrowthRatePercentage(growth_rate)}%`,
+        },
+    ];
+    const displayed_trade_param =
+        contract_type_list_info.find(contract_type_item_info => contract_type_item_info.is_param_displayed)
+            ?.displayed_param || '';
 
     return (
         <>
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
-                    'dc-contract-card__grid-underlying-trade--mobile': isMobile() && !multiplier,
+                    'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
+                    'dc-contract-card__grid-underlying-trade--trader--accumulator': is_accumulator,
+                    'dc-contract-card__grid-underlying-trade--trader--accumulator-sold': is_accumulator && is_sold,
                 })}
             >
                 <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
@@ -42,11 +78,16 @@ const ContractCardHeader = ({
                         {display_name || contract_info.display_name}
                     </Text>
                 </div>
-                <div id='dc-contract_card_type_label' className='dc-contract-card__type'>
+                <div
+                    id='dc-contract_card_type_label'
+                    className={classNames('dc-contract-card__type', {
+                        'dc-contract-card__type--accumulators': is_accumulator,
+                    })}
+                >
                     <ContractTypeCell
+                        displayed_trade_param={displayed_trade_param}
                         getContractTypeDisplay={getContractTypeDisplay}
                         is_high_low={isHighLow({ shortcode })}
-                        multiplier={multiplier}
                         type={contract_type}
                     />
                 </div>
@@ -77,13 +118,20 @@ const ContractCardHeader = ({
                         </CSSTransition>
                     ) : null}
                 </MobileWrapper>
+                {!is_sold && is_accumulator && (
+                    <TickCounterBar
+                        current_tick={tick_passed}
+                        max_ticks_duration={tick_count}
+                        label={getCardLabels().TICKS}
+                    />
+                )}
             </div>
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />
             </MobileWrapper>
             <DesktopWrapper>
                 {(!has_progress_slider || !!is_sold) && <div className='dc-progress-slider--completed' />}
-                {has_progress_slider && !is_sold && (
+                {has_progress_slider && !is_sold && !is_accumulator && (
                     <ProgressSlider
                         current_tick={current_tick}
                         expiry_time={date_expiry}
@@ -106,6 +154,7 @@ ContractCardHeader.propTypes = {
     getContractTypeDisplay: PropTypes.func,
     has_progress_slider: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
+    is_sold: PropTypes.bool,
     is_valid_to_sell: PropTypes.bool,
     onClickSell: PropTypes.func,
     server_time: PropTypes.object,

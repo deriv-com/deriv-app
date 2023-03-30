@@ -39,6 +39,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         show_p2p_in_cashier_onboarding,
     } = general_store;
     const {
+        app_contents_scroll_ref,
         is_dark_mode_on,
         is_mobile,
         openRealAccountSignup,
@@ -76,6 +77,12 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        return () => {
+            if (app_contents_scroll_ref.current) app_contents_scroll_ref.current.scrollTop = 0;
+        };
+    }, [app_contents_scroll_ref]);
 
     React.useEffect(() => {
         if (

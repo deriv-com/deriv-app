@@ -8,15 +8,30 @@
     &__language-container {
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
-        grid-template-rows: repeat(5, auto);
         grid-gap: 1.6rem;
+
         @include mobile {
             grid-template-columns: repeat(2, minmax(100%, 1fr));
             grid-gap: 0.3rem;
             grid-template-rows: auto;
         }
+
+        &--pre-appstore {
+            padding: 2.4rem;
+
+            @include mobile {
+                padding: 0.8rem;
+                grid-template-columns: repeat(2, minmax(9rem, 1fr));
+                grid-gap: 0;
+            }
+        }
     }
     &__language {
+        &-button_wrapper {
+            display: flex;
+            align-items: center;
+        }
+
         &-link {
             color: var(--text-prominent);
             display: flex;
@@ -27,6 +42,10 @@
             padding: 16px;
             @include mobile {
                 padding: 8px;
+
+                &--pre-appstore {
+                    padding: 1.6rem;
+                }
             }
             text-decoration: none;
             background-color: var(--state-normal);
@@ -40,11 +59,17 @@
         &-flag {
             width: 5rem;
             height: 4rem;
+            cursor: pointer;
 
             @include mobile {
                 margin-top: 1rem;
                 width: 5rem;
                 height: 4rem;
+
+                &--pre-appstore {
+                    width: 3.5rem;
+                    height: 2.5rem;
+                }
             }
         }
         &-name {

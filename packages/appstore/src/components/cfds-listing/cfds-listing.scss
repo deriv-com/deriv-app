@@ -1145,6 +1145,10 @@
 
     &-row-demo {
         grid-template-columns: 1.5fr 1fr 1fr 1fr;
+
+        &--restricted {
+            grid-template-columns: 1fr 2fr 1fr;
+        }
         @include mobile {
             width: 116vw;
             height: unset;
@@ -1177,6 +1181,10 @@
                     &__pre-appstore {
                         grid-template-columns: 1fr 1fr;
                     }
+                } @else if $synthetic_accounts_count > 0 and $financial_accounts_count == 0 {
+                    &__pre-appstore {
+                        grid-template-columns: 2fr 1fr;
+                    }
                 } @else if $synthetic_accounts_count == 0 {
                     grid-template-columns: 1fr ($financial_accounts_count + fr);
                     &__pre-appstore {
@@ -1187,6 +1195,11 @@
                     &__pre-appstore {
                         grid-template-columns: 1fr ($synthetic_accounts_count + fr) 1fr;
                     }
+                }
+            }
+            .cfd-accounts-compare-modal__table-header-for-synthetic-#{$synthetic_accounts_count} {
+                &__pre-appstore {
+                    grid-template-columns: 1fr 2fr 1fr;
                 }
             }
         }
@@ -1209,6 +1222,10 @@
 
         &--platform {
             &__pre-appstore {
+                grid-template-columns: 1fr 4.25fr 0.9fr;
+                &--restricted {
+                    grid-template-columns: 1fr 2fr 1fr;
+                }
                 grid-template-columns: 11rem 82rem 13.5rem;
             }
         }

@@ -1,51 +1,52 @@
+import classNames from 'classnames';
+import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Formik, Field } from 'formik';
-import classNames from 'classnames';
+import { withRouter } from 'react-router';
 import {
     Autocomplete,
-    Checkbox,
     Button,
-    FormSubmitErrorMessage,
-    Input,
+    Checkbox,
+    DateOfBirthPicker,
     DesktopWrapper,
     Dropdown,
+    FormSubmitErrorMessage,
+    HintBox,
+    Input,
     Loading,
     MobileWrapper,
     SelectNative,
-    DateOfBirthPicker,
     Text,
     useStateCallback,
-    HintBox,
 } from '@deriv/components';
 import {
-    toMoment,
-    isMobile,
-    validAddress,
-    validPostCode,
-    validPhone,
-    validLetterSymbol,
-    validLength,
+    PlatformContext,
+    WS,
+    filterObjProperties,
     getBrandWebsiteName,
     getLocation,
-    removeObjProperties,
-    filterObjProperties,
-    PlatformContext,
+    isMobile,
     regex_checks,
+    removeObjProperties,
     routes,
-    WS,
+    toMoment,
     useIsMounted,
+    validAddress,
+    validLength,
+    validLetterSymbol,
+    validName,
+    validPhone,
+    validPostCode,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { withRouter } from 'react-router';
-import { connect } from 'Stores/connect';
-import LeaveConfirm from 'Components/leave-confirm';
-import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
+import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
+import LeaveConfirm from 'Components/leave-confirm';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
+import { connect } from 'Stores/connect';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
@@ -297,14 +298,7 @@ export const PersonalDetailsForm = ({
 
         if (is_virtual) return errors;
 
-        const required_fields = [
-            'first_name',
-            'last_name',
-            'phone',
-            // 'account_opening_reason',
-            'address_line_1',
-            'address_city',
-        ];
+        const required_fields = ['first_name', 'last_name', 'phone', 'address_line_1', 'address_city'];
         if (is_eu) {
             required_fields.push('citizen');
         }
@@ -314,8 +308,6 @@ export const PersonalDetailsForm = ({
         }
 
         validateValues(val => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name'];
-        validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const residence_fields = ['citizen'];
         const validateResidence = val => getLocation(residence_list, val, 'value');
@@ -351,12 +343,19 @@ export const PersonalDetailsForm = ({
 
         const min_name = 2;
         const max_name = 50;
-        if (values.first_name && !validLength(values.first_name.trim(), { min: min_name, max: max_name })) {
-            errors.first_name = localize('You should enter 2-50 characters.');
-        }
-        if (values.last_name && !validLength(values.last_name.trim(), { min: min_name, max: max_name })) {
-            errors.last_name = localize('You should enter 2-50 characters.');
-        }
+        const validateName = (name, field) => {
+            if (name) {
+                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
+                    errors[field] = localize('You should enter 2-50 characters.');
+                } else if (!validName(name)) {
+                    // validName() has the exact regex used at the backend for allowing non digit characters including accented unicode characters.
+                    // two or more space between name not allowed.
+                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
+                }
+            }
+        };
+        validateName(values.first_name, 'first_name');
+        validateName(values.last_name, 'last_name');
 
         if (values.phone) {
             // minimum characters required is 9 numbers (excluding +- signs or space)
@@ -886,32 +885,6 @@ export const PersonalDetailsForm = ({
                                     </React.Fragment>
                                 )}
                                 <React.Fragment>
-                                    {/* Hide Account Opening Reason, uncomment block below to re-enable */}
-                                    {/* <fieldset className='account-form__fieldset'> */}
-                                    {/*    {account_opening_reason && is_fully_authenticated ? ( */}
-                                    {/*        <Input */}
-                                    {/*            data-lpignore='true' */}
-                                    {/*            type='text' */}
-                                    {/*            name='account_opening_reason' */}
-                                    {/*            label={localize('Account opening reason')} */}
-                                    {/*            value={values.account_opening_reason} */}
-                                    {/*            disabled */}
-                                    {/*        /> */}
-                                    {/*    ) : ( */}
-                                    {/*        <Dropdown */}
-                                    {/*            placeholder={'Account opening reason'} */}
-                                    {/*            is_align_text_left */}
-                                    {/*            name='account_opening_reason' */}
-                                    {/*            list={account_opening_reason_list} */}
-                                    {/*            value={values.account_opening_reason} */}
-                                    {/*            onChange={handleChange} */}
-                                    {/*            handleBlur={handleBlur} */}
-                                    {/*            error={ */}
-                                    {/*                errors.account_opening_reason */}
-                                    {/*            } */}
-                                    {/*        /> */}
-                                    {/*    )} */}
-                                    {/* </fieldset> */}
                                     {is_mf && (
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
@@ -1301,7 +1274,6 @@ export const PersonalDetailsForm = ({
                                                   (is_mf && !values.tax_identification_number) ||
                                                   (!is_svg && errors.place_of_birth) ||
                                                   (!is_svg && !values.place_of_birth) ||
-                                                  // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                   errors.address_line_1 ||
                                                   !values.address_line_1 ||
                                                   errors.address_line_2 ||

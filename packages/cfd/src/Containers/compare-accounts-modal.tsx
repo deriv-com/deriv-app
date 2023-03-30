@@ -28,7 +28,6 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_loading: boolean;
     is_eu: boolean;
     is_real_enabled: boolean;
-    is_pre_appstore: boolean;
     residence: string;
     is_demo_tab: boolean;
     has_unmerged_account: boolean;
@@ -302,7 +301,6 @@ export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
     is_uk: client.is_uk,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
-    is_pre_appstore: client.is_pre_appstore,
     landing_companies: client.landing_companies,
     residence: client.residence,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,

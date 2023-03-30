@@ -11,8 +11,7 @@ type TAccountTransferNoAccount = {
 
 const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccountTransferNoAccount) => {
     const {
-        client: { is_dxtrade_allowed, is_pre_appstore },
-        ui: { toggleAccountsDialog },
+        client: { is_dxtrade_allowed },
         traders_hub: { openModal, closeModal },
     } = useStore();
 
@@ -48,11 +47,7 @@ const AccountTransferNoAccount = observer(({ openAccountSwitcherModal }: TAccoun
                 primary
                 large
                 onClick={() =>
-                    openAccountSwitcherModal
-                        ? openAccountSwitcherModal()
-                        : is_pre_appstore
-                        ? openModal('currency_selection')
-                        : toggleAccountsDialog()
+                    openAccountSwitcherModal ? openAccountSwitcherModal() : openModal('currency_selection')
                 }
             >
                 <Localize i18n_default_text='Create account' />

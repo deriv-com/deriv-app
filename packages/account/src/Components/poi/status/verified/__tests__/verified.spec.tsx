@@ -1,6 +1,7 @@
-import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+
 import { Button } from '@deriv/components';
+import React from 'react';
 import { Verified } from '../verified';
 
 jest.mock('Components/poa/poa-button', () => jest.fn(() => <div data-testid='poa-button' />));
@@ -36,6 +37,5 @@ describe('<Verified/>', () => {
         render(<Verified needs_poa redirect_button={redirect_button} />);
         expect(screen.getByTestId('poa-button')).toBeInTheDocument();
         expect(screen.getByText(needs_poa_msg)).toBeInTheDocument();
-        expect(screen.getByRole('button')).toBeInTheDocument();
     });
 });

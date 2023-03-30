@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@binary-com/binary-document-uploader": "^2.4.7",
-        "@deriv/api-types": "^1.0.11",
+        "@deriv/api-types": "^1.0.85",
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",

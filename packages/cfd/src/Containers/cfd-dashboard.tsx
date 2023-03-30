@@ -30,11 +30,13 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import SwitchToRealAccountModal from './switch-to-real-account';
 import 'Sass/cfd-dashboard.scss';
 import RootStore from '../Stores/index';
-import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
+import { LandingCompany, ResidenceList } from '@deriv/api-types';
 // TODO: Change these imports after real released
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
+import { TNewDetailsOfEachMT5Loginid } from '../../types';
+import { TTradingPlatformAccounts } from 'Components/props.types';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -101,12 +103,12 @@ export type TCFDDashboardProps = RouteComponentProps & {
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<
         string,
-        DetailsOfEachMT5Loginid & {
+        TNewDetailsOfEachMT5Loginid & {
             enabled: number;
         }
     >;
     dxtrade_accounts_list_error: null;
-    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
+    isAccountOfTypeDisabled: (account: Record<string, TNewDetailsOfEachMT5Loginid>) => boolean;
     is_accounts_switcher_on: boolean;
     is_dark_mode_on: boolean;
     is_eu: boolean;
@@ -165,15 +167,15 @@ export type TCFDDashboardProps = RouteComponentProps & {
     disableCFDPasswordModal: () => void;
     openPasswordModal: (account_type?: TOpenAccountTransferMeta) => void;
     openTopUpModal: () => void;
-    setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
+    setCurrentAccount: (data: TNewDetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
     mt5_status_server: TMt5StatusServer;
     dxtrade_status_server: TDXTraderStatusServerType;
     getRealSyntheticAccountsExistingData: (
-        getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
+        getRealSyntheticAccountsExistingData: TNewDetailsOfEachMT5Loginid[] | undefined
     ) => void;
     getRealFinancialAccountsExistingData: (
-        getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
+        getRealSyntheticAccountsExistingData: TNewDetailsOfEachMT5Loginid[] | undefined
     ) => void;
     openDerivRealAccountNeededModal: () => void;
     setIsAcuityModalOpen: (value: boolean) => void;
@@ -294,18 +296,18 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const openAccountTransfer = (
-        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
-        meta: { category: string; type?: string }
+        data: TNewDetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        meta: TOpenAccountTransferMeta
     ) => {
         if (meta.category === 'real') {
-            if (data.platform === CFD_PLATFORMS.DXTRADE)
+            if ('platform' in data && data.platform === CFD_PLATFORMS.DXTRADE)
                 sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
             else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
 
             props.disableCFDPasswordModal();
             props.history.push(routes.cashier_acc_transfer);
         } else {
-            props.setCurrentAccount(data, meta);
+            if ('sub_account_type' in data) props.setCurrentAccount(data, meta);
             props.openTopUpModal();
         }
     };

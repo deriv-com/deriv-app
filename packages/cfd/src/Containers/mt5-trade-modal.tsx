@@ -9,7 +9,7 @@ import DMT5TradeModal from './dmt5-trade-modal';
 import DerivXTradeModal from './derivx-trade-modal';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
+    mt5_trade_account: Required<DetailsOfEachMT5Loginid & { market_type?: 'financial' | 'synthetic' | 'all' }>;
     is_eu_user: boolean;
     is_open: boolean;
     onPasswordManager: (

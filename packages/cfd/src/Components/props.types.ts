@@ -162,5 +162,5 @@ export type TTradingPlatformAccounts = {
     /**
      * Name of trading platform.
      */
-    platform?: 'dxtrade';
+    platform?: 'dxtrade' | string;
 };

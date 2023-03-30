@@ -3,9 +3,10 @@ import { localize } from '@deriv/translations';
 import { CFDAccountCard } from './cfd-account-card';
 import specifications from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
+import { LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
+import { TNewDetailsOfEachMT5Loginid } from '../../types';
 
 type TStandPoint = {
     financial_company: string;
@@ -28,14 +29,14 @@ type TCFDDemoAccountDisplayProps = {
     is_logged_in: boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        data: TNewDetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: TCFDPlatform;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<
         string,
-        DetailsOfEachMT5Loginid & {
+        TNewDetailsOfEachMT5Loginid & {
             enabled: number;
         }
     >;
@@ -63,7 +64,7 @@ const CFDDxtradeDemoAccountDisplay = ({
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
-                  }, [] as DetailsOfEachMT5Loginid[])
+                  }, [] as TNewDetailsOfEachMT5Loginid[])
             : undefined;
         return acc;
     };

@@ -6,7 +6,8 @@ import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deri
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+// import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TNewDetailsOfEachMT5Loginid } from '../../types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
@@ -24,7 +25,7 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
-type TCurrentList = DetailsOfEachMT5Loginid & {
+type TCurrentList = TNewDetailsOfEachMT5Loginid & {
     enabled: number;
 };
 
@@ -42,15 +43,15 @@ type TCFDRealAccountDisplayProps = {
     is_virtual: boolean;
     isFinancialCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
-    realSyntheticAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
-    realFinancialAccountsExistingData: (getRealExistingData: DetailsOfEachMT5Loginid[] | undefined) => void;
+    realSyntheticAccountsExistingData: (getRealExistingData: TNewDetailsOfEachMT5Loginid[] | undefined) => void;
+    realFinancialAccountsExistingData: (getRealExistingData: TNewDetailsOfEachMT5Loginid[] | undefined) => void;
     openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        data: TNewDetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: TCFDPlatform;
     isAccountOfTypeDisabled: (
-        account: Array<DetailsOfEachMT5Loginid> & { [key: string]: DetailsOfEachMT5Loginid }
+        account: Array<TNewDetailsOfEachMT5Loginid> & { [key: string]: TNewDetailsOfEachMT5Loginid }
     ) => boolean;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<string, TCurrentList>;
@@ -121,13 +122,13 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
+    const onClickFundReal = (account: TNewDetailsOfEachMT5Loginid) => {
         if (platform === 'dxtrade') {
             return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
                 category: account.account_type as keyof TOpenAccountTransferMeta,
                 type: getCFDAccountKey({
                     market_type: account.market_type,
-                    sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+                    sub_account_type: (account as TNewDetailsOfEachMT5Loginid).sub_account_type,
                     platform,
                 }),
             });
@@ -136,7 +137,7 @@ const CFDRealAccountDisplay = ({
             category: account.account_type as keyof TOpenAccountTransferMeta,
             type: getCFDAccountKey({
                 market_type: account.market_type,
-                sub_account_type: (account as DetailsOfEachMT5Loginid).sub_account_type,
+                sub_account_type: (account as TNewDetailsOfEachMT5Loginid).sub_account_type,
                 platform: 'mt5',
             }),
         });
@@ -176,7 +177,7 @@ const CFDRealAccountDisplay = ({
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
-                  }, [] as DetailsOfEachMT5Loginid[])
+                  }, [] as TNewDetailsOfEachMT5Loginid[])
             : undefined;
         return acc;
     };

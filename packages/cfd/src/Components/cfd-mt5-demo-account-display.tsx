@@ -7,6 +7,7 @@ import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
+import { TNewDetailsOfEachMT5Loginid } from '../../types';
 
 type TStandPoint = {
     financial_company: string;
@@ -36,11 +37,11 @@ type TCFDDemoAccountDisplayProps = {
     isSwapFreeCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     openAccountTransfer: (
-        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        data: TNewDetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: TCFDPlatform;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
+    current_list: Record<string, TNewDetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
     landing_companies?: LandingCompany;
@@ -94,7 +95,7 @@ const CFDMT5DemoAccountDisplay = ({
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
-                  }, [] as DetailsOfEachMT5Loginid[])
+                  }, [] as TNewDetailsOfEachMT5Loginid[])
             : undefined;
         return acc;
     };

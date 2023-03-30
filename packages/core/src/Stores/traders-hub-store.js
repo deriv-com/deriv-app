@@ -75,6 +75,7 @@ export default class TradersHubStore extends BaseStore {
             is_eu_selected: computed,
             is_eu_user: computed,
             is_real: computed,
+            is_low_risk_cr_eu_real: computed,
             is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
@@ -293,6 +294,10 @@ export default class TradersHubStore extends BaseStore {
     get show_eu_related_content() {
         const eu_related = [ContentFlag.EU_DEMO, ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU];
         return eu_related.includes(this.content_flag);
+    }
+
+    get is_low_risk_cr_eu_real() {
+        return [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(this.content_flag);
     }
 
     getAvailablePlatforms() {

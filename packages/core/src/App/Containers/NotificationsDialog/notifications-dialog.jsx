@@ -184,15 +184,16 @@ const NotificationsDialog = ({
 
     const clearNotifications = () => {
         const p2p_settings = LocalStore.getObject('p2p_settings');
-
-        p2p_settings[loginid].is_notifications_visible = false;
+        if (p2p_settings[loginid]) {
+            p2p_settings[loginid].is_notifications_visible = false;
+        }
         LocalStore.setObject('p2p_settings', p2p_settings);
 
         return notifications.map(item => {
             removeNotificationMessageByKey(item.key);
             removeNotificationMessage({
                 key: item.key,
-                should_show_again: false,
+                should_show_again: item.should_show_again || false,
             });
             removeNotifications(true);
         });

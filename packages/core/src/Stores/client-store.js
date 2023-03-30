@@ -5,11 +5,12 @@ import {
     LocalStore,
     State,
     deriv_urls,
-    filterUrlQuery,
     excludeParamsFromUrlQuery,
+    filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
+    isCryptocurrency,
     isDesktopOs,
     isEmptyObject,
     isLocal,
@@ -21,13 +22,12 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
+import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -247,7 +247,6 @@ export default class ClientStore extends BaseStore {
             is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
-            is_risky_client: computed,
             is_financial_assessment_incomplete: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
@@ -278,6 +277,7 @@ export default class ClientStore extends BaseStore {
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
+            should_restrict_vanuatu_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -703,15 +703,6 @@ export default class ClientStore extends BaseStore {
         );
     }
 
-    get is_risky_client() {
-        if (isEmptyObject(this.account_status)) return false;
-        return (
-            this.is_logged_in &&
-            !this.is_virtual &&
-            ['standard', 'high'].includes(this.account_status.risk_classification)
-        );
-    }
-
     get is_financial_assessment_incomplete() {
         return this.account_status?.status?.includes('financial_assessment_not_complete');
     }
@@ -834,6 +825,12 @@ export default class ClientStore extends BaseStore {
     get should_restrict_bvi_account_creation() {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
+        ).length;
+    }
+
+    get should_restrict_vanuatu_account_creation() {
+        return !!this.mt5_login_list.filter(
+            item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
     }
 
@@ -1337,6 +1334,7 @@ export default class ClientStore extends BaseStore {
         }
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
+
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);
@@ -1489,6 +1487,8 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
+        if (!loginid) return;
+
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
@@ -1538,7 +1538,6 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
-        this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
@@ -2142,6 +2141,8 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
+            this.setIsLoggingIn(true);
+
             const redirect_url = sessionStorage.getItem('redirect_url');
             const local_pre_appstore = localStorage.getItem('is_pre_appstore');
             if (

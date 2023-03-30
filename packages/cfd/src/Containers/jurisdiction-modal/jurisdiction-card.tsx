@@ -47,8 +47,8 @@ const JurisdictionCard = ({
                         `${card_classname}__card-flipped-container`
                     )}
                 >
-                    <div onClick={flipCard}>
-                        <Icon icon='IcBackButton' size={20} />
+                    <div>
+                        <Icon onClick={flipCard} icon='IcBackButton' size={20} />
                     </div>
                     <Text as='div' size='xxs'>
                         {jurisdiction_verification_contents.shortDescription}

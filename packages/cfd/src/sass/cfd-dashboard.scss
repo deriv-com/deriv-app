@@ -496,10 +496,9 @@
     flex-direction: column;
     min-height: 48rem;
     width: 26rem;
-    position: relative;
     cursor: pointer;
     @include mobile {
-        min-height: auto;
+        height: 48rem;
         width: 100%;
     }
 

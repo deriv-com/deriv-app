@@ -121,10 +121,22 @@ const MT5AccountTypeModal = () => {
         (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'all'
     );
 
-    const set_account_type = () =>
-        account_type_card === 'Derived'
-            ? setAccountType({ category: 'real', type: 'synthetic' })
-            : setAccountType({ category: 'real', type: 'financial' });
+    const set_account_type = () => {
+        switch (account_type_card) {
+            case 'Derived':
+                setAccountType({ category: 'real', type: 'synthetic' });
+                break;
+            case 'Financial':
+                setAccountType({ category: 'real', type: 'financial' });
+                break;
+            case 'Swap-Free':
+                setAccountType({ category: 'real', type: 'all' });
+                break;
+            default:
+                setAccountType({ category: 'real', type: 'financial' });
+                break;
+        }
+    };
 
     return (
         <div>

@@ -94,7 +94,6 @@ export type TRouteConfig = TRoute & {
 };
 
 export type TBinaryRoutes = {
-    is_pre_appstore: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
 };

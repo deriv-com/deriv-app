@@ -21,7 +21,7 @@ const ToggleNotificationsDrawer = ({
 
     useEffect(() => {
         if (is_notifications_loading_completed && !!count) setNumber(count);
-        else if (is_notifications_loading_completed && !count) setNumber(0);
+        else if (is_notifications_loading_completed) setNumber(0);
     }, [is_notifications_loading_completed, count]);
 
     const notifications_toggler_el = (

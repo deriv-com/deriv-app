@@ -46,6 +46,7 @@ export default class NotificationStore extends BaseStore {
         client_account_settings: true,
         client_account_status: true,
         client_landing_companies: true,
+        reaction: true,
     };
 
     constructor(root_store) {
@@ -126,12 +127,14 @@ export default class NotificationStore extends BaseStore {
                     (Object.keys(root_store.client.account_status).length > 0 &&
                         Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
+                    this.notifications_updated.reaction = false;
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
                     this.handleClientNotifications();
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
+                    this.notifications_updated.reaction = true;
                 }
             }
         );

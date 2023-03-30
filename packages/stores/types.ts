@@ -251,6 +251,7 @@ type TNotificationStore = {
         client_account_settings: boolean;
         client_account_status: boolean;
         client_landing_companies: boolean;
+        reaction: boolean;
     };
 };
 

@@ -269,6 +269,7 @@ const mock = (): TRootStore => {
                 client_account_settings: true,
                 client_account_status: true,
                 client_landing_companies: true,
+                reaction: true,
             },
         },
         modules: {},

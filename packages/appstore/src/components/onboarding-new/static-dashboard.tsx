@@ -1,5 +1,6 @@
 import React from 'react';
-import { useStores } from 'Stores';
+// import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
@@ -12,6 +13,7 @@ import StaticCurrencySwitcherContainer from './static-currency-switcher-containe
 import BalanceText from 'Components/elements/text/balance-text';
 
 import './static-dashboard.scss';
+import { useStores } from 'Stores/index';
 
 type TStaticDashboard = {
     loginid?: string;
@@ -108,6 +110,7 @@ const StaticDashboard = ({
                     'static-dashboard--eu': eu_user,
                 })}
                 style={isMobile() && eu_user ? { height: '100%' } : {}}
+                data-testid='dt_static_dashboard'
             >
                 {(isDesktop() || (isMobile() && index === 0)) && (
                     <div className='static-dashboard-wrapper__bordered--with-margin'>

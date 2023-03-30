@@ -157,7 +157,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_virtual,
         logout: logoutClient,
         should_allow_authentication,
-        is_risky_client,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_pre_appstore,
@@ -260,7 +259,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
-                return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                return is_virtual;
             } else if (/trading-assessment/.test(route_path)) {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {

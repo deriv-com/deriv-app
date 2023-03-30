@@ -1,6 +1,7 @@
 import React from 'react';
 import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCard from './jurisdiction-card';
+import { Jurisdiction } from '@deriv/shared';
 
 const JurisdictionModalContent = ({
     account_type,
@@ -28,7 +29,13 @@ const JurisdictionModalContent = ({
             ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
             : real_financial_accounts_existing_data?.some(account => account.landing_company_short === type_of_card);
     };
-    const jurisdiction_cards_array = ['svg', 'bvi', 'vanuatu', 'labuan', 'maltainvest'];
+    const jurisdiction_cards_array = [
+        Jurisdiction.SVG,
+        Jurisdiction.BVI,
+        Jurisdiction.VANUATU,
+        Jurisdiction.LABUAN,
+        Jurisdiction.MALTA_INVEST,
+    ];
     return (
         <React.Fragment>
             <div className={`${card_classname}__wrapper`}>

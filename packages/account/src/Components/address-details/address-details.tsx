@@ -105,6 +105,7 @@ const AddressDetails = ({
     is_gb_residence,
     onSubmitEnabledChange,
     selected_step_ref,
+    disabled_items,
     has_real_account,
     ...props
 }: TAddressDetails) => {
@@ -213,7 +214,10 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('First line of address')}
-                                            disabled={props.value?.address_line_1 && has_real_account}
+                                            disabled={
+                                                disabled_items.includes('address_line_1') ||
+                                                (props.value?.address_line_1 && has_real_account)
+                                            }
                                         />
                                         <InputField
                                             name='address_line_2'
@@ -225,7 +229,10 @@ const AddressDetails = ({
                                             }
                                             maxLength={255}
                                             placeholder={localize('Second line of address')}
-                                            disabled={props.value?.address_line_2 && has_real_account}
+                                            disabled={
+                                                disabled_items.includes('address_line_2') ||
+                                                (props.value?.address_line_2 && has_real_account)
+                                            }
                                         />
                                         <InputField
                                             name='address_city'
@@ -236,7 +243,10 @@ const AddressDetails = ({
                                                     : localize('Town/City')
                                             }
                                             placeholder={localize('Town/City')}
-                                            disabled={props.value?.address_city && has_real_account}
+                                            disabled={
+                                                disabled_items.includes('address_city') ||
+                                                (props.value?.address_city && has_real_account)
+                                            }
                                         />
                                         {!has_fetched_states_list && (
                                             <div className='details-form__loader'>
@@ -268,7 +278,8 @@ const AddressDetails = ({
                                                                 }}
                                                                 list_portal_id={is_appstore ? '' : 'modal_root'}
                                                                 disabled={
-                                                                    props.value?.address_state && has_real_account
+                                                                    disabled_items.includes('address_state') ||
+                                                                    (props.value?.address_state && has_real_account)
                                                                 }
                                                             />
                                                         </DesktopWrapper>
@@ -288,7 +299,8 @@ const AddressDetails = ({
                                                                     setAddressStateToDisplay('');
                                                                 }}
                                                                 disabled={
-                                                                    props.value?.address_state && has_real_account
+                                                                    disabled_items.includes('address_state') ||
+                                                                    (props.value?.address_state && has_real_account)
                                                                 }
                                                             />
                                                         </MobileWrapper>
@@ -301,7 +313,10 @@ const AddressDetails = ({
                                                 name='address_state'
                                                 label={localize('State/Province')}
                                                 placeholder={localize('State/Province')}
-                                                disabled={props.value?.address_state && has_real_account}
+                                                disabled={
+                                                    disabled_items.includes('address_state') ||
+                                                    (props.value?.address_state && has_real_account)
+                                                }
                                             />
                                         )}
                                         <InputField
@@ -315,7 +330,10 @@ const AddressDetails = ({
                                                 setFieldTouched('address_postcode', true);
                                                 handleChange(e);
                                             }}
-                                            disabled={props.value?.address_postcode && has_real_account}
+                                            disabled={
+                                                disabled_items.includes('address_postcode') ||
+                                                (props.value?.address_postcode && has_real_account)
+                                            }
                                         />
                                     </div>
                                 </ThemedScrollbars>

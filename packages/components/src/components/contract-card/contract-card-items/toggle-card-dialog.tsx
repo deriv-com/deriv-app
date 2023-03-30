@@ -30,6 +30,7 @@ export type TToggleCardDialogProps = {
     should_show_cancellation_warning: boolean;
     status: string;
     toggleCancellationWarning: () => void;
+    is_accumulator?: boolean;
 };
 
 const ToggleCardDialog = ({
@@ -40,6 +41,7 @@ const ToggleCardDialog = ({
     error_message_alignment,
     getCardLabels,
     getContractById,
+    is_accumulator,
     is_valid_to_cancel,
     onMouseLeave,
     removeToast,
@@ -170,6 +172,7 @@ const ToggleCardDialog = ({
                                 error_message_alignment={error_message_alignment}
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
+                                is_accumulator={is_accumulator}
                                 onMouseLeave={onMouseLeave}
                                 removeToast={removeToast}
                                 setCurrentFocus={setCurrentFocus}
@@ -197,6 +200,7 @@ const ToggleCardDialog = ({
                             error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
+                            is_accumulator={is_accumulator}
                             onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}

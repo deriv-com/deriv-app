@@ -7,9 +7,15 @@ export type TContractTypeCellProps = {
     is_high_low: boolean;
     multiplier?: number;
     type?: string;
+    displayed_trade_param?: string;
 };
 
-const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, type = '' }: TContractTypeCellProps) => (
+const ContractTypeCell = ({
+    displayed_trade_param,
+    getContractTypeDisplay,
+    is_high_low,
+    type = '',
+}: TContractTypeCellProps) => (
     <div className='dc-contract-type'>
         <div className='dc-contract-type__type-wrapper'>
             <IconTradeTypes
@@ -20,7 +26,9 @@ const ContractTypeCell = ({ getContractTypeDisplay, is_high_low, multiplier, typ
         </div>
         <div className='dc-contract-type__type-label'>
             <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
-            {multiplier && <div className='dc-contract-type__type-label-multiplier'>x{multiplier}</div>}
+            {displayed_trade_param && (
+                <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
+            )}
         </div>
     </div>
 );

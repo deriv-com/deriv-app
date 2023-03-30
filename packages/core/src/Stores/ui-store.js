@@ -24,6 +24,7 @@ export default class UIStore extends BaseStore {
 
     is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     is_settings_modal_on = false;
+    is_language_settings_modal_on = false;
     is_accounts_switcher_on = false;
     account_switcher_disabled_message = '';
 
@@ -256,6 +257,7 @@ export default class UIStore extends BaseStore {
 
             is_history_tab_active: observable,
             is_landscape: observable,
+            is_language_settings_modal_on: observable,
             is_nativepicker_visible: observable,
 
             is_positions_drawer_on: observable,
@@ -343,8 +345,6 @@ export default class UIStore extends BaseStore {
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
             toggleReadyToDepositModal: action.bound,
-            toggleShouldShowRealAccountsList: action.bound,
-            toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
             setIsNewAccount: action.bound,
@@ -387,6 +387,9 @@ export default class UIStore extends BaseStore {
             toggleSetCurrencyModal: action.bound,
             toggleSetResidenceModal: action.bound,
             toggleSettingsModal: action.bound,
+            toggleLanguageSettingsModal: action.bound,
+            toggleShouldShowMultipliersOnboarding: action.bound,
+            toggleShouldShowRealAccountsList: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
         });
@@ -598,6 +601,10 @@ export default class UIStore extends BaseStore {
 
     toggleSettingsModal() {
         this.is_settings_modal_on = !this.is_settings_modal_on;
+    }
+
+    toggleLanguageSettingsModal() {
+        this.is_language_settings_modal_on = !this.is_language_settings_modal_on;
     }
 
     openPositionsDrawer() {

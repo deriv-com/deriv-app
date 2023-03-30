@@ -5,10 +5,10 @@ import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deri
 import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, getLanguage, getAllowedLanguages } from '@deriv/translations';
+import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
-import { BinaryLink } from 'App/Components/Routes';
+import { BinaryLink, LanguageLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
@@ -142,7 +142,7 @@ const MenuLink = observer(
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
-    const { app_routing_history } = common;
+    const { app_routing_history, current_language } = common;
     const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
     const {
         account_status,
@@ -151,7 +151,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_virtual,
         logout: logoutClient,
         should_allow_authentication,
-        is_risky_client,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_eu,
@@ -170,6 +169,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
     const [is_submenu_expanded, expandSubMenu] = React.useState(false);
+    const [is_language_changing, setIsLanguageChanging] = React.useState(false);
 
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
@@ -247,7 +247,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
-                return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                return is_virtual;
             } else if (/trading-assessment/.test(route_path)) {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
@@ -323,6 +323,61 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         );
     };
 
+    const getLanguageRoutes = () => {
+        return (
+            <MobileDrawer.SubMenu
+                has_subheader
+                submenu_icon='IcLanguage'
+                submenu_title={localize('Language')}
+                submenu_suffix_icon='IcChevronRight'
+                onToggle={expandSubMenu}
+            >
+                {Object.keys(getAllowedLanguages()).map((lang, idx) => (
+                    <MobileDrawer.Item key={idx}>
+                        <MenuLink
+                            is_language
+                            is_active={current_language === lang}
+                            link_to={lang}
+                            icon={`IcFlag${lang.replace('_', '-')}`}
+                            text={getAllowedLanguages()[lang]}
+                            onClickLink={toggleDrawer}
+                        />
+                    </MobileDrawer.Item>
+                ))}
+            </MobileDrawer.SubMenu>
+        );
+    };
+
+    const GetLanguageRoutesTraderHub = React.useCallback(() => {
+        return (
+            <MobileDrawer.SubMenu
+                is_expanded={is_language_changing}
+                has_subheader
+                submenu_title={localize('Language')}
+                onToggle={is_expanded => {
+                    expandSubMenu(is_expanded);
+                    setIsLanguageChanging(is_changing => !is_changing);
+                }}
+                submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
+            >
+                <div className='settings-language__language-container--pre-appstore'>
+                    {Object.keys(getAllowedLanguages()).map(lang => (
+                        <LanguageLink
+                            key={lang}
+                            icon_classname='settings-language__language-flag--pre-appstore'
+                            is_clickable
+                            lang={lang}
+                            toggleModal={() => {
+                                toggleDrawer();
+                                setIsLanguageChanging(is_changing => !is_changing);
+                            }}
+                        />
+                    ))}
+                </div>
+            </MobileDrawer.SubMenu>
+        );
+    }, [is_language_changing, toggleDrawer]);
+
     const HelpCentreRoute = has_border_bottom => {
         return (
             <MobileDrawer.Item className={classNames({ 'header__menu-mobile-theme': has_border_bottom })}>
@@ -341,32 +396,33 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const getLanguageRoutes = () => {
-        const currentLanguage = getLanguage();
-
-        return (
-            <MobileDrawer.SubMenu
-                has_subheader
-                submenu_icon='IcLanguage'
-                submenu_title={localize('Language')}
-                submenu_suffix_icon='IcChevronRight'
-                onToggle={expandSubMenu}
-            >
-                {Object.keys(getAllowedLanguages()).map((lang, idx) => (
-                    <MobileDrawer.Item key={idx}>
-                        <MenuLink
-                            is_language
-                            is_active={currentLanguage === lang}
-                            link_to={lang}
-                            icon={`IcFlag${lang.replace('_', '-')}`}
-                            text={getAllowedLanguages()[lang]}
-                            onClickLink={toggleDrawer}
-                        />
-                    </MobileDrawer.Item>
-                ))}
-            </MobileDrawer.SubMenu>
-        );
-    };
+    const MenuTitle = React.useCallback(
+        () => (
+            <React.Fragment>
+                <div>{localize('Menu')}</div>
+                <div
+                    className='settings-language__language-button_wrapper'
+                    onClick={() => {
+                        if (!is_language_changing) {
+                            setIsLanguageChanging(true);
+                        }
+                    }}
+                >
+                    <Icon
+                        icon={`IcFlag${current_language.replace('_', '-')}`}
+                        data_testid='dt_icon'
+                        className='ic-settings-language__icon'
+                        type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
+                        size={22}
+                    />
+                    <Text weight='bold' size='xxs'>
+                        <Localize i18n_default_text={current_language} />
+                    </Text>
+                </div>
+            </React.Fragment>
+        ),
+        [current_language, is_language_changing]
+    );
 
     return (
         <React.Fragment>
@@ -387,9 +443,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 id='dt_mobile_drawer'
                 enableApp={enableApp}
                 disableApp={disableApp}
-                title={localize('Menu')}
+                title={<MenuTitle />}
                 height='100vh'
                 width='295px'
+                className='pre-appstore'
             >
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
@@ -400,7 +457,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 )}
                             </MobileDrawer.Body>
                         )}
-
                         <React.Fragment>
                             {!is_trading_hub_category && (
                                 <MobileDrawer.SubHeader
@@ -540,6 +596,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 <ServerTime is_mobile />
                                 <NetworkStatus is_mobile />
                             </MobileDrawer.Footer>
+                            {is_language_changing && <GetLanguageRoutesTraderHub />}
                         </React.Fragment>
                     </div>
                 </Div100vhContainer>

@@ -193,7 +193,7 @@ const NotificationsDialog = ({
             removeNotificationMessageByKey(item.key);
             removeNotificationMessage({
                 key: item.key,
-                should_show_again: false,
+                should_show_again: item.should_show_again || false,
             });
             removeNotifications(true);
         });

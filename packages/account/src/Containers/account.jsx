@@ -1,14 +1,15 @@
+import 'Styles/account.scss';
+
+import { FadeWrapper, Icon, Loading, PageOverlay, Text, VerticalTab } from '@deriv/components';
+import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
+import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
-import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
-import 'Styles/account.scss';
+import { localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 const AccountLogout = ({ logout, history }) => {
     return (
@@ -115,7 +116,6 @@ const Account = ({
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
-    is_risky_client,
     is_virtual,
     is_visible,
     location,
@@ -144,8 +144,7 @@ const Account = ({
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {
-                route.is_disabled =
-                    is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                route.is_disabled = is_virtual;
             }
 
             if (route.path === shared_routes.trading_assessment) {
@@ -219,7 +218,6 @@ Account.propTypes = {
     is_from_derivgo: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_risky_client: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
@@ -237,7 +235,6 @@ export default connect(({ client, common, ui }) => ({
     is_from_derivgo: common.is_from_derivgo,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_risky_client: client.is_risky_client,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

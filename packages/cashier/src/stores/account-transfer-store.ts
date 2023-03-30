@@ -141,7 +141,6 @@ export default class AccountTransferStore {
         const has_updated_account_balance =
             this.has_no_accounts_balance &&
             Object.keys(active_accounts).find(
-                // TODO: CHECK THIS TYPE ERROR
                 account => !active_accounts[Number(account)].is_virtual && active_accounts[Number(account)].balance
             );
         if (has_updated_account_balance) {

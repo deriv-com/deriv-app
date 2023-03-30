@@ -1691,7 +1691,7 @@
     "1984742793": "Téléchargement des documents",
     "1985366224": "Chaque jour, vous pouvez effectuer jusqu'à {{ allowed_internal }} transferts entre vos comptes Deriv et jusqu'à {{ allowed_mt5 }} transferts entre vos comptes Deriv et {{platform_name_mt5}}.",
     "1985637974": "Tous les blocs placés dans ce bloc seront exécutés à chaque tick. Si l'intervalle de bougie par défaut est défini sur 1 minute dans le bloc racine Paramètres du trade, les instructions de ce bloc seront exécutées toutes les minutes. Placez ce bloc en dehors de tout bloc racine.",
-    "1985946750": "{{maximum_ticks}}{{ticks}}",
+    "1985946750": "{{maximum_ticks}} {{ticks}}",
     "1986498784": "BTC/LTC",
     "1987080350": "Démo",
     "1987447369": "Votre caisse est verrouillée",

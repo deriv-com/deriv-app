@@ -1,4 +1,5 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
+import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+
 import type { RouteComponentProps } from 'react-router';
 
 type TBalance = { balance: number; currency: string };
@@ -173,7 +174,6 @@ type TClientStore = {
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
-    is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;

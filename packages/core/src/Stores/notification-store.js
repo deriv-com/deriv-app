@@ -144,8 +144,8 @@ export default class NotificationStore extends BaseStore {
         // check switching, logging, landing_company, and account_setting
         if (is_switching || is_logging_in || !is_landing_company_loaded || !is_account_setting_loaded) return false;
 
-        // return false if at least one property is false
-        return !Object.values(this.notifications_updated).some(e => !e);
+        // return true if all properties are true
+        return Object.values(this.notifications_updated).every(element => element);
     }
 
     get custom_notifications() {

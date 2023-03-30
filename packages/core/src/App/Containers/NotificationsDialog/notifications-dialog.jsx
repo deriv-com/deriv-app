@@ -15,7 +15,7 @@ import {
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { isEmptyObject, isMobile, LocalStore, toTitleCase } from '@deriv/shared';
+import { isEmptyObject, isMobile, LocalStore, toTitleCase, routes } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
@@ -117,54 +117,54 @@ const ClearAllFooter = ({ is_empty, clearNotifications }) => {
     );
 };
 
-const NotificationListWrapper = React.forwardRef(
-    ({ notifications, toggleDialog, clearNotifications, is_pre_appstore }, ref) => {
-        const is_empty = !notifications?.length;
+const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog, clearNotifications }, ref) => {
+    const is_empty = !notifications?.length;
 
-        return (
-            <div
-                className={classNames('notifications-dialog', {
-                    'notifications-dialog--pre-appstore': is_pre_appstore,
-                })}
-                ref={ref}
-            >
-                <div className='notifications-dialog__header'>
-                    <Text
-                        as='h2'
-                        className='notifications-dialog__header-text'
-                        size='s'
-                        weight='bold'
-                        color='prominent'
-                        styles={{
-                            lineHeight: '1.6rem',
-                        }}
-                    >
-                        <Localize i18n_default_text='Notifications' />
-                    </Text>
-                </div>
-                <div
-                    className={classNames('notifications-dialog__content', {
-                        'notifications-dialog__content--empty': is_empty,
-                    })}
+    const traders_hub = window.location.pathname === routes.traders_hub;
+
+    return (
+        <div
+            className={classNames('notifications-dialog', {
+                'notifications-dialog--pre-appstore':
+                    traders_hub || window.location.pathname.startsWith(routes.account),
+            })}
+            ref={ref}
+        >
+            <div className='notifications-dialog__header'>
+                <Text
+                    as='h2'
+                    className='notifications-dialog__header-text'
+                    size='s'
+                    weight='bold'
+                    color='prominent'
+                    styles={{
+                        lineHeight: '1.6rem',
+                    }}
                 >
-                    <ThemedScrollbars is_bypassed={isMobile() || is_empty}>
-                        {is_empty ? (
-                            <EmptyNotification />
-                        ) : (
-                            <NotificationsList notifications={notifications} toggleDialog={toggleDialog} />
-                        )}
-                    </ThemedScrollbars>
-                </div>
-                <ClearAllFooter clearNotifications={clearNotifications} is_empty={is_empty} />
+                    <Localize i18n_default_text='Notifications' />
+                </Text>
             </div>
-        );
-    }
-);
+            <div
+                className={classNames('notifications-dialog__content', {
+                    'notifications-dialog__content--empty': is_empty,
+                })}
+            >
+                <ThemedScrollbars is_bypassed={isMobile() || is_empty}>
+                    {is_empty ? (
+                        <EmptyNotification />
+                    ) : (
+                        <NotificationsList notifications={notifications} toggleDialog={toggleDialog} />
+                    )}
+                </ThemedScrollbars>
+            </div>
+            <ClearAllFooter clearNotifications={clearNotifications} is_empty={is_empty} />
+        </div>
+    );
+});
 
 NotificationListWrapper.displayName = 'NotificationListWrapper';
 
 const NotificationsDialog = ({
-    is_pre_appstore,
     is_visible,
     loginid,
     notifications,
@@ -212,7 +212,6 @@ const NotificationsDialog = ({
                     onClose={toggleDialog}
                 >
                     <NotificationListWrapper
-                        is_pre_appstore={is_pre_appstore}
                         notifications={notifications}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
@@ -232,7 +231,6 @@ const NotificationsDialog = ({
                     unmountOnExit
                 >
                     <NotificationListWrapper
-                        is_pre_appstore={is_pre_appstore}
                         notifications={notifications}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
@@ -248,7 +246,6 @@ const NotificationsDialog = ({
 };
 
 NotificationsDialog.propTypes = {
-    is_pre_appstore: PropTypes.bool,
     is_visible: PropTypes.bool,
     loginid: PropTypes.string,
     notifications: PropTypes.array,
@@ -261,7 +258,6 @@ NotificationsDialog.propTypes = {
 
 export default connect(({ common, client, notifications }) => ({
     app_routing_history: common.app_routing_history,
-    is_pre_appstore: client.is_pre_appstore,
     loginid: client.loginid,
     notifications: notifications.notifications,
     removeNotificationByKey: notifications.removeNotificationByKey,

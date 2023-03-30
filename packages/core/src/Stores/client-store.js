@@ -5,11 +5,12 @@ import {
     LocalStore,
     State,
     deriv_urls,
-    filterUrlQuery,
     excludeParamsFromUrlQuery,
+    filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
+    isCryptocurrency,
     isDesktopOs,
     isEmptyObject,
     isLocal,
@@ -21,13 +22,12 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
+import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -247,7 +247,6 @@ export default class ClientStore extends BaseStore {
             is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
-            is_risky_client: computed,
             is_financial_assessment_incomplete: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
@@ -701,15 +700,6 @@ export default class ClientStore extends BaseStore {
     get should_allow_authentication() {
         return this.account_status?.status?.some(
             status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
-        );
-    }
-
-    get is_risky_client() {
-        if (isEmptyObject(this.account_status)) return false;
-        return (
-            this.is_logged_in &&
-            !this.is_virtual &&
-            ['standard', 'high'].includes(this.account_status.risk_classification)
         );
     }
 
@@ -1344,6 +1334,7 @@ export default class ClientStore extends BaseStore {
         }
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
+
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);

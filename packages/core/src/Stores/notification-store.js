@@ -1,6 +1,9 @@
 import debounce from 'lodash.debounce';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import {
+    LocalStore,
     daysSince,
     formatDate,
     formatMoney,
@@ -12,24 +15,21 @@ import {
     isEmptyObject,
     isMobile,
     isMultiplierContract,
-    LocalStore,
     platform_name,
     routes,
     unique,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import React from 'react';
 import { WS } from 'Services';
-import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
-import BaseStore from './base-store';
 import {
     excluded_notifications,
     getCashierValidations,
     getStatusValidations,
     hasMissingRequiredField,
 } from './Helpers/client-notifications';
+import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
+import BaseStore from './base-store';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -290,7 +290,6 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
-            is_risky_client,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
@@ -342,10 +341,10 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
-            if (is_risky_client && is_financial_information_incomplete) {
-                this.addNotificationMessage(this.client_notifications.risk_client);
+            if (malta_account && is_financial_information_incomplete) {
+                this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
-                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
+                this.removeNotificationByKey({ key: this.client_notifications.need_fa });
             }
 
             if (is_poi_dob_mismatch) {
@@ -1412,8 +1411,8 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            risk_client: {
-                key: 'risk_client',
+            need_fa: {
+                key: 'need_fa',
                 header: localize('You can only make deposits.'),
                 message: (
                     <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
@@ -1423,6 +1422,8 @@ export default class NotificationStore extends BaseStore {
                     route: routes.financial_assessment,
                     text: localize('Start assessment'),
                 },
+                should_show_again: true,
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
             },
             svg_needs_poi_poa: {
                 key: 'svg_needs_poi_poa',

@@ -43,6 +43,9 @@ export type TQuickStrategyForm = {
     selected_type_strategy: TTypeStrategy;
     description: string;
     is_dialog_open: boolean;
+    is_running: boolean;
+    is_contract_dialog_open: boolean;
+    is_stop_bot_dialog_open: boolean;
     createStrategy: TCreateStrategy;
     getSizeDesc: TGetSizeDesc;
     onChangeDropdownItem: TOnChangeDropdownItem;
@@ -52,6 +55,7 @@ export type TQuickStrategyForm = {
     setCurrentFocus: TSetCurrentFocus;
     setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
+    loadDataStrategy: () => void;
 };
 
 export type TQuickStrategyFields = {
@@ -80,10 +84,14 @@ export type TQuickStrategyFooter = {
     is_submit_enabled: boolean;
     is_stop_button_visible: boolean;
     is_dialog_open: boolean;
+    is_running: boolean;
+    is_contract_dialog_open: boolean;
+    is_stop_bot_dialog_open: boolean;
     setFieldValue: TSetFieldValue;
     submitForm: FormikProps<TFormValues>['submitForm'];
     setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
+    loadDataStrategy: () => void;
 };
 
 export type TDropdownLists = Record<TDropdownItems, TDropdowns>;

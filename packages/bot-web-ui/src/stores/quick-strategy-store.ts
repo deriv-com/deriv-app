@@ -47,12 +47,14 @@ export default class QuickStrategyStore {
             input_oscar_unit: observable,
             input_loss: observable,
             input_profit: observable,
+            is_strategy_modal_open: observable,
             active_index: observable,
             symbol_dropdown: observable,
             trade_type_dropdown: observable,
             duration_unit_dropdown: observable,
             description: observable,
-            is_dialog_open: observable,
+            is_contract_dialog_open: observable,
+            is_stop_bot_dialog_open: observable,
             initial_values: computed,
             types_strategies_dropdown: observable,
             onScrollStopDropdownList: action.bound,
@@ -102,6 +104,9 @@ export default class QuickStrategyStore {
     symbol_dropdown: TSymbolDropdown = [];
     trade_type_dropdown: TTradeTypeDropdown = [];
     duration_unit_dropdown: TDurationUnitDropdown = [];
+    is_contract_dialog_open = false;
+    is_stop_bot_dialog_open = false;
+    is_strategy_modal_open = false;
     is_dialog_open = false;
 
     get initial_values() {
@@ -250,10 +255,14 @@ export default class QuickStrategyStore {
         }
     }
 
-    loadDataStrategy() {
+    async loadDataStrategy() {
         this.root_store.flyout.setVisibility(false);
-        this.updateSymbolDropdown();
-        this.updateTypesStrategiesDropdown();
+        this.is_strategy_modal_open = !this.is_strategy_modal_open;
+
+        if (this.is_strategy_modal_open) {
+            await this.updateSymbolDropdown();
+            await this.updateTypesStrategiesDropdown();
+        }
     }
 
     async createStrategy({ button }: Record<'button', 'run' | 'edit'>) {
@@ -337,6 +346,9 @@ export default class QuickStrategyStore {
                 .then(() => {
                     this.root_store.run_panel.onRunButtonClick();
                 });
+        }
+        if (this.is_strategy_modal_open) {
+            this.loadDataStrategy();
         }
     }
 
@@ -605,6 +617,7 @@ export default class QuickStrategyStore {
     };
 
     toggleStopBotDialog = (): void => {
-        this.is_dialog_open = !this.is_dialog_open;
+        this.is_contract_dialog_open = !this.is_contract_dialog_open;
+        this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
     };
 }

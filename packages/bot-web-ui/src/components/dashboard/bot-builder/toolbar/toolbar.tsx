@@ -23,7 +23,6 @@ type TToolbar = {
     onUndoClick: () => void;
     onZoomInOutClick: () => void;
     toggleSaveLoadModal: () => void;
-    loadDataStrategy: () => void;
     toggleLoadModal: () => void;
     toggleSaveModal: () => void;
 };
@@ -35,7 +34,7 @@ const Toolbar = (props: TToolbar) => {
 
     return (
         <React.Fragment>
-            <div className='toolbar dashboard__toolbar'>
+            <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
                 <div className='toolbar__section'>
                     <WorkspaceGroup {...props} />
                 </div>
@@ -85,6 +84,5 @@ export default connect(
         onZoomInOutClick: toolbar.onZoomInOutClick,
         toggleLoadModal: load_modal.toggleLoadModal,
         toggleSaveModal: save_modal.toggleSaveModal,
-        loadDataStrategy: quick_strategy.loadDataStrategy,
     })
 )(Toolbar);

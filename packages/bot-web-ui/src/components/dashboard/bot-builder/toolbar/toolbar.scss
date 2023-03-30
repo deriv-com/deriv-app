@@ -18,8 +18,10 @@
         &--icon {
             display: flex;
             justify-content: center;
-            margin: 0 0.4rem;
             height: calc(5.6rem - 1.6rem) !important;
+            width: 22rem;
+            margin-bottom: 1rem;
+
             & .dc-btn__icon {
                 padding-right: 0.4rem;
             }

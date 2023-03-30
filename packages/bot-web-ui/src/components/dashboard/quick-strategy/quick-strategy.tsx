@@ -3,18 +3,40 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TQuickStrategyProps } from './quick-strategy.types';
 import { QuickStrategyContainer } from './quick-strategy-components';
+import { isMobile } from '@deriv/shared';
+import { Modal, MobileFullPageModal } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const QuickStrategy = (props: TQuickStrategyProps) => {
-    const { loadDataStrategy } = props;
-    React.useEffect(() => {
-        loadDataStrategy();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const is_mobile = isMobile();
+    const { is_strategy_modal_open, loadDataStrategy } = props;
 
     return (
-        <div className='quick-strategy__container'>
-            <QuickStrategyContainer {...props} />
-        </div>
+        <>
+            {is_mobile ? (
+                <MobileFullPageModal
+                    is_modal_open={is_strategy_modal_open}
+                    className='quick-strategy__wrapper'
+                    header={localize('Quick Strategy')}
+                    onClickClose={loadDataStrategy}
+                    height_offset='8rem'
+                >
+                    <QuickStrategyContainer {...props} />
+                </MobileFullPageModal>
+            ) : (
+                <Modal
+                    title={localize('Quick strategy')}
+                    className='modal--strategy'
+                    is_open={is_strategy_modal_open}
+                    toggleModal={loadDataStrategy}
+                    width={'78rem'}
+                >
+                    <div className='modal__content'>
+                        <QuickStrategyContainer {...props} />
+                    </div>
+                </Modal>
+            )}
+        </>
     );
 };
 
@@ -39,8 +61,12 @@ export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore)
     symbol_dropdown: quick_strategy.symbol_dropdown,
     loadDataStrategy: quick_strategy.loadDataStrategy,
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
+    is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
     setCurrentFocus: ui.setCurrentFocus,
     setActiveTab: dashboard.setActiveTab,
     is_dialog_open: quick_strategy.is_dialog_open,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
+    is_running: run_panel.is_running,
+    is_contract_dialog_open: quick_strategy.is_contract_dialog_open,
+    is_stop_bot_dialog_open: quick_strategy.is_stop_bot_dialog_open,
 }))(QuickStrategy);

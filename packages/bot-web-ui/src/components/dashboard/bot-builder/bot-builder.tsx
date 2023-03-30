@@ -1,18 +1,18 @@
 import React from 'react';
-import RootStore from 'Stores/index';
+import classNames from 'classnames';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import LoadModal from 'Components/load-modal';
+import SaveModal from 'Components/save-modal';
+import ReactJoyride from 'react-joyride';
 import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';
-import ReactJoyride from 'react-joyride';
-import classNames from 'classnames';
-import LoadModal from 'Components/load-modal';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import SaveModal from 'Components/save-modal';
-import WorkspaceWrapper from './workspace-wrapper';
-import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
-import TourSlider from '../tour-slider';
-import { setColors } from '../../../../../bot-skeleton/src/scratch/hooks/colours';
-import { DBot } from '@deriv/bot-skeleton';
+import RootStore from 'Stores/index';
 import { blocksCoordinate } from '../../../../../bot-skeleton/src/scratch/hooks/block_svg';
+import { setColors } from '../../../../../bot-skeleton/src/scratch/hooks/colours';
+import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
+import QuickStrategy from '../quick-strategy';
+import TourSlider from '../tour-slider';
+import WorkspaceWrapper from './workspace-wrapper';
 
 type TBotBuilder = {
     app: AppStore;
@@ -117,6 +117,7 @@ const BotBuilder = ({
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />
+            <QuickStrategy />
         </>
     );
 };

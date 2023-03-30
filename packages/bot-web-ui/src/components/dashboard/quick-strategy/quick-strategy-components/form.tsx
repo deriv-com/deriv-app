@@ -22,6 +22,10 @@ const QuickStrategyForm = ({
     selected_duration_unit,
     selected_type_strategy,
     description,
+    is_dialog_open,
+    is_contract_dialog_open,
+    is_stop_bot_dialog_open,
+    is_running,
     createStrategy,
     onChangeDropdownItem,
     onChangeInputValue,
@@ -30,7 +34,7 @@ const QuickStrategyForm = ({
     setCurrentFocus,
     setActiveTab,
     toggleStopBotDialog,
-    is_dialog_open,
+    loadDataStrategy,
 }: TQuickStrategyForm) => {
     const { min, max } = selected_duration_unit;
 
@@ -83,18 +87,13 @@ const QuickStrategyForm = ({
                             'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
                         })}
                     >
-                        <ThemedScrollbars height='calc(100vh - 23.9rem)' autohide is_bypassed={is_mobile}>
+                        <ThemedScrollbars height='63rem' autohide is_bypassed={is_mobile}>
                             <div
                                 className={classNames('quick-strategy__form-content', {
                                     'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
                                     'quick-strategy__form-content--safari-fix': isSafari(),
                                 })}
                             >
-                                <div className='quick-strategy__text'>
-                                    <Text size={is_mobile ? 's' : 'sm'} weight='bold' line_height='s'>
-                                        {localize('Quick strategy')}
-                                    </Text>
-                                </div>
                                 <div className='quick-strategy__text'>
                                     <Text weight='normal'>
                                         {localize('Choose a template and set your trade parameters.')}
@@ -129,9 +128,13 @@ const QuickStrategyForm = ({
                             is_stop_button_visible={is_stop_button_visible}
                             setFieldValue={setFieldValue}
                             submitForm={submitForm}
+                            is_dialog_open={is_dialog_open}
+                            is_running={is_running}
+                            is_contract_dialog_open={is_contract_dialog_open}
                             setActiveTab={setActiveTab}
                             toggleStopBotDialog={toggleStopBotDialog}
-                            is_dialog_open={is_dialog_open}
+                            is_stop_bot_dialog_open={is_stop_bot_dialog_open}
+                            loadDataStrategy={loadDataStrategy}
                         />
                     </Form>
                 );

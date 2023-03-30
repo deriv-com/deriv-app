@@ -5,18 +5,21 @@
     @include desktop {
         min-width: 132rem;
     }
-
-    &--deposit-button-blurry {
-        opacity: 0.2;
+    @include mobile {
+        position: relative;
+        bottom: 2rem;
+    }
+    &--deposit-button {
         cursor: not-allowed;
+        &-blurry {
+            opacity: 0.2;
+        }
+        &-animated {
+            width: fit-content;
+            box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
+            animation: triggerAnimation 0.5s linear infinite alternate;
+        }
     }
-
-    &--deposit-button-animated {
-        width: fit-content;
-        box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
-        animation: triggerAnimation 0.5s linear infinite alternate;
-    }
-
     &--eu {
         padding-bottom: 7rem;
     }
@@ -44,11 +47,6 @@
             border: 1px solid var(--general-hover);
             padding: 2rem;
             border-radius: 2.4rem;
-
-            @include mobile {
-                padding: 3rem;
-                border: none;
-            }
         }
 
         &__bordered--with-margin {
@@ -56,9 +54,16 @@
             padding: 2.4rem;
             border-radius: 2.4rem;
             margin-bottom: 2rem;
+        }
 
+        &__bordered,
+        &__bordered--with-margin {
             @include mobile {
+                padding: 3rem 3rem 15rem;
+                height: 36.5rem;
                 border: none;
+                overflow-y: scroll;
+                overflow-x: hidden;
             }
         }
 

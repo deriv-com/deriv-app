@@ -19,7 +19,7 @@ describe('<AccountTransferNoAccount />', () => {
                 toggleAccountsDialog: jest.fn(),
             },
             traders_hub: { openModal: jest.fn(), closeModal: jest.fn() },
-        }) as TStores;
+        });
     });
 
     const renderAccountTransferNoAccountWithRouter = () => {

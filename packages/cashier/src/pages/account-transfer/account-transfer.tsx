@@ -94,7 +94,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
         return <Error error={error} />;
     }
     if (has_no_account) {
-        return <AccountTransferNoAccount openAccountSwitcherModal={openAccountSwitcherModal} />;
+        return <AccountTransferNoAccount />;
     }
     if (has_no_accounts_balance) {
         return <NoBalance onClickDeposit={onClickDeposit} />;
@@ -104,6 +104,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     }
     if (!is_from_outside_cashier && is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
+    }
 
     return (
         <AccountTransferForm

@@ -1691,7 +1691,7 @@
     "1984742793": "Enviando documentos",
     "1985366224": "A cada dia, você pode fazer até {{ allowed_internal }} transferências entre suas contas Deriv e até {{ allowed_mt5 }} transferências entre suas contas Deriv e {{platform_name_mt5}}.",
     "1985637974": "Quaisquer blocos colocados dentro desse bloco serão executados a cada tick. Se o intervalo de velas padrão for definido como 1 minuto no bloco raiz Parâmetros de Negociação, as instruções neste bloco serão executadas uma vez a cada minuto. Coloque esse bloco fora de qualquer bloco raiz.",
-    "1985946750": "{{maximum_ticks}}{{ticks}}",
+    "1985946750": "{{maximum_ticks}} {{ticks}}",
     "1986498784": "BTC/LTC",
     "1987080350": "Demo",
     "1987447369": "O seu caixa está bloqueado",

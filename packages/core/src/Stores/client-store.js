@@ -76,7 +76,6 @@ export default class ClientStore extends BaseStore {
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
-    is_pre_appstore = false;
     has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
@@ -164,7 +163,6 @@ export default class ClientStore extends BaseStore {
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
-            is_pre_appstore: observable,
             switch_broadcast: observable,
             initialized_broadcast: observable,
             currencies_list: observable,
@@ -388,7 +386,6 @@ export default class ClientStore extends BaseStore {
             updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            setIsPreAppStore: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
         });
@@ -412,33 +409,9 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings],
             () => {
-                const { trading_hub } = this.account_settings;
                 const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
-                this.is_pre_appstore = !!trading_hub;
-                localStorage.setItem('is_pre_appstore', !!trading_hub);
                 this.setPreferredLanguage(lang_from_url);
                 LocalStore.set(LANGUAGE_KEY, lang_from_url);
-            }
-        );
-        // TODO: Remove this after setting trading_hub enabled for all users
-
-        reaction(
-            () => [this.account_settings],
-            () => {
-                const { trading_hub } = this.account_settings;
-                const is_traders_hub = !!trading_hub;
-                if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
-                    window.location.href = routes.root;
-                } else if (
-                    this.is_pre_appstore &&
-                    window.location.pathname === routes.root &&
-                    is_traders_hub !== this.is_pre_appstore
-                ) {
-                    window.location.href = routes.traders_hub;
-                } else {
-                    return null;
-                }
-                return null;
             }
         );
 
@@ -2144,12 +2117,8 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
-            const local_pre_appstore = localStorage.getItem('is_pre_appstore');
-            if (
-                local_pre_appstore === 'true' &&
-                redirect_url?.endsWith('/') &&
-                (isTestLink() || isProduction() || isLocal() || isStaging())
-            ) {
+
+            if (redirect_url?.endsWith('/') && (isTestLink() || isProduction() || isLocal() || isStaging())) {
                 window.history.replaceState({}, document.title, '/appstore/traders-hub');
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
@@ -2633,19 +2602,5 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
-
-    setIsPreAppStore(is_pre_appstore) {
-        const trading_hub = is_pre_appstore ? 1 : 0;
-        try {
-            WS.setSettings({
-                set_settings: 1,
-                trading_hub,
-            });
-        } catch (error) {
-            return;
-        }
-        this.account_settings = { ...this.account_settings, trading_hub };
-        localStorage.setItem('is_pre_appstore', is_pre_appstore);
-    }
 }
 /* eslint-enable */

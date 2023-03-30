@@ -1487,6 +1487,8 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
+        if (!loginid) return;
+
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
@@ -1536,7 +1538,6 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
-        this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
@@ -2140,6 +2141,8 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
+            this.setIsLoggingIn(true);
+
             const redirect_url = sessionStorage.getItem('redirect_url');
             const local_pre_appstore = localStorage.getItem('is_pre_appstore');
             if (

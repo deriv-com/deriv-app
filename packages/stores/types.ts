@@ -204,6 +204,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
@@ -250,6 +251,7 @@ type TNotificationStore = {
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
+    is_low_risk_cr_eu_real: boolean;
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
 };

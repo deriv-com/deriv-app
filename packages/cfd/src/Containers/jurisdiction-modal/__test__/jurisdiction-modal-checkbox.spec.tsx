@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import JurisdictionModalCheckbox from '../jurisdiction-modal-checkbox';
 import RootStore from 'Stores/index';
+import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionModalCheckbox', () => {
     const mock_store = {
@@ -27,29 +28,29 @@ describe('JurisdictionModalCheckbox', () => {
     });
 
     it('should render labuan account and displays checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode='labuan' />);
+        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.LABUAN} />);
         expect(screen.queryByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render function onCheck when checkbox is clicked for labuan account', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode='labuan' />);
+        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.LABUAN} />);
         const checkbox = screen.getByRole('checkbox');
         fireEvent.click(checkbox);
         expect(mock_props.onCheck).toHaveBeenCalled();
     });
 
     it('should render svg account without displaying checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode='svg' />);
+        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.SVG} />);
         expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
     });
 
     it('should render bvi account without restriction and displays checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode='bvi' />);
+        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.BVI} />);
         expect(screen.queryByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render function onCheck when checkbox is clicked for bvi account without restriction', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode='bvi' />);
+        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.BVI} />);
         const checkbox = screen.getByRole('checkbox');
         fireEvent.click(checkbox);
         expect(mock_props.onCheck).toHaveBeenCalled();
@@ -59,7 +60,7 @@ describe('JurisdictionModalCheckbox', () => {
         render(
             <JurisdictionModalCheckbox
                 {...mock_props}
-                jurisdiction_selected_shortcode='bvi'
+                jurisdiction_selected_shortcode={Jurisdiction.BVI}
                 should_restrict_bvi_account_creation
             />
         );
@@ -67,12 +68,12 @@ describe('JurisdictionModalCheckbox', () => {
     });
 
     it('should render vanuatu account without restriction and displays checkbox', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode='vanuatu' />);
+        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.VANUATU} />);
         expect(screen.queryByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render function onCheck when checkbox is clicked for vanuatu account without restriction', () => {
-        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode='vanuatu' />);
+        render(<JurisdictionModalCheckbox {...mock_props} jurisdiction_selected_shortcode={Jurisdiction.VANUATU} />);
         const checkbox = screen.getByRole('checkbox');
         fireEvent.click(checkbox);
         expect(mock_props.onCheck).toHaveBeenCalled();
@@ -82,7 +83,7 @@ describe('JurisdictionModalCheckbox', () => {
         render(
             <JurisdictionModalCheckbox
                 {...mock_props}
-                jurisdiction_selected_shortcode='vanuatu'
+                jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
                 should_restrict_vanuatu_account_creation
             />
         );

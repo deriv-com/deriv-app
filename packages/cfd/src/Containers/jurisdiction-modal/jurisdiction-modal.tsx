@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
@@ -82,11 +82,11 @@ const JurisdictionModal = ({
               account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
           });
 
-    const is_svg_selected = jurisdiction_selected_shortcode === 'svg';
-    const is_bvi_selected = jurisdiction_selected_shortcode === 'bvi';
-    const is_vanuatu_selected = jurisdiction_selected_shortcode === 'vanuatu';
-    const is_labuan_selected = jurisdiction_selected_shortcode === 'labuan';
-    const is_maltainvest_selected = jurisdiction_selected_shortcode === 'maltainvest';
+    const is_svg_selected = jurisdiction_selected_shortcode === Jurisdiction.SVG;
+    const is_bvi_selected = jurisdiction_selected_shortcode === Jurisdiction.BVI;
+    const is_vanuatu_selected = jurisdiction_selected_shortcode === Jurisdiction.VANUATU;
+    const is_labuan_selected = jurisdiction_selected_shortcode === Jurisdiction.LABUAN;
+    const is_maltainvest_selected = jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
 
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {

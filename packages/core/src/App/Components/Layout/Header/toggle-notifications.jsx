@@ -17,11 +17,11 @@ const ToggleNotificationsDrawer = ({
         notifications: { is_notifications_loading_completed },
     } = useStore();
 
-    const [counter, setCounter] = useState(0);
+    const [number, setNumber] = useState(0);
 
     useEffect(() => {
-        if (is_notifications_loading_completed && !!count) setCounter(count);
-        else if (is_notifications_loading_completed && !count) setCounter(0);
+        if (is_notifications_loading_completed && !!count) setNumber(count);
+        else if (is_notifications_loading_completed && !count) setNumber(0);
     }, [is_notifications_loading_completed, count]);
 
     const notifications_toggler_el = (
@@ -32,7 +32,7 @@ const ToggleNotificationsDrawer = ({
             onClick={toggleDialog}
         >
             <Icon className='notifications-toggle__icon' icon='IcBell' />
-            {!!counter && <Counter count={counter} className='notifications-toggle__step' />}
+            {!!number && <Counter count={number} className='notifications-toggle__step' />}
         </div>
     );
 

@@ -5,11 +5,12 @@ import {
     LocalStore,
     State,
     deriv_urls,
-    filterUrlQuery,
     excludeParamsFromUrlQuery,
+    filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
+    isCryptocurrency,
     isDesktopOs,
     isEmptyObject,
     isLocal,
@@ -21,13 +22,12 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked, getRegion } from '_common/utility';
+import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -129,7 +129,6 @@ export default class ClientStore extends BaseStore {
 
     account_limits = {};
     self_exclusion = {};
-    sent_verify_emails_data = {};
 
     local_currency_config = {
         currency: '',
@@ -205,7 +204,6 @@ export default class ClientStore extends BaseStore {
             new_email: observable,
             account_limits: observable,
             self_exclusion: observable,
-            sent_verify_emails_data: observable,
             local_currency_config: observable,
             has_cookie_account: observable,
             financial_assessment: observable,
@@ -249,7 +247,6 @@ export default class ClientStore extends BaseStore {
             is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
-            is_risky_client: computed,
             is_financial_assessment_incomplete: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
@@ -309,7 +306,6 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
-            setSentVerifyEmailsData: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -704,15 +700,6 @@ export default class ClientStore extends BaseStore {
     get should_allow_authentication() {
         return this.account_status?.status?.some(
             status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
-        );
-    }
-
-    get is_risky_client() {
-        if (isEmptyObject(this.account_status)) return false;
-        return (
-            this.is_logged_in &&
-            !this.is_virtual &&
-            ['standard', 'high'].includes(this.account_status.risk_classification)
         );
     }
 
@@ -1180,11 +1167,6 @@ export default class ClientStore extends BaseStore {
         LocalStore.setObject(LANGUAGE_KEY, lang);
     };
 
-    setSentVerifyEmailsData(sent_verify_emails_data) {
-        this.sent_verify_emails_data = sent_verify_emails_data;
-        LocalStore.setObject('sent_verify_emails_data', sent_verify_emails_data);
-    }
-
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
 
@@ -1352,6 +1334,7 @@ export default class ClientStore extends BaseStore {
         }
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
+
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);
@@ -1591,7 +1574,6 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-        this.setSentVerifyEmailsData(LocalStore.getObject('sent_verify_emails_data'));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -2336,7 +2318,7 @@ export default class ClientStore extends BaseStore {
 
     fetchAccountSettings() {
         return new Promise(resolve => {
-            WS.authorized.getSettings().then(response => {
+            WS.authorized.storage.getSettings().then(response => {
                 this.setAccountSettings(response.get_settings);
                 resolve(response);
             });

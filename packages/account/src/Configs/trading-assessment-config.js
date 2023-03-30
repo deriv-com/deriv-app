@@ -316,7 +316,7 @@ const tradingAssessmentConfig = (
         props: {
             validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
             assessment_questions: trading_assessment_questions(),
-            disabled_items: account_settings.immutable_fields,
+            disabled_items: account_settings?.immutable_fields,
             setSubSectionIndex,
         },
         sub_step_count: trading_assessment_questions().length,

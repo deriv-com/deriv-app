@@ -11,7 +11,7 @@ import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import TickCounterBar from './tick-counter-bar';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
-import { TGetCardLables, TGetContractTypeDisplay } from 'src/components/types/common.types';
+import { TGetCardLables, TGetContractTypeDisplay } from '../../types/common.types';
 
 export type TContractCardHeaderProps = {
     contract_info: TContractInfo;

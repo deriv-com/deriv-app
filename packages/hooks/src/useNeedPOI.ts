@@ -3,7 +3,7 @@ import { useStore } from '@deriv/stores';
 const useNeedPOI = () => {
     const { client } = useStore();
     const { authentication } = client.account_status;
-    const is_need_poi = authentication?.needs_verification.includes('identity');
+    const is_need_poi = authentication?.needs_verification.includes('identity') || false;
 
     return is_need_poi;
 };

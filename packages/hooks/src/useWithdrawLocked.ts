@@ -11,7 +11,7 @@ const useWithdrawLocked = () => {
 
     const status_name_locked = client.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
 
-    return status_name_locked || is_need_poi || false;
+    return status_name_locked || is_need_poi;
 };
 
 export default useWithdrawLocked;

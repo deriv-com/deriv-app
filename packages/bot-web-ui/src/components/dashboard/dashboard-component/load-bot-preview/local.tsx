@@ -2,7 +2,7 @@ import { Dialog, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import React from 'react';
 import { connect } from 'Stores/connect';
@@ -62,7 +62,7 @@ const LocalComponent = ({
             onClick={() => {
                 setPreviewOnDialog(false);
                 loadFileFromRecent();
-                setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
+                setActiveTab(DBOT_TABS.BOT_BUILDER);
             }}
         >
             {localize('Open')}
@@ -86,7 +86,7 @@ const LocalComponent = ({
                         <div className='tab__dashboard__preview__retrigger'>
                             <button
                                 onClick={() => {
-                                    setActiveTab(DASHBOARD_TABS.TUTORIAL);
+                                    setActiveTab(DBOT_TABS.TUTORIAL);
                                 }}
                             >
                                 <Icon

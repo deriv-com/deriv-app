@@ -1,6 +1,6 @@
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
 
 type TUserGuide = {
@@ -10,7 +10,7 @@ type TUserGuide = {
 const UserGuide = ({ setActiveTab }: TUserGuide) => {
     return (
         <div className='tab__dashboard__home__retrigger'>
-            <button onClick={() => setActiveTab(DASHBOARD_TABS.TUTORIAL)}>
+            <button onClick={() => setActiveTab(DBOT_TABS.TUTORIAL)}>
                 <Icon
                     className='tab__dashboard__home__retrigger__icon'
                     width='2.4rem'

@@ -1,7 +1,7 @@
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
-import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -24,7 +24,7 @@ const InfoPanel = ({
 }: TInfoPanel) => {
     const is_mobile = isMobile();
     const switchTab = (link: boolean, label: string) => {
-        const tutorial_link = link ? setActiveTab(DASHBOARD_TABS.TUTORIAL) : null;
+        const tutorial_link = link ? setActiveTab(DBOT_TABS.TUTORIAL) : null;
         const tutorial_label = label === 'Guide' ? setActiveTabTutorial(0) : setActiveTabTutorial(1);
         return {
             tutorial_link,

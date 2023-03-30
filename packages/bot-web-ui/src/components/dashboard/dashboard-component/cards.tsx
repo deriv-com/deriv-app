@@ -2,7 +2,7 @@
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -76,13 +76,13 @@ const Cards = ({
         {
             icon: 'IcBotBuilder',
             content: localize('Bot Builder'),
-            method: () => setActiveTab(DASHBOARD_TABS.BOT_BUILDER),
+            method: () => setActiveTab(DBOT_TABS.BOT_BUILDER),
         },
         {
             icon: 'IcQuickStrategy',
             content: localize('Quick Strategy'),
             method: () => {
-                setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
+                setActiveTab(DBOT_TABS.BOT_BUILDER);
                 loadDataStrategy();
             },
         },

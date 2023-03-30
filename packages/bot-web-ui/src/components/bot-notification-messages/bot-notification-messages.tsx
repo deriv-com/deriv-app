@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -11,7 +11,7 @@ interface TBotNotificationMessagesProps {
     Notifications: React.ComponentType;
 }
 
-const { BOT_BUILDER, CHART } = DASHBOARD_TABS;
+const { BOT_BUILDER, CHART } = DBOT_TABS;
 
 const BotNotificationMessages = ({
     is_drawer_open,

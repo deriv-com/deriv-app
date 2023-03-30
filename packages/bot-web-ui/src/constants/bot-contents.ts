@@ -11,7 +11,7 @@ export const tabs_title: TTabsTitleProps = Object.freeze({
     CHART: 'Chart',
 });
 
-export const DASHBOARD_TABS: TDashboardTabsProps = Object.freeze({
+export const DBOT_TABS: TDashboardTabsProps = Object.freeze({
     DASHBOARD: 0,
     BOT_BUILDER: 1,
     CHART: 2,

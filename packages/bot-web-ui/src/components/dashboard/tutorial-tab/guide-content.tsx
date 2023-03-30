@@ -2,7 +2,7 @@ import { Dialog, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { DASHBOARD_TABS } from 'Constants/bot-contents';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -52,7 +52,7 @@ const GuideContent = ({
             } else {
                 setTourDialogVisibility(true);
             }
-            setActiveTab(DASHBOARD_TABS.DASHBOARD);
+            setActiveTab(DBOT_TABS.DASHBOARD);
         } else {
             if (storage.bot_builder_token) {
                 removeKeyValue('bot_builder_token');
@@ -62,7 +62,7 @@ const GuideContent = ({
             tour_type.key = 'bot_builder';
             setHasTourEnded(false);
             setTourDialogVisibility(true);
-            setActiveTab(DASHBOARD_TABS.BOT_BUILDER);
+            setActiveTab(DBOT_TABS.BOT_BUILDER);
         }
     };
     const is_mobile = isMobile();

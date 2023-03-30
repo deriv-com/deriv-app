@@ -4,7 +4,7 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import Chart from 'Components/chart';
-import { DASHBOARD_TABS, TAB_IDS } from 'Constants/bot-contents';
+import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import React from 'react';
 import ReactJoyride from 'react-joyride';
 import { connect } from 'Stores/connect';
@@ -83,7 +83,7 @@ const Dashboard = ({
     setTourDialogVisibility,
     setHasTourEnded,
 }: TDashboard) => {
-    const { BOT_BUILDER, CHART } = DASHBOARD_TABS;
+    const { BOT_BUILDER, CHART } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';

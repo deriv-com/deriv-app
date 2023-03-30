@@ -1,13 +1,13 @@
+import 'Styles/account.scss';
+import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
+import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
-import { routes as shared_routes, isMobile, matchRoute, getSelectedRoute, PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { flatten } from '../Helpers/flatten';
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
-import 'Styles/account.scss';
+import { localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 
 const AccountLogout = ({ logout, history }) => {
@@ -51,7 +51,6 @@ const TradingHubLogout = ({ logout }) => {
 const PageOverlayWrapper = ({
     is_from_derivgo,
     is_appstore,
-    is_pre_appstore,
     list_groups,
     logout,
     onClickClose,
@@ -59,7 +58,7 @@ const PageOverlayWrapper = ({
     subroutes,
     history,
 }) => {
-    const routeToPrevious = () => (is_pre_appstore ? history.push(shared_routes.traders_hub) : onClickClose());
+    const routeToPrevious = () => history.push(shared_routes.traders_hub);
 
     if (isMobile() && selected_route) {
         return (
@@ -103,7 +102,7 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
-                extra_content={is_pre_appstore && <TradingHubLogout logout={logout} />}
+                extra_content={<TradingHubLogout logout={logout} />}
             />
         </PageOverlay>
     );
@@ -112,7 +111,6 @@ const PageOverlayWrapper = ({
 const Account = observer(({ history, location, routes }) => {
     const { client, common, ui } = useStore();
     const {
-        is_pre_appstore,
         is_virtual,
         landing_company_shortcode,
         is_risky_client,
@@ -141,10 +139,6 @@ const Account = observer(({ history, location, routes }) => {
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
-            if (route.path === shared_routes.languages) {
-                route.is_hidden = !is_pre_appstore;
-            }
-
             if (route.path === shared_routes.financial_assessment) {
                 route.is_disabled = is_virtual || (landing_company_shortcode === 'maltainvest' && !is_risky_client);
             }
@@ -204,7 +198,6 @@ const Account = observer(({ history, location, routes }) => {
                 <PageOverlayWrapper
                     is_from_derivgo={is_from_derivgo}
                     is_appstore={is_appstore}
-                    is_pre_appstore={is_pre_appstore}
                     list_groups={list_groups}
                     logout={logout}
                     onClickClose={onClickClose}

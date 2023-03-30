@@ -367,7 +367,7 @@ const FinancialAssessment = observer(() => {
                     setFieldTouched,
                     dirty,
                 }) => (
-                    <>
+                    <React.Fragment>
                         {!is_appstore && isMobile() && is_confirmation_visible && (
                             <ConfirmationPage toggleModal={toggleConfirmationModal} onSubmit={handleSubmit} />
                         )}
@@ -1004,7 +1004,7 @@ const FinancialAssessment = observer(() => {
                                 </FormFooter>
                             </form>
                         )}
-                    </>
+                    </React.Fragment>
                 )}
             </Formik>
         </React.Fragment>

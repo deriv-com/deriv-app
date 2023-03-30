@@ -1,9 +1,9 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper } from '@deriv/components';
+import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
+import React from 'react';
 import { changeMetaTagWithOG } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
+import { withRouter } from 'react-router';
 
 const ProofOfIdentity = observer(({ is_from_external, onStateChange }) => {
     const { client, common, notifications } = useStore();

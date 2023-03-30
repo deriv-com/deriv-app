@@ -1,4 +1,5 @@
-import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields, getErrorMessages, toMoment, validLength } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 
 const personal_details_config = ({ residence_list, account_settings, is_appstore, real_account_signup_target }) => {

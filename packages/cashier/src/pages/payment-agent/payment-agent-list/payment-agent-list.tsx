@@ -35,7 +35,6 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
         }
     }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful]);
 
-    // TODO: CHECK THIS TYPE ERROR
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>
             <div

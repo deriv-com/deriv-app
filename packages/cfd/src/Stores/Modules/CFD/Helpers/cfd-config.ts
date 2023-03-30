@@ -51,7 +51,7 @@ export const getMtCompanies = (is_eu: boolean) => {
     const all_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('CFDs'),
+        short_title: is_eu ? localize('CFDs') : localize('Swap-Free'),
     };
     const synthetic_config = {
         account_type: '',
@@ -75,6 +75,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo'),
+                short_title: all_config.short_title,
+            },
+            all_svg: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo Swap-Free SVG'),
                 short_title: all_config.short_title,
             },
             synthetic: {
@@ -114,6 +120,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Real'),
+                short_title: all_config.short_title,
+            },
+            all_svg: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: is_eu ? localize('CFDs') : localize('Swap-Free SVG'),
                 short_title: all_config.short_title,
             },
             dxtrade: {

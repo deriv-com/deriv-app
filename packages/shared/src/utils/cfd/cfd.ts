@@ -19,6 +19,8 @@ const CFD_text: { [key: string]: string } = {
     financial_fx: 'Financial Labuan',
     financial_v: 'Financial Vanuatu',
     financial_svg: 'Financial SVG',
+    all: 'Swap-Free',
+    all_svg: 'Swap-Free SVG',
 } as const;
 
 type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
@@ -159,7 +161,9 @@ export const getCFDAccountDisplay = ({
         if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds';
         else cfd_account_key = 'cfd';
     }
-
+    if (cfd_account_key === 'all_svg') {
+        cfd_account_key = 'all';
+    }
     const cfd_account_display = CFD_text_translated[cfd_account_key]();
 
     // TODO condition will be changed when card 74063 is merged

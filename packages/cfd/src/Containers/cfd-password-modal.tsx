@@ -214,6 +214,8 @@ const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
+            case 'all':
+                return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
                     return <TradingPlatformIcon icon='CFDs' size={128} />;
@@ -226,6 +228,8 @@ const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_
         switch (type) {
             case 'synthetic':
                 return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+            case 'all':
+                return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
                     return <Icon icon='IcMt5CfdPlatform' size={128} />;

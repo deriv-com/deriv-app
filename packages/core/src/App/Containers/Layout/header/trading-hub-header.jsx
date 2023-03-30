@@ -14,6 +14,7 @@ import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
+import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -136,6 +137,10 @@ const TradingHubHeader = ({
     toggleNotifications,
     toggleExitTradersHubModal,
     switchToCRAccount,
+    has_any_real_account,
+    is_virtual,
+    toggleReadyToDepositModal,
+    toggleNeedRealAccountForCashierModal,
 }) => {
     const is_mf = loginid?.startsWith('MF');
     const filterPlatformsForClients = payload =>
@@ -146,6 +151,24 @@ const TradingHubHeader = ({
             return true;
         });
     const history = useHistory();
+
+    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+
+    const toggleModal = () => {
+        if (!has_any_real_account) {
+            toggleReadyToDepositModal();
+        } else if (window.location.pathname === routes.traders_hub) {
+            toggleNeedRealAccountForCashierModal();
+        }
+    };
+
+    const handleClickCashier = () => {
+        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
+            toggleModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
 
     return (
         <header
@@ -243,7 +266,7 @@ const TradingHubHeader = ({
                         </Popover>
                     </div>
                     <div className='trading-hub-header__cashier-button'>
-                        <Button primary small onClick={() => history.push(routes.cashier_deposit)}>
+                        <Button primary small onClick={handleClickCashier}>
                             <Localize i18n_default_text='Cashier' />
                         </Button>
                     </div>
@@ -279,6 +302,10 @@ TradingHubHeader.propTypes = {
     toggleExitTradersHubModal: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
+    has_any_real_account: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    toggleReadyToDepositModal: PropTypes.func,
+    toggleNeedRealAccountForCashierModal: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -302,4 +329,8 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     switchToCRAccount: traders_hub.switchToCRAccount,
     toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
+    has_any_real_account: client.has_any_real_account,
+    is_virtual: client.is_virtual,
+    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
+    toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
 }))(withRouter(TradingHubHeader));

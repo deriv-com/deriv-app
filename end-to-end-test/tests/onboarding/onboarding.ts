@@ -1,6 +1,5 @@
 import { Page, expect, chromium } from '@playwright/test';
-
-const suspend = (value: number) => new Promise(resolve => setTimeout(resolve, value));
+import suspend from '../../utils/suspend/suspend';
 
 export default class OnboardingFlow {
     readonly page: Page;

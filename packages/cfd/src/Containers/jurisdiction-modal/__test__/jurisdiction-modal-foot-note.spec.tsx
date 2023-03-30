@@ -2,7 +2,7 @@ import React from 'react';
 import JurisdictionModalFootNote from '../jurisdiction-modal-foot-note';
 import { render, screen } from '@testing-library/react';
 import RootStore from 'Stores/index';
-import { mockStore } from '@deriv/stores';
+import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionModalFootNote', () => {
     const mock_store = {
@@ -45,7 +45,11 @@ describe('JurisdictionModalFootNote', () => {
 
     it('should render JurisdictionModalFootNote and show svg message', () => {
         render(
-            <JurisdictionModalFootNote {...mock_props} jurisdiction_selected_shortcode='svg' account_type='synthetic' />
+            <JurisdictionModalFootNote
+                {...mock_props}
+                jurisdiction_selected_shortcode={Jurisdiction.SVG}
+                account_type='synthetic'
+            />
         );
         expect(
             screen.getByText('Add your Deriv MT5 Derived account under Deriv (SVG) LLC (company no. 273 LLC 2020).')
@@ -54,7 +58,11 @@ describe('JurisdictionModalFootNote', () => {
 
     it('should render JurisdictionModalFootNote without bvi_restriction and show bvi message', () => {
         render(
-            <JurisdictionModalFootNote {...mock_props} jurisdiction_selected_shortcode='bvi' account_type='synthetic' />
+            <JurisdictionModalFootNote
+                {...mock_props}
+                jurisdiction_selected_shortcode={Jurisdiction.BVI}
+                account_type='synthetic'
+            />
         );
         expect(
             screen.getByText(
@@ -67,7 +75,7 @@ describe('JurisdictionModalFootNote', () => {
         render(
             <JurisdictionModalFootNote
                 {...mock_props}
-                jurisdiction_selected_shortcode='bvi'
+                jurisdiction_selected_shortcode={Jurisdiction.BVI}
                 account_type='synthetic'
                 should_restrict_bvi_account_creation
             />
@@ -95,7 +103,7 @@ describe('JurisdictionModalFootNote', () => {
             <JurisdictionModalFootNote
                 {...mock_props}
                 account_status={mock_account_status}
-                jurisdiction_selected_shortcode='bvi'
+                jurisdiction_selected_shortcode={Jurisdiction.BVI}
                 account_type='synthetic'
                 should_restrict_bvi_account_creation
                 card_classname='mock_jurisdiction'
@@ -112,7 +120,7 @@ describe('JurisdictionModalFootNote', () => {
         render(
             <JurisdictionModalFootNote
                 {...mock_props}
-                jurisdiction_selected_shortcode='vanuatu'
+                jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
                 account_type='synthetic'
             />
         );
@@ -127,7 +135,7 @@ describe('JurisdictionModalFootNote', () => {
         render(
             <JurisdictionModalFootNote
                 {...mock_props}
-                jurisdiction_selected_shortcode='vanuatu'
+                jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
                 account_type='synthetic'
                 should_restrict_vanuatu_account_creation
             />
@@ -155,7 +163,7 @@ describe('JurisdictionModalFootNote', () => {
             <JurisdictionModalFootNote
                 {...mock_props}
                 account_status={mock_account_status}
-                jurisdiction_selected_shortcode='vanuatu'
+                jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
                 account_type='synthetic'
                 should_restrict_vanuatu_account_creation
                 card_classname='mock_jurisdiction'
@@ -172,7 +180,7 @@ describe('JurisdictionModalFootNote', () => {
         render(
             <JurisdictionModalFootNote
                 {...mock_props}
-                jurisdiction_selected_shortcode='labuan'
+                jurisdiction_selected_shortcode={Jurisdiction.LABUAN}
                 account_type='synthetic'
             />
         );
@@ -187,7 +195,7 @@ describe('JurisdictionModalFootNote', () => {
         render(
             <JurisdictionModalFootNote
                 {...mock_props}
-                jurisdiction_selected_shortcode='maltainvest'
+                jurisdiction_selected_shortcode={Jurisdiction.MALTA_INVEST}
                 account_type='synthetic'
             />
         );

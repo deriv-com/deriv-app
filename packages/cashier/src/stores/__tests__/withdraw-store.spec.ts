@@ -324,8 +324,4 @@ describe('WithdrawStore', () => {
         withdraw_store.validateWithdrawToAmount();
         expect(setConverterToError).toHaveBeenCalledWith(error_message);
     });
-
-    it('should get account_platform_icon', () => {
-        expect(withdraw_store.account_platform_icon).toBe('icon');
-    });
 });

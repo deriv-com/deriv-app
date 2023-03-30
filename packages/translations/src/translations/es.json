@@ -1691,7 +1691,7 @@
     "1984742793": "Subiendo documentos",
     "1985366224": "Cada día, puede realizar hasta {{ allowed_internal }} transferencias entre sus cuentas Deriv y hasta {{ allowed_mt5 }} transferencias entre sus cuentas Deriv y {{platform_name_mt5}}.",
     "1985637974": "Cualquier bloque colocado dentro de este bloque se ejecutará en cada tick. Si el intervalo de vela predeterminado se establece en 1 minuto en el bloque raíz Parámetros comerciales, las instrucciones en este bloque se ejecutarán una vez cada minuto. Coloque este bloque fuera de cualquier bloque raíz.",
-    "1985946750": "{{maximum_ticks}}{{ticks}}",
+    "1985946750": "{{maximum_ticks}} {{ticks}}",
     "1986498784": "BTC/LTC",
     "1987080350": "Demo",
     "1987447369": "Su cajero está bloqueado",

@@ -1,4 +1,5 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
+import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -99,9 +100,7 @@ type TClientStore = {
     balance?: string | number;
     can_change_fiat_currency: boolean;
     cfd_score: number;
-    is_cfd_score_available: boolean;
     setCFDScore: (score: number) => void;
-    setIsCFDScoreAvailable: (is_set: boolean) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -173,7 +172,6 @@ type TClientStore = {
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
-    is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;

@@ -209,6 +209,11 @@
                 // default padding for three letter currency symbols
                 padding-right: calc(1.6rem + 2.4rem);
             }
+            &--usd {
+                top: 1rem;
+                right: 1.1rem;
+                position: absolute;
+            }
             &--usdc + .dc-input__field,
             &--ust + .dc-input__field {
                 padding-right: calc(1.6rem + 3.2rem);

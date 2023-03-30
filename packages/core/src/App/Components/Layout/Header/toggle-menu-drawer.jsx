@@ -17,11 +17,51 @@ import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common } = useStore();
+        const { common, ui, client } = useStore();
         const { changeCurrentLanguage } = common;
         const deriv_static_url = getStaticUrl(link_to);
+        const history = useHistory();
+        const { has_any_real_account, is_virtual } = client;
+        const { toggleReadyToDepositModal } = ui;
+
+        const cashier_link =
+            link_to === routes.cashier_deposit ||
+            link_to === routes.cashier_withdrawal ||
+            link_to === routes.cashier_acc_transfer;
 
         if (is_hidden) return null;
+
+        if (cashier_link && is_virtual && !has_any_real_account) {
+            const toggle_modal_routes =
+                window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
+
+            const toggleModal = () => {
+                if (toggle_modal_routes && !has_any_real_account) {
+                    toggleReadyToDepositModal();
+                }
+            };
+
+            const handleClickCashier = () => {
+                if (is_virtual && has_any_real_account) {
+                    history.push(routes.cashier_deposit);
+                } else if (!has_any_real_account && is_virtual) {
+                    toggleModal();
+                }
+                onClickLink();
+            };
+            return (
+                <div
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                    })}
+                    onClick={handleClickCashier}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </div>
+            );
+        }
 
         if (is_language) {
             return (
@@ -30,7 +70,6 @@ const MenuLink = observer(
                         'header__menu-mobile-link--disabled': is_disabled,
                         'header__menu-mobile-link--active': is_active,
                     })}
-                    active_class='header__menu-mobile-link--active'
                     onClick={() => {
                         onClickLink();
                         changeLanguage(link_to, changeCurrentLanguage);
@@ -118,7 +157,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_virtual,
         logout: logoutClient,
         should_allow_authentication,
-        is_risky_client,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_pre_appstore,
@@ -221,7 +259,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
-                return is_virtual || (active_account_landing_company === 'maltainvest' && !is_risky_client);
+                return is_virtual;
             } else if (/trading-assessment/.test(route_path)) {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {

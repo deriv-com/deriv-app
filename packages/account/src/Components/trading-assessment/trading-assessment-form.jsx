@@ -10,6 +10,7 @@ import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
 const TradingAssessmentForm = ({
     assessment_questions,
     class_name,
+    disabled_items,
     form_value,
     onSubmit,
     onCancel,
@@ -143,6 +144,7 @@ const TradingAssessmentForm = ({
                                             values={values}
                                             setFieldValue={setFieldValue}
                                             setEnableNextSection={setIsSectionFilled}
+                                            disabled_items={disabled_items ?? []}
                                         />
                                     ) : (
                                         <TradingAssessmentRadioButton
@@ -152,6 +154,7 @@ const TradingAssessmentForm = ({
                                             values={values}
                                             form_control={form_control}
                                             setEnableNextSection={setIsSectionFilled}
+                                            disabled_items={disabled_items ?? []}
                                         />
                                     )}
                                 </div>

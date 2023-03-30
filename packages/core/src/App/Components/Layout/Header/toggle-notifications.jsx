@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Counter, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import 'Sass/app/modules/notifications-dialog.scss';
@@ -17,9 +17,9 @@ const ToggleNotificationsDrawer = ({
         notifications: { is_notifications_loading_completed },
     } = useStore();
 
-    const [number, setNumber] = useState(0);
+    const [number, setNumber] = React.useState(0);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (is_notifications_loading_completed && !!count) setNumber(count);
         else if (is_notifications_loading_completed) setNumber(0);
     }, [is_notifications_loading_completed, count]);

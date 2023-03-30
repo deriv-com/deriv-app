@@ -11,6 +11,7 @@ import NetworkStatus, {
     ResponsibleTrading,
     ToggleFullScreen,
     ToggleSettings,
+    ToggleLanguageSettings,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
@@ -31,6 +32,7 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
 };
 
 const Footer = ({
+    current_language,
     enableApp,
     footer_extensions,
     is_app_disabled,
@@ -38,9 +40,11 @@ const Footer = ({
     is_logged_in,
     is_route_modal_on,
     is_settings_modal_on,
+    is_language_settings_modal_on,
     is_virtual,
     disableApp,
     toggleSettingsModal,
+    toggleLanguageSettingsModal,
     settings_extension,
     landing_company_shortcode,
     is_pre_appstore,
@@ -92,6 +96,15 @@ const Footer = ({
                     settings_extension={settings_extension}
                     is_pre_appstore={is_pre_appstore}
                 />
+                {is_pre_appstore && (
+                    <ToggleLanguageSettings
+                        is_settings_visible={is_language_settings_modal_on}
+                        toggleSettings={toggleLanguageSettingsModal}
+                        is_pre_appstore={is_pre_appstore}
+                        lang={current_language}
+                    />
+                )}
+
                 <ToggleFullScreen />
             </div>
         </footer>
@@ -99,13 +112,16 @@ const Footer = ({
 };
 
 Footer.propTypes = {
+    current_language: PropTypes.string,
     is_app_disabled: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_settings_modal_on: PropTypes.bool,
+    is_language_settings_modal_on: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
     location: PropTypes.object,
     toggleSettingsModal: PropTypes.func,
+    toggleLanguageSettingsModal: PropTypes.func,
     settings_extension: PropTypes.array,
     is_virtual: PropTypes.bool,
     is_eu: PropTypes.bool,
@@ -117,7 +133,8 @@ Footer.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, ui, traders_hub }) => ({
+    connect(({ client, common, ui, traders_hub }) => ({
+        current_language: common.current_language,
         enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
         settings_extension: ui.settings_extension,
@@ -127,10 +144,12 @@ export default withRouter(
         is_eu: client.is_eu,
         is_loading: ui.is_loading,
         is_settings_modal_on: ui.is_settings_modal_on,
+        is_language_settings_modal_on: ui.is_language_settings_modal_on,
         is_virtual: client.is_virtual,
         landing_company_shortcode: client.landing_company_shortcode,
         disableApp: ui.disableApp,
         toggleSettingsModal: ui.toggleSettingsModal,
+        toggleLanguageSettingsModal: ui.toggleLanguageSettingsModal,
         is_pre_appstore: client.is_pre_appstore,
         show_eu_related_content: traders_hub.show_eu_related_content,
     }))(Footer)

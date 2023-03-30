@@ -28,8 +28,9 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
-    const { traders_hub } = useStores();
+    const { common, traders_hub } = useStores();
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
+    const { current_language } = common;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -57,7 +58,7 @@ const TradingAppCard = ({
     };
 
     return (
-        <div className='trading-app-card'>
+        <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
             <div
                 className={classNames('trading-app-card__icon--container', {
                     'trading-app-card__icon--container__clickable': clickable_icon,

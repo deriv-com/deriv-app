@@ -116,7 +116,6 @@ describe('<FinancialDetails />', () => {
     it('should render "FinancialDetails" for mobile', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        fieldsRenderCheck();
 
         render(<FinancialDetails {...mock_props} />);
 

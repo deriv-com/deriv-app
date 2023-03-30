@@ -215,6 +215,9 @@ const mock = (): TRootStore => {
             is_network_online: false,
         },
         ui: {
+            app_contents_scroll_ref: {
+                current: null,
+            },
             current_focus: null,
             is_cashier_visible: false,
             is_closing_create_real_account_modal: false,
@@ -245,6 +248,7 @@ const mock = (): TRootStore => {
             openModal: jest.fn(),
             content_flag: '',
             is_eu_user: false,
+            is_low_risk_cr_eu_real: false,
         },
         menu: {
             attach: jest.fn(),

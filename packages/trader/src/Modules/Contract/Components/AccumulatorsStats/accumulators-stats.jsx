@@ -17,7 +17,12 @@ export const ROW_SIZES = {
     MOBILE_EXPANDED: 5,
 };
 
-const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_stats = {} }) => {
+const AccumulatorsStats = ({
+    is_dark_theme,
+    is_expandable = true,
+    should_highlight_current_spot,
+    ticks_history_stats = {},
+}) => {
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
     const widget_title = localize('Stats');
@@ -55,7 +60,14 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
                     {!is_collapsed ? (
                         <div className='accumulators-stats__history-heading'>{localize('Number of ticks')}</div>
                     ) : (
-                        rows[0]?.map((el, i) => <TicksHistoryCounter key={i} value={el} has_progress_dots={i === 0} />)
+                        rows[0]?.map((el, i) => (
+                            <TicksHistoryCounter
+                                key={i}
+                                value={el}
+                                has_progress_dots={i === 0}
+                                should_highlight_current_spot={should_highlight_current_spot}
+                            />
+                        ))
                     )}
                 </Text>
             </div>
@@ -91,10 +103,12 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
 AccumulatorsStats.propTypes = {
     is_dark_theme: PropTypes.bool,
     is_expandable: PropTypes.bool,
+    should_highlight_current_spot: PropTypes.bool,
     ticks_history_stats: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ contract_trade, modules, ui }) => ({
     is_dark_theme: ui.is_dark_mode_on,
+    should_highlight_current_spot: contract_trade.should_highlight_current_spot,
     ticks_history_stats: modules.trade.ticks_history_stats,
 }))(AccumulatorsStats);

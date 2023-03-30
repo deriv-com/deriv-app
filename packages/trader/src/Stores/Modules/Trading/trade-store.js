@@ -1142,17 +1142,6 @@ export default class TradeStore extends BaseStore {
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier = tick_size_barrier;
-            const accumulator_barriers_data =
-                this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
-            if (!accumulator_barriers_data.accumulators_high_barrier) {
-                this.root_store.contract_trade.updateAccumulatorBarriersAndSpots({
-                    ...accumulator_barriers_data,
-                    pip_size: this.pip_size,
-                    symbol: this.symbol,
-                    current_symbol: this.symbol,
-                    tick_size_barrier,
-                });
-            }
         }
 
         if (!this.main_barrier || this.main_barrier?.shade) {
@@ -1455,13 +1444,9 @@ export default class TradeStore extends BaseStore {
                     tick_size_barrier: this.tick_size_barrier,
                 };
                 if ('tick' in args[0]) {
-                    const { current_spot, current_spot_time } =
-                        this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
                     const { epoch, pip_size, quote, symbol } = args[0].tick;
                     accumulator_barriers_data = {
                         ...accumulator_barriers_data,
-                        previous_spot: current_spot,
-                        previous_spot_time: current_spot_time,
                         current_spot: quote,
                         current_spot_time: epoch,
                         pip_size,
@@ -1472,8 +1457,6 @@ export default class TradeStore extends BaseStore {
                     const symbol = args[0].echo_req.ticks_history;
                     accumulator_barriers_data = {
                         ...accumulator_barriers_data,
-                        previous_spot: prices[prices.length - 2],
-                        previous_spot_time: times[times.length - 2],
                         current_spot: prices[prices.length - 1],
                         current_spot_time: times[times.length - 1],
                         pip_size: args[0].pip_size,

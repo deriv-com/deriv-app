@@ -334,7 +334,7 @@ const Chart = props => {
         wsSubscribe,
     } = props;
 
-    const { current_spot, current_spot_time } = accumulator_barriers_data[symbol] || {};
+    const { next_spot: current_spot, next_spot_time: current_spot_time } = accumulator_barriers_data[symbol] || {};
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (

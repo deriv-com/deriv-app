@@ -196,13 +196,16 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-    refreshStrategiesTheme = (): void => {
-        load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
+    refreshStrategiesTheme = (stratagy = this.selected_strategy?.xml): void => {
+        load({ block_string: stratagy, drop_event: {}, workspace: this.recent_workspace });
     };
-    loadFileFromRecent = (): void => {
+    loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
-
         if (!this.selected_strategy) {
+            Blockly.Xml.domToWorkspace(
+                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                Blockly.derivWorkspace
+            );
             this.is_open_button_loading = false;
             return;
         }

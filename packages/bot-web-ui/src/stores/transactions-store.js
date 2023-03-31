@@ -150,11 +150,11 @@ export default class TransactionsStore {
             }
         );
 
-        // Attempt to load cached transactions on client loginid change.
-        const disposeClientLoginIdListener = reaction(
-            () => client.loginid,
-            () => (this.elements = getStoredItemsByUser(this.TRANSACTION_CACHE, client.loginid, []))
-        );
+        // No need to show previous transactions if the user switches account.
+        // const disposeClientLoginIdListener = reaction(
+        //     () => client.loginid,
+        //     () => this.elements = getStoredItemsByUser(this.TRANSACTION_CACHE, client.loginid, [])
+        // );
 
         // User could've left the page mid-contract. On initial load, try
         // to recover any pending contracts so we can reflect accurate stats
@@ -166,7 +166,7 @@ export default class TransactionsStore {
 
         return () => {
             disposeTransactionElementsListener();
-            disposeClientLoginIdListener();
+            // disposeClientLoginIdListener();
             disposeRecoverContracts();
         };
     }

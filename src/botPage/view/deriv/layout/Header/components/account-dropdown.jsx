@@ -116,6 +116,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>
+                    <div className='account__switcher-total-label'>{translate('Total assets in your Deriv accounts.')}</div>
                     <Separator />
                     {/* only if we have real account */}
                     <a href={config.tradershub.url} className={'account__switcher-total--link'}>

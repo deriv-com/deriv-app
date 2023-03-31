@@ -99,12 +99,6 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                                     )
                                 );
                             })}
-                    {isReal && visible && (
-                        <a href={url} rel='noopener noreferrer' className='account__switcher-add'>
-                            <img className='account__switcher-add-icon' src='image/deriv/ic-add-circle.svg' />
-                            <span className='account__switcher-add-text'>{label}</span>
-                        </a>
-                    )}
                 </div>
             </div>
         </div>

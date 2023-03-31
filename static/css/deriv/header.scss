@@ -1,7 +1,7 @@
 @import "./devices.scss";
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
 
-@mixin position_center{
+@mixin position_center {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -633,21 +633,22 @@
                     border-radius: 0.4rem;
                     background: transparent;
                 }
-                &__manage{
-                        color: #333333;
-                        font-size: 1.4rem;
-                        border: 0.1rem solid #999999;
-                        border-radius: 0.4rem;
-                        background: transparent;
-                        font-size: 12px;
-                        border: 1px solid #999999;
-                        border-radius: 4px;
-                        background: transparent;
-                        color: #333333;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        font-size: 12px !important;
+
+                &__manage {
+                    color: #333333;
+                    font-size: 1.4rem;
+                    border: 0.1rem solid #999999;
+                    border-radius: 0.4rem;
+                    background: transparent;
+                    font-size: 12px;
+                    border: 1px solid #999999;
+                    border-radius: 4px;
+                    background: transparent;
+                    color: #333333;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 12px !important;
                 }
 
                 &--demo {
@@ -996,6 +997,13 @@
                         font-weight: 300;
                     }
                 }
+
+                &-label {
+                    font-size: 10px;
+                    margin: 4px 16px;
+                    color: #6e6e6e;
+                    margin-bottom: 0.8rem;
+                }
             }
 
             &-balance {
@@ -1245,7 +1253,7 @@
     }
 }
 
-.is_symbol_multiplier{
+.is_symbol_multiplier {
     font-size: 12px;
     font-weight: normal;
     color: #333;

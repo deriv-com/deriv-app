@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-// import Dashboard from '../../dashboard';
 import UserGuide from '../user-guide';
 import Sidebar from 'Components/dashboard/tutorial-tab/sidebar';
 
@@ -89,7 +88,6 @@ describe('<Dashboard />', () => {
         const use_guide_button = screen.getByTestId('btn-use-guide');
         userEvent.click(use_guide_button);
         render(<Sidebar {...mocked_props} />);
-        const search_input = screen.getByTestId('id-test-search');
-        expect(search_input).toBeInTheDocument();
+        expect(screen.getByRole('textbox')).toHaveClass('dc-tabs__wrapper__group__search-input', { exact: true });
     });
 });

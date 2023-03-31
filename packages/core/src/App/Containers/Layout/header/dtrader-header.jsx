@@ -40,7 +40,6 @@ const DTraderHeader = ({
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_pre_appstore,
     is_route_modal_on,
     is_virtual,
     notifications_count,
@@ -103,7 +102,6 @@ const DTraderHeader = ({
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
-                            is_pre_appstore={is_pre_appstore}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -203,7 +201,6 @@ DTraderHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    is_pre_appstore: PropTypes.bool,
     is_switching: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
@@ -240,7 +237,6 @@ export default connect(({ client, common, ui, notifications }) => ({
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_pre_appstore: client.is_pre_appstore,
     is_switching: client.is_switching,
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     has_any_real_account: client.has_any_real_account,

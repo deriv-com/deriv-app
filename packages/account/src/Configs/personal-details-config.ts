@@ -72,7 +72,7 @@ const personal_details_config = ({
             rules: [
                 ['req', localize('Date of birth is required.')],
                 [
-                    v => toMoment(v).isValid() && toMoment(v).isBefore(toMoment().subtract(18, 'years')),
+                    (v: string) => toMoment(v).isValid() && toMoment(v).isBefore(toMoment().subtract(18, 'years')),
                     localize('You must be 18 years old and above.'),
                 ],
             ],
@@ -98,7 +98,7 @@ const personal_details_config = ({
                 ['req', localize('Phone is required.')],
                 ['phone', localize('Phone is not in a proper format.')],
                 [
-                    value => {
+                    (value: string) => {
                         // phone_trim uses regex that trims non-digits
                         const phone_trim = value.replace(/\D/g, '');
                         return validLength(phone_trim, { min: min_phone_number, max: max_phone_number });
@@ -136,13 +136,13 @@ const personal_details_config = ({
                     },
                 ],
                 [
-                    (value, options, { tax_residence }) => {
+                    (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
                         return !!tax_residence;
                     },
                     localize('Please fill in Tax residence.'),
                 ],
                 [
-                    (value, options, { tax_residence }) => {
+                    (value: string, options: Record<string, unknown>, { tax_residence }: { tax_residence: string }) => {
                         const from_list = residence_list.filter(res => res.text === tax_residence && res.tin_format);
                         const tax_regex = from_list[0]?.tin_format?.[0];
                         return tax_regex ? new RegExp(tax_regex).test(value) : true;

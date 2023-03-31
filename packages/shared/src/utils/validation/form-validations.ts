@@ -5,7 +5,7 @@ import fromEntries from 'object.fromentries';
 type TConfig = {
     default_value: string | boolean | number;
     supported_in: string[];
-    rules?: Array<(TOptions & string)[]>;
+    rules?: Array<(TOptions & any)[]>;
     values?: Record<string, string | boolean>;
 };
 export type TSchema = { [key: string]: TConfig };

@@ -165,7 +165,7 @@ const Cards = ({
                         </MobileFullPageModal>
                     </MobileWrapper>
                 </div>
-                <Recent />
+                <Recent is_file_supported={is_file_supported} />
             </div>
         ),
         [is_dialog_open, has_dashboard_strategies]

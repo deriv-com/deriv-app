@@ -1,4 +1,4 @@
-import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types } from '@deriv/bot-skeleton';
+import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
@@ -26,6 +26,8 @@ interface ILoadModalStore {
     selected_strategy_id: string[] | string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
+    refreshStrategies: () => void;
+    refreshStrategiesTheme: () => void;
     preview_workspace: () => void;
     handleFileChange: (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
@@ -71,6 +73,8 @@ export default class LoadModalStore implements ILoadModalStore {
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
+            refreshStrategies: action.bound,
+            refreshStrategiesTheme: action.bound,
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
             loadFileFromLocal: action.bound,
@@ -192,11 +196,16 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-
-    loadFileFromRecent = (): void => {
+    refreshStrategiesTheme = (stratagy = this.selected_strategy?.xml): void => {
+        load({ block_string: stratagy, drop_event: {}, workspace: this.recent_workspace });
+    };
+    loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
-
         if (!this.selected_strategy) {
+            Blockly.Xml.domToWorkspace(
+                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                Blockly.derivWorkspace
+            );
             this.is_open_button_loading = false;
             return;
         }
@@ -336,7 +345,9 @@ export default class LoadModalStore implements ILoadModalStore {
                 scrollbars: true,
             });
         }
-        load({ block_string: this.selected_strategy.xml, drop_event: {}, workspace: this.recent_workspace });
+        const dark_mode = document.body.classList.contains('theme--dark');
+        setColors(dark_mode);
+        this.refreshStrategiesTheme();
         const {
             save_modal: { updateBotName },
         } = this.root_store;
@@ -355,7 +366,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.recent_strategies = recent_strategies;
     };
 
-    refreshStratagies = (): void => {
+    refreshStrategies = (): void => {
         this.setRecentStrategies(this.recent_strategies);
     };
 

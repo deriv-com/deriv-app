@@ -360,11 +360,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 }}
                 submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
             >
-                <div className='settings-language__language-container--pre-appstore'>
+                <div className='settings-language__language-container'>
                     {Object.keys(getAllowedLanguages()).map(lang => (
                         <LanguageLink
                             key={lang}
-                            icon_classname='settings-language__language-flag--pre-appstore'
+                            icon_classname='settings-language__language-flag'
                             is_clickable
                             lang={lang}
                             toggleModal={() => {

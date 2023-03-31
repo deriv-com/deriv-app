@@ -89,9 +89,11 @@ const FilterModal = () => {
         buy_sell_store.setSelectedPaymentMethodText([]);
     };
 
-    // this is to ensure when user clicks the back button after selecting some payment methods and clicking Leave Page button in the modal
-    // the previously selected payment methods should not be saved in the filter_payment_methods observable (by default its saved due to the onChange function applied to the checkbox)
-    // otherwise, when user goes back to the payment methods selection, it will assume that the user has already selected those previous payment methods
+    /**
+     * this is to ensure when user clicks the back button after selecting some payment methods and clicking Leave Page button in the modal
+     * the previously selected payment methods should not be saved in the filter_payment_methods observable (by default its saved due to the onChange function applied to the checkbox)
+     * otherwise, when user goes back to the payment methods selection, it will assume that the user has already selected those previous payment methods
+     **/
     const resetFilterPaymentMethods = () => {
         buy_sell_store.filter_payment_methods = buy_sell_store.filter_payment_methods.filter(
             filtered_payment_method => !selected_methods.includes(filtered_payment_method)

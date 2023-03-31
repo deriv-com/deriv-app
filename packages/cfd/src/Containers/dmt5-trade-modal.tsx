@@ -2,8 +2,16 @@ import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getUrlBase, getCFDAccountKey } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import {
+    CFD_PLATFORMS,
+    isMobile,
+    getCFDAccountDisplay,
+    getCFDPlatformLabel,
+    getPlatformSettings,
+    getUrlBase,
+    getCFDAccountKey,
+} from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
@@ -108,7 +116,7 @@ const DMT5TradeModal = ({
             shortcode: getCompanyShortcode(),
             is_mt5_trade_modal: true,
         });
-    const getAccountIcon = () => {
+    const getAccountTitle = () => {
         if (show_eu_related_content) return 'CFDs';
         else if (mt5_trade_account.market_type === 'synthetic') return 'Derived';
         return 'Financial';
@@ -116,7 +124,7 @@ const DMT5TradeModal = ({
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                <TradingPlatformIcon icon={getAccountIcon()} size={24} />
+                <TradingPlatformIcon icon={getAccountTitle()} size={24} />
                 <div className='cfd-trade-modal__desc'>
                     <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                         {getHeadingTitle()}
@@ -173,6 +181,16 @@ const DMT5TradeModal = ({
                                 toggleModal();
                             }}
                         />
+                    </div>
+                </div>
+                <div className='cfd-trade-modal__maintenance'>
+                    <Icon
+                        icon='IcAlertWarning'
+                        size={isMobile() ? 28 : 20}
+                        className='cfd-trade-modal__maintenance-icon'
+                    />
+                    <div className='cfd-trade-modal__maintenance-text'>
+                        <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                     </div>
                 </div>
             </div>
@@ -250,8 +268,26 @@ const DMT5TradeModal = ({
                     </a>
                 </div>
             </div>
+            <Text
+                align='center'
+                as='div'
+                className='cfd-trade-modal__download-center-text'
+                size={isMobile() ? 'xxxs' : 'xxs'}
+                weight='bold'
+            >
+                {localize(
+                    'Download {{ platform }} on your phone to trade with the {{ platform }} {{ account }} account',
+                    {
+                        platform: getCFDPlatformLabel(CFD_PLATFORMS.MT5),
+                        account: getAccountTitle(),
+                    }
+                )}
+            </Text>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
+                    <a href={getPlatformMt5DownloadLink('ios')} target='_blank' rel='noopener noreferrer'>
+                        <Icon icon='IcInstallationApple' width={135} height={40} />
+                    </a>
                     <a href={getPlatformMt5DownloadLink('android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
@@ -259,12 +295,16 @@ const DMT5TradeModal = ({
                         <Icon icon='IcInstallationHuawei' width={135} height={40} />
                     </a>
                 </div>
-                <div className='cfd-trade-modal__download-center-options--qrcode'>
-                    <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
-                    <Text align='center' size='xxs'>
-                        {localize('Scan the QR code to download Deriv MT5.')}
-                    </Text>
-                </div>
+                {!isMobile() && (
+                    <div className='cfd-trade-modal__download-center-options--qrcode'>
+                        <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
+                        <Text align='center' size='xxs'>
+                            {localize('Scan the QR code to download {{ platform }}.', {
+                                platform: getPlatformSettings('mt5').name,
+                            })}
+                        </Text>
+                    </div>
+                )}
             </div>
         </div>
     );

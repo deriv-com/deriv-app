@@ -4,10 +4,10 @@ import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
 import './payment-agent-deposit-details.scss';
-import { TPaymentAgent } from '../../../types';
+import { TPartialPaymentAgentList, TPaymentAgent } from '../../../types';
 
 type TPaymentAgentDepositDetails = {
-    payment_agent: TPaymentAgent;
+    payment_agent: TPartialPaymentAgentList;
 };
 
 const PaymentAgentDepositDetails = ({ payment_agent }: TPaymentAgentDepositDetails) => {

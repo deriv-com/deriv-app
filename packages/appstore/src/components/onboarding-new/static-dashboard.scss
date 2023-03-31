@@ -9,18 +9,17 @@
         position: relative;
         bottom: 2rem;
     }
-
-    &--deposit-button-blurry {
-        opacity: 0.2;
+    &--deposit-button {
         cursor: not-allowed;
+        &-blurry {
+            opacity: 0.2;
+        }
+        &-animated {
+            width: fit-content;
+            box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
+            animation: triggerAnimation 0.5s linear infinite alternate;
+        }
     }
-
-    &--deposit-button-animated {
-        width: fit-content;
-        box-shadow: 0 2rem 1.5rem -0.1rem var(--general-section-1);
-        animation: triggerAnimation 0.5s linear infinite alternate;
-    }
-
     &--eu {
         padding-bottom: 7rem;
     }

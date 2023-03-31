@@ -31,6 +31,8 @@ type TAccountsList = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: number;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    is_virtual: number;
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -97,6 +99,8 @@ type TClientStore = {
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
+    cfd_score: number;
+    setCFDScore: (score: number) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -146,6 +150,7 @@ type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
+    setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => void;
     switched: boolean;
@@ -192,9 +197,11 @@ type TCommonStore = {
     is_from_derivgo: boolean;
     is_network_online: boolean;
     platform: string;
+    current_language: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
 };
 
 type TUiStore = {
@@ -205,16 +212,22 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
     is_dark_mode_on: boolean;
+    is_closing_create_real_account_modal: boolean;
     is_mobile: boolean;
-    notification_messages_ui: JSX.Element | null;
-    openRealAccountSignup: (value: string) => void;
+    sub_section_index: number;
+    notification_messages_ui: React.FC | null;
+    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleSetCurrencyModal: () => void;
+    setSubSectionIndex: (index: number) => void;
+    toggleReadyToDepositModal: () => void;
+    is_ready_to_deposit_modal_visible: boolean;
 };
 
 type TMenuStore = {
@@ -224,17 +237,21 @@ type TMenuStore = {
 
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
+    client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
+    setP2PRedirectTo: () => void;
 };
 
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
     openModal: (modal_id: string, props?: any) => void;
+    is_eu_user: boolean;
 };
 
 export type TRootStore = {

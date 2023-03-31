@@ -4,7 +4,7 @@ import React from 'react';
 import ExpandedCard from './expanded-card.jsx';
 import PropTypes from 'prop-types';
 
-const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, updateErrors, validateField, values }) => {
+const Card = ({ card, error, index, setFieldValue, updateErrors, values }) => {
     const [is_open, setIsOpen] = React.useState(false);
     const onClickHandler = e => {
         e.preventDefault();
@@ -43,13 +43,10 @@ const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, upd
             {is_open && (
                 <ExpandedCard
                     card_details={card}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
                     values={values}
                     setFieldValue={setFieldValue}
                     index={index}
                     error={error}
-                    validateField={validateField}
                     updateErrors={updateErrors}
                 />
             )}
@@ -59,13 +56,10 @@ const Card = ({ card, error, handleBlur, handleChange, index, setFieldValue, upd
 
 Card.propTypes = {
     card: PropTypes.object,
-    error: PropTypes.array,
-    handleBlur: PropTypes.func,
-    handleChange: PropTypes.func,
+    error: PropTypes.object,
     index: PropTypes.number,
     setFieldValue: PropTypes.func,
     updateErrors: PropTypes.func,
-    validateField: PropTypes.func,
     values: PropTypes.object,
 };
 

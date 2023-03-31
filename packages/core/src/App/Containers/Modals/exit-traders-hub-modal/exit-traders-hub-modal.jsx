@@ -21,8 +21,9 @@ const ExitTradersHubModal = ({
 
     const exit_traders_hub_modal_content = (
         <Text size={isMobile() ? 'xxs' : 'xs'}>
-            {localize(`You won’t be able to see your EU account in the traditional view. The open positions in your EU
-        account will remain open. You can switch back to this view at any time.`)}
+            {localize(
+                "You won't be able to see your EU account in the traditional view. The open positions in your EU account will remain open. You can switch back to this view at any time."
+            )}
         </Text>
     );
 

@@ -12,6 +12,7 @@ export type Actions = {
     has_divider?: boolean;
     onAction?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     is_external?: boolean;
+    new_tab?: boolean;
     is_buttons_disabled?: boolean;
     is_real?: boolean;
 };
@@ -21,6 +22,7 @@ const TradingAppCardActions = ({
     link_to,
     onAction,
     is_external,
+    new_tab,
     is_buttons_disabled,
     is_real,
 }: Actions) => {
@@ -32,7 +34,7 @@ const TradingAppCardActions = ({
                 </Button>
             );
         case 'trade':
-            return <TradeButton link_to={link_to} onAction={onAction} is_external={is_external} />;
+            return <TradeButton link_to={link_to} onAction={onAction} is_external={is_external} new_tab={new_tab} />;
         case 'dxtrade':
             return <TradeButton link_to={link_to} />;
         case 'multi-action':

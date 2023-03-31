@@ -588,8 +588,11 @@ export default class TradersHubStore extends BaseStore {
             this.is_real &&
             !this.is_eu_user &&
             (this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'synthetic') ||
-                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'financial')) &&
-            (isEligibleForMoreRealMt5('synthetic') || isEligibleForMoreRealMt5('financial')) &&
+                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'financial') ||
+                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'all')) &&
+            (isEligibleForMoreRealMt5('synthetic') ||
+                isEligibleForMoreRealMt5('financial') ||
+                isEligibleForMoreRealMt5('all')) &&
             !is_high_risk_client_for_mt5
         );
     }

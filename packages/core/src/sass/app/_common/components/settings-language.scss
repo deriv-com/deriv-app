@@ -9,21 +9,12 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-gap: 1.6rem;
+        padding: 2.4rem;
 
         @include mobile {
-            grid-template-columns: repeat(2, minmax(100%, 1fr));
+            grid-template-columns: repeat(2, minmax(50%, 1fr));
             grid-gap: 0.3rem;
             grid-template-rows: auto;
-        }
-
-        &--pre-appstore {
-            padding: 2.4rem;
-
-            @include mobile {
-                padding: 0.8rem;
-                grid-template-columns: repeat(2, minmax(9rem, 1fr));
-                grid-gap: 0;
-            }
         }
     }
     &__language {
@@ -63,13 +54,8 @@
 
             @include mobile {
                 margin-top: 1rem;
-                width: 5rem;
-                height: 4rem;
-
-                &--pre-appstore {
-                    width: 3.5rem;
-                    height: 2.5rem;
-                }
+                width: 4rem;
+                height: 5rem;
             }
         }
         &-name {

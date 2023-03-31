@@ -94,22 +94,20 @@ const ShowAccountSwitcher = ({
     country_standpoint,
     is_dialog_on,
     toggleDialog,
-}) => {
-    return (
-        <AccountInfo
-            acc_switcher_disabled_message={acc_switcher_disabled_message}
-            account_type={account_type}
-            balance={balance}
-            is_disabled={is_disabled}
-            is_eu={is_eu}
-            is_virtual={is_virtual}
-            currency={currency}
-            country_standpoint={country_standpoint}
-            is_dialog_on={is_dialog_on}
-            toggleDialog={toggleDialog}
-        />
-    );
-};
+}) => (
+    <AccountInfo
+        acc_switcher_disabled_message={acc_switcher_disabled_message}
+        account_type={account_type}
+        balance={balance}
+        is_disabled={is_disabled}
+        is_eu={is_eu}
+        is_virtual={is_virtual}
+        currency={currency}
+        country_standpoint={country_standpoint}
+        is_dialog_on={is_dialog_on}
+        toggleDialog={toggleDialog}
+    />
+);
 
 const TradingHubHeader = ({
     header_extension,
@@ -152,7 +150,7 @@ const TradingHubHeader = ({
     const history = useHistory();
 
     const CashierMobileLinks = () => (
-        <>
+        <React.Fragment>
             <div className='trading-hub-header__menu-right--items--notifications__cashier'>
                 <ShowNotifications
                     is_notifications_visible={is_notifications_visible}
@@ -174,11 +172,11 @@ const TradingHubHeader = ({
                     toggleDialog={toggleAccountsDialog}
                 />
             </div>
-        </>
+        </React.Fragment>
     );
 
     const DefaultMobileLinks = () => (
-        <>
+        <React.Fragment>
             <div className='trading-hub-header__menu-right--items--onboarding'>
                 <TradingHubOnboarding
                     is_dark_mode={is_dark_mode}
@@ -212,7 +210,7 @@ const TradingHubHeader = ({
                     <Localize i18n_default_text='Cashier' />
                 </Button>
             </div>
-        </>
+        </React.Fragment>
     );
 
     return (
@@ -323,13 +321,13 @@ TradingHubHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
-    balance: PropTypes.any,
-    currency: PropTypes.any,
-    is_acc_switcher_disabled: PropTypes.any,
+    balance: PropTypes.number,
+    currency: PropTypes.string,
+    is_acc_switcher_disabled: PropTypes.bool,
     country_standpoint: PropTypes.object,
-    is_acc_switcher_on: PropTypes.any,
-    is_virtual: PropTypes.any,
-    toggleAccountsDialog: PropTypes.any,
+    is_acc_switcher_on: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    toggleAccountsDialog: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({

@@ -5,6 +5,7 @@ import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shar
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier-onboarding.scss';
+import { useHistory, useLocation } from 'react-router';
 
 type TCashierOnboardingSideNoteProps = {
     is_crypto?: boolean;
@@ -16,6 +17,8 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
     const { currency, is_eu, loginid, is_pre_appstore } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
+    const history = useHistory();
+    const { pathname } = useLocation();
 
     const currency_code = getCurrencyDisplayCode(currency);
 
@@ -45,30 +48,29 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
     };
 
     const getHeaderTitle = () => {
-        if (!is_pre_appstore) {
-            if (!is_crypto)
+        if (is_pre_appstore) {
+            if (is_crypto) {
                 return (
                     <Localize
-                        i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
-                        values={{ currency_code }}
+                        i18n_default_text='This is your {{currency_code}} account {{loginid}}'
+                        values={{ currency_code, loginid }}
                     />
                 );
-            return <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />;
-        }
-        if (is_crypto) {
+            }
+            const eu_text = is_eu ? 'EU' : 'non-EU';
             return (
                 <Localize
-                    i18n_default_text='This is your {{currency_code}} account {{loginid}}'
-                    values={{ currency_code, loginid }}
+                    i18n_default_text='This is your {{eu_text}} {{currency_code}} account {{loginid}}'
+                    values={{ eu_text, currency_code, loginid }}
                 />
             );
         }
-
-        const eu_text = is_eu ? 'EU ' : 'non-EU ';
+        if (is_crypto)
+            return <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />;
         return (
             <Localize
-                i18n_default_text='This is your {{eu_text}} {{currency_code}} account {{loginid}}'
-                values={{ eu_text, currency_code, loginid }}
+                i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
+                values={{ currency_code }}
             />
         );
     };

@@ -16,7 +16,7 @@ function checkExists(component: string) {
 module.exports = function (this: LoaderContext<Record<string, never>>, source: string, map: string) {
     const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
-        const matches = /import\s+\{(.*)\}\s*from\s+\'@deriv\/trader/.exec(line); // eslint-disable-line no-useless-escape
+        const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/trader/.exec(line); // eslint-disable-line no-useless-escape
         if (!matches || !matches[1]) {
             return line; // do nothing;
         }

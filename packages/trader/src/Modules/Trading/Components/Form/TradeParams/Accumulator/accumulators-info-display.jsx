@@ -10,11 +10,11 @@ const AccumulatorsInfoDisplay = ({ currency, maximum_payout, maximum_ticks }) =>
     const content = [
         {
             label: localize('Maximum payout'),
-            value: <Money key={0} amount={maximum_payout} show_currency currency={currency} />,
+            value: <Money amount={maximum_payout} show_currency currency={currency} />,
         },
         {
             label: localize('Maximum ticks'),
-            value: `${maximum_ticks} ${maximum_ticks === 1 ? localize('tick') : localize('ticks')}`,
+            value: `${maximum_ticks || 0} ${maximum_ticks === 1 ? localize('tick') : localize('ticks')}`,
         },
     ];
 

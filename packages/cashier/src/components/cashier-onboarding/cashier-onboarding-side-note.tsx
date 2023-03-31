@@ -13,7 +13,7 @@ type TCashierOnboardingSideNoteProps = {
 const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSideNoteProps) => {
     const { client, ui } = useStore();
     const { general_store } = useCashierStore();
-    const { currency, is_eu, loginid, is_high_risk } = client;
+    const { currency, is_eu, loginid, is_low_risk } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
 
@@ -45,31 +45,19 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
     };
 
     const getHeaderTitle = () => {
-        if (is_high_risk) {
-            if (is_crypto)
-                return (
-                    <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />
-                );
+        if (is_low_risk && !is_crypto) {
+            const eu_text = is_eu ? 'EU' : 'non-EU';
             return (
                 <Localize
-                    i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
-                    values={{ currency_code }}
+                    i18n_default_text='This is your {{eu_text}} {{currency_code}} account {{loginid}}'
+                    values={{ eu_text, currency_code, loginid }}
                 />
             );
         }
-        if (is_crypto) {
-            return (
-                <Localize
-                    i18n_default_text='This is your {{currency_code}} account {{loginid}}'
-                    values={{ currency_code, loginid }}
-                />
-            );
-        }
-        const eu_text = is_eu ? 'EU' : 'non-EU';
         return (
             <Localize
-                i18n_default_text='This is your {{eu_text}} {{currency_code}} account {{loginid}}'
-                values={{ eu_text, currency_code, loginid }}
+                i18n_default_text='This is your {{currency_code}} account {{loginid}}'
+                values={{ currency_code, loginid }}
             />
         );
     };

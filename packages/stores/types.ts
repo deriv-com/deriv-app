@@ -115,6 +115,7 @@ type TClientStore = {
     is_eu: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
+    is_high_risk: boolean;
     is_identity_verification_needed: boolean;
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;

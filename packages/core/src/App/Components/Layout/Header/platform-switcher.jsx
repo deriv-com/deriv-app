@@ -18,6 +18,7 @@ const PlatformSwitcher = ({
     is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
+    setTogglePlatformType,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
@@ -81,6 +82,7 @@ const PlatformSwitcher = ({
                     platform_config={platform_config}
                     closeDrawer={closeDrawer}
                     app_routing_history={app_routing_history}
+                    setTogglePlatformType={setTogglePlatformType}
                 />
             </CSSTransition>
         </React.Fragment>
@@ -95,6 +97,7 @@ PlatformSwitcher.propTypes = {
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    setTogglePlatformType: PropTypes.func,
 };
 
 export default withRouter(PlatformSwitcher);

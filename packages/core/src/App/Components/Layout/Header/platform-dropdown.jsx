@@ -7,7 +7,6 @@ import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
-import { useStore, observer } from '@deriv/stores';
 
 const PlatformBox = ({ platform: { icon, title, description } }) => (
     <React.Fragment>
@@ -51,10 +50,9 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
     );
 };
 
-const PlatformDropdown = observer(({ app_routing_history, closeDrawer, platform_config }) => {
+const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, setTogglePlatformType }) => {
     const history = useHistory();
-    const { traders_hub } = useStore();
-    const { setTogglePlatformType } = traders_hub;
+
     const TradersHubRedirect = () => {
         return (
             <div className='platform-dropdown__cta'>
@@ -118,7 +116,7 @@ const PlatformDropdown = observer(({ app_routing_history, closeDrawer, platform_
     }
 
     return ReactDOM.createPortal(platform_dropdown, document.getElementById('deriv_app'));
-});
+};
 
 PlatformDropdown.propTypes = {
     platform_configs: PropTypes.array,

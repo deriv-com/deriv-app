@@ -170,7 +170,7 @@ const TourTriggrerDialog = ({
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
-                    <Text size={is_mobile ? 'xxs' : 'xs'} color='prominent'>
+                    <Text size={is_mobile ? 'xxs' : 's'} color='prominent'>
                         {is_tour_dialog_visible && getTourContent('content')}
                     </Text>
                 </div>

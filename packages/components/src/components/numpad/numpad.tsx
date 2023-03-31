@@ -99,7 +99,7 @@ const Numpad = ({
                 if (String(default_value) === '0') {
                     updateValue(concatenate(String(num), 0));
                 } else {
-                    const regex = /(?:\d+\.)(\d+)$/;
+                    const regex = /(?:^\d{0,35}\.)(\d{0,35})$/;
                     const matches = regex.exec(String(default_value));
 
                     if (matches !== null && is_float) {

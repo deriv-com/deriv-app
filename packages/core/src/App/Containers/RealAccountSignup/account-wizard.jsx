@@ -190,7 +190,9 @@ const AccountWizard = props => {
 
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
-        delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
+        delete clone?.tax_identification_confirm;
+        delete clone?.agreed_tnc;
+        delete clone?.agreed_tos;
         props.setRealAccountFormData(clone);
         if (payload) {
             clone = {
@@ -357,6 +359,7 @@ const AccountWizard = props => {
 
 AccountWizard.propTypes = {
     account_settings: PropTypes.object,
+    account_status: PropTypes.object,
     closeRealAccountSignup: PropTypes.func,
     content_flag: PropTypes.string,
     fetchFinancialAssessment: PropTypes.func,
@@ -383,6 +386,7 @@ AccountWizard.propTypes = {
 
 export default connect(({ client, notifications, ui, traders_hub }) => ({
     account_settings: client.account_settings,
+    account_status: client.account_status,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     content_flag: traders_hub.content_flag,
     fetchAccountSettings: client.fetchAccountSettings,

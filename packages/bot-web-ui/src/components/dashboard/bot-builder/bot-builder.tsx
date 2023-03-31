@@ -1,17 +1,17 @@
 import React from 'react';
-import RootStore from 'Stores/index';
+import classNames from 'classnames';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { setColors, blocksCoordinate } from '@deriv/bot-skeleton';
+import LoadModal from 'Components/load-modal';
+import SaveModal from 'Components/save-modal';
+import ReactJoyride from 'react-joyride';
 import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';
-import ReactJoyride from 'react-joyride';
-import classNames from 'classnames';
-import LoadModal from 'Components/load-modal';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import SaveModal from 'Components/save-modal';
-import WorkspaceWrapper from './workspace-wrapper';
+import RootStore from 'Stores/index';
 import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
-import TourSlider from '../tour-slider';
 import QuickStrategy from '../quick-strategy';
-import { blocksCoordinate } from '../../../../../bot-skeleton/src/scratch/hooks/block_svg';
+import TourSlider from '../tour-slider';
+import WorkspaceWrapper from './workspace-wrapper';
 
 type TBotBuilder = {
     app: AppStore;
@@ -19,7 +19,11 @@ type TBotBuilder = {
     has_started_onboarding_tour: boolean;
     has_started_bot_builder_tour: boolean;
     is_preview_on_popup: boolean;
+    is_dark_mode_on: boolean;
     setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => boolean;
+    loadFileFromRecent: () => void;
+    selected_strategy_id: string;
+    previewRecentStrategy: (selected_strategy_id: string) => void;
 };
 
 const BotBuilder = ({
@@ -28,9 +32,19 @@ const BotBuilder = ({
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
     is_preview_on_popup,
+    is_dark_mode_on,
+    selected_strategy_id,
+    loadFileFromRecent,
+    previewRecentStrategy,
 }: TBotBuilder) => {
     const [is_tour_running] = React.useState<boolean>(true);
     const { onMount, onUnmount } = app;
+    const el_ref = React.useRef<HTMLInputElement | null>(null);
+
+    //removed used effect here because dark mode is an observable and the component will rerender
+    setColors(is_dark_mode_on);
+    previewRecentStrategy(selected_strategy_id);
+    if (active_tab === 1) loadFileFromRecent();
 
     React.useEffect(() => {
         onMount();
@@ -53,6 +67,7 @@ const BotBuilder = ({
                 {is_preview_on_popup ? null : (
                     <div
                         id='scratch_div'
+                        ref={el_ref}
                         style={{
                             width: 'calc(100vw - 3.2rem)',
                             height: 'var(--bot-content-height)',
@@ -106,11 +121,15 @@ const BotBuilder = ({
     );
 };
 
-export default connect(({ app, dashboard }: RootStore) => ({
+export default connect(({ app, dashboard, load_modal, ui }: RootStore) => ({
     app,
     active_tab: dashboard.active_tab,
     has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_preview_on_popup: dashboard.is_preview_on_popup,
+    is_dark_mode_on: ui.is_dark_mode_on,
+    loadFileFromRecent: load_modal.loadFileFromRecent,
     setOnBoardTourRunState: dashboard.setOnBoardTourRunState,
+    previewRecentStrategy: load_modal.previewRecentStrategy,
+    selected_strategy_id: load_modal.selected_strategy_id,
 }))(BotBuilder);

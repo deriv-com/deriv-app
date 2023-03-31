@@ -66,4 +66,7 @@ export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore)
     setActiveTab: dashboard.setActiveTab,
     is_dialog_open: quick_strategy.is_dialog_open,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
+    is_running: run_panel.is_running,
+    is_contract_dialog_open: quick_strategy.is_contract_dialog_open,
+    is_stop_bot_dialog_open: quick_strategy.is_stop_bot_dialog_open,
 }))(QuickStrategy);

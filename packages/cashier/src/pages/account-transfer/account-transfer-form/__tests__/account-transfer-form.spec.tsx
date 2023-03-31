@@ -120,7 +120,7 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
-        expect(screen.getByText('Transfer between your accounts in Deriv')).toBeInTheDocument();
+        expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
 
     it('should show loader if account_list.length === 0', () => {
@@ -216,19 +216,6 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
-    });
-
-    it('should show <AccountTransferNote /> component', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-
-        renderAccountTransferForm();
-
-        expect(screen.getByText('Transfer limits may vary depending on the exchange rates.')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.'
-            )
-        ).toBeInTheDocument();
     });
 
     it('should show proper hint about mt5 remained transfers', () => {

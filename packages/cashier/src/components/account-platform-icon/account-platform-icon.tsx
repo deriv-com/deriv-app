@@ -6,7 +6,6 @@ import { TAccountsList } from 'Types';
 type TAccountPlatformIcon = {
     size: number;
     account: TAccountsList['account'];
-    is_pre_appstore: boolean;
     icon_class_name?: string;
     appstore_icon_class_name?: string;
     appstoreIconOnClickHandler?: () => void;
@@ -14,13 +13,12 @@ type TAccountPlatformIcon = {
 
 const AccountPlatformIcon = ({
     account,
-    is_pre_appstore,
     size,
     icon_class_name,
     appstore_icon_class_name,
     appstoreIconOnClickHandler,
 }: TAccountPlatformIcon) => {
-    return is_pre_appstore && account.is_mt && account.platform_icon ? (
+    return account.is_mt && account.platform_icon ? (
         <TradingPlatformIcon
             icon={account.platform_icon}
             size={size}

@@ -23,4 +23,4 @@ export const getPersonalDetailsFields = () => ({
     employment_status: localize('Employment status'),
 });
 
-export const signup_form_fields = { ...getPersonalDetailsFields(), ...getAddressDetailsFields() };
+export const getSignupFormFields = () => ({ ...getPersonalDetailsFields(), ...getAddressDetailsFields() });

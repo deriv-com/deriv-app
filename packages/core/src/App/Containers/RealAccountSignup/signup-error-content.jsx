@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { isMobile, signup_form_fields } from '@deriv/shared';
+import { isMobile, getSignupFormFields } from '@deriv/shared';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
@@ -60,7 +60,7 @@ const Message = ({ code, message, details }) => {
         case 'InvalidAccount':
             return (
                 <Text size={isMobile() ? 'xxs' : 'xs'} align='center'>
-                    <Localize i18n_default_text={message} />
+                    {message}
                 </Text>
             );
         case 'InputValidationFailed':
@@ -74,7 +74,7 @@ const Message = ({ code, message, details }) => {
                     {Object.keys(details?.error_details).map(item => (
                         <div key={item} className='invalid_fields_input'>
                             <Text size='xs' weight='bold'>
-                                <Localize i18n_default_text={signup_form_fields[item]} />
+                                {getSignupFormFields()[item]}
                             </Text>
                             <Text size='xs' weight='bold'>
                                 {' : '}

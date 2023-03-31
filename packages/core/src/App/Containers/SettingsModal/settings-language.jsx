@@ -12,7 +12,7 @@ const LanguageSettings = observer(() => {
 
     return (
         <div className='settings-language'>
-            <div className='settings-language__language-container--pre-appstore'>
+            <div className='settings-language__language-container'>
                 {Object.keys(getAllowedLanguages()).map(lang =>
                     isCurrentLanguage(lang, current_language) ? (
                         <LanguageLink key={lang} lang={lang} />

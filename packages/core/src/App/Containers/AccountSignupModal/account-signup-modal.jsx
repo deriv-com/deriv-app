@@ -23,7 +23,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
     const disableBtn = (values, errors) =>
-        !values.residence || !!errors.residence || !values.citizenship || !!errors.citizenship;
+        (!values.residence && !!errors.residence) || (!values.citizenship && !!errors.citizenship);
 
     const updatePassword = new_password => {
         setPWInput(new_password);
@@ -116,6 +116,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                                 'account-signup__btn--disabled': disableBtn(values, errors),
                                             })}
                                             type='button'
+                                            is_disabled={(!errors && !values) || disableBtn(values, errors)}
                                             onClick={() => {
                                                 history_value.current = values;
                                                 setIsPasswordModal(true);

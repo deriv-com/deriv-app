@@ -2,7 +2,7 @@ import 'Styles/account.scss';
 
 import { FadeWrapper, Icon, Loading, PageOverlay, Text, VerticalTab } from '@deriv/components';
 import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
+import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';

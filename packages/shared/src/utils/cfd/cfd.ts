@@ -81,7 +81,12 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
     }
     if (market_type === 'all' && platform === CFD_PLATFORMS.MT5) {
         // currently we are only supporting SVG for SwapFree
-        return 'all_svg';
+        switch (shortcode) {
+            case 'svg':
+                return 'all_svg';
+            default:
+                return 'all';
+        }
     }
     return undefined;
 };
@@ -161,9 +166,7 @@ export const getCFDAccountDisplay = ({
         if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds';
         else cfd_account_key = 'cfd';
     }
-    if (cfd_account_key === 'all_svg') {
-        cfd_account_key = 'all';
-    }
+
     const cfd_account_display = CFD_text_translated[cfd_account_key]();
 
     // TODO condition will be changed when card 74063 is merged

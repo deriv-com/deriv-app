@@ -253,17 +253,15 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(
-            screen.getByText(
-                'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
+        );
     });
 
     it('should show the proper message if the client has disabled_status', () => {
@@ -288,17 +286,15 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(
-            screen.getByText(
-                'Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'
+        );
     });
 
     it('should show the proper message if the client account has no currency', () => {
@@ -592,17 +588,15 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(
-            screen.getByText(
-                /If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat./i
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            /If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat./i
+        );
     });
 
     it('should show the proper message if the client has unwelcome_status', () => {
@@ -627,13 +621,13 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(screen.getByText('Please contact us via live chat.')).toBeInTheDocument();
+        expect(container).toHaveTextContent('Please contact us via live chat.');
     });
 
     it('should show the proper message if the client has no_withdrawal_or_trading_status', () => {
@@ -658,17 +652,15 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(
-            screen.getByText(
-                'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
+        );
     });
 
     it('should show the proper message if the client has withdrawal_locked_status', () => {
@@ -693,17 +685,15 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(
-            screen.getByText(
-                'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
+        );
     });
 
     it('should show the proper message if the client has only_pa_withdrawals_allowed_status', () => {
@@ -728,15 +718,15 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(
-            screen.getByText('You can only make deposits. Please contact us via live chat for more information.')
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'You can only make deposits. Please contact us via live chat for more information.'
+        );
     });
 
     it('should prioritize cashier locked message if the client has a combo of deposit and cashier locked reasons', () => {
@@ -792,17 +782,15 @@ describe('<CashierLocked />', () => {
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
+        const { container } = render(<CashierLocked />, {
             wrapper: ({ children }) => (
                 <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
             ),
         });
 
-        expect(
-            screen.getByText(
-                'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
+        );
     });
 
     it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {

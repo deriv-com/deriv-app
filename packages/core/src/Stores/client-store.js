@@ -5,11 +5,12 @@ import {
     LocalStore,
     State,
     deriv_urls,
-    filterUrlQuery,
     excludeParamsFromUrlQuery,
+    filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
+    isCryptocurrency,
     isDesktopOs,
     isEmptyObject,
     isLocal,
@@ -21,13 +22,12 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    isCryptocurrency,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
-import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -76,7 +76,6 @@ export default class ClientStore extends BaseStore {
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
-    is_pre_appstore = false;
     has_enabled_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
@@ -147,6 +146,7 @@ export default class ClientStore extends BaseStore {
     is_mt5_account_list_updated = false;
 
     prev_real_account_loginid = '';
+    p2p_advertiser_info = {};
     prev_account_type = 'demo';
 
     constructor(root_store) {
@@ -163,7 +163,6 @@ export default class ClientStore extends BaseStore {
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
-            is_pre_appstore: observable,
             switch_broadcast: observable,
             initialized_broadcast: observable,
             currencies_list: observable,
@@ -210,6 +209,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
+            p2p_advertiser_info: observable,
             prev_account_type: observable,
             balance: computed,
             account_open_date: computed,
@@ -245,7 +245,6 @@ export default class ClientStore extends BaseStore {
             is_crypto: computed,
             default_currency: computed,
             should_allow_authentication: computed,
-            is_risky_client: computed,
             is_financial_assessment_incomplete: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
@@ -276,6 +275,7 @@ export default class ClientStore extends BaseStore {
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
+            should_restrict_vanuatu_account_creation: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -386,7 +386,7 @@ export default class ClientStore extends BaseStore {
             updateMT5Status: action.bound,
             isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
-            setIsPreAppStore: action.bound,
+            setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
         });
 
@@ -409,33 +409,9 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings],
             () => {
-                const { trading_hub } = this.account_settings;
                 const lang_from_url = new URLSearchParams(window.location.search).get('lang') || DEFAULT_LANGUAGE;
-                this.is_pre_appstore = !!trading_hub;
-                localStorage.setItem('is_pre_appstore', !!trading_hub);
                 this.setPreferredLanguage(lang_from_url);
                 LocalStore.set(LANGUAGE_KEY, lang_from_url);
-            }
-        );
-        // TODO: Remove this after setting trading_hub enabled for all users
-
-        reaction(
-            () => [this.account_settings],
-            () => {
-                const { trading_hub } = this.account_settings;
-                const is_traders_hub = !!trading_hub;
-                if (!this.is_pre_appstore && window.location.pathname === routes.traders_hub) {
-                    window.location.href = routes.root;
-                } else if (
-                    this.is_pre_appstore &&
-                    window.location.pathname === routes.root &&
-                    is_traders_hub !== this.is_pre_appstore
-                ) {
-                    window.location.href = routes.traders_hub;
-                } else {
-                    return null;
-                }
-                return null;
             }
         );
 
@@ -541,9 +517,7 @@ export default class ClientStore extends BaseStore {
             ['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target) &&
             this.current_landing_company
         ) {
-            return this.is_pre_appstore
-                ? getDefaultAllowedCurrencies()
-                : this.current_landing_company.legal_allowed_currencies;
+            return this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
@@ -702,15 +676,6 @@ export default class ClientStore extends BaseStore {
         );
     }
 
-    get is_risky_client() {
-        if (isEmptyObject(this.account_status)) return false;
-        return (
-            this.is_logged_in &&
-            !this.is_virtual &&
-            ['standard', 'high'].includes(this.account_status.risk_classification)
-        );
-    }
-
     get is_financial_assessment_incomplete() {
         return this.account_status?.status?.includes('financial_assessment_not_complete');
     }
@@ -833,6 +798,12 @@ export default class ClientStore extends BaseStore {
     get should_restrict_bvi_account_creation() {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'bvi' && item?.status === 'poa_failed'
+        ).length;
+    }
+
+    get should_restrict_vanuatu_account_creation() {
+        return !!this.mt5_login_list.filter(
+            item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
     }
 
@@ -1171,6 +1142,7 @@ export default class ClientStore extends BaseStore {
 
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1197,9 +1169,11 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
+            Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
+            Cookies.remove('region', { domain });
             Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }
@@ -1237,7 +1211,7 @@ export default class ClientStore extends BaseStore {
 
     responsePayoutCurrencies(response) {
         const list = response?.payout_currencies || response;
-        this.currencies_list = Array.isArray(list) ? buildCurrenciesList(list) : [];
+        this.currencies_list = buildCurrenciesList(Array.isArray(list) ? list : []);
         this.selectCurrency('');
     }
 
@@ -1331,8 +1305,9 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
-        const { document_number, document_type, ...required_form_values } = form_values;
+        const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = this.account_settings.citizen || this.residence;
+
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);
@@ -1485,6 +1460,8 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
+        if (!loginid) return;
+
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
@@ -1534,7 +1511,6 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
-        this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
@@ -1652,6 +1628,8 @@ export default class ClientStore extends BaseStore {
 
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
+
+            await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1706,6 +1684,10 @@ export default class ClientStore extends BaseStore {
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
         this.setRealityCheck();
+    }
+
+    setP2pAdvertiserInfo(response) {
+        this.p2p_advertiser_info = response.p2p_advertiser_info;
     }
 
     setStandpoint(landing_companies) {
@@ -1976,8 +1958,11 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccountSettings(settings) {
-        this.account_settings = settings;
-        this.is_account_setting_loaded = true;
+        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
+        if (!is_equal_settings) {
+            this.account_settings = settings;
+            this.is_account_setting_loaded = true;
+        }
     }
 
     setAccountStatus(status) {
@@ -2129,13 +2114,11 @@ export default class ClientStore extends BaseStore {
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
         if (is_client_logging_in) {
+            this.setIsLoggingIn(true);
+
             const redirect_url = sessionStorage.getItem('redirect_url');
-            const local_pre_appstore = localStorage.getItem('is_pre_appstore');
-            if (
-                local_pre_appstore === 'true' &&
-                redirect_url?.endsWith('/') &&
-                (isTestLink() || isProduction() || isLocal() || isStaging())
-            ) {
+
+            if (redirect_url?.endsWith('/') && (isTestLink() || isProduction() || isLocal() || isStaging())) {
                 window.history.replaceState({}, document.title, '/appstore/traders-hub');
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
@@ -2619,19 +2602,5 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
-
-    setIsPreAppStore(is_pre_appstore) {
-        const trading_hub = is_pre_appstore ? 1 : 0;
-        try {
-            WS.setSettings({
-                set_settings: 1,
-                trading_hub,
-            });
-        } catch (error) {
-            return;
-        }
-        this.account_settings = { ...this.account_settings, trading_hub };
-        localStorage.setItem('is_pre_appstore', is_pre_appstore);
-    }
 }
 /* eslint-enable */

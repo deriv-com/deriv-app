@@ -1,14 +1,13 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import { ButtonToggle, Icon } from '@deriv/components';
+import { ButtonToggle, Icon, SearchBox } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
-import SearchBox from 'Components/search-box';
 import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
 import CurrencyDropdown from 'Components/buy-sell/currency-dropdown.jsx';

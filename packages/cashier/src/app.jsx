@@ -1,8 +1,8 @@
 import React from 'react';
 import { setWebsocket } from '@deriv/shared';
 import { init } from 'Utils/server_time';
-import Routes from 'Containers/routes';
 import CashierProviders from './cashier-providers';
+import AppContent from './app-content';
 
 const App = ({ passthrough: { WS, root_store } }) => {
     React.useEffect(() => {
@@ -13,7 +13,7 @@ const App = ({ passthrough: { WS, root_store } }) => {
 
     return (
         <CashierProviders store={root_store}>
-            <Routes />
+            <AppContent />
         </CashierProviders>
     );
 };

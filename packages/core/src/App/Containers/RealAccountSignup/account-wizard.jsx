@@ -1,18 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, FormProgress, Wizard, Text } from '@deriv/components';
-import { toMoment, getLocation, makeCancellablePromise, WS } from '@deriv/shared';
+
+import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
+import { WS, getLocation, makeCancellablePromise, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import LoadingModal from './real-account-signup-loader.jsx';
 import AcceptRiskForm from './accept-risk-form.jsx';
+import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
 import 'Sass/details-form.scss';
 
-const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps }) => {
+const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {
     const step = getCurrentStep() - 1;
     const step_title = items[step].header ? items[step].header.title : '';
 
@@ -21,9 +22,10 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
             {(!has_real_account || has_target) && (
                 <React.Fragment>
                     <DesktopWrapper>
-                        <FormProgress steps={items} current_step={step} />
+                        <FormProgress steps={items} current_step={step} sub_section_index={sub_section_index} />
                     </DesktopWrapper>
                     <MobileWrapper>
+                        <FormProgress steps={items} current_step={step} sub_section_index={sub_section_index} />
                         <div className='account-wizard__header-steps'>
                             <Text
                                 as='h4'
@@ -187,9 +189,24 @@ const AccountWizard = props => {
         clearError();
     };
 
+    const processInputData = data => {
+        if (data?.risk_tolerance === 'No') {
+            return Object.entries(data).reduce((accumulator, [key, val]) => {
+                if (val) {
+                    return { ...accumulator, [key]: val };
+                }
+                return { ...accumulator };
+            }, {});
+        }
+        return data;
+    };
+
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
-        delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
+        delete clone?.tax_identification_confirm;
+        delete clone?.agreed_tnc;
+        delete clone?.agreed_tos;
+        clone = processInputData(clone);
         props.setRealAccountFormData(clone);
         if (payload) {
             clone = {
@@ -197,7 +214,6 @@ const AccountWizard = props => {
                 ...payload,
             };
         }
-
         return props.realAccountSignup(clone);
     };
 
@@ -236,10 +252,11 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const submitIDVData = async (document_type, document_number, country_code) => {
+    const submitIDVData = async (document_type, document_number, document_additional = '', country_code) => {
         const idv_submit_data = {
             identity_verification_document_add: 1,
             document_number,
+            document_additional,
             document_type: document_type.id,
             issuing_country: country_code,
         };
@@ -259,11 +276,10 @@ const AccountWizard = props => {
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
-
-                const { document_type, document_number } = { ...form_values() };
+                const { document_type, document_number, document_additional } = { ...form_values() };
                 if (document_type && document_number) {
                     const country_code = props.account_settings.citizen || props.residence;
-                    submitIDVData(document_type, document_number, country_code);
+                    submitIDVData(document_type, document_number, document_additional, country_code);
                 }
             })
             .catch(error => {
@@ -333,6 +349,7 @@ const AccountWizard = props => {
                     has_currency={props.has_currency}
                     has_target={props.real_account_signup_target !== 'manage'}
                     setIsRiskWarningVisible={props.setIsRiskWarningVisible}
+                    sub_section_index={props.sub_section_index}
                 />
             );
         }
@@ -356,6 +373,7 @@ const AccountWizard = props => {
 
 AccountWizard.propTypes = {
     account_settings: PropTypes.object,
+    account_status: PropTypes.object,
     closeRealAccountSignup: PropTypes.func,
     content_flag: PropTypes.string,
     fetchFinancialAssessment: PropTypes.func,
@@ -376,10 +394,13 @@ AccountWizard.propTypes = {
     residence: PropTypes.string,
     setIsRiskWarningVisible: PropTypes.func,
     setLoading: PropTypes.func,
+    setSubSectionIndex: PropTypes.func,
+    sub_section_index: PropTypes.number,
 };
 
 export default connect(({ client, notifications, ui, traders_hub }) => ({
     account_settings: client.account_settings,
+    account_status: client.account_status,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     content_flag: traders_hub.content_flag,
     fetchAccountSettings: client.fetchAccountSettings,
@@ -402,4 +423,6 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
     states_list: client.states_list,
     upgrade_info: client.upgrade_info,
+    setSubSectionIndex: ui.setSubSectionIndex,
+    sub_section_index: ui.sub_section_index,
 }))(AccountWizard);

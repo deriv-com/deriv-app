@@ -11,7 +11,7 @@ import {
     VerticalTab,
     Loading,
 } from '@deriv/components';
-import { useOnrampVisible } from '@deriv/hooks';
+import { useOnrampVisible, useAccountTransferVisible, useSwitchToRealAccount } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
@@ -30,7 +30,6 @@ type TCashierProps = RouteComponentProps & {
     routeBackInApp: TRootStore['common']['routeBackInApp'];
     toggleCashier: TRootStore['ui']['toggleCashier'];
     resetLastLocation: () => void;
-    is_pre_appstore: boolean;
 };
 
 type TCashierOptions = {
@@ -48,7 +47,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const {
         withdraw,
         general_store,
-        account_transfer,
         transaction_history,
         payment_agent_transfer,
         payment_agent,
@@ -65,15 +63,20 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         setCashierTabIndex: setTabIndex,
         cashier_route_tab_index: tab_index,
     } = general_store;
-    const { is_account_transfer_visible } = account_transfer;
     const { is_crypto_transactions_visible } = transaction_history;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
     const { resetLastLocation } = account_prompt_dialog;
-    const { routeBackInApp, is_from_derivgo } = common;
+    const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
-    const { is_account_setting_loaded, is_logged_in, is_logging_in, is_pre_appstore } = client;
+    const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
+    const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
+    const switchToReal = useSwitchToRealAccount();
+
+    React.useEffect(() => {
+        switchToReal();
+    }, [switchToReal]);
 
     React.useEffect(() => {
         toggleCashier();
@@ -95,7 +98,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
-    const onClickClose = () => (is_pre_appstore ? history.push(routes.traders_hub) : routeBackInApp(history));
+    const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = () => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {

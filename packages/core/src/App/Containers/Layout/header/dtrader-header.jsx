@@ -17,8 +17,6 @@ import { TradersHubHomeButton } from './trading-hub-header';
 
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
-const MemoizedMenuLinks = React.memo(MenuLinks);
-
 const DTraderHeader = ({
     acc_switcher_disabled_message,
     account_type,
@@ -42,18 +40,17 @@ const DTraderHeader = ({
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_pre_appstore,
     is_route_modal_on,
     is_virtual,
-    menu_items,
     notifications_count,
     openRealAccountSignup,
     platform,
-    replaceCashierMenuOnclick,
     removeNotificationMessage,
     toggleAccountsDialog,
     toggleNotifications,
     is_switching,
+    toggleReadyToDepositModal,
+    has_any_real_account,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -66,7 +63,14 @@ const DTraderHeader = ({
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
 
-    const onClickDeposit = () => history.push(routes.cashier_deposit);
+    const handleClickCashier = () => {
+        if (!has_any_real_account && is_virtual) {
+            toggleReadyToDepositModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -98,7 +102,6 @@ const DTraderHeader = ({
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
-                            is_pre_appstore={is_pre_appstore}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -111,8 +114,7 @@ const DTraderHeader = ({
                     <DesktopWrapper>
                         <TradersHubHomeButton />
                     </DesktopWrapper>
-                    {menu_items && is_logged_in && replaceCashierMenuOnclick()}
-                    <MemoizedMenuLinks is_logged_in={is_logged_in} items={menu_items} />
+                    <MenuLinks />
                 </div>
 
                 <div
@@ -151,7 +153,7 @@ const DTraderHeader = ({
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
-                            onClickDeposit={onClickDeposit}
+                            onClickDeposit={handleClickCashier}
                             notifications_count={notifications_count}
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleNotifications={toggleNotifications}
@@ -195,17 +197,16 @@ DTraderHeader.propTypes = {
     openRealAccountSignup: PropTypes.func,
     platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
-    replaceCashierMenuOnclick: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    menu_items: PropTypes.array,
-    is_pre_appstore: PropTypes.bool,
     is_switching: PropTypes.bool,
+    toggleReadyToDepositModal: PropTypes.func,
+    has_any_real_account: PropTypes.bool,
 };
 
-export default connect(({ client, common, ui, menu, modules, notifications }) => ({
+export default connect(({ client, common, ui, notifications }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -230,14 +231,13 @@ export default connect(({ client, common, ui, menu, modules, notifications }) =>
     is_notifications_visible: notifications.is_notifications_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
-    menu_items: menu.extensions,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
     platform: common.platform,
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_pre_appstore: client.is_pre_appstore,
     is_switching: client.is_switching,
+    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
+    has_any_real_account: client.has_any_real_account,
 }))(withRouter(DTraderHeader));

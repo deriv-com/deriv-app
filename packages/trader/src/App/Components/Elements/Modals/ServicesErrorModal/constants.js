@@ -1,8 +1,16 @@
 import { localize } from '@deriv/translations';
 
-export const title = {
-    buy: localize('Purchase Error'),
-    cancel: localize('Deal Cancellation Error'),
-    contract_update: localize('Contract Update Error'),
-    sell: localize('Sell Error'),
+export const getTitle = type => {
+    switch (type) {
+        case 'buy':
+            return localize('Purchase Error');
+        case 'cancel':
+            return localize('Deal Cancellation Error');
+        case 'contract_update':
+            return localize('Contract Update Error');
+        case 'sell':
+            return localize('Sell Error');
+        default:
+            return 'Error';
+    }
 };

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -31,13 +31,7 @@ const modal_pages_indices = {
     finished_add_currency: 8,
 };
 
-const WizardHeading = ({
-    country_standpoint,
-    currency,
-    is_isle_of_man_residence,
-    is_pre_appstore,
-    real_account_signup_target,
-}) => {
+const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence, real_account_signup_target }) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
@@ -54,23 +48,18 @@ const WizardHeading = ({
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
 
-    // if (is_pre_appstore) {
-    //     return <Localize i18n_default_text='Get an Options account' />;
-    // }
-
     switch (real_account_signup_target) {
         case 'malta':
             if (
                 country_standpoint.is_united_kingdom ||
                 country_standpoint.is_rest_of_eu ||
-                country_standpoint.is_belgium ||
-                is_pre_appstore
+                country_standpoint.is_belgium
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Options account' />;
             }
             return <Localize i18n_default_text='Add a Derived account' />;
         case 'iom':
-            if (country_standpoint.is_united_kingdom || is_pre_appstore) {
+            if (country_standpoint.is_united_kingdom) {
                 return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
             }
             return <Localize i18n_default_text='Add a Derived account' />;
@@ -79,8 +68,7 @@ const WizardHeading = ({
                 country_standpoint.is_united_kingdom ||
                 country_standpoint.is_france ||
                 country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu ||
-                is_pre_appstore
+                country_standpoint.is_rest_of_eu
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
             }
@@ -108,14 +96,12 @@ const RealAccountSignup = ({
     show_eu_related_content,
     is_from_restricted_country,
     is_isle_of_man_residence,
-    is_pre_appstore,
     is_real_acc_signup_on,
     real_account_signup_target,
     realAccountSignup,
-    replaceCashierMenuOnclick,
-    routing_history,
     setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled,
+    setIsClosingCreateRealAccountModal,
     setParams,
     setShouldShowAppropriatenessWarningModal,
     setShouldShowRiskWarningModal,
@@ -124,7 +110,7 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
-    is_low_risk,
+    is_trading_experience_incomplete,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -183,7 +169,7 @@ const RealAccountSignup = ({
                 <FinishedSetCurrency
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
-                    onCancel={closeModal}
+                    onCancel={closeSetCurrencySuccessModal}
                     onSubmit={closeModalThenOpenCashier}
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
@@ -200,7 +186,10 @@ const RealAccountSignup = ({
         },
         {
             body: local_props => (
-                <StatusDialogContainer currency={local_props.state_value.currency} closeModal={closeModal} />
+                <StatusDialogContainer
+                    currency={local_props.state_value.currency}
+                    closeModal={closeSetCurrencySuccessModal}
+                />
             ),
         },
         {
@@ -261,11 +250,7 @@ const RealAccountSignup = ({
         if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
-            if (
-                show_eu_related_content &&
-                !(is_pre_appstore && is_low_risk) &&
-                getActiveModalIndex() === modal_pages_indices.add_or_manage_account
-            ) {
+            if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
@@ -277,6 +262,7 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
+
         return '740px'; // Account wizard modal
     };
 
@@ -295,7 +281,6 @@ const RealAccountSignup = ({
     };
 
     const closeModalThenOpenCashier = () => {
-        replaceCashierMenuOnclick();
         closeRealAccountSignup();
         history.push(routes.cashier_deposit);
     };
@@ -339,7 +324,7 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
-        return () => setIsTradingAssessmentForNewUserEnabled(false);
+        return () => setIsTradingAssessmentForNewUserEnabled(is_trading_experience_incomplete);
     }, []);
 
     // setCurrentAction callback useEffect to set error details
@@ -363,8 +348,7 @@ const RealAccountSignup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_from_restricted_country, is_real_acc_signup_on]);
 
-    const closeModal = e => {
-        replaceCashierMenuOnclick();
+    const closeSetCurrencySuccessModal = e => {
         // Do not close modal on external link and popover click event
         if (
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
@@ -378,14 +362,27 @@ const RealAccountSignup = ({
             localStorage.removeItem('real_account_signup_wizard');
         }
         closeRealAccountSignup();
+    };
 
-        if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {
-            window.location = routes.smarttrader;
+    const closeModal = e => {
+        // Do not close modal on external link and popover click event
+        if (
+            e?.target.getAttribute('rel') === 'noopener noreferrer' ||
+            e?.target.closest('.redirect-notice') ||
+            e?.target.closest('.dc-popover__bubble')
+        ) {
+            return;
+        }
+        if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {
+            sessionStorage.removeItem('post_real_account_signup');
+            localStorage.removeItem('real_account_signup_wizard');
         }
 
-        if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
-            window.location = routes.binarybot;
+        if (modal_content[getActiveModalIndex()].action === 'signup') {
+            setIsClosingCreateRealAccountModal(true);
+            return;
         }
+        closeRealAccountSignup();
     };
 
     const onErrorConfirm = () => {
@@ -478,10 +475,9 @@ const RealAccountSignup = ({
     if (assessment_decline) {
         return (
             <RiskToleranceWarningModal
-                has_icon={false}
                 show_risk_modal={assessment_decline}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the risk of losing your money. <0/><0/>
@@ -494,10 +490,9 @@ const RealAccountSignup = ({
     } else if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
-                has_icon={true}
                 show_risk_modal={should_show_risk_warning_modal}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, kindly note that you would need to wait 24 hours before you can proceed further.'
@@ -563,7 +558,6 @@ const RealAccountSignup = ({
                                             is_belgium_residence={is_belgium_residence}
                                             is_eu={show_eu_related_content}
                                             is_isle_of_man_residence={is_isle_of_man_residence}
-                                            is_pre_appstore={is_pre_appstore}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
@@ -601,7 +595,6 @@ const RealAccountSignup = ({
                                             currency={currency}
                                             is_belgium_residence={is_belgium_residence}
                                             is_isle_of_man_residence={is_isle_of_man_residence}
-                                            is_pre_appstore={is_pre_appstore}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
@@ -627,7 +620,7 @@ const RealAccountSignup = ({
     );
 };
 
-export default connect(({ ui, client, common, traders_hub, modules }) => ({
+export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
@@ -643,15 +636,13 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
-    is_pre_appstore: client.is_pre_appstore,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
-    replaceCashierMenuOnclick: modules.cashier.general_store.replaceCashierMenuOnclick,
-    routing_history: common.app_routing_history,
     setCFDScore: client.setCFDScore,
     setIsDeposit: modules.cashier.general_store.setIsDeposit,
     setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
+    setIsClosingCreateRealAccountModal: ui.setIsClosingCreateRealAccountModal,
     setParams: ui.setRealAccountSignupParams,
     setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
     setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
@@ -661,5 +652,4 @@ export default connect(({ ui, client, common, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    is_low_risk: client.is_low_risk,
 }))(withRouter(RealAccountSignup));

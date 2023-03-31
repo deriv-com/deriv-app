@@ -66,7 +66,7 @@ const MainTitleBar = () => {
                                     </Tabs>
                                 </>
                             ) : (
-                                <div className='main-title-bar-mobile--regulator__container loader'>
+                                <div className='main-title-bar-mobile--regulator__container content-loader'>
                                     <RegulationsSwitcherLoader />
                                 </div>
                             )}

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, ThemedScrollbars, Carousel } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
@@ -14,7 +15,11 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 <div className='contract-type-info__gif'>
                     <TradeCategoriesGIF category={type.value} />
                 </div>
-                <ThemedScrollbars className='contract-type-info__scrollbars' height='300px' autohide={false}>
+                <ThemedScrollbars
+                    className='contract-type-info__scrollbars'
+                    height={isMobile() ? '' : '300px'}
+                    autohide={false}
+                >
                     <div className='contract-type-info__content'>
                         <TradeCategories category={type.value} />
                     </div>
@@ -43,7 +48,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 handleNavigationClick(contract_types[active_index]);
             }}
             list={cards}
-            width={290}
+            width={isMobile() ? 328 : 290}
         />
     );
 };

@@ -84,6 +84,7 @@ export default class PortfolioStore extends BaseStore {
             updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
+            is_accumulator: computed,
             is_multiplier: computed,
         });
 
@@ -239,8 +240,11 @@ export default class PortfolioStore extends BaseStore {
         const profit_loss = +proposal.profit;
 
         // fix for missing barrier and entry_spot in proposal_open_contract API response, only re-assign if valid
-        if (proposal.barrier) portfolio_position.barrier = +proposal.barrier;
-        if (proposal.entry_spot) portfolio_position.entry_spot = +proposal.entry_spot;
+        Object.entries(proposal).forEach(([key, value]) => {
+            if (key === 'barrier' || key === 'high_barrier' || key === 'low_barrier' || key === 'entry_spot') {
+                portfolio_position[key] = +value;
+            }
+        });
 
         // store contract proposal details that require modifiers
         portfolio_position.indicative = new_indicative;
@@ -574,6 +578,10 @@ export default class PortfolioStore extends BaseStore {
 
     setContractType(contract_type) {
         this.contract_type = contract_type;
+    }
+
+    get is_accumulator() {
+        return this.contract_type === 'accumulator';
     }
 
     get is_multiplier() {

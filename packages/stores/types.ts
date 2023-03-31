@@ -1,4 +1,12 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
+import type {
+    GetAccountStatus,
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    LogOutResponse,
+    GetLimits,
+    SetFinancialAssessmentResponse,
+    SetFinancialAssessmentRequest,
+} from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -121,6 +129,7 @@ type TClientStore = {
     is_logging_in: boolean;
     is_pre_appstore: boolean;
     is_switching: boolean;
+    is_svg: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -148,6 +157,9 @@ type TClientStore = {
     };
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
+    setFinancialAndTradingAssessment: (
+        payload: Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>
+    ) => SetFinancialAssessmentResponse & Record<string, { [key: string]: React.ReactNode }>;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;

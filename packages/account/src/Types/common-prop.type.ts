@@ -1,5 +1,5 @@
 /** Add types that are shared between components */
-import { Authorize } from '@deriv/api-types';
+import { Authorize, SetFinancialAssessmentRequest, SetFinancialAssessmentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -124,3 +124,9 @@ export type TFile = {
     type: string;
     webkitRelativePath: string;
 };
+
+export type TFinancialAndTradeAssessmentRequest = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>;
+// Partial<Pick<SetFinancialAssessmentRequest, 'financial_information'>>;
+
+export type TFinancialAndTradeAssessmentResponse = SetFinancialAssessmentResponse &
+    Record<string, { [key: string]: React.ReactNode }>;

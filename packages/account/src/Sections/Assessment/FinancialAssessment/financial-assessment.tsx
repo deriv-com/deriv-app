@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Formik } from 'formik';
 import { useHistory, withRouter } from 'react-router';
 import {
@@ -45,8 +44,47 @@ import {
     getOtherInstrumentsTradingExperienceList,
     getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
+import type { TRootStore } from '@deriv/stores/types';
+import {
+    GetFinancialAssessmentResponse,
+    GetFinancialAssessment,
+    SetFinancialAssessmentRequest,
+} from '@deriv/api-types';
+import { TFinancialAndTradeAssessmentRequest } from 'Types';
 
-const ConfirmationContent = ({ className }) => {
+type TConfirmationPage = {
+    toggleModal: (prop: boolean) => void;
+    onSubmit: () => void;
+};
+
+type TConfirmationModal = {
+    is_visible: boolean;
+} & TConfirmationPage;
+
+type TSubmittedPage = {
+    platform: keyof typeof platforms;
+    routeBackInApp: TRootStore['common']['routeBackInApp'];
+};
+
+type TFinancialAssessmentProps = {
+    is_authentication_needed: boolean;
+    is_financial_account: boolean;
+    is_mf: boolean;
+    is_svg: boolean;
+    is_trading_experience_incomplete: boolean;
+    is_financial_information_incomplete: boolean;
+    is_virtual: boolean;
+    platform: keyof typeof platforms;
+    refreshNotifications: TRootStore['notifications']['refreshNotifications'];
+    routeBackInApp: TRootStore['common']['routeBackInApp'];
+    setFinancialAndTradingAssessment: TRootStore['client']['setFinancialAndTradingAssessment'];
+    updateAccountStatus: TRootStore['client']['updateAccountStatus'];
+};
+
+type TFinancialAssessementData = Pick<SetFinancialAssessmentRequest, 'financial_information'> &
+    Record<string, { [key: string]: React.ReactNode }>;
+
+const ConfirmationContent = ({ className }: { className?: string }) => {
     return (
         <React.Fragment>
             <Text as='p' size='xs' className={className}>
@@ -64,7 +102,7 @@ const ConfirmationContent = ({ className }) => {
     );
 };
 
-const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }) => (
+const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }: TConfirmationModal) => (
     <Modal
         className='financial-assessment-confirmation'
         is_open={is_visible}
@@ -90,7 +128,7 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }) => (
     </Modal>
 );
 
-const ConfirmationPage = ({ toggleModal, onSubmit }) => (
+const ConfirmationPage = ({ toggleModal, onSubmit }: TConfirmationPage) => (
     <div className='account__confirmation-page'>
         <Text
             size='xs'
@@ -116,7 +154,7 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = ({ platform, routeBackInApp }) => {
+const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
     const history = useHistory();
 
     const onClickButton = () => {
@@ -188,17 +226,17 @@ const FinancialAssessment = ({
     routeBackInApp,
     setFinancialAndTradingAssessment,
     updateAccountStatus,
-}) => {
+}: TFinancialAssessmentProps) => {
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_confirmation_visible, setIsConfirmationVisible] = React.useState(false);
     const [has_trading_experience, setHasTradingExperience] = React.useState(false);
     const [is_form_visible, setIsFormVisible] = React.useState(true);
-    const [api_initial_load_error, setApiInitialLoadError] = React.useState(null);
+    const [api_initial_load_error, setApiInitialLoadError] = React.useState<React.ReactNode>(null);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
-    const [initial_form_values, setInitialFormValues] = React.useState({});
+    const [initial_form_values, setInitialFormValues] = React.useState<Partial<GetFinancialAssessment>>({});
 
     const {
         income_source,
@@ -225,7 +263,7 @@ const FinancialAssessment = ({
             setIsLoading(false);
             history.push(routes.personal_details);
         } else {
-            WS.authorized.storage.getFinancialAssessment().then(data => {
+            WS.authorized.storage.getFinancialAssessment().then((data: TFinancialAssessementData) => {
                 WS.wait('get_account_status').then(() => {
                     setHasTradingExperience(
                         (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
@@ -234,7 +272,7 @@ const FinancialAssessment = ({
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
-                    setInitialFormValues(data.get_financial_assessment);
+                    if (data?.get_financial_assessment) setInitialFormValues(data.get_financial_assessment);
                     setIsLoading(false);
                 });
             });
@@ -243,10 +281,13 @@ const FinancialAssessment = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSubmit = async (values, { setSubmitting, setStatus }) => {
+    const onSubmit = async (
+        values: SetFinancialAssessmentRequest['financial_information'],
+        { setSubmitting, setStatus }: any
+    ) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
-        const form_payload = {
+        const form_payload: TFinancialAndTradeAssessmentRequest = {
             financial_information: { ...values },
         };
         const data = await setFinancialAndTradingAssessment(form_payload);
@@ -255,8 +296,8 @@ const FinancialAssessment = ({
             setStatus({ msg: data.error.message });
         } else {
             await updateAccountStatus();
-            WS.authorized.storage.getFinancialAssessment().then(res_data => {
-                setInitialFormValues(res_data.get_financial_assessment);
+            WS.authorized.storage.getFinancialAssessment().then((res_data: TFinancialAssessementData) => {
+                if (res_data?.get_financial_assessment) setInitialFormValues(res_data.get_financial_assessment);
                 setIsSubmitSuccess(true);
                 setIsBtnLoading(false);
 
@@ -269,9 +310,9 @@ const FinancialAssessment = ({
         }
     };
 
-    const validateFields = values => {
+    const validateFields = (values: Record<string, unknown>) => {
         setIsSubmitSuccess(false);
-        const errors = {};
+        const errors: Record<string, string> = {};
         Object.keys(values).forEach(field => {
             if (!values[field]) {
                 errors[field] = localize('This field is required');
@@ -280,19 +321,19 @@ const FinancialAssessment = ({
         return errors;
     };
 
-    const showForm = is_visible => {
+    const showForm = (is_visible: boolean) => {
         setIsFormVisible(is_visible);
         setIsConfirmationVisible(false);
     };
 
-    const toggleConfirmationModal = value => {
+    const toggleConfirmationModal = (value: boolean) => {
         setIsConfirmationVisible(value);
         if (isMobile()) {
             setIsFormVisible(!value);
         }
     };
 
-    const onClickSubmit = handleSubmit => {
+    const onClickSubmit = (handleSubmit: () => void) => {
         const is_confirmation_needed = has_trading_experience && is_trading_experience_incomplete;
 
         if (is_confirmation_needed) {
@@ -1007,22 +1048,7 @@ const FinancialAssessment = ({
     );
 };
 
-FinancialAssessment.propTypes = {
-    is_authentication_needed: PropTypes.bool,
-    is_financial_account: PropTypes.bool,
-    is_mf: PropTypes.bool,
-    is_svg: PropTypes.bool,
-    is_trading_experience_incomplete: PropTypes.bool,
-    is_financial_information_incomplete: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    platform: PropTypes.string,
-    refreshNotifications: PropTypes.func,
-    routeBackInApp: PropTypes.func,
-    setFinancialAndTradingAssessment: PropTypes.func,
-    updateAccountStatus: PropTypes.func,
-};
-
-export default connect(({ client, common, notifications }) => ({
+export default connect(({ client, common, notifications }: TRootStore) => ({
     is_authentication_needed: client.is_authentication_needed,
     is_financial_account: client.is_financial_account,
     is_mf: client.landing_company_shortcode === 'maltainvest',

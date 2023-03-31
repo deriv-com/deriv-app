@@ -11,7 +11,7 @@ export type TToken = {
 
 export type TPoaStatusProps = {
     needs_poi: boolean;
-    is_description_enabled?: boolean;
+    redirect_button: React.ReactNode;
 };
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
@@ -80,7 +80,6 @@ export type TRouteConfig = TRoute & {
 };
 
 export type TBinaryRoutes = {
-    is_pre_appstore: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
 };

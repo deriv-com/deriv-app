@@ -86,7 +86,7 @@ gulp.task(
 gulp.task(
     'pull-blockly-translations',
     gulp.series(done => {
-        const blocklyLanguages = ['en', 'id', 'it', 'vi', 'pl', 'pt', 'es', 'fr', 'zh-hans', 'zh-hant'];
+        const blocklyLanguages = ['en', 'pt', 'es'];
         remoteSrc(
             blocklyLanguages.map(lang => `${lang}.js?_=${Date.now()}`),
             {

@@ -13,10 +13,29 @@
     @include position-center;
     width: 100%;
 
+    &__description {
+        margin: auto;
+    }
+
     &__text {
+        grid-column: span 2;
         margin: 1.5rem 0;
         @include mobile {
             @include position-center;
+        }
+    }
+
+    &__fields {
+        display: grid;
+        margin-top: 3.5rem;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 3.5rem;
+        :first-child {
+            grid-column: span 2;
+        }
+        @include mobile {
+            display: block;
+            margin-top: auto;
         }
     }
 
@@ -33,7 +52,9 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin: 3.5rem 0;
+            @include mobile {
+                margin: 3.5rem 0;
+            }
 
             .dc-dropdown-list__item--active {
                 font-weight: bold;
@@ -47,10 +68,6 @@
 
             @include mobile {
                 flex-direction: column;
-            }
-
-            &:first-child {
-                margin-top: 0;
             }
             > * {
                 justify-content: center;
@@ -257,4 +274,8 @@
     .dc-text {
         font-size: var(--text-size-sm);
     }
+}
+
+.grid-item:nth-child(2) {
+    grid-row: 2 / 4; /* Starts on the second row line and ends on the fourth row line */
 }

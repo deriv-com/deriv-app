@@ -5,7 +5,9 @@ const getUrlBase = (path = '') => {
 
     if (!/^\/(br_)/.test(l.pathname)) return path;
 
-    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
+    const get_path = /^\//.test(path) ? path : `/${path}`;
+
+    return `/${l.pathname.split('/')[1]}${get_path}`;
 };
 
 export function setBotPublicPath(path: string) {

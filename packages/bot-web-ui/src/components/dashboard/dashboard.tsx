@@ -10,7 +10,6 @@ import { isMobile } from '@deriv/shared';
 import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
-import QuickStrategy from './quick-strategy';
 import { DASHBOARD_TABS, TAB_IDS } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {

@@ -47,8 +47,6 @@ const Cards = ({
     showVideoDialog,
     loadDataStrategy,
 }: TCardProps) => {
-    /* eslint-disable no-unused-expressions */
-    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
 
     const openGoogleDriveDialog = () => {
@@ -131,7 +129,7 @@ const Cards = ({
                         accept='.xml'
                         hidden
                         onChange={e => {
-                            setIsFileSupported(handleFileChange(e, false));
+                            handleFileChange(e, false);
                             loadFileFromLocal();
                             setFileLoaded(true);
                             setOpenSettings('import');

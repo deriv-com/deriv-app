@@ -43,8 +43,6 @@ const LocalComponent = ({
     has_mobile_preview_loaded,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    // eslint-disable-next-line no-unused-expressions
-    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const is_mobile = isMobile();
     const has_dashboard_strategies = !!dashboard_strategies?.length;
@@ -122,7 +120,7 @@ const LocalComponent = ({
                                     onChange={e => {
                                         clearInjectionDiv('component', el_ref);
                                         onConfirmSave();
-                                        setIsFileSupported(handleFileChange(e, false));
+                                        handleFileChange(e, false);
                                     }}
                                 />
                                 {renderOpenButton()}

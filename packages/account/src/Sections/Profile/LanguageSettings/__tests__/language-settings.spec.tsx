@@ -1,7 +1,8 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import LanguageSettings, { TLanguageSettings } from '../language-settings';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import LanguageSettings from '../language-settings';
 
 jest.mock('react-i18next', () => ({
     ...jest.requireActual('react-i18next'),
@@ -16,24 +17,18 @@ jest.mock('@deriv/translations', () => {
     };
 });
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
-
 describe('LanguageSettings', () => {
-    const mock_props: TLanguageSettings = {
-        current_language: 'lang_1',
-        changeSelectedLanguage: jest.fn(),
-        isCurrentLanguage: jest.fn(),
-    };
-
+    const mockRootStore = mockStore({
+        common: {
+            changeSelectedLanguage: jest.fn(),
+            current_language: 'lang_1',
+            isCurrentLanguage: jest.fn(() => false),
+        },
+    });
     it('should render LanguageSettings and change language', async () => {
-        render(<LanguageSettings {...mock_props} />);
+        render(<LanguageSettings />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         const lang_el_1 = screen.getByText('Test Lang 1');
         const lang_el_2 = screen.getByText('Test Lang 2');
@@ -51,7 +46,7 @@ describe('LanguageSettings', () => {
 
         userEvent.click(submit_btn);
         await waitFor(() => {
-            expect(mock_props.changeSelectedLanguage).toHaveBeenCalled();
+            expect(mockRootStore.common.changeSelectedLanguage).toHaveBeenCalled();
         });
     });
 });

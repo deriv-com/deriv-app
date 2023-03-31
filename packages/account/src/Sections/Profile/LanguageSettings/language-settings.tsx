@@ -1,22 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import { Button, DesktopWrapper } from '@deriv/components';
 import { localize, getAllowedLanguages } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import FormSubHeader from 'Components/form-sub-header';
-import TCoreStore from '../../../Stores';
-import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
 
-export type TLanguageSettings = {
-    current_language: string;
-    changeSelectedLanguage: (lang: string) => void;
-    isCurrentLanguage: (lang: string) => boolean;
-};
-
-const LanguageSettings = ({ changeSelectedLanguage, current_language, isCurrentLanguage }: TLanguageSettings) => {
+const LanguageSettings = observer(() => {
     const { i18n } = useTranslation();
+    const { common } = useStore();
+    const { changeSelectedLanguage, current_language, isCurrentLanguage } = common;
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     const initial_values = { language_code: current_language };
     return (
@@ -69,10 +64,6 @@ const LanguageSettings = ({ changeSelectedLanguage, current_language, isCurrentL
             }}
         </Formik>
     );
-};
+});
 
-export default connect(({ common }: TCoreStore) => ({
-    changeSelectedLanguage: common.changeSelectedLanguage,
-    current_language: common.current_language,
-    isCurrentLanguage: common.isCurrentLanguage,
-}))(LanguageSettings);
+export default LanguageSettings;

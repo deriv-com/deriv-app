@@ -3,7 +3,21 @@ import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
-const RiskToleranceWarningModal = ({ show_risk_modal, handleAcceptRisk, title, button_text, body_content }) => {
+type TRiskToleranceWarningModal = {
+    show_risk_modal: boolean;
+    handleAcceptRisk?: () => void;
+    title: string;
+    button_text?: string;
+    body_content: string;
+};
+
+const RiskToleranceWarningModal = ({
+    show_risk_modal,
+    handleAcceptRisk,
+    title,
+    button_text,
+    body_content,
+}: TRiskToleranceWarningModal) => {
     return (
         <Modal
             width='44rem'

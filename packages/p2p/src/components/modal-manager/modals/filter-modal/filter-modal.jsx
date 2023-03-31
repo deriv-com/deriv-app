@@ -89,7 +89,17 @@ const FilterModal = () => {
         buy_sell_store.setSelectedPaymentMethodText([]);
     };
 
+    // this is to ensure when user clicks the back button after selecting some payment methods and clicking Leave Page button in the modal
+    // the previously selected payment methods should not be saved in the filter_payment_methods observable (by default its saved due to the onChange function applied to the checkbox)
+    // otherwise, when user goes back to the payment methods selection, it will assume that the user has already selected those previous payment methods
+    const resetFilterPaymentMethods = () => {
+        buy_sell_store.filter_payment_methods = buy_sell_store.filter_payment_methods.filter(
+            filtered_payment_method => !selected_methods.includes(filtered_payment_method)
+        );
+    };
+
     const onClickClose = () => {
+        resetFilterPaymentMethods();
         buy_sell_store.setShowFilterPaymentMethods(false);
         my_profile_store.setSearchTerm('');
         my_profile_store.setSearchResults([]);
@@ -103,8 +113,9 @@ const FilterModal = () => {
         onClickClear();
     };
 
-    const onClickApplyPaymentMethods = () => {
-        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+    const onClickConfirmPaymentMethods = () => {
+        buy_sell_store.setSelectedPaymentMethodValue(selected_methods);
+        buy_sell_store.setSelectedPaymentMethodText(selected_methods_text);
         buy_sell_store.setShowFilterPaymentMethods(false);
     };
 
@@ -143,6 +154,7 @@ const FilterModal = () => {
                 key: 'LeavePageModal',
                 props: {
                     onLeavePage: () => {
+                        resetFilterPaymentMethods();
                         if (isMobile()) {
                             setSelectedMethods(
                                 selected_methods.filter(selected_method =>
@@ -197,23 +209,25 @@ const FilterModal = () => {
                                     className='filter-modal__row filter-modal__select'
                                     onClick={() => buy_sell_store.setShowFilterPaymentMethods(true)}
                                 >
-                                    <Text color='prominent' size='xs'>
-                                        <Localize i18n_default_text='Payment methods' />
-                                    </Text>
-                                    {selected_methods_text.length ===
-                                    my_profile_store.payment_methods_list_items.length ? (
-                                        <Text color='less-prominent' size='xs'>
-                                            <Localize i18n_default_text='All' />
+                                    <div className='filter-modal__column'>
+                                        <Text color='prominent' size='xs'>
+                                            <Localize i18n_default_text='Payment methods' />
                                         </Text>
-                                    ) : (
-                                        <Text
-                                            className='filter-modal__selected-payment-methods'
-                                            color='less-prominent'
-                                            size='xs'
-                                        >
-                                            {selected_methods_text.join(', ')}
-                                        </Text>
-                                    )}
+                                        {selected_methods_text.length ===
+                                        my_profile_store.payment_methods_list_items.length ? (
+                                            <Text color='less-prominent' size='xs'>
+                                                <Localize i18n_default_text='All' />
+                                            </Text>
+                                        ) : (
+                                            <Text
+                                                className='filter-modal__selected-payment-methods'
+                                                color='less-prominent'
+                                                size='xs'
+                                            >
+                                                {selected_methods_text.join(', ')}
+                                            </Text>
+                                        )}
+                                    </div>
                                     <Icon className='filter-modal__arrow' icon='IcChevronRight' size={18} />
                                 </div>
                                 <div className='filter-modal__row'>
@@ -255,9 +269,9 @@ const FilterModal = () => {
                                     disabled={!has_selected_payment_methods}
                                     large
                                     primary
-                                    onClick={onClickApplyPaymentMethods}
+                                    onClick={onClickConfirmPaymentMethods}
                                 >
-                                    {localize('Apply')}
+                                    {localize('Confirm')}
                                 </Button>
                             </Button.Group>
                         ) : (
@@ -300,9 +314,9 @@ const FilterModal = () => {
                                             disabled={!has_selected_payment_methods}
                                             large
                                             primary
-                                            onClick={onClickApplyPaymentMethods}
+                                            onClick={onClickConfirmPaymentMethods}
                                         >
-                                            {localize('Apply')}
+                                            {localize('Confirm')}
                                         </Button>
                                     </Button.Group>
                                 ) : (

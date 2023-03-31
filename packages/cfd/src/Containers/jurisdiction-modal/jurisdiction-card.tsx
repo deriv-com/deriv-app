@@ -33,8 +33,8 @@ const JurisdictionCard = ({
 
     const card_values = jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents];
 
-    // const swapfree_card_data = is_swapfree ? card_values.swapfree_contents : card_values.financial_contents;
-    const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
+    const swapfree_card_data = is_swapfree ? card_values.swapfree_contents : card_values.financial_contents;
+    const card_data = is_synthetic ? card_values.synthetic_contents : swapfree_card_data;
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
@@ -64,7 +64,7 @@ const JurisdictionCard = ({
                     <Text as='p' color={'prominent'} weight='bold' size='sm' className={`${card_classname}__h2-header`}>
                         <Localize i18n_default_text={card_values.header} />
                     </Text>
-                    {card_data.map((item, index) => (
+                    {card_data?.map((item, index) => (
                         <div className={`${card_classname}__bullet-wrapper`} key={index}>
                             <div>
                                 <Checkmark />

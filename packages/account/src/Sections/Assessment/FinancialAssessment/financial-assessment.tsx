@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Formik } from 'formik';
-import { useHistory } from 'react-router';
-import { withRouter } from 'react-router-dom';
+import { Formik, FormikHelpers, FormikValues } from 'formik';
+import { useHistory, withRouter } from 'react-router-dom';
 import {
     FormSubmitErrorMessage,
     Loading,
@@ -270,10 +269,7 @@ const FinancialAssessment = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSubmit = async (
-        values: Partial<Pick<TFinancialAndTradeAssessmentData, 'financial_information'>>,
-        { setSubmitting, setStatus }: any
-    ) => {
+    const onSubmit = async (values: FormikValues, { setSubmitting, setStatus }: FormikHelpers<any>) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
         const form_payload: any = {
@@ -406,7 +402,7 @@ const FinancialAssessment = observer(() => {
                                 onSubmit={handleSubmit}
                             />
                         )}
-                        <LeaveConfirm onDirty={isMobile() ? showForm : null} />
+                        <LeaveConfirm onDirty={isMobile() ? showForm : () => undefined} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
                                 {is_mf && is_financial_information_incomplete && !is_submit_success && (

@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { useHistory, withRouter } from 'react-router';
+import { useHistory } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import {
     FormSubmitErrorMessage,
     Loading,
@@ -14,9 +15,9 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
@@ -45,12 +46,8 @@ import {
     getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
 import type { TRootStore } from '@deriv/stores/types';
-import {
-    GetFinancialAssessmentResponse,
-    GetFinancialAssessment,
-    SetFinancialAssessmentRequest,
-} from '@deriv/api-types';
-import { TFinancialAndTradeAssessmentRequest } from 'Types';
+import { GetFinancialAssessment, SetFinancialAssessmentRequest } from '@deriv/api-types';
+import { TFinancialAndTradeAssessmentData } from 'Types';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -64,21 +61,6 @@ type TConfirmationModal = {
 type TSubmittedPage = {
     platform: keyof typeof platforms;
     routeBackInApp: TRootStore['common']['routeBackInApp'];
-};
-
-type TFinancialAssessmentProps = {
-    is_authentication_needed: boolean;
-    is_financial_account: boolean;
-    is_mf: boolean;
-    is_svg: boolean;
-    is_trading_experience_incomplete: boolean;
-    is_financial_information_incomplete: boolean;
-    is_virtual: boolean;
-    platform: keyof typeof platforms;
-    refreshNotifications: TRootStore['notifications']['refreshNotifications'];
-    routeBackInApp: TRootStore['common']['routeBackInApp'];
-    setFinancialAndTradingAssessment: TRootStore['client']['setFinancialAndTradingAssessment'];
-    updateAccountStatus: TRootStore['client']['updateAccountStatus'];
 };
 
 type TFinancialAssessementData = Pick<SetFinancialAssessmentRequest, 'financial_information'> &
@@ -213,21 +195,28 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
     );
 };
 
-const FinancialAssessment = ({
-    is_authentication_needed,
-    is_financial_account,
-    is_mf,
-    is_svg,
-    is_trading_experience_incomplete,
-    is_financial_information_incomplete,
-    is_virtual,
-    platform,
-    refreshNotifications,
-    routeBackInApp,
-    setFinancialAndTradingAssessment,
-    updateAccountStatus,
-}: TFinancialAssessmentProps) => {
+const FinancialAssessment = observer(() => {
     const history = useHistory();
+    const { client, common, notifications } = useStore();
+
+    const {
+        is_authentication_needed,
+        is_financial_account,
+        is_svg,
+        is_financial_information_incomplete,
+        is_trading_experience_incomplete,
+        is_virtual,
+        updateAccountStatus,
+        landing_company_shortcode,
+        setFinancialAndTradingAssessment,
+    } = client;
+
+    const { platform, routeBackInApp } = common;
+
+    const { refreshNotifications } = notifications;
+
+    const is_mf = landing_company_shortcode === 'maltainvest';
+
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_confirmation_visible, setIsConfirmationVisible] = React.useState(false);
@@ -282,12 +271,12 @@ const FinancialAssessment = ({
     }, []);
 
     const onSubmit = async (
-        values: SetFinancialAssessmentRequest['financial_information'],
+        values: Partial<Pick<TFinancialAndTradeAssessmentData, 'financial_information'>>,
         { setSubmitting, setStatus }: any
     ) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
-        const form_payload: TFinancialAndTradeAssessmentRequest = {
+        const form_payload: any = {
             financial_information: { ...values },
         };
         const data = await setFinancialAndTradingAssessment(form_payload);
@@ -1046,19 +1035,6 @@ const FinancialAssessment = ({
             </Formik>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ client, common, notifications }: TRootStore) => ({
-    is_authentication_needed: client.is_authentication_needed,
-    is_financial_account: client.is_financial_account,
-    is_mf: client.landing_company_shortcode === 'maltainvest',
-    is_svg: client.is_svg,
-    is_financial_information_incomplete: client.is_financial_information_incomplete,
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    is_virtual: client.is_virtual,
-    platform: common.platform,
-    refreshNotifications: notifications.refreshNotifications,
-    routeBackInApp: common.routeBackInApp,
-    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-    updateAccountStatus: client.updateAccountStatus,
-}))(withRouter(FinancialAssessment));
+export default withRouter(FinancialAssessment);

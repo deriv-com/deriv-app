@@ -8,6 +8,7 @@ import type {
     SetFinancialAssessmentRequest,
 } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
+import { platforms } from '@deriv/shared';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -75,7 +76,7 @@ type TNotificationMessage = {
     key: string;
     message_popup?: string;
     message: string | JSX.Element;
-    platform?: string;
+    platform?: keyof typeof platforms;
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
     should_hide_close_btn?: boolean;
@@ -208,7 +209,7 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
-    platform: string;
+    platform: keyof typeof platforms;
     current_language: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;

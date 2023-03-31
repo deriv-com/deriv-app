@@ -67,83 +67,84 @@ const LocalComponent = ({
             {localize('Open')}
         </button>
     );
-
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
-            <div
-                className={classNames('load-strategy__local-preview', {
-                    'load-strategy__local-preview--listed': has_dashboard_strategies,
-                })}
-            >
-                <div className='load-strategy__recent-preview'>
-                    <div
-                        className={classNames('load-strategy__title', 'load-strategy__recent-preview-title', {
-                            'load-strategy__title--listed': has_dashboard_strategies && is_mobile,
-                        })}
-                    >
-                        {!is_mobile && <Localize i18n_default_text='Preview' />}
-                        <div className='tab__dashboard__preview__retrigger'>
-                            <button
-                                onClick={() => {
-                                    setActiveTab(4);
-                                }}
-                            >
-                                <Icon
-                                    className='tab__dashboard__preview__retrigger__icon'
-                                    width='2.4rem'
-                                    height='2.4rem'
-                                    icon={'IcDbotUserGuide'}
-                                />
-                                {!is_mobile && (
-                                    <Text
-                                        color='prominent'
-                                        size='xs'
-                                        line_height='s'
-                                        className={'tab__dashboard__preview__retrigger__text'}
-                                    >
-                                        {localize('User Guide')}
-                                    </Text>
-                                )}
-                            </button>
-                        </div>
-                    </div>
-
-                    {!is_mobile && (
-                        <>
-                            <div className='load-strategy__preview-workspace'>
-                                <BotPreview id_ref={el_ref} type={'local'} />
-                            </div>
-                            <div className='load-strategy__button-group'>
-                                <input
-                                    type='file'
-                                    ref={file_input_ref}
-                                    accept='.xml'
-                                    style={{ display: 'none' }}
-                                    onChange={e => {
-                                        clearInjectionDiv('component', el_ref);
-                                        onConfirmSave();
-                                        setIsFileSupported(handleFileChange(e, false));
-                                    }}
-                                />
-                                {renderOpenButton()}
-                            </div>
-                        </>
-                    )}
-                    <MobileWrapper>
-                        <Dialog
-                            is_visible={has_mobile_preview_loaded}
-                            onCancel={() => setPreviewOnDialog(false)}
-                            is_mobile_full_width
-                            className='dc-dialog__wrapper--preview'
-                            has_close_icon
-                            title={localize('Preview')}
+            {is_file_supported && (
+                <div
+                    className={classNames('load-strategy__local-preview', {
+                        'load-strategy__local-preview--listed': has_dashboard_strategies,
+                    })}
+                >
+                    <div className='load-strategy__recent-preview'>
+                        <div
+                            className={classNames('load-strategy__title', 'load-strategy__recent-preview-title', {
+                                'load-strategy__title--listed': has_dashboard_strategies && is_mobile,
+                            })}
                         >
-                            <BotPreview id_ref={el_ref} type='local' />
-                            <div className='load-strategy__button-group'>{renderOpenButton()}</div>
-                        </Dialog>
-                    </MobileWrapper>
+                            {!is_mobile && <Localize i18n_default_text='Preview' />}
+                            <div className='tab__dashboard__preview__retrigger'>
+                                <button
+                                    onClick={() => {
+                                        setActiveTab(4);
+                                    }}
+                                >
+                                    <Icon
+                                        className='tab__dashboard__preview__retrigger__icon'
+                                        width='2.4rem'
+                                        height='2.4rem'
+                                        icon={'IcDbotUserGuide'}
+                                    />
+                                    {!is_mobile && (
+                                        <Text
+                                            color='prominent'
+                                            size='xs'
+                                            line_height='s'
+                                            className={'tab__dashboard__preview__retrigger__text'}
+                                        >
+                                            {localize('User Guide')}
+                                        </Text>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                        {!is_mobile && (
+                            <>
+                                <div className='load-strategy__preview-workspace'>
+                                    <BotPreview id_ref={el_ref} type={'local'} />
+                                </div>
+                                <div className='load-strategy__button-group'>
+                                    <input
+                                        type='file'
+                                        ref={file_input_ref}
+                                        accept='.xml'
+                                        style={{ display: 'none' }}
+                                        onChange={e => {
+                                            clearInjectionDiv('component', el_ref);
+                                            onConfirmSave();
+                                            setIsFileSupported(handleFileChange(e, false));
+                                        }}
+                                    />
+                                    {renderOpenButton()}
+                                </div>
+                            </>
+                        )}
+                        <MobileWrapper>
+                            <Dialog
+                                is_visible={has_mobile_preview_loaded}
+                                onCancel={() => setPreviewOnDialog(false)}
+                                is_mobile_full_width
+                                className='dc-dialog__wrapper--preview'
+                                has_close_icon
+                                title={localize('Preview')}
+                            >
+                                <BotPreview id_ref={el_ref} type='local' />
+                                <div className='load-strategy__button-group'>{renderOpenButton()}</div>
+                            </Dialog>
+                        </MobileWrapper>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

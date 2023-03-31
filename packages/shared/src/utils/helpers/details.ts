@@ -65,11 +65,11 @@ export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore
         return days_value <= 2 ? unit_map.d.name_singular : unit_map.d.name_plural;
     }
     if (duration_ms >= TIME.HOUR && duration_ms < TIME.DAY) {
-        if (!should_ignore_end_time && isEndTime(duration_ms / (TIME.SECOND * 60 * 60))) return '';
+        if (!should_ignore_end_time && isEndTime(duration_ms / TIME.HOUR)) return '';
         return duration_ms === TIME.HOUR ? unit_map.h.name_singular : unit_map.h.name_plural;
     }
     if (duration_ms >= TIME.MINUTE && duration_ms < TIME.HOUR) {
-        if (!should_ignore_end_time && isEndTime(duration_ms / (TIME.SECOND * 60))) return '';
+        if (!should_ignore_end_time && isEndTime(duration_ms / TIME.MINUTE)) return '';
         return duration_ms === TIME.MINUTE ? unit_map.m.name_singular : unit_map.m.name_plural;
     }
     if (duration_ms >= TIME.SECOND && duration_ms < TIME.MINUTE) {

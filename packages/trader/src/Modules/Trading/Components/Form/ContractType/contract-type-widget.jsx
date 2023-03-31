@@ -53,6 +53,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         if (selected_item && selected_item.value !== value) {
             onChange({ target: { name, value: selected_item.value } });
         }
+        // don't include value into the dependency array, it'll breake TradeTypeTab component
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_item, onChange, name]);
 

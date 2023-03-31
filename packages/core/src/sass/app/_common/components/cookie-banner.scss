@@ -12,7 +12,7 @@
     padding: 2.8rem 0;
     bottom: 0;
     width: 100%;
-    height: 152px;
+    height: fit-content;
     text-align: center;
     transition: top 0.3s ease-in-out;
     z-index: 1000;
@@ -46,7 +46,6 @@
     &__btn-dont-accept:hover,
     &__btn-accept,
     &__btn-accept:hover {
-        display: inline-block;
         margin: 20px auto 0;
         height: 40px;
         border-width: 2px;
@@ -63,10 +62,10 @@
     }
     &__btn-dont-accept,
     &__btn-dont-accept:hover {
-        width: 116px;
+        width: fit-content;
         margin-right: 8px;
     }
     &__btn-accept {
-        width: 78px;
+        width: fit-content;
     }
 }

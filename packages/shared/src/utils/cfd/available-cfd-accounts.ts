@@ -13,7 +13,7 @@ export interface AvailableAccount {
     link_to?: string;
 }
 
-export const available_traders_hub_cfd_accounts: AvailableAccount[] = [
+export const getCFDAvailableAccount = () => [
     {
         name: 'Derived',
         description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),

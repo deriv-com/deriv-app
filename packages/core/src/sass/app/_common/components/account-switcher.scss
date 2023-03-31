@@ -393,10 +393,6 @@
         grid-template-columns: auto auto;
         justify-content: space-between;
         padding-left: 1.3rem;
-
-        &--traders-hub {
-            padding: 0.5rem 0 0.3rem 1.3rem;
-        }
     }
     &__compare {
         justify-self: end;
@@ -473,6 +469,28 @@
 
         &--traders_hub {
             margin: 1.3rem 1.1rem 1rem 1rem;
+        }
+    }
+
+    &__traders-hub {
+        padding: 1.2rem 0.5rem 0.6rem 0.8rem;
+
+        @include mobile {
+            padding: 1.2rem 0.5rem 0.6rem 2.5rem;
+        }
+        &--link {
+            cursor: pointer;
+            text-decoration: none;
+            :hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        &--text {
+            align-items: center;
+            padding: 0.8rem;
+            color: var(--text-loss-danger);
         }
     }
 }

@@ -25,7 +25,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@deriv/account": "^1.0.0",
-        "@deriv/api-types": "^1.0.54",
+        "@deriv/api-types": "^1.0.85",
         "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
@@ -33,7 +33,6 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
-        "@deriv/ui": "^0.0.15",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "mobx": "^6.6.1",

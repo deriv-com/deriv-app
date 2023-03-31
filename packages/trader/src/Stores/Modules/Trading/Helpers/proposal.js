@@ -1,4 +1,4 @@
-import { getDecimalPlaces, getPropertyValue, convertToUnix, toMoment } from '@deriv/shared';
+import { convertToUnix, getDecimalPlaces, getPropertyValue, isAccumulatorContract, toMoment } from '@deriv/shared';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -25,7 +25,10 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const stake = proposal.display_value;
     const basis_list = store.basis_list;
 
-    const contract_basis = basis_list.find(o => o.value !== store.basis) || {};
+    const contract_basis = store.is_vanilla
+        ? { text: 'Payout', value: 'number_of_contracts' }
+        : basis_list.find(o => o.value !== store.basis) || {};
+
     const is_stake = contract_basis.text === 'Stake';
     const price = is_stake ? stake : proposal[contract_basis.value];
     let has_increased = price > obj_prev_contract_basis.value;
@@ -41,6 +44,10 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
     const commission = proposal.commission;
     const cancellation = proposal.cancellation;
+    const accumulators_details = {
+        ...proposal.contract_details,
+        growth_rate: store.growth_rate,
+    };
 
     return {
         commission,
@@ -58,6 +65,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         profit: profit.toFixed(getDecimalPlaces(store.currency)),
         returns: `${returns.toFixed(2)}%`,
         stake,
+        ...accumulators_details,
     };
 };
 
@@ -87,7 +95,18 @@ const setProposalMultiplier = (store, obj_multiplier) => {
     }
 };
 
+const setProposalAccumulator = (store, obj_accumulator) => {
+    obj_accumulator.growth_rate = store.growth_rate;
+
+    obj_accumulator.limit_order = store.has_take_profit ? {} : undefined;
+
+    if (store.has_take_profit && store.take_profit) {
+        obj_accumulator.limit_order.take_profit = +store.take_profit || 0; // send positive take_profit to API
+    }
+};
+
 const createProposalRequestForContract = (store, type_of_contract) => {
+    const obj_accumulator = {};
     const obj_expiry = {};
     const obj_multiplier = {};
 
@@ -98,6 +117,10 @@ const createProposalRequestForContract = (store, type_of_contract) => {
 
     if (store.contract_type === 'multiplier') {
         setProposalMultiplier(store, obj_multiplier);
+    }
+
+    if (store.contract_type === 'accumulator') {
+        setProposalAccumulator(store, obj_accumulator);
     }
 
     return {
@@ -115,10 +138,12 @@ const createProposalRequestForContract = (store, type_of_contract) => {
                   duration_unit: store.duration_unit,
               }
             : obj_expiry),
-        ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) && {
-            barrier: store.barrier_1 || store.last_digit,
-        }),
-        ...(store.barrier_count === 2 && { barrier2: store.barrier_2 }),
+        ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) &&
+            !isAccumulatorContract(type_of_contract) && {
+                barrier: store.barrier_1 || store.last_digit,
+            }),
+        ...(store.barrier_count === 2 && !isAccumulatorContract(type_of_contract) && { barrier2: store.barrier_2 }),
+        ...obj_accumulator,
         ...obj_multiplier,
     };
 };

@@ -14,7 +14,7 @@ type TStep = {
 
 type TTradingHubContents = Record<'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'step6', TStep>;
 
-export const trading_hub_contents: TTradingHubContents = {
+export const getTradingHubContents = (): TTradingHubContents => ({
     step1: {
         component: (
             <StaticDashboard
@@ -42,7 +42,7 @@ export const trading_hub_contents: TTradingHubContents = {
                 }}
             />
         ),
-        footer_header: localize(`Welcome to Trader's hub`),
+        footer_header: localize("Welcome to Trader's hub"),
         footer_text: localize('This is your personal start page for Deriv'),
         has_next_content: false,
     },
@@ -75,7 +75,7 @@ export const trading_hub_contents: TTradingHubContents = {
         ),
         footer_header: localize('Trading accounts'),
         footer_text: localize(
-            `These are the trading accounts available to you. You can click on an account’s icon or description to find out more`
+            'These are the trading accounts available to you. You can click on an account’s icon or description to find out more'
         ),
         has_next_content: false,
     },
@@ -226,4 +226,4 @@ export const trading_hub_contents: TTradingHubContents = {
         has_next_content: true,
         next_content: localize('Start trading'),
     },
-};
+});

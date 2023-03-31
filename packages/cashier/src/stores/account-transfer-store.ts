@@ -41,7 +41,6 @@ export default class AccountTransferStore {
             should_switch_account: observable,
             transfer_fee: observable,
             transfer_limit: observable,
-            is_account_transfer_visible: computed,
             is_transfer_locked: computed,
             setBalanceByLoginId: action.bound,
             setBalanceSelectedFrom: action.bound,
@@ -89,13 +88,6 @@ export default class AccountTransferStore {
     should_switch_account = false;
     transfer_fee?: number | null = null;
     transfer_limit: { min?: string | null; max?: string | null } = {};
-
-    get is_account_transfer_visible() {
-        const { has_maltainvest_account, landing_company_shortcode, residence } = this.root_store.client;
-        // cashier Transfer account tab is hidden for iom clients
-        // check for residence to hide the tab before creating a real money account
-        return residence !== 'im' && (landing_company_shortcode !== 'malta' || has_maltainvest_account);
-    }
 
     get is_transfer_locked() {
         const {
@@ -377,8 +369,7 @@ export default class AccountTransferStore {
         const arr_accounts: TTransferAccount | TAccount[] = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        const is_from_pre_appstore =
-            this.root_store.client.is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
@@ -435,10 +426,7 @@ export default class AccountTransferStore {
 
             const obj_values: TAccount = {
                 text:
-                    is_cfd &&
-                    account.account_type === CFD_PLATFORMS.MT5 &&
-                    this.root_store.client.is_pre_appstore &&
-                    combined_cfd_mt5_account
+                    is_cfd && account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                         ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
                 value: account.loginid,
@@ -450,9 +438,7 @@ export default class AccountTransferStore {
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
                     platform_icon:
-                        account.account_type === CFD_PLATFORMS.MT5 &&
-                        this.root_store.client.is_pre_appstore &&
-                        combined_cfd_mt5_account
+                        account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                             ? combined_cfd_mt5_account.icon
                             : cfd_icon_display,
                     status: account?.status,
@@ -483,7 +469,7 @@ export default class AccountTransferStore {
 
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account
-                if (!is_from_pre_appstore || [account_id, login].includes(account.loginid)) {
+                if (!is_from_outside_cashier || [account_id, login].includes(account.loginid)) {
                     this.setSelectedTo(obj_values);
                 }
             }

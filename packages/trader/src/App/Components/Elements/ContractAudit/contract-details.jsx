@@ -4,8 +4,11 @@ import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     epochToMoment,
+    formatMoney,
     toGMTFormat,
     getCancellationPrice,
+    isAccumulatorContract,
+    getCurrencyDisplayCode,
     isMobile,
     isMultiplierContract,
     isUserSold,
@@ -21,7 +24,7 @@ import {
 import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
-const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot }) => {
+const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot, is_vanilla }) => {
     const {
         commission,
         contract_type,
@@ -32,12 +35,16 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         profit,
         date_start,
         tick_count,
+        tick_passed,
         transaction_ids: { buy, sell } = {},
+        number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
-
     const cancellation_price = getCancellationPrice(contract_info);
+    const ticks_duration_text = isAccumulatorContract(contract_type)
+        ? `${tick_passed}/${tick_count} ${localize('ticks')}`
+        : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
@@ -76,28 +83,48 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <ContractAuditItem
-                            id='dt_duration_label'
-                            icon={<Icon icon='IcContractDuration' size={24} />}
-                            label={localize('Duration')}
-                            value={
-                                tick_count > 0
-                                    ? `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`
-                                    : `${duration} ${duration_unit}`
-                            }
-                        />
-                        <ContractAuditItem
-                            id='dt_bt_label'
-                            icon={
-                                isDigitType(contract_type) ? (
-                                    <Icon icon='IcContractTarget' size={24} />
-                                ) : (
-                                    <Icon icon='IcContractBarrier' size={24} />
-                                )
-                            }
-                            label={getBarrierLabel(contract_info)}
-                            value={getBarrierValue(contract_info) || ' - '}
-                        />
+                        {(!isAccumulatorContract(contract_type) || !isNaN(contract_end_time)) && (
+                            <ContractAuditItem
+                                id='dt_duration_label'
+                                icon={<Icon icon='IcContractDuration' size={24} />}
+                                label={localize('Duration')}
+                                value={tick_count > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
+                            />
+                        )}
+                        {is_vanilla && (
+                            <React.Fragment>
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={<Icon icon='IcContractStrike' size={24} />}
+                                    label={getBarrierLabel(contract_info)}
+                                    value={getBarrierValue(contract_info) || ' - '}
+                                />
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={<Icon icon='IcContractPayout' size={24} />}
+                                    label={localize('Payout per point')}
+                                    value={
+                                        `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(
+                                            currency
+                                        )}` || ' - '
+                                    }
+                                />
+                            </React.Fragment>
+                        )}
+                        {!isAccumulatorContract(contract_type) && !is_vanilla && (
+                            <ContractAuditItem
+                                id='dt_bt_label'
+                                icon={
+                                    isDigitType(contract_type) ? (
+                                        <Icon icon='IcContractTarget' size={24} />
+                                    ) : (
+                                        <Icon icon='IcContractBarrier' size={24} />
+                                    )
+                                }
+                                label={getBarrierLabel(contract_info)}
+                                value={getBarrierValue(contract_info) || ' - '}
+                            />
+                        )}
                     </React.Fragment>
                 )}
                 <ContractAuditItem
@@ -144,6 +171,7 @@ ContractDetails.propTypes = {
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
     exit_spot: PropTypes.string,
+    is_vanilla: PropTypes.bool,
 };
 
 export default ContractDetails;

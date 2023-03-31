@@ -1,7 +1,7 @@
 import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
-import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import { DBot, ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
     Audio,
     BotFooterExtensions,
@@ -16,7 +16,6 @@ import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
-import { setColors } from '../../../bot-skeleton/src/scratch/hooks/colours';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;

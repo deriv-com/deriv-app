@@ -74,8 +74,8 @@ const TurbosCardBody = ({
                     className='dc-contract-card__stake'
                     header={is_sold ? PROFIT_LOSS : STAKE}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={is_sold && profit ? +profit < 0 : false}
-                    is_won={is_sold && profit ? +profit > 0 : false}
+                    is_loss={is_sold && profit ? profit < 0 : false}
+                    is_won={is_sold && profit ? profit > 0 : false}
                 >
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
@@ -118,21 +118,21 @@ const TurbosCardBody = ({
                 )}
                 <MobileWrapper>
                     <div className='dc-contract-card__status'>
-                        {is_sold && profit ? (
-                            <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={+profit > 0} />
+                        {is_sold && !!profit ? (
+                            <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={profit > 0} />
                         ) : (
                             !is_sold && progress_slider_mobile_el
                         )}
                     </div>
                 </MobileWrapper>
             </div>
-            {!is_sold && profit && (
+            {!is_sold && !!profit && (
                 <ContractCardItem
                     className='dc-contract-card-item__total-profit-loss'
                     header={TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={+profit < 0}
-                    is_won={+profit > 0}
+                    is_loss={profit < 0}
+                    is_won={profit > 0}
                 >
                     <Money amount={profit} currency={currency} />
                     <div

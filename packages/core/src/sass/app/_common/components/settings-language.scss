@@ -14,12 +14,6 @@
             grid-template-columns: repeat(2, minmax(50%, 1fr));
             grid-gap: 0.3rem;
             grid-template-rows: auto;
-        }
-    }
-    &__language {
-        &-button_wrapper {
-            display: flex;
-            align-items: center;
 
             @include mobile {
                 &--disabled {
@@ -27,6 +21,12 @@
                     pointer-events: none;
                 }
             }
+        }
+    }
+    &__language {
+        &-button_wrapper {
+            display: flex;
+            align-items: center;
         }
 
         &-link {

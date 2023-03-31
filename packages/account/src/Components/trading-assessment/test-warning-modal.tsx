@@ -2,7 +2,13 @@ import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const TestWarningModal = ({ show_risk_modal, body_content, footer_content }) => (
+type TTestWarningModal = {
+    show_risk_modal: boolean;
+    body_content: string;
+    footer_content: string;
+};
+
+const TestWarningModal = ({ show_risk_modal, body_content, footer_content }: TTestWarningModal) => (
     <React.Fragment>
         <MobileWrapper>
             <MobileDialog

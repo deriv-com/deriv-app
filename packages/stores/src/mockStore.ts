@@ -207,6 +207,7 @@ const mock = (): TRootStore => {
             },
             current_language: 'EN',
             is_from_derivgo: false,
+            isCurrentLanguage: jest.fn(),
             has_error: false,
             platform: '',
             routeBackInApp: jest.fn(),

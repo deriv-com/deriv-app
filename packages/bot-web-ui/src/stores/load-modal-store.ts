@@ -202,7 +202,7 @@ export default class LoadModalStore implements ILoadModalStore {
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
         if (!this.selected_strategy) {
-            Blockly.derivWorkspace.cleanUp();
+            Blockly.derivWorkspace.asyncClear();
             Blockly.Xml.domToWorkspace(
                 Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
                 Blockly.derivWorkspace

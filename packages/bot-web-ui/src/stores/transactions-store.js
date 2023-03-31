@@ -150,12 +150,6 @@ export default class TransactionsStore {
             }
         );
 
-        // No need to show previous transactions if the user switches account.
-        // const disposeClientLoginIdListener = reaction(
-        //     () => client.loginid,
-        //     () => this.elements = getStoredItemsByUser(this.TRANSACTION_CACHE, client.loginid, [])
-        // );
-
         // User could've left the page mid-contract. On initial load, try
         // to recover any pending contracts so we can reflect accurate stats
         // and transactions.
@@ -166,7 +160,6 @@ export default class TransactionsStore {
 
         return () => {
             disposeTransactionElementsListener();
-            // disposeClientLoginIdListener();
             disposeRecoverContracts();
         };
     }
@@ -214,7 +207,7 @@ export default class TransactionsStore {
         const positions = core.portfolio.positions;
 
         // TODO: the idea is to remove the POC calls completely
-        // but adding this check to prevent making POC calls only for bot as of no
+        // but adding this check to prevent making POC calls only for bot as of now
         if (!isBot()) {
             ws.authorized.subscribeProposalOpenContract(contract_id, response => {
                 this.is_called_proposal_open_contract = true;

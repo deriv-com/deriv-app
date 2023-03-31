@@ -409,16 +409,12 @@ export default class NotificationStore extends BaseStore {
                 const svg_needs_poi_poa =
                     cr_account &&
                     status.includes('allow_document_upload') &&
-                    (identity?.status === 'none' || identity?.status === 'rejected') &&
-                    (document?.status === 'none' || document?.status === 'rejected');
+                    identity?.status === 'none' &&
+                    document?.status === 'none';
                 const svg_needs_poa =
-                    cr_account &&
-                    status.includes('allow_document_upload') &&
-                    (document?.status === 'none' || document?.status === 'rejected');
+                    cr_account && status.includes('allow_document_upload') && document?.status === 'none';
                 const svg_needs_poi =
-                    cr_account &&
-                    status.includes('allow_document_upload') &&
-                    (identity?.status === 'none' || identity?.status === 'rejected');
+                    cr_account && status.includes('allow_document_upload') && identity?.status === 'none';
                 const svg_poi_expired = cr_account && identity?.status === 'expired';
 
                 this.addVerificationNotifications(

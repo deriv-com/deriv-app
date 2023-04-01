@@ -213,6 +213,7 @@ const mock = (): TRootStore => {
             changeSelectedLanguage: jest.fn(),
             current_language: 'EN',
             is_network_online: false,
+            is_language_changing: false,
         },
         ui: {
             app_contents_scroll_ref: {

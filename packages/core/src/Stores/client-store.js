@@ -1306,7 +1306,7 @@ export default class ClientStore extends BaseStore {
             currency = form_values.currency;
         }
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
-        required_form_values.citizen = this.account_settings.citizen || this.residence;
+        required_form_values.citizen = form_values?.citizen || this.account_settings.citizen || this.residence;
 
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
@@ -1591,7 +1591,9 @@ export default class ClientStore extends BaseStore {
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
             }
-            if (this.citizen) this.onSetCitizen(this.citizen);
+            if (this.citizen) {
+                await this.onSetCitizen(this.citizen);
+            }
             if (!this.is_virtual) {
                 this.setPrevRealAccountLoginid(this.loginid);
             }
@@ -2248,7 +2250,7 @@ export default class ClientStore extends BaseStore {
         });
     }
 
-    onSetCitizen(citizen) {
+    async onSetCitizen(citizen) {
         if (!citizen) return;
         WS.setSettings({
             set_settings: 1,

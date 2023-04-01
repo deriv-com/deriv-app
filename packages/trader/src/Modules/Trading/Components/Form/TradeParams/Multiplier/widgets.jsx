@@ -2,11 +2,12 @@ import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal.jsx';
-import MultiplierOptionsModal from 'Modules/Trading/Containers/Multiplier/multiplier-options-modal.jsx';
+import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal.jsx';
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal.jsx';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 import { localize } from '@deriv/translations';
+import { getGrowthRatePercentage } from '@deriv/shared';
 
 const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -61,7 +62,7 @@ export const MultiplierAmountWidget = connect(({ modules }) => ({
     multiplier: modules.trade.multiplier,
 }))(AmountWidget);
 
-const MultiplierWidget = ({ multiplier }) => {
+const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const toggleModal = () => {
@@ -70,17 +71,22 @@ const MultiplierWidget = ({ multiplier }) => {
 
     return (
         <React.Fragment>
-            <MultiplierOptionsModal is_open={is_open} toggleModal={toggleModal} />
+            <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
             <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
                 <div className='mobile-widget__item'>
-                    <span className='mobile-widget__item-value'>x{multiplier}</span>
+                    <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
             </div>
         </React.Fragment>
     );
 };
 
-export const MultiplierOptionsWidget = connect(({ modules, ui }) => ({
-    multiplier: modules.trade.multiplier,
-    addToast: ui.addToast,
-}))(MultiplierWidget);
+export const MultiplierOptionsWidget = connect(({ modules }) => ({
+    displayed_trade_param: `x${modules.trade.multiplier}`,
+    modal_title: localize('Multiplier'),
+}))(RadioGroupOptionsWidget);
+
+export const AccumulatorOptionsWidget = connect(({ modules }) => ({
+    displayed_trade_param: `${getGrowthRatePercentage(modules.trade.growth_rate)}%`,
+    modal_title: localize('Accumulate'),
+}))(RadioGroupOptionsWidget);

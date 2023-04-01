@@ -31,21 +31,17 @@ type TAccountTransferFormProps = {
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
-const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
+const AccountOption = ({ account, idx }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
                 <div className='account-transfer-form__icon'>
-                    <AccountPlatformIcon account={account} is_pre_appstore={is_pre_appstore} size={16} />
+                    <AccountPlatformIcon account={account} size={16} />
                 </div>
             )}
 
             <div className='account-transfer-form__currency-wrapper'>
-                <Text
-                    size='xxs'
-                    line_height='xs'
-                    styles={{ color: is_pre_appstore ? 'prominent' : 'inherit', fontWeight: 'inherit' }}
-                >
+                <Text size='xxs' line_height='xs' styles={{ color: 'prominent', fontWeight: 'inherit' }}>
                     {account.is_dxtrade || account.is_mt || account.is_derivez
                         ? account.text
                         : getCurrencyName(account.currency)}
@@ -86,13 +82,7 @@ const AccountTransferForm = observer(
             common: { is_from_derivgo },
         } = useStore();
 
-        const {
-            account_limits,
-            authentication_status,
-            is_dxtrade_allowed,
-            is_pre_appstore,
-            getLimits: onMount,
-        } = client;
+        const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
 
         const {
@@ -128,7 +118,8 @@ const AccountTransferForm = observer(
         const [to_accounts, setToAccounts] = React.useState({});
         const [transfer_to_hint, setTransferToHint] = React.useState<string>();
 
-        const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
+
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5;
         const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
@@ -199,7 +190,7 @@ const AccountTransferForm = observer(
             derivez_accounts_to = [];
 
             accounts_list.forEach((account, idx) => {
-                const text = <AccountOption idx={idx} account={account} is_pre_appstore={is_pre_appstore} />;
+                const text = <AccountOption idx={idx} account={account} />;
                 const value = account.value;
 
                 const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;
@@ -369,7 +360,7 @@ const AccountTransferForm = observer(
                 className='cashier__wrapper account-transfer-form__wrapper'
                 data-testid='dt_account_transfer_form_wrapper'
             >
-                {!is_from_pre_appstore && (
+                {!is_from_outside_cashier && (
                     <Text
                         as='h2'
                         color='prominent'
@@ -462,7 +453,7 @@ const AccountTransferForm = observer(
                                                     }}
                                                     className={classNames(
                                                         'cashier__input dc-input--no-placeholder account-transfer-form__input',
-                                                        !is_from_pre_appstore &&
+                                                        !is_from_outside_cashier &&
                                                             'account-transfer-form__input-fit-content'
                                                     )}
                                                     classNameHint={classNames('account-transfer-form__hint', {
@@ -573,17 +564,16 @@ const AccountTransferForm = observer(
                                         )}
                                         data-testid='dt_account_transfer_form_submit'
                                     >
-                                        {is_from_pre_appstore && <NotesLink />}
-                                        {is_pre_appstore && (
-                                            <Button
-                                                className='account-transfer-form__deposit-button'
-                                                secondary
-                                                large
-                                                onClick={depositClick}
-                                            >
-                                                <Localize i18n_default_text='Deposit' />
-                                            </Button>
-                                        )}
+                                        {is_from_outside_cashier && <NotesLink />}
+                                        <Button
+                                            className='account-transfer-form__deposit-button'
+                                            secondary
+                                            large
+                                            onClick={depositClick}
+                                        >
+                                            <Localize i18n_default_text='Deposit' />
+                                        </Button>
+
                                         <Button
                                             className='account-transfer-form__submit-button'
                                             type='submit'
@@ -605,7 +595,7 @@ const AccountTransferForm = observer(
                                             <Localize i18n_default_text='Transfer' />
                                         </Button>
                                     </div>
-                                    {!is_from_pre_appstore && (
+                                    {!is_from_outside_cashier && (
                                         <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
                                             {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                             <AccountTransferNote

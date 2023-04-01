@@ -18,34 +18,9 @@ const TestComponent = () => {
 };
 
 describe('useSwitchToRealAccount', () => {
-    test('should not switch if is_pre_appstore is false', async () => {
-        const mock = mockStore({
-            client: {
-                is_pre_appstore: false,
-                is_virtual: true,
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <TestComponent />
-                {children}
-            </StoreProvider>
-        );
-
-        const { result } = renderHook(() => useStore(), { wrapper });
-
-        expect(result.current.client.is_virtual).toBe(true);
-
-        result.current.client.switchAccount('real');
-
-        expect(result.current.client.is_virtual).toBe(true);
-    });
-
     test('should not switch if is already real account', async () => {
         const mock = mockStore({
             client: {
-                is_pre_appstore: true,
                 is_virtual: false,
             },
         });
@@ -70,7 +45,6 @@ describe('useSwitchToRealAccount', () => {
         const history = createMemoryHistory();
         const mock = mockStore({
             client: {
-                is_pre_appstore: true,
                 is_virtual: true,
                 has_active_real_account: false,
             },

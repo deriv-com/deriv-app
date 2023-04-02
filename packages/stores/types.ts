@@ -208,6 +208,7 @@ type TCommonStore = {
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
+    is_language_changing: boolean;
 };
 
 type TUiStore = {

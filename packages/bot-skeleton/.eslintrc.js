@@ -10,12 +10,4 @@ module.exports = {
         gapi: false,
         __webpack_public_path__: false,
     },
-    settings: {
-        react: {
-            version: '16',
-        },
-    },
-    rules: {
-        'no-underscore-dangle': 0,
-    }
 };

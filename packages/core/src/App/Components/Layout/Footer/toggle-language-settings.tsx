@@ -9,10 +9,11 @@ import LanguageSettings from '../../../Containers/SettingsModal/settings-languag
 const ToggleLanguageSettings = observer(() => {
     const { common, ui } = useStore();
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
-    const { current_language } = common;
+    const { current_language, is_language_changing } = common;
 
     const toggle_settings_class = classNames('ic-language', 'footer__link', {
         'ic-settings--active': is_language_settings_modal_on,
+        'ic-settings--disabled': is_language_changing,
     });
     return (
         <React.Fragment>

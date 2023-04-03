@@ -21,8 +21,6 @@ datadogRum.init({
     defaultPrivacyLevel: 'mask-user-input',
 });
 
-datadogRum.startSessionReplayRecording();
-
 const App = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "trader-app", webpackPreload: true */ './App/index')),
     () => <Loading />

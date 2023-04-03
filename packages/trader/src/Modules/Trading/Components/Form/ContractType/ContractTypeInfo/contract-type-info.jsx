@@ -9,7 +9,7 @@ import { getContractTypes } from '../../../../Helpers/contract-type';
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
     const contract_types = getContractTypes(list, item).filter(
-        i => i.value !== 'rise_fall_equal' && i.value !== 'turboslong'
+        i => i.value !== 'rise_fall_equal' && i.value !== 'turbosshort'
     );
 
     const cards = contract_types.map((type, idx) => {

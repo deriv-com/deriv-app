@@ -12,7 +12,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     const [selected_category, setSelectedCategory] = React.useState(null);
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState(null);
-    const [selected_item, setSelectedItem] = React.useState(null);
 
     const handleClickOutside = React.useCallback(
         event => {
@@ -44,18 +43,10 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
             setItem(clicked_item);
-            setSelectedItem(clicked_item);
             setSelectedCategory(key);
+            onChange({ target: { name, value: clicked_item.value } });
         }
     };
-
-    React.useEffect(() => {
-        if (selected_item && selected_item.value !== value) {
-            onChange({ target: { name, value: selected_item.value } });
-        }
-        // don't include value into the dependency array, it'll breake TradeTypeTab component
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected_item, onChange, name]);
 
     const handleInfoClick = clicked_item => {
         setInfoDialogVisibility(!is_info_dialog_open);
@@ -168,7 +159,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     const selected_contract_index = () => {
         const contract_types_arr = list_with_category()?.flatMap(category => category.contract_types);
         return contract_types_arr
-            .filter(type => type.value !== 'rise_fall_equal')
+            .filter(type => type.value !== 'rise_fall_equal' && type.value !== 'turbosshort')
             .findIndex(type => type.value === item?.value);
     };
 

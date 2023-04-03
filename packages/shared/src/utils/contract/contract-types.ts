@@ -1,4 +1,4 @@
-import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
+import { ContractUpdate, ProposalOpenContract as TProposalOpenContract } from '@deriv/api-types';
 
 export type TStatus = 'open' | 'sold' | 'won' | 'lost' | 'cancelled';
 
@@ -14,7 +14,7 @@ export type TIsEnded = Partial<TGetFinalPrice> & {
     is_settleable?: 0 | 1;
 };
 
-export type TContractInfo = ProposalOpenContract & {
+export type TContractInfo = TProposalOpenContract & {
     tick_stream?: TTickItem[];
     cancellation?: {
         ask_price?: number;

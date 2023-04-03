@@ -485,11 +485,10 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         },
     } as const);
 
-export const getContractConfig = (is_high_low?: boolean) =>
-    ({
-        ...getSupportedContracts(is_high_low),
-        ...getUnsupportedContracts(),
-    } as const);
+export const getContractConfig = (is_high_low?: boolean) => ({
+    ...getSupportedContracts(is_high_low),
+    ...getUnsupportedContracts(),
+});
 
 /*
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.

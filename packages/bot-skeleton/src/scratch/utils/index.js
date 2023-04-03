@@ -307,6 +307,7 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
 export const hasAllRequiredBlocks = workspace => {
     const blocks_in_workspace = workspace.getAllBlocks();
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    if (!trade_type_block) return false;
     const selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
     const mandatory_tradeoptions_block =
         selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';

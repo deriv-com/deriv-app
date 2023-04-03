@@ -74,10 +74,12 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             is_eu_selected: computed,
             is_real: computed,
+            is_low_risk_cr_eu_real: computed,
             is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
             multipliers_account_status: computed,
+            financial_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -111,6 +113,8 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
+                this.root_store.client.landing_companies,
+                this.root_store.common.current_language,
             ],
             () => {
                 this.getAvailablePlatforms();
@@ -291,6 +295,10 @@ export default class TradersHubStore extends BaseStore {
         return eu_related.includes(this.content_flag);
     }
 
+    get is_low_risk_cr_eu_real() {
+        return [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(this.content_flag);
+    }
+
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
         if (this.is_eu_user && !this.is_demo_low_risk) {
@@ -380,10 +388,23 @@ export default class TradersHubStore extends BaseStore {
         this.setCombinedCFDMT5Accounts();
     }
 
+    get financial_restricted_countries() {
+        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+
+        return gaming_company?.shortcode === 'svg' && !financial_company;
+    }
+
     getAvailableMt5Accounts() {
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
+
+        if (this.financial_restricted_countries) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account => account.market_type !== 'financial' && account.platform === CFD_PLATFORMS.MT5
             );
             return;
         }

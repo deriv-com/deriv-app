@@ -68,9 +68,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
-        // close modal only when the user try to transfer money from traders-hub, not from cashier
-        // because in cashier this component is not a modal
-        if (is_from_outside_cashier) onClose?.();
     };
 
     return (

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
-import { routes, ContentFlag } from '@deriv/shared';
+import { routes, platforms } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -39,38 +39,6 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
             <Text className='trading-hub-header__tradershub--text'>
                 <Localize i18n_default_text="Trader's hub" />
             </Text>
-        </div>
-    );
-};
-
-const RedirectToOldInterface = ({
-    setIsPreAppStore,
-    should_show_exit_traders_modal,
-    toggleExitTradersHubModal,
-    content_flag,
-    switchToCRAccount,
-}) => {
-    const history = useHistory();
-    const disablePreAppstore = async () => {
-        if (should_show_exit_traders_modal) {
-            toggleExitTradersHubModal();
-        } else {
-            if (content_flag === ContentFlag.LOW_RISK_CR_EU) {
-                await switchToCRAccount();
-            }
-            setIsPreAppStore(false);
-            history.push(routes.root);
-        }
-    };
-    return (
-        <div className='trading-hub-header__redirect'>
-            <div className='trading-hub-header__redirect--link' onClick={disablePreAppstore}>
-                <Text as='p' size='xs' color='general'>
-                    <Localize i18n_default_text="Exit Trader's hub" />
-                </Text>
-                <Icon className='trading-hub-header__redirect--beta' icon='IcAppstoreTradingHubBeta' size={50} />
-                <Icon icon='IcArrowRight' size={18} color='red' />
-            </div>
         </div>
     );
 };
@@ -115,26 +83,25 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
 };
 
 const TradingHubHeader = ({
-    content_flag,
     header_extension,
+    is_app_disabled,
     is_dark_mode,
     is_eu_country,
     is_eu,
     is_logged_in,
     is_mt5_allowed,
     is_notifications_visible,
+    is_route_modal_on,
     loginid,
     modal_data,
     notifications_count,
+    platform,
     setIsOnboardingVisited,
-    setIsPreAppStore,
-    should_show_exit_traders_modal,
     toggleIsTourOpen,
     toggleNotifications,
-    toggleExitTradersHubModal,
-    switchToCRAccount,
 }) => {
     const is_mf = loginid?.startsWith('MF');
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -145,7 +112,12 @@ const TradingHubHeader = ({
     const history = useHistory();
 
     return (
-        <header className='trading-hub-header'>
+        <header
+            className={classNames('trading-hub-header', {
+                'trading-hub-header--is-disabled': is_app_disabled || is_route_modal_on,
+                'trading-hub-header--is-hidden': platforms[platform],
+            })}
+        >
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
@@ -165,13 +137,6 @@ const TradingHubHeader = ({
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
-                    <RedirectToOldInterface
-                        setIsPreAppStore={setIsPreAppStore}
-                        should_show_exit_traders_modal={should_show_exit_traders_modal}
-                        toggleExitTradersHubModal={toggleExitTradersHubModal}
-                        content_flag={content_flag}
-                        switchToCRAccount={switchToCRAccount}
-                    />
                     <Divider />
                     <div className='trading-hub-header__menu-right--items'>
                         <div className='trading-hub-header__menu-right--items--onboarding'>
@@ -248,45 +213,47 @@ const TradingHubHeader = ({
 };
 
 TradingHubHeader.propTypes = {
+    content_flag: PropTypes.string,
     header_extension: PropTypes.any,
+    is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
     is_eu_country: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
+    is_route_modal_on: PropTypes.bool,
     is_settings_modal_on: PropTypes.bool,
     loginid: PropTypes.string,
     modal_data: PropTypes.object,
     notifications_count: PropTypes.number,
-    setIsPreAppStore: PropTypes.func,
+    platform: PropTypes.string,
     setIsOnboardingVisited: PropTypes.func,
     settings_extension: PropTypes.array,
     should_show_exit_traders_modal: PropTypes.bool,
+    switchToCRAccount: PropTypes.func,
     toggleIsTourOpen: PropTypes.func,
     toggleNotifications: PropTypes.func,
-    toggleExitTradersHubModal: PropTypes.func,
-    content_flag: PropTypes.string,
-    switchToCRAccount: PropTypes.func,
 };
 
-export default connect(({ client, notifications, ui, traders_hub }) => ({
+export default connect(({ client, common, notifications, ui, traders_hub }) => ({
     header_extension: ui.header_extension,
+    is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
     is_eu_country: client.is_eu_country,
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
+    is_route_modal_on: ui.is_route_modal_on,
     modal_data: traders_hub.modal_data,
     notifications_count: notifications.notifications.length,
     toggleNotifications: notifications.toggleNotificationsModal,
     loginid: client.loginid,
+    platform: common.platform,
     setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
-    setIsPreAppStore: client.setIsPreAppStore,
     should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    toggleExitTradersHubModal: ui.toggleExitTradersHubModal,
     content_flag: traders_hub.content_flag,
     switchToCRAccount: traders_hub.switchToCRAccount,
 }))(withRouter(TradingHubHeader));

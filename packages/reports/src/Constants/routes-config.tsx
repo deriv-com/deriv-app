@@ -31,7 +31,7 @@ const initRoutesConfig = (): TRouteConfig[] => {
                 {
                     path: routes.profit,
                     component: lazyLoadReportComponent('ProfitTable'),
-                    getTitle: () => localize('Profit table'),
+                    getTitle: () => localize('Trade table'),
                     icon_component: 'IcProfitTable',
                 },
                 {

@@ -6,7 +6,7 @@ type TPlaceholderComponent = {
     empty_message_component?: React.ElementType;
     has_selected_date?: boolean;
     is_empty?: boolean;
-    is_loading: boolean;
+    is_loading?: boolean;
     localized_message?: string;
     localized_period_message?: string;
 };

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 import { Calendar } from '@deriv/components';
-import { addMonths, diffInMonths, epochToMoment, subMonths, toMoment } from '@deriv/shared';
+import { addMonths, diffInMonths, subMonths, toMoment } from '@deriv/shared';
 
 type TTwoMonthPicker = {
     onChange: (date: moment.MomentInput) => void;
@@ -37,9 +37,8 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
      * Only allow previous months to be available to navigate. Disable other periods
      *
      * @param {moment.Moment} date
-     * @param {Extract<moment.DurationInputArg2, 'month'>} range
      */
-    const validateFromArrows = (date: moment.Moment, range: Extract<moment.DurationInputArg2, 'month'>) => {
+    const validateFromArrows = (date: moment.Moment) => {
         return diffInMonths(toMoment(left_pane_date), date) !== -1;
     };
 
@@ -48,9 +47,8 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
      * Disable other periods
      *
      * @param {moment.Moment} date
-     * @param {Extract<moment.DurationInputArg2, 'month'>} range
      */
-    const validateToArrows = (date: moment.Moment, range: Extract<moment.DurationInputArg2, 'month'>) => {
+    const validateToArrows = (date: moment.Moment) => {
         const r_date = toMoment(right_pane_date).startOf('month');
         if (diffInMonths(toMoment().startOf('month'), r_date) === 0) return true; // future months are disallowed
         return diffInMonths(r_date, date) !== 1;

@@ -1,10 +1,10 @@
 import type { Moment } from 'moment';
 import type {
-    GetAccountStatus,
     Authorize,
     DetailsOfEachMT5Loginid,
-    LogOutResponse,
+    GetAccountStatus,
     GetLimits,
+    LogOutResponse,
     ProposalOpenContract,
 } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
@@ -106,6 +106,8 @@ type TClientStore = {
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
+    cfd_score: number;
+    setCFDScore: (score: number) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -124,7 +126,6 @@ type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
-    is_pre_appstore: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -157,6 +158,7 @@ type TClientStore = {
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
     setVisibilityRealityCheck: (value: number) => void;
+    setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => void;
     switched: boolean;
@@ -178,7 +180,6 @@ type TClientStore = {
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
-    is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
@@ -207,36 +208,46 @@ type TCommonStore = {
     routeTo: (pathname: string) => void;
     server_time: Moment;
     changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
+    current_language: string;
+    is_language_changing: boolean;
 };
 
 type TUiStore = {
+    addToast: () => void;
+    app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
+    is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
+    is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;
+    setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    sub_section_index: number;
+    setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
-    addToast: (obj: Record<string, string>) => void;
-    removeToast: (name: string) => void;
+    toggleLanguageSettingsModal: () => void;
+    toggleReadyToDepositModal: () => void;
+    toggleSetCurrencyModal: () => void;
+    removeToast: () => void;
+    is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
     toggleCancellationWarning: () => void;
     toggleUnsupportedContractModal: () => void;
-    toggleSetCurrencyModal: () => void;
-    toggleReports: (value: boolean) => void;
-    setSubSectionIndex: (index: number) => void;
+    toggleReports: () => void;
 };
 
 type TPortfolioStore = {
@@ -265,17 +276,22 @@ type TMenuStore = {
 
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
+    client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
+    setP2PRedirectTo: () => void;
 };
 
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
+    is_low_risk_cr_eu_real: boolean;
     openModal: (modal_id: string, props?: any) => void;
+    is_eu_user: boolean;
 };
 
 export type TRootStore = {

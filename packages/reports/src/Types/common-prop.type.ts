@@ -7,8 +7,8 @@ export type TPassthrough = {
 };
 
 export type TBinaryRoutes = {
-    is_logged_in: boolean;
-    is_logging_in: boolean;
+    is_logged_in?: boolean;
+    is_logging_in?: boolean;
     passthrough?: TPassthrough;
 };
 

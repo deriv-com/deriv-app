@@ -6,7 +6,7 @@ import ErrorComponent from 'Components/Errors';
 import { TRootStore } from 'Stores/index';
 import { TRoutes } from '../Types';
 
-const Routes = ({ error, has_error, is_logged_in, is_logging_in, is_virtual, passthrough }: TRoutes) => {
+const Routes = ({ error, has_error, is_logged_in, is_logging_in, passthrough }: TRoutes) => {
     if (has_error) {
         return <ErrorComponent {...error} />;
     }

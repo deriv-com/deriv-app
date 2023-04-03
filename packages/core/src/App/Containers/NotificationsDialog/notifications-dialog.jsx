@@ -120,13 +120,15 @@ const ClearAllFooter = ({ is_empty, clearNotifications }) => {
 const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog, clearNotifications }, ref) => {
     const is_empty = !notifications?.length;
 
-    const traders_hub = window.location.pathname === routes.traders_hub;
+    const traders_hub_header =
+        window.location.pathname === routes.traders_hub ||
+        window.location.pathname.startsWith(routes.cashier) ||
+        window.location.pathname.startsWith(routes.account);
 
     return (
         <div
             className={classNames('notifications-dialog', {
-                'notifications-dialog--pre-appstore':
-                    traders_hub || window.location.pathname.startsWith(routes.account),
+                'notifications-dialog--pre-appstore': traders_hub_header,
             })}
             ref={ref}
         >

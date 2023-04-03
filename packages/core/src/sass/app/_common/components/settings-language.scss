@@ -9,12 +9,18 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(90px, 1fr));
         grid-gap: 1.6rem;
-        padding: 2.4rem;
 
         @include mobile {
             grid-template-columns: repeat(2, minmax(50%, 1fr));
             grid-gap: 0.3rem;
             grid-template-rows: auto;
+
+            @include mobile {
+                &--disabled {
+                    opacity: 0.5;
+                    pointer-events: none;
+                }
+            }
         }
     }
     &__language {

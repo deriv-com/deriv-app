@@ -79,7 +79,7 @@ const Cards = ({
         },
         {
             icon: 'IcQuickStrategy',
-            content: localize('Quick Strategy'),
+            content: localize('Quick strategy'),
             method: () => {
                 setActiveTab(1);
                 loadDataStrategy();

@@ -93,7 +93,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
 
     const platform_dropdown = (
         <div className='platform-dropdown'>
-            <Div100vhContainer height_offset='156px' is_disabled={isDesktop()}>
+            <Div100vhContainer height_offset='9rem' is_disabled={isDesktop()}>
                 <div className='platform-dropdown__list'>
                     {platform_config.map(platform => {
                         return (

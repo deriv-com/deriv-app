@@ -45,8 +45,11 @@ import {
     getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
 import type { TRootStore } from '@deriv/stores/types';
-import { GetFinancialAssessment, SetFinancialAssessmentRequest } from '@deriv/api-types';
-import { TFinancialAndTradeAssessmentData } from 'Types';
+import {
+    GetFinancialAssessment,
+    SetFinancialAssessmentRequest,
+    GetFinancialAssessmentResponse,
+} from '@deriv/api-types';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -58,12 +61,8 @@ type TConfirmationModal = {
 } & TConfirmationPage;
 
 type TSubmittedPage = {
-    platform: keyof typeof platforms;
-    routeBackInApp: TRootStore['common']['routeBackInApp'];
+    platform: TRootStore['common']['platform'];
 };
-
-type TFinancialAssessementData = Pick<SetFinancialAssessmentRequest, 'financial_information'> &
-    Record<string, { [key: string]: React.ReactNode }>;
 
 const ConfirmationContent = ({ className }: { className?: string }) => {
     return (
@@ -135,11 +134,13 @@ const ConfirmationPage = ({ toggleModal, onSubmit }: TConfirmationPage) => (
     </div>
 );
 
-const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
+const SubmittedPage = observer(({ platform }: TSubmittedPage) => {
     const history = useHistory();
+    const { common } = useStore();
+    const { routeBackInApp } = common;
 
     const onClickButton = () => {
-        if (platforms[platform].is_hard_redirect) {
+        if (platform && platforms[platform].is_hard_redirect) {
             window.location.href = platforms[platform].url;
         } else {
             routeBackInApp(history);
@@ -192,7 +193,7 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
             </div>
         </IconMessageContent>
     );
-};
+});
 
 const FinancialAssessment = observer(() => {
     const history = useHistory();
@@ -251,12 +252,19 @@ const FinancialAssessment = observer(() => {
             setIsLoading(false);
             history.push(routes.personal_details);
         } else {
-            WS.authorized.storage.getFinancialAssessment().then((data: TFinancialAssessementData) => {
+            WS.authorized.storage.getFinancialAssessment().then((data: GetFinancialAssessmentResponse) => {
                 WS.wait('get_account_status').then(() => {
                     setHasTradingExperience(
                         (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
                     );
-                    if (data.error) {
+                    if (
+                        data &&
+                        'error' in data &&
+                        typeof data.error === 'object' &&
+                        data.error &&
+                        'message' in data.error &&
+                        typeof data.error.message === 'string'
+                    ) {
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
@@ -278,10 +286,19 @@ const FinancialAssessment = observer(() => {
         const data = await setFinancialAndTradingAssessment(form_payload);
         if (data.error) {
             setIsBtnLoading(false);
-            setStatus({ msg: data.error.message });
+            if (
+                data &&
+                'error' in data &&
+                typeof data.error === 'object' &&
+                data.error &&
+                'message' in data.error &&
+                typeof data.error.message === 'string'
+            ) {
+                setStatus({ msg: data.error.message });
+            }
         } else {
             await updateAccountStatus();
-            WS.authorized.storage.getFinancialAssessment().then((res_data: TFinancialAssessementData) => {
+            WS.authorized.storage.getFinancialAssessment().then((res_data: GetFinancialAssessmentResponse) => {
                 if (res_data?.get_financial_assessment) setInitialFormValues(res_data.get_financial_assessment);
                 setIsSubmitSuccess(true);
                 setIsBtnLoading(false);
@@ -340,7 +357,7 @@ const FinancialAssessment = observer(() => {
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
     if (isMobile() && is_authentication_needed && !is_mf && is_submit_success)
-        return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
+        return <SubmittedPage platform={platform} />;
 
     const setInitialFormData = () => {
         const form_data = {
@@ -454,7 +471,7 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Source of income')}
                                                     list_items={getIncomeSourceList()}
                                                     value={values.income_source}
-                                                    error={touched.income_source && errors.income_source}
+                                                    error={touched.income_source ? errors.income_source : undefined}
                                                     onChange={e => {
                                                         setFieldTouched('income_source', true);
                                                         handleChange(e);
@@ -483,7 +500,11 @@ const FinancialAssessment = observer(() => {
                                                         label={localize('Employment status')}
                                                         list_items={getEmploymentStatusList()}
                                                         value={values.employment_status}
-                                                        error={touched.employment_status && errors.employment_status}
+                                                        error={
+                                                            touched.employment_status
+                                                                ? errors.employment_status
+                                                                : undefined
+                                                        }
                                                         onChange={e => {
                                                             setFieldTouched('employment_status', true);
                                                             handleChange(e);
@@ -512,7 +533,11 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Industry of employment')}
                                                     list_items={getEmploymentIndustryList()}
                                                     value={values.employment_industry}
-                                                    error={touched.employment_industry && errors.employment_industry}
+                                                    error={
+                                                        touched.employment_industry
+                                                            ? errors.employment_industry
+                                                            : undefined
+                                                    }
                                                     onChange={e => {
                                                         setFieldTouched('employment_industry', true);
                                                         handleChange(e);
@@ -541,7 +566,7 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Occupation')}
                                                     list_items={getOccupationList()}
                                                     value={values.occupation}
-                                                    error={touched.occupation && errors.occupation}
+                                                    error={touched.occupation ? errors.occupation : undefined}
                                                     onChange={e => {
                                                         setFieldTouched('occupation', true);
                                                         handleChange(e);
@@ -569,7 +594,9 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Source of wealth')}
                                                     list_items={getSourceOfWealthList()}
                                                     value={values.source_of_wealth}
-                                                    error={touched.source_of_wealth && errors.source_of_wealth}
+                                                    error={
+                                                        touched.source_of_wealth ? errors.source_of_wealth : undefined
+                                                    }
                                                     onChange={e => {
                                                         setFieldTouched('source_of_wealth', true);
                                                         handleChange(e);
@@ -597,7 +624,7 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Level of education')}
                                                     list_items={getEducationLevelList()}
                                                     value={values.education_level}
-                                                    error={touched.education_level && errors.education_level}
+                                                    error={touched.education_level ? errors.education_level : undefined}
                                                     onChange={e => {
                                                         setFieldTouched('education_level', true);
                                                         handleChange(e);
@@ -625,7 +652,7 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Net annual income')}
                                                     list_items={getNetIncomeList()}
                                                     value={values.net_income}
-                                                    error={touched.net_income && errors.net_income}
+                                                    error={touched.net_income ? errors.net_income : undefined}
                                                     onChange={e => {
                                                         setFieldTouched('net_income', true);
                                                         handleChange(e);
@@ -654,7 +681,7 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Estimated net worth')}
                                                     list_items={getEstimatedWorthList()}
                                                     value={values.estimated_worth}
-                                                    error={touched.estimated_worth && errors.estimated_worth}
+                                                    error={touched.estimated_worth ? errors.estimated_worth : undefined}
                                                     onChange={e => {
                                                         setFieldTouched('estimated_worth', true);
                                                         handleChange(e);
@@ -683,7 +710,9 @@ const FinancialAssessment = observer(() => {
                                                     label={localize('Anticipated account turnover')}
                                                     list_items={getAccountTurnoverList()}
                                                     value={values.account_turnover}
-                                                    error={touched.account_turnover && errors.account_turnover}
+                                                    error={
+                                                        touched.account_turnover ? errors.account_turnover : undefined
+                                                    }
                                                     onChange={e => {
                                                         setFieldTouched('account_turnover', true);
                                                         handleChange(e);
@@ -727,8 +756,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getForexTradingExperienceList()}
                                                             value={values.forex_trading_experience}
                                                             error={
-                                                                touched.forex_trading_experience &&
-                                                                errors.forex_trading_experience
+                                                                touched.forex_trading_experience
+                                                                    ? errors.forex_trading_experience
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched('forex_trading_experience', true);
@@ -761,8 +791,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getForexTradingFrequencyList()}
                                                             value={values.forex_trading_frequency}
                                                             error={
-                                                                touched.forex_trading_frequency &&
-                                                                errors.forex_trading_frequency
+                                                                touched.forex_trading_frequency
+                                                                    ? errors.forex_trading_frequency
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched('forex_trading_frequency', true);
@@ -795,8 +826,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getBinaryOptionsTradingExperienceList()}
                                                             value={values.binary_options_trading_experience}
                                                             error={
-                                                                touched.binary_options_trading_experience &&
-                                                                errors.binary_options_trading_experience
+                                                                touched.binary_options_trading_experience
+                                                                    ? errors.binary_options_trading_experience
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched(
@@ -832,8 +864,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getBinaryOptionsTradingFrequencyList()}
                                                             value={values.binary_options_trading_frequency}
                                                             error={
-                                                                touched.binary_options_trading_frequency &&
-                                                                errors.binary_options_trading_frequency
+                                                                touched.binary_options_trading_frequency
+                                                                    ? errors.binary_options_trading_frequency
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched(
@@ -869,8 +902,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getCfdTradingExperienceList()}
                                                             value={values.cfd_trading_experience}
                                                             error={
-                                                                touched.cfd_trading_experience &&
-                                                                errors.cfd_trading_experience
+                                                                touched.cfd_trading_experience
+                                                                    ? errors.cfd_trading_experience
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched('cfd_trading_experience', true);
@@ -903,8 +937,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getCfdTradingFrequencyList()}
                                                             value={values.cfd_trading_frequency}
                                                             error={
-                                                                touched.cfd_trading_frequency &&
-                                                                errors.cfd_trading_frequency
+                                                                touched.cfd_trading_frequency
+                                                                    ? errors.cfd_trading_frequency
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched('cfd_trading_frequency', true);
@@ -939,8 +974,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getOtherInstrumentsTradingExperienceList()}
                                                             value={values.other_instruments_trading_experience}
                                                             error={
-                                                                touched.other_instruments_trading_experience &&
-                                                                errors.other_instruments_trading_experience
+                                                                touched.other_instruments_trading_experience
+                                                                    ? errors.other_instruments_trading_experience
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched(
@@ -979,8 +1015,9 @@ const FinancialAssessment = observer(() => {
                                                             list_items={getOtherInstrumentsTradingFrequencyList()}
                                                             value={values.other_instruments_trading_frequency}
                                                             error={
-                                                                touched.other_instruments_trading_frequency &&
-                                                                errors.other_instruments_trading_frequency
+                                                                touched.other_instruments_trading_frequency
+                                                                    ? errors.other_instruments_trading_frequency
+                                                                    : undefined
                                                             }
                                                             onChange={e => {
                                                                 setFieldTouched(

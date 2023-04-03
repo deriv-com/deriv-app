@@ -123,11 +123,3 @@ export type TFile = {
     type: string;
     webkitRelativePath: string;
 };
-
-export type TFinancialAndTradeAssessmentData = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>;
-
-export type TFinancialAndTradeAssessmentRequest = TFinancialAndTradeAssessmentData &
-    Partial<Pick<TFinancialAndTradeAssessmentData, 'financial_information'>>;
-
-export type TFinancialAndTradeAssessmentResponse = SetFinancialAssessmentResponse &
-    Record<string, { [key: string]: React.ReactNode }>;

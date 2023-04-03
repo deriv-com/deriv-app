@@ -130,7 +130,6 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
-    is_pre_appstore: boolean;
     jurisdiction_selected_shortcode: string;
     platform: string;
     has_cfd_error: boolean;
@@ -152,7 +151,6 @@ const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
     platform,
-    context,
 }: TPasswordModalHeaderProps) => {
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
@@ -198,6 +196,7 @@ const ReviewMessageForMT5 = ({
 };
 
 const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
+    const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         switch (type) {
             case 'all':
@@ -209,18 +208,30 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
             default:
                 return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
-    }
-
-    switch (type) {
-        case 'synthetic':
-            return <TradingPlatformIcon icon='Derived' size={128} />;
-        case 'financial':
-            if (show_eu_related_content) {
-                return <TradingPlatformIcon icon='CFDs' size={128} />;
-            }
-            return <TradingPlatformIcon icon='Financial' size={128} />;
-        default:
-            return <TradingPlatformIcon icon='Financial' size={128} />;
+    } else if (traders_hub) {
+        switch (type) {
+            case 'synthetic':
+                return <TradingPlatformIcon icon='Derived' size={128} />;
+            case 'financial':
+                if (show_eu_related_content) {
+                    return <TradingPlatformIcon icon='CFDs' size={128} />;
+                }
+                return <TradingPlatformIcon icon='Financial' size={128} />;
+            default:
+                return <TradingPlatformIcon icon='Financial' size={128} />;
+        }
+    } else {
+        switch (type) {
+            case 'synthetic':
+                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+            case 'financial':
+                if (show_eu_related_content) {
+                    return <Icon icon='IcMt5CfdPlatform' size={128} />;
+                }
+                return <Icon icon='IcMt5FinancialPlatform' size={128} />;
+            default:
+                return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
+        }
     }
 });
 IconType.displayName = 'IconType';
@@ -977,5 +988,4 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     mt5_login_list: client.mt5_login_list,
     updateAccountStatus: client.updateAccountStatus,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(CFDPasswordModal));

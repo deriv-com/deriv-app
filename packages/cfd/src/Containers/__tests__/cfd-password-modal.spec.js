@@ -267,7 +267,22 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
+    });
+
+    it('should display icon in Success Dialog in tradershub', async () => {
+        const props = {
+            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
+            error_type: 'PasswordError',
+            account_type: { category: 'real', type: 'synthetic' },
+        };
+        render(
+            <Router history={history}>
+                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled is_eu />
+            </Router>
+        );
+
+        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
     });
 
     it('should display Financial icon in Success Dialog', async () => {
@@ -282,7 +297,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
     });
 
     it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
@@ -328,7 +343,7 @@ describe('<CFDPasswordModal/>', () => {
                 <CFDPasswordModal {...mock_props} {...props} show_eu_related_content is_cfd_success_dialog_enabled />
             </Router>
         );
-        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5CfdPlatform')).toBeInTheDocument();
     });
 
     it('should invoke verifyEmail for DerivX when Forgot password is clicked', async () => {

@@ -288,7 +288,6 @@ export default class BaseStore {
     validateAllProperties() {
         const validation_rules = Object.keys(this.validation_rules);
         const validation_errors = Object.keys(this.validation_errors);
-
         validation_rules.forEach(p => {
             this.validateProperty(p, this[p]);
         });
@@ -337,7 +336,7 @@ export default class BaseStore {
                 () => this.root_store.client.pre_switch_broadcast,
                 () => {
                     try {
-                        const result = this.pre_switch_account_listener();
+                        const result = this.pre_switch_account_listener?.();
                         if (result && result.then && typeof result.then === 'function') {
                             result.then(() => {
                                 this.root_store.client.setPreSwitchAccount(false);

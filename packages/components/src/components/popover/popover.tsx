@@ -32,6 +32,7 @@ const Popover = ({
     window_border,
     zIndex = '1',
     data_testid,
+    arrow_styles,
 }: React.PropsWithChildren<TPopoverProps>) => {
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
@@ -160,7 +161,9 @@ const Popover = ({
                                               margin: 'auto',
                                               bottom: '0px',
                                           }
-                                        : {}
+                                        : {
+                                              ...arrow_styles,
+                                          }
                                 }
                             >
                                 <div

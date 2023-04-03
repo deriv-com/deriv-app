@@ -6,10 +6,8 @@ import { localize } from '@deriv/translations';
 
 const SetResidenceForm = ({
     class_prefix = 'set-residence',
-    children,
     default_value,
     history_value,
-    header_text,
     errors,
     touched,
     setFieldTouched,
@@ -22,16 +20,9 @@ const SetResidenceForm = ({
             setFieldValue('residence', default_value, true);
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <div className={`${class_prefix}__residence-selection`}>
-            {!!header_text && (
-                <Text as='p' align='center' weight='bold' className={`${class_prefix}__heading`}>
-                    {header_text}
-                </Text>
-            )}
-            <Text as='p' className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>
-                {localize('Where do you live?')}
-            </Text>
             <Field name='residence'>
                 {({ field }) => (
                     <React.Fragment>
@@ -42,7 +33,7 @@ const SetResidenceForm = ({
                                 input_id='dt_core_set-residence-form_signup-residence-select'
                                 className={`${class_prefix}__residence-field`}
                                 type='text'
-                                label={localize('Choose country')}
+                                label={localize('Country of residence')}
                                 historyValue={history_value}
                                 error={touched.residence && errors.residence}
                                 required
@@ -55,7 +46,7 @@ const SetResidenceForm = ({
                         <MobileWrapper>
                             <SelectNative
                                 placeholder={localize('Please select')}
-                                label={localize('Choose country')}
+                                label={localize('Country of residence')}
                                 value={field.value}
                                 list_items={residence_list}
                                 error={touched.residence && errors.residence}
@@ -70,18 +61,20 @@ const SetResidenceForm = ({
                     </React.Fragment>
                 )}
             </Field>
-            {children}
+            {!errors?.residence?.length > 0 ? (
+                <Text as='p' size='xxs' className='account-signup__subtext' color='less-prominent'>
+                    {localize('Country of residence is where you currently live.')}
+                </Text>
+            ) : null}
         </div>
     );
 };
 
 SetResidenceForm.propTypes = {
-    children: PropTypes.node,
     class_prefix: PropTypes.string,
     default_value: PropTypes.string,
     history_value: PropTypes.string,
     errors: PropTypes.object,
-    header_text: PropTypes.string,
     residence_list: PropTypes.arrayOf(PropTypes.object),
     setFieldTouched: PropTypes.func,
     setFieldValue: PropTypes.func,

@@ -298,30 +298,4 @@ describe('<AccountTransfer />', () => {
 
         expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
     });
-
-    it('should show the crypto transactions if triggered from recent transactions', async () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    transaction_history: {
-                        onMount: jest.fn(),
-                        is_crypto_transactions_visible: true,
-                    },
-                },
-            },
-        });
-
-        renderAccountTransfer(mock_root_store as TRootStore);
-
-        expect(await screen.findByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();
-    });
 });

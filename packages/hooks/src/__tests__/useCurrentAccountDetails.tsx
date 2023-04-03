@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useAccountPlatformDetails from '../useAccountPlatformDetails';
+import useCurrentAccountDetails from '../useCurrentAccountDetails';
 
-describe('useAccountPlatformDetails', () => {
+describe('useCurrentAccountDetails', () => {
     test('should return the account info of the current loginid', async () => {
         const mockRootStore = mockStore({
             client: {
@@ -28,7 +28,7 @@ describe('useAccountPlatformDetails', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mockRootStore}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useAccountPlatformDetails(), { wrapper });
+        const { result } = renderHook(() => useCurrentAccountDetails(), { wrapper });
 
         expect(result.current).toStrictEqual({
             account: {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
-import { useAccountPlatformDetails } from '@deriv/hooks';
+import { useCurrentAccountDetails } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
@@ -77,7 +77,7 @@ const CryptoWithdrawForm = observer(() => {
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
-    const account_platform_details = useAccountPlatformDetails();
+    const account_platform_details = useCurrentAccountDetails();
 
     React.useEffect(() => {
         recentTransactionOnMount();

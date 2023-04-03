@@ -60,7 +60,7 @@ export default class FlyoutHelpStore {
             this.block_node = block_node;
             this.block_type = block_type;
             this.title = title;
-            this.help_string = help_strings[block_type];
+            this.help_string = help_strings[block_type]; // eslint-disable-line import/namespace
         });
 
         if (!flyout.is_search_flyout) {
@@ -74,7 +74,7 @@ export default class FlyoutHelpStore {
         if (block_node) {
             const target_blocks = this.xml_list_group[block_node];
             const block_type = target_blocks[0].getAttribute('type');
-            block_content = help_strings[block_type];
+            block_content = help_strings[block_type]; // eslint-disable-line import/namespace
         }
         return block_content;
     };

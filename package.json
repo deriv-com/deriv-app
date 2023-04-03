@@ -25,7 +25,7 @@
         "@types/react-router-dom": "^5.1.6",
         "@types/react-virtualized": "^9.21.21",
         "babel-polyfill": "^6.26.0",
-        "eslint-config-deriv": "^1.0.15",
+        "eslint-config-deriv": "^1.0.18",
         "husky": "^7.0.0",
         "jest": "^26.4.2",
         "jest-chain": "^1.1.5",

@@ -114,9 +114,10 @@ const Calendar = React.memo(
                     year: 'month',
                     decade: 'year',
                 };
+
                 const date = toMoment(calendar_date)
-                    [type === 'decade' ? 'year' : type](e.target.dataset[type].split('-')[0])
-                    .format(date_format);
+                    [type === 'decade' ? 'year' : type](e.target.dataset[type].split('-')[0]) // eslint-disable-line no-unexpected-multiline
+                    .format(date_format); // eslint-disable-line no-unexpected-multiline
 
                 if (isPeriodDisabled(date, type)) return;
 

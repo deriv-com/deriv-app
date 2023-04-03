@@ -32,7 +32,7 @@ type TAutocompleteProps = {
     show_list?: boolean;
     trailing_icon?: React.ReactElement;
     value: string;
-    onSearch?: (value: string, items: TItem[]) => void;
+    onSearch?: (value: string, items: TItem[]) => [];
 };
 
 const KEY_CODE = {
@@ -296,7 +296,7 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
     };
 
     const filterList = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const val = e.target.value.toLowerCase();
+        const val = (e.target as HTMLInputElement).value.toLowerCase();
         let new_filtered_items = [];
 
         if (typeof props.onSearch === 'function') {

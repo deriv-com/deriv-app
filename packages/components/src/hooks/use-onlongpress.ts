@@ -8,7 +8,7 @@ export const useLongPress = (
 ) => {
     const [startLongPress, setStartLongPress] = React.useState(false);
 
-    const preventDefaults = (e: Event) => {
+    const preventDefaults = (e: React.MouseEvent | React.TouchEvent) => {
         e.preventDefault();
         e.stopPropagation();
     };
@@ -28,13 +28,13 @@ export const useLongPress = (
     }, [startLongPress]);
 
     return {
-        onMouseDown: (e: MouseEvent) => {
+        onMouseDown: (e: React.MouseEvent) => {
             preventDefaults(e);
             setStartLongPress(true);
         },
         onMouseUp: () => setStartLongPress(false),
         onMouseLeave: () => setStartLongPress(false),
-        onTouchStart: (e: TouchEvent) => {
+        onTouchStart: (e: React.TouchEvent) => {
             preventDefaults(e);
             setStartLongPress(true);
         },

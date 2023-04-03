@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
-import { trading_assessment_questions } from 'Configs/trading-assessment-config.js';
+import { trading_assessment_questions } from 'Configs/trading-assessment-config';
 import {
     DesktopWrapper,
     Dropdown,

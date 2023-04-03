@@ -30,12 +30,16 @@ type TInputProps = {
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onInput?: (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement;
-    type: string;
-    value?: string;
+    type?: string;
+    value?: string | number;
     warn?: string;
+    readOnly?: boolean;
 };
 
 type TInputWrapper = {

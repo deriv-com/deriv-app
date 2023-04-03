@@ -1,37 +1,22 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { Field as FormField, Formik, Form, FieldProps } from 'formik';
+import { Field as FormField, Formik, Form } from 'formik';
 import { Icon, Input } from '@deriv/components';
 import './cashier-search-box.scss';
 
-type TCashierSearchBoxProps = {
-    className?: string;
-    onClear: VoidFunction;
-    onSearch: (search: string) => void;
-    placeholder: string;
-    search_term: string;
-    setIsSearchLoading: (value: boolean) => void;
-};
-
-const CashierSearchBox = ({
-    className,
-    onClear,
-    onSearch,
-    placeholder,
-    search_term,
-    setIsSearchLoading,
-}: TCashierSearchBoxProps) => {
+const CashierSearchBox = ({ className, onClear, onSearch, placeholder, search_term, setIsSearchLoading }) => {
     React.useEffect(() => {
         return onClear;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSearchClear = (setFieldValue: (field: string, value: string) => void) => {
+    const onSearchClear = setFieldValue => {
         setFieldValue('search', '');
         onClear();
     };
 
-    const onSearchKeyUpDown = (submitForm: VoidFunction, search: string) => {
+    const onSearchKeyUpDown = (submitForm, search) => {
         if (!search.trim() && search_term) {
             onClear();
         } else if (!search.trim()) return;
@@ -40,7 +25,7 @@ const CashierSearchBox = ({
         submitForm();
     };
 
-    const onSearchSubmit = ({ search }: { search: string }) => {
+    const onSearchSubmit = ({ search }) => {
         onSearch(search);
     };
 
@@ -50,7 +35,7 @@ const CashierSearchBox = ({
                 {({ submitForm, values: { search }, setFieldValue }) => (
                     <Form>
                         <FormField name='search'>
-                            {({ field }: FieldProps<string>) => (
+                            {({ field }) => (
                                 <Input
                                     {...field}
                                     type='text'
@@ -60,14 +45,14 @@ const CashierSearchBox = ({
                                     onKeyDown={() => onSearchKeyUpDown(submitForm, search)}
                                     leading_icon={<Icon icon='IcSearch' data_testid='dt_search_icon' />}
                                     trailing_icon={
-                                        search ? (
+                                        search && (
                                             <Icon
                                                 color='general'
                                                 data_testid='dt_close_icon'
                                                 icon='IcCloseCircle'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                             />
-                                        ) : null
+                                        )
                                     }
                                 />
                             )}
@@ -77,6 +62,15 @@ const CashierSearchBox = ({
             </Formik>
         </div>
     );
+};
+
+CashierSearchBox.propTypes = {
+    className: PropTypes.string,
+    onClear: PropTypes.func,
+    onSearch: PropTypes.func,
+    placeholder: PropTypes.string,
+    search_term: PropTypes.string,
+    setIsSearchLoading: PropTypes.func,
 };
 
 export default CashierSearchBox;

@@ -45,11 +45,7 @@ import {
     getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
 import type { TRootStore } from '@deriv/stores/types';
-import {
-    GetFinancialAssessment,
-    SetFinancialAssessmentRequest,
-    GetFinancialAssessmentResponse,
-} from '@deriv/api-types';
+import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;

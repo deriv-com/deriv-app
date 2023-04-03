@@ -1,5 +1,5 @@
 /** Add types that are shared between components */
-import { Authorize, SetFinancialAssessmentRequest, SetFinancialAssessmentResponse } from '@deriv/api-types';
+import { Authorize } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {

@@ -136,7 +136,6 @@ const mock = (): TRootStore => {
             is_landing_company_loaded: false,
             is_logged_in: false,
             is_logging_in: false,
-            is_pre_appstore: false,
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
@@ -213,8 +212,12 @@ const mock = (): TRootStore => {
             changeSelectedLanguage: jest.fn(),
             current_language: 'EN',
             is_network_online: false,
+            is_language_changing: false,
         },
         ui: {
+            app_contents_scroll_ref: {
+                current: null,
+            },
             current_focus: null,
             is_cashier_visible: false,
             is_closing_create_real_account_modal: false,
@@ -245,6 +248,7 @@ const mock = (): TRootStore => {
             openModal: jest.fn(),
             content_flag: '',
             is_eu_user: false,
+            is_low_risk_cr_eu_real: false,
         },
         menu: {
             attach: jest.fn(),

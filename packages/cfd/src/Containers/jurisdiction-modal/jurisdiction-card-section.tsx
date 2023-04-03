@@ -1,15 +1,10 @@
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { TClickableDescription, TJurisdictionCardSectionTitleIndicators } from 'Components/props.types';
 import { TJurisdictionCardSectionProps } from '../props.types';
 
-const JurisdictionCardSection = ({ cardSectionItem, flipCard }: TJurisdictionCardSectionProps) => {
-    const handleCardFlip = (event: SyntheticEvent) => {
-        event.stopPropagation();
-        flipCard();
-    };
-
+const JurisdictionCardSection = ({ cardSectionItem, toggleCardFlip }: TJurisdictionCardSectionProps) => {
     const renderTitleIndicator = (titleIndicators: TJurisdictionCardSectionTitleIndicators) => {
         switch (titleIndicators.type) {
             case 'displayText':
@@ -35,7 +30,7 @@ const JurisdictionCardSection = ({ cardSectionItem, flipCard }: TJurisdictionCar
             switch (descriptionPart.type) {
                 case 'link':
                     return (
-                        <span onClick={event => handleCardFlip(event)}>
+                        <span onClick={toggleCardFlip}>
                             <Text as='span' size='xxs' className='clickable-description-link'>
                                 {descriptionPart.text}
                             </Text>

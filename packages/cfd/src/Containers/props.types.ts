@@ -16,6 +16,7 @@ import {
     TCardFlipStatus,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
+import { SyntheticEvent } from 'react';
 
 export type TCFDPersonalDetailsContainerProps = {
     account_settings: GetSettings;
@@ -182,7 +183,7 @@ export type TJurisdictionCardProps = {
 
 export type TJurisdictionCardSectionProps = {
     cardSectionItem: TJurisdictionCardSection;
-    flipCard: () => void;
+    toggleCardFlip: (event: SyntheticEvent) => void;
 };
 
 export type TVerificationStatusBannerProps = {

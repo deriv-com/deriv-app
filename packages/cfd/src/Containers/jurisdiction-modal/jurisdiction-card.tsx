@@ -1,7 +1,7 @@
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { jurisdiction_contents, jurisdiction_verification_contents } from '../../Constants/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardSection from './jurisdiction-card-section';
@@ -30,7 +30,8 @@ const JurisdictionCard = ({
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
 
-    const toggleCardFlip = () => {
+    const toggleCardFlip = (event: SyntheticEvent) => {
+        event.stopPropagation();
         flipCard(type_of_card);
     };
 
@@ -39,7 +40,7 @@ const JurisdictionCard = ({
             className={classNames(card_classname, {
                 [`${card_classname}--selected selected-card`]: jurisdiction_selected_shortcode === type_of_card,
             })}
-            onClick={disabled || isCardFlipped ? () => undefined : () => cardSelection(type_of_card)}
+            onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
         >
             {isCardFlipped ? (
                 <div
@@ -49,7 +50,12 @@ const JurisdictionCard = ({
                     )}
                 >
                     <div>
-                        <Icon onClick={toggleCardFlip} icon='IcBackButton' size={20} />
+                        <Icon
+                            onClick={toggleCardFlip}
+                            className='cfd-card-back-section-back-button'
+                            icon='IcBackButton'
+                            size={20}
+                        />
                     </div>
                     <Text as='div' size='xxs'>
                         {jurisdiction_verification_contents.shortDescription}
@@ -104,7 +110,7 @@ const JurisdictionCard = ({
                     <div className={`${card_classname}__card-section-container`}>
                         {card_data.map((item, index) => (
                             <React.Fragment key={item.key}>
-                                <JurisdictionCardSection cardSectionItem={item} flipCard={toggleCardFlip} />
+                                <JurisdictionCardSection cardSectionItem={item} toggleCardFlip={toggleCardFlip} />
                                 {index < card_data.length - 1 && <div className='cfd-card-section-divider' />}
                             </React.Fragment>
                         ))}

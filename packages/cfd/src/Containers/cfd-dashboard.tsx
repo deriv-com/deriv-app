@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Icon, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {
     isEmptyObject,
@@ -181,7 +181,6 @@ export type TCFDDashboardProps = RouteComponentProps & {
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
     show_eu_related_content: boolean;
-    is_pre_appstore: boolean;
     is_user_exception: boolean;
 };
 
@@ -206,6 +205,14 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         selected_account_group: '',
         selected_server: '',
     });
+
+    const history = useHistory();
+
+    React.useEffect(() => {
+        if (window.location.href.includes(routes.mt5) || window.location.href.includes(routes.dxtrade)) {
+            history.push(routes.traders_hub);
+        }
+    }, [history]);
 
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
@@ -439,7 +446,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         real_account_creation_unlock_date,
         setShouldShowCooldownModal,
         show_eu_related_content,
-        is_pre_appstore,
         is_user_exception,
     } = props;
 
@@ -481,7 +487,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
     const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
-    if ((platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE) && is_pre_appstore)
+    if (platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE)
         return <Redirect to={routes.traders_hub} />;
     if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
 
@@ -809,7 +815,6 @@ export default withRouter(
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
         show_eu_related_content: traders_hub.show_eu_related_content,
-        is_pre_appstore: client.is_pre_appstore,
         is_user_exception: client.account_settings.dxtrade_user_exception,
     }))(CFDDashboard)
 );

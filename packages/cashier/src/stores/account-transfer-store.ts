@@ -369,8 +369,7 @@ export default class AccountTransferStore {
         const arr_accounts: TTransferAccount | TAccount[] = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        const is_from_pre_appstore =
-            this.root_store.client.is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
@@ -427,10 +426,7 @@ export default class AccountTransferStore {
 
             const obj_values: TAccount = {
                 text:
-                    is_cfd &&
-                    account.account_type === CFD_PLATFORMS.MT5 &&
-                    this.root_store.client.is_pre_appstore &&
-                    combined_cfd_mt5_account
+                    is_cfd && account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                         ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
                 value: account.loginid,
@@ -442,9 +438,7 @@ export default class AccountTransferStore {
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
                     platform_icon:
-                        account.account_type === CFD_PLATFORMS.MT5 &&
-                        this.root_store.client.is_pre_appstore &&
-                        combined_cfd_mt5_account
+                        account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                             ? combined_cfd_mt5_account.icon
                             : cfd_icon_display,
                     status: account?.status,
@@ -475,7 +469,7 @@ export default class AccountTransferStore {
 
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account
-                if (!is_from_pre_appstore || [account_id, login].includes(account.loginid)) {
+                if (!is_from_outside_cashier || [account_id, login].includes(account.loginid)) {
                     this.setSelectedTo(obj_values);
                 }
             }

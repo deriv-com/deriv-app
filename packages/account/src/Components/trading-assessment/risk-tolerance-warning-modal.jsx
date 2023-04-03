@@ -8,11 +8,11 @@ const RiskToleranceWarningModal = ({ show_risk_modal, handleAcceptRisk, title, b
         <Modal
             width='44rem'
             title={title}
-            height={isMobile() ? '44rem' : '41rem'}
+            height={isMobile() ? '46rem' : '41rem'}
             is_open={show_risk_modal}
             className='center-risk-modal'
             toggleModal={handleAcceptRisk}
-            has_close_icon={!isMobile()}
+            has_close_icon={false}
         >
             <Modal.Body>
                 <Icon icon='IcRedWarning' size={isMobile() ? 65 : 63} />

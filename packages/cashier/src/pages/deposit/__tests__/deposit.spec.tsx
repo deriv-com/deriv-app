@@ -453,7 +453,7 @@ describe('<Deposit />', () => {
                     },
                 },
             },
-            traders_hub: { content_flag: ContentFlag.EU_REAL },
+            traders_hub: { is_low_risk_cr_eu_real: true },
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {

@@ -209,6 +209,7 @@ type TCommonStore = {
     is_network_online: boolean;
     platform: keyof typeof platforms;
     current_language: string;
+    is_language_changing: boolean;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;

@@ -33,7 +33,7 @@ const SetResidenceForm = ({
                                 input_id='dt_core_set-residence-form_signup-residence-select'
                                 className={`${class_prefix}__residence-field`}
                                 type='text'
-                                label={localize('Choose country')}
+                                label={localize('Country of residence')}
                                 historyValue={history_value}
                                 error={touched.residence && errors.residence}
                                 required
@@ -46,7 +46,7 @@ const SetResidenceForm = ({
                         <MobileWrapper>
                             <SelectNative
                                 placeholder={localize('Please select')}
-                                label={localize('Choose country')}
+                                label={localize('Country of residence')}
                                 value={field.value}
                                 list_items={residence_list}
                                 error={touched.residence && errors.residence}

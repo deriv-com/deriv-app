@@ -185,6 +185,7 @@ export type TVerificationStatusBannerProps = {
     type_of_card: string;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
+    real_swapfree_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };

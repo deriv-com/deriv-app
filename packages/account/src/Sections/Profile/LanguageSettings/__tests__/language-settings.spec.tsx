@@ -20,7 +20,6 @@ jest.mock('@deriv/translations', () => {
 describe('LanguageSettings', () => {
     const mockRootStore = mockStore({
         common: {
-            changeSelectedLanguage: jest.fn(),
             current_language: 'lang_1',
             isCurrentLanguage: jest.fn(() => false),
         },

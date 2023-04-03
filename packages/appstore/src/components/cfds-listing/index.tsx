@@ -324,7 +324,6 @@ const CFDsListing = () => {
                                 if ((has_no_real_account || no_CR_account) && is_real) {
                                     openDerivRealAccountNeededModal();
                                 } else {
-                                    // TODO: call cTrader API when get button clicked
                                     setAccountType({
                                         category: selected_account_type,
                                         type: account.market_type,

@@ -518,11 +518,11 @@ export default class TradersHubStore extends BaseStore {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
         }
-        createCFDAccount({ ...account_type, platform });
 
         if (!CFD_PLATFORMS.DERIVEZ) {
             enableCFDPasswordModal();
         }
+        createCFDAccount({ ...account_type, platform });
     }
 
     openRealAccount(account_type, platform) {

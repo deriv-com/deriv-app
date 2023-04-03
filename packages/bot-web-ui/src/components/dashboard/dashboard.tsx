@@ -10,7 +10,6 @@ import { isMobile } from '@deriv/shared';
 import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
 import RunPanel from '../run-panel';
-import QuickStrategy from './quick-strategy';
 import { DASHBOARD_TABS, TAB_IDS } from '../../constants/bot-contents';
 import Tutorial from './tutorial-tab';
 import {
@@ -52,7 +51,6 @@ type TDashboard = {
     setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    loadDataStrategy: () => void;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
@@ -70,7 +68,6 @@ const Dashboard = ({
     has_started_bot_builder_tour,
     is_dialog_open,
     is_tour_dialog_visible,
-    loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
     onEntered,
@@ -84,7 +81,7 @@ const Dashboard = ({
     setTourDialogVisibility,
     setHasTourEnded,
 }: TDashboard) => {
-    const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
+    const { BOT_BUILDER, CHART } = DASHBOARD_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';
@@ -289,7 +286,7 @@ const Dashboard = ({
                 >
                     {active_tab !== 2 && <RunStrategy />}
 
-                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&
+                    {([BOT_BUILDER, CHART].includes(active_tab) || has_started_onboarding_tour) &&
                         !has_started_bot_builder_tour && <RunPanel />}
                 </div>
             </DesktopWrapper>
@@ -329,7 +326,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     is_drawer_open: run_panel.is_drawer_open,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
     dialog_options: run_panel.dialog_options,
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onCloseDialog: run_panel.onCloseDialog,

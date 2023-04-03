@@ -38,8 +38,8 @@ jest.mock('Components/crypto-transactions-history', () => {
 });
 
 jest.mock('Components/error', () => {
-    const Error = () => <div>Error</div>;
-    return Error;
+    const ErrorComponent = () => <div>Error</div>;
+    return ErrorComponent;
 });
 
 jest.mock('../crypto-deposit', () => {

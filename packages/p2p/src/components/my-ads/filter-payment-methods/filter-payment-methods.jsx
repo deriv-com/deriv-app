@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import FilterPaymentMethodsResults from './filter-payment-method-results';
 
+// TODO: Merge this component with FilterModal once navigation flow is fixed
 const FilterPaymentMethods = observer(({ selected_methods, setSelectedMethods }) => {
     const { my_profile_store, my_ads_store } = useStores();
     const filtered_payment_methods = my_profile_store.payment_methods_list.filter(

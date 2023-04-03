@@ -4,7 +4,6 @@ import { Loading, RadioGroup, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
-// TODO Merge this component with FilterModal once navigation flow is fixed
 const FilterPaymentMethodsResults = observer(({ filtered_payment_methods, setSelectedMethods }) => {
     const { my_ads_store } = useStores();
 

@@ -33,7 +33,12 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin: 3.5rem 0;
+            @include mobile {
+                margin: 3rem 0;
+            }
+            @include desktop {
+                margin: 3.5rem 0;
+            }
 
             .dc-dropdown-list__item--active {
                 font-weight: bold;
@@ -41,7 +46,7 @@
 
             > * + * {
                 @include mobile {
-                    margin-top: 4.5rem;
+                    margin-top: 3rem;
                 }
             }
 
@@ -94,7 +99,7 @@
             padding: 0 1.9rem 0 2.4rem;
             margin-bottom: 12rem;
             @include mobile {
-                margin-left: 1.6rem;
+                padding-bottom: 4rem;
             }
 
             &--active-keyboard {
@@ -108,21 +113,18 @@
         }
         &-footer {
             border-top: 1px solid var(--general-section-5);
-            padding: 1.6rem 2.4rem;
             bottom: 0;
             left: 0;
             background: var(--general-main-1);
             width: 100%;
             position: fixed;
-
-            &--active-keyboard {
-                position: unset;
-                display: block;
+            @include desktop {
+                padding: 1.6rem 2.4rem;
             }
             @include mobile {
                 position: fixed;
                 bottom: 2.6rem;
-                padding: 1rem 2.4rem;
+                padding: 1rem 2.4rem 8rem;
             }
         }
         .dc-autocomplete {

@@ -10,6 +10,16 @@
     background-color: var(--general-main-1);
     @include mobile {
         left: 1.4rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
     z-index: 1;
     &__btn {
@@ -19,8 +29,13 @@
             display: flex;
             justify-content: center;
             height: calc(5.6rem - 1.6rem) !important;
-            width: 22rem;
-            margin-bottom: 1rem;
+            @include desktop {
+                width: 22rem;
+                margin-bottom: 1rem;
+            }
+            @include mobile {
+                margin-bottom: 2rem;
+            }
 
             & .dc-btn__icon {
                 padding-right: 0.4rem;
@@ -36,8 +51,14 @@
     &__section {
         display: flex;
 
+        @include mobile {
+            margin-top: 2rem;
+        }
+
         > * {
-            align-self: center;
+            @include desktop {
+                align-self: center;
+            }
         }
     }
     &__icon {

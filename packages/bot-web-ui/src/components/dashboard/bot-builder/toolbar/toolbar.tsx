@@ -4,6 +4,8 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import WorkspaceGroup from './workspace-group';
+import ToolbarButton from './toolbar-button';
+import { isMobile } from '@deriv/shared';
 
 type TToolbar = {
     active_tab: string;
@@ -25,6 +27,7 @@ type TToolbar = {
     toggleSaveLoadModal: () => void;
     toggleLoadModal: () => void;
     toggleSaveModal: () => void;
+    loadDataStrategy: () => void;
 };
 
 const Toolbar = (props: TToolbar) => {
@@ -36,6 +39,15 @@ const Toolbar = (props: TToolbar) => {
         <React.Fragment>
             <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
                 <div className='toolbar__section'>
+                    {isMobile() && (
+                        <ToolbarButton
+                            popover_message={localize('Click here to start building your DBot.')}
+                            button_id='db-toolbar__get-started-button'
+                            button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
+                            buttonOnClick={props.loadDataStrategy}
+                            button_text={localize('Quick strategy')}
+                        />
+                    )}
                     <WorkspaceGroup {...props} />
                 </div>
             </div>
@@ -64,25 +76,24 @@ const Toolbar = (props: TToolbar) => {
     );
 };
 
-export default connect(
-    ({ blockly_store, run_panel, save_modal, load_modal, toolbar, ui, quick_strategy }: RootStore) => ({
-        active_tab: blockly_store.active_tab,
-        file_name: toolbar.file_name,
-        has_redo_stack: toolbar.has_redo_stack,
-        has_undo_stack: toolbar.has_undo_stack,
-        is_dialog_open: toolbar.is_dialog_open,
-        is_drawer_open: run_panel.is_drawer_open,
-        is_running: run_panel.is_running,
-        is_stop_button_disabled: run_panel.is_stop_button_disabled,
-        is_stop_button_visible: run_panel.is_stop_button_visible,
-        closeResetDialog: toolbar.closeResetDialog,
-        onOkButtonClick: toolbar.onResetOkButtonClick,
-        onResetClick: toolbar.onResetClick,
-        onRunButtonClick: run_panel.onRunButtonClick,
-        onSortClick: toolbar.onSortClick,
-        onUndoClick: toolbar.onUndoClick,
-        onZoomInOutClick: toolbar.onZoomInOutClick,
-        toggleLoadModal: load_modal.toggleLoadModal,
-        toggleSaveModal: save_modal.toggleSaveModal,
-    })
-)(Toolbar);
+export default connect(({ blockly_store, run_panel, save_modal, load_modal, toolbar, quick_strategy }: RootStore) => ({
+    active_tab: blockly_store.active_tab,
+    file_name: toolbar.file_name,
+    has_redo_stack: toolbar.has_redo_stack,
+    has_undo_stack: toolbar.has_undo_stack,
+    is_dialog_open: toolbar.is_dialog_open,
+    is_drawer_open: run_panel.is_drawer_open,
+    is_running: run_panel.is_running,
+    is_stop_button_disabled: run_panel.is_stop_button_disabled,
+    is_stop_button_visible: run_panel.is_stop_button_visible,
+    closeResetDialog: toolbar.closeResetDialog,
+    onOkButtonClick: toolbar.onResetOkButtonClick,
+    onResetClick: toolbar.onResetClick,
+    onRunButtonClick: run_panel.onRunButtonClick,
+    onSortClick: toolbar.onSortClick,
+    onUndoClick: toolbar.onUndoClick,
+    onZoomInOutClick: toolbar.onZoomInOutClick,
+    toggleLoadModal: load_modal.toggleLoadModal,
+    toggleSaveModal: save_modal.toggleSaveModal,
+    loadDataStrategy: quick_strategy.loadDataStrategy,
+}))(Toolbar);

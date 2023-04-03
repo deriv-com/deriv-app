@@ -8,7 +8,7 @@ type TSelectNative = {
     className?: string;
     classNameDisplay?: string;
     classNameHint?: string;
-    error?: string | boolean;
+    error?: string;
     hint?: string;
     label: string;
     placeholder?: string;

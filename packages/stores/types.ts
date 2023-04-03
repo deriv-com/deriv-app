@@ -76,7 +76,7 @@ type TNotificationMessage = {
     key: string;
     message_popup?: string;
     message: string | JSX.Element;
-    platform?: keyof typeof platforms;
+    platform?: keyof typeof platforms | '';
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
     should_hide_close_btn?: boolean;
@@ -207,7 +207,7 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
-    platform: keyof typeof platforms;
+    platform?: keyof typeof platforms | '';
     current_language: string;
     is_language_changing: boolean;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;

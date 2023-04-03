@@ -17,7 +17,7 @@ const BuyAdPaymentMethodsList = ({
     should_show_hint,
     touched,
 }) => {
-    const { my_ads_store, my_profile_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const [selected_edit_method, setSelectedEditMethod] = React.useState();
     const [payment_methods_list, setPaymentMethodsList] = React.useState([]);
     const [close_icon, setCloseIcon] = React.useState(false);
@@ -147,7 +147,11 @@ const BuyAdPaymentMethodsList = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
-                                                    hide_list={isDesktop() ? hide_list : true}
+                                                    hide_list={
+                                                        !general_store.isCurrentModal('QuickAddModal')
+                                                            ? hide_list
+                                                            : true
+                                                    }
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                     list_items={payment_methods_list}
@@ -186,7 +190,11 @@ const BuyAdPaymentMethodsList = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
-                                                    hide_list={isDesktop() ? hide_list : true}
+                                                    hide_list={
+                                                        !general_store.isCurrentModal('QuickAddModal')
+                                                            ? hide_list
+                                                            : true
+                                                    }
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={
                                                         <Icon
@@ -198,7 +206,9 @@ const BuyAdPaymentMethodsList = ({
                                                             }
                                                         />
                                                     }
-                                                    list_items={isDesktop() ? [method] : []}
+                                                    list_items={
+                                                        !general_store.isCurrentModal('QuickAddModal') ? [method] : []
+                                                    }
                                                     list_portal_id={list_portal_id ?? 'deriv_app'}
                                                     onBlur={e => {
                                                         e.preventDefault();
@@ -214,7 +224,7 @@ const BuyAdPaymentMethodsList = ({
                                                     }}
                                                     onFocus={e => {
                                                         e.preventDefault();
-                                                        if (isDesktop()) {
+                                                        if (!general_store.isCurrentModal('QuickAddModal')) {
                                                             setCloseIcon(true);
                                                             setHideList(false);
                                                             setFieldValue('payment_method', method);
@@ -231,7 +241,8 @@ const BuyAdPaymentMethodsList = ({
                                                         }
                                                     }}
                                                     onShowDropdownList={() => {
-                                                        setCloseIcon(true);
+                                                        if (!general_store.isCurrentModal('QuickAddModal'))
+                                                            setCloseIcon(true);
                                                     }}
                                                     required
                                                     trailing_icon={

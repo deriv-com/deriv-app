@@ -46,6 +46,10 @@
                 margin-top: auto;
                 padding: 1.6rem 2.4rem;
 
+                @include mobile {
+                    margin: -1.5rem;
+                }
+
                 &-profile {
                     padding: 0 2.4rem 2rem;
                 }
@@ -54,6 +58,11 @@
 
         &__form-wrapper {
             padding: 1.4rem 2.4rem;
+
+            @include mobile {
+                display: table;
+                height: 100%;
+            }
 
             .dc-input--error {
                 margin-bottom: 6rem;

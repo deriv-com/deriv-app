@@ -1,0 +1,32 @@
+.filter-payment-methods-results {
+    overflow: scroll;
+    height: calc(100% - 48px);
+
+    .dc-radio-group {
+        &.filter-payment-methods-results__radiogroup {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0;
+        }
+        .dc-radio-group__item {
+            &.filter-payment-methods-results__radiogroup {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 1.7rem;
+            }
+
+            .dc-radio-group__circle {
+                margin-right: 1rem;
+            }
+        }
+    }
+
+    &__text {
+        display: flex;
+        justify-content: center;
+        margin-top: 4rem;
+    }
+}

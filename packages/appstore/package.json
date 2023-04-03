@@ -24,6 +24,7 @@
     "author": "Deriv",
     "license": "Apache-2.0",
     "dependencies": {
+        "@datadog/browser-rum": "^4.37.0",
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "^1.0.85",
         "@deriv/cashier": "^1.0.0",

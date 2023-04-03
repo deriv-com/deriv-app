@@ -246,6 +246,8 @@ export default class CFDStore extends BaseStore {
                 company: this.jurisdiction_selected_shortcode,
             };
             this.openCFDAccount(values);
+            this.enableCFDPasswordModal();
+            this.setCFDSuccessDialog(true);
         }
     }
 

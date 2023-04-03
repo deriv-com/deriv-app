@@ -2,6 +2,8 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SelfExclusion from '../self-exclusion';
+import { StoreProvider } from '../../../../../stores/src/useStore';
+import { mockStore } from '../../../../../stores/src/mockStore';
 
 const portal_root = document.createElement('div');
 document.body.appendChild(portal_root);
@@ -21,6 +23,7 @@ jest.mock('../self-exclusion-modal', () => () => <div>SelfExclusionModal</div>);
 
 describe('<SelfExclusion />', () => {
     let mock_props = {};
+    let store = mockStore();
 
     beforeEach(() => {
         mock_props = {
@@ -63,14 +66,22 @@ describe('<SelfExclusion />', () => {
     it('should render SelfExclusion component for virtual account', () => {
         mock_props.is_virtual = true;
 
-        render(<SelfExclusion {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <SelfExclusion {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByText('This feature is not available for demo accounts.')).toBeInTheDocument();
     });
 
     it('should render SelfExclusion component with SelfExclusionModal', async () => {
         await act(async () => {
-            render(<SelfExclusion {...mock_props} />);
+            render(
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            );
         });
 
         expect(screen.getByText('SelfExclusionModal')).toBeInTheDocument();
@@ -88,7 +99,11 @@ describe('<SelfExclusion />', () => {
             });
 
         await act(async () => {
-            render(<SelfExclusion {...mock_props} />);
+            render(
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            );
         });
 
         expect(screen.queryByText('Test getSelfExclusion response error')).toBeInTheDocument();
@@ -97,7 +112,11 @@ describe('<SelfExclusion />', () => {
     it('Should trigger session_duration_limit input and show error if the value is greater than 60480 or does not show if less than 60480', async () => {
         mock_props.is_eu = true;
 
-        render(<SelfExclusion {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <SelfExclusion {...mock_props} />
+            </StoreProvider>
+        );
 
         const inputs = await screen.findAllByRole('textbox');
         const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
@@ -122,7 +141,11 @@ describe('<SelfExclusion />', () => {
     it('Should trigger exclude_until input and show error depends on input value', async () => {
         Date.now = jest.fn(() => new Date('2022-02-03'));
 
-        render(<SelfExclusion {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <SelfExclusion {...mock_props} />
+            </StoreProvider>
+        );
 
         const inputs = await screen.findAllByRole('textbox');
         const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
@@ -151,7 +174,11 @@ describe('<SelfExclusion />', () => {
             });
 
         await act(async () => {
-            render(<SelfExclusion {...mock_props} />);
+            render(
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            );
         });
 
         expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
@@ -228,7 +255,11 @@ describe('<SelfExclusion />', () => {
         const logout = mock_props.logout;
 
         await act(async () => {
-            render(<SelfExclusion {...mock_props} />);
+            render(
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            );
         });
 
         expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();

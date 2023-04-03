@@ -136,7 +136,7 @@ const mock = (): TRootStore => {
             cfd_score: 0,
             setCFDScore: jest.fn(),
             getLimits: jest.fn(),
-            has_active_real_account: false,
+            has_active_real_account: true,
             has_logged_out: false,
             has_maltainvest_account: false,
             initialized_broadcast: false,

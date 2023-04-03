@@ -1,5 +1,13 @@
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
+
+type TTradingAssessmentConfig = {
+    real_account_signup_target: string;
+    financial_assessment: GetFinancialAssessment;
+    account_settings: GetSettings;
+    setSubSectionIndex: number;
+};
 
 export const trading_assessment_questions = () => [
     {
@@ -256,7 +264,7 @@ const default_form_config = {
     supported_in: ['maltainvest'],
 };
 
-export const getTradingAssessmentFormConfig = financial_assessment => {
+export const getTradingAssessmentFormConfig = (financial_assessment: GetFinancialAssessment) => {
     return {
         risk_tolerance: {
             ...default_form_config,
@@ -302,8 +310,13 @@ export const getTradingAssessmentFormConfig = financial_assessment => {
 };
 
 const tradingAssessmentConfig = (
-    { real_account_signup_target, financial_assessment, account_settings, setSubSectionIndex },
-    TradingAssessmentNewUser
+    {
+        real_account_signup_target,
+        financial_assessment,
+        account_settings,
+        setSubSectionIndex,
+    }: TTradingAssessmentConfig,
+    TradingAssessmentNewUser: React.Component
 ) => {
     const trading_assessment_form_config = getTradingAssessmentFormConfig(financial_assessment);
     return {

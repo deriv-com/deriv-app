@@ -39,7 +39,6 @@ export default class MyAdsStore extends BaseStore {
     searched_results = [];
     selected_ad_id = '';
     selected_advert = null;
-    selected_payment_method = '';
     should_show_add_payment_method = false;
     show_ad_form = false;
     show_edit_ad_form = false;
@@ -82,7 +81,6 @@ export default class MyAdsStore extends BaseStore {
             searched_results: observable,
             selected_ad_id: observable,
             selected_advert: observable,
-            selected_payment_method: observable,
             should_show_add_payment_method: observable,
             show_ad_form: observable,
             show_edit_ad_form: observable,
@@ -135,7 +133,6 @@ export default class MyAdsStore extends BaseStore {
             setSearchedResults: action.bound,
             setSelectedAdId: action.bound,
             setSelectedAdvert: action.bound,
-            setSelectedPaymentMethod: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
@@ -205,8 +202,9 @@ export default class MyAdsStore extends BaseStore {
         });
     }
 
-    handleChange(e) {
-        this.setSelectedPaymentMethod(e.target.value);
+    handleChange() {
+        this.setSearchTerm('');
+        this.setSearchedResults([]);
         this.setShowFilterPaymentMethods(false);
     }
 
@@ -619,10 +617,6 @@ export default class MyAdsStore extends BaseStore {
 
     setSelectedAdvert(selected_advert) {
         this.selected_advert = selected_advert;
-    }
-
-    setSelectedPaymentMethod(selected_payment_method) {
-        this.selected_payment_method = selected_payment_method;
     }
 
     setShouldShowAddPaymentMethod(should_show_add_payment_method) {

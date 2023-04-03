@@ -148,9 +148,9 @@ const BuyAdPaymentMethodsList = ({
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
                                                     hide_list={
-                                                        !general_store.isCurrentModal('QuickAddModal')
+                                                        isDesktop()
                                                             ? hide_list
-                                                            : true
+                                                            : general_store.isCurrentModal('QuickAddModal')
                                                     }
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={<Icon icon='IcAddOutline' size={14} />}
@@ -191,9 +191,9 @@ const BuyAdPaymentMethodsList = ({
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
                                                     hide_list={
-                                                        !general_store.isCurrentModal('QuickAddModal')
+                                                        isDesktop()
                                                             ? hide_list
-                                                            : true
+                                                            : general_store.isCurrentModal('QuickAddModal')
                                                     }
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={
@@ -207,7 +207,9 @@ const BuyAdPaymentMethodsList = ({
                                                         />
                                                     }
                                                     list_items={
-                                                        !general_store.isCurrentModal('QuickAddModal') ? [method] : []
+                                                        !general_store.isCurrentModal('QuickAddModal') || isDesktop()
+                                                            ? [method]
+                                                            : []
                                                     }
                                                     list_portal_id={list_portal_id ?? 'deriv_app'}
                                                     onBlur={e => {
@@ -224,7 +226,10 @@ const BuyAdPaymentMethodsList = ({
                                                     }}
                                                     onFocus={e => {
                                                         e.preventDefault();
-                                                        if (!general_store.isCurrentModal('QuickAddModal')) {
+                                                        if (
+                                                            !general_store.isCurrentModal('QuickAddModal') ||
+                                                            isDesktop()
+                                                        ) {
                                                             setCloseIcon(true);
                                                             setHideList(false);
                                                             setFieldValue('payment_method', method);
@@ -241,7 +246,10 @@ const BuyAdPaymentMethodsList = ({
                                                         }
                                                     }}
                                                     onShowDropdownList={() => {
-                                                        if (!general_store.isCurrentModal('QuickAddModal'))
+                                                        if (
+                                                            !general_store.isCurrentModal('QuickAddModal') ||
+                                                            isDesktop()
+                                                        )
                                                             setCloseIcon(true);
                                                     }}
                                                     required
@@ -263,16 +271,16 @@ const BuyAdPaymentMethodsList = ({
                                                                 if (isMobile())
                                                                     onClickIcon(payment_method, key, setFieldValue);
                                                             }}
-                                                            onMouseDown={() => {
-                                                                if (isDesktop() && my_ads_store.show_ad_form)
+                                                            onMouseDown={e => {
+                                                                e.stopPropagation();
+                                                                if (isDesktop())
                                                                     onClickIcon(payment_method, key, setFieldValue);
                                                             }}
                                                             onClick={e => {
                                                                 e.preventDefault();
                                                                 e.stopPropagation();
-                                                                if (isDesktop() && !my_ads_store.show_ad_form) {
+                                                                if (isDesktop())
                                                                     onClickIcon(payment_method, key, setFieldValue);
-                                                                }
                                                             }}
                                                         />
                                                     }

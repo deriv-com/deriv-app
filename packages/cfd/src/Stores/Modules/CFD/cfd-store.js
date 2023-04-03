@@ -152,6 +152,12 @@ export default class CFDStore extends BaseStore {
             };
         });
 
+        this.root_store.client.ctrader_accounts_list.forEach(account => {
+            list[getAccountListKey(account, CFD_PLATFORMS.CTRADER)] = {
+                ...account,
+            };
+        });
+
         return list;
     }
 
@@ -228,6 +234,12 @@ export default class CFDStore extends BaseStore {
             } else {
                 this.demoCFDSignup();
             }
+        } else if (platform === CFD_PLATFORMS.CTRADER) {
+            this.openCFDAccount({
+                platform: 'ctrader',
+                account_type: category,
+                market_type: 'all',
+            });
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
                 this.toggleJurisdictionModal();
@@ -294,7 +306,10 @@ export default class CFDStore extends BaseStore {
             password: values.password,
             platform: values.platform,
             account_type: this.account_type.category,
-            market_type: this.account_type.type === 'dxtrade' ? 'all' : this.account_type.type,
+            market_type:
+                this.account_type.type === 'dxtrade' || this.account_type.type === 'cTrader'
+                    ? 'all'
+                    : this.account_type.type,
         });
     }
 
@@ -549,6 +564,15 @@ export default class CFDStore extends BaseStore {
                         .tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE)
                         .then(this.root_store.client.responseTradingPlatformAccountsList);
                     new_balance = this.root_store.client.dxtrade_accounts_list.find(
+                        item => item.account_id === this.current_account.account_id
+                    )?.balance;
+                    break;
+                }
+                case CFD_PLATFORMS.CTRADER: {
+                    await WS.authorized
+                        .tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER)
+                        .then(this.root_store.client.responseTradingPlatformAccountsList);
+                    new_balance = this.root_store.client.ctrader_accounts_list.find(
                         item => item.account_id === this.current_account.account_id
                     )?.balance;
                     break;

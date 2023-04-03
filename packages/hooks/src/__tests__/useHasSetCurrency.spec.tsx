@@ -29,4 +29,24 @@ describe('useHasSetCurrency', () => {
 
         expect(result.current).toBe(true);
     });
+
+    test('should return true account title is not Real ', async () => {
+        const mock = mockStore({
+            client: {
+                account_list: [
+                    {
+                        title: 'Demo',
+                        is_virtual: false,
+                    },
+                ],
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useHasSetCurrency(), { wrapper });
+
+        expect(result.current).toBe(true);
+    });
 });

@@ -1,8 +1,8 @@
+import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
+import PoaButton from 'Components/poa/poa-button';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import PoaButton from 'Components/poa/poa-button';
-import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
 
 type TIdvSubmitComplete = {
     needs_poa: boolean;

@@ -1,21 +1,21 @@
-import React from 'react';
 import { Button, Loading } from '@deriv/components';
-import { getPlatformRedirect, platforms, WS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
+import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
-import NotRequired from 'Components/poi/status/not-required';
-import Unsupported from 'Components/poi/status/unsupported';
-import Verified from 'Components/poi/status/verified';
-import Limited from 'Components/poi/status/limited';
 import Expired from 'Components/poi/status/expired';
-import UploadComplete from 'Components/poi/status/upload-complete';
-import POISubmission from './proof-of-identity-submission.jsx';
-import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
-import { identity_status_codes, service_code } from './proof-of-identity-utils';
+import Limited from 'Components/poi/status/limited';
+import { Localize } from '@deriv/translations';
+import NotRequired from 'Components/poi/status/not-required';
+import Onfido from './onfido.jsx';
+import POISubmission from './proof-of-identity-submission.jsx';
+import React from 'react';
+import Unsupported from 'Components/poi/status/unsupported';
+import UploadComplete from 'Components/poi/status/upload-complete';
+import Verified from 'Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
+import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = ({
     account_status,
@@ -40,7 +40,8 @@ const ProofOfIdentityContainer = ({
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
     const from_platform = getPlatformRedirect(app_routing_history);
-    const should_show_redirect_btn = from_platform.name === 'P2P';
+
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform.ref);
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
@@ -97,7 +98,7 @@ const ProofOfIdentityContainer = ({
     }
 
     const onClickRedirectButton = () => {
-        const platform = platforms[from_platform.name?.toLowerCase()];
+        const platform = platforms[from_platform.ref];
         const { is_hard_redirect = false, url = '' } = platform ?? {};
         if (is_hard_redirect) {
             window.location.href = url;

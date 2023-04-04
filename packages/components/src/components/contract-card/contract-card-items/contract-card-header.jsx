@@ -61,7 +61,7 @@ const ContractCardHeader = ({
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
-                    'dc-contract-card__grid-underlying-trade--trader--accumulator': is_accumulator,
+                    'dc-contract-card__grid-underlying-trade--trader--accumulator': !is_mobile && is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader--accumulator-sold': is_accumulator && is_sold,
                 })}
             >

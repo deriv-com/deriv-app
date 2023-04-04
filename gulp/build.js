@@ -18,6 +18,19 @@ const getConfig = prefix => ({
     binary_style_img: 'image/binary-style',
     seo_title: translate('Bot trading |  Automated trading system – Deriv'),
     seo_description: translate('Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more.'),
+    antiJack_css: `<style id="antiClickjack">
+                        body {
+                            display: none !important;
+                        }
+                    </style>`,
+    antiJack_script: `<script type="text/javascript">
+                        if (self === top) {
+                            var antiClickjack = document.getElementById("antiClickjack");
+                            antiClickjack.parentNode.removeChild(antiClickjack);
+                        } else {
+                            top.location = self.location;
+                        }
+                    </script>`,
     gtm_iframe:
         '<!-- Google Tag Manager (noscript) --> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P97C2DZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <!-- End Google Tag Manager (noscript) -->',
 });

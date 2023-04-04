@@ -27,12 +27,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="referrer" content="origin">
         <meta name="description" content="{{> seo_description }}">
-
-        <style id="antiClickjack">
-            body {
-                display: none !important;
-            }
-        </style>
+        
+        {{> antiJack_css }}
+        {{> antiJack_script }}
 
         <title>Binary Bot</title>
         {{> bundle_css }}
@@ -83,17 +80,6 @@
             style="display: none; visibility: hidden;"></iframe>
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
         <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
-
-        
-        <script type="text/javascript">
-            if (self === top) {
-                var antiClickjack = document.getElementById("antiClickjack");
-                antiClickjack.parentNode.removeChild(antiClickjack);
-            } else {
-                top.location = self.location;
-            }
-        </script>
-        
         <script>
            document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
 

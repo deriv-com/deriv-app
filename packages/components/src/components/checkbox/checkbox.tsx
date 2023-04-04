@@ -68,7 +68,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                     disabled={disabled}
                     onChange={onInputChange}
                     defaultChecked={checked}
-                    checked={value}
+                    checked={checked}
                     {...otherProps}
                 />
                 <span

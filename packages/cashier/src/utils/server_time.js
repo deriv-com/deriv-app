@@ -4,22 +4,16 @@ import { PromiseClass } from './utility';
 
 let clock_started = false;
 const pending = new PromiseClass();
-let server_time: moment.Moment,
-    performance_request_time: number,
-    get_time_interval: ReturnType<typeof setInterval>,
-    update_time_interval: ReturnType<typeof setInterval>,
-    onTimeUpdated: VoidFunction;
+let server_time, performance_request_time, get_time_interval, update_time_interval, onTimeUpdated;
 
 const requestTime = () => {
     performance_request_time = performance.now();
     WS.send({ time: 1 }).then(timeCounter);
 };
 
-export const init = (fncTimeUpdated?: VoidFunction) => {
+export const init = fncTimeUpdated => {
     if (!clock_started) {
-        if (fncTimeUpdated) {
-            onTimeUpdated = fncTimeUpdated;
-        }
+        onTimeUpdated = fncTimeUpdated;
         requestTime();
         clearInterval(get_time_interval);
         get_time_interval = setInterval(requestTime, 30000);
@@ -27,7 +21,7 @@ export const init = (fncTimeUpdated?: VoidFunction) => {
     }
 };
 
-export const timeCounter = (response: { error: unknown; time: number }) => {
+export const timeCounter = response => {
     if (response.error) return;
 
     if (!clock_started) {
@@ -51,8 +45,7 @@ export const timeCounter = (response: { error: unknown; time: number }) => {
         }
     };
     updateTime();
-    pending.resolve?.();
-
+    pending.resolve();
     update_time_interval = setInterval(updateTime, 1000);
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import PoaNotRequired from '..';
+import PoaNotRequired from '../index';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

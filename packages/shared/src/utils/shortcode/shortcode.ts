@@ -86,12 +86,14 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
 
 export const isHighLow = ({ shortcode = '', shortcode_info }: TIsHighLow) => {
     const info_from_shortcode = shortcode ? extractInfoFromShortcode(shortcode) : shortcode_info;
-    return info_from_shortcode && info_from_shortcode.barrier_1 ? !/^S0P$/.test(info_from_shortcode.barrier_1) : false;
+    return info_from_shortcode && info_from_shortcode.barrier_1
+        ? !/^S0P$/.test(info_from_shortcode.barrier_1 as string)
+        : false;
 };
 
 export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
     const shortcode_info = extractInfoFromShortcode(shortcode);
     if (shortcode_info?.multiplier) return false;
     const start_time = shortcode_info?.start_time;
-    return start_time && purchase_time && /f$/gi.test(start_time);
+    return start_time && purchase_time && /f$/gi.test(start_time as string);
 };

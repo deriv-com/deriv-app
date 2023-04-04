@@ -49,20 +49,13 @@ export const mocked_props = {
 
 describe('<Dashboard />', () => {
     beforeEach(() => mocked_props);
-    it('user guide button click', () => {
-        // arrange
-        render(<UserGuide {...mocked_props} />);
-        const use_guide_button = screen.getByTestId('btn-use-guide');
-        //act
-        userEvent.click(use_guide_button);
-    });
-
     it('on user guide button click it should render the tutorials tab', () => {
         // arrange
         render(<UserGuide {...mocked_props} />);
         const use_guide_button = screen.getByTestId('btn-use-guide');
         //act
         userEvent.click(use_guide_button);
+        // arrange
         render(<Sidebar {...mocked_props} />);
         // assert
         expect(screen.getByRole('textbox')).toHaveClass('dc-tabs__wrapper__group__search-input', { exact: true });

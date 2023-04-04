@@ -4,6 +4,8 @@ import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-li
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { PersonalDetailsForm } from '../personal-details.jsx';
+import { StoreProvider } from '../../../../../../stores/src/useStore';
+import { mockStore } from '../../../../../../stores/src/mockStore';
 
 afterAll(cleanup);
 
@@ -32,20 +34,22 @@ describe('<PersonalDetailsForm />', () => {
                 value: 'value',
             },
         ];
+        let store = mockStore();
+        store.client.account_settings = {
+            email_consent: 1,
+        };
+        store.client.fetchResidenceList = fetchResidenceList;
+        store.client.residence_list = fetchStatesList;
+        store.client.residence_list = residence_list;
+        store.client.has_residence = true;
+        store.client.getChangeableFields = () => [];
+        store.client.is_virtual = false;
+        store.client.states_list = residence_list;
         const screen = render(
             <Router history={history}>
-                <PersonalDetailsForm
-                    fetchResidenceList={fetchResidenceList}
-                    fetchStatesList={fetchStatesList}
-                    residence_list={residence_list}
-                    has_residence={true}
-                    account_settings={{
-                        email_consent: 1,
-                    }}
-                    getChangeableFields={() => []}
-                    is_virtual={false}
-                    states_list={residence_list}
-                />
+                <StoreProvider store={store}>
+                    <PersonalDetailsForm />
+                </StoreProvider>
             </Router>
         );
         await waitForElementToBeRemoved(() => screen.container.querySelector('.account__initial-loader'));

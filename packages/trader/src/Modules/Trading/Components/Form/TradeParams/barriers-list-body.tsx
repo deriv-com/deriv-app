@@ -3,11 +3,11 @@ import { isMobile } from '@deriv/shared';
 import { Text, ThemedScrollbars } from '@deriv/components';
 import classNames from 'classnames';
 
-type TBarriersListBody = {
+export type TBarriersListBody = {
     barriers_list: string[];
     className?: string;
     onClick: (barrier: string) => void;
-    onHover?: (barrier: string | null) => void;
+    onHover?: (barrier: string) => void;
     selected_item: string;
     subheader?: string;
 };
@@ -21,7 +21,7 @@ const BarriersListBody = ({
     subheader,
 }: TBarriersListBody) => {
     const onMouseEnter = (barrier: string) => {
-        if (selected_item !== barrier && onHover) {
+        if (selected_item !== barrier && typeof onHover === 'function') {
             onHover(barrier);
         }
     };
@@ -54,7 +54,7 @@ const BarriersListBody = ({
                             })}
                             onClick={() => onClick(barrier)}
                             onMouseEnter={() => onMouseEnter(barrier)}
-                            onMouseLeave={() => onHover && onHover(null)}
+                            onMouseLeave={() => typeof onHover === 'function' && onHover('')}
                         >
                             {barrier}
                         </Text>

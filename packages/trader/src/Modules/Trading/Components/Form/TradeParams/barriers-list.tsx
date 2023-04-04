@@ -3,18 +3,12 @@ import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
 import { CSSTransition } from 'react-transition-group';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import BarriersListBody from './barriers-list-body';
+import BarriersListBody, { TBarriersListBody } from './barriers-list-body';
 
-type TBarriersList = {
-    barriers_list: string[];
-    className: string;
+type TBarriersList = TBarriersListBody & {
     header: string;
-    onClick: (barrier: string) => void;
     onClickCross: () => void;
-    onHover?: (barrier: string | null) => void;
-    selected_item: string;
     show_table: boolean;
-    subheader?: string;
 };
 
 const BarriersList = ({ className, header, onClickCross, show_table, ...props }: TBarriersList) => (

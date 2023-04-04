@@ -40,17 +40,14 @@ describe('<BarriersList/>', () => {
     });
     it('click handler should be called after clicking on the 2nd barrier option (33)', () => {
         userEvent.click(screen.getByTestId(barrier_choices[1]));
-
         expect(mockClickCallback).toHaveBeenCalled();
     });
     it('hover handler should be called when the 3rd barrier option (40) is hovered', () => {
         userEvent.hover(screen.getByTestId(barrier_choices[2]));
-
         expect(mockHoverCallback).toHaveBeenCalled();
     });
     it('hover handler should be called with null when mouseLeave event fires on the 3rd barrier option (40)', () => {
         userEvent.unhover(screen.getByTestId(barrier_choices[2]));
-
-        expect(mockHoverCallback).toHaveBeenCalledWith(null);
+        expect(mockHoverCallback).toHaveBeenCalledWith('');
     });
 });

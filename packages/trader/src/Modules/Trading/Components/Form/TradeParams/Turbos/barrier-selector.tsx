@@ -22,7 +22,7 @@ const BarrierSelector = observer(() => {
     };
 
     const onBarrierClick = (barrier: string) => {
-        setHoveredBarrier(null);
+        setHoveredBarrier('');
         setSelectedBarrier(barrier);
         onChange({
             target: {
@@ -92,7 +92,7 @@ const BarrierSelector = observer(() => {
                         subheader={localize('Distance to current spot')}
                         onClick={onBarrierClick}
                         onClickCross={toggleBarriersTable}
-                        onHover={(barrier: string | null) => setHoveredBarrier(barrier)}
+                        onHover={setHoveredBarrier}
                     />
                 </MobileDialog>
             </MobileWrapper>
@@ -123,7 +123,7 @@ const BarrierSelector = observer(() => {
                         subheader={localize('Distance to current spot')}
                         onClick={onBarrierClick}
                         onClickCross={toggleBarriersTable}
-                        onHover={(barrier: string | null) => setHoveredBarrier(barrier)}
+                        onHover={setHoveredBarrier}
                     />
                 )}
             </DesktopWrapper>

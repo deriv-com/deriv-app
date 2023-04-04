@@ -110,16 +110,16 @@ export default class CommonStore extends BaseStore {
             this.is_language_changing = true;
             this.changing_language_timer_id = setTimeout(() => {
                 this.is_language_changing = false;
-            }, 10000);
+            }, 2500);
         }
     }
 
-    changeSelectedLanguage = key => {
+    changeSelectedLanguage = async key => {
         SocketCache.clear();
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-
+        await WS.wait('authorize');
         WS.setSettings({
             set_settings: 1,
             preferred_language: key,

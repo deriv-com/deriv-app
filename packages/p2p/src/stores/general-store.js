@@ -497,7 +497,6 @@ export default class GeneralStore extends BaseStore {
             const { sendbird_store } = this.root_store;
 
             this.setP2PConfig();
-
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {

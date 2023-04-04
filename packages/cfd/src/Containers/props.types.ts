@@ -14,6 +14,7 @@ import {
     TExistingData,
     TJurisdictionCardSection,
     TCardFlipStatus,
+    TJurisdictionCardSectionTitleIndicators,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
 import { SyntheticEvent } from 'react';
@@ -29,6 +30,7 @@ export type TCFDPersonalDetailsContainerProps = {
 };
 
 type CFD_Platform = 'dxtrade' | 'mt5';
+export type MT5_Jurisdictions = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
@@ -175,10 +177,14 @@ export type TJurisdictionCardProps = {
     financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
-    type_of_card: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
+    type_of_card: MT5_Jurisdictions;
     disabled: boolean;
     cardFlipStatus: TCardFlipStatus;
-    flipCard: (cardName: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest') => void;
+    flipCard: (cardName: MT5_Jurisdictions) => void;
+};
+
+export type TJurisdictionTitleIndicatorProps = {
+    title_indicators: TJurisdictionCardSectionTitleIndicators;
 };
 
 export type TJurisdictionCardSectionProps = {
@@ -252,7 +258,7 @@ export type TJurisdictionModalContentProps = {
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;
     cardFlipStatus: TCardFlipStatus;
-    flipCard: (cardName: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest') => void;
+    flipCard: (cardName: MT5_Jurisdictions) => void;
 };
 
 export type TJurisdictionModalFootNoteProps = {

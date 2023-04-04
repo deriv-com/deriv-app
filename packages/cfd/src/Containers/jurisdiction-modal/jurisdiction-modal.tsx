@@ -5,7 +5,7 @@ import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
-import { TJurisdictionModalProps } from '../props.types';
+import { MT5_Jurisdictions, TJurisdictionModalProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 
@@ -175,7 +175,7 @@ const JurisdictionModal = ({
         }
     };
 
-    const flipCard = (cardName: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest') => {
+    const flipCard = (cardName: MT5_Jurisdictions) => {
         setCardFlipStatus({ ...cardFlipStatus, [cardName]: !cardFlipStatus[cardName] });
     };
 

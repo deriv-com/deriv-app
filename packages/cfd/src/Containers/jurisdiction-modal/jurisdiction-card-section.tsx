@@ -1,30 +1,10 @@
 import { Text } from '@deriv/components';
-import classNames from 'classnames';
+import { TClickableDescription } from 'Components/props.types';
 import React from 'react';
-import { TClickableDescription, TJurisdictionCardSectionTitleIndicators } from 'Components/props.types';
 import { TJurisdictionCardSectionProps } from '../props.types';
+import JurisdictionTitleIndicator from './jurisdiction-title-indicator';
 
 const JurisdictionCardSection = ({ cardSectionItem, toggleCardFlip }: TJurisdictionCardSectionProps) => {
-    const renderTitleIndicator = (titleIndicators: TJurisdictionCardSectionTitleIndicators) => {
-        switch (titleIndicators.type) {
-            case 'displayText':
-                return (
-                    <div
-                        className={classNames(
-                            'cfd-card-section-title-indicator',
-                            `cfd-card-section-title-indicator__${titleIndicators.displayTextSkinColor}`
-                        )}
-                    >
-                        {titleIndicators.displayText}
-                    </div>
-                );
-            case 'displayIcons':
-                return '';
-            default:
-                return '';
-        }
-    };
-
     const renderClickableDescription = (clickableDescription: Array<TClickableDescription>) => {
         return clickableDescription.map(descriptionPart => {
             switch (descriptionPart.type) {
@@ -57,7 +37,9 @@ const JurisdictionCardSection = ({ cardSectionItem, toggleCardFlip }: TJurisdict
                         {cardSectionItem.title}
                     </Text>
                 </div>
-                {cardSectionItem.titleIndicators && renderTitleIndicator(cardSectionItem.titleIndicators)}
+                {cardSectionItem.titleIndicators && (
+                    <JurisdictionTitleIndicator title_indicators={cardSectionItem.titleIndicators} />
+                )}
             </div>
             {cardSectionItem.clickableDescription ? (
                 <div>{renderClickableDescription(cardSectionItem.clickableDescription)}</div>

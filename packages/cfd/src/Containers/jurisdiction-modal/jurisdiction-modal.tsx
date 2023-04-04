@@ -56,6 +56,13 @@ const JurisdictionModal = ({
                 fetchAccountSettings();
             }
             setJurisdictionSelectedShortcode('');
+            setCardFlipStatus({
+                svg: false,
+                bvi: false,
+                vanuatu: false,
+                labuan: false,
+                maltainvest: false,
+            });
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

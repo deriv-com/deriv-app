@@ -2,6 +2,7 @@ import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import ApiToken, { TApiToken } from '../api-token';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

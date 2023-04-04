@@ -1,10 +1,20 @@
-//Need to fix errors caused by store provider implementation
-// import React from 'react';
-// import { act } from 'react-dom/test-utils';
-// import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-// import SelfExclusion from '../self-exclusion';
-// import { StoreProvider } from '../../../../../stores/src/useStore';
-// import { mockStore } from '../../../../../stores/src/mockStore';
+// //Need to fix errors caused by store provider implementation
+import React from 'react';
+import { act } from 'react-dom/test-utils';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import SelfExclusion from '../self-exclusion';
+import { mockStore, StoreProvider } from '@deriv/stores';
+
+describe('App component', () => {
+    let store = mockStore();
+    test('renders App component without crashing', () => {
+        render(
+            <StoreProvider store={store}>
+                <SelfExclusion />
+            </StoreProvider>
+        );
+    });
+});
 
 // const portal_root = document.createElement('div');
 // document.body.appendChild(portal_root);

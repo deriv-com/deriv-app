@@ -4,8 +4,7 @@ import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-li
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { PersonalDetailsForm } from '../personal-details.jsx';
-import { StoreProvider } from '../../../../../../stores/src/useStore';
-import { mockStore } from '../../../../../../stores/src/mockStore';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 afterAll(cleanup);
 

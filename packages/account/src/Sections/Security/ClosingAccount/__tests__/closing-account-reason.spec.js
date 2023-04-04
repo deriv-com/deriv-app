@@ -1,8 +1,7 @@
 import React from 'react';
 import { act, render, screen, waitFor, fireEvent, userEvent } from '@testing-library/react';
 import ClosingAccountReason from '../closing-account-reason';
-import { StoreProvider } from '../../../../../../stores/src/useStore';
-import { mockStore } from '../../../../../../stores/src/mockStore';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

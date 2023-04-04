@@ -1,8 +1,7 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import IconWithMessage from '../icon-with-message';
-import { StoreProvider } from '../../../../../stores/src/useStore';
-import { mockStore } from '../../../../../stores/src/mockStore';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

@@ -1,12 +1,22 @@
 //Need to fix errors caused by store provider implementation
 
-// import React from 'react';
-// import { screen, render } from '@testing-library/react';
-// import { formatMoney, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
-// import AccountLimits from '../account-limits';
-// import { BrowserRouter } from 'react-router-dom';
-// import { StoreProvider } from "../../../../../stores/src/useStore"
-// import {mockStore} from "../../../../../stores/src/mockStore"
+import React from 'react';
+import { screen, render } from '@testing-library/react';
+import { formatMoney, isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import AccountLimits from '../account-limits';
+import { BrowserRouter } from 'react-router-dom';
+import { mockStore, StoreProvider } from '@deriv/stores';
+
+describe('App component', () => {
+    let store = mockStore();
+    test('renders App component without crashing', () => {
+        render(
+            <StoreProvider store={store}>
+                <AccountLimits />
+            </StoreProvider>
+        );
+    });
+});
 
 // jest.mock('Stores/connect.js', () => ({
 //     __esModule: true,

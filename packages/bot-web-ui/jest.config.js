@@ -12,16 +12,8 @@ module.exports = {
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
-    coveragePathIgnorePatterns: [
-        '<rootDir>/.eslintrc.js',
-        '<rootDir>/jest.config.js',
-        '<rootDir>/coverage/lcov-report',
-        '<rootDir>/dist',
-        '<rootDir>/build',
-        '<rootDir>/docs',
-    ],
-    globals: {
-        __webpack_public_path__: '',
-    },
     collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
+    globals: {
+        __webpack_public_path__: '/',
+    },
 };

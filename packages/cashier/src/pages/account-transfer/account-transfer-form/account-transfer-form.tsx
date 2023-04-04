@@ -629,5 +629,5 @@ const AccountTransferForm = observer(
         );
     }
 );
-
+AccountTransferForm.displayName = 'AccountTransferForm';
 export default AccountTransferForm;

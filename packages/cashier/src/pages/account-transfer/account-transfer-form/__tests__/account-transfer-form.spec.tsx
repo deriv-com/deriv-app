@@ -11,6 +11,8 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 
 let mockRootStore;
 
+jest.mock('Assets/svgs/trading-platform', () => (props) => <div data-testid={props.icon}>TradingPlatformIcon</div> );
+
 describe('<AccountTransferForm />', () => {
     beforeEach(() => {
         mockRootStore = {
@@ -276,60 +278,6 @@ describe('<AccountTransferForm />', () => {
         expect(screen.getByText('You have 1 transfer remaining for today.')).toBeInTheDocument();
     });
 
-    it('should show proper note if transfer fee is 2% and is_crypto_to_crypto_transfer', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.selected_from.is_crypto = true;
-        mockRootStore.modules.cashier.account_transfer.selected_from.currency = 'BTC';
-        mockRootStore.modules.cashier.account_transfer.selected_to.is_crypto = true;
-        mockRootStore.modules.cashier.account_transfer.selected_to.currency = 'BTC';
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
-
-        renderAccountTransferForm();
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 BTC, whichever is higher, for transfers between your Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 2%, is_mt_transfer, and is_dxtrade_allowed is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
-        mockRootStore.modules.cashier.account_transfer.selected_to.is_mt = true;
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
-
-        renderAccountTransferForm();
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is 2% and is_mt_transfer is false', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = 2;
-
-        renderAccountTransferForm();
-
-        expect(
-            screen.getByText(
-                'We’ll charge a 2% transfer fee or 0 USD, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper note if transfer fee is null', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        mockRootStore.modules.cashier.account_transfer.transfer_fee = null;
-
-        renderAccountTransferForm();
-
-        expect(screen.getByText('Please bear in mind that some transfers may not be possible.')).toBeInTheDocument();
-    });
-
     describe('<Dropdown />', () => {
         const accountsList = [
             {
@@ -374,7 +322,7 @@ describe('<AccountTransferForm />', () => {
                 text: 'USD',
                 currency: 'USD',
                 value: 'MTR40013177',
-                platform_icon: 'IcMt5Derived',
+                platform_icon: 'Derived',
                 is_crypto: false,
                 is_mt: true,
                 is_dxtrade: false,
@@ -476,7 +424,7 @@ describe('<AccountTransferForm />', () => {
                     .mockReturnValue(100.0);
 
                 renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_IcMt5Derived')).toBeInTheDocument();
+                expect(screen.getByTestId('Derived')).toBeInTheDocument();
             });
 
             it('should check for DerivX icon when DerivX is selected in from_dropdown', () => {

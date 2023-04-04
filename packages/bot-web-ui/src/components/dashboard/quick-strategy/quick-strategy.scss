@@ -19,9 +19,12 @@
 
     &__text {
         grid-column: span 2;
-        margin: 1.5rem 0;
         @include mobile {
             @include position-center;
+        }
+
+        &--margin {
+            margin: 1.5rem 0;
         }
     }
 
@@ -30,6 +33,7 @@
         margin-top: 3.5rem;
         grid-template-columns: 1fr 1fr;
         row-gap: 3.5rem;
+        column-gap: 1.2rem;
         :first-child {
             grid-column: span 2;
         }
@@ -102,14 +106,6 @@
                     margin: 1.1rem;
                     position: unset;
                     height: 1.6rem;
-                }
-            }
-            &--multiple {
-                > *:first-child {
-                    margin-right: 1.2rem;
-                }
-                > * + * {
-                    margin-left: 1.2rem;
                 }
             }
         }

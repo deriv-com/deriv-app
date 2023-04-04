@@ -26,16 +26,18 @@ const AccountLimits = observer(
         should_show_article = true,
     }) => {
         const { client, common } = useStore();
+        const { is_virtual, account_limits, getLimits, is_switching, currency, is_fully_authenticated } = client;
+        const { is_from_derivgo } = common;
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(false);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
         const { is_appstore } = React.useContext(PlatformContext);
 
         React.useEffect(() => {
-            if (client.is_virtual) {
+            if (is_virtual) {
                 setLoading(false);
             } else {
-                client.getLimits().then(() => {
+                getLimits().then(() => {
                     if (isMounted()) setLoading(false);
                 });
             }
@@ -43,10 +45,10 @@ const AccountLimits = observer(
         }, []);
 
         React.useEffect(() => {
-            if (!client.is_virtual && client.account_limits && is_loading) {
+            if (!is_virtual && account_limits && is_loading) {
                 setLoading(false);
             }
-        }, [client.account_limits, client.is_virtual, is_loading]);
+        }, [account_limits, is_virtual, is_loading]);
 
         React.useEffect(() => {
             if (typeof setIsPopupOverlayShown === 'function') {
@@ -56,11 +58,11 @@ const AccountLimits = observer(
 
         const toggleOverlay = () => setIsOverlayShown(!is_overlay_shown);
 
-        if (client.is_switching) {
+        if (is_switching) {
             return <Loading is_fullscreen={false} />;
         }
 
-        if (client.is_virtual) {
+        if (is_virtual) {
             return (
                 <div
                     className={classNames('account__demo-message-wrapper', {
@@ -81,13 +83,13 @@ const AccountLimits = observer(
             num_of_days_limit,
             remainder,
             withdrawal_since_inception_monetary,
-        } = client.account_limits;
+        } = account_limits;
 
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
 
-        if (client.is_switching || is_loading) {
+        if (is_switching || is_loading) {
             return <Loading is_fullscreen={false} />;
         }
 
@@ -117,7 +119,7 @@ const AccountLimits = observer(
                         })}
                     >
                         {should_show_article && isMobile() && (
-                            <AccountLimitsArticle is_from_derivgo={common.is_from_derivgo} />
+                            <AccountLimitsArticle is_from_derivgo={is_from_derivgo} />
                         )}
                         <div className='da-account-limits__table-wrapper'>
                             <ThemedScrollbars is_bypassed={should_bypass_scrollbars || isMobile()}>
@@ -164,7 +166,7 @@ const AccountLimits = observer(
                                             <AccountLimitsTableCell align='right'>
                                                 {/* null or 0 are expected form BE when max balance limit is not set */}
                                                 {account_balance ? (
-                                                    formatMoney(client.currency, account_balance, true)
+                                                    formatMoney(currency, account_balance, true)
                                                 ) : (
                                                     <Localize i18n_default_text='Not set' />
                                                 )}
@@ -183,7 +185,7 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum aggregate payouts on open positions' />
                                             </AccountLimitsTableCell>
                                             <AccountLimitsTableCell align='right'>
-                                                {formatMoney(client.currency, payout, true)}
+                                                {formatMoney(currency, payout, true)}
                                             </AccountLimitsTableCell>
                                         </tr>
                                         <tr>
@@ -232,7 +234,7 @@ const AccountLimits = observer(
                                                     <AccountLimitsTableHeader>
                                                         <Localize i18n_default_text='Withdrawal limits' />
                                                     </AccountLimitsTableHeader>
-                                                    {client.is_fully_authenticated && (
+                                                    {is_fully_authenticated && (
                                                         <AccountLimitsTableHeader align='right'>
                                                             <Localize i18n_default_text='Limit' />
                                                         </AccountLimitsTableHeader>
@@ -240,7 +242,7 @@ const AccountLimits = observer(
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {client.is_fully_authenticated ? (
+                                                {is_fully_authenticated ? (
                                                     <tr>
                                                         <AccountLimitsTableCell>
                                                             <React.Fragment>
@@ -262,7 +264,7 @@ const AccountLimits = observer(
                                                                 ) : (
                                                                     <Localize i18n_default_text='Total withdrawal allowed' />
                                                                 )}
-                                                                {is_appstore && !client.is_fully_authenticated && (
+                                                                {is_appstore && !is_fully_authenticated && (
                                                                     <React.Fragment>
                                                                         <Text
                                                                             size={isMobile() ? 'xxxs' : 'xxs'}
@@ -291,7 +293,7 @@ const AccountLimits = observer(
                                                                 )}
                                                             </AccountLimitsTableCell>
                                                             <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(client.currency, num_of_days_limit, true)}
+                                                                {formatMoney(currency, num_of_days_limit, true)}
                                                             </AccountLimitsTableCell>
                                                         </tr>
                                                         <tr>
@@ -300,7 +302,7 @@ const AccountLimits = observer(
                                                             </AccountLimitsTableCell>
                                                             <AccountLimitsTableCell align='right'>
                                                                 {formatMoney(
-                                                                    client.currency,
+                                                                    currency,
                                                                     withdrawal_since_inception_monetary,
                                                                     true
                                                                 )}
@@ -311,7 +313,7 @@ const AccountLimits = observer(
                                                                 <Localize i18n_default_text='Maximum withdrawal remaining' />
                                                             </AccountLimitsTableCell>
                                                             <AccountLimitsTableCell align='right'>
-                                                                {formatMoney(client.currency, remainder, true)}
+                                                                {formatMoney(currency, remainder, true)}
                                                             </AccountLimitsTableCell>
                                                         </tr>
                                                     </React.Fragment>
@@ -321,7 +323,7 @@ const AccountLimits = observer(
                                         {(!is_appstore || isMobile()) && (
                                             <div className='da-account-limits__text-container'>
                                                 <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                                    {client.is_fully_authenticated ? (
+                                                    {is_fully_authenticated ? (
                                                         <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
                                                     ) : (
                                                         <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
@@ -344,15 +346,8 @@ const AccountLimits = observer(
 );
 
 AccountLimits.propTypes = {
-    account_limits: PropTypes.object,
-    currency: PropTypes.string.isRequired,
     footer_ref: PropTypes.shape({ current: PropTypes.any }),
     is_app_settings: PropTypes.bool,
-    getLimits: PropTypes.func.isRequired,
-    is_fully_authenticated: PropTypes.bool.isRequired,
-    is_from_derivgo: PropTypes.bool,
-    is_switching: PropTypes.bool.isRequired,
-    is_virtual: PropTypes.bool.isRequired,
     overlay_ref: PropTypes.shape({ current: PropTypes.any }),
     setIsOverlayShown: PropTypes.func,
     setIsPopupOverlayShown: PropTypes.func,

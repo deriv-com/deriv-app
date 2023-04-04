@@ -272,7 +272,3 @@
         font-size: var(--text-size-sm);
     }
 }
-
-.grid-item:nth-child(2) {
-    grid-row: 2 / 4; /* Starts on the second row line and ends on the fourth row line */
-}

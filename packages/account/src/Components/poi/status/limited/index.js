@@ -1,3 +1,3 @@
-import { POILimited } from './limited.jsx';
+import { POILimited } from './limited';
 
 export default POILimited;

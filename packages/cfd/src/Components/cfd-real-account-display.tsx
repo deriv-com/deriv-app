@@ -65,6 +65,7 @@ type TCFDRealAccountDisplayProps = {
     setIsAcuityModalOpen: (value: boolean) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
+    show_eu_related_content: boolean;
 };
 
 const CFDRealAccountDisplay = ({
@@ -96,6 +97,7 @@ const CFDRealAccountDisplay = ({
     setIsAcuityModalOpen,
     real_account_creation_unlock_date,
     setShouldShowCooldownModal,
+    show_eu_related_content,
 }: TCFDRealAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
@@ -220,7 +222,7 @@ const CFDRealAccountDisplay = ({
             key='real.financial'
             has_real_account={has_real_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
-            title={is_eu_user ? localize('CFDs') : localize('Financial')}
+            title={show_eu_related_content ? localize('CFDs') : localize('Financial')}
             type={{
                 category: 'real',
                 type: 'financial',
@@ -232,7 +234,7 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu_user)}
+            descriptor={general_messages.getFinancialAccountDescriptor(platform, show_eu_related_content)}
             specs={financial_specs}
             is_accounts_switcher_on={is_accounts_switcher_on}
             is_eu={is_eu_user}

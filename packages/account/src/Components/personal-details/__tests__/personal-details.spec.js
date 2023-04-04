@@ -374,7 +374,7 @@ describe('<PersonalDetails/>', () => {
         runCommonFormfieldsTests();
     });
 
-    it('should not show disabled fields', () => {
+    it('should not enable fields which are disabled and empty', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <PersonalDetails
@@ -391,13 +391,13 @@ describe('<PersonalDetails/>', () => {
                 />
             </PlatformContext.Provider>
         );
-        expect(screen.getByRole('radio', { name: /mr/i })).toBeDisabled();
-        expect(screen.getByRole('radio', { name: /ms/i })).toBeDisabled();
+        expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
+        expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
         expect(screen.getByTestId('first_name')).toBeDisabled();
         expect(screen.getByTestId('last_name')).toBeDisabled();
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('place_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('citizenship')).toBeDisabled();
+        expect(screen.getByTestId('place_of_birth')).not.toBeDisabled();
+        expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is empty, so enable the field
     });
 
     it('should disable citizen field if the client is_fully_authenticated', () => {
@@ -704,7 +704,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 
@@ -720,7 +720,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 

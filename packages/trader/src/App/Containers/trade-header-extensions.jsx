@@ -28,7 +28,7 @@ const TradeHeaderExtensions = ({
         );
 
         populateHeaderExtensions(header_items);
-    }, [populateHeaderExtensions, store, show_positions_toggle]);
+    }, [populateHeaderExtensions, store, show_positions_toggle, is_populating_account_list]);
 
     React.useEffect(() => {
         const waitForLogin = async () => {

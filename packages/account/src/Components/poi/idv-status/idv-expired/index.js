@@ -1,3 +1,3 @@
-import IdvExpired from './idv-expired.jsx';
+import IdvExpired from './idv-expired';
 
 export default IdvExpired;

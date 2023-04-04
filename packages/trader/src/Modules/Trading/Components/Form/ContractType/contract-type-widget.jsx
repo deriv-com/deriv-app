@@ -3,7 +3,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractType from './contract-type.jsx';
-import { getContractTypeCategoryIcons } from '../../../Helpers/contract-type';
+import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
 
 const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageChanged }) => {
     const wrapper_ref = React.useRef(null);
@@ -38,11 +38,14 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     };
 
     const handleSelect = (clicked_item, e) => {
+        const categories = list_with_category();
+        const { key } = findContractCategory(categories, clicked_item);
         if (e.target.id !== 'info-icon') {
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
             setItem(clicked_item);
             setSelectedItem(clicked_item);
+            setSelectedCategory(key);
         }
     };
 

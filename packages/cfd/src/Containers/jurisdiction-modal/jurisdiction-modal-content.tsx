@@ -57,14 +57,13 @@ const JurisdictionModalContent = ({
             </div>
             <JurisdictionModalFootNote
                 account_status={account_status}
-                card_classname={card_classname}
                 account_type={account_type}
+                card_classname={card_classname}
                 context={context}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
             />
             <JurisdictionCheckBox
-                account_status={account_status}
                 is_checked={checked}
                 context={context}
                 onCheck={() => setChecked(!checked)}

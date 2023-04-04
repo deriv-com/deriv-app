@@ -31,10 +31,7 @@ export const FORM_ERROR_MESSAGES = {
             max_value,
         }),
     minNumber: min_value => localize('Should be more than {{min_value}}', { min_value }),
-    maxNumber: max_value =>
-        localize('Should be less than {{max_value}}', {
-            max_value,
-        }),
+    maxNumber: max_value => localize('Should be less than {{max_value}}', { max_value }),
     // all existing warning phrases from zxcvbn
     password_warnings: {
         use_a_few_words: () => localize('Use a few words, avoid common phrases'),

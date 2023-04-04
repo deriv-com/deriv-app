@@ -9,10 +9,13 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }: TCFDAccountsProps) => {
     const { client, modules, common, ui }: TRootStore = useStores();
     const { is_eu } = client;
-    const account_name = is_eu ? 'CFDs' : 'Financial';
+    const account_name = is_eu ? localize('CFDs') : localize('Financial');
     const account_desc = is_eu
-        ? 'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
-        : 'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.';
+        ? localize(
+              'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+          )
+        : localize('Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.');
+
     const available_demo_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
@@ -24,7 +27,7 @@ const CFDDemoAccounts = ({ isDerivedVisible, isFinancialVisible, current_list }:
         },
         {
             name: account_name,
-            description: localize(account_desc),
+            description: account_desc,
             is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
             disabled: false,
             platform: CFD_PLATFORMS.MT5,

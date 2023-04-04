@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render, act, fireEvent, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import ResetTradingPasswordModal from '../reset-trading-password-modal';
+import { ResetTradingPasswordModal } from '../reset-trading-password-modal';
 import { WS } from '@deriv/shared';
 
 const mock_promise = Promise.resolve();

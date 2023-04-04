@@ -4,11 +4,11 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TError, TReactElement } from 'Types';
+import { TError, TReactElement } from '../../types';
 
 type TErrorDialogProps = {
-    className: string;
-    error: TError | Record<string, never>;
+    className?: string;
+    error?: TError | Record<string, never>;
 };
 
 type TSetDetails = {
@@ -119,6 +119,11 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
     React.useEffect(() => {
         setErrorVisibility(!!error.message);
     }, [error.message]);
+
+    React.useEffect(() => {
+        return () => dismissError();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const setErrorVisibility = (is_error_visible: boolean) => {
         setIsVisible(is_error_visible);

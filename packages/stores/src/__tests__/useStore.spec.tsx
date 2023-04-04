@@ -1,27 +1,15 @@
 import * as React from 'react';
-// Todo: After upgrading to react 18 we should use @testing-library/react-hooks instead.
-import { render, screen } from '@testing-library/react';
-import { StoreProvider, useStore } from '../useStore';
-import { TRootStore } from '../../types';
-
-const UseStoreExample = () => {
-    const store = useStore();
-
-    return (
-        <>
-            <p data-testid={'dt_email'}>{store.client.email}</p>
-            <p data-testid={'dt_is_dark_mode_on'}>{store.ui.is_dark_mode_on ? 'true' : 'false'}</p>
-        </>
-    );
-};
+import { renderHook } from '@testing-library/react-hooks';
+import { StoreProvider, useStore, TStores } from '../useStore';
 
 describe('useStore', () => {
     test('should throw an error if StoreContext has not been provided', async () => {
-        expect(() => render(<UseStoreExample />)).toThrowError('useStore must be used within StoreContext');
+        const { result } = renderHook(() => useStore());
+        expect(result.error).toEqual(Error('useStore must be used within StoreContext'));
     });
 
     test('should be able to access store data if StoreContext has been provided', async () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore: DeepPartial<TStores> = {
             client: {
                 email: 'john@company.com',
             },
@@ -30,13 +18,12 @@ describe('useStore', () => {
             },
         };
 
-        render(<UseStoreExample />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
-        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useStore(), { wrapper });
 
-        const email = screen.getByTestId('dt_email');
-        const is_dark_mode_on = screen.getByTestId('dt_is_dark_mode_on');
-        expect(email).toHaveTextContent('john@company.com');
-        expect(is_dark_mode_on).toHaveTextContent('true');
+        expect(result.current.client.email).toBe('john@company.com');
+        expect(result.current.ui.is_dark_mode_on).toBe(true);
     });
 });

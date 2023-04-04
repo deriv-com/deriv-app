@@ -199,7 +199,6 @@ export default withRouter(
         currency: client.currency,
         loginid: client.loginid,
         is_eu: client.is_eu,
-        is_eu_country: client.is_eu_country,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

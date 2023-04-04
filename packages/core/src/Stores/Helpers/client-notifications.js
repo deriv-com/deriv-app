@@ -71,4 +71,8 @@ export const excluded_notifications = isMobile()
           'maintenance',
           'bot_switch_account',
           'new_version_available',
+          'svg_needs_poi_poa',
+          'svg_needs_poa',
+          'svg_needs_poi',
+          'svg_poi_expired',
       ];

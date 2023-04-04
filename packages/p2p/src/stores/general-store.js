@@ -17,11 +17,13 @@ export default class GeneralStore extends BaseStore {
     advertiser_id = null;
     advertiser_info = {};
     advertiser_sell_limit = null;
+    advertiser_relations_response = []; //TODO: Remove this when backend has fixed is_blocked flag issue
     block_unblock_user_error = '';
     balance;
     cancels_remaining = null;
     contact_info = '';
     feature_level = null;
+    formik_ref = null;
     inactive_notification_count = 0;
     is_advertiser = false;
     is_advertiser_blocked = null;
@@ -44,6 +46,7 @@ export default class GeneralStore extends BaseStore {
     poi_status = null;
     props = {};
     review_period;
+    saved_form_state = null;
     should_show_real_name = false;
     should_show_popup = false;
     user_blocked_count = 0;
@@ -69,9 +72,11 @@ export default class GeneralStore extends BaseStore {
             advertiser_id: observable,
             advertiser_buy_limit: observable,
             advertiser_sell_limit: observable,
+            advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
             feature_level: observable,
+            formik_ref: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
@@ -91,6 +96,7 @@ export default class GeneralStore extends BaseStore {
             poi_status: observable,
             props: observable.ref,
             review_period: observable,
+            saved_form_state: observable,
             should_show_real_name: observable,
             should_show_popup: observable,
             user_blocked_count: observable,
@@ -99,10 +105,12 @@ export default class GeneralStore extends BaseStore {
             is_modal_open: observable,
             client: computed,
             current_focus: computed,
+            form_state: computed,
             setCurrentFocus: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
+            is_form_modified: computed,
             is_my_profile_tab_visible: computed,
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
@@ -124,7 +132,11 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
             setAppProps: action.bound,
+            setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
             setFeatureLevel: action.bound,
+            setFormikRef: action.bound,
+            setSavedFormState: action.bound,
+            saveFormState: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
             setIsBlocked: action.bound,
@@ -146,7 +158,6 @@ export default class GeneralStore extends BaseStore {
             setBlockUnblockUserError: action.bound,
             setIsAdvertiserBlocked: action.bound,
             setIsBlockUnblockUserLoading: action.bound,
-            setIsBlockUserModalOpen: action.bound,
             setShouldShowRealName: action.bound,
             setShouldShowPopup: action.bound,
             setUserBlockedCount: action.bound,
@@ -166,6 +177,10 @@ export default class GeneralStore extends BaseStore {
         return this.props?.current_focus;
     }
 
+    get form_state() {
+        return this.formik_ref;
+    }
+
     get setCurrentFocus() {
         return this.props?.setCurrentFocus;
     }
@@ -182,6 +197,10 @@ export default class GeneralStore extends BaseStore {
         return !!this.user_blocked_until;
     }
 
+    get is_form_modified() {
+        return this.form_state?.dirty || this.saved_form_state;
+    }
+
     get is_my_profile_tab_visible() {
         return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
     }
@@ -191,7 +210,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
-        const { advertiser_page_store } = this.root_store;
+        const { advertiser_page_store, general_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -199,15 +218,30 @@ export default class GeneralStore extends BaseStore {
         }).then(response => {
             if (response) {
                 if (!response.error) {
-                    this.setIsBlockUserModalOpen(false);
+                    general_store.hideModal();
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
+
+                        //TODO: Remove this when backend has fixed is_blocked flag issue
+                        this.setAdvertiserRelationsResponse(p2p_advertiser_relations.blocked_advertisers);
+
                         advertiser_page_store.setIsCounterpartyAdvertiserBlocked(
                             p2p_advertiser_relations.blocked_advertisers.some(ad => ad.id === advertiser_id)
                         );
                     }
                 } else {
                     this.setBlockUnblockUserError(response.error.message);
+                    if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
+                        general_store.showModal({
+                            key: 'ErrorModal',
+                            props: {
+                                error_message: response.error.message,
+                                error_modal_title: 'Unable to block advertiser',
+                                has_close_icon: false,
+                                width: isMobile() ? '90rem' : '40rem',
+                            },
+                        });
+                    }
                 }
             }
             this.setIsBlockUnblockUserLoading(false);
@@ -397,9 +431,8 @@ export default class GeneralStore extends BaseStore {
                     const server_time = this.props.server_time.get();
                     const blocked_until_moment = toMoment(blocked_until);
 
-                    this.user_blocked_timeout = setTimeout(() => {
-                        this.setUserBlockedUntil(null);
-                    }, blocked_until_moment.diff(server_time));
+                    // Need isAfter instead of setTimeout as setTimeout has a max delay of 24.8 days
+                    if (server_time.isAfter(blocked_until_moment)) this.setUserBlockedUntil(null);
                 }
             }
         );
@@ -585,6 +618,11 @@ export default class GeneralStore extends BaseStore {
         this.props = props;
     }
 
+    //TODO: Remove this when backend has fixed is_blocked flag issue
+    setAdvertiserRelationsResponse(advertiser_relations_response) {
+        this.advertiser_relations_response = advertiser_relations_response;
+    }
+
     setBlockUnblockUserError(block_unblock_user_error) {
         this.block_unblock_user_error = block_unblock_user_error;
     }
@@ -601,6 +639,18 @@ export default class GeneralStore extends BaseStore {
         this.feature_level = feature_level;
     }
 
+    setFormikRef(formik_ref) {
+        this.formik_ref = formik_ref;
+    }
+
+    setSavedFormState(saved_form_state) {
+        this.saved_form_state = saved_form_state;
+    }
+
+    saveFormState() {
+        this.setSavedFormState(this.form_state);
+    }
+
     setInactiveNotificationCount(inactive_notification_count) {
         this.inactive_notification_count = inactive_notification_count;
     }
@@ -615,10 +665,6 @@ export default class GeneralStore extends BaseStore {
 
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
-    }
-
-    setIsBlockUserModalOpen(is_block_user_modal_open) {
-        this.is_block_user_modal_open = is_block_user_modal_open;
     }
 
     setIsBlockUnblockUserLoading(is_block_unblock_user_loading) {
@@ -796,6 +842,7 @@ export default class GeneralStore extends BaseStore {
             this.setUserBlockedCount(blocked_by_count);
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
+            this.setIsRestricted(false);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 
@@ -842,6 +889,7 @@ export default class GeneralStore extends BaseStore {
         p2p_settings[this.client.loginid] = user_settings;
 
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
+        window.dispatchEvent(new Event('storage'));
 
         this.setNotificationCount(notification_count);
         this.setActiveNotificationCount(active_notification_count);

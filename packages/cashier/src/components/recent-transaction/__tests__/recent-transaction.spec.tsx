@@ -3,13 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import RecentTransaction from '../recent-transaction';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { StoreProvider } from '@deriv/stores';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CashierProviders from '../../../cashier-providers';
 
 describe('<RecentTransaction />', () => {
     let history, mockRootStore;
@@ -47,11 +41,11 @@ describe('<RecentTransaction />', () => {
 
     const renderRecentTransaction = () => {
         return render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <Router history={history}>
                     <RecentTransaction />
                 </Router>
-            </StoreProvider>
+            </CashierProviders>
         );
     };
 

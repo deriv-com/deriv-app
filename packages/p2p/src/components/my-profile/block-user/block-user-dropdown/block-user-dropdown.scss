@@ -1,0 +1,15 @@
+.block-user-dropdown {
+    margin-left: 1rem;
+    width: 20rem;
+
+    @include mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border-normal);
+        border-radius: 4px;
+        padding: 0.8rem;
+        height: 4rem;
+        width: 4rem;
+    }
+}

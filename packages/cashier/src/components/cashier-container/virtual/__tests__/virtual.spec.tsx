@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import Virtual from '../virtual';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<Virtual />', () => {
     const history = createBrowserHistory();
@@ -12,6 +12,7 @@ describe('<Virtual />', () => {
     beforeEach(() => {
         mockRootStore = {
             ui: { is_dark_mode_on: true, toggleAccountsDialog: jest.fn() },
+            client: { is_pre_appstore: true },
         };
     });
 
@@ -21,7 +22,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 
@@ -34,7 +35,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 
@@ -49,7 +50,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 
@@ -62,7 +63,7 @@ describe('<Virtual />', () => {
                 <Virtual />
             </Router>,
             {
-                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
             }
         );
 

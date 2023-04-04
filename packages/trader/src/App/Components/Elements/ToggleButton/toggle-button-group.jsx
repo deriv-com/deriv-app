@@ -41,7 +41,7 @@ const ToggleButtonGroup = ({ children, className, multiple, onChange, value, ...
     });
 
     return (
-        <div className={classNames('toggle-button-group', className)} {...others}>
+        <div data-testid='dt_toggle_button_group' className={classNames('toggle-button-group', className)} {...others}>
             {toggle_buttons}
         </div>
     );

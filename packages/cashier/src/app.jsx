@@ -1,9 +1,8 @@
 import React from 'react';
 import { setWebsocket } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
 import { init } from 'Utils/server_time';
 import Routes from 'Containers/routes';
-import { MobxContentProvider } from 'Stores/connect';
+import CashierProviders from './cashier-providers';
 
 const App = ({ passthrough: { WS, root_store } }) => {
     React.useEffect(() => {
@@ -13,11 +12,9 @@ const App = ({ passthrough: { WS, root_store } }) => {
     }, []);
 
     return (
-        <MobxContentProvider store={root_store}>
-            <StoreProvider store={root_store}>
-                <Routes />
-            </StoreProvider>
-        </MobxContentProvider>
+        <CashierProviders store={root_store}>
+            <Routes />
+        </CashierProviders>
     );
 };
 

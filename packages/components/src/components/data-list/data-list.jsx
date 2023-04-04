@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
-import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
-import { List } from 'react-virtualized/dist/es/List';
+import { CellMeasurer, CellMeasurerCache } from '@enykeev/react-virtualized/dist/es/CellMeasurer';
+import { AutoSizer } from '@enykeev/react-virtualized/dist/es/AutoSizer';
+import { List } from '@enykeev/react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell.jsx';
 import DataListRow from './data-list-row.jsx';
@@ -133,6 +133,7 @@ const DataList = React.memo(
         }
         return (
             <div
+                data-testid='dt_data_list'
                 className={classNames(className, 'data-list', {
                     [`${className}__data-list`]: className,
                 })}

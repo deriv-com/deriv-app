@@ -31,7 +31,7 @@ describe('should render the CompareAccountsContent component properly', () => {
         mock_props = {
             is_logged_in: true,
             platform: 'mt5',
-            show_eu_related: 'false',
+            is_eu_client: 'false',
             residence: 'idn',
             is_eu: 'false',
             is_uk: 'false',
@@ -91,7 +91,7 @@ describe('should render the CompareAccountsContent component properly', () => {
 
     it('should render the correct footer text', () => {
         render(
-            <CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} show_eu_related={true} />
+            <CompareAccountsContent {...mock_props} landing_companies={all_landing_companies} is_eu_client={true} />
         );
 
         expect(

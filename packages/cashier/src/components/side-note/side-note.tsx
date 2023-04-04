@@ -3,7 +3,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { TReactChildren, TSideNotesProps } from 'Types';
+import { TReactChildren, TSideNotesProps } from '../../types';
 import './side-note.scss';
 
 type TSideNoteTitle = {

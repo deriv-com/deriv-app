@@ -57,6 +57,7 @@ const CFDResetPasswordModal = ({
     email,
     is_cfd_reset_password_modal_enabled,
     is_eu,
+    is_pre_appstore,
     context,
     is_logged_in,
     platform,
@@ -89,7 +90,7 @@ const CFDResetPasswordModal = ({
         localStorage.removeItem('cfd_reset_password_intent');
         localStorage.removeItem('cfd_reset_password_type');
         localStorage.removeItem('cfd_reset_password_code');
-        if (history.location.pathname !== routes.mt5) {
+        if (history.location.pathname !== routes.mt5 && !is_pre_appstore) {
             history.push(`${routes.mt5}`);
         }
     };
@@ -287,6 +288,7 @@ CFDResetPasswordModal.propTypes = {
     email: PropTypes.string,
     is_cfd_reset_password_modal_enabled: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_pre_appstore: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     platform: PropTypes.string,
     setCFDPasswordResetModal: PropTypes.func,
@@ -296,13 +298,14 @@ CFDResetPasswordModal.propTypes = {
 
 export default React.memo(
     withRouter(
-        connect(({ modules: { cfd }, client }: RootStore) => ({
+        connect(({ modules: { cfd }, client, ui }: RootStore) => ({
             email: client.email,
             is_eu: client.is_eu,
-            is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
-            setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
+            is_cfd_reset_password_modal_enabled: ui.is_cfd_reset_password_modal_enabled,
+            setCFDPasswordResetModal: ui.setCFDPasswordResetModal,
             current_list: cfd.current_list,
             is_logged_in: client.is_logged_in,
+            is_pre_appstore: client.is_pre_appstore,
         }))(CFDResetPasswordModal)
     )
 );

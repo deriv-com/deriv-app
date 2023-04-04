@@ -3,6 +3,7 @@ import { BEFORE_PURCHASE } from './state/constants';
 import { contractStatus, info, log } from '../utils/broadcast';
 import { getUUID, recoverFromError, doUntilDone } from '../utils/helpers';
 import { log_types } from '../../../constants/messages';
+import { api_base } from '../../api/api-base';
 
 let delayIndex = 0;
 let purchase_reference;
@@ -41,7 +42,7 @@ export default Engine =>
                     buy_price: buy.buy_price,
                 });
             };
-            const action = () => this.api.send({ buy: id, price: askPrice });
+            const action = () => api_base.api.send({ buy: id, price: askPrice });
             this.isSold = false;
             contractStatus({
                 id: 'contract.purchase_sent',

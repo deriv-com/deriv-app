@@ -49,6 +49,8 @@ const TradingHubFooter = ({
     settings_extension,
     setDarkMode,
     is_dark_mode,
+    is_pre_appstore,
+    show_eu_related_content,
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -88,7 +90,11 @@ const TradingHubFooter = ({
                 <ResponsibleTrading />
                 {is_logged_in && <AccountLimitsFooter />}
                 {is_logged_in && !is_virtual && (
-                    <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />
+                    <RegulatoryInformation
+                        landing_company={landing_company_shortcode}
+                        is_eu={is_eu}
+                        show_eu_related_content={show_eu_related_content}
+                    />
                 )}
                 <div className='footer__links--dark-mode'>
                     <Popover alignment='top' message='Change theme'>
@@ -108,6 +114,7 @@ const TradingHubFooter = ({
                         disableApp={disableApp}
                         enableApp={enableApp}
                         settings_extension={settings_extension}
+                        is_pre_appstore={is_pre_appstore}
                     />
                 )}
                 <ToggleFullScreen />
@@ -132,10 +139,12 @@ TradingHubFooter.propTypes = {
     footer_extensions: PropTypes.array,
     is_dark_mode: PropTypes.bool,
     setDarkMode: PropTypes.func,
+    is_pre_appstore: PropTypes.bool,
+    show_eu_related_content: PropTypes.bool,
 };
 
 export default withRouter(
-    connect(({ client, ui }) => ({
+    connect(({ client, ui, traders_hub }) => ({
         enableApp: ui.enableApp,
         footer_extensions: ui.footer_extensions,
         settings_extension: ui.settings_extension,
@@ -151,5 +160,7 @@ export default withRouter(
         toggleSettingsModal: ui.toggleSettingsModal,
         is_dark_mode: ui.is_dark_mode_on,
         setDarkMode: ui.setDarkMode,
+        is_pre_appstore: client.is_pre_appstore,
+        show_eu_related_content: traders_hub.show_eu_related_content,
     }))(TradingHubFooter)
 );

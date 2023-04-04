@@ -59,8 +59,8 @@ describe('<CFDRealAccountDisplay />', () => {
                 svg: true,
             },
             toggleAccountsDialog: jest.fn(),
-            toggleMT5TradeModal: jest.fn(),
             toggleShouldShowRealAccountsList: jest.fn(),
+            show_eu_related_content: false,
         };
     });
 
@@ -233,10 +233,15 @@ describe('<CFDRealAccountDisplay />', () => {
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
     });
 
-    it('should render a CFDs card only with enabled "Add real account" button on Deriv MT5 when is_logged_in=true, should_enable_add_button=true & is_eu=true', () => {
+    it('should render a CFDs card only with enabled "Add real account" button on Deriv MT5 when is_logged_in=true, should_enable_add_button=true & show_eu_related_content=true', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(
-            <CFDRealAccountDisplay {...props} is_eu should_enable_add_button account_settings={account_settings_eu} />
+            <CFDRealAccountDisplay
+                {...props}
+                show_eu_related_content
+                should_enable_add_button
+                account_settings={account_settings_eu}
+            />
         );
 
         checkAccountCardsRendering(TESTED_CASES.EU);
@@ -249,7 +254,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render a CFDs card only without "Add real account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
-        render(<CFDRealAccountDisplay {...props} is_logged_in={false} is_eu_country />);
+        render(<CFDRealAccountDisplay {...props} is_logged_in={false} show_eu_related_content />);
 
         checkAccountCardsRendering(TESTED_CASES.EU);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
@@ -282,41 +287,6 @@ describe('<CFDRealAccountDisplay />', () => {
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
         expect(screen.queryAllByRole('button', { name: /add real account/i }).length).toBe(0);
-    });
-
-    it('should render 1 open account with an enabled "Top up" ("Fund transfer" in Deriv X) & "Trade" ("Trade on web terminal" in Deriv X) buttons', () => {
-        props.current_list['mt5.real.financial@p01_ts01'] = mt5_real_financial_account;
-        const { rerender } = render(<CFDRealAccountDisplay {...props} has_real_account={true} />);
-
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
-        expect(screen.getAllByRole('button', { name: /add real account/i }).length).toBe(1);
-        const dmt5_top_up_button = screen.getByRole('button', { name: /top up/i });
-        const dmt5_trade_button = screen.getByRole('button', { name: /trade/i });
-
-        fireEvent.click(dmt5_top_up_button);
-        expect(props.openAccountTransfer).toHaveBeenCalledWith(props.current_list['mt5.real.financial@p01_ts01'], {
-            category: 'real',
-            type: 'financial',
-        });
-        fireEvent.click(dmt5_trade_button);
-        expect(props.toggleMT5TradeModal).toHaveBeenCalledTimes(1);
-
-        rerender(
-            <CFDRealAccountDisplay
-                {...props}
-                platform='dxtrade'
-                current_list={{
-                    'dxtrade.real.synthetic@synthetic': dxtrade_real_synthetic_account,
-                }}
-            />
-        );
-        checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
-        const dxtrade_fund_transfer_button = screen.getByRole('button', { name: /fund transfer/i });
-        const dxtrade_trade_on_web_terminal_button = screen.getByRole('link', { name: /trade on web terminal/i });
-        expect(dxtrade_trade_on_web_terminal_button).toHaveAttribute('href', 'https://dx.deriv.com');
-
-        fireEvent.click(dxtrade_fund_transfer_button);
-        expect(props.openAccountTransfer).toHaveBeenCalledTimes(2);
     });
 
     it('should show "Switch to your real account", which opens Account Switcher, on Deriv X cards when has_real_account=true & is_virtual=true', () => {

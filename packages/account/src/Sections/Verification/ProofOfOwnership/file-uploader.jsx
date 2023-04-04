@@ -15,32 +15,33 @@ const FileUploader = ({
     name,
     sub_index,
     updateErrors,
-    validateField,
 }) => {
     const [show_browse_button, setShowBrowseButton] = React.useState(!file_name);
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
     const handleClick = e => {
-        e.stopPropagation();
+        e.nativeEvent.preventDefault();
+        e.nativeEvent.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
         hidden_file_input.current.click();
     };
 
     const handleChange = async event => {
-        event.stopPropagation();
+        event.nativeEvent.preventDefault();
+        event.nativeEvent.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
         const file_to_upload = await compressImageFiles([event.target.files[0]]);
         handleFile(name, file_to_upload[0]);
         setShowBrowseButton(!file_to_upload[0]);
     };
-    const handleIconClick = e => {
-        e.stopPropagation();
+    const handleIconClick = async e => {
+        e.nativeEvent.preventDefault();
+        e.nativeEvent.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
         hidden_file_input.current.value = '';
-        handleFile(name, '');
+        await handleFile(name, '');
         setShowBrowseButton(prevState => !prevState);
-        updateErrors(index, item_index, sub_index);
-        validateField('files');
+        await updateErrors(index, item_index, sub_index);
     };
     return (
         <div className={`file-uploader ${class_name}`}>
@@ -98,7 +99,6 @@ FileUploader.propTypes = {
     name: PropTypes.string,
     sub_index: PropTypes.number,
     updateErrors: PropTypes.func,
-    validateField: PropTypes.func,
 };
 
 export default FileUploader;

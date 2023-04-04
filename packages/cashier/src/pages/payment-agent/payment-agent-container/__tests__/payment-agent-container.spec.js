@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -83,9 +83,9 @@ describe('<PaymentAgentContainer />', () => {
 
     const renderPaymentAgentContainer = (is_deposit = true) => {
         return render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <PaymentAgentContainer is_deposit={is_deposit} verification_code='ABCdef' />
-            </StoreProvider>
+            </CashierProviders>
         );
     };
 

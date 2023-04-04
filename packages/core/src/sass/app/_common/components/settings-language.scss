@@ -2,6 +2,7 @@
 .settings-language {
     @include mobile {
         display: flex;
+        padding: 1.5rem 1.5rem 8rem;
     }
 
     &__language-container {
@@ -24,6 +25,9 @@
             align-items: center;
             border-radius: $BORDER_RADIUS;
             padding: 16px;
+            @include mobile {
+                padding: 8px;
+            }
             text-decoration: none;
             background-color: var(--state-normal);
             cursor: pointer;
@@ -57,5 +61,13 @@
                 font-size: 1.4rem;
             }
         }
+        &--radio-button {
+            display: none;
+        }
+    }
+}
+.account-form {
+    &--language-settings {
+        overflow: auto !important;
     }
 }

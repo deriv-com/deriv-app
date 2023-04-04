@@ -22,9 +22,12 @@ const MyAds = () => {
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);
-        my_ads_store.setShowAdForm(false);
         my_ads_store.setShowEditAdForm(false);
         my_ads_store.getAccountStatus();
+
+        return () => {
+            my_ads_store.setShowAdForm(false);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

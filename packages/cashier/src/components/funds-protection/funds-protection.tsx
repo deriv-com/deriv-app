@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useWS } from '@deriv/api';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
 import './funds-protection.scss';
 
-const FundsProtection = observer(() => {
-    const {
-        modules: {
-            cashier: {
-                deposit: { submitFundsProtection },
-            },
-        },
-    } = useStore();
+const FundsProtection = () => {
+    const { data, send } = useWS('tnc_approval');
+
+    useEffect(() => {
+        if (data) location.reload();
+    }, [data]);
 
     return (
         <div className='funds-protection'>
@@ -36,11 +34,11 @@ const FundsProtection = observer(() => {
                     />
                 }
             </p>
-            <Button onClick={submitFundsProtection} primary large type='submit'>
+            <Button onClick={() => send({ ukgc_funds_protection: 1 })} primary large type='submit'>
                 {localize('Deposit now')}
             </Button>
         </div>
     );
-});
+};
 
 export default FundsProtection;

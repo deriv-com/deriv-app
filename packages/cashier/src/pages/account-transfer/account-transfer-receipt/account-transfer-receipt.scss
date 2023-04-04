@@ -4,7 +4,10 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        padding-top: 2.4rem;
+
+        &-padding {
+            padding-top: 2.4rem;
+        }
 
         &--details {
             display: flex;

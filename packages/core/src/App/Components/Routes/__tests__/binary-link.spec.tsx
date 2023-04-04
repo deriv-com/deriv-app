@@ -1,67 +1,58 @@
-// TODO refactor old tests in this component
 import React from 'react';
-import { NavLink, BrowserRouter } from 'react-router-dom';
-import { PlatformContext, routes } from '@deriv/shared';
+import { render, screen } from '@testing-library/react';
 import { BinaryLink } from '../index';
-import RootStore from '../../../../Stores';
-import { MobxContentProvider } from '../../../../Stores/connect';
+import { BrowserRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
-// configure({ adapter: new Adapter() });
+type TMockBinaryLink = {
+    active_class?: string;
+    to?: string;
+    has_error?: boolean;
+    setError?: () => void;
+};
 
-describe('<BinaryLink />', () => {
-    // const store = new RootStore();
-    // const Mock = ({ children }) => (
-    //     <MobxContentProvider store={store}>
-    //         <BrowserRouter>
-    //             <PlatformContext.Provider>{children}</PlatformContext.Provider>
-    //         </BrowserRouter>
-    //     </MobxContentProvider>
-    // );
+jest.mock('Stores/connect', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect:
+        () =>
+        <T,>(Component: T) =>
+            Component,
+}));
 
-    it('should render one <BinaryLink /> component', () => {
-        // const comp = (
-        //     <Mock>
-        //         <BinaryLink />
-        //     </Mock>
-        // );
-        // const wrapper = shallow(comp);
-        // expect(wrapper).toHaveLength(1);
+const MockBinaryLink = ({ active_class, to, has_error, setError }: TMockBinaryLink) => (
+    <BrowserRouter>
+        <BinaryLink has_error={has_error} setError={setError} active_class={active_class} to={to}>
+            <div data-testid='dt_child' />
+        </BinaryLink>
+    </BrowserRouter>
+);
+
+describe('BinaryLink component', () => {
+    it('should render "children" when passed in', () => {
+        render(<MockBinaryLink />);
+        expect(screen.getByTestId('dt_child')).toBeInTheDocument();
     });
-    // it('should render children when passed in', () => {
-    //     const child_div = <div className='sweet-child-of-mine' />;
-    //     const comp = (
-    //         <Mock>
-    //             <BinaryLink>{child_div}</BinaryLink>
-    //         </Mock>
-    //     );
-    //     const wrapper = shallow(comp);
-    //     expect(wrapper.contains(child_div)).toBe(true);
-    // });
-    // it("should render <a /> when property 'to' is not passed", () => {
-    //     const comp = (
-    //         <Mock>
-    //             <BinaryLink />
-    //         </Mock>
-    //     );
-    //     const wrapper = mount(comp);
-    //     expect(wrapper.contains(<a />)).toBe(true);
-    // });
-    // it("should not render <a> when property 'to' is passed", () => {
-    //     const comp = (
-    //         <MobxContentProvider store={store}>
-    //             <BinaryLink to={routes.trade} />
-    //         </MobxContentProvider>
-    //     );
-    //     const wrapper = shallow(comp);
-    //     expect(wrapper.contains(<a />)).toBe(false);
-    // });
-    // it('should render component with props if any given', () => {
-    //     const comp = (
-    //         <MobxContentProvider store={store}>
-    //             <BinaryLink className='a-cool-classname' />
-    //         </MobxContentProvider>
-    //     );
-    //     const wrapper = shallow(comp);
-    //     expect(wrapper.find('.a-cool-classname').exists());
-    // });
+
+    it('should have "active_class__link-wrapper" class when "active_class" property is passed', () => {
+        render(<MockBinaryLink active_class='active_class' to='/test' />);
+        expect(screen.getByTestId('dt_span')).toHaveClass('active_class__link-wrapper');
+    });
+
+    it('should render "NavLink" when "to" property is passed and we do not have "href"', () => {
+        render(<MockBinaryLink to='/test' />);
+        expect(screen.getByTestId('dt_span')).toBeInTheDocument();
+    });
+
+    it('should render "a" element whe property "to" is not passed', () => {
+        render(<MockBinaryLink />);
+        expect(screen.getByTestId('dt_link')).toBeInTheDocument();
+    });
+
+    it('should call "setError" property when "has_error" property is "true"', () => {
+        const setError = jest.fn();
+        render(<MockBinaryLink has_error setError={setError} to='/' />);
+        userEvent.click(screen.getByTestId('dt_span'));
+        expect(setError).toHaveBeenCalledTimes(1);
+    });
 });

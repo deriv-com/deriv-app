@@ -79,7 +79,7 @@ const Dialog = ({
             }}
             unmountOnExit
         >
-            <div className='contract-type-dialog' data-testid='contract_wrapper'>
+            <div className='contract-type-dialog' data-testid='dt_contract_wrapper'>
                 <div className='contract-type-dialog__wrapper'>
                     {show_loading ? (
                         <Loading is_fullscreen={false} />

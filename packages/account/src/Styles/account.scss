@@ -2325,11 +2325,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     &__footer {
-        @media (max-height: 900px) {
-            position: fixed;
-            bottom: 36px;
-        }
-
         @include mobile {
             display: flex;
             flex-direction: row;

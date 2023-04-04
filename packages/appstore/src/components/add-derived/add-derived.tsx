@@ -1,11 +1,11 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 import { Text, Icon } from '@deriv/components';
 import classNames from 'classnames';
 
-export interface TAddDerivedProps extends HTMLAttributes<HTMLDivElement> {
+export interface TAddDerivedProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     onClickHandler: () => void;
     class_names?: string;
-    title: string;
+    title: ReactNode;
 }
 
 const AddDerived = ({ title, onClickHandler, class_names }: TAddDerivedProps) => {

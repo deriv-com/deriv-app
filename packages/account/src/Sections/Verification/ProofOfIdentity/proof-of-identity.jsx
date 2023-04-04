@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper } from '@deriv/components';
+import { changeMetaTagWithOG } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
@@ -18,6 +19,20 @@ const ProofOfIdentity = ({
     routeBackInApp,
     should_allow_authentication,
 }) => {
+    // next useEffect implements seo requirements
+    React.useEffect(() => {
+        const description_content = 'Submit your proof of identity documents to verify your account and start trading';
+        const title_content = 'Account Verification | Deriv app';
+
+        const restoreMetaTagWithOGDescription = changeMetaTagWithOG('description', description_content);
+        const restoreMetaTagWithOGTitle = changeMetaTagWithOG('title', title_content);
+
+        return () => {
+            restoreMetaTagWithOGDescription();
+            restoreMetaTagWithOGTitle();
+        };
+    }, []);
+
     return (
         <AutoHeightWrapper default_height={200}>
             {({ setRef, height }) => (

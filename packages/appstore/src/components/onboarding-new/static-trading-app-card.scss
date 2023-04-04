@@ -1,0 +1,52 @@
+.static-trading-app-card {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    height: 6rem;
+
+    &--with-bot-margin {
+        margin-bottom: 1rem;
+    }
+
+    @include mobile {
+        border-bottom: 1px solid var(--general-hover);
+        margin-top: 0.5rem;
+        height: 8.8rem;
+    }
+
+    &__button--hidden {
+        visibility: hidden;
+    }
+
+    &--blurry {
+        opacity: 0.2;
+    }
+
+    &__details {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        margin-left: 1.6rem;
+        padding: 0 2rem;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        margin-left: auto;
+
+        a {
+            text-decoration: none;
+        }
+
+        &--blurry {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+    }
+    &--divider {
+        border-bottom: 1px solid var(--general-hover);
+    }
+}

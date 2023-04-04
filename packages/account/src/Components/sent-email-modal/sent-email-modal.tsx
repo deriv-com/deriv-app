@@ -107,7 +107,7 @@ const SentEmailModal = ({
                         classNameBubble='help-centre__tooltip'
                         alignment='top'
                         message={localize('Live chat')}
-                        zIndex={9999}
+                        zIndex='9999'
                     />
                 </span>,
             ]}

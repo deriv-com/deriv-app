@@ -10,6 +10,7 @@ const TradingAssessmentNewUser = ({
     onSubmit,
     getCurrentStep,
     value,
+    setSubSectionIndex,
 }) => {
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
@@ -37,7 +38,7 @@ const TradingAssessmentNewUser = ({
             form_value={value}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
-            is_header_navigation
+            setSubSectionIndex={setSubSectionIndex}
         />
     );
 };

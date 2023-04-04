@@ -4,7 +4,7 @@ import { Icon } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TPlatformContext, TPoaStatusProps } from 'Types';
-import { PoiButton } from 'Components/poi/poi-button/poi-button.jsx';
+import { PoiButton } from 'Components/poi/poi-button/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 

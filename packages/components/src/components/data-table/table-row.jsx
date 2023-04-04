@@ -23,7 +23,7 @@ const TableRow = ({
 }) => {
     const action_columns = getActionColumns && getActionColumns({ row_obj, is_header, is_footer });
 
-    const cells = columns.map(({ col_index, renderCellContent, title, key }) => {
+    const cells = columns?.map(({ col_index, renderCellContent, title, key }) => {
         let cell_content = title;
         if (!is_header) {
             const cell_value = row_obj[col_index] || '';

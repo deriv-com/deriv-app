@@ -1,0 +1,72 @@
+.account-type-dropdown {
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 2rem;
+    text-transform: capitalize;
+    border: 2px solid;
+    height: 1.8em;
+
+    &--parent {
+        padding: 0;
+        border: none;
+        & > div.dc-dropdown {
+            &-container {
+                min-width: 8.2rem;
+                width: 8.2rem;
+            }
+        }
+
+        &--demo {
+            width: 90%;
+        }
+    }
+
+    &:focus,
+    &:hover {
+        outline: none;
+    }
+    &--real,
+    &--demo {
+        & > .dc-text {
+            font-weight: 700;
+            line-height: 20px;
+            letter-spacing: 0em;
+            text-align: left;
+            padding-left: 0.6em;
+        }
+    }
+    &--real,
+    &--real:focus,
+    &--real:hover {
+        border: 1px solid var(--status-info);
+        width: 87%;
+        & > .dc-text {
+            color: var(--status-info);
+        }
+    }
+
+    &--demo,
+    &--demo:focus,
+    &--demo:hover {
+        border: 1px solid var(--status-success);
+        width: 90%;
+        & > .dc-text {
+            color: var(--status-success);
+            padding-left: 0.8em;
+        }
+    }
+    &__icon {
+        &--real,
+        &--demo {
+            transform: none !important;
+        }
+        &--real {
+            --fill-color1: var(--status-info) !important;
+            right: 1.8rem;
+        }
+        &--demo {
+            --fill-color1: var(--status-success) !important;
+            right: 1.5rem;
+        }
+    }
+}

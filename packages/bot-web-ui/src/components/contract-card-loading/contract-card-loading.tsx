@@ -10,8 +10,8 @@ const ContractCardLoader = ({ speed = 3 }: TContractCardLoader) => (
         height={153}
         width={334}
         speed={speed}
-        primaryColor={'var(--general-section-2)'}
-        secondaryColor={'var(--general-hover)'}
+        backgroundColor={'var(--general-section-2)'}
+        foregroundColor={'var(--general-hover)'}
     >
         <rect x='12' y='15' rx='0' ry='0' width='41' height='25' />
         <rect x='61' y='24' rx='0' ry='0' width='91' height='8' />

@@ -7,8 +7,8 @@ const ReportsTableRowLoader = ({ speed }) => (
         height={64}
         width={992}
         speed={speed}
-        primaryColor={'var(--general-hover)'}
-        secondaryColor={'var(--general-active)'}
+        backgroundColor={'var(--general-hover)'}
+        foregroundColor={'var(--general-active)'}
     >
         <rect x='16' y='16' rx='4' ry='4' width='32' height='32' />
         <rect x='52' y='16' rx='4' ry='4' width='32' height='32' />

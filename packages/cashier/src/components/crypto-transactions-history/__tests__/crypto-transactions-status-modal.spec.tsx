@@ -1,13 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsStatusModal from '../crypto-transactions-status-modal';
-import { StoreProvider } from '@deriv/stores';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoTransactionsStatusModal />', () => {
     let modal_root_el, mockRootStore;
@@ -37,7 +31,7 @@ describe('<CryptoTransactionsStatusModal />', () => {
 
     const renderCryptoTransactionsStatusModal = () =>
         render(<CryptoTransactionsStatusModal />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
     it('should show proper messages and "OK" button', () => {

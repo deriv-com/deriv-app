@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, routes, getCFDAccountKey, getAccountListKey } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
+import { CFD_PLATFORMS, routes, getAccountListKey } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import AccountManager from '../account-manager';
 import AddDerived from 'Components/add-derived';
@@ -9,11 +9,6 @@ import { TCFDAccountsProps, TPlatform, TDetailsOfEachMT5Loginid, TStaticAccountP
 import AddOptionsAccount from 'Components/add-options-account';
 import { useStores } from 'Stores/index';
 import { useHistory } from 'react-router-dom';
-
-type TOpenAccountTransferMeta = {
-    category: string;
-    type?: string;
-};
 
 const CFDRealAccounts = ({
     isDerivedVisible,
@@ -36,10 +31,13 @@ const CFDRealAccounts = ({
     const { setAppstorePlatform, platform } = common;
     const { isEligibleForMoreRealMt5, is_eu } = client;
     const history = useHistory();
-    const account_name = is_eu ? 'CFDs' : 'Financial';
+    const account_name = is_eu ? localize('CFDs') : localize('Financial');
     const account_desc = is_eu
-        ? 'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
-        : 'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.';
+        ? localize(
+              'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+          )
+        : localize('Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.');
+
     const available_real_accounts: TStaticAccountProps[] = [
         {
             name: 'Derived',
@@ -51,7 +49,7 @@ const CFDRealAccounts = ({
         },
         {
             name: account_name,
-            description: localize(account_desc),
+            description: account_desc,
             is_visible: isFinancialVisible(CFD_PLATFORMS.MT5),
             disabled: has_cfd_account_error(CFD_PLATFORMS.MT5),
             platform: CFD_PLATFORMS.MT5,
@@ -66,6 +64,7 @@ const CFDRealAccounts = ({
             type: 'all',
         },
     ];
+
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
     const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
@@ -79,10 +78,7 @@ const CFDRealAccounts = ({
         return url;
     };
 
-    const openAccountTransfer = (
-        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
-        meta: { category: string; type?: string }
-    ) => {
+    const openAccountTransfer = (data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string }) => {
         if (data.platform === CFD_PLATFORMS.DXTRADE)
             sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
         else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
@@ -93,23 +89,9 @@ const CFDRealAccounts = ({
 
     const onClickFundReal = (account: DetailsOfEachMT5Loginid) => {
         if (platform === 'dxtrade') {
-            return openAccountTransfer(current_list[getAccountListKey(account, platform)], {
-                category: account.account_type as keyof TOpenAccountTransferMeta,
-                type: getCFDAccountKey({
-                    market_type: account.market_type,
-                    sub_account_type: account.sub_account_type,
-                    platform,
-                }),
-            });
+            return openAccountTransfer(current_list[getAccountListKey(account, platform)]);
         }
-        return openAccountTransfer(account, {
-            category: account.account_type as keyof TOpenAccountTransferMeta,
-            type: getCFDAccountKey({
-                market_type: account.market_type,
-                sub_account_type: account.sub_account_type,
-                platform: CFD_PLATFORMS.MT5,
-            }),
-        });
+        return openAccountTransfer(account);
     };
 
     const OnClickGetAccount = (account: TStaticAccountProps) => {
@@ -227,7 +209,12 @@ const CFDRealAccounts = ({
                                                             number_of_derived_accounts === index + 1) &&
                                                         account.platform !== CFD_PLATFORMS.DXTRADE && (
                                                             <AddDerived
-                                                                title={localize(`More ${account.name} accounts`)}
+                                                                title={
+                                                                    <Localize
+                                                                        i18n_default_text='More {{account.name}} accounts'
+                                                                        values={{ account_name }}
+                                                                    />
+                                                                }
                                                                 onClickHandler={() => {
                                                                     toggleJurisdictionModal();
                                                                     setAccountType({

@@ -13,6 +13,29 @@
             margin: 2.4rem 0;
         }
     }
+    &__deposit-button {
+        @include desktop {
+            margin: 3.4rem 0.8rem 2.4rem 0;
+        }
+        @include mobile {
+            margin: 2.4rem 0.8rem 2.4rem 0;
+        }
+    }
+
+    &__button-link {
+        cursor: pointer;
+        margin: 3.4rem 0.8rem 2.4rem 6.4rem;
+        position: absolute;
+        left: 0;
+
+        &:hover {
+            text-decoration: underline var(--brand-red-coral);
+        }
+
+        .dc-text {
+            margin-right: 0.4rem;
+        }
+    }
     &__crypto {
         &--disabled {
             pointer-events: none;
@@ -95,8 +118,10 @@
     }
     &__wrapper .account-transfer-form__input {
         margin-bottom: -0.8rem !important;
-        width: fit-content;
         min-width: 36rem;
+        &-fit-content {
+            width: fit-content;
+        }
         @include mobile {
             width: 100%;
             min-width: auto;
@@ -114,11 +139,15 @@
         &-wrapper {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: flex-start;
             margin-left: 8px;
             margin-right: 8px;
         }
+    }
+    &__icon {
+        display: flex;
+        justify-content: center;
     }
     &__balance {
         margin-left: auto;
@@ -140,6 +169,18 @@
             }
         }
     }
+
+    &__form-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+        align-items: center;
+
+        > * {
+            width: auto;
+        }
+    }
+
     &__loader {
         &-wrapper {
             display: flex;

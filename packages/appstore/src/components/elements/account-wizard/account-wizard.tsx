@@ -333,7 +333,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 {wizard_steps}
             </Wizard>
             <DesktopWrapper>
-                <FormCancelButton label={localize('Cancel')} is_absolute onClick={onCancel} />
+                <FormCancelButton label={localize('Cancel')} is_absolute onCancel={onCancel} />
             </DesktopWrapper>
         </React.Fragment>
     );

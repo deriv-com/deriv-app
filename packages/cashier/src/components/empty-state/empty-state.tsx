@@ -5,7 +5,7 @@ import './empty-state.scss';
 
 type TAction = {
     label: string;
-    onClick?: () => void;
+    onClick?: VoidFunction;
     primary?: boolean;
     tertiary?: boolean;
     disabled?: boolean;

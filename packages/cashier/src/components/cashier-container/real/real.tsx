@@ -4,7 +4,7 @@ import { Loading } from '@deriv/components';
 type TRealProps = {
     iframe_height: number | string;
     iframe_url: string;
-    clearIframe: () => void;
+    clearIframe: VoidFunction;
     is_loading: boolean;
 };
 

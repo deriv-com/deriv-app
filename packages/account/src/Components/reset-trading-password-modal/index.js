@@ -1,3 +1,3 @@
-import './reset-trading-password-modal.scss';
+import { ResetTradingPasswordModal } from './reset-trading-password-modal';
 
-export default from './reset-trading-password-modal.jsx';
+export default ResetTradingPasswordModal;

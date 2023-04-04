@@ -21,11 +21,19 @@ describe('CurrencyUtils', () => {
             expect(CurrencyUtils.formatMoney('GBP', '123.55')).toBe(`${CurrencyUtils.formatCurrency('GBP')}123.55`);
             expect(CurrencyUtils.formatMoney('EUR', '123.55')).toBe(`${CurrencyUtils.formatCurrency('EUR')}123.55`);
             expect(CurrencyUtils.formatMoney('AUD', '123.55')).toBe(`${CurrencyUtils.formatCurrency('AUD')}123.55`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.005432110')).toBe(`${CurrencyUtils.formatCurrency('BTC')}0.00543211`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.005432116')).toBe(`${CurrencyUtils.formatCurrency('BTC')}0.00543212`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.00000001')).toBe(`${CurrencyUtils.formatCurrency('BTC')}0.00000001`);
+            expect(CurrencyUtils.formatMoney('BTC', '0.005432110')).toBe(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00543211`
+            );
+            expect(CurrencyUtils.formatMoney('BTC', '0.005432116')).toBe(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00543212`
+            );
+            expect(CurrencyUtils.formatMoney('BTC', '0.00000001')).toBe(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00000001`
+            );
             // don't remove trailing zeroes for now
-            expect(CurrencyUtils.formatMoney('BTC', '0.00010000')).toBe(`${CurrencyUtils.formatCurrency('BTC')}0.00010000`);
+            expect(CurrencyUtils.formatMoney('BTC', '0.00010000')).toBe(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00010000`
+            );
         });
 
         it('works with negative values', () => {

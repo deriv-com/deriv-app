@@ -15,6 +15,9 @@
 
     .toolbar__section {
         justify-content: end;
+        @include mobile {
+            column-gap: 1rem;
+        }
     }
 
     .run-panel__container {

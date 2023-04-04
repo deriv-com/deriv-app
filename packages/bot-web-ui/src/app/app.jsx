@@ -1,7 +1,7 @@
 import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
-import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import { DBot, ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
     Audio,
     BotFooterExtensions,
@@ -23,6 +23,13 @@ const App = ({ passthrough }) => {
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { showDigitalOptionsMaltainvestError } = app;
+    const {
+        ui: { is_dark_mode_on },
+    } = root_store_instance.current;
+
+    React.useEffect(() => {
+        setColors(is_dark_mode_on);
+    }, [is_dark_mode_on]);
 
     React.useEffect(() => {
         /**

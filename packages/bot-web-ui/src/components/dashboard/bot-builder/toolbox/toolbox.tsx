@@ -54,18 +54,19 @@ const Toolbox = ({
 
     if (!isMobile()) {
         return (
-            <div className='dashboard__toolbox'>
+            <div className='dashboard__toolbox' data-testid='dashboard__toolbox'>
                 <ToolbarButton
                     popover_message={localize('Click here to start building your DBot.')}
                     button_id='db-toolbar__get-started-button'
                     button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
                     buttonOnClick={loadDataStrategy}
-                    button_text={localize('Quick strategies')}
+                    button_text={localize('Quick strategy')}
                 />
                 <div id='gtm-toolbox' className='db-toolbox__content'>
                     <div className='db-toolbox__header'>
                         <div
                             className='db-toolbox__title'
+                            data-testid='db-toolbox__title'
                             onClick={() => {
                                 setOpen(!is_open);
                                 setVisibility(false);
@@ -81,7 +82,10 @@ const Toolbox = ({
                             </span>
                         </div>
                     </div>
-                    <div className={classNames('db-toolbox__content-wrapper', { active: is_open })}>
+                    <div
+                        className={classNames('db-toolbox__content-wrapper', { active: is_open })}
+                        data-testid='db-toolbox__content-wrapper'
+                    >
                         <SearchBox
                             is_search_loading={is_search_loading}
                             onSearch={onSearch}

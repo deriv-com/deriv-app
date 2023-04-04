@@ -1,11 +1,11 @@
+import { MobileFullPageModal, Modal } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { TQuickStrategyProps } from './quick-strategy.types';
 import { QuickStrategyContainer } from './quick-strategy-components';
-import { isMobile } from '@deriv/shared';
-import { Modal, MobileFullPageModal } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { TQuickStrategyProps } from './quick-strategy.types';
 
 const QuickStrategy = (props: TQuickStrategyProps) => {
     const is_mobile = isMobile();

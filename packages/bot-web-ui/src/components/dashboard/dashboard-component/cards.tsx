@@ -80,7 +80,7 @@ const Cards = ({
         },
         {
             icon: 'IcQuickStrategy',
-            content: localize('Quick Strategy'),
+            content: localize('Quick strategy'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 loadDataStrategy();
@@ -168,7 +168,7 @@ const Cards = ({
                         </MobileFullPageModal>
                     </MobileWrapper>
                 </div>
-                <Recent />
+                <Recent is_file_supported={is_file_supported} />
             </div>
         ),
         [is_dialog_open, has_dashboard_strategies]

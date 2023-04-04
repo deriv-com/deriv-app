@@ -423,6 +423,12 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
+
+        if (this.financial_restricted_countries) {
+            this.available_dxtrade_accounts = [];
+            return;
+        }
+
         this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
             account => account.platform === CFD_PLATFORMS.DXTRADE
         );

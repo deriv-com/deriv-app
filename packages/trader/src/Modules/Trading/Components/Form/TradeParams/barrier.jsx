@@ -104,7 +104,7 @@ const Barrier = ({
                 <LabeledQuantityInputMobile
                     input_label={barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
                     id='dt_barrier_1_input'
-                    type='number'
+                    type='text'
                     inputmode='decimal'
                     name='barrier_1'
                     value={barrier_1}
@@ -130,7 +130,7 @@ const Barrier = ({
                         input_label={localize('Barrier 2')}
                         id='dt_barrier_2_input'
                         inputmode='decimal'
-                        type='number'
+                        type='text'
                         name='barrier_2'
                         value={barrier_2}
                         is_incrementable={!is_absolute_barrier}

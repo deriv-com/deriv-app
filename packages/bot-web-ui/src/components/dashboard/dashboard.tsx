@@ -265,14 +265,14 @@ const Dashboard = ({
                         onTabItemClick={handleTabChange}
                         top
                     >
-                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id={TAB_IDS[active_tab]}>
+                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id='id-dbot-dashboard'>
                             <DashboardComponent />
                         </div>
-                        <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id={TAB_IDS[active_tab]} />
-                        <div icon='IcChartsTabDbot' label={localize('Charts')} id={TAB_IDS[active_tab]}>
+                        <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
+                        <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
                             <Chart />
                         </div>
-                        <div icon='IcTutorialsTabs' label={localize('Tutorials')} id={TAB_IDS[active_tab]}>
+                        <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
                             <div className='tutorials-wrapper'>
                                 <Tutorial />
                             </div>

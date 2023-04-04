@@ -234,6 +234,7 @@ export type TJurisdictionModalContentProps = {
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    all_available_accounts: TTradingPlatformAvailableAccount[];
     checked: boolean;
     setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     real_synthetic_accounts_existing_data: TExistingData;

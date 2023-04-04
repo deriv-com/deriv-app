@@ -69,6 +69,14 @@ const JurisdictionModal = ({
                 : available_account.shortcode !== 'maltainvest')
     );
 
+    const all_available_accounts = trading_platform_available_accounts.filter(
+        available_account =>
+            available_account.market_type === 'all' &&
+            (show_eu_related_content
+                ? available_account.shortcode === 'maltainvest'
+                : available_account.shortcode !== 'maltainvest')
+    );
+
     const modal_title = show_eu_related_content
         ? localize('Jurisdiction for your Deriv MT5 CFDs account')
         : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
@@ -156,6 +164,7 @@ const JurisdictionModal = ({
                 account_type={account_type.type}
                 checked={checked}
                 financial_available_accounts={financial_available_accounts}
+                all_available_accounts={all_available_accounts}
                 is_virtual={is_virtual}
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}

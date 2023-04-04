@@ -416,9 +416,7 @@ export default class TradersHubStore extends BaseStore {
     getAvailableCTraderAccounts() {
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(
-                account =>
-                    ['All'].some(region => region === account.availability) &&
-                    account.platform === CFD_PLATFORMS.CTRADER
+                account => region => region === account.availability && account.platform === CFD_PLATFORMS.CTRADER
             );
             return;
         }

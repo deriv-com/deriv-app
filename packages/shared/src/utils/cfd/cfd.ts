@@ -154,7 +154,7 @@ export const getCFDAccountDisplay = ({
     if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return localize('Synthetic');
     if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
     if (platform === CFD_PLATFORMS.DERIVEZ) return '';
-    if (platform === CFD_PLATFORMS.CTRADER) return cfd_account_display;
+    if (platform === CFD_PLATFORMS.CTRADER && market_type === 'all') return '';
 
     return '';
 };

@@ -33,6 +33,12 @@
         :first-child {
             grid-column: span 2;
         }
+        :nth-child(3) {
+            grid-column: span 2;
+        }
+        :nth-child(4) {
+            grid-column: span 2;
+        }
         @include mobile {
             display: block;
             margin-top: auto;

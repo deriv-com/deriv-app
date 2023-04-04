@@ -4,7 +4,25 @@ import { toMoment } from '@deriv/shared';
 import Icon from '../icon';
 import Text from '../text';
 
-const Native = ({
+interface NativePropsT {
+    value: any;
+    id: string;
+    name: string;
+    label: string;
+    placeholder: string;
+    max_date: moment.Moment;
+    min_date: moment.Moment;
+    display_format: string;
+    data_testid: string;
+    hint?: string;
+    error?: string;
+    disabled: boolean;
+    onSelect: (Arg: string) => void;
+    onBlur: (Arg: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus: (Arg: React.FocusEvent<HTMLInputElement>) => void;
+}
+
+const Native: React.FC<NativePropsT> = ({
     id,
     disabled,
     display_format,
@@ -21,21 +39,21 @@ const Native = ({
     value,
     data_testid,
 }) => {
-    const [is_focused, setIsFocused] = React.useState(0);
-    const input_ref = React.useRef();
+    const [is_focused, setIsFocused] = React.useState<boolean>(false);
+    const input_ref: React.MutableRefObject<HTMLInputElement | null> = React.useRef(null);
 
     React.useEffect(() => {
         if (input_ref.current) input_ref.current.value = value;
     }, [value]);
 
-    const handleFocus = e => {
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
         setIsFocused(true);
         if (typeof onFocus === 'function') {
             onFocus(e);
         }
     };
 
-    const handleBlur = e => {
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         setIsFocused(false);
         if (typeof onBlur === 'function') {
             onBlur(e);
@@ -74,7 +92,11 @@ const Native = ({
                 {label || (!value && placeholder)}
             </label>
 
-            <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
+            <Icon
+                icon='IcCalendar'
+                className='dc-datepicker__calendar-icon'
+                color={disabled ? 'disabled' : undefined}
+            />
 
             <input
                 ref={input_ref}

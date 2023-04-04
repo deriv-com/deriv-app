@@ -83,32 +83,6 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
     );
 };
 
-const ShowAccountSwitcher = ({
-    acc_switcher_disabled_message,
-    account_type,
-    balance,
-    is_disabled,
-    is_eu,
-    is_virtual,
-    currency,
-    country_standpoint,
-    is_dialog_on,
-    toggleDialog,
-}) => (
-    <AccountInfo
-        acc_switcher_disabled_message={acc_switcher_disabled_message}
-        account_type={account_type}
-        balance={balance}
-        is_disabled={is_disabled}
-        is_eu={is_eu}
-        is_virtual={is_virtual}
-        currency={currency}
-        country_standpoint={country_standpoint}
-        is_dialog_on={is_dialog_on}
-        toggleDialog={toggleDialog}
-    />
-);
-
 const TradingHubHeader = ({
     header_extension,
     is_app_disabled,
@@ -159,7 +133,7 @@ const TradingHubHeader = ({
                 />
             </div>
             <div className='trading-hub-header__menu-right--items--account-toggle'>
-                <ShowAccountSwitcher
+                <AccountInfo
                     acc_switcher_disabled_message={acc_switcher_disabled_message}
                     account_type={account_type}
                     balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
@@ -267,7 +241,7 @@ const TradingHubHeader = ({
                         </Popover>
                         {cashier_routes && (
                             <div className='trading-hub-header__menu-right--items--account-toggle'>
-                                <ShowAccountSwitcher
+                                <AccountInfo
                                     acc_switcher_disabled_message={acc_switcher_disabled_message}
                                     account_type={account_type}
                                     balance={

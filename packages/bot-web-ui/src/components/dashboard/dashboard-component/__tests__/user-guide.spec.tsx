@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserGuide from '../user-guide';
+import userEvent from '@testing-library/user-event';
 import { mocked_props } from './dashboard-components.spec';
 
 describe('<UserGuide />', () => {
-    beforeEach(() => mocked_props);
     it('renders user guide button', () => {
-        // arrange
         render(<UserGuide {...mocked_props} />);
-        // assert
-        expect(screen.getByTestId('btn-use-guide', { exact: true }));
+        const use_guide_button = screen.getByTestId('btn-use-guide');
+        userEvent.click(use_guide_button);
+        expect(screen.getByTestId('btn-use-guide')).toBeInTheDocument();
     });
 });

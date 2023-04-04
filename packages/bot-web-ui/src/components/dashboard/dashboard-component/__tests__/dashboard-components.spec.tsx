@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import UserGuide from '../user-guide';
 import Sidebar from 'Components/dashboard/tutorial-tab/sidebar';
 
-//arrange
 jest.mock('Stores/connect', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
@@ -45,26 +44,20 @@ export const mocked_props = {
     showVideoDialog: jest.fn(),
     performSelfExclusionCheck: jest.fn(),
 };
-//arrange
 
 describe('<Dashboard />', () => {
-    beforeEach(() => mocked_props);
     it('user guide button click', () => {
-        // arrange
         render(<UserGuide {...mocked_props} />);
         const use_guide_button = screen.getByTestId('btn-use-guide');
-        //act
         userEvent.click(use_guide_button);
+        expect(screen.getByTestId('btn-use-guide')).toBeInTheDocument();
     });
 
     it('on user guide button click it should render the tutorials tab', () => {
-        // arrange
         render(<UserGuide {...mocked_props} />);
         const use_guide_button = screen.getByTestId('btn-use-guide');
-        //act
         userEvent.click(use_guide_button);
         render(<Sidebar {...mocked_props} />);
-        // assert
         expect(screen.getByRole('textbox')).toHaveClass('dc-tabs__wrapper__group__search-input', { exact: true });
     });
 });

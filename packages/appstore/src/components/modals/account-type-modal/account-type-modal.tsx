@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
@@ -110,6 +110,13 @@ const MT5AccountTypeModal = () => {
     const { trading_platform_available_accounts } = client;
     const { enableApp, disableApp } = ui;
     const { setAppstorePlatform } = common;
+
+    useEffect(() => {
+        if (!is_account_type_modal_visible) {
+            selectAccountTypeCard('');
+        }
+    }, [is_account_type_modal_visible, selectAccountTypeCard]);
+
     const is_financial_available = trading_platform_available_accounts.some(
         (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'financial'
     );

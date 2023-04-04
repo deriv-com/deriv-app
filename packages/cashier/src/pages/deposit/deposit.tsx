@@ -20,7 +20,7 @@ type TDeposit = {
 };
 
 const Deposit = observer(({ setSideNotes }: TDeposit) => {
-    const { client, traders_hub, ui } = useStore();
+    const { client, traders_hub } = useStore();
     const {
         can_change_fiat_currency,
         currency,

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import CashierBreadcrumb from '../../cashier-breadcrumb';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 
-const Real = ({ is_deposit = false }: { is_deposit?: boolean }) => {
+const Real = observer(({ is_deposit = false }: { is_deposit?: boolean }) => {
     const {
         traders_hub: { is_low_risk_cr_eu_real },
         ui: { is_dark_mode_on },
@@ -49,6 +49,6 @@ const Real = ({ is_deposit = false }: { is_deposit?: boolean }) => {
             )}
         </div>
     );
-};
+});
 
 export default Real;

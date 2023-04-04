@@ -79,6 +79,7 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
+        "dotenv-webpack": "^8.0.1",
         "@datadog/browser-rum": "^4.37.0",
         "@deriv/api-types": "^1.0.85",
         "@deriv/components": "^1.0.0",

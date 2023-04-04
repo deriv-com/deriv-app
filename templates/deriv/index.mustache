@@ -26,27 +26,19 @@
         <meta http-equiv="pragma" content="no-cache">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="referrer" content="origin">
-        <meta name="description" content="{{> seo_description }}"></meta>
-
-        <title>Binary Bot</title>
-        {{> bundle_css }}
-        <link rel="stylesheet" href="css/binary.css">
-        <link rel="stylesheet" href="css/styles.css">
-        {{> bot_css }}
+        <meta name="description" content="{{> seo_description }}">
 
         <style id="antiClickjack">
             body {
                 display: none !important;
             }
         </style>
-        <script type="text/javascript">
-            if (self === top) {
-                var antiClickjack = document.getElementById("antiClickjack");
-                antiClickjack.parentNode.removeChild(antiClickjack);
-            } else {
-                top.location = self.location;
-            }
-        </script>
+
+        <title>Binary Bot</title>
+        {{> bundle_css }}
+        <link rel="stylesheet" href="css/binary.css">
+        <link rel="stylesheet" href="css/styles.css">
+        {{> bot_css }}
     </head>
 
     <body>
@@ -91,6 +83,17 @@
             style="display: none; visibility: hidden;"></iframe>
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
         <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
+
+        
+        <script type="text/javascript">
+            if (self === top) {
+                var antiClickjack = document.getElementById("antiClickjack");
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            } else {
+                top.location = self.location;
+            }
+        </script>
+        
         <script>
            document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
 

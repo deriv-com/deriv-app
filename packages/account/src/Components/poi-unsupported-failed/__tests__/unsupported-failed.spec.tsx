@@ -16,6 +16,6 @@ describe('<UnsupportedFailed />', () => {
         render(<UnsupportedFailed error={error} />);
         expect(screen.getByText('Proof of identity documents upload failed')).toBeInTheDocument();
         expect(screen.getByText('error')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Icon')).toBeInTheDocument;
+        expect(screen.getByText('Mocked Icon')).toBeInTheDocument();
     });
 });

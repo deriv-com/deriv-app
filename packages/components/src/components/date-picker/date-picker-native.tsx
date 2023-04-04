@@ -5,7 +5,7 @@ import Icon from '../icon';
 import Text from '../text';
 
 interface NativePropsT {
-    value: any;
+    value: string;
     id: string;
     name: string;
     label: string;

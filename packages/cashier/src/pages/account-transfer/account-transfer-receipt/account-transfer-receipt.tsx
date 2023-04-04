@@ -35,6 +35,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     React.useEffect(() => {
         return () => {
             resetAccountTransfer();
+            onClose();
         };
     }, [resetAccountTransfer]);
 
@@ -46,7 +47,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     const switchAndRedirect = async () => {
         await switchAccount(switch_to.value);
         openStatement();
-        onClose();
     };
 
     const toggleSwitchAlert = () => {

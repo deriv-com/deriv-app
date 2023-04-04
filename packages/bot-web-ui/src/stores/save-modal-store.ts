@@ -58,6 +58,49 @@ export default class SaveModalStore implements ISaveModalStore {
         return errors;
     };
 
+    addStrategyToWorkspace = async (
+        workspace_id: string,
+        is_local: boolean,
+        save_as_collection: boolean,
+        bot_name: string
+    ) => {
+        const workspace = await getSavedWorkspaces();
+        const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
+        const {
+            load_modal: { getSaveType },
+        } = this.root_store;
+        const local_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
+        const save_collection = save_as_collection ? save_types.UNSAVED : local_type;
+        const type = save_collection;
+
+        const save_type = getSaveType(type)?.toLowerCase();
+
+        const workspace_structure = {
+            id: workspace_id,
+            xml: Blockly.Xml.domToText(xml),
+            name: bot_name,
+            timestamp: Date.now(),
+            save_type,
+        };
+
+        if (current_workspace_index >= 0) {
+            const current_workspace = workspace_structure;
+            workspace[current_workspace_index] = current_workspace;
+        } else {
+            workspace.push(workspace_structure);
+        }
+
+        workspace
+            .sort((a, b) => {
+                return new Date(a.timestamp) - new Date(b.timestamp);
+            })
+            .reverse();
+
+        if (workspace.length > MAX_STRATEGIES) {
+            workspace.pop();
+        }
+    };
+
     async onConfirmSave({ is_local, save_as_collection, bot_name }) {
         this.setButtonStatus(button_status.LOADING);
 
@@ -101,49 +144,6 @@ export default class SaveModalStore implements ISaveModalStore {
         this.updateBotName(bot_name);
         this.toggleSaveModal();
     }
-
-    addStrategyToWorkspace = async (
-        workspace_id: string,
-        is_local: boolean,
-        save_as_collection: boolean,
-        bot_name: string
-    ) => {
-        const workspace = await getSavedWorkspaces();
-        const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
-        const {
-            load_modal: { getSaveType },
-        } = this.root_store;
-        const local_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
-        const save_collection = save_as_collection ? save_types.UNSAVED : local_type;
-        const type = save_collection;
-
-        const save_type = getSaveType(type)?.toLowerCase();
-
-        const workspace_structure = {
-            id: workspace_id,
-            xml: Blockly.Xml.domToText(xml),
-            name: bot_name,
-            timestamp: Date.now(),
-            save_type,
-        };
-
-        if (current_workspace_index >= 0) {
-            const current_workspace = workspace_structure;
-            workspace[current_workspace_index] = current_workspace;
-        } else {
-            workspace.push(workspace_structure);
-        }
-
-        workspace
-            .sort((a, b) => {
-                return new Date(a.timestamp) - new Date(b.timestamp);
-            })
-            .reverse();
-
-        if (workspace.length > MAX_STRATEGIES) {
-            workspace.pop();
-        }
-    };
 
     updateBotName = (bot_name: { [key: string]: string } | string): void => {
         this.bot_name = bot_name;

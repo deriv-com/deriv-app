@@ -46,7 +46,7 @@ export const getTradeTypeName = (category: string, is_high_low = false) =>
         : null;
 
 export const getContractDurationType = (longcode: string, shortcode: string): string => {
-    if (/^MULTUP|MULTDOWN/.test(shortcode)) return '';
+    if (/^(MULTUP|MULTDOWN)/.test(shortcode)) return '';
 
     const duration_pattern = new RegExp('ticks|tick|seconds|minutes|minute|hour|hours');
     const extracted = duration_pattern.exec(longcode);

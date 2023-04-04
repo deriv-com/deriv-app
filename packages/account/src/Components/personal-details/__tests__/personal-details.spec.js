@@ -384,8 +384,6 @@ describe('<PersonalDetails/>', () => {
                         'first_name',
                         'last_name',
                         'date_of_birth',
-                        'place_of_birth',
-                        'citizen',
                         'account_opening_reason',
                     ]}
                 />
@@ -397,7 +395,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByTestId('last_name')).toBeDisabled();
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
         expect(screen.getByTestId('place_of_birth')).not.toBeDisabled();
-        expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is empty, so enable the field
+        expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is not disabled by BE, so enable the field
     });
 
     it('should disable citizen field if the client is_fully_authenticated', () => {
@@ -726,5 +724,19 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
+    });
+
+    it('should autopopulate tax_residence for MF clients', () => {
+        const new_props = {
+            ...props,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'Malta',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        const el_tax_residence = screen.getByTestId('selected_value');
+        expect(el_tax_residence).toHaveTextContent('Malta');
     });
 });

@@ -11,7 +11,8 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 
 let mockRootStore;
 
-jest.mock('Assets/svgs/trading-platform', () => (props) => <div data-testid={props.icon}>TradingPlatformIcon</div> );
+// jest.mock('Assets/svgs/trading-platform', () => (props) => <div data-testid={props.icon}>TradingPlatformIcon</div> );
+jest.mock('Assets/svgs/trading-platform', () => jest.fn(() => 'TradingPlatformIcon'));
 
 describe('<AccountTransferForm />', () => {
     beforeEach(() => {

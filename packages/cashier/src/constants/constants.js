@@ -4,12 +4,12 @@ const containers = {
     payment_agent: 'payment_agent',
     payment_agent_transfer: 'payment_agent_transfer',
     withdraw: 'withdraw',
-} as const;
+};
 
 const map_action = {
     withdraw: 'payment_withdraw',
     payment_agent: 'payment_agent_withdraw',
-} as const;
+};
 
 const icon_payment_methods = {
     Alipay: ['alipay'],
@@ -53,7 +53,7 @@ const icon_payment_methods = {
     WebMoney: ['perfectmoneyandwebmoney', 'webmoney'],
     Wechatpay: ['wechatpay'],
     Zenithbank: ['zenithbank'],
-} as const;
+};
 
 const payment_methods = {
     AbokiFX: ['AbokiFX', 'A BOKI FX'],
@@ -762,6 +762,6 @@ const payment_methods = {
     'Zanaco bank': ['ZANACO', 'Zanaco bank'],
     'Zenith bank': ['Zenith bank', 'Zenithbank', 'Zenith Bank', 'ZenithBank', 'ZENITH BANK', 'Zenith', 'zenithbank'],
     Zipit: ['Zipit', 'ZIPIT', 'ZIPIT bank transfers'],
-} as const;
+};
 
 export default { containers, map_action, icon_payment_methods, payment_methods };

@@ -1,21 +1,21 @@
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { TStatusCode, TTransactionType } from 'Types';
 
-export const getStatus = (transaction_hash: string, transaction_type: TTransactionType, status_code: TStatusCode) => {
+export const getStatus = (transaction_hash, transaction_type, status_code) => {
+    const formatted_status_code = status_code.toLowerCase();
     const formatted_transaction_hash = transaction_hash
         ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
         : localize('Pending');
     const status_list = {
         deposit: {
-            CONFIRMED: {
+            confirmed: {
                 name: localize('Successful'),
                 description: localize('Your deposit is successful.'),
                 renderer: 'successful',
                 transaction_hash: formatted_transaction_hash,
             },
-            ERROR: {
+            error: {
                 name: localize('Unsuccessful'),
                 description: localize(
                     'Your deposit is unsuccessful due to an error on the blockchain. Please contact your crypto wallet service provider for more info.'
@@ -23,7 +23,7 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            PENDING: {
+            pending: {
                 name: localize('In process'),
                 description: localize('We’ve received your request and are waiting for more blockchain confirmations.'),
                 renderer: 'in-process',
@@ -31,17 +31,16 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
             },
         },
         withdrawal: {
-            CANCELLED: {
+            cancelled: {
                 name: localize('Cancelled'),
                 description: localize('You’ve cancelled your withdrawal request.'),
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            ERROR: {
+            error: {
                 name: localize('Unsuccessful'),
                 description: (
                     <Localize
-                        key={0}
                         i18n_default_text='Your withdrawal is unsuccessful due to an error on the blockchain. Please <0>contact us</0> via live chat for more info.'
                         values={{
                             interpolation: { escapeValue: false },
@@ -52,7 +51,7 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            LOCKED: {
+            locked: {
                 name: localize('In review'),
                 description: localize(
                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel."
@@ -60,19 +59,19 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'in-review',
                 transaction_hash: formatted_transaction_hash,
             },
-            PERFORMING_BLOCKCHAIN_TXN: {
+            performing_blockchain_txn: {
                 name: localize('In process'),
                 description: localize('We’re sending your request to the blockchain.'),
                 renderer: 'in-process',
                 transaction_hash: formatted_transaction_hash,
             },
-            PROCESSING: {
+            processing: {
                 name: localize('In process'),
                 description: localize('We’re awaiting confirmation from the blockchain.'),
                 renderer: 'in-process',
                 transaction_hash: formatted_transaction_hash,
             },
-            REJECTED: {
+            rejected: {
                 name: localize('Unsuccessful'),
                 description: localize(
                     "Your withdrawal is unsuccessful. We've sent you an email with more information."
@@ -80,13 +79,13 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
-            SENT: {
+            sent: {
                 name: localize('Successful'),
                 description: localize('Your withdrawal is successful.'),
                 renderer: 'successful',
                 transaction_hash: formatted_transaction_hash,
             },
-            VERIFIED: {
+            verified: {
                 name: localize('In process'),
                 description: localize('We’re processing your withdrawal.'),
                 renderer: 'in-process',
@@ -95,16 +94,5 @@ export const getStatus = (transaction_hash: string, transaction_type: TTransacti
         },
     };
 
-    const isDeposit = (status: TStatusCode): status is keyof typeof status_list.deposit =>
-        Object.keys(status_list.deposit).includes(status);
-    const isWithdrawal = (status: TStatusCode): status is keyof typeof status_list.withdrawal =>
-        Object.keys(status_list.withdrawal).includes(status);
-
-    if (transaction_type === 'deposit' && isDeposit(status_code)) {
-        return status_list[transaction_type][status_code];
-    } else if (transaction_type === 'withdrawal' && isWithdrawal(status_code)) {
-        return status_list[transaction_type][status_code];
-    }
-
-    return null;
+    return status_list[transaction_type][formatted_status_code];
 };

@@ -1,16 +1,15 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import RecentTransaction from '../recent-transaction';
-import { BrowserHistory, createBrowserHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
 
 describe('<RecentTransaction />', () => {
-    let history: BrowserHistory, mockRootStore: TStores;
+    let history, mockRootStore;
     beforeEach(() => {
         history = createBrowserHistory();
-        mockRootStore = mockStore({
+        mockRootStore = {
             client: {
                 currency: 'BTC',
             },
@@ -37,7 +36,7 @@ describe('<RecentTransaction />', () => {
                     },
                 },
             },
-        }) as TStores;
+        };
     });
 
     const renderRecentTransaction = () => {

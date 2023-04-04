@@ -21,13 +21,12 @@ const RecentTransaction = observer(() => {
     if (!crypto_transactions.length) {
         return null;
     }
-    const { address_hash, transaction_hash, transaction_type, status_code, submit_date } = crypto_transactions[0];
+    let { address_hash, submit_date, transaction_type } = crypto_transactions[0];
+    const { status_code, transaction_hash } = crypto_transactions[0];
     const status = getStatus(transaction_hash, transaction_type, status_code);
-    const submit_date_moment = epochToMoment(submit_date).format('MMM D, YYYY');
-    const transaction_type_display_text = transaction_type[0].toUpperCase() + transaction_type.slice(1);
-    const address_hash_display_value = `${address_hash.substring(0, 4)}....${address_hash.substring(
-        address_hash.length - 4
-    )}`;
+    submit_date = epochToMoment(submit_date).format('MMM D, YYYY');
+    transaction_type = transaction_type[0].toUpperCase() + transaction_type.slice(1);
+    address_hash = `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`;
 
     const amount = crypto_transactions[0].amount;
 
@@ -44,17 +43,17 @@ const RecentTransaction = observer(() => {
                 <div className='cashier-recent-transaction__data-wrapper'>
                     <Icon
                         className='cashier-recent-transaction__icon'
-                        data_testid={transaction_type === 'deposit' ? 'dti_icon_cashier_add' : 'dti_icon_cashier_minus'}
-                        icon={transaction_type === 'deposit' ? 'IcCashierAdd' : 'IcCashierMinus'}
+                        data_testid={transaction_type === 'Deposit' ? 'dti_icon_cashier_add' : 'dti_icon_cashier_minus'}
+                        icon={transaction_type === 'Deposit' ? 'IcCashierAdd' : 'IcCashierMinus'}
                         size={32}
                     />
                     <div>
                         <div className='cashier-recent-transaction__status-wrapper'>
                             <Text as='p' size='xxs'>
                                 <Localize
-                                    i18n_default_text='{{transaction_type_display_text}} {{currency}}'
+                                    i18n_default_text='{{transaction_type}} {{currency}}'
                                     values={{
-                                        transaction_type_display_text,
+                                        transaction_type,
                                         currency,
                                     }}
                                 />
@@ -73,11 +72,11 @@ const RecentTransaction = observer(() => {
                         </div>
                         <Text as='p' size='xxxs' color='less-prominent' line_height='s'>
                             <Localize
-                                i18n_default_text='{{amount}} {{currency}} on {{submit_date_moment}}'
+                                i18n_default_text='{{amount}} {{currency}} on {{submit_date}}'
                                 values={{
                                     amount,
                                     currency,
-                                    submit_date_moment,
+                                    submit_date,
                                 }}
                             />
                         </Text>
@@ -88,7 +87,7 @@ const RecentTransaction = observer(() => {
                                     &nbsp;
                                 </Text>
                                 <Text as='p' size='xxxs' color='red' line_height='s'>
-                                    {address_hash_display_value}
+                                    {address_hash}
                                 </Text>
                             </div>
 

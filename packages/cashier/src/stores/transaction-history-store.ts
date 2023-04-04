@@ -1,6 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
-import { TWebSocket, TRootStore, TTransactionItem } from '../types';
+import { TWebSocket, TRootStore, TTransactionItem } from 'Types';
 
 export default class TransactionHistoryStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {

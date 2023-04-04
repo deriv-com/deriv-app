@@ -23,7 +23,6 @@ const Input = ({
     is_hj_whitelisted,
     is_incrementable,
     is_read_only,
-    lang,
     max_length,
     name,
     onBlur,
@@ -107,7 +106,6 @@ const Input = ({
                 value={display_value ?? ''}
                 aria-label={ariaLabel}
                 data-lpignore={type !== 'password'}
-                lang={lang}
             />
         </div>
     );
@@ -133,7 +131,6 @@ Input.propTypes = {
     is_hj_whitelisted: PropTypes.bool,
     is_incrementable: PropTypes.bool,
     is_read_only: PropTypes.bool,
-    lang: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,
     onBlur: PropTypes.func,

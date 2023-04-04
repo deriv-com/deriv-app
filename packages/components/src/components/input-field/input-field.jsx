@@ -42,7 +42,6 @@ const InputField = ({
     inputmode,
     increment_button_type,
     label,
-    lang,
     max_length,
     max_value,
     min_value,
@@ -80,6 +79,7 @@ const InputField = ({
         if (type === 'number' || type === 'tel') {
             const is_empty = !e.target.value || e.target.value === '' || e.target.value === '  ';
             const signed_regex = is_signed ? '^([+-.0-9])' : '^';
+            e.target.value = e.target.value.replace(',', '.');
 
             const is_number = new RegExp(`${signed_regex}(\\d*)?${is_float ? '(\\.\\d+)?' : ''}$`).test(e.target.value);
 
@@ -249,7 +249,6 @@ const InputField = ({
             is_hj_whitelisted={is_hj_whitelisted}
             is_incrementable={is_increment_input}
             is_read_only={is_read_only}
-            lang={lang}
             max_length={max_length}
             name={name}
             onBlur={onBlur}
@@ -364,7 +363,6 @@ InputField.propTypes = {
     is_signed: PropTypes.bool,
     is_unit_at_right: PropTypes.bool,
     increment_button_type: PropTypes.string,
-    lang: PropTypes.string,
     label: PropTypes.string,
     max_length: PropTypes.number,
     name: PropTypes.string,

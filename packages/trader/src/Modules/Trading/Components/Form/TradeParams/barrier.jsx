@@ -104,7 +104,7 @@ const Barrier = ({
                 <LabeledQuantityInputMobile
                     input_label={barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
                     id='dt_barrier_1_input'
-                    type='text'
+                    type='number'
                     inputmode='decimal'
                     name='barrier_1'
                     value={barrier_1}
@@ -118,7 +118,6 @@ const Barrier = ({
                         `barrier__fields-barriers-${input_class}-input`
                     )}
                     current_focus={current_focus}
-                    lang='en-150'
                     format={format}
                     onChange={onChange}
                     is_float
@@ -130,7 +129,7 @@ const Barrier = ({
                         input_label={localize('Barrier 2')}
                         id='dt_barrier_2_input'
                         inputmode='decimal'
-                        type='text'
+                        type='number'
                         name='barrier_2'
                         value={barrier_2}
                         is_incrementable={!is_absolute_barrier}
@@ -143,7 +142,6 @@ const Barrier = ({
                             `barrier__fields-barriers-${input_class}-input`
                         )}
                         current_focus={current_focus}
-                        lang='en-150'
                         format={format}
                         onChange={onChange}
                         is_float

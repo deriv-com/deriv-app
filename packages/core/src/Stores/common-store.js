@@ -1,12 +1,14 @@
-import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-import { getAllowedLanguages, changeLanguage as changeLanguageTranslation } from '@deriv/translations';
-import { action, computed, observable, makeObservable } from 'mobx';
-import { currentLanguage } from 'Utils/Language/index';
-import ServerTime from '_common/base/server_time';
-import BinarySocket from '_common/base/socket_base';
-import BaseStore from './base-store';
-import WS from 'Services/ws-methods';
 import * as SocketCache from '_common/base/socket_cache';
+
+import { action, computed, makeObservable, observable } from 'mobx';
+import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
+
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import ServerTime from '_common/base/server_time';
+import WS from 'Services/ws-methods';
+import { currentLanguage } from 'Utils/Language/index';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
@@ -51,7 +53,7 @@ export default class CommonStore extends BaseStore {
             setAppRouterHistory: action.bound,
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
-            changeLanguage: action.bound,
+            changeSelectedLanguage: action.bound,
             getExchangeRate: action.bound,
             routeBackInApp: action.bound,
         });
@@ -111,6 +113,30 @@ export default class CommonStore extends BaseStore {
             }, 10000);
         }
     }
+
+    changeSelectedLanguage = key => {
+        SocketCache.clear();
+        if (key === 'EN') {
+            window.localStorage.setItem('i18n_language', key);
+        }
+
+        WS.setSettings({
+            set_settings: 1,
+            preferred_language: key,
+        }).then(() => {
+            const new_url = new URL(window.location.href);
+            if (key === 'EN') {
+                new_url.searchParams.delete('lang');
+            } else {
+                new_url.searchParams.set('lang', key);
+            }
+            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+            changeLanguage(key, () => {
+                this.changeCurrentLanguage(key);
+                BinarySocket.closeAndOpenNewConnection(key);
+            });
+        });
+    };
 
     setAppstorePlatform(platform) {
         this.platform = platform;
@@ -233,7 +259,7 @@ export default class CommonStore extends BaseStore {
     setServicesError(error) {
         this.services_error = error;
         if (isMobile()) {
-            if (error.code === 'CompanyWideLimitExceeded') {
+            if (error.code === 'CompanyWideLimitExceeded' || error.code === 'PleaseAuthenticate') {
                 this.root_store.ui.toggleServicesErrorModal(true);
             } else {
                 this.root_store.ui.addToast({
@@ -263,31 +289,6 @@ export default class CommonStore extends BaseStore {
         }
         this.app_routing_history.unshift(router_action);
     }
-
-    changeLanguage = (key, changeCurrentLanguage) => {
-        const request = {
-            set_settings: 1,
-            preferred_language: key,
-        };
-        SocketCache.clear();
-        if (key === 'EN') {
-            window.localStorage.setItem('i18n_language', key);
-        }
-
-        WS.setSettings(request).then(() => {
-            const new_url = new URL(window.location.href);
-            if (key === 'EN') {
-                new_url.searchParams.delete('lang');
-            } else {
-                new_url.searchParams.set('lang', key);
-            }
-            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            changeLanguageTranslation(key, () => {
-                changeCurrentLanguage(key);
-                BinarySocket.closeAndOpenNewConnection(key);
-            });
-        });
-    };
 
     isCurrentLanguage = lang => lang === this.current_language;
 

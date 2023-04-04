@@ -8,7 +8,7 @@ import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
-import ExitTradersHubModal from './exit-traders-hub-modal';
+import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 
 const AccountSignupModal = React.lazy(() =>
@@ -71,12 +71,11 @@ const AppModals = ({
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
-    setIsCFDScoreAvailable,
     content_flag,
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
-    is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible,
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
 }) => {
@@ -89,7 +88,6 @@ const AppModals = ({
         if (is_logged_in) {
             fetchFinancialAssessment().then(response => {
                 setCFDScore(response?.cfd_score ?? 0);
-                setIsCFDScoreAvailable(true);
             });
         }
     }, [is_logged_in]);
@@ -152,10 +150,11 @@ const AppModals = ({
         ComponentToLoad = <CompletedAssessmentModal />;
     } else if (is_deriv_account_needed_modal_visible) {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
-    } else if (is_exit_traders_hub_modal_visible) {
-        ComponentToLoad = <ExitTradersHubModal />;
     } else if (should_show_risk_accept_modal) {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
+    }
+    if (is_ready_to_deposit_modal_visible) {
+        ComponentToLoad = <ReadyToDepositModal />;
     }
 
     return (
@@ -180,7 +179,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,
-    setIsCFDScoreAvailable: client.setIsCFDScoreAvailable,
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
@@ -188,7 +186,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
-    is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,

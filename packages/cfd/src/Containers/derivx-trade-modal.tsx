@@ -2,7 +2,14 @@ import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getCFDAccountKey, isMobile } from '@deriv/shared';
+import {
+    CFD_PLATFORMS,
+    getCFDAccountDisplay,
+    getCFDPlatformLabel,
+    getCFDAccountKey,
+    getPlatformSettings,
+    isMobile,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { QRCode } from 'react-qrcode';
@@ -148,8 +155,6 @@ const DerivXTradeModal = ({
             is_mt5_trade_modal: true,
         });
 
-    const qr_code_mobile = isMobile() ? '100%' : '80%';
-
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
@@ -224,6 +229,15 @@ const DerivXTradeModal = ({
                     <DxtradeDesktopDownload is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
                 </div>
             </div>
+            <Text
+                align='center'
+                as='div'
+                className='cfd-trade-modal__download-center-text'
+                size={isMobile() ? 'xxxs' : 'xxs'}
+                weight='bold'
+            >
+                {localize('Download Deriv X on your phone to trade with the Deriv X account')}
+            </Text>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links--apple'>
@@ -240,16 +254,20 @@ const DerivXTradeModal = ({
                         </a>
                     </div>
                 </div>
-                <div className='cfd-trade-modal__download-center-options--qrcode'>
-                    <QRCode
-                        value={mobileDownloadLink('dxtrade', 'android')}
-                        size={5}
-                        style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
-                    />
-                    <Text align='center' size='xxs'>
-                        {localize('Scan the QR code to download Deriv X.')}
-                    </Text>
-                </div>
+                {!isMobile() && (
+                    <div className='cfd-trade-modal__download-center-options--qrcode'>
+                        <QRCode
+                            value={mobileDownloadLink('dxtrade', 'android')}
+                            size={5}
+                            style={{ height: 'auto', maxWidth: '100%', width: '80%' }}
+                        />
+                        <Text align='center' size='xxs'>
+                            {localize('Scan the QR code to download {{ platform }}.', {
+                                platform: getPlatformSettings('dxtrade').name,
+                            })}
+                        </Text>
+                    </div>
+                )}
             </div>
         </div>
     );

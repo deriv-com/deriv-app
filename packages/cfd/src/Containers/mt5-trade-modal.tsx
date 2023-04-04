@@ -10,11 +10,8 @@ import DMT5TradeModal from './dmt5-trade-modal';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
-    disableApp: () => void;
-    enableApp: () => void;
     is_eu_user: boolean;
     is_open: boolean;
-    context: RootStore;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
@@ -31,8 +28,6 @@ type TMT5TradeModalProps = {
 
 const MT5TradeModal = ({
     mt5_trade_account,
-    disableApp,
-    enableApp,
     is_eu_user,
     is_open,
     onPasswordManager,
@@ -71,9 +66,7 @@ const MT5TradeModal = ({
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
                 <Modal
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={true}
+                    is_open={is_open}
                     title={localize('Trade')}
                     toggleModal={toggleModal}
                     should_header_stick_body={false}
@@ -100,11 +93,9 @@ const MT5TradeModal = ({
     );
 };
 
-export default connect(({ modules: { cfd }, modules, ui, common, traders_hub }: RootStore) => ({
+export default connect(({ modules: { cfd }, modules, common, traders_hub }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     platform: common.platform,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
     mt5_trade_account: modules.cfd.mt5_trade_account,
     show_eu_related_content: traders_hub.show_eu_related_content,
 }))(MT5TradeModal);

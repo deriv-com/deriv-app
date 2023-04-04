@@ -11,15 +11,18 @@ const CFD_text: { [key: string]: string } = {
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
     synthetic: 'Derived',
+    synthetic_demo: 'Derived Demo',
     synthetic_bvi: 'Derived BVI',
     synthetic_svg: 'Derived SVG',
     synthetic_v: 'Derived Vanuatu',
     financial: 'Financial',
+    financial_demo: 'Financial Demo',
     financial_bvi: 'Financial BVI',
     financial_fx: 'Financial Labuan',
     financial_v: 'Financial Vanuatu',
     financial_svg: 'Financial SVG',
     all: 'Swap-Free',
+    all_demo: 'Swap-Free Demo',
     all_svg: 'Swap-Free SVG',
 } as const;
 
@@ -55,7 +58,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                 case 'vanuatu':
                     return 'synthetic_v';
                 default:
-                    return 'synthetic';
+                    return 'synthetic_demo';
             }
         }
     }
@@ -75,7 +78,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                 case 'vanuatu':
                     return 'financial_v';
                 default:
-                    return 'financial';
+                    return 'financial_demo';
             }
         }
     }
@@ -85,7 +88,7 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
             case 'svg':
                 return 'all_svg';
             default:
-                return 'all';
+                return 'all_demo';
         }
     }
     return undefined;

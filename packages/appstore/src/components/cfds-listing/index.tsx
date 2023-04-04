@@ -140,13 +140,18 @@ const CFDsListing = () => {
                         const has_mt5_account_status = existing_account.status
                             ? getMT5AccountAuthStatus(existing_account.status)
                             : null;
+                        const is_demo_account = existing_account.account_type === 'demo';
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
                                 clickable_icon
                                 icon={existing_account.icon}
-                                sub_title={existing_account?.sub_title}
+                                sub_title={
+                                    is_demo_account
+                                        ? localize(`${existing_account?.sub_title} Demo`)
+                                        : existing_account?.sub_title
+                                }
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
                                 short_code_and_region={existing_account?.short_code_and_region}
                                 platform={existing_account.platform}

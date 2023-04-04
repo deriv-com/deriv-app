@@ -39,6 +39,7 @@ describe('<CryptoDeposit />', () => {
     };
 
     it('should show loader', () => {
+        // TODO: use mockStore for tests after TStores type will be updated
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 currency: 'BTC',
@@ -65,6 +66,70 @@ describe('<CryptoDeposit />', () => {
         renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
+    });
+
+    it('should show proper breadcrumbs', () => {
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+
+        expect(screen.getByText(/cashier/i)).toBeInTheDocument();
+        expect(screen.getByText(/deposit cryptocurrencies/i)).toBeInTheDocument();
+    });
+
+    it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+
+        const el_breadcrumb_cashier = screen.queryByText(/cashier/i);
+
+        if (el_breadcrumb_cashier) {
+            fireEvent.click(el_breadcrumb_cashier);
+            expect(mockRootStore.modules?.cashier.general_store.setIsDeposit).toHaveBeenCalledWith(false);
+        }
     });
 
     it('should show proper error message and button', () => {

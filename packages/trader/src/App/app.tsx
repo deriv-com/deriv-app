@@ -9,6 +9,7 @@ import { NetworkStatusToastErrorPopup } from 'Modules/Trading/Containers/toast-p
 import { MobxContentProvider } from 'Stores/connect';
 import initStore from './init-store.js'; // eslint-disable-line import/extensions
 import 'Sass/app.scss';
+import { datadogRum } from '@datadog/browser-rum';
 
 type Apptypes = {
     passthrough: {
@@ -16,6 +17,25 @@ type Apptypes = {
         WS: any;
     };
 };
+
+const DATADOG_APP_ID = process.env.DATADOG_APPLICATION_ID ? process.env.DATADOG_APPLICATION_ID : '';
+const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ? process.env.DATADOG_CLIENT_TOKEN : '';
+
+datadogRum.init({
+    applicationId: DATADOG_APP_ID,
+    clientToken: DATADOG_CLIENT_TOKEN,
+    site: 'datadoghq.com',
+    service: 'deriv.com-static-site',
+    env: 'qa',
+    // Specify a version number to identify the deployed version of your application in Datadog
+    // version: '1.0.0',
+    sessionSampleRate: 100,
+    sessionReplaySampleRate: 20,
+    trackUserInteractions: true,
+    trackResources: true,
+    trackLongTasks: true,
+    defaultPrivacyLevel: 'mask-user-input',
+});
 
 const TradeModals = Loadable({
     loader: () => import(/* webpackChunkName: "trade-modals", webpackPrefetch: true */ './Containers/Modals'),

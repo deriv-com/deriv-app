@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv/components';
 import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
@@ -93,20 +92,15 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
 
     const platform_dropdown = (
         <div className='platform-dropdown'>
-            <Div100vhContainer height_offset='9rem' is_disabled={isDesktop()}>
-                <div className='platform-dropdown__list'>
-                    {platform_config.map(platform => {
-                        return (
-                            <div key={platform.name} onClick={closeDrawer} ref={ref}>
-                                <PlatformDropdownContent
-                                    platform={platform}
-                                    app_routing_history={app_routing_history}
-                                />
-                            </div>
-                        );
-                    })}
-                    <TradersHubRedirect />
-                </div>
+            <Div100vhContainer className='platform-dropdown__list' height_offset='15rem' is_disabled={isDesktop()}>
+                {platform_config.map(platform => {
+                    return (
+                        <div key={platform.name} onClick={closeDrawer} ref={ref}>
+                            <PlatformDropdownContent platform={platform} app_routing_history={app_routing_history} />
+                        </div>
+                    );
+                })}
+                <TradersHubRedirect />
             </Div100vhContainer>
         </div>
     );
@@ -116,10 +110,6 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
     }
 
     return ReactDOM.createPortal(platform_dropdown, document.getElementById('deriv_app'));
-};
-
-PlatformDropdown.propTypes = {
-    platform_configs: PropTypes.array,
 };
 
 export { PlatformDropdown, PlatformBox };

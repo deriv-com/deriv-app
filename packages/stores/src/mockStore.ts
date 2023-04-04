@@ -249,6 +249,7 @@ const mock = (): TRootStore => {
             content_flag: '',
             is_eu_user: false,
             is_low_risk_cr_eu_real: false,
+            setTogglePlatformType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

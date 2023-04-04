@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
+import { extractInfoFromShortcode, getContractSubtype, isHighLow, isTurbosContract } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 
@@ -16,6 +16,7 @@ const MarketSymbolIconRow = ({
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
+    const is_turbos = isTurbosContract(info_from_shortcode.category);
 
     // We need the condition to update the label for vanilla trade type since the label doesn't match with the trade type key unlike other contracts
     const category_label = is_vanilla
@@ -52,7 +53,11 @@ const MarketSymbolIconRow = ({
                         classNameTarget='category-type-icon__popover'
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
-                        message={getTradeTypeName(info_from_shortcode.category, is_high_low)}
+                        message={
+                            is_turbos
+                                ? getContractSubtype(info_from_shortcode.category)
+                                : getTradeTypeName(info_from_shortcode.category, is_high_low)
+                        }
                         is_bubble_hover_enabled
                         disable_target_icon
                     >

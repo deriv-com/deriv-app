@@ -6,13 +6,12 @@ import { localize } from '@deriv/translations';
 import { NavLink } from 'react-router-dom';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
-import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { connect } from 'Stores/connect';
 import TogglePositions from './toggle-positions.jsx';
 
 const TogglePositionsMobile = ({
     active_positions_count,
-    all_positions,
+    filtered_positions,
     currency,
     disableApp,
     enableApp,
@@ -22,13 +21,9 @@ const TogglePositionsMobile = ({
     onClickSell,
     onClickRemove,
     onClickCancel,
-    symbol,
     togglePositionsDrawer,
     toggleUnsupportedContractModal,
-    trade_contract_type,
 }) => {
-    let filtered_positions = [];
-
     const closeModal = () => {
         filtered_positions.slice(0, 5).map(position => {
             const { contract_info } = position;
@@ -38,16 +33,6 @@ const TogglePositionsMobile = ({
         });
         togglePositionsDrawer();
     };
-
-    filtered_positions = all_positions.filter(
-        p =>
-            p.contract_info &&
-            symbol === p.contract_info.underlying &&
-            (trade_contract_type.includes('turbos')
-                ? filterByContractType(p.contract_info, 'turbosshort') ||
-                  filterByContractType(p.contract_info, 'turboslong')
-                : filterByContractType(p.contract_info, trade_contract_type))
-    );
 
     // Show only 5 most recent open contracts
     const body_content = (
@@ -131,9 +116,7 @@ const TogglePositionsMobile = ({
 };
 // TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
 // Fixes issue with positions not updated in positions modal
-export default connect(({ modules, ui, portfolio }) => ({
-    symbol: modules.trade.symbol,
-    trade_contract_type: modules.trade.contract_type,
+export default connect(({ ui, portfolio }) => ({
     onClickRemove: portfolio.removePositionById,
     togglePositionsDrawer: ui.togglePositionsDrawer,
     is_positions_drawer_on: ui.is_positions_drawer_on,

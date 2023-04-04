@@ -165,6 +165,6 @@ export const shouldShowExpiration = (symbol: string) => /^cry/.test(symbol);
 export const shouldShowCancellation = (symbol: string) => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);
 
 export const getContractSubtype = (type: string) =>
-    /(VANILLALONG|TURBOS)/.test(type)
-        ? capitalizeFirstLetter(type.replace(/(VANILLALONG|TURBOS)/, '').toLowerCase())
+    /(VANILLALONG|TURBOS)/i.test(type)
+        ? capitalizeFirstLetter(type.replace(/(VANILLALONG|TURBOS)/i, '').toLowerCase())
         : '';

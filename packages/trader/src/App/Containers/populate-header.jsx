@@ -18,20 +18,23 @@ const PopulateHeader = ({
     symbol,
     trade_contract_type,
 }) => {
-    const symbol_positions = positions.filter(
+    const filtered_positions = positions.filter(
         p =>
             p.contract_info &&
             symbol === p.contract_info.underlying &&
-            filterByContractType(p.contract_info, trade_contract_type)
+            (trade_contract_type.includes('turbos')
+                ? filterByContractType(p.contract_info, 'turbosshort') ||
+                  filterByContractType(p.contract_info, 'turboslong')
+                : filterByContractType(p.contract_info, trade_contract_type))
     );
 
     return (
         <TogglePositionsMobile
             active_positions_count={active_positions_count}
-            all_positions={positions}
+            filtered_positions={filtered_positions}
             currency={positions_currency}
             disableApp={disableApp}
-            is_empty={!symbol_positions.length}
+            is_empty={!filtered_positions.length}
             enableApp={enableApp}
             error={positions_error}
             onClickSell={onPositionsSell}

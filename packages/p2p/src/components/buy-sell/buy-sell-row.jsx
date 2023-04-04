@@ -51,7 +51,7 @@ const BuySellRow = ({ row: advert }) => {
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name, rating_average, rating_count } = advert.advertiser_details;
-    const rating_average_decimal = rating_average ? Number(rating_average.toFixed(1)) : null;
+    const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
         rate_type,
@@ -93,17 +93,25 @@ const BuySellRow = ({ row: advert }) => {
                         </div>
                         <div className='buy-sell-row__rating'>
                             {!!rating_count && !!rating_average ? (
-                                <StarRating
-                                    empty_star_className='buy-sell-row__rating--star'
-                                    empty_star_icon='IcEmptyStar'
-                                    full_star_className='buy-sell-row__rating--star'
-                                    full_star_icon='IcFullStar'
-                                    initial_value={rating_average_decimal}
-                                    is_readonly
-                                    number_of_stars={5}
-                                    should_allow_hover_effect={false}
-                                    star_size={14}
-                                />
+                                <div className='buy-sell-row__rating--row'>
+                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
+                                        {rating_average_decimal}
+                                    </Text>
+                                    <StarRating
+                                        empty_star_className='buy-sell-row__rating--star'
+                                        empty_star_icon='IcEmptyStar'
+                                        full_star_className='buy-sell-row__rating--star'
+                                        full_star_icon='IcFullStar'
+                                        initial_value={rating_average_decimal}
+                                        is_readonly
+                                        number_of_stars={5}
+                                        should_allow_hover_effect={false}
+                                        star_size={14}
+                                    />
+                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
+                                        ({rating_count})
+                                    </Text>
+                                </div>
                             ) : (
                                 <Text color='less-prominent' size='xxs'>
                                     <Localize i18n_default_text='Not rated yet' />
@@ -194,17 +202,25 @@ const BuySellRow = ({ row: advert }) => {
                         </div>
                         <div className='buy-sell-row__rating'>
                             {!!rating_count && !!rating_average ? (
-                                <StarRating
-                                    empty_star_className='buy-sell-row__rating--star'
-                                    empty_star_icon='IcEmptyStar'
-                                    full_star_className='buy-sell-row__rating--star'
-                                    full_star_icon='IcFullStar'
-                                    initial_value={rating_average_decimal}
-                                    is_readonly
-                                    number_of_stars={5}
-                                    should_allow_hover_effect={false}
-                                    star_size={14}
-                                />
+                                <div className='buy-sell-row__rating--row'>
+                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
+                                        {rating_average_decimal}
+                                    </Text>
+                                    <StarRating
+                                        empty_star_className='buy-sell-row__rating--star'
+                                        empty_star_icon='IcEmptyStar'
+                                        full_star_className='buy-sell-row__rating--star'
+                                        full_star_icon='IcFullStar'
+                                        initial_value={rating_average_decimal}
+                                        is_readonly
+                                        number_of_stars={5}
+                                        should_allow_hover_effect={false}
+                                        star_size={14}
+                                    />
+                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
+                                        ({rating_count})
+                                    </Text>
+                                </div>
                             ) : (
                                 <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xxs'}>
                                     <Localize i18n_default_text='Not rated yet' />

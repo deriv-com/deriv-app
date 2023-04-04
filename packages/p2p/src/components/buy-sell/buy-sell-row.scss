@@ -124,6 +124,12 @@
                 margin-right: 0.1rem;
             }
         }
+
+        &--row {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
     }
 
     &__table-cell {

@@ -89,6 +89,12 @@
         }
     }
 
+    &__checkbox {
+        .dc-checkbox__box {
+            margin: 0;
+        }
+    }
+
     &__icon {
         border-radius: 2px;
     }

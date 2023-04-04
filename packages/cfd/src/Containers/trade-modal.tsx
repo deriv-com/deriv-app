@@ -9,6 +9,8 @@ import { QRCode } from 'react-qrcode';
 import {
     getDXTradeWebTerminalLink,
     getPlatformDXTradeDownloadLink,
+    getPlatformCTraderDownloadLink,
+    getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
 
@@ -36,16 +38,6 @@ export type TSpecBoxProps = {
 };
 
 type TDxtradeDesktopDownloadProps = {
-    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
-    is_demo: string;
-};
-
-type TDerivEZDesktopDownloadProps = {
-    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
-    is_demo: string;
-};
-
-type TCTraderDesktopDownloadProps = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
 };
@@ -100,7 +92,13 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
 );
 
 const mobileDownloadLink = (platform: string, type: 'ios' | 'android' | 'huawei') => {
-    return platform === CFD_PLATFORMS.MT5 ? getPlatformMt5DownloadLink(type) : getPlatformDXTradeDownloadLink(type);
+    return platform === CFD_PLATFORMS.MT5
+        ? getPlatformMt5DownloadLink(type)
+        : platform === CFD_PLATFORMS.DXTRADE
+        ? getPlatformDXTradeDownloadLink(type)
+        : platform === CFD_PLATFORMS.CTRADER
+        ? getPlatformCTraderDownloadLink(type)
+        : getPlatformDerivEZDownloadLink(type);
 };
 
 const getTitle = (market_type: string, is_eu_user: boolean) => {
@@ -131,18 +129,10 @@ const DxtradeDesktopDownload = ({ dxtrade_tokens, is_demo }: TDxtradeDesktopDown
     );
 };
 
-const DerivEZDesktopDownload = ({ dxtrade_tokens, is_demo }: TDerivEZDesktopDownloadProps) => {
+const DerivEZDesktopDownload = () => {
     return (
         <React.Fragment>
-            <a
-                className='cfd-trade-modal__dxtrade-button'
-                href={getDXTradeWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    dxtrade_tokens && dxtrade_tokens[is_demo ? 'demo' : 'real']
-                )}
-                target='_blank'
-                rel='noopener noreferrer'
-            >
+            <a className='cfd-trade-modal__dxtrade-button' href={''} target='_blank' rel='noopener noreferrer'>
                 <Icon className='cfd-trade-modal__dxtrade-button-icon' icon='IcBrandDerivEzWordmark' size={36} />
                 <div className='cfd-trade-modal__dxtrade-button-text'>
                     <Text color='colored-background' size='xxs' weight='bold'>
@@ -154,15 +144,12 @@ const DerivEZDesktopDownload = ({ dxtrade_tokens, is_demo }: TDerivEZDesktopDown
     );
 };
 
-const CTraderDesktopDownload = ({ dxtrade_tokens, is_demo }: TCTraderDesktopDownloadProps) => {
+const CTraderDesktopDownload = () => {
     return (
         <React.Fragment>
             <a
                 className='cfd-trade-modal__dxtrade-button'
-                href={getDXTradeWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    dxtrade_tokens && dxtrade_tokens[is_demo ? 'demo' : 'real']
-                )}
+                href={'https://ctrader.com/download/'}
                 target='_blank'
                 rel='noopener noreferrer'
             >
@@ -226,7 +213,7 @@ const TradeModal = ({
             return (
                 <>
                     <QRCode
-                        value={mobileDownloadLink('dxtrade', 'android')}
+                        value={mobileDownloadLink('ctrader', 'android')}
                         size={5}
                         style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
                     />
@@ -239,7 +226,7 @@ const TradeModal = ({
             return (
                 <>
                     <QRCode
-                        value={mobileDownloadLink('dxtrade', 'android')}
+                        value={mobileDownloadLink('derivez', 'android')}
                         size={5}
                         style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
                     />
@@ -269,17 +256,17 @@ const TradeModal = ({
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {localize('Run cTrader on your browser')}
                         </Text>
-                        <CTraderDesktopDownload is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
+                        <CTraderDesktopDownload />
                     </div>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Icon icon='IcWindowsLogo' size={32} />
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                            {localize('MetaTrader 5 Windows app')}
+                            {localize('cTrader Windows app')}
                         </Text>
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={getPlatformMt5DownloadLink('windows')}
+                            href={'https://ctrader.com/download/'}
                             target='_blank'
                             rel='noopener noreferrer'
                         >
@@ -296,7 +283,7 @@ const TradeModal = ({
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv EZ on your browser')}
                     </Text>
-                    <DerivEZDesktopDownload is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
+                    <DerivEZDesktopDownload />
                 </div>
             );
         }

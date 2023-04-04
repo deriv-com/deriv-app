@@ -38,7 +38,7 @@ const MT5TradeModal = ({
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
-    platform,
+    platform = 'cTrader',
     is_demo,
     show_eu_related_content,
 }: TMT5TradeModalProps) => {
@@ -62,7 +62,7 @@ const MT5TradeModal = ({
                 toggleModal={toggleModal}
                 dxtrade_tokens={dxtrade_tokens}
                 is_demo={is_demo}
-                platform={platform}
+                platform={'cTrader'}
             />
         );
     };
@@ -73,7 +73,7 @@ const MT5TradeModal = ({
                 <Modal
                     disableApp={disableApp}
                     enableApp={enableApp}
-                    is_open={is_open}
+                    is_open={true}
                     title={localize('Trade')}
                     toggleModal={toggleModal}
                     should_header_stick_body={false}

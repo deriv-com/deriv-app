@@ -7,6 +7,9 @@ const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503'
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
+const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
+const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.spotware.ct&hl=en&gl=US';
+
 const getBrokerName = () => 'Deriv Limited';
 
 const getTopUpConfig = () => {
@@ -16,7 +19,7 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
         case 'ios':
             return DXTRADE_IOS_APP_URL;
@@ -24,6 +27,32 @@ const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
             return DXTRADE_HUAWEI_APP_URL;
         default:
             return DXTRADE_ANDROID_APP_URL;
+    }
+};
+
+const getPlatformCTraderDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+    switch (platform) {
+        case 'ios':
+            return CTRADER_IOS_APP_URL;
+        case 'android':
+            return CTRADER_ANDROID_APP_URL;
+        case 'huawei':
+            return '';
+        default:
+            return CTRADER_ANDROID_APP_URL;
+    }
+};
+
+const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+    switch (platform) {
+        case 'ios':
+            return '';
+        case 'android':
+            return '';
+        case 'huawei':
+            return '';
+        default:
+            return '';
     }
 };
 
@@ -75,6 +104,8 @@ export {
     DEMO_DXTRADE_URL,
     getBrokerName,
     getPlatformDXTradeDownloadLink,
+    getPlatformCTraderDownloadLink,
+    getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
     getDXTradeWebTerminalLink,
     getMT5WebTerminalLink,

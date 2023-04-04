@@ -461,7 +461,7 @@ describe('<CFDDashboard />', () => {
         window.location = { pathname: routes.dxtrade, hash: '' } as (string | Location) & Location;
         renderCFDDashboardWithRouter({ is_logged_in: true, platform: CFD_PLATFORMS.DXTRADE }, rerender);
         fireEvent.click(screen.getByRole('button', { name: /fund transfer/i }));
-        expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(2);
+        expect(props.disableCFDPasswordModal).toHaveBeenCalledTimes(1);
         expect(window.location.pathname).toBe(routes.cashier_acc_transfer);
 
         renderCFDDashboardWithRouter({ is_logged_in: true, platform: CFD_PLATFORMS.MT5 }, rerender);

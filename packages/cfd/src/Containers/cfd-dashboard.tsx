@@ -300,12 +300,14 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         meta: TOpenAccountTransferMeta
     ) => {
         if (meta.category === 'real') {
-            if ('platform' in data && data.platform === CFD_PLATFORMS.DXTRADE)
-                sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
-            else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+            if (data) {
+                if ('platform' in data && data.platform === CFD_PLATFORMS.DXTRADE)
+                    sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
+                else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
 
-            props.disableCFDPasswordModal();
-            props.history.push(routes.cashier_acc_transfer);
+                props.disableCFDPasswordModal();
+                props.history.push(routes.cashier_acc_transfer);
+            }
         } else {
             if ('sub_account_type' in data) props.setCurrentAccount(data, meta);
             props.openTopUpModal();

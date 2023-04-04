@@ -26,7 +26,14 @@
         <meta http-equiv="pragma" content="no-cache">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="referrer" content="origin">
-        <meta name="description" content="{{> seo_description }}">
+        <meta name="description" content="{{> seo_description }}"></meta>
+
+        <title>Binary Bot</title>
+        {{> bundle_css }}
+        <link rel="stylesheet" href="css/binary.css">
+        <link rel="stylesheet" href="css/styles.css">
+        {{> bot_css }}
+
         <style id="antiClickjack">
             body {
                 display: none !important;
@@ -40,12 +47,6 @@
                 top.location = self.location;
             }
         </script>
-
-        <title>Binary Bot</title>
-        {{> bundle_css }}
-        <link rel="stylesheet" href="css/binary.css">
-        <link rel="stylesheet" href="css/styles.css">
-        {{> bot_css }}
     </head>
 
     <body>

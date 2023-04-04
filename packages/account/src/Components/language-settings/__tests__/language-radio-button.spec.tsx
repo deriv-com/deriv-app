@@ -49,11 +49,11 @@ describe('LanguageRadioButton', () => {
             'settings-language__language-link--active'
         );
 
-        const btn = screen.getByRole('radio');
-        expect(btn).toHaveClass('settings-language__language--radio-button');
-        expect(btn).toHaveAttribute('id', 'test id');
-        expect(btn).toHaveAttribute('name', 'Test Language');
-        userEvent.click(btn);
+        const button = screen.getByRole('radio');
+        expect(button).toHaveClass('settings-language__language--radio-button');
+        expect(button).toHaveAttribute('id', 'test id');
+        expect(button).toHaveAttribute('name', 'Test Language');
+        userEvent.click(button);
         expect(mock_props.onChange).toHaveBeenCalled();
     });
 });

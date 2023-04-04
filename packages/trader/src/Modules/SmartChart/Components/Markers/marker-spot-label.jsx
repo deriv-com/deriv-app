@@ -10,6 +10,7 @@ import MarkerSpot from './marker-spot.jsx';
 const MarkerSpotLabel = ({
     align_label,
     has_hover_toggle,
+    is_value_hidden,
     spot_className,
     spot_count,
     spot_epoch,
@@ -39,23 +40,25 @@ const MarkerSpotLabel = ({
 
     return (
         <div className={'chart-spot-label'}>
-            {show_label && (
+            {show_label && !is_value_hidden && (
                 <div className='chart-spot-label__info-container'>
                     <div
                         data-testid='dt_time_value_container'
                         className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${align_label}`}
                     >
-                        <div className='chart-spot-label__time-container'>
-                            <Icon
-                                icon='IcClockOutline'
-                                height={10}
-                                width={10}
-                                className='chart-spot-label__time-icon'
-                            />
-                            <Text as='p' color='prominent' size='xxxs'>
-                                {toMoment(+spot_epoch).format('HH:mm:ss')}
-                            </Text>
-                        </div>
+                        {spot_epoch && (
+                            <div className='chart-spot-label__time-container'>
+                                <Icon
+                                    icon='IcClockOutline'
+                                    height={10}
+                                    width={10}
+                                    className='chart-spot-label__time-icon'
+                                />
+                                <Text as='p' color='prominent' size='xxxs'>
+                                    {toMoment(+spot_epoch).format('HH:mm:ss')}
+                                </Text>
+                            </div>
+                        )}
                         <div
                             data-testid='dt_value_container'
                             className={classNames('chart-spot-label__value-container', {
@@ -75,11 +78,13 @@ const MarkerSpotLabel = ({
 
 MarkerSpotLabel.defaultProps = {
     align_label: 'top',
+    is_value_hidden: false,
 };
 
 MarkerSpotLabel.propTypes = {
     align_label: PropTypes.oneOf(['top', 'bottom']),
     has_hover_toggle: PropTypes.bool,
+    is_value_hidden: PropTypes.bool,
     spot_className: PropTypes.string,
     spot_count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     spot_epoch: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

@@ -68,7 +68,7 @@ const FooterNote = ({
 
 const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
     return (
-        <div className={`${props.card_classname}__footnote`}>
+        <div data-testid='dt-jurisdiction-footnote' className={`${props.card_classname}__footnote`}>
             <Text
                 as='p'
                 color='prominent'

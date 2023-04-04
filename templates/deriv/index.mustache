@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title="{{> seo_title }}">
+        <title="{{> seo_title }}"></title>
         <link rel="apple-touch-icon" sizes="57x57" href="{{> binary_style_img }}/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="114x114"
             href="{{> binary_style_img }}/favicons/apple-touch-icon-114x114.png">
@@ -27,15 +27,25 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="referrer" content="origin">
         <meta name="description" content="{{> seo_description }}">
+        <style id="antiClickjack">
+            body {
+                display: none !important;
+            }
+        </style>
+        <script type="text/javascript">
+            if (self === top) {
+                var antiClickjack = document.getElementById("antiClickjack");
+                antiClickjack.parentNode.removeChild(antiClickjack);
+            } else {
+                top.location = self.location;
+            }
+        </script>
 
         <title>Binary Bot</title>
         {{> bundle_css }}
         <link rel="stylesheet" href="css/binary.css">
         <link rel="stylesheet" href="css/styles.css">
         {{> bot_css }}
-
-        {{> antiJack_css }}
-        {{> antiJack_script }}
     </head>
 
     <body>

@@ -5,6 +5,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -175,5 +176,10 @@ module.exports = function (env) {
         ],
         //TODO: Uncomment this line when type script migrations on all packages done
         // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
+        plugins: [
+            new Dotenv({
+                systemvars: true,
+            }),
+        ],
     };
 };

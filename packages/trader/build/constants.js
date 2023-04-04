@@ -12,6 +12,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const {
     // copyConfig,
@@ -125,6 +126,9 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = (base, is_test_env) => [
+    new Dotenv({
+        systemvars: true,
+    }),
     new CleanWebpackPlugin(),
     // new HtmlWebPackPlugin(htmlOutputConfig()),
     // new HtmlWebpackTagsPlugin(htmlInjectConfig()),

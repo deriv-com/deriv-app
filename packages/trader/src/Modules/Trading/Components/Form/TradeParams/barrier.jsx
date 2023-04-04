@@ -118,7 +118,7 @@ const Barrier = ({
                         `barrier__fields-barriers-${input_class}-input`
                     )}
                     current_focus={current_focus}
-                    lang='en-US'
+                    lang='en-150'
                     format={format}
                     onChange={onChange}
                     is_float
@@ -143,7 +143,7 @@ const Barrier = ({
                             `barrier__fields-barriers-${input_class}-input`
                         )}
                         current_focus={current_focus}
-                        lang='en'
+                        lang='en-150'
                         format={format}
                         onChange={onChange}
                         is_float

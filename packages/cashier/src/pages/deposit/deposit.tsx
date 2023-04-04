@@ -1,7 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
-import { ContentFlag } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';

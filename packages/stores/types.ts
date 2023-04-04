@@ -119,7 +119,6 @@ type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
-    is_pre_appstore: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -201,9 +200,11 @@ type TCommonStore = {
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
+    is_language_changing: boolean;
 };
 
 type TUiStore = {
+    app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
@@ -250,6 +251,7 @@ type TNotificationStore = {
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: any;
+    is_low_risk_cr_eu_real: boolean;
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
 };

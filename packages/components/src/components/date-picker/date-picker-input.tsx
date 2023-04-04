@@ -1,12 +1,36 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 import Input from '../input';
+import type { TIconProps } from '../types';
 
-const DatePickerIcon = ({ icon, ...props }) => <Icon className='dc-datepicker__icon' icon={icon} {...props} />;
+const DatePickerIcon = ({ icon, ...props }: TIconProps) => (
+    <Icon className='dc-datepicker__icon' icon={icon} {...props} />
+);
 
-const DatePickerInput = ({
+interface TDatePickerInputProps {
+    id?: number;
+    name: string;
+    label: string;
+    value: string;
+    placeholder: string;
+    type?: string;
+    className?: string;
+    error?: string;
+    disabled: boolean;
+    is_placeholder_visible: boolean;
+    required: boolean;
+    readOnly?: boolean;
+    is_clearable?: boolean;
+    show_leading_icon?: boolean;
+    error_messages: string[];
+    onClick: () => void;
+    onBlur: () => void;
+    onChangeInput: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onClickClear?: () => void;
+}
+
+const DatePickerInput: React.FC<TDatePickerInputProps> = ({
     className,
     disabled,
     error,
@@ -65,15 +89,15 @@ const DatePickerInput = ({
             error={error}
             id={id ? `${id}_input` : undefined}
             autoComplete='off'
-            is_autocomplete_disabled='true'
-            is_hj_whitelisted='true'
+            is_autocomplete_disabled={true}
+            is_hj_whitelisted={true}
             label={label}
             name={name}
             onChange={onChangeInput}
             onClick={onClick}
             placeholder={placeholder}
             readOnly={readOnly}
-            leading_icon={show_leading_icon && OpenIcon}
+            leading_icon={show_leading_icon ? OpenIcon : undefined}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
             type={readOnly ? 'text' : 'number'}
             value={is_placeholder_visible || !value ? '' : value}
@@ -84,27 +108,6 @@ const DatePickerInput = ({
             {...common_props}
         />
     );
-};
-
-DatePickerInput.propTypes = {
-    className: PropTypes.string,
-    error_messages: PropTypes.array,
-    placeholder: PropTypes.string,
-    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_clearable: PropTypes.bool,
-    name: PropTypes.string,
-    label: PropTypes.string,
-    show_leading_icon: PropTypes.bool,
-    onClick: PropTypes.func,
-    onClickClear: PropTypes.func,
-    value: PropTypes.string,
-    disabled: PropTypes.bool,
-    error: PropTypes.string,
-    is_placeholder_visible: PropTypes.bool,
-    onChangeInput: PropTypes.func,
-    onBlur: PropTypes.func,
-    readOnly: PropTypes.bool,
-    required: PropTypes.bool,
 };
 
 export default DatePickerInput;

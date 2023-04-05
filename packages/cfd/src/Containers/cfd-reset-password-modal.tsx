@@ -100,6 +100,7 @@ const CFDResetPasswordModal = ({
         if (values.new_password.toLowerCase() === email.toLowerCase()) {
             errors.new_password = localize('Your password cannot be the same as your email address.');
         }
+
         return errors;
     };
 

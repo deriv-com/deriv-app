@@ -5,9 +5,9 @@ const useWithdrawLocked = () => {
     const { client } = useStore();
     const is_need_poi = useNeedPOI();
 
-    const status_name_locked = client.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
+    const has_withdrawal_locked_status = client.account_status?.status?.some(status => status === 'withdrawal_locked');
 
-    return status_name_locked || is_need_poi;
+    return has_withdrawal_locked_status || is_need_poi;
 };
 
 export default useWithdrawLocked;

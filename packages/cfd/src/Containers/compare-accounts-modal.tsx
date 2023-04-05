@@ -43,7 +43,7 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     upgradeable_landing_companies: unknown[];
     landing_company_shortcode: string;
     content_flag: string;
-    financial_restricted_countries: string[];
+    CFDs_restricted_countries: string[];
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
@@ -115,7 +115,7 @@ const CompareAccountsModal = ({
     toggleCompareAccounts,
     content_flag,
     show_eu_related_content,
-    financial_restricted_countries,
+    CFDs_restricted_countries,
 }: TCompareAccountsModalProps) => {
     const location = window.location.pathname;
     const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
@@ -144,7 +144,7 @@ const CompareAccountsModal = ({
     const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
 
     const is_preappstore_restricted_cr_demo_account =
-        is_pre_appstore_setting && financial_restricted_countries && content_flag === ContentFlag.CR_DEMO;
+        is_pre_appstore_setting && CFDs_restricted_countries && content_flag === ContentFlag.CR_DEMO;
 
     const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
     const mt5_accounts = [
@@ -309,5 +309,5 @@ export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
     is_eu_user: traders_hub.is_eu_user,
     content_flag: traders_hub.content_flag,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    financial_restricted_countries: traders_hub.financial_restricted_countries,
+    CFDs_restricted_countries: traders_hub.CFDs_restricted_countries,
 }))(CompareAccountsModal);

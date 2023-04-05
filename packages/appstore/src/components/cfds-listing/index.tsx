@@ -49,7 +49,7 @@ const CFDsListing = () => {
         showTopUpModal,
         no_CR_account,
         setSelectedAccount,
-        financial_restricted_countries,
+        CFDs_restricted_countries,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -204,7 +204,7 @@ const CFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
-            {!is_eu_user && !financial_restricted_countries && (
+            {!is_eu_user && !CFDs_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>

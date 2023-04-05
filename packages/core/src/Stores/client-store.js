@@ -1620,11 +1620,14 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
+            if (Object.keys(this.account_settings).length === 0) {
+                this.setAccountSettings((await WS.authorized.cache.getSettings()).get_settings);
+            }
+
+            if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            if (account_settings && !account_settings.residence) {
+            if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
 

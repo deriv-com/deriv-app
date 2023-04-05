@@ -1,4 +1,5 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { ThemeProvider } from '@deriv/ui';
 import { CashierStoreProvider } from './stores/useCashierStores';
@@ -8,7 +9,9 @@ const CashierProviders = ({ children, store }: React.PropsWithChildren<{ store: 
     return (
         <StoreProvider store={store}>
             <CashierStoreProvider>
-                <ThemeProvider>{children} </ThemeProvider>
+                <APIProvider>
+                    <ThemeProvider>{children}</ThemeProvider>
+                </APIProvider>
             </CashierStoreProvider>
         </StoreProvider>
     );

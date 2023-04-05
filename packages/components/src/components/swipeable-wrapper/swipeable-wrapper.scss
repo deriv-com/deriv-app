@@ -29,5 +29,9 @@
         display: flex;
         padding: 1.6rem 0.8rem;
         justify-content: space-between;
+
+        &--is-expanded {
+            bottom: 9.8rem;
+        }
     }
 }

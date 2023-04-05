@@ -62,7 +62,7 @@ const ModalManager = () => {
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
     } = ui;
-    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
+    const { is_demo } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -184,10 +184,7 @@ const ModalManager = () => {
                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                 setShouldShowCooldownModal={setShouldShowCooldownModal}
             />
-            <AccountTransferModal
-                is_modal_open={is_account_transfer_modal_open}
-                toggleModal={toggleAccountTransferModal}
-            />
+            <AccountTransferModal />
             <FailedVerificationModal />
         </React.Fragment>
     );

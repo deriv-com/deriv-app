@@ -139,6 +139,18 @@ const Redirect = ({
             }
             break;
         }
+        case 'add_account_multiplier': {
+            WS.wait('get_account_status').then(() => {
+                if (!currency) return openRealAccountSignup('set_currency');
+                return openRealAccountSignup('maltainvest');
+            });
+            const ext_platform_url = url_params.get('ext_platform_url');
+            if (ext_platform_url) {
+                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
+                redirected_to_route = true;
+            }
+            break;
+        }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
             sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);

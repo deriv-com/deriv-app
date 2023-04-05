@@ -17,14 +17,14 @@ import { useCashierStore } from '../../stores/useCashierStores';
 type TAccountTransferProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
-    onClose: () => void;
     openAccountSwitcherModal?: () => void;
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
 const AccountTransfer = observer(
-    ({ onClickDeposit, onClickNotes, onClose, openAccountSwitcherModal, setSideNotes }: TAccountTransferProps) => {
-        const { client } = useStore();
+    ({ onClickDeposit, onClickNotes, openAccountSwitcherModal, setSideNotes }: TAccountTransferProps) => {
+        const { client, traders_hub } = useStore();
+        const { toggleAccountTransferModal } = traders_hub;
         const { account_transfer, general_store, transaction_history } = useCashierStore();
 
         const {
@@ -102,7 +102,7 @@ const AccountTransfer = observer(
             return <NoBalance onClickDeposit={onClickDeposit} />;
         }
         if (is_transfer_confirm) {
-            return <AccountTransferReceipt onClose={onClose} />;
+            return <AccountTransferReceipt onClose={toggleAccountTransferModal} />;
         }
         if (!is_from_outside_cashier && is_crypto_transactions_visible) {
             return <CryptoTransactionsHistory />;

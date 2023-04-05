@@ -18,7 +18,14 @@ const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
     const { notification_messages_ui: Notifications } = ui;
     const { is_landing_company_loaded, is_logged_in, is_switching, is_logging_in, is_account_setting_loaded } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
+    const {
+        selected_platform_type,
+        setTogglePlatformType,
+        is_tour_open,
+        content_flag,
+        is_eu_user,
+        toggleAccountTransferModal,
+    } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
@@ -31,6 +38,10 @@ const TradersHub = () => {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
+
+    // React.useEffect(() => {
+    //     onClose();
+    // }, []);
 
     React.useEffect(() => {
         setTimeout(() => {

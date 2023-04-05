@@ -9,7 +9,8 @@ export const getLanguage = () => {
     const lang =
         getStorage('lang') in supportedLanguages ? getStorage('lang') : isQueryLangSupported ? queryLang : 'en';
     if (!isQueryLangSupported) {
-        window.history.pushState(null, '/', '/?lang=en');
+        const newSearch = document.location.search.replace(/lang=+[a-z]{2}/, 'lang=en');
+        window.history.pushState(null, '/', newSearch);
     }
     setStorage('lang', lang);
     setCookieLanguage(lang);

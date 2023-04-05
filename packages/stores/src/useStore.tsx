@@ -1,17 +1,20 @@
 import React, { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react';
 import { TRootStore } from '../types';
-import { CounterStore } from './stores';
+import ExchangeRatesProvider from './providers/ExchangeRatesProvider';
+import { CounterStore, ExchangeRatesStore } from './stores';
 
 export type TStores = TRootStore & {
+    exchange_rates: ExchangeRatesStore;
     counter: CounterStore;
 };
 
 const StoreContext = createContext<TStores | null>(null);
 
 const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
-    const memoizedValue = useMemo(
+    const memoizedValue: TStores = useMemo(
         () => ({
             ...store,
+            exchange_rates: new ExchangeRatesStore(),
             counter: new CounterStore(),
         }),
         [store]
@@ -19,11 +22,16 @@ const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStor
 
     useEffect(() => {
         return () => {
-            return memoizedValue.counter.unmount();
+            memoizedValue.exchange_rates.unmount();
+            memoizedValue.counter.unmount();
         };
     }, [memoizedValue]);
 
-    return <StoreContext.Provider value={memoizedValue}>{children}</StoreContext.Provider>;
+    return (
+        <StoreContext.Provider value={memoizedValue}>
+            <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+        </StoreContext.Provider>
+    );
 };
 
 const useStore = () => {

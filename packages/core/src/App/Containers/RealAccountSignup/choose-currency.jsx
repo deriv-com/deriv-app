@@ -30,17 +30,7 @@ const ChooseCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
 
-    const [all_payment_agent_list, setAllPaymentAgentList] = React.useState();
-
-    const { data, is_loading, send } = usePaymentAgentList();
-
-    React.useEffect(() => {
-        send();
-    }, [send]);
-
-    React.useEffect(() => {
-        setAllPaymentAgentList(data);
-    }, [data]);
+    const { all_payment_agent_list, is_loading } = usePaymentAgentList();
 
     React.useEffect(() => {
         return () => setShouldShowAllAvailableCurrencies(false);
@@ -66,6 +56,7 @@ const ChooseCurrency = ({
             all_payment_agent_list,
             account_list
         );
+        console.log('is_loading', is_loading);
 
         const reorderCryptoCurrencies = should_show_all_available_currencies
             ? reorderCurrencies(
@@ -188,7 +179,6 @@ const ChooseCurrency = ({
 
 ChooseCurrency.propTypes = {
     account_list: PropTypes.array,
-    all_payment_agent_list: PropTypes.array,
     available_crypto_currencies: PropTypes.array,
     closeRealAccountSignup: PropTypes.func,
     continueRouteAfterChooseCrypto: PropTypes.func,
@@ -205,7 +195,6 @@ ChooseCurrency.propTypes = {
 
 export default connect(({ client, modules, ui }) => ({
     account_list: client.account_list,
-    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
     available_crypto_currencies: client.available_crypto_currencies,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     continueRouteAfterChooseCrypto: ui.continueRouteAfterChooseCrypto,

@@ -7,11 +7,12 @@ import { routes } from '@deriv/shared';
 import type { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
 
-jest.mock('@deriv/hooks', () => {
+jest.mock('@deriv/api', () => {
     const data = { list: ['PA1', 'PA2'] };
+    const isSuccess = true;
     return {
-        ...jest.requireActual('@deriv/hooks'),
-        usePaymentAgentList: jest.fn(() => ({ data, send: jest.fn() })),
+        ...jest.requireActual('@deriv/api'),
+        useFetch: jest.fn(() => ({ data, isSuccess })),
     };
 });
 

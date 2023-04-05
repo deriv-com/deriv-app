@@ -1,20 +1,18 @@
-import React from 'react';
-import { useWS } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
 const usePaymentAgentList = (currency?: string) => {
     const { client } = useStore();
     const { residence } = client;
 
-    const { send: _send, ...rest } = useWS('paymentagent_list');
-
-    const send = React.useCallback(() => {
-        _send({ paymentagent_list: residence, currency });
-    }, [_send, currency, residence]);
+    const { data, isLoading } = useFetch('paymentagent_list', {
+        payload: { paymentagent_list: residence, currency },
+        options: { enabled: Boolean(residence) },
+    });
 
     return {
-        ...rest,
-        send,
+        all_payment_agent_list: data?.list,
+        is_loading: isLoading,
     };
 };
 

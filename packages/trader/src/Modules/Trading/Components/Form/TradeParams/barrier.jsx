@@ -115,9 +115,6 @@ const Barrier = ({
                         'barrier__fields-input',
                         'barrier__fields-barriers-input',
                         `barrier__fields-barriers-${input_class}-input`
-                        // {
-                        //     'barrier__fields-input--is-offset': !is_absolute_barrier,
-                        // }
                     )}
                     current_focus={current_focus}
                     format={format}
@@ -125,7 +122,6 @@ const Barrier = ({
                     is_float
                     is_signed
                     setCurrentFocus={setCurrentFocus}
-                    inputmode='numeric'
                 />
                 {barrier_count === 2 && (
                     <LabeledQuantityInputMobile
@@ -142,9 +138,6 @@ const Barrier = ({
                             'barrier__fields-input',
                             'barrier__fields-barriers-input',
                             `barrier__fields-barriers-${input_class}-input`
-                            // {
-                            //     'barrier__fields-input--is-offset': !is_absolute_barrier,
-                            // }
                         )}
                         current_focus={current_focus}
                         format={format}
@@ -152,7 +145,6 @@ const Barrier = ({
                         is_float
                         is_signed
                         setCurrentFocus={setCurrentFocus}
-                        inputmode='numeric'
                     />
                 )}
             </MobileWrapper>

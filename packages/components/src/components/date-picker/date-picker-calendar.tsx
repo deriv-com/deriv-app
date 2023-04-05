@@ -15,7 +15,7 @@ type TDatePickerCalendar = {
     style: Record<string, string | number>;
     placement: string;
     onHover?: (hovered_date: string) => void;
-    onSelect: (formateed_date: string, keep_open: boolean) => void;
+    onSelect: (formatted_date: string, keep_open: boolean) => void;
 };
 
 const DatePickerCalendar = React.forwardRef(

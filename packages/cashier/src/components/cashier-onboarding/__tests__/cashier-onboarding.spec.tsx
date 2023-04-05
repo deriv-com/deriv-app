@@ -7,12 +7,12 @@ import { routes } from '@deriv/shared';
 import type { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
 
-jest.mock('@deriv/api', () => {
-    const data = { list: ['PA1', 'PA2'] };
-    const isSuccess = true;
+jest.mock('@deriv/hooks', () => {
+    const all_payment_agent_list = ['PA1', 'PA2'];
+    const is_loading = false;
     return {
-        ...jest.requireActual('@deriv/api'),
-        useFetch: jest.fn(() => ({ data, isSuccess })),
+        ...jest.requireActual('@deriv/hooks'),
+        usePaymentAgentList: jest.fn(() => ({ all_payment_agent_list, is_loading })),
     };
 });
 

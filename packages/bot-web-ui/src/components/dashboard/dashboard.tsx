@@ -284,8 +284,7 @@ const Dashboard = ({
                         'dashboard__run-strategy-wrapper--padded': active_tab === 2,
                     })}
                 >
-                    {active_tab !== 2 && <RunStrategy />}
-
+                    <RunStrategy />
                     {([BOT_BUILDER, CHART].includes(active_tab) || has_started_onboarding_tour) &&
                         !has_started_bot_builder_tour && <RunPanel />}
                 </div>

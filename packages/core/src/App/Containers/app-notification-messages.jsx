@@ -148,11 +148,10 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
-    // svg... and authenticate keys will be showed like separate pop up (not only inside 'View notifications')
     const filtered_excluded_notifications = notifications.filter(message =>
         priority_toast_messages.includes(message.key) ? message : excluded_notifications.includes(message.key)
     );
-    
+
     const notifications_sublist =
         window.location.pathname === routes.cashier_deposit
             ? filtered_excluded_notifications.filter(message => message.key.includes('switched_to_real'))

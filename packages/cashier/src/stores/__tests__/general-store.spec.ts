@@ -1,6 +1,6 @@
 import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
-import { routes } from '@deriv/shared';
+import { routes, ContentFlag } from '@deriv/shared';
 import GeneralStore from '../general-store';
 import type { TWebSocket, TRootStore } from 'Types';
 
@@ -76,6 +76,7 @@ beforeEach(() => {
         ui: {
             toggleSetCurrencyModal: jest.fn(),
         },
+        traders_hub: { content_flag: ContentFlag.CR_DEMO },
     };
     WS = {
         authorized: {
@@ -104,20 +105,20 @@ describe('GeneralStore', () => {
         expect(general_store.is_crypto).toBeTruthy();
     });
 
-    // it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
-    //     expect(general_store.is_p2p_enabled).toBeFalsy();
-    // });
+    it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
+        expect(general_store.is_p2p_enabled).toBeFalsy();
+    });
 
-    // it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
-    //     general_store.setIsP2pVisible(true);
-    //     general_store.root_store.client.is_eu = true;
-    //     expect(general_store.is_p2p_enabled).toBeFalsy();
-    // });
+    it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
+        general_store.setIsP2pVisible(true);
+        expect(general_store.is_p2p_enabled).toBeTruthy();
+    });
 
-    // it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
-    //     general_store.setIsP2pVisible(true);
-    //     expect(general_store.is_p2p_enabled).toBeTruthy();
-    // });
+    it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
+        general_store.setIsP2pVisible(true);
+        general_store.root_store.traders_hub.content_flag = ContentFlag.EU_REAL;
+        expect(general_store.is_p2p_enabled).toBeFalsy();
+    });
 
     // TODO: fix this test once website_status is called after authorized card has been released
     // it('should show p2p in cashier onboarding if the user account is not virtual, and he has USD account', async () => {

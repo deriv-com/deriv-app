@@ -180,7 +180,7 @@ export type TJurisdictionCardProps = {
     account_type: string;
     type_of_card: MT5_Jurisdictions;
     disabled: boolean;
-    cardFlipStatus: TCardFlipStatus;
+    card_flip_status: TCardFlipStatus;
     flipCard: (cardName: MT5_Jurisdictions) => void;
 };
 
@@ -263,7 +263,7 @@ export type TJurisdictionModalContentProps = {
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;
-    cardFlipStatus: TCardFlipStatus;
+    card_flip_status: TCardFlipStatus;
     flipCard: (cardName: MT5_Jurisdictions) => void;
 };
 

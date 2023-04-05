@@ -33,7 +33,7 @@ const JurisdictionModal = ({
     has_submitted_cfd_personal_details,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
-    const [cardFlipStatus, setCardFlipStatus] = React.useState({
+    const [card_flip_status, setCardFlipStatus] = React.useState({
         svg: false,
         bvi: false,
         vanuatu: false,
@@ -175,8 +175,8 @@ const JurisdictionModal = ({
         }
     };
 
-    const flipCard = (cardName: MT5_Jurisdictions) => {
-        setCardFlipStatus({ ...cardFlipStatus, [cardName]: !cardFlipStatus[cardName] });
+    const flipCard = (card_name: MT5_Jurisdictions) => {
+        setCardFlipStatus({ ...card_flip_status, [card_name]: !card_flip_status[card_name] });
     };
 
     const ModalContent = () => (
@@ -191,7 +191,7 @@ const JurisdictionModal = ({
                 context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
-                cardFlipStatus={cardFlipStatus}
+                card_flip_status={card_flip_status}
                 flipCard={flipCard}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>

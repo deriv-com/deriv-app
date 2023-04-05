@@ -16,7 +16,7 @@ const JurisdictionCard = ({
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
     type_of_card,
-    cardFlipStatus,
+    card_flip_status,
     flipCard,
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
@@ -26,7 +26,7 @@ const JurisdictionCard = ({
     const verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs
         : card_values.financial_verification_docs;
-    const isCardFlipped = cardFlipStatus[type_of_card];
+    const is_card_flipped = card_flip_status[type_of_card];
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
@@ -43,7 +43,7 @@ const JurisdictionCard = ({
             })}
             onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
         >
-            {isCardFlipped ? (
+            {is_card_flipped ? (
                 <div
                     className={classNames(
                         `${card_classname}__card-content-container`,

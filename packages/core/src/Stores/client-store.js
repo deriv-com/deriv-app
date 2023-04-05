@@ -276,6 +276,7 @@ export default class ClientStore extends BaseStore {
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
+            should_show_eu_content: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -805,6 +806,11 @@ export default class ClientStore extends BaseStore {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
+    }
+
+    get should_show_eu_content() {
+        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
+        return (!this.loginid && this.is_eu_country) || this.is_eu || is_current_mf;
     }
 
     get is_virtual() {

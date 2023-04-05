@@ -392,6 +392,13 @@ export default class TradeStore extends BaseStore {
                 this.resetAccumulatorData();
             }
         );
+        reaction(
+            () => this.root_store.common.is_language_changing,
+            () => {
+                this.setValidationRules(getValidationRules());
+                this.changeDurationValidationRules();
+            }
+        );
         when(
             () => this.accumulator_range_list.length,
             () => this.setDefaultGrowthRate()

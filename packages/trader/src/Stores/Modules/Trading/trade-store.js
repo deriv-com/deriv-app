@@ -22,6 +22,9 @@ import {
     showDigitalOptionsUnavailableError,
     showMxMltUnavailableError,
     showUnavailableLocationError,
+    formatMoney,
+    getCurrencyDisplayCode,
+    unsupported_contract_types_list,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -29,7 +32,7 @@ import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
-
+import { getAvailableContractTypes } from 'Modules/Trading/Helpers/contract-type';
 import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
 import { processTradeParams } from './Helpers/process';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
@@ -147,6 +150,9 @@ export default class TradeStore extends BaseStore {
 
     // Mobile
     is_trade_params_expanded = true;
+
+    //Toastbox
+    contract_purchase_toast_box;
 
     addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
@@ -324,6 +330,9 @@ export default class TradeStore extends BaseStore {
             updateLimitOrderBarriers: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
+            contract_purchase_toast_box: observable,
+            clearContractPurchaseToastBox: action.bound,
+            setContractPurchaseToastbox: action.bound,
         });
 
         // Adds intercept to change min_max value of duration validation
@@ -837,6 +846,7 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
+                            this.setContractPurchaseToastbox(response.buy);
                             this.is_purchasing_contract = false;
                             return;
                         }
@@ -1558,6 +1568,22 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla() {
         return this.contract_type === 'vanilla';
+    }
+
+    setContractPurchaseToastbox(response) {
+        const list = getAvailableContractTypes(this.contract_types_list, unsupported_contract_types_list);
+
+        return (this.contract_purchase_toast_box = {
+            key: true,
+            buy_price: formatMoney(this.root_store.client.currency, response.buy_price, true, 0, 0),
+            contract_type: this.contract_type,
+            currency: getCurrencyDisplayCode(this.root_store.client.currency),
+            list,
+        });
+    }
+
+    clearContractPurchaseToastBox() {
+        this.contract_purchase_toast_box = undefined;
     }
 
     async getFirstOpenMarket(markets_to_search) {

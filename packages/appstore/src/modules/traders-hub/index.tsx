@@ -13,6 +13,7 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 import './traders-hub.scss';
+import WalletsBanner from 'Components/wallets-banner';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -84,6 +85,11 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    <WalletsBanner migration_status={'ineligible'} />
+                    <WalletsBanner migration_status={'eligible'} />
+                    <WalletsBanner migration_status={'failed'} />
+                    <WalletsBanner migration_status={'in_progress'} />
+                    <WalletsBanner migration_status={'migrated'} />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

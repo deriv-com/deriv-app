@@ -21,6 +21,7 @@ beforeEach(() => {
         },
         client: {
             loginid: '',
+            account_settings: {},
         },
         modules: {
             cashier: {
@@ -37,6 +38,9 @@ beforeEach(() => {
                     onMountCommon: jest.fn(),
                 },
             },
+        },
+        ui: {
+            is_real_acc_signup_on: false,
         },
     };
     payment_agent_transfer_store = new PaymentAgentTransferStore({ WS, root_store });

@@ -65,7 +65,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         } else {
             // if the account transferred to is a Deriv MT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
-            setShouldSwitchAccount();
+            setShouldSwitchAccount(true);
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }

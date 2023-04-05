@@ -105,8 +105,8 @@ export default class AccountTransferStore {
         return need_financial_assessment && this.error.is_ask_financial_risk_approval;
     }
 
-    setShouldSwitchAccount() {
-        this.should_switch_account = true;
+    setShouldSwitchAccount(value: boolean) {
+        this.should_switch_account = value;
     }
 
     setBalanceByLoginId(loginid: string, balance: string | number) {

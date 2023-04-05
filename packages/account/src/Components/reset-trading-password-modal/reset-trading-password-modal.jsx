@@ -46,7 +46,6 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
         } else if (!validPassword(values.password)) {
             errors.password = getErrorMessages().password();
         }
-
         return errors;
     };
 

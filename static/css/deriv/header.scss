@@ -623,35 +623,31 @@
 
             &-footer {
                 display: flex;
-                justify-content: space-around;
+                justify-content: space-between;
                 align-items: center;
-
-                button {
-                    color: #333333;
-                    font-size: 1.4rem;
-                    border: 0.1rem solid #999999;
-                    border-radius: 0.4rem;
-                    background: transparent;
-                }
+                padding: 0 16px;
 
                 &__manage {
-                    color: #333333;
-                    font-size: 1.4rem;
-                    border: 0.1rem solid #999999;
-                    border-radius: 0.4rem;
-                    background: transparent;
-                    font-size: 12px;
-                    border: 1px solid #999999;
-                    border-radius: 4px;
-                    background: transparent;
-                    color: #333333;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    font-size: 12px !important;
+                    color: #333333;
+                    border: 1px solid #999999;
+                    border-radius: 4px;
+                    background: transparent;
+                    font-size: 14px;
+                    text-transform: none;
+                    padding: 0 16px;
+                    height: 2rem;
+                    font-family: unset;
+                    font-weight: 600;
+                    
                 }
 
                 &--demo {
+                    justify-content: flex-end;
+                }
+                &--real{
                     justify-content: flex-end;
                 }
             }
@@ -816,6 +812,9 @@
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        span{
+                            font-size: 14px;
+                        }
                     }
                 }
             }
@@ -1024,7 +1023,7 @@
                 align-items: center;
                 justify-content: flex-end;
                 padding: 16px 13px;
-                float: right;
+                padding-right: 0;
                 cursor: pointer;
 
                 @include mobile {

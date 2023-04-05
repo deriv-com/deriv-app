@@ -38,7 +38,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                     onClick={() => setIsAccordionOpen(!isAccordionOpen)}
                 >
                     <div className='account__switcher-accordion-header-text'>
-                        <span>{translate(isReal ? 'Deriv Accounts' : 'Demo Accounts')}</span>
+                        <span>{translate(isReal ? 'Deriv accounts' : 'Demo accounts')}</span>
                         <img
                             className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
                             src='image/deriv/ic-chevron-down.svg'

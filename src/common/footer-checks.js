@@ -47,9 +47,9 @@ const isLowRisk = async (financial_company, gaming_company, token_list, risk_cla
     const gaming_shortcode = gaming_company?.shortcode;
     const low_risk_landing_company = financial_shortcode === 'maltainvest' && gaming_shortcode === 'svg';
     return (
-        low_risk_landing_company ||
+         low_risk_landing_company ||
         (upgradable_companies?.includes('svg') && upgradable_companies?.includes('maltainvest')) ||
-        risk_classification === 'low'
+         risk_classification === 'low'
     );
 };
 
@@ -59,7 +59,7 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
         (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
 
     const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
-    return high_risk_landing_company || risk_classification === 'high' || restricted_countries;
+    return  risk_classification === 'high'  || high_risk_landing_company || restricted_countries;
 };
 
 export const isMultiplier = async landing_company_list => {
@@ -77,7 +77,7 @@ export const checkSwitcherType = async () => {
 
     const { financial_company, gaming_company } = landing_company;
     const account_status = await api.send({ get_account_status: 1 });
-
+    
     const {
         get_account_status: { risk_classification },
     } = account_status;
@@ -106,7 +106,7 @@ export const checkSwitcherType = async () => {
     if (is_high_risk) {
         is_low_risk = false;
     }
-
+    
     return {
         low_risk: is_low_risk,
         high_risk: is_high_risk,

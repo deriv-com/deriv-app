@@ -26,7 +26,6 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         currency,
         is_landing_company_loaded,
         is_switching,
-        residence,
     } = client;
     const { is_from_derivgo } = common;
     const {

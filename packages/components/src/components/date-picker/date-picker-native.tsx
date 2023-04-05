@@ -17,9 +17,9 @@ interface NativePropsT {
     hint?: string;
     error?: string;
     disabled: boolean;
-    onSelect: (Arg: string) => void;
-    onBlur: (Arg: React.FocusEvent<HTMLInputElement>) => void;
-    onFocus: (Arg: React.FocusEvent<HTMLInputElement>) => void;
+    onSelect: (new_date: string) => void;
+    onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const Native: React.FC<NativePropsT> = ({
@@ -106,7 +106,6 @@ const Native: React.FC<NativePropsT> = ({
                 type='date'
                 max={max_date && toMoment(max_date).format('YYYY-MM-DD')}
                 min={min_date && toMoment(min_date).format('YYYY-MM-DD')}
-                // error={error}
                 required
                 onBlur={handleBlur}
                 onFocus={handleFocus}

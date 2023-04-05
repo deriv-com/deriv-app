@@ -14,8 +14,8 @@ type TDatePickerCalendar = {
     portal_id: string;
     style: Record<string, string | number>;
     placement: string;
-    onHover?: (Arg1: string) => void;
-    onSelect: (Arg1: string, Arg2: boolean) => void;
+    onHover?: (hovered_date: string) => void;
+    onSelect: (formateed_date: string, keep_open: boolean) => void;
 };
 
 const DatePickerCalendar = React.forwardRef(

@@ -181,6 +181,7 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     setActiveTypeStrategyIndex: (index: number) => void;
     setCurrentFocus: TSetCurrentFocus;
     toggleStopBotDialog: () => void;
+    loadDataStrategy: () => void;
 }>;
 
 export type TQSCache = {

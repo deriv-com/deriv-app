@@ -1,11 +1,14 @@
 .onboarding-wrapper {
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
     background-color: var(--general-hover);
     height: inherit;
+
     .onboarding-header {
+        margin-left: 5%;
         display: flex;
-        margin-left: 1rem;
+        // margin-bottom: 2rem;
         justify-content: space-between;
 
         &--deriv-logo {

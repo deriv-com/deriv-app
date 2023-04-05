@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getLocalizedBasis, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, getGrowthRatePercentage, getLocalizedBasis, isMobile } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
@@ -35,6 +35,7 @@ const ContractInfo = ({
     currency,
     has_increased,
     is_loading,
+    is_accumulator,
     is_multiplier,
     is_vanilla,
     should_fade,
@@ -98,22 +99,29 @@ const ContractInfo = ({
                     'trade-container__price-info--fade': is_loading && should_fade,
                 })}
             >
-                {is_multiplier ? (
+                {(is_multiplier || is_accumulator) && (
                     <React.Fragment>
-                        <DesktopWrapper>
-                            <CancelDealInfo proposal_info={proposal_info} />
-                        </DesktopWrapper>
+                        {!is_accumulator && (
+                            <DesktopWrapper>
+                                <CancelDealInfo proposal_info={proposal_info} />
+                            </DesktopWrapper>
+                        )}
                         <MobileWrapper>
                             <div className='trade-container__price-info-wrapper'>
                                 <div className='btn-purchase__text_wrapper'>
                                     <Text size='xs' weight='bold' color='colored-background'>
-                                        <Money amount={stake} currency={currency} show_currency />
+                                        {!is_accumulator ? (
+                                            <Money amount={stake} currency={currency} show_currency />
+                                        ) : (
+                                            !is_loading && `${getGrowthRatePercentage(proposal_info?.growth_rate)}%`
+                                        )}
                                     </Text>
                                 </div>
                             </div>
                         </MobileWrapper>
                     </React.Fragment>
-                ) : is_vanilla && isMobile() ? (
+                )}
+                {is_vanilla && isMobile() && (
                     <React.Fragment>
                         <MobileWrapper>
                             <div
@@ -162,17 +170,31 @@ const ContractInfo = ({
                             </div>
                         </MobileWrapper>
                     </React.Fragment>
-                ) : (
-                    obj_contract_basis && (
-                        <React.Fragment>
+                )}
+                {!is_multiplier && !is_accumulator && !(is_vanilla && isMobile()) && obj_contract_basis && (
+                    <React.Fragment>
+                        <div
+                            className={classNames('trade-container__price-info-basis', {
+                                'trade-container__price-info-strike': is_vanilla,
+                            })}
+                        >
+                            {basis_text}
+                        </div>
+                        <DesktopWrapper>
+                            <ValueMovement
+                                has_error_or_not_loaded={has_error_or_not_loaded}
+                                proposal_info={proposal_info}
+                                currency={getCurrencyDisplayCode(currency)}
+                                has_increased={has_increased}
+                                is_vanilla={is_vanilla}
+                            />
+                        </DesktopWrapper>
+                        <MobileWrapper>
                             <div
-                                className={classNames('trade-container__price-info-basis', {
-                                    'trade-container__price-info-strike': is_vanilla,
+                                className={classNames('trade-container__price-info-wrapper', {
+                                    'strike--info': is_vanilla,
                                 })}
                             >
-                                {basis_text}
-                            </div>
-                            <DesktopWrapper>
                                 <ValueMovement
                                     has_error_or_not_loaded={has_error_or_not_loaded}
                                     proposal_info={proposal_info}
@@ -180,27 +202,12 @@ const ContractInfo = ({
                                     has_increased={has_increased}
                                     is_vanilla={is_vanilla}
                                 />
-                            </DesktopWrapper>
-                            <MobileWrapper>
-                                <div
-                                    className={classNames('trade-container__price-info-wrapper', {
-                                        'strike--info': is_vanilla,
-                                    })}
-                                >
-                                    <ValueMovement
-                                        has_error_or_not_loaded={has_error_or_not_loaded}
-                                        proposal_info={proposal_info}
-                                        currency={getCurrencyDisplayCode(currency)}
-                                        has_increased={has_increased}
-                                        is_vanilla={is_vanilla}
-                                    />
-                                </div>
-                            </MobileWrapper>
-                        </React.Fragment>
-                    )
+                            </div>
+                        </MobileWrapper>
+                    </React.Fragment>
                 )}
             </div>
-            {!is_multiplier && (
+            {!is_multiplier && !is_accumulator && (
                 <DesktopWrapper>
                     <Popover
                         alignment='left'
@@ -221,6 +228,7 @@ ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_increased: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_vanilla: PropTypes.bool,
     is_loading: PropTypes.bool,

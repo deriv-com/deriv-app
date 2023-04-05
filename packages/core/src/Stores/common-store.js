@@ -1,12 +1,15 @@
-import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-import { getAllowedLanguages, changeLanguage } from '@deriv/translations';
-import { action, computed, observable, makeObservable } from 'mobx';
-import { currentLanguage } from 'Utils/Language/index';
-import ServerTime from '_common/base/server_time';
-import BinarySocket from '_common/base/socket_base';
-import BaseStore from './base-store';
-import WS from 'Services/ws-methods';
 import * as SocketCache from '_common/base/socket_cache';
+import { reject } from 'lodash';
+
+import { action, computed, makeObservable, observable } from 'mobx';
+import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
+
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import ServerTime from '_common/base/server_time';
+import WS from 'Services/ws-methods';
+import { currentLanguage } from 'Utils/Language/index';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
@@ -112,26 +115,33 @@ export default class CommonStore extends BaseStore {
         }
     }
 
-    changeSelectedLanguage = key => {
+    changeSelectedLanguage = async key => {
         SocketCache.clear();
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
 
-        WS.setSettings({
-            set_settings: 1,
-            preferred_language: key,
-        }).then(() => {
-            const new_url = new URL(window.location.href);
-            if (key === 'EN') {
-                new_url.searchParams.delete('lang');
-            } else {
-                new_url.searchParams.set('lang', key);
-            }
-            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            changeLanguage(key, () => {
-                this.changeCurrentLanguage(key);
-                BinarySocket.closeAndOpenNewConnection(key);
+        return new Promise(resolve => {
+            WS.setSettings({
+                set_settings: 1,
+                preferred_language: key,
+            }).then(async () => {
+                const new_url = new URL(window.location.href);
+                if (key === 'EN') {
+                    new_url.searchParams.delete('lang');
+                } else {
+                    new_url.searchParams.set('lang', key);
+                }
+                window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+                try {
+                    await changeLanguage(key, () => {
+                        this.changeCurrentLanguage(key);
+                        BinarySocket.closeAndOpenNewConnection(key);
+                    });
+                    resolve();
+                } catch (e) {
+                    reject();
+                }
             });
         });
     };
@@ -257,7 +267,7 @@ export default class CommonStore extends BaseStore {
     setServicesError(error) {
         this.services_error = error;
         if (isMobile()) {
-            if (error.code === 'CompanyWideLimitExceeded') {
+            if (error.code === 'CompanyWideLimitExceeded' || error.code === 'PleaseAuthenticate') {
                 this.root_store.ui.toggleServicesErrorModal(true);
             } else {
                 this.root_store.ui.addToast({

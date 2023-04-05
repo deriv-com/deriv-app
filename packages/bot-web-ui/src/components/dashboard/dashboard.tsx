@@ -51,7 +51,6 @@ type TDashboard = {
     setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    loadDataStrategy: () => void;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
@@ -69,7 +68,6 @@ const Dashboard = ({
     has_started_bot_builder_tour,
     is_dialog_open,
     is_tour_dialog_visible,
-    loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
     onEntered,
@@ -281,13 +279,8 @@ const Dashboard = ({
                 </div>
             </div>
             <DesktopWrapper>
-                <div
-                    className={classNames('dashboard__run-strategy-wrapper', {
-                        'dashboard__run-strategy-wrapper--padded': active_tab === 2,
-                    })}
-                >
-                    {active_tab !== 2 && <RunStrategy />}
-
+                <div className={'dashboard__run-strategy-wrapper'}>
+                    <RunStrategy />
                     {([BOT_BUILDER, CHART].includes(active_tab) || has_started_onboarding_tour) &&
                         !has_started_bot_builder_tour && <RunPanel />}
                 </div>
@@ -328,7 +321,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     is_drawer_open: run_panel.is_drawer_open,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
     dialog_options: run_panel.dialog_options,
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onCloseDialog: run_panel.onCloseDialog,

@@ -93,7 +93,7 @@ const QuickStrategyForm = ({
                                 })}
                             >
                                 <div className='quick-strategy__text'>
-                                    <Text weight='normal'>
+                                    <Text weight='normal' size={is_mobile ? 'xxs' : 's'}>
                                         {localize('Choose a template and set your trade parameters.')}
                                     </Text>
                                 </div>
@@ -121,7 +121,6 @@ const QuickStrategyForm = ({
                             </div>
                         </ThemedScrollbars>
                         <QuickStrategyFooter
-                            is_onscreen_keyboard_active={is_onscreen_keyboard_active}
                             is_submit_enabled={is_submit_enabled}
                             is_stop_button_visible={is_stop_button_visible}
                             setFieldValue={setFieldValue}

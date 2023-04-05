@@ -56,6 +56,7 @@ const Trade = ({
     symbol,
     is_synthetics_available,
     is_synthetics_trading_market_available,
+    is_trade_params_expanded,
     is_vanilla,
 }) => {
     const [digits, setDigits] = React.useState([]);
@@ -199,6 +200,7 @@ const Trade = ({
                                 should_show_active_symbols_loading
                             }
                             className={classNames({ 'vanilla-trade-chart': is_vanilla })}
+                            is_trade_params_expanded={is_trade_params_expanded}
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
                             <ChartTrade
@@ -253,6 +255,7 @@ export default connect(({ client, common, modules, ui }) => ({
     should_show_active_symbols_loading: modules.trade.should_show_active_symbols_loading,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
+    is_trade_params_expanded: modules.trade.is_trade_params_expanded,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
     prepareTradeStore: modules.trade.prepareTradeStore,
@@ -318,13 +321,13 @@ const Chart = props => {
         granularity,
         has_alternative_source,
         is_accumulator,
-        is_eu_country,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
         refToAddTick,
         setChartStatus,
         settings,
+        should_show_eu_content,
         show_digits_stats,
         should_highlight_current_spot,
         symbol,
@@ -378,7 +381,6 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
-            is_eu_country={is_eu_country}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -399,6 +401,7 @@ const Chart = props => {
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
+            should_show_eu_content={should_show_eu_content}
             stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}
@@ -444,7 +447,6 @@ Chart.propTypes = {
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
     is_accumulator: PropTypes.bool,
-    is_eu_country: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -452,6 +454,7 @@ Chart.propTypes = {
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
+    should_show_eu_content: PropTypes.bool,
     should_highlight_current_spot: PropTypes.bool,
     symbol: PropTypes.string,
     wsForget: PropTypes.func,
@@ -477,7 +480,6 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
-    is_eu_country: client.is_eu_country,
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
@@ -485,6 +487,7 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     extra_barriers: modules.trade.barriers_flattened,
+    should_show_eu_content: client.should_show_eu_content,
     show_digits_stats: modules.trade.show_digits_stats,
     should_highlight_current_spot: contract_trade.should_highlight_current_spot,
     contract_type: modules.trade.contract_type,

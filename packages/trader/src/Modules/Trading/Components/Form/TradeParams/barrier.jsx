@@ -125,6 +125,7 @@ const Barrier = ({
                     is_float
                     is_signed
                     setCurrentFocus={setCurrentFocus}
+                    inputmode='numeric'
                 />
                 {barrier_count === 2 && (
                     <LabeledQuantityInputMobile
@@ -151,6 +152,7 @@ const Barrier = ({
                         is_float
                         is_signed
                         setCurrentFocus={setCurrentFocus}
+                        inputmode='numeric'
                     />
                 )}
             </MobileWrapper>

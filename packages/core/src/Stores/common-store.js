@@ -1,4 +1,5 @@
 import * as SocketCache from '_common/base/socket_cache';
+import { reject } from 'lodash';
 
 import { action, computed, makeObservable, observable } from 'mobx';
 import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
@@ -120,20 +121,27 @@ export default class CommonStore extends BaseStore {
             window.localStorage.setItem('i18n_language', key);
         }
         await WS.wait('authorize');
-        WS.setSettings({
-            set_settings: 1,
-            preferred_language: key,
-        }).then(() => {
-            const new_url = new URL(window.location.href);
-            if (key === 'EN') {
-                new_url.searchParams.delete('lang');
-            } else {
-                new_url.searchParams.set('lang', key);
-            }
-            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            changeLanguage(key, () => {
-                this.changeCurrentLanguage(key);
-                BinarySocket.closeAndOpenNewConnection(key);
+        return new Promise(resolve => {
+            WS.setSettings({
+                set_settings: 1,
+                preferred_language: key,
+            }).then(async () => {
+                const new_url = new URL(window.location.href);
+                if (key === 'EN') {
+                    new_url.searchParams.delete('lang');
+                } else {
+                    new_url.searchParams.set('lang', key);
+                }
+                window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+                try {
+                    await changeLanguage(key, () => {
+                        this.changeCurrentLanguage(key);
+                        BinarySocket.closeAndOpenNewConnection(key);
+                    });
+                    resolve();
+                } catch (e) {
+                    reject();
+                }
             });
         });
     };

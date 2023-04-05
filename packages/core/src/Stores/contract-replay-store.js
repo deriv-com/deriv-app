@@ -1,7 +1,7 @@
 import { action, observable, makeObservable, override } from 'mobx';
 import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contractSold } from '@deriv/shared';
 import { Money } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, getLanguage, getInitialLanguage } from '@deriv/translations';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
 
@@ -305,7 +305,7 @@ export default class ContractReplayStore extends BaseStore {
         if (this.has_error) {
             this.removeErrorMessage();
             this.onMount(contract_id);
-        } else {
+        } else if (!this.root_store.common.is_language_changing){
             history.push(routes.reports);
         }
         return Promise.resolve();

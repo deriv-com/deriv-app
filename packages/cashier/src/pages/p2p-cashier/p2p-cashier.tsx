@@ -40,7 +40,7 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
         residence,
         setP2pAdvertiserInfo,
     } = client;
-    const { notification_messages_ui: Notifications, is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
+    const { is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
     const { platform } = common;
     const { general_store } = useCashierStore();
     const { setNotificationCount, setOnRemount } = general_store;
@@ -144,7 +144,6 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
             modal_root_id='modal_root'
             order_id={order_id}
             platform={platform}
-            Notifications={Notifications}
             poi_url={routes.proof_of_identity}
             refreshNotifications={refreshNotifications}
             removeNotificationByKey={removeNotificationByKey}

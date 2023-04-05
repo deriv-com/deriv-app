@@ -19,7 +19,6 @@ const App = props => {
         className,
         history,
         lang,
-        Notifications,
         order_id,
         server_time,
         verification_action,
@@ -106,7 +105,6 @@ const App = props => {
 
     return (
         <main className={classNames('p2p-cashier', className)}>
-            <Notifications />
             <ModalManagerContextProvider>
                 <ModalManager />
                 <AppContent order_id={order_id} />

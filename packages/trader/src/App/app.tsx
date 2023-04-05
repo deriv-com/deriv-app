@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
+import { StoreProvider } from '@deriv/stores';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
 import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';
@@ -30,14 +31,14 @@ const App = ({ passthrough }: Apptypes) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <React.Fragment>
+            <StoreProvider store={root_store}>
                 <Routes />
                 <TradeModals />
                 <NetworkStatusToastErrorPopup />
                 <TradeHeaderExtensions store={root_store} />
                 <TradeFooterExtensions />
                 <TradeSettingsExtensions store={root_store} />
-            </React.Fragment>
+            </StoreProvider>
         </MobxContentProvider>
     );
 };

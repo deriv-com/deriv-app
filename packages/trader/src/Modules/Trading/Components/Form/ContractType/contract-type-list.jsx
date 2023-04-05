@@ -16,6 +16,7 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
 
             return true;
         });
+        const is_new = contract_category.key === 'Accumulators' || contract_category.key === 'Vanillas';
 
         return (
             <div key={key} className='contract-type-list' data-testid='contract_list'>
@@ -23,7 +24,7 @@ const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
                     <Text size='xs' className='contract-type-list__label'>
                         {contract_category.label}
                     </Text>
-                    {contract_category.key === 'Vanillas' && (
+                    {is_new && (
                         <span className={classNames('dc-vertical-tab__header--new', 'contract-type-item__new')}>
                             {localize('NEW!')}
                         </span>

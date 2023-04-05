@@ -85,6 +85,7 @@
         "@deriv/deriv-charts": "1.1.8",
         "@deriv/reports": "^1.0.0",
         "@deriv/shared": "^1.0.0",
+        "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@types/classnames": "^2.2.11",
         "@types/react-loadable": "^5.5.6",

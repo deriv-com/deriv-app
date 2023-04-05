@@ -22,6 +22,7 @@ export default class TradersHubStore extends BaseStore {
     account_type_card = '';
     selected_platform_type = 'options';
     active_index = 0;
+    exchange_rates_2 = {};
     open_failed_verification_for = '';
     platform_demo_balance = { balance: 0, currency: 'USD' };
     platform_real_balance = { balance: 0, currency: 'USD' };
@@ -61,6 +62,7 @@ export default class TradersHubStore extends BaseStore {
             selected_platform_type: observable,
             selected_region: observable,
             open_failed_verification_for: observable,
+            exchange_rates_2: observable,
             can_get_more_cfd_mt5_accounts: computed,
             closeModal: action.bound,
             content_flag: computed,
@@ -102,6 +104,7 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
+            updateExchangeRates: action.bound,
         });
 
         reaction(
@@ -163,6 +166,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.accounts,
                 this.selected_account_type,
                 this.selected_region,
+                this.exchange_rates_2,
             ],
             async () => {
                 await this.updatePlatformBalance();
@@ -672,6 +676,10 @@ export default class TradersHubStore extends BaseStore {
         });
     }
 
+    updateExchangeRates = data => {
+        this.exchange_rates_2 = data;
+    };
+
     toggleAccountTransferModal() {
         this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
     }
@@ -681,7 +689,6 @@ export default class TradersHubStore extends BaseStore {
             this.is_balance_calculating = true;
         });
         const { accounts, dxtrade_accounts_list, mt5_login_list } = this.root_store.client;
-
         const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
         const platform_demo_account = account_list.find(account => account.is_virtual);
         if (platform_demo_account) {
@@ -735,17 +742,23 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async getTotalBalance(accounts, base_currency) {
-        const { getExchangeRate } = this.root_store.common;
+        // const { getExchangeRate } = this.root_store.common;
         const total_balance = await accounts.reduce(
             async (total, account) => {
                 const { balance, currency } = account;
 
-                let exchange_rate = 1;
+                // let exchange_rate = 1;
+                let exchange_rate_new = 1;
                 if (currency !== base_currency) {
-                    exchange_rate = await getExchangeRate(currency, base_currency);
+                    // exchange_rate = await getExchangeRate(currency, base_currency);
+                    exchange_rate_new = this.exchange_rates_2?.rates
+                        ? this.exchange_rates_2.rates[base_currency] / this.exchange_rates_2.rates[currency]
+                        : 1;
+                    // console.log('exchange_rate', exchange_rate);
+                    // console.log('exchange_rate_new', exchange_rate_new);
                 }
 
-                (await total).balance += balance * exchange_rate || 0;
+                (await total).balance += balance * exchange_rate_new || 0;
                 return total;
             },
             { balance: 0 }

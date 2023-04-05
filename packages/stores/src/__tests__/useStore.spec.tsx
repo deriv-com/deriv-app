@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, useStore, TStores } from '../useStore';
+import useStore from '../useStore';
+import type { TStores } from '../../types';
+import StoreProvider from '../storeProvider';
 
 describe('useStore', () => {
     test('should throw an error if StoreContext has not been provided', async () => {

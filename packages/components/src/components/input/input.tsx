@@ -42,8 +42,8 @@ type TInputProps = {
     value?: string | number;
     warn?: string;
     readOnly?: boolean;
-    is_autocomplete_disabled?: boolean;
-    is_hj_whitelisted?: boolean;
+    is_autocomplete_disabled?: string;
+    is_hj_whitelisted?: string;
 };
 
 type TInputWrapper = {

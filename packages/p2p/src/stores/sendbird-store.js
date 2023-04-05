@@ -1,5 +1,5 @@
 import SendBird from 'sendbird';
-import { epochToMoment } from '@deriv/shared';
+import { epochToMoment, isMobile } from '@deriv/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
@@ -237,7 +237,7 @@ export default class SendbirdStore extends BaseStore {
     markMessagesAsRead(should_check_scroll) {
         if (!this.active_chat_channel) return;
 
-        if (document.hasFocus()) {
+        if (document.hasFocus() && ((isMobile() && this.should_show_chat_modal) || !isMobile())) {
             if (should_check_scroll && this.messages_ref?.current) {
                 const { scrollHeight, scrollTop, clientHeight } = this.messages_ref.current;
                 const is_at_bottom = scrollHeight - scrollTop === clientHeight;
@@ -259,7 +259,7 @@ export default class SendbirdStore extends BaseStore {
 
     onMessagesScroll() {
         if (this.scroll_debounce) {
-            clearInterval(this.scroll_debounce);
+            clearTimeout(this.scroll_debounce);
         }
 
         this.scroll_debounce = setTimeout(() => {

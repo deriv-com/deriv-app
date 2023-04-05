@@ -53,8 +53,6 @@ beforeEach(() => {
                     is_onramp_tab_visible: false,
                 },
                 payment_agent: {
-                    getAllPaymentAgentList: jest.fn().mockResolvedValue(['PA1', 'PA2']),
-                    setAllPaymentAgentList: jest.fn(),
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
                     filterPaymentAgentList: jest.fn(),
                 },

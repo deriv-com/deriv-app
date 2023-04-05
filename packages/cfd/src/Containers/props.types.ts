@@ -79,7 +79,7 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = RouteComponentProps & {
+export type TCFDResetPasswordModal = {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     context?: RootStore;

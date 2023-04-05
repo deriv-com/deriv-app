@@ -1596,6 +1596,7 @@ export default class ClientStore extends BaseStore {
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
+                await this.root_store.common.changeSelectedLanguage(language);
             }
             if (this.citizen) {
                 await this.onSetCitizen(this.citizen);

@@ -279,11 +279,7 @@ const Dashboard = ({
                 </div>
             </div>
             <DesktopWrapper>
-                <div
-                    className={classNames('dashboard__run-strategy-wrapper', {
-                        'dashboard__run-strategy-wrapper--padded': active_tab === 2,
-                    })}
-                >
+                <div className={'dashboard__run-strategy-wrapper'}>
                     <RunStrategy />
                     {([BOT_BUILDER, CHART].includes(active_tab) || has_started_onboarding_tour) &&
                         !has_started_bot_builder_tour && <RunPanel />}

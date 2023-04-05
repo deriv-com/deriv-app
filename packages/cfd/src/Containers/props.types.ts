@@ -15,6 +15,7 @@ import {
     TJurisdictionCardSection,
     TCardFlipStatus,
     TJurisdictionCardSectionTitleIndicators,
+    TClickableDescription,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
 import { SyntheticEvent } from 'react';
@@ -181,6 +182,11 @@ export type TJurisdictionCardProps = {
     disabled: boolean;
     cardFlipStatus: TCardFlipStatus;
     flipCard: (cardName: MT5_Jurisdictions) => void;
+};
+
+export type TJurisdictionClickableDescriptionProps = {
+    clickable_description: Array<TClickableDescription>;
+    toggleCardFlip: (event: SyntheticEvent) => void;
 };
 
 export type TJurisdictionTitleIndicatorProps = {

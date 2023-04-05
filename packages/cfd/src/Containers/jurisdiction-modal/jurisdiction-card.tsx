@@ -1,8 +1,9 @@
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { jurisdiction_verification_contents } from 'Constants/jurisdiction-verification-contents';
 import React, { SyntheticEvent } from 'react';
-import { jurisdiction_contents, jurisdiction_verification_contents } from '../../Constants/jurisdiction-contents';
+import { jurisdiction_contents } from '../../Constants/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardSection from './jurisdiction-card-section';
 

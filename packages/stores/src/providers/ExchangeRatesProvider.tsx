@@ -1,26 +1,20 @@
 import React, { useEffect } from 'react';
-// import { useStore } from '../useStore';
 import { useSubscription } from '@deriv/api';
+import useStore from '../useStore';
 
 const ExchangeRatesProvider = ({ children }: React.PropsWithChildren) => {
-    const { data, subscribe, unsubscribe } = useSubscription('exchange_rates');
-    // const {
-    //     exchange_rates: { update },
-    // } = useStore();
-
-    // useEffect(() => {
-    //     update(data);
-    // }, [update, data]);
+    const { data, subscribe } = useSubscription('exchange_rates');
+    const {
+        exchange_rates: { update },
+    } = useStore();
 
     useEffect(() => {
-        subscribe({
-            base_currency: 'USD',
-        });
-
-        return () => {
-            unsubscribe();
-        };
+        subscribe({ payload: { base_currency: 'USD' } });
     }, []);
+
+    useEffect(() => {
+        update(data);
+    }, [update, data]);
 
     return <>{children}</>;
 };

@@ -1,6 +1,6 @@
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
 import type { RouteComponentProps } from 'react-router';
+import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -268,4 +268,8 @@ export type TRootStore = {
     modules: Record<string, any>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
+};
+
+export type TStores = TRootStore & {
+    exchange_rates: ExchangeRatesStore;
 };

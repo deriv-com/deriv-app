@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
-import { StoreProvider } from '@deriv/stores';
+import { observer, StoreProvider, useStore } from '@deriv/stores';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
 import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';
@@ -18,6 +18,26 @@ type Apptypes = {
     };
 };
 
+const ExchangeRates = observer(() => {
+    const { exchange_rates } = useStore();
+
+    return (
+        <div
+            style={{
+                backgroundColor: 'red',
+                fontSize: 50,
+                padding: 50,
+                position: 'absolute',
+                zIndex: 9999,
+                top: 0,
+                left: 0,
+            }}
+        >
+            <p>data: {JSON.stringify(exchange_rates.data)}</p>
+        </div>
+    );
+});
+
 const TradeModals = Loadable({
     loader: () => import(/* webpackChunkName: "trade-modals", webpackPrefetch: true */ './Containers/Modals'),
     loading: () => null,
@@ -33,6 +53,7 @@ const App = ({ passthrough }: Apptypes) => {
         <MobxContentProvider store={root_store}>
             <StoreProvider store={root_store}>
                 <Routes />
+                <ExchangeRates />
                 <TradeModals />
                 <NetworkStatusToastErrorPopup />
                 <TradeHeaderExtensions store={root_store} />

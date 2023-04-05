@@ -1,31 +1,31 @@
-import React from 'react';
-import { Tabs, DesktopWrapper, Dialog, MobileWrapper } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import Chart from 'Components/chart';
-import ReactJoyride from 'react-joyride';
-import classNames from 'classnames';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import Chart from 'Components/chart';
+import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
+import React from 'react';
+import ReactJoyride from 'react-joyride';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import { getImageLocation } from '../../public-path';
+import RunPanel from '../run-panel';
+import BotNotification from './bot-notification';
 import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
-import RunPanel from '../run-panel';
-import { DASHBOARD_TABS, TAB_IDS } from '../../constants/bot-contents';
-import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
-    handleJoyrideCallback,
     getTourSettings,
-    setTourType,
-    tour_type,
+    handleJoyrideCallback,
     setTourSettings,
+    setTourType,
     tour_status_ended,
+    tour_type,
 } from './joyride-config';
-import TourTriggrerDialog from './tour-trigger-dialog';
-import { getImageLocation } from '../../public-path';
 import TourSlider from './tour-slider';
-import BotNotification from './bot-notification';
-import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+import TourTriggrerDialog from './tour-trigger-dialog';
+import Tutorial from './tutorial-tab';
 
 type TDialogOptions = {
     title: string;
@@ -81,7 +81,7 @@ const Dashboard = ({
     setTourDialogVisibility,
     setHasTourEnded,
 }: TDashboard) => {
-    const { BOT_BUILDER, CHART } = DASHBOARD_TABS;
+    const { BOT_BUILDER, CHART } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';

@@ -21,7 +21,6 @@ const Barrier = ({
     validation_errors,
 }) => {
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
-
     if (is_minimized) {
         return barrier_count !== 2 ? (
             <div className='fieldset-minimized fieldset-minimized__barrier1'>{barrier_1}</div>
@@ -41,6 +40,7 @@ const Barrier = ({
     const format = value => {
         const float_value = parseFloat(value);
         let final_value;
+
         if (Math.sign(float_value) === -1) {
             final_value = float_value.toFixed(barrier_pipsize).toString();
         } else {
@@ -114,10 +114,10 @@ const Barrier = ({
                     classNameInput={classNames(
                         'barrier__fields-input',
                         'barrier__fields-barriers-input',
-                        `barrier__fields-barriers-${input_class}-input`,
-                        {
-                            'barrier__fields-input--is-offset': !is_absolute_barrier,
-                        }
+                        `barrier__fields-barriers-${input_class}-input`
+                        // {
+                        //     'barrier__fields-input--is-offset': !is_absolute_barrier,
+                        // }
                     )}
                     current_focus={current_focus}
                     format={format}
@@ -140,10 +140,10 @@ const Barrier = ({
                         classNameInput={classNames(
                             'barrier__fields-input',
                             'barrier__fields-barriers-input',
-                            `barrier__fields-barriers-${input_class}-input`,
-                            {
-                                'barrier__fields-input--is-offset': !is_absolute_barrier,
-                            }
+                            `barrier__fields-barriers-${input_class}-input`
+                            // {
+                            //     'barrier__fields-input--is-offset': !is_absolute_barrier,
+                            // }
                         )}
                         current_focus={current_focus}
                         format={format}

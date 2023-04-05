@@ -1,5 +1,11 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
+import {
+    usePaymentAgentTransferVisible,
+    useOnrampVisible,
+    useAccountTransferVisible,
+    useSwitchToRealAccount,
+} from '@deriv/hooks';
 import { withRouter } from 'react-router-dom';
 import {
     Button,
@@ -11,7 +17,6 @@ import {
     VerticalTab,
     Loading,
 } from '@deriv/components';
-import { useOnrampVisible, useAccountTransferVisible, useSwitchToRealAccount } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
@@ -44,14 +49,7 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const {
-        withdraw,
-        general_store,
-        transaction_history,
-        payment_agent_transfer,
-        payment_agent,
-        account_prompt_dialog,
-    } = useCashierStore();
+    const { withdraw, general_store, transaction_history, payment_agent, account_prompt_dialog } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -64,7 +62,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         cashier_route_tab_index: tab_index,
     } = general_store;
     const { is_crypto_transactions_visible } = transaction_history;
-    const { is_payment_agent_transfer_visible } = payment_agent_transfer;
+    const {
+        is_payment_agent_transfer_visible,
+        is_loading: is_payment_agent_checking,
+        is_success,
+    } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
     const { resetLastLocation } = account_prompt_dialog;
     const { is_from_derivgo } = common;
@@ -97,6 +99,16 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             }
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
+
+    React.useEffect(() => {
+        if (
+            is_success &&
+            !is_payment_agent_transfer_visible &&
+            history.location.pathname === routes.cashier_pa_transfer
+        ) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_payment_agent_transfer_visible, is_success]);
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = () => {
@@ -134,7 +146,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
     // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
-    if (((!is_logged_in || isMobile()) && is_logging_in) || !is_account_setting_loaded) {
+    if (((!is_logged_in || isMobile()) && is_logging_in) || !is_account_setting_loaded || is_payment_agent_checking) {
         return <Loading is_fullscreen />;
     }
 

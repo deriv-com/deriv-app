@@ -41,7 +41,8 @@ const Unsupported = ({
     });
 
     if (manual) {
-        if (manual.status === identity_status_codes.pending) return <UploadComplete is_manual_upload />;
+        if (manual.status === identity_status_codes.pending)
+            return <UploadComplete is_manual_upload needs_poa={needs_poa} redirect_button={redirect_button} />;
         else if ([identity_status_codes.rejected, identity_status_codes.suspected].includes(manual.status)) {
             if (!allow_poi_resubmission) return <Limited />;
         } else if (manual.status === identity_status_codes.verified) {

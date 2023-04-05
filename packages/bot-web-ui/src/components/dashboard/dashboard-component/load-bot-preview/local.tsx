@@ -1,13 +1,14 @@
-import React from 'react';
+import { Dialog, Icon, MobileWrapper, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { DBOT_TABS } from 'Constants/bot-contents';
+import { clearInjectionDiv } from 'Constants/load-modal';
+import React from 'react';
+import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import BotPreview from './bot-preview';
-import { Localize, localize } from '@deriv/translations';
-import { Text, Icon, MobileWrapper, Dialog } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import { isMobile } from '@deriv/shared';
 import './index.scss';
-import { clearInjectionDiv } from 'Constants/load-modal';
 
 type TWorkspace = {
     id: string;
@@ -60,7 +61,7 @@ const LocalComponent = ({
             onClick={() => {
                 setPreviewOnDialog(false);
                 loadFileFromRecent();
-                setActiveTab(1);
+                setActiveTab(DBOT_TABS.BOT_BUILDER);
             }}
         >
             {localize('Open')}
@@ -84,7 +85,7 @@ const LocalComponent = ({
                             <div className='tab__dashboard__preview__retrigger'>
                                 <button
                                     onClick={() => {
-                                        setActiveTab(4);
+                                        setActiveTab(DBOT_TABS.TUTORIAL);
                                     }}
                                 >
                                     <Icon

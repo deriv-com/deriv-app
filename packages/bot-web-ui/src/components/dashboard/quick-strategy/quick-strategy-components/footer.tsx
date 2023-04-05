@@ -1,6 +1,7 @@
 import { Button } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
 import { TQuickStrategyFooter } from './components.types';
 
@@ -15,11 +16,11 @@ const QuickStrategyFooter = ({
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
         submitForm();
-        setActiveTab(1);
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
     }, [is_submit_enabled]);
 
     const handleRun = React.useCallback(() => {
-        setActiveTab(1);
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
         if (is_running) {
             toggleStopBotDialog();
             setFieldValue('button', 'edit');

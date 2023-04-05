@@ -2,17 +2,20 @@ type TTabsTitleProps = {
     [key: string]: string | number;
 };
 
+type TDashboardTabsProps = {
+    [key: string]: number;
+};
+
 export const tabs_title: TTabsTitleProps = Object.freeze({
     WORKSPACE: 'Workspace',
     CHART: 'Chart',
 });
 
-export const DASHBOARD_TABS: TTabsTitleProps = Object.freeze({
+export const DBOT_TABS: TDashboardTabsProps = Object.freeze({
     DASHBOARD: 0,
     BOT_BUILDER: 1,
-    QUICK_STRATEGY: 2,
-    CHART: 3,
-    TUTORIAL: 4,
+    CHART: 2,
+    TUTORIAL: 3,
 });
 
 export const MAX_STRATEGIES = 10;

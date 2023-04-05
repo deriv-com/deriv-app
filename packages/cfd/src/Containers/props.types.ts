@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,

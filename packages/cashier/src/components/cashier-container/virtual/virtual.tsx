@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Text } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
@@ -10,9 +10,7 @@ import './virtual.scss';
 const Virtual = observer(() => {
     const {
         ui: { is_dark_mode_on, toggleAccountsDialog },
-        client: { is_pre_appstore },
     } = useStore();
-    const history = useHistory();
 
     return (
         <div className='cashier__wrapper' data-testid='dt_cashier_wrapper_id'>
@@ -46,12 +44,7 @@ const Virtual = observer(() => {
                                 key={1}
                                 className='virtual__account-switch-text'
                                 onClick={() => {
-                                    if (is_pre_appstore) {
-                                        history.push(routes.trade);
-                                        toggleAccountsDialog();
-                                    } else {
-                                        toggleAccountsDialog();
-                                    }
+                                    toggleAccountsDialog();
                                 }}
                             />,
                         ]}

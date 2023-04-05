@@ -31,7 +31,6 @@ type TCashierProps = RouteComponentProps & {
     routeBackInApp: TStores['common']['routeBackInApp'];
     toggleCashier: TStores['ui']['toggleCashier'];
     resetLastLocation: () => void;
-    is_pre_appstore: boolean;
 };
 
 type TCashierOptions = {
@@ -69,9 +68,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
     const { resetLastLocation } = account_prompt_dialog;
-    const { routeBackInApp, is_from_derivgo } = common;
+    const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
-    const { is_account_setting_loaded, is_logged_in, is_logging_in, is_pre_appstore } = client;
+    const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const switchToReal = useSwitchToRealAccount();
@@ -100,7 +99,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
-    const onClickClose = () => (is_pre_appstore ? history.push(routes.traders_hub) : routeBackInApp(history));
+    const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = () => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {

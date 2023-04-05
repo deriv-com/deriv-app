@@ -8,6 +8,7 @@ import {
     P2PAdvertInfo,
     TransferBetweenAccountsResponse,
 } from '@deriv/api-types';
+import type { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
 import type { TTransactionItem } from 'Types';
 
 export type TCashierPayments = {
@@ -87,5 +88,5 @@ export type TWebSocket = {
     tradingPlatformAccountsList: (platform: string) => {
         trading_platform_accounts: (DetailsOfEachMT5Loginid & { account_id: string })[];
     };
-    wait: (value: string) => Promise<unknown>;
+    wait: <T extends TSocketEndpointNames>(value: T) => Promise<TSocketResponse<T>>;
 };

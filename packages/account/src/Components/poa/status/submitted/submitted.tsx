@@ -8,7 +8,7 @@ import { ContinueTradingButton } from 'Components/poa/continue-trading-button/co
 import PoiButton from 'Components/poi/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Submitted = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
+export const Submitted = ({ needs_poi, redirect_button }: TPoaStatusProps) => {
     const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);
     const message = localize('Your documents were submitted successfully');
     if (needs_poi) {
@@ -48,7 +48,7 @@ export const Submitted = ({ needs_poi, is_description_enabled = true }: TPoaStat
                 icon={<Icon icon='IcPoaVerified' size={128} />}
                 full_width={is_appstore}
             >
-                {!is_description_enabled && <ContinueTradingButton />}
+                {redirect_button || <ContinueTradingButton />}
             </IconMessageContent>
         </div>
     );

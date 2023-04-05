@@ -1,3 +1,4 @@
+import type { useMutation, useQuery } from '@tanstack/react-query';
 import type {
     ActiveSymbolsResponse,
     ActiveSymbolsRequest,
@@ -155,6 +156,8 @@ import type {
     PaymentAgentTransferResponse,
     PaymentAgentWithdrawRequest,
     PaymentAgentWithdrawResponse,
+    PaymentAgentWithdrawJustificationRequest,
+    PaymentAgentWithdrawJustificationResponse,
     PayoutCurrenciesRequest,
     PayoutCurrenciesResponse,
     PingRequest,
@@ -225,7 +228,7 @@ import type {
     ServerStatusRequest,
 } from '@deriv/api-types';
 
-export type TSocketEndpoints = {
+type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;
@@ -538,6 +541,10 @@ export type TSocketEndpoints = {
         request: PaymentAgentWithdrawRequest;
         response: PaymentAgentWithdrawResponse;
     };
+    paymentagent_withdraw_justification: {
+        request: PaymentAgentWithdrawJustificationRequest;
+        response: PaymentAgentWithdrawJustificationResponse;
+    };
     payout_currencies: {
         request: PayoutCurrenciesRequest;
         response: PayoutCurrenciesResponse;
@@ -686,19 +693,39 @@ export type TSocketResponse<T extends TSocketEndpointNames> = TSocketEndpoints[T
 
 export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketResponse<T>[T extends 'ticks' ? 'tick' : T];
 
-export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
-type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
-    TSocketRequest<T>,
-    (T extends KeysMatching<TSocketRequest<T>, 1> ? T : never) | 'passthrough' | 'req_id' | 'subscribe'
+type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
+
+export type TSocketRequestCleaned<T extends TSocketEndpointNames> = {
+    payload: Omit<TSocketRequest<T>, TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'>;
+};
+
+export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useQuery<TSocketResponseData<T>, unknown>
+>[2];
+
+export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>
+>[2];
+
+type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
+    TSocketRequestCleaned<T> & { options?: TSocketRequestQueryOptions<T> },
+    | (TSocketRequestCleaned<T>['payload'] extends Record<string, never> ? 'payload' : never)
+    | (O extends true ? never : 'options')
 >;
 
-type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
-    ? never
-    : TSocketRequestCleaned<T>;
+type TNever<T> = T extends Record<string, never> ? never : T;
 
-export type TSocketAcceptableProps<T extends TSocketEndpointNames> = TSocketRequestProps<T> extends never
+type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TNever<
+    TSocketRequestWithOptions<T, O>
+>;
+
+export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestProps<
+    T,
+    O
+> extends never
     ? [undefined?]
-    : Partial<TSocketRequestProps<T>> extends TSocketRequestProps<T>
-    ? [TSocketRequestProps<T>?]
-    : [TSocketRequestProps<T>];
+    : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
+    ? [TSocketRequestProps<T, O>?]
+    : [TSocketRequestProps<T, O>];

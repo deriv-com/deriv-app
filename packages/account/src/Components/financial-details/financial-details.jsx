@@ -1,35 +1,31 @@
+import classNames from 'classnames';
 import { Formik } from 'formik';
 import React from 'react';
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
-
-import { localize } from '@deriv/translations';
+import {
+    AutoHeightWrapper,
+    Div100vhContainer,
+    FormSubmitButton,
+    Modal,
+    Text,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import {
     AccountTurnover,
-    BinaryOptionsTradingExperience,
-    BinaryOptionsTradingFrequency,
-    CFDTradingExperience,
-    CFDTradingFrequency,
+    IncomeSource,
     EducationLevel,
     EmploymentIndustry,
-    EmploymentStatus,
     EstimatedWorth,
-    ForexTradingExperience,
-    ForexTradingFrequency,
-    IncomeSource,
     NetIncome,
     Occupation,
-    OtherInstrumentsTradingExperience,
-    OtherInstrumentsTradingFrequency,
     SourceOfWealth,
 } from './financial-details-partials';
-import FormSubHeader from '../form-sub-header';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 const FinancialInformation = ({
     shared_props,
     income_source_enum,
-    employment_status_enum,
     employment_industry_enum,
     occupation_enum,
     source_of_wealth_enum,
@@ -39,13 +35,7 @@ const FinancialInformation = ({
     account_turnover_enum,
 }) => (
     <React.Fragment>
-        <FormSubHeader
-            title={localize('Financial information')}
-            subtitle={localize('(All fields are required)')}
-            description={localize("We're legally obliged to ask for your financial information.")}
-        />
         <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
-        <EmploymentStatus {...shared_props} employment_status_enum={employment_status_enum} />
         <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
         <Occupation {...shared_props} occupation_enum={occupation_enum} />
         <SourceOfWealth {...shared_props} source_of_wealth_enum={source_of_wealth_enum} />
@@ -53,46 +43,6 @@ const FinancialInformation = ({
         <NetIncome {...shared_props} net_income_enum={net_income_enum} />
         <EstimatedWorth {...shared_props} estimated_worth_enum={estimated_worth_enum} />
         <AccountTurnover {...shared_props} account_turnover_enum={account_turnover_enum} />
-    </React.Fragment>
-);
-
-const TradingExperience = ({
-    shared_props,
-    forex_trading_experience_enum,
-    forex_trading_frequency_enum,
-    binary_options_trading_experience_enum,
-    binary_options_trading_frequency_enum,
-    cfd_trading_experience_enum,
-    cfd_trading_frequency_enum,
-    other_instruments_trading_experience_enum,
-    other_instruments_trading_frequency_enum,
-}) => (
-    <React.Fragment>
-        <FormSubHeader
-            title={localize('Trading experience')}
-            subtitle={localize('(All fields are required)')}
-            description={localize('Tell us about your trading experience.')}
-        />
-        <ForexTradingExperience {...shared_props} forex_trading_experience_enum={forex_trading_experience_enum} />
-        <ForexTradingFrequency {...shared_props} forex_trading_frequency_enum={forex_trading_frequency_enum} />
-        <BinaryOptionsTradingExperience
-            {...shared_props}
-            binary_options_trading_experience_enum={binary_options_trading_experience_enum}
-        />
-        <BinaryOptionsTradingFrequency
-            {...shared_props}
-            binary_options_trading_frequency_enum={binary_options_trading_frequency_enum}
-        />
-        <CFDTradingExperience {...shared_props} cfd_trading_experience_enum={cfd_trading_experience_enum} />
-        <CFDTradingFrequency {...shared_props} cfd_trading_frequency_enum={cfd_trading_frequency_enum} />
-        <OtherInstrumentsTradingExperience
-            {...shared_props}
-            other_instruments_trading_experience_enum={other_instruments_trading_experience_enum}
-        />
-        <OtherInstrumentsTradingFrequency
-            {...shared_props}
-            other_instruments_trading_frequency_enum={other_instruments_trading_frequency_enum}
-        />
     </React.Fragment>
 );
 
@@ -132,16 +82,26 @@ const FinancialDetails = props => {
                         {({ setRef, height }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
-                                    className='details-form'
+                                    className={classNames('details-form', 'financial-assessment')}
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
+                                    <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
+                                        <Localize
+                                            i18n_default_text='We collect information about your employment as part of our due
+                                        diligence obligations, as required by anti-money laundering legislation.'
+                                        />
+                                    </Text>
                                     <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 77}>
-                                        <div className='details-form__elements  details-form__elements--wide'>
+                                        <div
+                                            className={classNames(
+                                                'details-form__elements',
+                                                'financial-assessment__form'
+                                            )}
+                                        >
                                             <FinancialInformation
                                                 shared_props={shared_props}
                                                 income_source_enum={props.income_source_enum}
-                                                employment_status_enum={props.employment_status_enum}
                                                 employment_industry_enum={props.employment_industry_enum}
                                                 occupation_enum={props.occupation_enum}
                                                 source_of_wealth_enum={props.source_of_wealth_enum}
@@ -149,25 +109,6 @@ const FinancialDetails = props => {
                                                 net_income_enum={props.net_income_enum}
                                                 estimated_worth_enum={props.estimated_worth_enum}
                                                 account_turnover_enum={props.account_turnover_enum}
-                                            />
-                                            <TradingExperience
-                                                shared_props={shared_props}
-                                                forex_trading_experience_enum={props.forex_trading_experience_enum}
-                                                forex_trading_frequency_enum={props.forex_trading_frequency_enum}
-                                                binary_options_trading_experience_enum={
-                                                    props.binary_options_trading_experience_enum
-                                                }
-                                                binary_options_trading_frequency_enum={
-                                                    props.binary_options_trading_frequency_enum
-                                                }
-                                                cfd_trading_experience_enum={props.cfd_trading_experience_enum}
-                                                cfd_trading_frequency_enum={props.cfd_trading_frequency_enum}
-                                                other_instruments_trading_experience_enum={
-                                                    props.other_instruments_trading_experience_enum
-                                                }
-                                                other_instruments_trading_frequency_enum={
-                                                    props.other_instruments_trading_frequency_enum
-                                                }
                                             />
                                         </div>
                                     </ThemedScrollbars>

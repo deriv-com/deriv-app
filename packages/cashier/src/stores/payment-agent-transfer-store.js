@@ -45,7 +45,13 @@ export default class PaymentAgentTransferStore {
     }
 
     async checkIsPaymentAgent() {
-        const get_settings = (await this.WS.authorized.storage.getSettings()).get_settings;
+        const { client, ui } = this.root_store;
+        const { account_settings } = client;
+        const { is_real_acc_signup_on } = ui;
+        const get_settings =
+            Object.keys(account_settings).length > 0 && is_real_acc_signup_on
+                ? account_settings
+                : (await this.WS.authorized.storage.getSettings()).get_settings;
         this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
     }
 

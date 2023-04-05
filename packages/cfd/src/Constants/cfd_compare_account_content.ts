@@ -181,11 +181,7 @@ export const getCrRealFooterButtons = (): TCompareAccountFooterButtonData[] => [
     { label: localize('Add'), action: 'financial_labuan' },
     { label: localize('Add'), action: 'derivx' },
 ];
-export const getEuRealFooterButtons = (): TCompareAccountFooterButtonData[] => [
-    { label: localize('Add'), action: 'financial_maltainvest' },
-];
-
-export const getEuDemoFooterButtons = (): TCompareAccountFooterButtonData[] => [
+export const getEuFooterButtons = (): TCompareAccountFooterButtonData[] => [
     { label: localize('Add'), action: 'financial_maltainvest' },
 ];
 

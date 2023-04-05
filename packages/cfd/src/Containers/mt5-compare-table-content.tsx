@@ -17,11 +17,10 @@ import {
     getEuRealContent,
     getCrRealContent,
     getCrRealFooterButtons,
-    getEuRealFooterButtons,
     getPreappstoreCrDemoContent,
     getPreappstoreCrDemoFooterButtons,
     getPreappstoreEuDemoContent,
-    getEuDemoFooterButtons,
+    getEuFooterButtons,
 } from '../Constants/cfd_compare_account_content';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 
@@ -424,8 +423,8 @@ const DMT5CompareModalContent = ({
 
     const modal_footer = () => {
         if (is_preappstore_cr_demo_account) return getPreappstoreCrDemoFooterButtons();
-        else if (is_demo_tab && show_eu_related_content) return getEuDemoFooterButtons();
-        return show_eu_related_content ? getEuRealFooterButtons() : getCrRealFooterButtons();
+        else if (is_demo_tab && show_eu_related_content) return getEuFooterButtons();
+        return show_eu_related_content ? getEuFooterButtons() : getCrRealFooterButtons();
     };
 
     const shouldShowPendingStatus = (item: TCompareAccountFooterButtonData) => {

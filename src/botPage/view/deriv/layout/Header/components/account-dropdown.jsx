@@ -116,7 +116,9 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>
-                    <div className='account__switcher-total-label'>{translate('Total assets in your Deriv accounts.')}</div>
+                    <div className='account__switcher-total-label'>
+                        {translate('Total assets in your Deriv accounts.')}
+                    </div>
                     <Separator />
                     {/* only if we have real account */}
                     <a href={config.tradershub.url} className={'account__switcher-total--link'}>
@@ -126,10 +128,10 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     <div
                         className={classNames('account__switcher-footer', {
                             'account__switcher-footer--demo': activeTab === 'demo',
-                            'account__switcher-footer--real': Object.keys(accounts).length === 1
+                            'account__switcher-footer--real': Object.keys(accounts).length === 1,
                         })}
                     >
-                        {(activeTab === 'real' && Object.keys(accounts).length > 1) && (
+                        {activeTab === 'real' && Object.keys(accounts).length > 1 && (
                             <a href={url} rel='noopener noreferrer'>
                                 <div>
                                     <button className='account__switcher-footer__manage'>Manage accounts</button>

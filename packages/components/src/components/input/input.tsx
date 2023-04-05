@@ -33,6 +33,8 @@ type TInputProps = {
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onInput?: (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onClick?: (e: React.MouseEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onMouseEnter?: (e: React.MouseEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onMouseLeave?: (e: React.MouseEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement;
@@ -40,6 +42,8 @@ type TInputProps = {
     value?: string | number;
     warn?: string;
     readOnly?: boolean;
+    is_autocomplete_disabled?: boolean;
+    is_hj_whitelisted?: boolean;
 };
 
 type TInputWrapper = {

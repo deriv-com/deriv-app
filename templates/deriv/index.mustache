@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title="{{> seo_title }}">
+        <title>{{> seo_title }}</title>
         <link rel="apple-touch-icon" sizes="57x57" href="{{> binary_style_img }}/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="114x114"
             href="{{> binary_style_img }}/favicons/apple-touch-icon-114x114.png">
@@ -40,8 +40,6 @@
                 top.location = self.location;
             }
         </script>
-
-        <title>Binary Bot</title>
         {{> bundle_css }}
         <link rel="stylesheet" href="css/binary.css">
         <link rel="stylesheet" href="css/styles.css">
@@ -106,6 +104,18 @@
 
             localStorage.removeItem('login_url')
         </script>
+        
+        <!-- Start of Survicate (www.survicate.com) code -->
+        <script type='text/javascript'>
+            (function (w) {
+                var s = document.createElement('script');
+                s.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
+                s.async = true;
+                var e = document.getElementsByTagName('script')[0];
+                e.parentNode.insertBefore(s, e);
+            })(window);
+        </script>
+        <!-- End of Survicate code -->
     </body>
 
 </html>

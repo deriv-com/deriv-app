@@ -11,7 +11,6 @@ const Redirect = ({
     currency,
     setVerificationCode,
     verification_code,
-    hasAnyRealAccount,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
@@ -129,7 +128,6 @@ const Redirect = ({
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                if (hasAnyRealAccount()) return openRealAccountSignup('manage');
                 return openRealAccountSignup();
             });
             const ext_platform_url = url_params.get('ext_platform_url');
@@ -143,6 +141,18 @@ const Redirect = ({
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup('maltainvest');
+            });
+            const ext_platform_url = url_params.get('ext_platform_url');
+            if (ext_platform_url) {
+                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
+                redirected_to_route = true;
+            }
+            break;
+        }
+        case 'manage_account': {
+            WS.wait('get_account_status').then(() => {
+                if (!currency) return openRealAccountSignup('set_currency');
+                return openRealAccountSignup('manage');
             });
             const ext_platform_url = url_params.get('ext_platform_url');
             if (ext_platform_url) {
@@ -193,7 +203,6 @@ Redirect.propTypes = {
     currency: PropTypes.string,
     loginid: PropTypes.string,
     getServerTime: PropTypes.object,
-    hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     setResetTradingPasswordModalOpen: PropTypes.func,
@@ -214,7 +223,6 @@ export default withRouter(
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,
-        hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,

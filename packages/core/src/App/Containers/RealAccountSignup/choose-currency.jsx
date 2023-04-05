@@ -56,7 +56,6 @@ const ChooseCurrency = ({
             all_payment_agent_list,
             account_list
         );
-        console.log('is_loading', is_loading);
 
         const reorderCryptoCurrencies = should_show_all_available_currencies
             ? reorderCurrencies(

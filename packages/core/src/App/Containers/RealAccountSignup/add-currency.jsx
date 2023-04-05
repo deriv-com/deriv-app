@@ -67,8 +67,6 @@ const AddCurrency = ({
         }
     };
 
-    console.log('is_loading', is_loading);
-
     const AddFiat = () => {
         return (
             <div>

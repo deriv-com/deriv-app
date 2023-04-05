@@ -261,7 +261,6 @@ const mock = (): TRootStore => {
             is_currency_switcher_disabled_for_mf: false,
             multipliers_account_status: null,
             openFailedVerificationModal: jest.fn(),
-            selectRegion: jest.fn(),
             selected_region: '',
             toggleRegulatorsCompareModal: jest.fn(),
             handleTabItemClick: jest.fn(),

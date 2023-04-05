@@ -269,7 +269,6 @@ type TTradersHubStore = {
     is_currency_switcher_disabled_for_mf: boolean;
     multipliers_account_status: 'need_verification' | 'failed' | 'pending' | null;
     openFailedVerificationModal: (selected_account_type: unknown) => void;
-    selectRegion: (region: string) => void;
     selected_region: string;
     toggleRegulatorsCompareModal: () => void;
     handleTabItemClick: (index: number) => void;

@@ -30,17 +30,6 @@ describe('useCurrentAccountDetails', () => {
         );
         const { result } = renderHook(() => useCurrentAccountDetails(), { wrapper });
 
-        expect(result.current).toStrictEqual({
-            account: {
-                balance: 10000,
-                currency: 'USD',
-                disabled: false,
-                is_crypto: false,
-            },
-            icon: 'icon',
-            is_dark_mode_on: false,
-            loginid: 'loginid',
-            title: 'title',
-        });
+        expect(result.current).toStrictEqual(mockRootStore.client.account_list[0]);
     });
 });

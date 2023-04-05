@@ -4,28 +4,28 @@ import { TJurisdictionCardSectionProps } from '../props.types';
 import JurisdictionClickableDescription from './jurisdiction-clickable-description';
 import JurisdictionTitleIndicator from './jurisdiction-title-indicator';
 
-const JurisdictionCardSection = ({ cardSectionItem, toggleCardFlip }: TJurisdictionCardSectionProps) => {
+const JurisdictionCardSection = ({ card_section_item, toggleCardFlip }: TJurisdictionCardSectionProps) => {
     return (
         <div className='cfd-card-section'>
             <div className='cfd-card-title-container'>
                 <div className='cfd-card-title'>
                     <Text as='span' weight='bold' size='xs'>
-                        {cardSectionItem.title}
+                        {card_section_item.title}
                     </Text>
                 </div>
-                {cardSectionItem.title_indicators && (
-                    <JurisdictionTitleIndicator title_indicators={cardSectionItem.title_indicators} />
+                {card_section_item.title_indicators && (
+                    <JurisdictionTitleIndicator title_indicators={card_section_item.title_indicators} />
                 )}
             </div>
-            {cardSectionItem.clickable_description ? (
+            {card_section_item.clickable_description ? (
                 <JurisdictionClickableDescription
-                    clickable_description={cardSectionItem.clickable_description}
+                    clickable_description={card_section_item.clickable_description}
                     toggleCardFlip={toggleCardFlip}
                 />
             ) : (
-                cardSectionItem.description && (
+                card_section_item.description && (
                     <Text as='span' size='xxs'>
-                        {cardSectionItem.description}
+                        {card_section_item.description}
                     </Text>
                 )
             )}

@@ -62,20 +62,20 @@ const JurisdictionCard = ({
                         {jurisdiction_verification_contents.short_description}
                     </Text>
                     <div className={classNames('cfd-card-back-section-items-container', 'cfd-card-back-section-main')}>
-                        {verification_docs?.map(verificationItem => (
-                            <div className='cfd-card-back-section-items-sub-container' key={verificationItem}>
+                        {verification_docs?.map(verification_item => (
+                            <div className='cfd-card-back-section-items-sub-container' key={verification_item}>
                                 <div>
                                     <Icon
                                         icon={
                                             jurisdiction_verification_contents.required_verification_docs[
-                                                verificationItem
+                                                verification_item
                                             ]?.icon
                                         }
                                     />
                                 </div>
                                 <Text as='span' size='xxs'>
                                     {
-                                        jurisdiction_verification_contents.required_verification_docs[verificationItem]
+                                        jurisdiction_verification_contents.required_verification_docs[verification_item]
                                             ?.text
                                     }
                                 </Text>
@@ -84,13 +84,13 @@ const JurisdictionCard = ({
                     </div>
                     <div className='cfd-card-section-divider' />
                     <div className='cfd-card-back-section-items-container'>
-                        {jurisdiction_verification_contents.status_references.map(statusItem => (
-                            <div className='cfd-card-back-section-items-sub-container' key={statusItem.color}>
+                        {jurisdiction_verification_contents.status_references.map(status_item => (
+                            <div className='cfd-card-back-section-items-sub-container' key={status_item.color}>
                                 <div>
-                                    <Icon icon={statusItem.icon} />
+                                    <Icon icon={status_item.icon} />
                                 </div>
                                 <Text as='span' size='xxs'>
-                                    {statusItem.text}
+                                    {status_item.text}
                                 </Text>
                             </div>
                         ))}
@@ -111,7 +111,7 @@ const JurisdictionCard = ({
                     <div className={`${card_classname}__card-section-container`}>
                         {card_data.map((item, index) => (
                             <React.Fragment key={item.key}>
-                                <JurisdictionCardSection cardSectionItem={item} toggleCardFlip={toggleCardFlip} />
+                                <JurisdictionCardSection card_section_item={item} toggleCardFlip={toggleCardFlip} />
                                 {index < card_data.length - 1 && <div className='cfd-card-section-divider' />}
                             </React.Fragment>
                         ))}

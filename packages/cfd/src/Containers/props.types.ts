@@ -194,7 +194,7 @@ export type TJurisdictionTitleIndicatorProps = {
 };
 
 export type TJurisdictionCardSectionProps = {
-    cardSectionItem: TJurisdictionCardSection;
+    card_section_item: TJurisdictionCardSection;
     toggleCardFlip: (event: SyntheticEvent) => void;
 };
 

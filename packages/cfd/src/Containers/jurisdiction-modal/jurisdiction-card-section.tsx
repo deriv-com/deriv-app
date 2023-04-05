@@ -13,13 +13,13 @@ const JurisdictionCardSection = ({ cardSectionItem, toggleCardFlip }: TJurisdict
                         {cardSectionItem.title}
                     </Text>
                 </div>
-                {cardSectionItem.titleIndicators && (
-                    <JurisdictionTitleIndicator title_indicators={cardSectionItem.titleIndicators} />
+                {cardSectionItem.title_indicators && (
+                    <JurisdictionTitleIndicator title_indicators={cardSectionItem.title_indicators} />
                 )}
             </div>
-            {cardSectionItem.clickableDescription ? (
+            {cardSectionItem.clickable_description ? (
                 <JurisdictionClickableDescription
-                    clickable_description={cardSectionItem.clickableDescription}
+                    clickable_description={cardSectionItem.clickable_description}
                     toggleCardFlip={toggleCardFlip}
                 />
             ) : (

@@ -79,22 +79,21 @@ export type TCardFlipStatus = {
 export type TClickableDescription = {
     type: 'text' | 'link';
     text: string;
-    linkData?: string;
 };
 
 export type TJurisdictionCardSectionTitleIndicators = {
     type: 'displayText' | 'displayIcons';
-    displayText?: string;
-    displayTextSkinColor?: string;
-    displayIcons?: Array<string>;
+    display_text?: string;
+    display_text_skin_color?: string;
+    display_icons?: Array<string>;
 };
 
 export type TJurisdictionCardSection = {
     key: string;
     title: string;
-    titleIndicators?: TJurisdictionCardSectionTitleIndicators;
+    title_indicators?: TJurisdictionCardSectionTitleIndicators;
     description?: string;
-    clickableDescription?: Array<TClickableDescription>;
+    clickable_description?: Array<TClickableDescription>;
 };
 
 export type TJurisdictionCardBackRequiredDocsItem = {
@@ -103,16 +102,18 @@ export type TJurisdictionCardBackRequiredDocsItem = {
 };
 
 export type TJurisdictionCardBackSectionRequiredDocs = {
-    documentNumber?: TJurisdictionCardBackRequiredDocsItem;
+    document_number?: TJurisdictionCardBackRequiredDocsItem;
     selfie?: TJurisdictionCardBackRequiredDocsItem;
-    identityDocument?: TJurisdictionCardBackRequiredDocsItem;
-    nameAndAddress?: TJurisdictionCardBackRequiredDocsItem;
+    identity_document?: TJurisdictionCardBackRequiredDocsItem;
+    name_and_address?: TJurisdictionCardBackRequiredDocsItem;
 };
+
+type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';
 
 export type TJurisdictionCardBackSectionStatusReferences = {
     icon: string;
     text: string;
-    color: 'yellow' | 'red' | 'green';
+    color: TJurisdictionVerificationColors;
 };
 
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];

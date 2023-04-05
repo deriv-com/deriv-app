@@ -59,7 +59,7 @@ const JurisdictionCard = ({
                         />
                     </div>
                     <Text as='div' size='xxs'>
-                        {jurisdiction_verification_contents.shortDescription}
+                        {jurisdiction_verification_contents.short_description}
                     </Text>
                     <div className={classNames('cfd-card-back-section-items-container', 'cfd-card-back-section-main')}>
                         {verification_docs?.map(verificationItem => (
@@ -67,7 +67,7 @@ const JurisdictionCard = ({
                                 <div>
                                     <Icon
                                         icon={
-                                            jurisdiction_verification_contents.requiredVerificationDocs[
+                                            jurisdiction_verification_contents.required_verification_docs[
                                                 verificationItem
                                             ]?.icon
                                         }
@@ -75,7 +75,7 @@ const JurisdictionCard = ({
                                 </div>
                                 <Text as='span' size='xxs'>
                                     {
-                                        jurisdiction_verification_contents.requiredVerificationDocs[verificationItem]
+                                        jurisdiction_verification_contents.required_verification_docs[verificationItem]
                                             ?.text
                                     }
                                 </Text>
@@ -84,7 +84,7 @@ const JurisdictionCard = ({
                     </div>
                     <div className='cfd-card-section-divider' />
                     <div className='cfd-card-back-section-items-container'>
-                        {jurisdiction_verification_contents.statusReferences.map(statusItem => (
+                        {jurisdiction_verification_contents.status_references.map(statusItem => (
                             <div className='cfd-card-back-section-items-sub-container' key={statusItem.color}>
                                 <div>
                                     <Icon icon={statusItem.icon} />

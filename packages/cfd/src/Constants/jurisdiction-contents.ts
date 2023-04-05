@@ -1,14 +1,16 @@
 import { localize } from '@deriv/translations';
 import { TJurisdictionCardSection } from 'Components/props.types';
 
+type TJurisdictionCardItemVerification = Array<'document_number' | 'selfie' | 'identity_document' | 'name_and_address'>;
+
 type TJurisdictionCardItems = {
     header: string;
     over_header?: string;
     synthetic_contents: Array<TJurisdictionCardSection>;
     financial_contents: Array<TJurisdictionCardSection>;
     is_over_header_available: boolean;
-    synthetic_verification_docs?: Array<'documentNumber' | 'selfie' | 'identityDocument' | 'nameAndAddress'>;
-    financial_verification_docs?: Array<'documentNumber' | 'selfie' | 'identityDocument' | 'nameAndAddress'>;
+    synthetic_verification_docs?: TJurisdictionCardItemVerification;
+    financial_verification_docs?: TJurisdictionCardItemVerification;
 };
 
 type TJurisdictionContent = {
@@ -28,19 +30,19 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Synthetics, Basket indices and Derived FX')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('40+')}`,
-                    displayTextSkinColor: 'red-darker',
+                    display_text: `${localize('40+')}`,
+                    display_text_skin_color: 'red-darker',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:1000')}`,
-                    displayTextSkinColor: 'yellow-light',
+                    display_text: `${localize('1:1000')}`,
+                    display_text_skin_color: 'yellow-light',
                 },
             },
             {
@@ -61,28 +63,28 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('170+')}`,
-                    displayTextSkinColor: 'red-light',
+                    display_text: `${localize('170+')}`,
+                    display_text_skin_color: 'red-light',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:1000')}`,
-                    displayTextSkinColor: 'yellow-light',
+                    display_text: `${localize('1:1000')}`,
+                    display_text_skin_color: 'yellow-light',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('0.6 pips')}`,
-                    displayTextSkinColor: 'violet-dark',
+                    display_text: `${localize('0.6 pips')}`,
+                    display_text_skin_color: 'violet-dark',
                 },
             },
             {
@@ -107,25 +109,25 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Synthetics, Basket indices and Derived FX')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('40+')}`,
-                    displayTextSkinColor: 'red-darker',
+                    display_text: `${localize('40+')}`,
+                    display_text_skin_color: 'red-darker',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:1000')}`,
-                    displayTextSkinColor: 'yellow-light',
+                    display_text: `${localize('1:1000')}`,
+                    display_text_skin_color: 'yellow-light',
                 },
             },
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -143,34 +145,34 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('170+')}`,
-                    displayTextSkinColor: 'red-light',
+                    display_text: `${localize('170+')}`,
+                    display_text_skin_color: 'red-light',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:1000')}`,
-                    displayTextSkinColor: 'yellow-light',
+                    display_text: `${localize('1:1000')}`,
+                    display_text_skin_color: 'yellow-light',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('0.5 pips')}`,
-                    displayTextSkinColor: 'violet-dark',
+                    display_text: `${localize('0.5 pips')}`,
+                    display_text_skin_color: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -183,8 +185,8 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 )}`,
             },
         ],
-        synthetic_verification_docs: ['documentNumber', 'nameAndAddress'],
-        financial_verification_docs: ['documentNumber', 'nameAndAddress'],
+        synthetic_verification_docs: ['document_number', 'name_and_address'],
+        financial_verification_docs: ['document_number', 'name_and_address'],
     },
     vanuatu: {
         is_over_header_available: false,
@@ -194,25 +196,25 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Synthetics, Basket indices and Derived FX')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('40+')}`,
-                    displayTextSkinColor: 'red-darker',
+                    display_text: `${localize('40+')}`,
+                    display_text_skin_color: 'red-darker',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:1000')}`,
-                    displayTextSkinColor: 'yellow-light',
+                    display_text: `${localize('1:1000')}`,
+                    display_text_skin_color: 'yellow-light',
                 },
             },
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -228,34 +230,34 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex, Stock indices, Commodities and Cryptocurrencies')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('90+')}`,
-                    displayTextSkinColor: 'red-dark',
+                    display_text: `${localize('90+')}`,
+                    display_text_skin_color: 'red-dark',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:1000')}`,
-                    displayTextSkinColor: 'yellow-light',
+                    display_text: `${localize('1:1000')}`,
+                    display_text_skin_color: 'yellow-light',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('0.5 pips')}`,
-                    displayTextSkinColor: 'violet-dark',
+                    display_text: `${localize('0.5 pips')}`,
+                    display_text_skin_color: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -266,8 +268,8 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize('Vanuatu Financial Services Commission')}`,
             },
         ],
-        synthetic_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
-        financial_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
+        synthetic_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
+        financial_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
     },
     labuan: {
         over_header: localize('Straight-through processing'),
@@ -283,7 +285,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -299,34 +301,34 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 key: 'assets',
                 title: `${localize('Assets')}`,
                 description: `${localize('Forex and Cryptocurrencies')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('90+')}`,
-                    displayTextSkinColor: 'red-dark',
+                    display_text: `${localize('90+')}`,
+                    display_text_skin_color: 'red-dark',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:100')}`,
-                    displayTextSkinColor: 'yellow-dark',
+                    display_text: `${localize('1:100')}`,
+                    display_text_skin_color: 'yellow-dark',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('0.6 pips')}`,
-                    displayTextSkinColor: 'violet-dark',
+                    display_text: `${localize('0.6 pips')}`,
+                    display_text_skin_color: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -337,8 +339,8 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize('Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
             },
         ],
-        synthetic_verification_docs: ['documentNumber', 'nameAndAddress'],
-        financial_verification_docs: ['documentNumber', 'nameAndAddress'],
+        synthetic_verification_docs: ['document_number', 'name_and_address'],
+        financial_verification_docs: ['document_number', 'name_and_address'],
     },
     maltainvest: {
         is_over_header_available: false,
@@ -350,34 +352,34 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize(
                     'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'
                 )}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('140+')}`,
-                    displayTextSkinColor: 'red-light',
+                    display_text: `${localize('140+')}`,
+                    display_text_skin_color: 'red-light',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:30')}`,
-                    displayTextSkinColor: 'brown-dark',
+                    display_text: `${localize('1:30')}`,
+                    display_text_skin_color: 'brown-dark',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('0.5 pips')}`,
-                    displayTextSkinColor: 'violet-dark',
+                    display_text: `${localize('0.5 pips')}`,
+                    display_text_skin_color: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -395,34 +397,34 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize(
                     'Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies'
                 )}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('140+')}`,
-                    displayTextSkinColor: 'red-light',
+                    display_text: `${localize('140+')}`,
+                    display_text_skin_color: 'red-light',
                 },
             },
             {
                 key: 'leverage',
                 title: `${localize('Leverage')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('1:30')}`,
-                    displayTextSkinColor: 'brown-dark',
+                    display_text: `${localize('1:30')}`,
+                    display_text_skin_color: 'brown-dark',
                 },
             },
             {
                 key: 'spreadsFrom',
                 title: `${localize('Spreads from')}`,
-                titleIndicators: {
+                title_indicators: {
                     type: 'displayText',
-                    displayText: `${localize('0.5 pips')}`,
-                    displayTextSkinColor: 'violet-dark',
+                    display_text: `${localize('0.5 pips')}`,
+                    display_text_skin_color: 'violet-dark',
                 },
             },
             {
                 key: 'verifications',
                 title: `${localize('Verifications')}`,
-                clickableDescription: [
+                clickable_description: [
                     { type: 'link', text: `${localize('Learn more')}` },
                     { type: 'text', text: `${localize('about verifications needed.')}` },
                 ],
@@ -433,7 +435,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
                 description: `${localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
             },
         ],
-        synthetic_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
-        financial_verification_docs: ['selfie', 'identityDocument', 'nameAndAddress'],
+        synthetic_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
+        financial_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
     },
 };

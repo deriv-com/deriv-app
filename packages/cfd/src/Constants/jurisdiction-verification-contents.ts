@@ -5,15 +5,15 @@ import {
 } from 'Components/props.types';
 
 type TJurisdictionCardBackSectionContent = {
-    shortDescription: string;
-    requiredVerificationDocs: TJurisdictionCardBackSectionRequiredDocs;
-    statusReferences: Array<TJurisdictionCardBackSectionStatusReferences>;
+    short_description: string;
+    required_verification_docs: TJurisdictionCardBackSectionRequiredDocs;
+    status_references: Array<TJurisdictionCardBackSectionStatusReferences>;
 };
 
 export const jurisdiction_verification_contents: TJurisdictionCardBackSectionContent = {
-    shortDescription: `${localize('We need you to submit these in order to get this account:')}`,
-    requiredVerificationDocs: {
-        documentNumber: {
+    short_description: `${localize('We need you to submit these in order to get this account:')}`,
+    required_verification_docs: {
+        document_number: {
             icon: 'IcDocumentNumberVerification',
             text: `${localize('Document number (identity card, passport)')}`,
         },
@@ -21,18 +21,18 @@ export const jurisdiction_verification_contents: TJurisdictionCardBackSectionCon
             icon: 'IcSelfieVerification',
             text: `${localize('A selfie of yourself.')}`,
         },
-        identityDocument: {
+        identity_document: {
             icon: 'IcIdentityDocumentVerification',
             text: `${localize('A copy of your identity document (identity card, passport)')}`,
         },
-        nameAndAddress: {
+        name_and_address: {
             icon: 'IcNameAndAddressVerification',
             text: `${localize(
                 'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             )}`,
         },
     },
-    statusReferences: [
+    status_references: [
         {
             icon: 'IcVerificationStatusYellow',
             text: `${localize('Your document is pending for verification.')}`,

@@ -25,7 +25,12 @@ const Redirect = ({
     const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
+    const ext_platform_url = url_params.get('ext_platform_url');
 
+    const redirectToExternalPlatform = url => {
+        history.push(`${routes.root}?ext_platform_url=${url}`);
+        redirected_to_route = true;
+    };
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
 
@@ -130,11 +135,7 @@ const Redirect = ({
                 if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup();
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'add_account_multiplier': {
@@ -142,23 +143,14 @@ const Redirect = ({
                 if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup('maltainvest');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'manage_account': {
             WS.wait('get_account_status').then(() => {
-                if (!currency) return openRealAccountSignup('set_currency');
                 return openRealAccountSignup('manage');
             });
-            const ext_platform_url = url_params.get('ext_platform_url');
-            if (ext_platform_url) {
-                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
-                redirected_to_route = true;
-            }
+            if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;
         }
         case 'verification': {

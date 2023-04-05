@@ -20,7 +20,7 @@
                     const client_accounts = JSON.parse(value);
                     const token_data = {};
                     let login_token  = null
-                    //localStorage.setItem('client.accounts', {});
+
                     Object.keys(client_accounts).forEach((e, i) => {
                         const order = i + 1;
                         const { token, currency } = client_accounts[e];

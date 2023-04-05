@@ -12,10 +12,10 @@ jest.mock('Stores/connect', () => ({
 }));
 
 describe('ToggleSettings Component', () => {
-    it('should has "ic-settings--active" class when "is_settings_visible" is true', () => {
-        render(<ToggleSettings is_settings_visible />);
+    it('should render toggle settings with "ic-settings" footer class', () => {
+        render(<ToggleSettings />);
         const link = screen.getByTestId('dt_toggle_settings');
-        expect(link).toHaveClass('ic-settings--active');
+        expect(link).toHaveClass('ic-settings footer__link footer__link');
     });
 
     it('should contain "IcGear" icon', () => {

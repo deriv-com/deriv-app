@@ -8,7 +8,7 @@ import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
 
-type TDatePicker = {
+export type TDatePicker = {
     error_messages: string[];
     label: string;
     is_alignment_top: boolean;
@@ -43,6 +43,7 @@ type TDatePicker = {
     }) => void;
     alignment: string;
     keep_open: boolean;
+    calendar_view?: 'date' | 'month' | 'year' | 'decade';
 };
 
 const DatePicker = React.memo((props: TDatePicker) => {

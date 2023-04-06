@@ -72,7 +72,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
         () => {
             if (is_datepicker_visible) setIsDatepickerVisible(false);
         },
-        e => !calendar_el_ref.current?.contains(e.target as Node)
+        e => !calendar_el_ref.current?.contains(e.target as HTMLDivElement)
     );
 
     React.useEffect(() => {

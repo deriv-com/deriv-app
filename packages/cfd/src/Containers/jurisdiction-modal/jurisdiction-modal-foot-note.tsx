@@ -67,7 +67,7 @@ const FooterNote = ({
 };
 
 const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
-    return (
+    return !props.jurisdiction_selected_shortcode ? (
         <div data-testid='dt-jurisdiction-footnote' className={`${props.card_classname}__footnote`}>
             <Text
                 as='p'
@@ -80,6 +80,8 @@ const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
                 <FooterNote {...props} />
             </Text>
         </div>
+    ) : (
+        <React.Fragment />
     );
 };
 

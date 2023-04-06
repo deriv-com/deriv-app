@@ -5,10 +5,10 @@ import { supportedLanguages, translate, init } from './i18n';
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().lang ? parseQueryString().lang || getStorage('lang') : 'en';
-    const isQueryLangSupported = queryLang in supportedLanguages;
+    const is_query_lang_supported = queryLang in supportedLanguages;
     const lang =
-        getStorage('lang') in supportedLanguages ? getStorage('lang') : isQueryLangSupported ? queryLang : 'en';
-    if (!isQueryLangSupported) {
+        getStorage('lang') in supportedLanguages ? getStorage('lang') : is_query_lang_supported ? queryLang : 'en';
+    if (!is_query_lang_supported) {
         const newSearch = document.location.search.replace(/lang=+[a-z]{2}/, 'lang=en');
         window.history.pushState(null, '/', newSearch);
     }

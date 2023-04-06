@@ -9,7 +9,7 @@ import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 
 const AssetSummary = observer(() => {
-    const { traders_hub, client, common }: any = useStore();
+    const { traders_hub, client, common, exchange_rates } = useStore();
     const {
         selected_account_type,
         platform_real_balance,
@@ -20,17 +20,15 @@ const AssetSummary = observer(() => {
         no_CR_account,
         no_MF_account,
         updateExchangeRates,
-        exchange_rates_2,
     } = traders_hub;
     const { is_logging_in, is_switching } = client;
     const { getExchangeRate } = common;
 
     const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
     const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
-    const { exchange_rates } = useStore();
 
     React.useEffect(() => {
-        updateExchangeRates(exchange_rates.data);
+        updateExchangeRates(exchange_rates?.data);
     }, [exchange_rates.data]);
 
     React.useEffect(() => {
@@ -91,23 +89,6 @@ const AssetSummary = observer(() => {
 
     return (
         <div className='asset-summary'>
-            <div
-                style={{
-                    backgroundColor: 'red',
-                    fontSize: 20,
-                    padding: 50,
-                    position: 'fixed',
-                    zIndex: 9999,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    overflow: 'scroll',
-                }}
-            >
-                <p>data from useStore: {JSON.stringify(exchange_rates.data)}</p>
-                <hr />
-                <p>data from traders hub store: {JSON.stringify(exchange_rates_2)}</p>
-            </div>
             {has_active_related_deriv_account || selected_account_type === 'demo' ? (
                 <React.Fragment>
                     {!isMobile() ? (

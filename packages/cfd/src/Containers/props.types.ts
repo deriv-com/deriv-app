@@ -167,6 +167,7 @@ export type TJurisdictionCardProps = {
     context: RootStore;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    all_market_type_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
     type_of_card: string;
@@ -219,6 +220,7 @@ export type TJurisdictionModalProps = {
     should_restrict_vanuatu_account_creation: boolean;
     show_eu_related_content: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    ctrader_available_accounts: TTradingPlatformAvailableAccount[];
     fetchAccountSettings: () => void;
     toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
@@ -235,6 +237,7 @@ export type TJurisdictionModalContentProps = {
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    all_market_type_available_accounts: TTradingPlatformAvailableAccount[];
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;

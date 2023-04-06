@@ -22,6 +22,7 @@ const JurisdictionModal = ({
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
     trading_platform_available_accounts,
+    ctrader_available_accounts,
     toggleJurisdictionModal,
     setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation,
@@ -76,11 +77,17 @@ const JurisdictionModal = ({
                 : available_account.shortcode !== 'maltainvest')
     );
 
+    const all_market_type_available_accounts = ctrader_available_accounts.filter(
+        available_account => available_account.account_type === 'real'
+    );
+
     const modal_title = show_eu_related_content
         ? localize('Jurisdiction for your Deriv MT5 CFDs account')
-        : localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
+        : account_type.type !== 'all'
+        ? localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
               account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
-          });
+          })
+        : localize('Choose a jurisdiction for your cTrader account');
 
     const is_svg_selected = jurisdiction_selected_shortcode === 'svg';
     const is_bvi_selected = jurisdiction_selected_shortcode === 'bvi';
@@ -172,6 +179,7 @@ const JurisdictionModal = ({
                 context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
+                all_market_type_available_accounts={all_market_type_available_accounts}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
                 <JurisdictionModalFootNote
@@ -262,6 +270,7 @@ export default connect(({ modules: { cfd }, ui, client, traders_hub }: RootStore
     should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     show_eu_related_content: traders_hub.show_eu_related_content,
     trading_platform_available_accounts: client.trading_platform_available_accounts,
+    ctrader_available_accounts: client.ctrader_available_accounts,
     toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
     toggleJurisdictionModal: cfd.toggleJurisdictionModal,
     updateMT5Status: client.updateMT5Status,

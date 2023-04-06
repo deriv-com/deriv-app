@@ -209,6 +209,7 @@ export type TJurisdictionModalProps = {
     };
     account_status: GetAccountStatus;
     context: RootStore;
+    openCTraderRealAccount: (category: string, platform: string, type: string) => void;
     disableApp: () => void;
     enableApp: () => void;
     is_jurisdiction_modal_visible: boolean;

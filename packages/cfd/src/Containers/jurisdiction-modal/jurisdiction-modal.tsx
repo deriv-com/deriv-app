@@ -19,6 +19,7 @@ const JurisdictionModal = ({
     is_virtual,
     jurisdiction_selected_shortcode,
     openPasswordModal,
+    openCTraderRealAccount,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
     trading_platform_available_accounts,
@@ -128,7 +129,11 @@ const JurisdictionModal = ({
         };
 
         if (is_svg_selected) {
-            openPasswordModal(type_of_account);
+            if (type_of_account.type === 'all') {
+                openCTraderRealAccount(type_of_account.category, 'ctrader', type_of_account.type);
+            } else {
+                openPasswordModal(type_of_account);
+            }
         } else if (is_vanuatu_selected) {
             if (
                 poi_acknowledged_for_vanuatu_maltainvest &&
@@ -259,6 +264,7 @@ export default connect(({ modules: { cfd }, ui, client, traders_hub }: RootStore
     content_flag: traders_hub.content_flag,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
+    openCTraderRealAccount: cfd.createCFDAccount,
     is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
     is_virtual: client.is_virtual,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,

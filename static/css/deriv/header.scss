@@ -85,6 +85,7 @@
 
             &_label {
                 line-height: initial;
+                margin: unset;
 
                 @include mobile {
                     margin: 0 0 !important;
@@ -237,10 +238,6 @@
 
         &-text {
             margin-right: 0.5rem;
-
-            @include desktop {
-                margin-top: 0.25rem;
-            }
         }
 
         &-button {
@@ -641,13 +638,14 @@
                     height: 2rem;
                     font-family: unset;
                     font-weight: 600;
-                    
+
                 }
 
                 &--demo {
                     justify-content: flex-end;
                 }
-                &--real{
+
+                &--real {
                     justify-content: flex-end;
                 }
             }
@@ -812,7 +810,8 @@
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
-                        span{
+
+                        span {
                             font-size: 14px;
                         }
                     }

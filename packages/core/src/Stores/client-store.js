@@ -99,6 +99,7 @@ export default class ClientStore extends BaseStore {
     mt5_login_list = [];
     mt5_login_list_error = null;
     dxtrade_accounts_list = [];
+    ctrader_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
     statement = [];
@@ -193,6 +194,7 @@ export default class ClientStore extends BaseStore {
             mt5_login_list: observable,
             mt5_login_list_error: observable,
             dxtrade_accounts_list: observable,
+            ctrader_accounts_list: observable,
             dxtrade_accounts_list_error: observable,
             dxtrade_disabled_signup_types: observable,
             statement: observable,
@@ -608,10 +610,19 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
+    get has_real_ctrader_login() {
+        return this.ctrader_accounts_list.some(account => account.account_type === 'real');
+    }
+
     hasAccountErrorInCFDList = (platform, account_type) => {
         if (!this.is_logged_in) return false;
 
-        const list = platform === CFD_PLATFORMS.MT5 ? this.mt5_login_list : this.dxtrade_accounts_list;
+        const list =
+            platform === CFD_PLATFORMS.MT5
+                ? this.mt5_login_list
+                : platform === CFD_PLATFORMS.DXTRADE
+                ? this.dxtrade_accounts_list
+                : this.ctrader_accounts_list;
         return list?.some(account => !!account.has_error && account.account_type === account_type);
     };
 
@@ -1613,6 +1624,7 @@ export default class ClientStore extends BaseStore {
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
+            WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
 
             this.responseStatement(
@@ -1992,6 +2004,7 @@ export default class ClientStore extends BaseStore {
         this.accounts = {};
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
+        this.ctrader_accounts_list = [];
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
@@ -2376,6 +2389,11 @@ export default class ClientStore extends BaseStore {
                     this.setMT5DisabledSignupTypes({
                         [account_type]: true,
                     });
+                    if (platform === CFD_PLATFORMS.CTRADER) {
+                        this.setCFDDisabledSignupTypes(platform, {
+                            [account_type]: true,
+                        });
+                    }
                     return {
                         account_type,
                         display_login,

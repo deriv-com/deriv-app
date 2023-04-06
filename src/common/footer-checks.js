@@ -40,7 +40,7 @@ const isLowRisk = async (financial_company, gaming_company, token_list) => {
         const {
             loginInfo: { upgradeable_landing_companies },
         } = data;
-        return upgradeable_landing_companies
+        return upgradeable_landing_companies;
     });
     const financial_shortcode = financial_company?.shortcode;
     const gaming_shortcode = gaming_company?.shortcode;

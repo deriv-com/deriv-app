@@ -35,7 +35,6 @@ export const jurisdiction_contents: TJurisdictionContent = {
         ],
         swapfree_contents: [
             `${localize('Selecting this will onboard you through Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
-            `${localize('Registered with the Financial Commission')}`,
             `${localize(
                 '40+ assets: forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies, and ETFs swap-free.'
             )}`,

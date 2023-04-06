@@ -112,13 +112,14 @@
             }
         }
     }
-    .barrier {
+    .barrier_1,
+    .barrier_2 {
         &__widget {
             border: 1px solid var(--general-active);
             border-radius: 4px;
             margin-inline: 1.6rem;
-            &:active {
-                border: 1px solid var(--purchase-main-1);
+            &:has(input:active, input:focus) {
+                border: 1px solid var(--border-active);
             }
         }
     }

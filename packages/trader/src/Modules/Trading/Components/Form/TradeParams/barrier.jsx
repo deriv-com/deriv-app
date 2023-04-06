@@ -12,17 +12,18 @@ const Barrier = ({
     barrier_2,
     barrier_count,
     barrier_pipsize,
-    // contract_info,
     current_focus,
     duration_unit,
     is_minimized,
     is_absolute_only,
     onChange,
+    // proposal_info,
     setCurrentFocus,
     validation_errors,
 }) => {
     const [show_modal, setShowModal] = React.useState(false);
-    // const { barrier: barrier_price, current_spot_display_value: current_price } = contract_info;
+
+    //TODO: Check if we can exctract current price and barier  price
 
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
 
@@ -123,9 +124,10 @@ const Barrier = ({
                     <LabeledQuantityInputMobile
                         input_label={localize('Barrier')}
                         type='number'
-                        name='barrier'
+                        name={barrier_count === 1 ? 'barrier_1' : 'barrier_2'}
                         value={barrier_count === 1 ? barrier_1 : barrier_2}
                         className={`barrier__fields-${input_class}`}
+                        //Check those classes
                         classNameInput={classNames(
                             'barrier__fields-input',
                             'barrier__fields-barriers-input',
@@ -200,12 +202,12 @@ Barrier.propTypes = {
     barrier_2: PropTypes.string,
     barrier_count: PropTypes.number,
     barrier_pipsize: PropTypes.number,
-    // contract_info: PropTypes.object,
     current_focus: PropTypes.string,
     duration_unit: PropTypes.string,
     is_absolute_only: PropTypes.bool,
     is_minimized: PropTypes.bool,
     onChange: PropTypes.func,
+    // proposal_info: PropTypes.object,
     setCurrentFocus: PropTypes.func,
     validation_errors: PropTypes.object,
 };
@@ -215,11 +217,10 @@ export default connect(({ modules, ui }) => ({
     barrier_2: modules.trade.barrier_2,
     barrier_pipsize: modules.trade.barrier_pipsize,
     barrier_count: modules.trade.barrier_count,
-    // contract_info: summary_card.contract_info,
-    // contract_info: modules.trade.contract_info,
     current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     onChange: modules.trade.onChange,
+    // proposal_info: modules.trade.proposal_info,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
 }))(Barrier);

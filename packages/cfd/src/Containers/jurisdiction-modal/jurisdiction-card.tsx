@@ -105,7 +105,13 @@ const JurisdictionCard = ({
                     ) : (
                         <div className={`${card_classname}__card-content-over-header-blank`} />
                     )}
-                    <Text as='p' color={'prominent'} weight='bold' size='sm' className={`${card_classname}__h2-header`}>
+                    <Text
+                        as='p'
+                        color={'prominent'}
+                        weight='bold'
+                        size='xsm'
+                        className={`${card_classname}__h2-header`}
+                    >
                         <Localize i18n_default_text={card_values.header} />
                     </Text>
                     <div className={`${card_classname}__card-section-container`}>

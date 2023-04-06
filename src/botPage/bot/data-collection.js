@@ -113,11 +113,11 @@ export default class DataCollection {
         const current_login_id = getStorage('active_loginid') || '';
         let lognin_id = null;
         if (tokenList.length) {
-                tokenList.forEach((token_list) => {
-                if (current_login_id === token_list.loginInfo.loginid){
+            tokenList.forEach(token_list => {
+                if (current_login_id === token_list.loginInfo.loginid) {
                     lognin_id = token_list.loginInfo.loginid;
                 }
-            })
+            });
         }
         return lognin_id;
     };

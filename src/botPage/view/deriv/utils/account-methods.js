@@ -21,11 +21,11 @@ export const updateTokenList = () => {
         const active_token = getActiveToken(token_list);
         if ('loginInfo' in active_token) {
             const current_login_id = getStorage('active_loginid') || '';
-            token_list.forEach((token) => {
+            token_list.forEach(token => {
                 if (current_login_id === token.loginInfo.loginid) {
                     setStorage('active_loginid', token_list.loginInfo.loginid);
                 }
-            })
+            });
             setStorage('client.accounts', JSON.stringify(convertForDerivStore(token_list)));
             syncWithDerivApp();
         }

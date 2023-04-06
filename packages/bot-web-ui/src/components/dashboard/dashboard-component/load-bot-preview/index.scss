@@ -262,7 +262,7 @@
             }
 
             @include desktop {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: 1fr 1fr 1fr 1.5fr;
             }
 
             grid-template-areas: ('text location');
@@ -276,7 +276,7 @@
             }
 
             & .dc-text {
-                width: 10rem;
+                width: fit-content;
 
                 @include mobile {
                     width: unset;

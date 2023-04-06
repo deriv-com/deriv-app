@@ -96,6 +96,18 @@ export type TJurisdictionCardSection = {
     clickable_description?: Array<TClickableDescription>;
 };
 
+type TJurisdictionCardItemVerification = Array<'document_number' | 'selfie' | 'identity_document' | 'name_and_address'>;
+
+export type TJurisdictionCardItems = {
+    header: string;
+    over_header?: string;
+    synthetic_contents: Array<TJurisdictionCardSection>;
+    financial_contents: Array<TJurisdictionCardSection>;
+    is_over_header_available: boolean;
+    synthetic_verification_docs?: TJurisdictionCardItemVerification;
+    financial_verification_docs?: TJurisdictionCardItemVerification;
+};
+
 export type TJurisdictionCardBackRequiredDocsItem = {
     icon: string;
     text: string;

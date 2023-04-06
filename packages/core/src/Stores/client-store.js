@@ -242,7 +242,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
-            is_crypto: computed,
+            is_crypto: action.bound,
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
@@ -656,8 +656,8 @@ export default class ClientStore extends BaseStore {
         return this.default_currency;
     }
 
-    get is_crypto() {
-        return isCryptocurrency(this.currency);
+    is_crypto(currency) {
+        return isCryptocurrency(currency || this.currency);
     }
 
     get default_currency() {

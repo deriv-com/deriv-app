@@ -10,6 +10,7 @@ import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 import SideNote from 'Components/side-note';
 import type { TCashierOnboardingProvider } from './cashier-onboarding-providers';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useHasFiatCurrency, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
 
 type TCashierOnboardingProps = {
     setSideNotes?: (component: React.ReactElement[]) => void;
@@ -35,8 +36,6 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         setIsDeposit,
         setDepositTarget,
         setShouldShowAllAvailableCurrencies,
-        showP2pInCashierOnboarding,
-        show_p2p_in_cashier_onboarding,
     } = general_store;
     const {
         app_contents_scroll_ref,
@@ -48,6 +47,9 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
     } = ui;
     const { is_payment_agent_visible_in_onboarding } = payment_agent;
     const { shouldNavigateAfterPrompt } = account_prompt_dialog;
+    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const has_fiat_currency = useHasFiatCurrency();
+    const has_usd_currency = useHasUSDCurrency();
 
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
@@ -154,7 +156,6 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
     };
 
     const getDepositOptions = () => {
-        showP2pInCashierOnboarding();
         const options: TCashierOnboardingProvider[] = [];
         options.push(Providers.createCashProvider(onClickDepositCash));
         options.push(Providers.createCryptoProvider(onClickDepositCrypto));
@@ -163,7 +164,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
 
-        if (show_p2p_in_cashier_onboarding) {
+        if (is_p2p_enabled || (has_fiat_currency && has_usd_currency)) {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;

@@ -43,7 +43,7 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
     const { notification_messages_ui: Notifications, is_dark_mode_on, is_mobile, setCurrentFocus, current_focus } = ui;
     const { platform } = common;
     const { general_store } = useCashierStore();
-    const { setNotificationCount, setOnRemount } = general_store;
+    const { setOnRemount } = general_store;
     const [order_id, setOrderId] = React.useState<string | null>(null);
     const [action_param, setActionParam] = React.useState<string | null>(null);
     const [code_param, setCodeParam] = React.useState<string | null>(null);
@@ -151,7 +151,6 @@ const P2PCashier = observer(({ history, location }: TP2PCashierProps) => {
             removeNotificationMessage={removeNotificationMessage}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}
-            setNotificationCount={setNotificationCount}
             setOrderId={setQueryOrder}
             setOnRemount={setOnRemount}
             setP2POrderProps={setP2POrderProps}

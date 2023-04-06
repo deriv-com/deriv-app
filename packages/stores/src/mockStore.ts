@@ -188,7 +188,7 @@ const mock = (): TRootStore => {
             switched: false,
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
-            is_crypto: false,
+            is_crypto: jest.fn(),
         },
         common: {
             error: {

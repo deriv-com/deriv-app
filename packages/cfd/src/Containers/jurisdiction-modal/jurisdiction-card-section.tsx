@@ -8,11 +8,9 @@ const JurisdictionCardSection = ({ card_section_item, toggleCardFlip }: TJurisdi
     return (
         <div className='cfd-card-section'>
             <div className='cfd-card-title-container'>
-                <div className='cfd-card-title'>
-                    <Text as='span' weight='bold' size='xs'>
-                        {card_section_item.title}
-                    </Text>
-                </div>
+                <Text as='span' weight='bold' size='xs'>
+                    {card_section_item.title}
+                </Text>
                 {card_section_item.title_indicators && (
                     <JurisdictionTitleIndicator title_indicators={card_section_item.title_indicators} />
                 )}

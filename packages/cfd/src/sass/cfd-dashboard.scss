@@ -715,11 +715,8 @@
         border-bottom: 2px solid var(--border-divider);
     }
     &-title-indicator {
-        display: flex;
         padding: 0.6rem 1.2rem;
-        color: var(--brand-white);
         border-radius: $BORDER_RADIUS;
-        font-weight: bold;
         &__red-darker {
             background: var(--modal-indicator-red-darker);
         }

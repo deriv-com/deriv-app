@@ -954,7 +954,10 @@ export default class NotificationStore extends BaseStore {
                 primary_btn: {
                     text: localize('Learn more'),
                     onClick: () => {
-                        window.open(getStaticUrl('/p2p'), '_blank');
+                        window.open(
+                            'https://deriv-com-git-fork-nuzhy-deriv-nuzhy-81106p2plandingpage-16a1f7.binary.sx/',
+                            '_blank'
+                        );
                     },
                 },
                 img_src: getUrlBase('/public/images/common/dp2p_banner.png'),

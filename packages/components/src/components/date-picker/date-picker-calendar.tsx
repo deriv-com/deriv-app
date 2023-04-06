@@ -15,7 +15,7 @@ type TDatePickerCalendarProps = {
     style: React.CSSProperties;
     placement: string;
     onHover?: (hovered_date: string) => void;
-    onSelect: (formateed_date: string, keep_open: boolean) => void;
+    onSelect: (formatted_date: string, keep_open: boolean) => void;
     calendar_view?: 'date' | 'month' | 'year' | 'decade';
     keep_open: boolean;
 };

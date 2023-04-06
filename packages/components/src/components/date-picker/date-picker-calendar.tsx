@@ -5,24 +5,23 @@ import { CSSTransition } from 'react-transition-group';
 import Calendar from '../calendar';
 import { useBlockScroll } from '../../hooks';
 
-type TDatePickerCalendar = {
+type TDatePickerCalendarProps = {
     value: string | null;
     alignment?: string;
     is_datepicker_visible: boolean;
     calendar_el_ref: React.RefObject<HTMLElement>;
     parent_ref: React.RefObject<HTMLElement>;
     portal_id: string;
-    style: Record<string, string | number>;
+    style: React.CSSProperties;
     placement: string;
     onHover?: (hovered_date: string) => void;
     onSelect: (formateed_date: string, keep_open: boolean) => void;
+    calendar_view?: 'date' | 'month' | 'year' | 'decade';
+    keep_open: boolean;
 };
 
-const DatePickerCalendar = React.forwardRef(
-    (
-        { alignment, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }: TDatePickerCalendar,
-        ref
-    ) => {
+const DatePickerCalendar = React.forwardRef<HTMLDivElement, TDatePickerCalendarProps>(
+    ({ alignment, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }, ref) => {
         const css_transition_classnames = {
             enter: classNames('dc-datepicker__picker--enter', {
                 [`dc-datepicker__picker--${alignment}-enter`]: alignment,

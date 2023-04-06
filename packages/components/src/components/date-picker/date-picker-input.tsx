@@ -1,36 +1,21 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import Icon from '../icon';
 import Input from '../input';
-import type { TIconProps } from '../types';
 
-const DatePickerIcon = ({ icon, ...props }: TIconProps) => (
+const DatePickerIcon = ({ icon, ...props }:  React.ComponentProps<typeof Icon>) => (
     <Icon className='dc-datepicker__icon' icon={icon} {...props} />
 );
 
-interface TDatePickerInputProps {
-    id?: number;
-    name: string;
-    label: string;
-    value: string;
-    placeholder: string;
-    type?: string;
-    className?: string;
-    error?: string;
-    disabled: boolean;
+type TDatePickerInputProps = React.ComponentProps<typeof Input> & {
     is_placeholder_visible: boolean;
-    required: boolean;
-    readOnly?: boolean;
     is_clearable?: boolean;
     show_leading_icon?: boolean;
-    error_messages: string[];
-    onClick: () => void;
-    onBlur: () => void;
-    onChangeInput: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onChangeInput: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onClickClear?: () => void;
-}
+};
 
-const DatePickerInput: React.FC<TDatePickerInputProps> = ({
+const DatePickerInput = ({
     className,
     disabled,
     error,
@@ -49,7 +34,7 @@ const DatePickerInput: React.FC<TDatePickerInputProps> = ({
     value,
     required,
     ...common_props
-}) => {
+}: TDatePickerInputProps) => {
     const [is_clear_btn_visible, setIsClearBtnVisible] = React.useState(false);
 
     const onMouseEnter = () => {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { toMoment } from '@deriv/shared';
-import DatePicker, { type TDatePicker } from '../date-picker';
+import DatePicker from '../date-picker';
 
-const DateOfBirthPicker = (props: TDatePicker) => {
-    const [max_date] = React.useState(toMoment().subtract(18, 'years'));
-    const [min_date] = React.useState(toMoment().subtract(100, 'years'));
+const DateOfBirthPicker = (props: Omit<React.ComponentProps<typeof DatePicker>, 'display_format' | 'max_date' | 'min_date'>) => {
+    const max_date = toMoment().subtract(18, 'years');
+    const min_date = toMoment().subtract(100, 'years');
 
     return (
         <DatePicker

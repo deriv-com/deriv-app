@@ -4,25 +4,24 @@ import { toMoment } from '@deriv/shared';
 import Icon from '../icon';
 import Text from '../text';
 
-interface NativePropsT {
+type TDatePickerNativeProps = Omit<React.HTMLAttributes<HTMLInputElement>, 'onSelect'> & {
     value: string;
-    id: string;
-    name: string;
     label: string;
     placeholder: string;
     max_date: moment.Moment;
     min_date: moment.Moment;
     display_format: string;
     data_testid: string;
-    hint?: string;
+    name: string;
     error?: string;
     disabled: boolean;
-    onSelect: (new_date: string) => void;
-    onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
-    onFocus: (event: React.FocusEvent<HTMLInputElement>) => void;
+    hint?: string;
+    onSelect: (selected_date: string) => void;
+    onBlur: React.FocusEventHandler<HTMLInputElement>;
+    onFocus: React.FocusEventHandler<HTMLInputElement>;
 }
 
-const Native: React.FC<NativePropsT> = ({
+const Native = ({
     id,
     disabled,
     display_format,
@@ -38,22 +37,22 @@ const Native: React.FC<NativePropsT> = ({
     onSelect,
     value,
     data_testid,
-}) => {
-    const [is_focused, setIsFocused] = React.useState<boolean>(false);
-    const input_ref: React.MutableRefObject<HTMLInputElement | null> = React.useRef(null);
+}: TDatePickerNativeProps) => {
+    const [is_focused, setIsFocused] = React.useState(false);
+    const input_ref = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
         if (input_ref.current) input_ref.current.value = value;
     }, [value]);
 
-    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
         setIsFocused(true);
         if (typeof onFocus === 'function') {
             onFocus(e);
         }
     };
 
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
         setIsFocused(false);
         if (typeof onBlur === 'function') {
             onBlur(e);

@@ -1,6 +1,6 @@
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import AppIdMap from '../../../common/appIdResolver';
-import { supportedLanguages } from '../../../common/i18n';
+import { supported_languages } from '../../../common/i18n';
 import { setCookieLanguage } from '../../../common/utils/cookieManager';
 
 // [Todo] getLanguage, getStorage, setStorage are duplicated here after update the structure of project we should remove them
@@ -27,7 +27,7 @@ export const parseQueryString = () => {
 
 export const getLanguage = () => {
     const queryLang = parseQueryString().l || getStorage('lang');
-    const lang = queryLang in supportedLanguages ? queryLang : 'en';
+    const lang = queryLang in supported_languages ? queryLang : 'en';
     setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;

@@ -1,16 +1,16 @@
 import { parseQueryString } from '../common/utils/tools';
 import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
 import { setCookieLanguage } from '../common/utils/cookieManager';
-import { supportedLanguages, translate, init } from './i18n';
+import { supported_languages, translate, init } from './i18n';
 
 export const getLanguage = () => {
-    const queryLang = parseQueryString().lang ? parseQueryString().lang || getStorage('lang') : 'en';
-    const is_query_lang_supported = queryLang in supportedLanguages;
+    const query_lang = parseQueryString().lang ? parseQueryString().lang || getStorage('lang') : 'en';
+    const is_query_lang_supported = query_lang in supported_languages;
     const lang =
-        getStorage('lang') in supportedLanguages ? getStorage('lang') : is_query_lang_supported ? queryLang : 'en';
+        getStorage('lang') in supported_languages ? getStorage('lang') : is_query_lang_supported ? query_lang : 'en';
     if (!is_query_lang_supported) {
-        const newSearch = document.location.search.replace(/lang=+[a-z]{2}/, 'lang=en');
-        window.history.pushState(null, '/', newSearch);
+        const new_search = document.location.search.replace(/lang=+[a-z]{2}/, 'lang=en');
+        window.history.pushState(null, '/', new_search);
     }
     setStorage('lang', lang);
     setCookieLanguage(lang);

@@ -742,23 +742,18 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async getTotalBalance(accounts, base_currency) {
-        // const { getExchangeRate } = this.root_store.common;
         const total_balance = await accounts.reduce(
             async (total, account) => {
                 const { balance, currency } = account;
 
-                // let exchange_rate = 1;
-                let exchange_rate_new = 1;
+                let exchange_rate = 1;
                 if (currency !== base_currency) {
-                    // exchange_rate = await getExchangeRate(currency, base_currency);
-                    exchange_rate_new = this.exchange_rates_2?.rates
+                    exchange_rate = this.exchange_rates_2?.rates
                         ? this.exchange_rates_2.rates[base_currency] / this.exchange_rates_2.rates[currency]
                         : 1;
-                    // console.log('exchange_rate', exchange_rate);
-                    // console.log('exchange_rate_new', exchange_rate_new);
                 }
 
-                (await total).balance += balance * exchange_rate_new || 0;
+                (await total).balance += balance * exchange_rate || 0;
                 return total;
             },
             { balance: 0 }

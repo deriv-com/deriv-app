@@ -3,7 +3,6 @@ import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import BalanceText from 'Components/elements/text/balance-text';
-// import { useStores } from 'Stores';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';

@@ -496,6 +496,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include mobile {
                     width: auto;
                     text-align: center;
+                    align-self: center;
                     &--dashboard {
                         margin: 0 1.6rem;
                         text-align: left;

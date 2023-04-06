@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
+import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon, Button } from '@deriv/components';
 import { ContentFlag } from '@deriv/shared';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
@@ -12,7 +12,8 @@ import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switche
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
-    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
+    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag, openRealWalletsUpgrade } =
+        traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
@@ -22,6 +23,14 @@ const MainTitleBar = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
+                <Button
+                    className='dc-dialog__button'
+                    onClick={openRealWalletsUpgrade}
+                    has_effect
+                    text={localize('Upgrade Wallets')}
+                    primary
+                    large
+                />
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold'>

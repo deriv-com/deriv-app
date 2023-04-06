@@ -213,7 +213,7 @@ const CFDMT5DemoAccountDisplay = ({
                             descriptor={localize(
                                 'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
                             )}
-                            specs={specifications[platform as keyof TSpecifications].real_synthetic_specs}
+                            specs={specifications[platform as keyof TSpecifications].real_all_specs}
                             has_banner
                             toggleMT5TradeModal={toggleMT5TradeModal}
                         />

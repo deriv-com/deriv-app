@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
@@ -111,7 +111,7 @@ const MT5AccountTypeModal = () => {
     const { enableApp, disableApp } = ui;
     const { setAppstorePlatform } = common;
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (!is_account_type_modal_visible) {
             selectAccountTypeCard('');
         }

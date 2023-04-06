@@ -81,15 +81,15 @@ describe('<Dashboard />', () => {
 
     it('user guide button click should be enabled', () => {
         render(<UserGuide {...mocked_props} />);
-        const use_guide_button = screen.getByTestId('btn-use-guide');
+        const use_guide_button = screen.getByTestId('btn-user-guide');
         userEvent.click(use_guide_button);
-        expect(screen.getByTestId('btn-use-guide')).toBeInTheDocument();
+        expect(screen.getByTestId('btn-user-guide')).toBeInTheDocument();
         expect(use_guide_button).toBeEnabled();
     });
 
     it('on user guide button click it should render the tutorials tab', () => {
         render(<UserGuide {...mocked_props} />);
-        const use_guide_button = screen.getByTestId('btn-use-guide');
+        const use_guide_button = screen.getByTestId('btn-user-guide');
         userEvent.click(use_guide_button);
         render(<Sidebar {...mocked_props} />);
         expect(mocked_props.setActiveTab).toHaveBeenCalledWith(3);

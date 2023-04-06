@@ -7,8 +7,8 @@ import { mocked_props } from './dashboard-component.spec';
 describe('<UserGuide />', () => {
     it('renders user guide button', () => {
         render(<UserGuide {...mocked_props} />);
-        const use_guide_button = screen.getByTestId('btn-use-guide');
+        const use_guide_button = screen.getByTestId('btn-user-guide');
         userEvent.click(use_guide_button);
-        expect(screen.getByTestId('btn-use-guide')).toBeInTheDocument();
+        expect(screen.getByTestId('btn-user-guide')).toBeInTheDocument();
     });
 });

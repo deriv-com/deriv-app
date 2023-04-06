@@ -1,27 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
-import { useDepositLocked } from '@deriv/hooks';
+import { useDepositLocked, useWithdrawLocked } from '@deriv/hooks';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
+jest.mock('@deriv/hooks');
 
 describe('<CashierLocked />', () => {
-    it('should show the proper message if there is a cryptocashier maintenance', () => {
+    beforeEach(() => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(false);
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
+    });
+    it('should show the proper message if there is a crypto cashier maintenance', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -57,6 +48,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto withdrawal is suspended', () => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -65,8 +57,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
-                is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {
@@ -92,6 +82,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto deposit is suspended', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -100,8 +91,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: useDepositLocked.mockReturnValue(true),
-                is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {
@@ -135,7 +124,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -170,7 +158,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -205,7 +192,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -240,7 +226,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -273,7 +258,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -306,7 +290,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -339,7 +322,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -370,7 +352,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -404,7 +385,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -439,7 +419,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -470,7 +449,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -501,7 +479,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -536,7 +513,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -562,7 +538,8 @@ describe('<CashierLocked />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show the proper message if the client has self-exluded from the website', () => {
+    it('should show the proper message if the client has self-excluded from the website', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -575,8 +552,6 @@ describe('<CashierLocked />', () => {
                 },
                 loginid: 'CR9000000',
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(true),
-                is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {
@@ -600,6 +575,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has unwelcome_status', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -608,7 +584,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(true),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -631,6 +606,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has no_withdrawal_or_trading_status', () => {
+        useWithdrawLocked.mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -639,8 +615,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
-                is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {
@@ -664,6 +638,8 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has withdrawal_locked_status', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -672,8 +648,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
-                is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {
@@ -697,6 +671,8 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has only_pa_withdrawals_allowed_status', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -705,8 +681,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
-                is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {
@@ -738,7 +712,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
@@ -761,6 +734,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show cashier locked message if the client has a combo of deposit and withdrawal locked reasons', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -769,8 +743,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
-                is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {
@@ -794,6 +766,8 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -802,8 +776,6 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: useDepositLocked.mockReturnValue(false),
-                is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
                 mt5_login_list: [
                     {

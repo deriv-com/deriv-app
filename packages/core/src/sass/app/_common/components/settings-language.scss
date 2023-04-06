@@ -1,19 +1,27 @@
 /** @define settings-language */
 .settings-language {
+    margin-left: 1.6rem;
+    width: fit-content;
+
     @include mobile {
         display: flex;
-        padding: 1.5rem 1.5rem 8rem;
+        flex-direction: column;
+        padding: 1.6rem 2.2rem 8rem;
+        width: 100%;
+        margin-left: 0;
     }
 
     &__language-container {
         display: grid;
-        grid-template-columns: repeat(4, minmax(90px, 1fr));
-        grid-gap: 1.6rem;
+        grid-template-columns: repeat(4, min-content);
+        grid-gap: 0.8rem;
+        margin: 1.6rem 0;
 
         @include mobile {
-            grid-template-columns: repeat(2, minmax(50%, 1fr));
-            grid-gap: 0.3rem;
+            grid-template-columns: repeat(2, minmax(40%, 1fr));
             grid-template-rows: auto;
+            margin: 1.4rem auto 0;
+            padding: 0 1.6rem;
 
             @include mobile {
                 &--disabled {
@@ -37,6 +45,9 @@
             align-items: center;
             border-radius: $BORDER_RADIUS;
             padding: 16px;
+            width: 13.6rem;
+            height: 8.8rem;
+
             @include mobile {
                 padding: 8px;
 
@@ -46,22 +57,26 @@
             }
             text-decoration: none;
             background-color: var(--state-normal);
-            cursor: pointer;
+            &,
+            & * {
+                cursor: pointer;
+            }
 
             &--active {
                 border: 1px solid var(--border-active);
                 color: var(--text-prominent);
+                &,
+                & * {
+                    cursor: not-allowed;
+                }
             }
         }
         &-flag {
-            width: 5rem;
-            height: 4rem;
-            cursor: pointer;
+            width: 3.6rem;
+            height: 2.8rem;
 
             @include mobile {
                 margin-top: 1rem;
-                width: 4rem;
-                height: 5rem;
             }
         }
         &-name {
@@ -84,10 +99,5 @@
         &--center-label {
             text-align: center;
         }
-    }
-}
-.account-form {
-    &--language-settings {
-        overflow: auto !important;
     }
 }

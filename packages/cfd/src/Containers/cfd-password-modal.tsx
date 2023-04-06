@@ -209,6 +209,9 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
                 return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
     } else if (traders_hub) {
+        if (platform === CFD_PLATFORMS.CTRADER) {
+            return <TradingPlatformIcon icon='CTrader' size={128} />;
+        }
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
@@ -537,7 +540,12 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
+                                            platform_name:
+                                                platform === CFD_PLATFORMS.MT5
+                                                    ? 'MT5'
+                                                    : platform === CFD_PLATFORMS.DXTRADE
+                                                    ? 'Deriv X'
+                                                    : 'cTrader',
                                             account: !show_eu_related_content ? account_title : '',
                                             jurisdiction_shortcode: showJuristiction(),
                                         }}
@@ -548,7 +556,12 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
+                                            platform_name:
+                                                platform === CFD_PLATFORMS.MT5
+                                                    ? 'MT5'
+                                                    : platform === CFD_PLATFORMS.DXTRADE
+                                                    ? 'Deriv X'
+                                                    : 'cTrader',
                                             account: account_title,
                                         }}
                                     />

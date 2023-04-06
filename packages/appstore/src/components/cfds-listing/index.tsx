@@ -224,37 +224,36 @@ const CFDsListing = () => {
                 available_ctrader_accounts.map((account: any) => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
-                    // return has_existing_accounts ? (
-                    //     existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
-                    //         <TradingAppCard
-                    //             action_type='multi-action'
-                    //             availability={selected_region}
-                    //             clickable_icon
-                    //             icon={account.icon}
-                    //             sub_title={account.name}
-                    //             name={`${formatMoney(
-                    //                 existing_account.currency,
-                    //                 existing_account.display_balance,
-                    //                 true
-                    //             )} ${existing_account.currency}`}
-                    //             description={existing_account.display_login}
-                    //             platform={account.platform}
-                    //             key={`trading_app_card_${existing_account.display_login}`}
-                    //             onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                    //                 const button_name = e?.currentTarget?.name;
-                    //                 if (button_name === 'transfer-btn') {
-                    //                     toggleAccountTransferModal();
-                    //                     setSelectedAccount(existing_account);
-                    //                 } else if (button_name === 'topup-btn') {
-                    //                     showTopUpModal(existing_account);
-                    //                 } else {
-                    //                     startTrade(account.platform, existing_account);
-                    //                 }
-                    //             }}
-                    //         />
-                    //     ))
-                    // ) : (
-                    return (
+                    return has_existing_accounts ? (
+                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                            <TradingAppCard
+                                action_type='multi-action'
+                                availability={selected_region}
+                                clickable_icon
+                                icon={account.icon}
+                                sub_title={account.name}
+                                name={`${formatMoney(
+                                    existing_account.currency,
+                                    existing_account.display_balance,
+                                    true
+                                )} ${existing_account.currency}`}
+                                description={existing_account.display_login}
+                                platform={account.platform}
+                                key={`trading_app_card_${existing_account.display_login}`}
+                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                    const button_name = e?.currentTarget?.name;
+                                    if (button_name === 'transfer-btn') {
+                                        toggleAccountTransferModal();
+                                        setSelectedAccount(existing_account);
+                                    } else if (button_name === 'topup-btn') {
+                                        showTopUpModal(existing_account);
+                                    } else {
+                                        startTrade(account.platform, existing_account);
+                                    }
+                                }}
+                            />
+                        ))
+                    ) : (
                         <TradingAppCard
                             action_type='get'
                             availability={selected_region}
@@ -278,7 +277,6 @@ const CFDsListing = () => {
                             key={`trading_app_card_${account.name}`}
                         />
                     );
-                    // );
                 })
             ) : (
                 <PlatformLoader />

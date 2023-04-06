@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, CFD_PLATFORMS } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
@@ -25,6 +25,8 @@ const JurisdictionModal = ({
     trading_platform_available_accounts,
     ctrader_available_accounts,
     toggleJurisdictionModal,
+    enableCFDPasswordModal,
+    setCFDSuccessDialog,
     setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation,
@@ -128,9 +130,17 @@ const JurisdictionModal = ({
             type: account_type.type,
         };
 
+        const ctrader_values = {
+            platform: CFD_PLATFORMS.CTRADER,
+            type: type_of_account.category,
+            category: type_of_account.type,
+        };
+
         if (is_svg_selected) {
             if (type_of_account.type === 'all') {
-                openCTraderRealAccount(type_of_account.category, 'ctrader', type_of_account.type);
+                openCTraderRealAccount(ctrader_values);
+                enableCFDPasswordModal();
+                setCFDSuccessDialog(true);
             } else {
                 openPasswordModal(type_of_account);
             }
@@ -264,9 +274,11 @@ export default connect(({ modules: { cfd }, ui, client, traders_hub }: RootStore
     content_flag: traders_hub.content_flag,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    openCTraderRealAccount: cfd.createCFDAccount,
+    openCTraderRealAccount: cfd.openCFDAccount,
     is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
     is_virtual: client.is_virtual,
+    enableCFDPasswordModal: cfd.enableCFDPasswordModal,
+    setCFDSuccessDialog: cfd.setCFDSuccessDialog,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,

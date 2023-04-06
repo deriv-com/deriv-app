@@ -209,11 +209,13 @@ export type TJurisdictionModalProps = {
     };
     account_status: GetAccountStatus;
     context: RootStore;
-    openCTraderRealAccount: (category: string, platform: string, type: string) => void;
+    openCTraderRealAccount: (values: { platform: string; type: string; category: string }) => void;
     disableApp: () => void;
     enableApp: () => void;
     is_jurisdiction_modal_visible: boolean;
     is_virtual: boolean;
+    enableCFDPasswordModal: () => void;
+    setCFDSuccessDialog: (is_open: boolean) => void;
     jurisdiction_selected_shortcode: string;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;

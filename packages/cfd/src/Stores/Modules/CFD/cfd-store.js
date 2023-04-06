@@ -235,11 +235,15 @@ export default class CFDStore extends BaseStore {
                 this.demoCFDSignup();
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
-            this.openCFDAccount({
-                platform: 'ctrader',
-                account_type: category,
-                market_type: 'all',
-            });
+            if (this.account_type.category === 'demo') this.setJurisdictionSelectedShortcode('svg');
+            const values = {
+                platform,
+                account_type: this.account_type.category,
+                market_type: this.account_type.type,
+            };
+            this.openCFDAccount(values);
+            this.enableCFDPasswordModal();
+            this.setCFDSuccessDialog(true);
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
                 this.toggleJurisdictionModal();
@@ -303,7 +307,7 @@ export default class CFDStore extends BaseStore {
 
     openCFDAccount(values) {
         return WS.tradingPlatformNewAccount({
-            password: values.password,
+            password: CFD_PLATFORMS.DXTRADE ? values.password : '',
             platform: values.platform,
             account_type: this.account_type.category,
             market_type:
@@ -480,7 +484,7 @@ export default class CFDStore extends BaseStore {
     }
 
     async submitCFDPassword(values, actions) {
-        if (this.root_store.client.is_dxtrade_password_not_set) {
+        if (CFD_PLATFORMS.DXTRADE && this.root_store.client.is_dxtrade_password_not_set) {
             const has_error = await this.createCFDPassword(values, actions);
             if (has_error) return;
         }

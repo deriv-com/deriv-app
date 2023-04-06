@@ -1,11 +1,11 @@
-import { observable, action, makeObservable } from 'mobx';
+import { getSavedWorkspaces, save, saveWorkspaceToRecent, save_types, updateWorkspaceName } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName, getSavedWorkspaces } from '@deriv/bot-skeleton';
-import { button_status } from 'Constants/button-status';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
-import RootStore from './root-store';
-import LZString from 'lz-string';
+import { button_status } from 'Constants/button-status';
 import localForage from 'localforage';
+import LZString from 'lz-string';
+import { action, makeObservable, observable } from 'mobx';
+import RootStore from './root-store';
 
 interface ISaveModalStore {
     is_save_modal_open: boolean;
@@ -58,6 +58,49 @@ export default class SaveModalStore implements ISaveModalStore {
         return errors;
     };
 
+    addStrategyToWorkspace = async (
+        workspace_id: string,
+        is_local: boolean,
+        save_as_collection: boolean,
+        bot_name: string
+    ) => {
+        const workspace = await getSavedWorkspaces();
+        const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
+        const {
+            load_modal: { getSaveType },
+        } = this.root_store;
+        const local_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
+        const save_collection = save_as_collection ? save_types.UNSAVED : local_type;
+        const type = save_collection;
+
+        const save_type = getSaveType(type)?.toLowerCase();
+
+        const workspace_structure = {
+            id: workspace_id,
+            xml: Blockly.Xml.domToText(xml),
+            name: bot_name,
+            timestamp: Date.now(),
+            save_type,
+        };
+
+        if (current_workspace_index >= 0) {
+            const current_workspace = workspace_structure;
+            workspace[current_workspace_index] = current_workspace;
+        } else {
+            workspace.push(workspace_structure);
+        }
+
+        workspace
+            .sort((a, b) => {
+                return new Date(a.timestamp) - new Date(b.timestamp);
+            })
+            .reverse();
+
+        if (workspace.length > MAX_STRATEGIES) {
+            workspace.pop();
+        }
+    };
+
     async onConfirmSave({ is_local, save_as_collection, bot_name }) {
         this.setButtonStatus(button_status.LOADING);
 
@@ -85,44 +128,9 @@ export default class SaveModalStore implements ISaveModalStore {
             load_modal: { selected_strategy_id, setRecentStrategies },
         } = this.root_store;
 
-        let save_type;
         if (active_tab === 0) {
             const workspace_id = selected_strategy_id || Blockly.utils.genUid();
-            const workspace = await getSavedWorkspaces();
-            const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
-            const {
-                load_modal: { getSaveType },
-            } = this.root_store;
-            const local_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
-            const save_collection = save_as_collection ? save_types.UNSAVED : local_type;
-            const type = save_collection;
-
-            save_type = getSaveType(type)?.toLowerCase();
-
-            const workspace_structure = {
-                id: workspace_id,
-                xml: Blockly.Xml.domToText(xml),
-                name: bot_name,
-                timestamp: Date.now(),
-                save_type,
-            };
-
-            if (current_workspace_index >= 0) {
-                const current_workspace = workspace_structure;
-                workspace[current_workspace_index] = current_workspace;
-            } else {
-                workspace.push(workspace_structure);
-            }
-
-            workspace
-                .sort((a, b) => {
-                    return new Date(a.timestamp) - new Date(b.timestamp);
-                })
-                .reverse();
-
-            if (workspace.length > MAX_STRATEGIES) {
-                workspace.pop();
-            }
+            this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name);
             localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspace)));
             const updated_stratagies = await getSavedWorkspaces();
             setRecentStrategies(updated_stratagies);

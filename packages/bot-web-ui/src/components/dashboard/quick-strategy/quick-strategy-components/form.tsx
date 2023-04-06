@@ -93,7 +93,7 @@ const QuickStrategyForm = ({
                                     'quick-strategy__form-content--safari-fix': isSafari(),
                                 })}
                             >
-                                <div className='quick-strategy__text'>
+                                <div className={classNames('quick-strategy__text', 'quick-strategy__text--margin')}>
                                     <Text weight='normal' size={is_mobile ? 'xxs' : 's'}>
                                         {localize('Choose a template and set your trade parameters.')}
                                     </Text>

@@ -24,10 +24,10 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     const { account_transfer } = useCashierStore();
     const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;
-    const { is_pre_appstore, loginid, switchAccount } = client;
+    const { loginid, switchAccount } = client;
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
-    const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+    const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
@@ -70,14 +70,14 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         }
         // close modal only when the user try to transfer money from traders-hub, not from cashier
         // because in cashier this component is not a modal
-        if (is_from_pre_appstore) onClose?.();
+        if (is_from_outside_cashier) onClose?.();
     };
 
     return (
         <div
             className={classNames(
                 'account-transfer-receipt__crypto',
-                !is_from_pre_appstore && 'account-transfer-receipt__crypto-padding'
+                !is_from_outside_cashier && 'account-transfer-receipt__crypto-padding'
             )}
         >
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
@@ -97,7 +97,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             <div className='account-transfer-receipt__crypto--details-wrapper'>
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
-                        <AccountPlatformIcon account={selected_from} is_pre_appstore={is_pre_appstore} size={32} />
+                        <AccountPlatformIcon account={selected_from} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
@@ -111,7 +111,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
                     <div className='crypto-transfer-to-details'>
-                        <AccountPlatformIcon account={selected_to} is_pre_appstore={is_pre_appstore} size={32} />
+                        <AccountPlatformIcon account={selected_to} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
@@ -137,8 +137,8 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <Button
                     className='account-transfer-receipt__button'
                     has_effect
-                    text={is_from_pre_appstore ? localize('Close') : localize('Make a new transfer')}
-                    onClick={is_from_pre_appstore ? onClose : resetAccountTransfer}
+                    text={is_from_outside_cashier ? localize('Close') : localize('Make a new transfer')}
+                    onClick={is_from_outside_cashier ? onClose : resetAccountTransfer}
                     primary
                     large
                 />

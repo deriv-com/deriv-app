@@ -1,32 +1,31 @@
-import React from 'react';
-import { Tabs, DesktopWrapper, Dialog, MobileWrapper } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import Chart from 'Components/chart';
-import ReactJoyride from 'react-joyride';
-import classNames from 'classnames';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import Chart from 'Components/chart';
+import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
+import React from 'react';
+import ReactJoyride from 'react-joyride';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import { getImageLocation } from '../../public-path';
+import RunPanel from '../run-panel';
+import BotNotification from './bot-notification';
 import DashboardComponent from './dashboard-component';
 import RunStrategy from './dashboard-component/run-strategy';
-import RunPanel from '../run-panel';
-import QuickStrategy from './quick-strategy';
-import { DASHBOARD_TABS, TAB_IDS } from '../../constants/bot-contents';
-import Tutorial from './tutorial-tab';
 import {
     DBOT_ONBOARDING,
-    handleJoyrideCallback,
     getTourSettings,
-    setTourType,
-    tour_type,
+    handleJoyrideCallback,
     setTourSettings,
+    setTourType,
     tour_status_ended,
+    tour_type,
 } from './joyride-config';
-import TourTriggrerDialog from './tour-trigger-dialog';
-import { getImageLocation } from '../../public-path';
 import TourSlider from './tour-slider';
-import BotNotification from './bot-notification';
-import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
+import TourTriggrerDialog from './tour-trigger-dialog';
+import Tutorial from './tutorial-tab';
 
 type TDialogOptions = {
     title: string;
@@ -52,7 +51,6 @@ type TDashboard = {
     setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
     setOnBoardTourRunState: (param: boolean) => void;
-    loadDataStrategy: () => void;
     setBotBuilderTokenCheck: (param: string | number) => void;
     setOnBoardingTokenCheck: (param: string | number) => void;
     setTourActive: (param: boolean) => void;
@@ -70,7 +68,6 @@ const Dashboard = ({
     has_started_bot_builder_tour,
     is_dialog_open,
     is_tour_dialog_visible,
-    loadDataStrategy,
     onCancelButtonClick,
     onCloseDialog,
     onEntered,
@@ -84,7 +81,7 @@ const Dashboard = ({
     setTourDialogVisibility,
     setHasTourEnded,
 }: TDashboard) => {
-    const { BOT_BUILDER, CHART, QUICK_STRATEGY } = DASHBOARD_TABS;
+    const { BOT_BUILDER, CHART } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';
@@ -282,14 +279,9 @@ const Dashboard = ({
                 </div>
             </div>
             <DesktopWrapper>
-                <div
-                    className={classNames('dashboard__run-strategy-wrapper', {
-                        'dashboard__run-strategy-wrapper--padded': active_tab === 2,
-                    })}
-                >
-                    {active_tab !== 2 && <RunStrategy />}
-
-                    {([BOT_BUILDER, CHART, QUICK_STRATEGY].includes(active_tab) || has_started_onboarding_tour) &&
+                <div className={'dashboard__run-strategy-wrapper'}>
+                    <RunStrategy />
+                    {([BOT_BUILDER, CHART].includes(active_tab) || has_started_onboarding_tour) &&
                         !has_started_bot_builder_tour && <RunPanel />}
                 </div>
             </DesktopWrapper>
@@ -329,7 +321,6 @@ export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: Ro
     is_drawer_open: run_panel.is_drawer_open,
     has_started_bot_builder_tour: dashboard.has_started_bot_builder_tour,
     is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
     dialog_options: run_panel.dialog_options,
     onCancelButtonClick: run_panel.onCancelButtonClick,
     onCloseDialog: run_panel.onCloseDialog,

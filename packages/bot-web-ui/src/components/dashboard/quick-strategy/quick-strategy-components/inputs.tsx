@@ -48,14 +48,6 @@ const Inputs = ({
                 uniq_selected_input={uniq_selected_input}
                 errors={errors}
             />
-            <InputField
-                idx={idx}
-                handleChange={handleChange}
-                onChangeInputValue={onChangeInputValue}
-                setCurrentFocus={setCurrentFocus}
-                is_mobile={is_mobile}
-                errors={errors}
-            />
         </div>
     ) : (
         <></>

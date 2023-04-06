@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ProofOfOwnership } from '../proof-of-ownership.jsx';
 import test_data from './test-data';
-import { StoreProvider } from '../../../../../../stores/src/useStore';
-import { mockStore } from '../../../../../../stores/src/mockStore';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('proof-of-ownership.jsx', () => {
     let ownership_temp;

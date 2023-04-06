@@ -30,4 +30,14 @@
             padding-left: 1rem;
         }
     }
+
+    &--footer {
+        @include mobile {
+            justify-content: center;
+
+            &--button {
+                width: 50%;
+            }
+        }
+    }
 }

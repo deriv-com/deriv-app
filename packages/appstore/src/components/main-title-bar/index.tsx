@@ -22,15 +22,15 @@ const MainTitleBar = () => {
 
     return (
         <React.Fragment>
+            <Button
+                className='dc-dialog__button'
+                onClick={openRealWalletsUpgrade}
+                has_effect
+                text={localize('Upgrade Wallets')}
+                primary
+                large
+            />
             <DesktopWrapper>
-                <Button
-                    className='dc-dialog__button'
-                    onClick={openRealWalletsUpgrade}
-                    has_effect
-                    text={localize('Upgrade Wallets')}
-                    primary
-                    large
-                />
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold'>

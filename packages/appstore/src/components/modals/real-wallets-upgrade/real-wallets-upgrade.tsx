@@ -39,7 +39,7 @@ const RealWalletsUpgrade = () => {
                             toggleModal={closeRealWalletsUpgrade}
                             height='734px'
                             width='1200px'
-                            has_close_icon
+                            elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             {currentStep === 1 && (
                                 <IntroducingWallets
@@ -61,10 +61,26 @@ const RealWalletsUpgrade = () => {
                     <MobileWrapper>
                         <MobileDialog
                             portal_element_id='modal_root'
-                            wrapper_classname='account-signup-mobile-dialog'
                             visible={is_real_wallets_upgrade_on}
                             onClose={closeRealWalletsUpgrade}
-                        />
+                            wrapper_classname='introducing-wallets'
+                        >
+                            {currentStep === 1 && (
+                                <IntroducingWallets
+                                    onNext={handleNext}
+                                    onClose={closeRealWalletsUpgrade}
+                                    eu_user={eu_user}
+                                />
+                            )}
+                            {currentStep === 2 && <HowItWorksWallets onNext={handleNext} onBack={handleBack} />}
+                            {currentStep === 3 && (
+                                <TradingAccountsWallets
+                                    onBack={handleBack}
+                                    onClose={closeRealWalletsUpgrade}
+                                    eu_user={eu_user}
+                                />
+                            )}
+                        </MobileDialog>
                     </MobileWrapper>
                 </React.Fragment>
             )}

@@ -132,7 +132,7 @@ const InputField = ({
         if (max_is_disabled) return;
         let increment_value;
 
-        const current_value = local_value || value;
+        const current_value = +(local_value || value);
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
         const is_crypto = !!currency && isCryptocurrency(currency);
@@ -190,7 +190,8 @@ const InputField = ({
     };
 
     const updateValue = (new_value, is_long_press) => {
-        let formatted_value = format ? format(new_value) : new_value;
+        // let formatted_value = format ? format(new_value) : new_value;
+        let formatted_value = new_value;
         if (is_long_press) {
             setLocalValue(formatted_value);
         } else {

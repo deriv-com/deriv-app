@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSubscription } from '@deriv/api';
 import useStore from '../useStore';
 
-const ExchangeRatesProvider = ({ children }: React.PropsWithChildren) => {
+const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { data, subscribe } = useSubscription('exchange_rates');
     const {
         exchange_rates: { update },

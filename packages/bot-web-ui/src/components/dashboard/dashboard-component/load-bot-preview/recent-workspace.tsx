@@ -96,6 +96,8 @@ const RecentWorkspace = ({
 
     const is_active_mobile = selected_strategy_id === workspace.id && is_dropdown_visible;
 
+    // console.log('pr test');
+
     return (
         <div
             className={classnames('load-strategy__recent-item', {

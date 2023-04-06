@@ -97,7 +97,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions, crypto_transactions.length, is_cashier_onboarding, iframe_height]);
+    }, [currency, tab_index, crypto_transactions, crypto_transactions?.length, is_cashier_onboarding, iframe_height]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;

@@ -35,21 +35,19 @@ const isEmptyObject = obj => {
     return is_empty;
 };
 
-const isLowRisk = async (financial_company, gaming_company, token_list, risk_classification) => {
-    const upgradable_companies = [];
-    token_list.map(data => {
+const isLowRisk = async (financial_company, gaming_company, token_list) => {
+    const upgradable_companies = token_list.map(data => {
         const {
             loginInfo: { upgradeable_landing_companies },
         } = data;
-        return upgradable_companies.push(upgradeable_landing_companies);
+        return upgradeable_landing_companies
     });
     const financial_shortcode = financial_company?.shortcode;
     const gaming_shortcode = gaming_company?.shortcode;
     const low_risk_landing_company = financial_shortcode === 'maltainvest' && gaming_shortcode === 'svg';
     return (
         low_risk_landing_company ||
-        (upgradable_companies?.includes('svg') && upgradable_companies?.includes('maltainvest')) ||
-        risk_classification === 'low'
+        (upgradable_companies[0]?.includes('svg') && upgradable_companies[0]?.includes('maltainvest'))
     );
 };
 
@@ -81,7 +79,8 @@ export const checkSwitcherType = async () => {
     const {
         get_account_status: { risk_classification },
     } = account_status;
-    let is_low_risk = await isLowRisk(financial_company, gaming_company, token_list, risk_classification);
+
+    let is_low_risk = await isLowRisk(financial_company, gaming_company, token_list);
     let is_high_risk = await isHighRisk(financial_company, gaming_company, risk_classification);
 
     const client_accounts = JSON.parse(getStorage('client.accounts'));

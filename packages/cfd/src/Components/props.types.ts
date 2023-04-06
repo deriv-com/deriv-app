@@ -96,7 +96,9 @@ export type TJurisdictionCardSection = {
     clickable_description?: Array<TClickableDescription>;
 };
 
-type TJurisdictionCardItemVerification = Array<'document_number' | 'selfie' | 'identity_document' | 'name_and_address'>;
+export type TJurisdictionCardItemVerification = Array<
+    'document_number' | 'selfie' | 'identity_document' | 'name_and_address'
+>;
 
 export type TJurisdictionCardItems = {
     header: string;

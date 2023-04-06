@@ -1,11 +1,9 @@
-import { Text, Icon } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import { jurisdiction_verification_contents } from 'Constants/jurisdiction-verification-contents';
 import React, { SyntheticEvent } from 'react';
 import { jurisdiction_contents } from '../../Constants/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
-import JurisdictionCardSection from './jurisdiction-card-section';
+import JurisdictionCardBack from './jurisdiction-card-back';
+import JurisdictionCardFront from './jurisdiction-card-front';
 
 const JurisdictionCard = ({
     account_type,
@@ -25,7 +23,7 @@ const JurisdictionCard = ({
     const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
     const verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs
-        : card_values.financial_verification_docs;
+        : card_values?.financial_verification_docs;
     const is_card_flipped = card_flip_status[type_of_card];
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
@@ -43,86 +41,19 @@ const JurisdictionCard = ({
             })}
             onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
         >
-            {is_card_flipped ? (
-                <div
-                    className={classNames(
-                        `${card_classname}__card-content-container`,
-                        `${card_classname}__card-flipped-container`
-                    )}
-                >
-                    <div>
-                        <Icon
-                            onClick={toggleCardFlip}
-                            className='cfd-card-back-section-back-button'
-                            icon='IcBackButton'
-                            size={20}
-                        />
-                    </div>
-                    <Text as='div' size='xxs'>
-                        {jurisdiction_verification_contents.short_description}
-                    </Text>
-                    <div className={classNames('cfd-card-back-section-items-container', 'cfd-card-back-section-main')}>
-                        {verification_docs?.map(verification_item => (
-                            <div className='cfd-card-back-section-items-sub-container' key={verification_item}>
-                                <div>
-                                    <Icon
-                                        icon={
-                                            jurisdiction_verification_contents.required_verification_docs[
-                                                verification_item
-                                            ]?.icon
-                                        }
-                                    />
-                                </div>
-                                <Text as='span' size='xxs'>
-                                    {
-                                        jurisdiction_verification_contents.required_verification_docs[verification_item]
-                                            ?.text
-                                    }
-                                </Text>
-                            </div>
-                        ))}
-                    </div>
-                    <div className='cfd-card-section-divider' />
-                    <div className='cfd-card-back-section-items-container'>
-                        {jurisdiction_verification_contents.status_references.map(status_item => (
-                            <div className='cfd-card-back-section-items-sub-container' key={status_item.color}>
-                                <div>
-                                    <Icon icon={status_item.icon} />
-                                </div>
-                                <Text as='span' size='xxs'>
-                                    {status_item.text}
-                                </Text>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            {!is_card_flipped ? (
+                <JurisdictionCardFront
+                    card_classname={card_classname}
+                    toggleCardFlip={toggleCardFlip}
+                    card_values={card_values}
+                    card_data={card_data}
+                />
             ) : (
-                <div className={`${card_classname}__card-content-container`}>
-                    {card_values.is_over_header_available ? (
-                        <Text as='div' size='xxs' className={`${card_classname}__card-content-over-header`}>
-                            <Localize i18n_default_text={card_values.over_header} />
-                        </Text>
-                    ) : (
-                        <div className={`${card_classname}__card-content-over-header-blank`} />
-                    )}
-                    <Text
-                        as='p'
-                        color={'prominent'}
-                        weight='bold'
-                        size='xsm'
-                        className={`${card_classname}__h2-header`}
-                    >
-                        <Localize i18n_default_text={card_values.header} />
-                    </Text>
-                    <div className={`${card_classname}__card-section-container`}>
-                        {card_data.map((item, index) => (
-                            <React.Fragment key={item.key}>
-                                <JurisdictionCardSection card_section_item={item} toggleCardFlip={toggleCardFlip} />
-                                {index < card_data.length - 1 && <div className='cfd-card-section-divider' />}
-                            </React.Fragment>
-                        ))}
-                    </div>
-                </div>
+                <JurisdictionCardBack
+                    card_classname={card_classname}
+                    toggleCardFlip={toggleCardFlip}
+                    verification_docs={verification_docs}
+                />
             )}
         </div>
     );

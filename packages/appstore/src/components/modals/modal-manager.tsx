@@ -19,6 +19,7 @@ import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
+import WalletsConsentPopup from 'Components/wallets-consent-popup';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -102,6 +103,8 @@ const ModalManager = () => {
         enableCFDPasswordModal();
     };
 
+    const [show_test_modal, setShowTestModal] = React.useState(true);
+
     const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
         const current_list_keys = Object.keys(current_list);
         const should_be_enabled = (list_item: TCurrentList) =>
@@ -126,6 +129,7 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
+            <WalletsConsentPopup show_test_modal={show_test_modal} setShowTestModal={setShowTestModal} />
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />

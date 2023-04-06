@@ -1,0 +1,69 @@
+.wallet-wrapper {
+    display: grid;
+    place-content: center;
+    width: 100%;
+    height: 100%;
+
+    &--icon {
+        max-width: 23.8rem;
+        max-height: 15rem;
+        width: 100%;
+        height: auto;
+    }
+
+    &--body {
+        margin: 0 auto;
+        max-width: 73.9rem;
+        @include mobile {
+            padding: 0rem 1.6rem;
+        }
+    }
+
+    &--body,
+    &--text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &--text {
+        margin: 2.4rem 0;
+    }
+
+    &--info-section {
+        // replace with css variables
+        background: #f1f6ff;
+        border-radius: 0.8rem;
+        padding: 1.6rem;
+        margin-bottom: 2.4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 1.6rem;
+
+        &__text {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.8rem;
+        }
+    }
+
+    &--footer {
+        // replace with css variables
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        padding: 1.6rem;
+        box-shadow: inset 0px 2px 0px #f2f3f4;
+
+        &__btn {
+            width: 50%;
+        }
+    }
+}

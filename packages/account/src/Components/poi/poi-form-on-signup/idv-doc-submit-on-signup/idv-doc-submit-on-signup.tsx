@@ -18,10 +18,7 @@ import {
     documentAdditionalError,
     getDocumentData,
     getRegex,
-    isRecurringNumberRegex,
-    isSequentialNumber,
     preventEmptyClipboardPaste,
-    isIDVWhitelistDocumentNumber,
 } from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
@@ -113,17 +110,8 @@ export const IdvDocSubmitOnSignup = ({
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
-        const is_sequential_number = isSequentialNumber(document_number);
-        const is_recurring_number = isRecurringNumberRegex(document_number);
         const needs_additional_document = !!document_type.additional;
-        const is_idv_whitelist_document_number = isIDVWhitelistDocumentNumber(
-            country_code,
-            document_type.id,
-            document_number
-        );
-        const is_document_number_invalid =
-            (!is_idv_whitelist_document_number && (is_recurring_number || is_sequential_number)) ||
-            document_number === document_type.example_format;
+        const is_document_number_invalid = document_number === document_type.example_format;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');

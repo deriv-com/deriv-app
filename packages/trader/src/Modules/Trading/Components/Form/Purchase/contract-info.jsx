@@ -5,6 +5,7 @@ import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deri
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getGrowthRatePercentage, getLocalizedBasis, isMobile } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
+import { vanilla_financials } from 'Constants/trade-categories';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
     <div className='strike--value-container'>
@@ -41,14 +42,18 @@ const ContractInfo = ({
     should_fade,
     proposal_info,
     type,
+    symbol,
 }) => {
     const localized_basis = getLocalizedBasis();
+    const vanilla_payout_text = vanilla_financials.includes(symbol)
+        ? localize('Payout per pips')
+        : localize('Payout per point');
 
     const stakeOrPayout = () => {
         switch (basis) {
             case 'stake': {
                 if (is_vanilla) {
-                    return localize('Payout per point');
+                    return vanilla_payout_text;
                 }
                 return localized_basis.payout;
             }
@@ -62,14 +67,14 @@ const ContractInfo = ({
 
     const setBasisText = () => {
         if (is_vanilla) {
-            return 'Payout per point';
+            return vanilla_payout_text;
         }
         return proposal_info.obj_contract_basis.text;
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
 
-    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : localize('{{value}}', { value: setBasisText() });
+    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : setBasisText();
 
     const { message, obj_contract_basis, stake } = proposal_info;
 

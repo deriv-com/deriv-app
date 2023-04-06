@@ -34,6 +34,7 @@ const ContractDrawer = ({
     server_time,
     status,
     toggleHistoryTab,
+    symbol,
 }) => {
     const { currency, exit_tick_display_value, is_sold } = contract_info;
     const contract_drawer_ref = React.useRef();
@@ -110,6 +111,7 @@ const ContractDrawer = ({
             has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
             toggleHistoryTab={toggleHistoryTab}
             is_vanilla={is_vanilla}
+            symbol={symbol}
         />
     );
 
@@ -196,8 +198,9 @@ ContractDrawer.propTypes = {
 };
 
 export default withRouter(
-    connect(({ common, ui }) => ({
+    connect(({ common, ui, modules }) => ({
         server_time: common.server_time,
         is_mobile: ui.is_mobile,
+        symbol: modules.trade.symbol,
     }))(ContractDrawer)
 );

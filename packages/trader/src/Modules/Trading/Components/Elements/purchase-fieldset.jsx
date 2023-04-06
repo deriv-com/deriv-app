@@ -28,6 +28,7 @@ const PurchaseFieldset = ({
     onHoverPurchase,
     setPurchaseState,
     type,
+    symbol,
 }) => {
     const [should_fade, setShouldFade] = React.useState(false);
 
@@ -56,6 +57,7 @@ const PurchaseFieldset = ({
                 should_fade={should_fade}
                 type={type}
                 basis={basis} // mobile-only
+                symbol={symbol}
             />
             {is_multiplier && has_cancellation && (
                 <MobileWrapper>

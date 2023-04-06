@@ -3,18 +3,27 @@ import { set as setStorage, get as getStorage } from '../common/utils/storageMan
 import { setCookieLanguage } from '../common/utils/cookieManager';
 import { supported_languages, translate, init } from './i18n';
 
-export const getLanguage = () => {
-    const query_lang = parseQueryString().lang ? parseQueryString().lang || getStorage('lang') : 'en';
-    const is_query_lang_supported = query_lang in supported_languages;
-    const lang =
-        getStorage('lang') in supported_languages ? getStorage('lang') : is_query_lang_supported ? query_lang : 'en';
-    if (!is_query_lang_supported) {
-        const new_search = document.location.search.replace(/lang=+[a-z]{2}/, 'lang=en');
-        window.history.pushState(null, '/', new_search);
-    }
+const setLanguage = lang => {
     setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;
+};
+
+export const getLanguage = () => {
+    const parsed_url = parseQueryString().lang || parseQueryString().l;
+    const parsed_valid_url =
+        parsed_url.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
+    const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
+    const query_lang = parsed_valid_url ? parsed_valid_url || supported_storage_lang : 'en';
+    const is_query_lang_supported = query_lang in supported_languages;
+
+    if (is_query_lang_supported) {
+        setLanguage(query_lang);
+    } else {
+        const new_search = document.location.search.replace(/(lang|l)+=[a-z]{2}/, 'lang=en');
+        window.history.pushState(null, '/', new_search);
+        setLanguage('en');
+    }
 };
 
 const addUiLang = () => {

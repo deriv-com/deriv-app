@@ -955,7 +955,7 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Learn more'),
                     onClick: () => {
                         window.open(
-                            'https://deriv-com-git-fork-nuzhy-deriv-nuzhy-81106p2plandingpage-16a1f7.binary.sx/',
+                            'https://deriv-com-git-fork-nuzhy-deriv-nuzhy-81106p2plandingpage-16a1f7.binary.sx/p2p',
                             '_blank'
                         );
                     },

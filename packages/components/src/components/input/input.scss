@@ -31,6 +31,10 @@
     }
     &--disabled {
         border-color: var(--border-normal);
+
+        .dc-datepicker__display-text {
+            color: var(--text-less-prominent);
+        }
     }
     &--error {
         border-color: var(--brand-red-coral) !important;

@@ -114,10 +114,6 @@
             min-width: calc(100% - 1rem);
             position: absolute;
             height: 38px;
-
-            &:disabled {
-                color: var(--text-less-prominent);
-            }
         }
         &__display {
             display: flex;

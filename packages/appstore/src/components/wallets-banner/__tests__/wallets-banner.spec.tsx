@@ -1,21 +1,39 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-// import userEvent from '@testing-library/user-event';
-import WalletsBanner from '../wallets-banner';
+import { isMobile } from '@deriv/shared';
+import WalletsBannerUpgrade from '../wallets-banner-upgrade';
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
+    // isDesktop: jest.fn(() => true),
+    // formatMoney: jest.fn(),
+}));
 
 describe('<WalletsBanner />', () => {
-    it('should render properly without banner if status is ineligible', () => {
-        render(<WalletsBanner migration_status={'ineligible'} />);
-        const banner = screen.queryByTestId('wallets_banner');
+    describe('<WalletsBannerUpgrade />', () => {
+        it('Should render properly with right banner if status is eligible', () => {
+            render(<WalletsBannerUpgrade />);
+            const btn = screen.queryByText('Upgrade now');
 
-        expect(banner).not.toBeInTheDocument();
-    });
+            expect(btn).toBeInTheDocument();
+        });
 
-    it('should render properly with right banner if status is eligible', () => {
-        render(<WalletsBanner migration_status={'eligible'} />);
-        const banner = screen.queryByAltText('wallets are eligible for upgrade');
+        it('Should render image properly for desktop', () => {
+            isMobile.mockReturnValue(false);
+            render(<WalletsBannerUpgrade />);
+            const image = screen.queryByTestId('UpgradeDesktop');
 
-        expect(banner).toBeInTheDocument();
+            expect(image).toBeInTheDocument();
+        });
+
+        it('Should render image properly for mobile', () => {
+            isMobile.mockReturnValue(true);
+            render(<WalletsBannerUpgrade />);
+            const image = screen.queryByTestId('UpgradeMobile');
+
+            expect(image).toBeInTheDocument();
+        });
     });
 });

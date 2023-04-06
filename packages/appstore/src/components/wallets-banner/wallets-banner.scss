@@ -1,20 +1,57 @@
-.wallets-banner-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4.8rem;
-    padding-right: 0;
-    margin-bottom: 2.4rem;
+.wallets-banner {
+    &__container {
+        position: relative;
+        padding-inline: 4.8rem;
+        margin-bottom: 2.4rem;
 
-    // width: 1200px;
-    height: 180px;
+        border: 1px solid #e6e9e9;
+        box-shadow: 0px 12px 16px -4px rgba(14, 14, 14, 0.08), 0px 4px 6px -2px rgba(14, 14, 14, 0.03);
+        border-radius: 16px;
 
-    border: 1px solid #e6e9e9;
-    box-shadow: 0px 12px 16px -4px rgba(14, 14, 14, 0.08), 0px 4px 6px -2px rgba(14, 14, 14, 0.03);
-    border-radius: 16px;
+        @include mobile {
+            padding: 1.4rem 1.6rem;
+            border-radius: 8px;
+        }
+    }
+
+    &__image {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        border-bottom-right-radius: 16px;
+
+        @include mobile {
+            border-bottom-right-radius: 8px;
+        }
+    }
+
+    &__upgrade-banner {
+        height: 180px;
+
+        @include mobile {
+            height: 108px;
+        }
+
+        &--description {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: baseline;
+
+            @include mobile {
+                width: 70%;
+            }
+        }
+
+        &--button {
+            margin-top: 0.8rem;
+            padding-inline: 6.7rem;
+
+            @include mobile {
+                padding-inline: 1.6rem;
+            }
+        }
+    }
 }
-
-// .eligible {
-//     background-image: url('./../../assets/svgs/trading-platform/ic-brand-smarttrader.svg');
-// }

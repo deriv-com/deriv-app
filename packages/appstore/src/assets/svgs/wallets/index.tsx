@@ -1,34 +1,21 @@
 import React from 'react';
-import BarsSvg from 'Assets/svgs/wallets/bars.svg';
+import UpgradeDesktop from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
+import UpgradeMobile from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
 
-export { BarsSvg };
+export const WalletsBanners = {
+    UpgradeDesktop,
+    UpgradeMobile,
+};
 
-// export const PlatformIcons = {
-//     BinaryBot,
-//     BinaryBotBlue,
-//     DBot,
-//     Demo,
-//     Derived,
-//     DerivGo,
-//     DerivGoBlack,
-//     DerivLogo,
-//     DerivTradingLogo,
-//     DerivX,
-//     DropDown,
-//     DTrader,
-//     Financial,
-//     Options,
-//     SmartTrader,
-//     SmartTraderBlue,
-//     CFDs,
-// };
+type WalletsBannerProps<T> = {
+    banner: T;
+    className?: string;
+};
 
-// const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {
-//     const PlatformIcon = PlatformIcons[icon] as React.ElementType;
+const WalletsBannerImage = ({ banner, className }: WalletsBannerProps<keyof typeof WalletsBanners>) => {
+    const WalletsBanner = WalletsBanners[banner] as React.ElementType;
 
-//     return PlatformIcon ? (
-//         <PlatformIcon className={className} style={{ width: size, height: size }} onClick={onClick} />
-//     ) : null;
-// };
+    return <WalletsBanner className={className} data-testid={banner} />;
+};
 
-// export default TradingPlatformIcon;
+export default WalletsBannerImage;

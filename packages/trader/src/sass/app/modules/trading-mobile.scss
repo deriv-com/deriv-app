@@ -112,6 +112,16 @@
             }
         }
     }
+    .barrier {
+        &__widget {
+            border: 1px solid var(--general-active);
+            border-radius: 4px;
+            margin-inline: 1.6rem;
+            &:active {
+                border: 1px solid var(--purchase-main-1);
+            }
+        }
+    }
     /** @define allow-equals; weak */
     .allow-equals,
     .take-profit.mobile-widget {
@@ -144,6 +154,11 @@
             @media only screen and (max-height: 480px) {
                 top: 0.4rem;
             }
+        }
+        &__container_barrier {
+            border-radius: 8px;
+            box-shadow: 0 16px 16px 0 var(--shadow-menu-2), 0 0 16px 0 var(--shadow-menu-2);
+            overflow-y: scroll;
         }
         &-header {
             /* postcss-bem-linter: ignore */

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, Icon, InputField, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
@@ -12,6 +12,7 @@ const Barrier = ({
     barrier_2,
     barrier_count,
     barrier_pipsize,
+    // contract_info,
     current_focus,
     duration_unit,
     is_minimized,
@@ -20,6 +21,9 @@ const Barrier = ({
     setCurrentFocus,
     validation_errors,
 }) => {
+    const [show_modal, setShowModal] = React.useState(false);
+    // const { barrier: barrier_price, current_spot_display_value: current_price } = contract_info;
+
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
 
     if (is_minimized) {
@@ -47,6 +51,10 @@ const Barrier = ({
             final_value = `+${float_value.toFixed(barrier_pipsize)}`;
         }
         return final_value;
+    };
+
+    const onClick = () => {
+        setShowModal(!show_modal);
     };
 
     return (
@@ -101,6 +109,37 @@ const Barrier = ({
                 </Fieldset>
             </DesktopWrapper>
             <MobileWrapper>
+                <Modal
+                    id='dt_input_barrier_mobile'
+                    className='barrier'
+                    is_open={show_modal}
+                    should_header_stick_body
+                    toggleModal={onClick}
+                    height='auto'
+                    width='calc(100vw - 32px)'
+                    title={localize('Barrier')}
+                >
+                    {/* {current_price} */}
+                    <LabeledQuantityInputMobile
+                        input_label={localize('Barrier')}
+                        type='number'
+                        name='barrier'
+                        value={barrier_count === 1 ? barrier_1 : barrier_2}
+                        className={`barrier__fields-${input_class}`}
+                        classNameInput={classNames(
+                            'barrier__fields-input',
+                            'barrier__fields-barriers-input',
+                            `barrier__fields-barriers-${input_class}-input`
+                        )}
+                        current_focus={current_focus}
+                        format={format}
+                        onChange={onChange}
+                        is_float
+                        is_signed
+                        setCurrentFocus={setCurrentFocus}
+                    />
+                    {/* {barrier_price} */}
+                </Modal>
                 <LabeledQuantityInputMobile
                     input_label={barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
                     id='dt_barrier_1_input'
@@ -119,9 +158,11 @@ const Barrier = ({
                     current_focus={current_focus}
                     format={format}
                     onChange={onChange}
+                    onClick={onClick}
                     is_float
                     is_signed
                     setCurrentFocus={setCurrentFocus}
+                    is_read_only
                 />
                 {barrier_count === 2 && (
                     <LabeledQuantityInputMobile
@@ -142,9 +183,11 @@ const Barrier = ({
                         current_focus={current_focus}
                         format={format}
                         onChange={onChange}
+                        onClick={onClick}
                         is_float
                         is_signed
                         setCurrentFocus={setCurrentFocus}
+                        is_read_only
                     />
                 )}
             </MobileWrapper>
@@ -157,6 +200,7 @@ Barrier.propTypes = {
     barrier_2: PropTypes.string,
     barrier_count: PropTypes.number,
     barrier_pipsize: PropTypes.number,
+    // contract_info: PropTypes.object,
     current_focus: PropTypes.string,
     duration_unit: PropTypes.string,
     is_absolute_only: PropTypes.bool,
@@ -171,6 +215,8 @@ export default connect(({ modules, ui }) => ({
     barrier_2: modules.trade.barrier_2,
     barrier_pipsize: modules.trade.barrier_pipsize,
     barrier_count: modules.trade.barrier_count,
+    // contract_info: summary_card.contract_info,
+    // contract_info: modules.trade.contract_info,
     current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     onChange: modules.trade.onChange,

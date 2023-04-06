@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
-import { useOnrampVisible, useAccountTransferVisible } from '@deriv/hooks';
+import { useOnrampVisible, useAccountTransferVisible, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
@@ -22,7 +22,8 @@ const MenuLink = observer(
         const deriv_static_url = getStaticUrl(link_to);
         const history = useHistory();
         const { has_any_real_account, is_virtual } = client;
-        const { toggleReadyToDepositModal } = ui;
+        const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
+        const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
         const cashier_link =
             link_to === routes.cashier_deposit ||
@@ -30,6 +31,27 @@ const MenuLink = observer(
             link_to === routes.cashier_acc_transfer;
 
         if (is_hidden) return null;
+
+        const traders_hub_path = window.location.pathname === routes.traders_hub;
+
+        if (real_account_needed_for_cashier && cashier_link && traders_hub_path) {
+            const handleClickCashier = () => {
+                onClickLink();
+                toggleNeedRealAccountForCashierModal();
+            };
+            return (
+                <div
+                    className={classNames('header__menu-mobile-link', {
+                        'header__menu-mobile-link--disabled': is_disabled,
+                    })}
+                    onClick={handleClickCashier}
+                >
+                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
+                    <span className='header__menu-mobile-link-text'>{text}</span>
+                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
+                </div>
+            );
+        }
 
         if (cashier_link && is_virtual && !has_any_real_account) {
             const toggle_modal_routes =

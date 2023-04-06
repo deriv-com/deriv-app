@@ -575,14 +575,10 @@
     }
 
     &__card-content-over-header {
-        display: flex;
         background: var(--text-info-blue-bg);
-        color: var(--text-info-blue);
         height: 4rem;
         width: 100%;
-        justify-content: center;
-        font-weight: bold;
-        align-items: center;
+        padding: 0.5rem;
         border-radius: 1.6rem 1.6rem 0rem 0rem;
     }
 
@@ -596,7 +592,6 @@
     }
 
     &__h2-header {
-        text-align: center;
         min-height: 5rem;
         margin: 1rem 2rem;
         @include mobile {

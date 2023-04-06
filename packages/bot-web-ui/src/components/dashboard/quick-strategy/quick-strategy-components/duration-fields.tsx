@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { InputField, SelectField } from '.';
+import { SelectField } from '.';
 import { TDropdownItems, TSelectsFieldNames } from '../quick-strategy.types';
 import { TDurationFields } from './components.types';
 import { isMobile } from '@deriv/shared';
@@ -51,14 +51,6 @@ const DurationFields = ({
                 onScrollStopDropdownList={onScrollStopDropdownList}
                 selected_trade_type={selected_trade_type}
                 selected_symbol={selected_symbol}
-            />
-            <InputField
-                idx={idx}
-                handleChange={handleChange}
-                onChangeInputValue={onChangeInputValue}
-                setCurrentFocus={setCurrentFocus}
-                is_mobile={is_mobile}
-                errors={errors}
             />
         </div>
     ) : (

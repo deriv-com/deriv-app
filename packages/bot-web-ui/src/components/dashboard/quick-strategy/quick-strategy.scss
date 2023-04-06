@@ -13,10 +13,39 @@
     @include position-center;
     width: 100%;
 
+    &__description {
+        margin: auto;
+    }
+
     &__text {
-        margin: 1.5rem 0;
+        grid-column: span 2;
         @include mobile {
             @include position-center;
+        }
+
+        &--margin {
+            margin: 1.5rem 0;
+        }
+    }
+
+    &__fields {
+        display: grid;
+        margin-top: 3.5rem;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 3.5rem;
+        column-gap: 1.2rem;
+        :first-child {
+            grid-column: span 2;
+        }
+        :nth-child(3) {
+            grid-column: span 2;
+        }
+        :nth-child(4) {
+            grid-column: span 2;
+        }
+        @include mobile {
+            display: block;
+            margin-top: auto;
         }
     }
 
@@ -36,9 +65,6 @@
             @include mobile {
                 margin: 3rem 0;
             }
-            @include desktop {
-                margin: 3.5rem 0;
-            }
 
             .dc-dropdown-list__item--active {
                 font-weight: bold;
@@ -52,10 +78,6 @@
 
             @include mobile {
                 flex-direction: column;
-            }
-
-            &:first-child {
-                margin-top: 0;
             }
             > * {
                 justify-content: center;
@@ -84,14 +106,6 @@
                     margin: 1.1rem;
                     position: unset;
                     height: 1.6rem;
-                }
-            }
-            &--multiple {
-                > *:first-child {
-                    margin-right: 1.2rem;
-                }
-                > * + * {
-                    margin-left: 1.2rem;
                 }
             }
         }

@@ -1,6 +1,5 @@
-import { data_uniq_input_obj, common_inputs_properties } from '..';
+import { common_inputs_properties } from '..';
 import { TSelectsFieldNames, TDropdownItems, TInputBaseFields, TInputsFieldNames } from '../../quick-strategy.types';
-import { TDataUniqInput } from './data-uniq-input-obj';
 import { TCommonInputsProperties } from './common-input-properties';
 
 const getMessage = (property: string) => `The bot will stop trading if your total ${property} exceeds this amount.`;
@@ -15,9 +14,10 @@ export type TDataFields = {
     placeholder?: string;
     trailing_icon_message?: string;
     is_able_disabled?: boolean;
+    is_uniq_strategy_field?: boolean;
 } & Readonly<TCommonInputsProperties>;
 
-const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = [
+const data_fields: ReadonlyArray<TDataFields> = [
     {
         id: 'type-strategy',
         field_name: 'quick-strategy__type-strategy',
@@ -74,7 +74,12 @@ const data_fields: ReadonlyArray<TDataFields | ReadonlyArray<TDataUniqInput>> = 
         trailing_icon_message: getMessage('loss'),
         ...common_inputs_properties,
     },
-    ...[data_uniq_input_obj],
+    {
+        id: 'strategy-data',
+        is_uniq_strategy_field: true,
+        label: '',
+        field_name: '',
+    },
     {
         id: 'profit',
         field_name: 'quick-strategy__profit',

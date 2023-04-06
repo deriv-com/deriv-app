@@ -48,7 +48,6 @@ const Cards = ({
     showVideoDialog,
     loadDataStrategy,
 }: TCardProps) => {
-    /* eslint-disable no-unused-expressions */
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
 

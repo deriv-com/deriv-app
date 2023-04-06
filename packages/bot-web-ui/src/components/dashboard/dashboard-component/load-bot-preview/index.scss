@@ -276,7 +276,8 @@
             }
 
             & .dc-text {
-                width: 10rem;
+                width: fit-content;
+                cursor: pointer;
 
                 @include mobile {
                     width: unset;
@@ -328,10 +329,6 @@
 
             &.load-dialog {
                 padding: 1.6rem;
-            }
-
-            &:hover {
-                cursor: pointer;
             }
 
             &__loaded {
@@ -431,6 +428,10 @@
 
                 align-items: center;
                 justify-content: flex-end;
+
+                .dc-icon {
+                    cursor: pointer;
+                }
             }
         }
     }

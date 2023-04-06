@@ -67,8 +67,6 @@ const StaticDashboard = ({
     const { content_flag } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 
-    //starting ctrader project
-
     const [index, setIndex] = React.useState<number>(0);
 
     const Divider = () => <div className='divider' />;

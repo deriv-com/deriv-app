@@ -1,4 +1,12 @@
-import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+import type {
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetLimits,
+    LogOutResponse,
+    GetSettings,
+    ResidenceList,
+} from '@deriv/api-types';
 
 import type { RouteComponentProps } from 'react-router';
 
@@ -176,6 +184,10 @@ type TClientStore = {
     is_crypto: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
     isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
+    fetchResidenceList?: () => void;
+    account_settings: GetSettings;
+    residence_list: ResidenceList;
+    is_high_risk: boolean;
 };
 
 type TCommonStoreError = {
@@ -204,6 +216,7 @@ type TCommonStore = {
     current_language: string;
     is_language_changing: boolean;
     setAppstorePlatform: (value: string) => void;
+    app_routing_history: unknown[];
 };
 
 type TUiStore = {

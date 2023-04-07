@@ -268,13 +268,6 @@ const mock = (): TRootStore => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
-            is_notifications_loading_completed: true,
-            notifications_updated: {
-                client_account_settings: true,
-                client_account_status: true,
-                client_landing_companies: true,
-                reaction: true,
-            },
         },
         modules: {},
     };

@@ -14,8 +14,11 @@ const ToggleNotificationsDrawer = ({
     should_disable_pointer_events = false,
 }) => {
     const {
-        notifications: { is_notifications_loading_completed },
+        client: { is_logging_in, is_switching, is_landing_company_loaded, is_account_setting_loaded },
     } = useStore();
+
+    const is_notifications_loading_completed =
+        !is_logging_in && !is_switching && is_landing_company_loaded && is_account_setting_loaded;
 
     const [number, setNumber] = React.useState(0);
 

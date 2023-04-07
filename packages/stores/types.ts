@@ -248,13 +248,6 @@ type TNotificationStore = {
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
-    is_notifications_loading_completed: boolean;
-    notifications_updated: {
-        client_account_settings: boolean;
-        client_account_status: boolean;
-        client_landing_companies: boolean;
-        reaction: boolean;
-    };
 };
 
 type TTradersHubStore = {

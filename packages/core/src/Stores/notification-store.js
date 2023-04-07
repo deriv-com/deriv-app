@@ -42,12 +42,6 @@ export default class NotificationStore extends BaseStore {
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
-    notifications_updated = {
-        client_account_settings: true,
-        client_account_status: true,
-        client_landing_companies: true,
-        reaction: true,
-    };
 
     constructor(root_store) {
         super({ root_store });
@@ -87,8 +81,6 @@ export default class NotificationStore extends BaseStore {
             updateNotifications: action.bound,
             p2p_completed_orders: observable,
             getP2pCompletedOrders: action.bound,
-            is_notifications_loading_completed: computed,
-            notifications_updated: observable,
         });
 
         const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
@@ -127,28 +119,15 @@ export default class NotificationStore extends BaseStore {
                     (Object.keys(root_store.client.account_status).length > 0 &&
                         Object.keys(root_store.client.landing_companies).length > 0)
                 ) {
-                    this.notifications_updated.reaction = false;
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
                     this.setClientNotifications();
                     this.handleClientNotifications();
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
-                    this.notifications_updated.reaction = true;
                 }
             }
         );
-    }
-
-    get is_notifications_loading_completed() {
-        const { is_switching, is_logging_in, is_landing_company_loaded, is_account_setting_loaded } =
-            this.root_store.client;
-
-        // check switching, logging, landing_company, and account_setting
-        if (is_switching || is_logging_in || !is_landing_company_loaded || !is_account_setting_loaded) return false;
-
-        // return true if all properties are true
-        return Object.values(this.notifications_updated).every(element => element);
     }
 
     get custom_notifications() {

@@ -137,7 +137,6 @@ const Barrier = ({
                             `barrier__fields-barriers-${input_class}-input`
                         )}
                         current_focus={current_focus}
-                        format={format}
                         onChange={onChange}
                         error_messages={
                             (barrier_count === 1 ? validation_errors.barrier_1 : validation_errors.barrier_2) || []

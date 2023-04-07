@@ -222,7 +222,7 @@ const InputField = ({
 
     const is_increment_input = is_incrementable && (type === 'number' || type === 'tel');
 
-    const input = display_as ? (
+    const field = display_as ? (
         <Text className={classNames('input', classNameInput)} onClick={onClick} as={display_as}>
             {display_value}
         </Text>
@@ -310,10 +310,10 @@ const InputField = ({
                     )}
                 >
                     {increment_buttons}
-                    {input}
+                    {field}
                 </div>
             ) : (
-                input
+                field
             )}
         </Tooltip>
     );

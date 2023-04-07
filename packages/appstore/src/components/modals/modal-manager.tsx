@@ -64,7 +64,13 @@ const ModalManager = () => {
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
     } = ui;
-    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
+    const {
+        is_demo,
+        is_account_transfer_modal_open,
+        toggleAccountTransferModal,
+        show_wallet_consent_popup,
+        setShouldShowWalletConsentPopup,
+    } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -104,9 +110,6 @@ const ModalManager = () => {
         enableCFDPasswordModal();
     };
 
-    // Remove this once everything is merged
-    const [show_test_modal, setShowTestModal] = React.useState(false);
-
     const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
         const current_list_keys = Object.keys(current_list);
         const should_be_enabled = (list_item: TCurrentList) =>
@@ -131,10 +134,9 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
-            {/* Remove this once everything is merged */}
             <WalletsConsentPopup
-                show_test_modal={true}
-                setShowTestModal={setShowTestModal}
+                show_wallet_consent_popup={show_wallet_consent_popup}
+                setShouldShowWalletConsentPopup={setShouldShowWalletConsentPopup}
                 is_eu={is_eu}
                 is_high_risk={is_high_risk}
             />

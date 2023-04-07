@@ -33,6 +33,7 @@ export default class TradersHubStore extends BaseStore {
     };
     is_account_transfer_modal_open = false;
     selected_account = {};
+    show_wallet_consent_popup = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -102,6 +103,8 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
+            show_wallet_consent_popup: observable,
+            setShouldShowWalletConsentPopup: action.bound,
         });
 
         reaction(
@@ -168,6 +171,10 @@ export default class TradersHubStore extends BaseStore {
                 await this.updatePlatformBalance();
             }
         );
+    }
+
+    setShouldShowWalletConsentPopup(value) {
+        this.show_wallet_consent_popup = value;
     }
 
     async setSwitchEU() {

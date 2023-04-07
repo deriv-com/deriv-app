@@ -12,17 +12,22 @@ import { localize } from '@deriv/translations';
 import WalletsConsentForm from './wallets-consent-form';
 
 type TWalletsConsentPopupProps = {
-    show_test_modal: boolean;
-    setShowTestModal: (show_test_modal: boolean) => void;
+    show_wallet_consent_popup: boolean;
+    setShouldShowWalletConsentPopup: (show_wallet_consent_popup: boolean) => void;
     is_eu: boolean;
     is_high_risk: boolean;
 };
 
-const WalletsConsentPopup = ({ show_test_modal, setShowTestModal, is_eu, is_high_risk }: TWalletsConsentPopupProps) => {
+const WalletsConsentPopup = ({
+    show_wallet_consent_popup,
+    setShouldShowWalletConsentPopup,
+    is_eu,
+    is_high_risk,
+}: TWalletsConsentPopupProps) => {
     const [is_disabled, setIsDisabled] = React.useState(false);
 
     const toggleModal = () => {
-        setShowTestModal(!show_test_modal);
+        setShouldShowWalletConsentPopup(!show_wallet_consent_popup);
     };
 
     const toggleCheckbox = () => {
@@ -33,7 +38,7 @@ const WalletsConsentPopup = ({ show_test_modal, setShowTestModal, is_eu, is_high
         <React.Fragment>
             <DesktopWrapper>
                 <Modal
-                    is_open={show_test_modal}
+                    is_open={show_wallet_consent_popup}
                     title={' '}
                     width='1200px'
                     height='734px'
@@ -52,12 +57,17 @@ const WalletsConsentPopup = ({ show_test_modal, setShowTestModal, is_eu, is_high
                     </Modal.Body>
                     {/* TODO: Once merged with the main component the button will not be needed as it will be handled on the main component */}
                     <Modal.Footer has_separator>
-                        <Button secondary text={localize('Back')} large onClick={setShowTestModal(false)} />
+                        <Button
+                            secondary
+                            text={localize('Back')}
+                            large
+                            onClick={setShouldShowWalletConsentPopup(false)}
+                        />
                         <Button
                             primary
                             text={localize('Upgrade to Wallets')}
                             large
-                            onClick={setShowTestModal(false)}
+                            onClick={setShouldShowWalletConsentPopup(false)}
                             is_disabled={!is_disabled}
                         />
                     </Modal.Footer>
@@ -67,7 +77,7 @@ const WalletsConsentPopup = ({ show_test_modal, setShowTestModal, is_eu, is_high
                 <MobileDialog
                     portal_element_id='modal_root'
                     wrapper_classname='wallet-wrapper'
-                    visible={show_test_modal}
+                    visible={show_wallet_consent_popup}
                     has_full_height={true}
                 >
                     <Div100vhContainer className='wallet-wrapper--body' height_offset='15rem'>

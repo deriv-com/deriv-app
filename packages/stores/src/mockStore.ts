@@ -138,6 +138,7 @@ const mock = (): TRootStore => {
             is_logging_in: false,
             is_switching: false,
             is_tnc_needed: false,
+            is_high_risk: false,
             is_trading_experience_incomplete: false,
             is_virtual: false,
             is_withdrawal_lock: false,
@@ -253,6 +254,8 @@ const mock = (): TRootStore => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            show_wallet_consent_popup: false,
+            setShouldShowWalletConsentPopup: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

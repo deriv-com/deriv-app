@@ -1,17 +1,16 @@
 import React from 'react';
-import WalletsBannerImage, { WalletsBanners } from 'Assets/svgs/wallets';
+import WalletsImage, { WalletsImagesList } from 'Assets/svgs/wallets';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
 const WalletsBannerUpgrade = () => {
-    const banner: keyof typeof WalletsBanners = isMobile() ? 'UpgradeMobile' : 'UpgradeDesktop';
+    const banner: keyof typeof WalletsImagesList = isMobile() ? 'UpgradeMobile' : 'UpgradeDesktop';
     const size: string = isMobile() ? 'xs' : 'm';
-    const large = !isMobile();
 
     return (
         <div className='wallets-banner__container wallets-banner__upgrade-banner'>
-            <div className='wallets-banner__upgrade-banner--description'>
+            <div className='wallets-banner__upgrade-banner-description'>
                 <div>
                     <Localize
                         i18n_default_text='<0>Wallets</0><1> - the best way to organise your funds</1>'
@@ -19,15 +18,14 @@ const WalletsBannerUpgrade = () => {
                     />
                 </div>
                 <Button
-                    className={'wallets-banner__upgrade-banner--button'}
+                    className={'wallets-banner__upgrade-banner-button'}
                     has_effect
                     text={localize('Upgrade now')}
-                    // onClick={() => {}}
                     primary
-                    large={large}
+                    large={!isMobile()}
                 />
             </div>
-            <WalletsBannerImage banner={banner} className={'wallets-banner__image'} />
+            <WalletsImage banner={banner} className={'wallets-banner__image'} />
         </div>
     );
 };

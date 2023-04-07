@@ -7,8 +7,6 @@ import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
-    // isDesktop: jest.fn(() => true),
-    // formatMoney: jest.fn(),
 }));
 
 describe('<WalletsBanner />', () => {

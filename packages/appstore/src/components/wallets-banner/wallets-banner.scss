@@ -4,13 +4,13 @@
         padding-inline: 4.8rem;
         margin-bottom: 2.4rem;
 
-        border: 1px solid #e6e9e9;
-        box-shadow: 0px 12px 16px -4px rgba(14, 14, 14, 0.08), 0px 4px 6px -2px rgba(14, 14, 14, 0.03);
-        border-radius: 16px;
+        border: 1px solid $color-grey-4;
+        box-shadow: $wallets-banner-box-shadow;
+        border-radius: $wallets-banner-border-radius-desktop;
 
         @include mobile {
             padding: 1.4rem 1.6rem;
-            border-radius: 8px;
+            border-radius: $wallets-banner-border-radius-mobile;
         }
     }
 
@@ -18,10 +18,10 @@
         position: absolute;
         right: 0;
         bottom: 0;
-        border-bottom-right-radius: 16px;
+        border-bottom-right-radius: $wallets-banner-border-radius-desktop;
 
         @include mobile {
-            border-bottom-right-radius: 8px;
+            border-bottom-right-radius: $wallets-banner-border-radius-mobile;
         }
     }
 
@@ -32,8 +32,8 @@
             height: 108px;
         }
 
-        &--description {
-            width: 50%;
+        &-description {
+            width: 45%;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -45,7 +45,7 @@
             }
         }
 
-        &--button {
+        &-button {
             margin-top: 0.8rem;
             padding-inline: 6.7rem;
 

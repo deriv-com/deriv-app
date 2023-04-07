@@ -196,3 +196,8 @@ $gradient-webmoney: linear-gradient(90deg, #1a77ac 0%, #0068a3 100%);
 /* App Cards gradient background */
 $gradient-virtual: linear-gradient(274.25deg, #333333 9.01%, #5c5b5b 103.31%);
 $gradient-virtual-swap-free: linear-gradient(58.51deg, #061828 28.06%, #1a3c60 93.51%);
+
+/* Wallets */
+$wallets-banner-box-shadow: 0px 12px 16px -4px rgba(14, 14, 14, 0.08), 0px 4px 6px -2px rgba(14, 14, 14, 0.03);
+$wallets-banner-border-radius-desktop: 16px;
+$wallets-banner-border-radius-mobile: 8px;

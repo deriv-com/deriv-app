@@ -1,7 +1,6 @@
 import React from 'react';
 import WalletsBannerUpgrade from './wallets-banner-upgrade';
-
-type TWalletsMigrationStatus = 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
+import { TWalletsMigrationStatus } from 'Types';
 
 const WalletsBanner = () => {
     const migration_status: TWalletsMigrationStatus = 'eligible';

@@ -6,69 +6,40 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
+import {
+    useTotalAccountBalance,
+    usePlatformRealAccounts,
+    usePlatformDemoAccount,
+    useCurrencyExcahngeRate,
+    useCFDRealAccounts,
+    useCFDDemoAccounts,
+} from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client, common, exchange_rates } = useStore();
-    const {
-        selected_account_type,
-        platform_real_balance,
-        cfd_demo_balance,
-        platform_demo_balance,
-        cfd_real_balance,
-        is_eu_user,
-        no_CR_account,
-        no_MF_account,
-        updateExchangeRates,
-    } = traders_hub;
-    const { is_logging_in, is_switching } = client;
-    const { getExchangeRate } = common;
+    const { selected_account_type, is_eu_user, no_CR_account, no_MF_account, updateExchangeRates } = traders_hub;
+    const { is_logging_in, is_switching, default_currency } = client;
 
-    const [exchanged_rate_cfd_real, setExchangedRateCfdReal] = React.useState(1);
-    const [exchanged_rate_cfd_demo, setExchangedRateCfdDemo] = React.useState(1);
+    const cfd_real_rate = useCurrencyExcahngeRate(default_currency);
+    const cfd_demo_rate = useCurrencyExcahngeRate(default_currency);
+    const platform_real_accounts = usePlatformRealAccounts();
+    const platform_demo_account = usePlatformDemoAccount();
+    const cfd_real_accounts = useCFDRealAccounts();
+    const cfd_demo_accounts = useCFDDemoAccounts();
+    const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
+    const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
+    const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
 
     React.useEffect(() => {
         updateExchangeRates(exchange_rates?.data);
     }, [exchange_rates.data]);
 
-    React.useEffect(() => {
-        const getCurrentExchangeRate = (
-            currency: string,
-            setExchangeRate: React.Dispatch<React.SetStateAction<number>>,
-            base_currency = platform_real_balance.currency
-        ) => {
-            if (currency) {
-                getExchangeRate(currency, base_currency).then((res: number) => {
-                    setExchangeRate(res);
-                });
-            }
-        };
-
-        if (cfd_real_balance.currency !== platform_real_balance.currency) {
-            getCurrentExchangeRate(cfd_real_balance.currency, setExchangedRateCfdReal);
-        }
-        if (cfd_demo_balance.currency !== platform_demo_balance.currency) {
-            getCurrentExchangeRate(cfd_demo_balance.currency, setExchangedRateCfdDemo, platform_demo_balance.currency);
-        }
-    }, [
-        cfd_demo_balance.currency,
-        cfd_real_balance.currency,
-        getExchangeRate,
-        platform_demo_balance.currency,
-        platform_real_balance.currency,
-    ]);
-
     const getTotalBalance = () => {
         if (selected_account_type === 'real') {
-            return {
-                balance: platform_real_balance.balance + cfd_real_balance.balance * exchanged_rate_cfd_real,
-                currency: platform_real_balance.currency,
-            };
+            return platform_real_balance + cfd_real_balance * cfd_real_rate;
         }
 
-        return {
-            balance: platform_demo_balance.balance + cfd_demo_balance.balance * exchanged_rate_cfd_demo,
-            currency: platform_demo_balance.currency,
-        };
+        return platform_demo_account.balance + cfd_demo_balance * cfd_demo_rate;
     };
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
@@ -101,11 +72,7 @@ const AssetSummary = observer(() => {
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >
-                        <BalanceText
-                            currency={getTotalBalance().currency}
-                            balance={getTotalBalance().balance}
-                            underline_style='dotted'
-                        />
+                        <BalanceText currency={default_currency} balance={getTotalBalance()} underline_style='dotted' />
                     </Popover>
                 </React.Fragment>
             ) : null}

@@ -60,24 +60,6 @@ const IntroducingWallets = ({ onNext, onClose, eu_user }: StepProps) => {
                     </div>
                 </Div100vhContainer>
             </Modal.Body>
-            <Modal.Footer has_separator className='introducing-wallets--footer'>
-                <Button
-                    className='introducing-wallets--footer--button'
-                    has_effect
-                    onClick={onClose}
-                    text={localize('Maybe later')}
-                    secondary
-                    large
-                />
-                <Button
-                    className='introducing-wallets--footer--button'
-                    has_effect
-                    onClick={onNext}
-                    text={localize('Next')}
-                    primary
-                    large
-                />
-            </Modal.Footer>
         </React.Fragment>
     );
 };

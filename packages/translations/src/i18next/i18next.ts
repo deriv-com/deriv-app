@@ -100,6 +100,7 @@ const i18n_config = {
         hashTransKey(defaultValue: string) {
             return crc32(defaultValue);
         },
+        useSuspense: false,
     },
     lng: initial_language,
     fallbackLng: 'EN',

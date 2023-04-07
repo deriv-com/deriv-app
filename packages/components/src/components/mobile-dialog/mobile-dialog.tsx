@@ -12,7 +12,7 @@ type TMobileDialog = {
     has_content_scroll?: boolean;
     portal_element_id: string;
     renderTitle?: () => string;
-    title?: string | React.ReactNode;
+    title?: React.ReactNode;
     visible?: boolean;
     wrapper_classname?: string;
     header_classname?: string;

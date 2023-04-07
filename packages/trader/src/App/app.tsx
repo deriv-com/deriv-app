@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
+import { StoreProvider, StoreProvider } from '@deriv/stores';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
 import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';
 import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions.jsx';
 import { NetworkStatusToastErrorPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import { MobxContentProvider } from 'Stores/connect';
-import { StoreProvider } from '@deriv/stores';
 import initStore from './init-store.js'; // eslint-disable-line import/extensions
 import 'Sass/app.scss';
 

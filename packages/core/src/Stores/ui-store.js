@@ -166,6 +166,7 @@ export default class UIStore extends BaseStore {
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
+    is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
@@ -204,6 +205,7 @@ export default class UIStore extends BaseStore {
             has_only_forward_starting_contracts: observable,
             has_read_scam_message: observable,
             is_ready_to_deposit_modal_visible: observable,
+            is_need_real_account_for_cashier_modal_visible: observable,
             is_services_error_visible: observable,
             is_unsupported_contract_modal_visible: observable,
             is_new_account: observable,
@@ -341,6 +343,9 @@ export default class UIStore extends BaseStore {
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
             toggleReadyToDepositModal: action.bound,
+            toggleNeedRealAccountForCashierModal: action.bound,
+            toggleShouldShowRealAccountsList: action.bound,
+            toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
             setIsNewAccount: action.bound,
@@ -384,8 +389,6 @@ export default class UIStore extends BaseStore {
             toggleSetResidenceModal: action.bound,
             toggleSettingsModal: action.bound,
             toggleLanguageSettingsModal: action.bound,
-            toggleShouldShowMultipliersOnboarding: action.bound,
-            toggleShouldShowRealAccountsList: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
         });
@@ -895,6 +898,10 @@ export default class UIStore extends BaseStore {
 
     toggleReadyToDepositModal() {
         this.is_ready_to_deposit_modal_visible = !this.is_ready_to_deposit_modal_visible;
+    }
+
+    toggleNeedRealAccountForCashierModal() {
+        this.is_need_real_account_for_cashier_modal_visible = !this.is_need_real_account_for_cashier_modal_visible;
     }
 
     setCFDPasswordResetModal(val) {

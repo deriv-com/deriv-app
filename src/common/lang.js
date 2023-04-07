@@ -9,6 +9,11 @@ const setLanguage = lang => {
     return lang;
 };
 
+const redirectToSupportedLang = lang => {
+    const new_search = document.location.search.replace(/(lang|l)+=[a-z]{2}/, `l=${lang}`);
+    window.history.pushState(null, '/', new_search);
+};
+
 export const getLanguage = () => {
     const parsed_url = parseQueryString().lang || parseQueryString().l;
     const parsed_valid_url =
@@ -18,12 +23,11 @@ export const getLanguage = () => {
     const is_query_lang_supported = query_lang in supported_languages;
 
     if (is_query_lang_supported) {
-        setLanguage(query_lang);
-    } else {
-        const new_search = document.location.search.replace(/(lang|l)+=[a-z]{2}/, 'lang=en');
-        window.history.pushState(null, '/', new_search);
-        setLanguage('en');
+        return setLanguage(query_lang);
     }
+
+    redirectToSupportedLang('en');
+    return setLanguage('en');
 };
 
 const addUiLang = () => {
@@ -39,13 +43,17 @@ const addUiLang = () => {
     });
 };
 
-export const load = () => {
+export const load = async () => {
     if (typeof $ !== 'function') return; // Adding this check to skip unit test
-    const lang = getLanguage();
+
+    const lang = await getLanguage();
+    if (lang) {
+        init(lang);
+    }
 
     $('#select_language li:not(:first)').click(function click() {
         const newLang = $(this).attr('class');
-        document.location.search = `l=${newLang}`;
+        redirectToSupportedLang(newLang);
     });
 
     $('.language').text(
@@ -62,9 +70,6 @@ export const load = () => {
         script.src = `${document.location.protocol}//cdn.crowdin.com/jipt/jipt.js`;
         $('body').append(script);
     }
-
-    init(lang);
-
     addUiLang();
 };
 

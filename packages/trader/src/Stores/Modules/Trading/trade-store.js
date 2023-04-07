@@ -150,8 +150,8 @@ export default class TradeStore extends BaseStore {
     cancellation_range_list = [];
 
     // Turbos trade params
-    short_barriers = [];
-    long_barriers = [];
+    long_barriers = {};
+    short_barriers = {};
 
     // Vanilla trade params
     vanilla_trade_type = 'VANILLALONGCALL';
@@ -244,8 +244,6 @@ export default class TradeStore extends BaseStore {
             has_stop_loss: observable,
             has_take_profit: observable,
             hovered_barrier: observable,
-            short_barriers: observable,
-            long_barriers: observable,
             hovered_contract_type: observable,
             is_accumulator: computed,
             is_chart_loading: observable,
@@ -258,6 +256,7 @@ export default class TradeStore extends BaseStore {
             is_trade_params_expanded: observable,
             is_turbos: computed,
             last_digit: observable,
+            long_barriers: observable,
             main_barrier: observable,
             market_close_times: observable,
             market_open_times: observable,
@@ -271,6 +270,7 @@ export default class TradeStore extends BaseStore {
             setHoveredBarrier: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
+            short_barriers: observable,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
             stake_boundary: observable,
@@ -1629,10 +1629,11 @@ export default class TradeStore extends BaseStore {
     setBarrierChoices(barrier_choices) {
         this.barrier_choices = barrier_choices ?? [];
         if (this.is_turbos) {
-            if (getContractSubtype(this.contract_type) === 'Short') {
-                this.short_barriers = barrier_choices;
+            const stored_barriers_data = { barrier: this.barrier_1, barrier_choices };
+            if (getContractSubtype(this.contract_type) === 'Long') {
+                this.long_barriers = stored_barriers_data;
             } else {
-                this.long_barriers = barrier_choices;
+                this.short_barriers = stored_barriers_data;
             }
         }
     }

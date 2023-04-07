@@ -117,30 +117,25 @@ export const ContractType = (() => {
 
         if (!contract_type) return {};
 
-        let stored_barrier_choices = [];
+        let stored_barriers_data = {};
         if (getContractSubtype(contract_type) === 'Short') {
-            stored_barrier_choices = short_barriers;
+            stored_barriers_data = short_barriers;
         } else if (getContractSubtype(contract_type) === 'Long') {
-            stored_barrier_choices = long_barriers;
+            stored_barriers_data = long_barriers;
         }
-        const middle_barrier_index = Math.floor(stored_barrier_choices.length / 2);
 
         const form_components = getComponents(contract_type);
         const obj_basis = getBasis(contract_type, basis);
         const obj_trade_types = getTradeTypes(contract_type);
         const obj_start_dates = getStartDates(contract_type, start_date);
         const obj_start_type = getStartType(obj_start_dates.start_date);
-        const obj_barrier = getBarriers(
-            contract_type,
-            contract_expiry_type,
-            stored_barrier_choices[middle_barrier_index]
-        );
+        const obj_barrier = getBarriers(contract_type, contract_expiry_type, stored_barriers_data.barrier);
         const obj_duration_unit = getDurationUnit(duration_unit, contract_type, obj_start_type.contract_start_type);
 
         const obj_duration_units_list = getDurationUnitsList(contract_type, obj_start_type.contract_start_type);
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
         const obj_accumulator_range_list = getAccumulatorRange(contract_type);
-        const obj_barrier_choices = getBarrierChoices(contract_type, stored_barrier_choices);
+        const obj_barrier_choices = getBarrierChoices(contract_type, stored_barriers_data.barrier_choices);
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
@@ -519,7 +514,7 @@ export const ContractType = (() => {
             getPropertyValue(available_contract_types, [contract_type, 'config', 'growth_rate_range']) || [],
     });
 
-    const getBarrierChoices = (contract_type, stored_barrier_choices) => ({
+    const getBarrierChoices = (contract_type, stored_barrier_choices = []) => ({
         barrier_choices: stored_barrier_choices.length
             ? stored_barrier_choices
             : getPropertyValue(available_contract_types, [contract_type, 'config', 'barrier_choices']) || [],

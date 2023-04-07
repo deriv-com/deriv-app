@@ -57,7 +57,7 @@ const MT5TradeModal = ({
                 toggleModal={toggleModal}
                 dxtrade_tokens={dxtrade_tokens}
                 is_demo={is_demo}
-                platform={'dxtrade'}
+                platform={platform}
             />
         );
     };
@@ -66,7 +66,7 @@ const MT5TradeModal = ({
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
                 <Modal
-                    is_open={true}
+                    is_open={is_open}
                     title={localize('Trade')}
                     toggleModal={toggleModal}
                     should_header_stick_body={false}

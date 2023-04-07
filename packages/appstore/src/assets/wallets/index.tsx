@@ -14,9 +14,7 @@ export const PlatformIcons = {
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {
     const PlatformIcon = PlatformIcons[icon] as React.ElementType;
 
-    return PlatformIcon ? (
-        <PlatformIcon className={className} style={{ width: size, height: size }} onClick={onClick} />
-    ) : null;
+    return <PlatformIcon className={className} style={{ width: size, height: size }} onClick={onClick} />;
 };
 
 export default TradingPlatformIcon;

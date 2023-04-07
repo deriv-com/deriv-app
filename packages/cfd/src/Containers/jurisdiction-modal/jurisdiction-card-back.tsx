@@ -1,6 +1,6 @@
 import { Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
-import { jurisdiction_verification_contents } from 'Constants/jurisdiction-verification-contents';
+import { jurisdiction_verification_contents } from 'Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionCardBackProps } from 'Containers/props.types';
 import React from 'react';
 

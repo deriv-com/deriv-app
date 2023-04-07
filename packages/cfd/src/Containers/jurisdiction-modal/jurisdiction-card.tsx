@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { SyntheticEvent } from 'react';
-import { jurisdiction_contents } from '../../Constants/jurisdiction-contents';
+import { jurisdiction_contents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';

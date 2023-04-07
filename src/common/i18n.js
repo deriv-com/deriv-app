@@ -12,7 +12,7 @@ export const supported_languages = {
 const fallbackLang = en;
 let translation = {};
 
-const t = key => (key in translation ? translation[key] : fallbackLang[key]);
+const t = key => (translation && key in translation ? translation[key] : fallbackLang[key]);
 
 export const init = lang => {
     translation = supported_languages[lang];

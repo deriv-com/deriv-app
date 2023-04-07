@@ -174,6 +174,8 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
+    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
 };
 
 type TCommonStoreError = {
@@ -201,6 +203,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    setAppstorePlatform: (value: string) => void;
 };
 
 type TUiStore = {
@@ -231,6 +234,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 type TMenuStore = {
@@ -256,8 +260,22 @@ type TTradersHubStore = {
     is_low_risk_cr_eu_real: boolean;
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
+    show_eu_related_content: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+};
+
+type TModuleStore = {
+    cfd: {
+        setMT5TradeAccount: (arg: any) => void;
+        toggleCFDVerificationModal: () => void;
+        setJurisdictionSelectedShortcode: (shortcode: string) => void;
+        setAccountType: (account_type: { category: string; type?: string }) => void;
+        dxtrade_tokens: {
+            demo: string;
+            real: string;
+        };
+    };
 };
 
 export type TRootStore = {
@@ -265,7 +283,7 @@ export type TRootStore = {
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: Record<string, any>;
+    modules: TModuleStore;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

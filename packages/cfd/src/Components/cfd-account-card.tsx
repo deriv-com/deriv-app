@@ -4,8 +4,6 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from '../Stores/connect';
-import RootStore from '../Stores/index';
 import { CFDAccountCopy } from './cfd-account-copy';
 import { getDXTradeWebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import {
@@ -17,6 +15,7 @@ import {
     TTradingPlatformAccounts,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { useStore, observer } from '@deriv/stores';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -170,7 +169,6 @@ const CFDAccountCardComponent = ({
     button_label,
     commission_message,
     descriptor,
-    dxtrade_tokens,
     existing_accounts_data,
     has_banner,
     has_cfd_account_error,
@@ -178,32 +176,37 @@ const CFDAccountCardComponent = ({
     is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
-    is_eu,
     is_logged_in,
     is_virtual,
-    isEligibleForMoreDemoMt5Svg,
-    isEligibleForMoreRealMt5,
     onClickFund,
     onPasswordManager,
     onSelectAccount,
     platform,
-    setAccountType,
-    setJurisdictionSelectedShortcode,
-    setIsAcuityModalOpen,
-    setMT5TradeAccount,
     specs,
     title,
     toggleAccountsDialog,
-    toggleCFDVerificationModal,
     toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     type,
-    updateAccountStatus,
     real_account_creation_unlock_date,
     setShouldShowCooldownModal,
-    setAppstorePlatform,
-    show_eu_related_content,
 }: TCFDAccountCard) => {
+    const {
+        modules: {
+            cfd: {
+                dxtrade_tokens,
+                setAccountType,
+                setJurisdictionSelectedShortcode,
+                setMT5TradeAccount,
+                toggleCFDVerificationModal,
+            },
+        },
+        ui: { setIsAcuityModalOpen },
+        common: { setAppstorePlatform },
+        traders_hub: { show_eu_related_content },
+        client: { updateAccountStatus, isEligibleForMoreRealMt5, isEligibleForMoreDemoMt5Svg },
+    } = useStore();
+
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
 
     const should_show_extra_add_account_button =
@@ -759,18 +762,6 @@ const CFDAccountCardComponent = ({
     );
 };
 
-const CFDAccountCard = connect(({ modules: { cfd }, client, ui, common, traders_hub }: RootStore) => ({
-    dxtrade_tokens: cfd.dxtrade_tokens,
-    isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
-    isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
-    setAccountType: cfd.setAccountType,
-    setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
-    setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
-    setMT5TradeAccount: cfd.setMT5TradeAccount,
-    setAppstorePlatform: common.setAppstorePlatform,
-    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
-    updateAccountStatus: client.updateAccountStatus,
-    show_eu_related_content: traders_hub.show_eu_related_content,
-}))(CFDAccountCardComponent);
+const CFDAccountCard = observer(CFDAccountCardComponent);
 
 export { CFDAccountCard };

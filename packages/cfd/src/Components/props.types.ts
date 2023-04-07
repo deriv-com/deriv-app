@@ -74,13 +74,7 @@ export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
-    dxtrade_tokens: {
-        demo: string;
-        real: string;
-    };
     is_hovered?: boolean;
-    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
-    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
     existing_accounts_data?: TExistingData;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
@@ -109,16 +103,8 @@ export type TCFDAccountCard = {
     toggleAccountsDialog?: (arg?: boolean) => void;
     toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
-    setMT5TradeAccount: (arg: any) => void;
-    toggleCFDVerificationModal: () => void;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    setAccountType: (account_type: { category: string; type?: string }) => void;
-    setIsAcuityModalOpen: (value: boolean) => void;
-    updateAccountStatus: () => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
-    setAppstorePlatform: (value: string) => void;
-    show_eu_related_content: boolean;
 };
 
 export type TTradingPlatformAccounts = {

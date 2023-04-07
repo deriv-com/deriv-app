@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
@@ -30,7 +30,7 @@ const AssetSummary = observer(() => {
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
 
-    const getTotalBalance = () => {
+    const totalBalance = useMemo(() => {
         if (selected_account_type === 'real') {
             return {
                 balance: platform_real_balance.balance + cfd_real_balance.balance * cfd_real_rate,
@@ -42,7 +42,17 @@ const AssetSummary = observer(() => {
             balance: platform_demo_account.balance + cfd_demo_balance.balance * cfd_demo_rate,
             currency: platform_demo_account.currency,
         };
-    };
+    }, [
+        cfd_demo_balance.balance,
+        cfd_demo_rate,
+        cfd_real_balance.balance,
+        cfd_real_rate,
+        platform_demo_account.balance,
+        platform_demo_account.currency,
+        platform_real_balance.balance,
+        platform_real_balance.currency,
+        selected_account_type,
+    ]);
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;
@@ -75,8 +85,8 @@ const AssetSummary = observer(() => {
                         is_bubble_hover_enabled
                     >
                         <BalanceText
-                            currency={getTotalBalance().currency || default_currency}
-                            balance={getTotalBalance().balance}
+                            currency={totalBalance.currency || default_currency}
+                            balance={totalBalance.balance}
                             underline_style='dotted'
                         />
                     </Popover>

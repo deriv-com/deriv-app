@@ -189,7 +189,6 @@ const mock = (): TRootStore => {
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
             is_crypto: false,
-            obj_total_balance: { balance: 0, currency: 'USD' },
             dxtrade_accounts_list: [],
             default_currency: 'USD',
         },

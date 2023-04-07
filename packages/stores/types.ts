@@ -174,7 +174,6 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
-    obj_total_balance: any;
     dxtrade_accounts_list: any;
     default_currency: string;
 };

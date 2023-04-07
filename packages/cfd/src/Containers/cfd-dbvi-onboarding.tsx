@@ -63,7 +63,7 @@ const CFDDbviOnboarding = ({
 
             if (get_account_status?.authentication) {
                 const {
-                    // poa_resubmit_for_labuan,
+                    poa_resubmit_for_labuan,
                     poi_acknowledged_for_vanuatu_maltainvest,
                     poi_acknowledged_for_bvi_labuan,
                     poa_acknowledged,
@@ -78,7 +78,9 @@ const CFDDbviOnboarding = ({
                     setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
                 } else if (jurisdiction_selected_shortcode === 'labuan') {
                     setShowSubmittedModal(
-                        poi_acknowledged_for_vanuatu_maltainvest && has_submitted_cfd_personal_details
+                        poi_acknowledged_for_vanuatu_maltainvest &&
+                            has_submitted_cfd_personal_details &&
+                            !poa_resubmit_for_labuan
                     );
                 } else
                     setShowSubmittedModal(

@@ -230,6 +230,8 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
     const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
     const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
 
+    const is_authenticated_with_idv_photoid = account_status.status?.includes('authenticated_with_idv_photoid');
+
     const acknowledged_status = ['pending', 'verified'];
     const failed_cases = ['rejected', 'expired', 'suspected'];
 
@@ -297,6 +299,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
     const poi_resubmit_for_bvi_labuan =
         !poi_pending_for_bvi_labuan && !poi_not_submitted_for_bvi_labuan && !poi_verified_for_bvi_labuan;
     const poi_poa_verified_for_bvi_labuan = poi_verified_for_bvi_labuan && poa_verified;
+    const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
 
     return {
         poa_status,
@@ -327,6 +330,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
         poi_resubmit_for_vanuatu_maltainvest,
         poi_resubmit_for_bvi_labuan,
         poa_pending,
-        // poa_resubmit_for_labuan,
+        poa_resubmit_for_labuan,
     };
 };

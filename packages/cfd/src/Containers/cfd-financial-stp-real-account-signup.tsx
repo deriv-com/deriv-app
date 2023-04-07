@@ -71,7 +71,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const state_index = step;
     let is_mounted = React.useRef(true).current;
 
-    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan } = getAuthenticationStatusInfo(account_status);
+    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan, poa_resubmit_for_labuan } =
+        getAuthenticationStatusInfo(account_status);
 
     const poi_config: TItemsState = {
         body: CFDPOI,
@@ -128,7 +129,10 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     let should_show_poa = false;
 
-    if (jurisdiction_selected_shortcode === 'labuan' && account_status.risk_classification === 'high') {
+    if (
+        jurisdiction_selected_shortcode === 'labuan' &&
+        (account_status.risk_classification === 'high' || poa_resubmit_for_labuan)
+    ) {
         should_show_poa = true;
     } else {
         should_show_poa = !(

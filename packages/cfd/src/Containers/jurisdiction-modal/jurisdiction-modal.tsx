@@ -40,7 +40,7 @@ const JurisdictionModal = ({
         poi_acknowledged_for_bvi_labuan,
         poi_acknowledged_for_vanuatu_maltainvest,
         poa_acknowledged,
-        // poa_resubmit_for_labuan,
+        poa_resubmit_for_labuan,
         need_poa_resubmission,
     } = getAuthenticationStatusInfo(account_status);
 
@@ -149,7 +149,7 @@ const JurisdictionModal = ({
                 toggleCFDVerificationModal();
             }
         } else if (is_labuan_selected) {
-            if (poi_acknowledged_for_bvi_labuan && has_submitted_cfd_personal_details) {
+            if (poi_acknowledged_for_bvi_labuan && has_submitted_cfd_personal_details && !poa_resubmit_for_labuan) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();

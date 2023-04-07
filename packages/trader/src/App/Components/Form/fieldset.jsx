@@ -9,9 +9,9 @@ const Fieldset = ({
     header,
     header_tooltip,
     is_center,
+    is_tooltip_disabled,
     onMouseEnter,
     onMouseLeave,
-    is_tooltip_disabled,
 }) => {
     const fieldset_header_class = classNames('trade-container__fieldset-header', {
         'center-text': is_center,

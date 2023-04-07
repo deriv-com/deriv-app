@@ -13,10 +13,8 @@ type TDatePickerOnChangeEvent = {
     duration?: number | null | string;
     target?: { name: string; value: number | string | moment.Moment | null };
 };
-export type TDatePicker = Omit<
-    React.ComponentProps<typeof Native> &
-        React.ComponentProps<typeof Input> &
-        React.ComponentProps<typeof Calendar>,
+type TDatePicker = Omit<
+    React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,
     'value'
 > & {
     mode: string;
@@ -184,14 +182,11 @@ const DatePicker = React.memo((props: TDatePicker) => {
         return mode === 'duration' ? new_duration : calendar_value;
     };
 
-    const getInputValue = (): string | number => (mode === 'duration' ? (duration ? duration : 0) : date);
+    const getInputValue = (): string | number => (mode === 'duration' ? duration || 0 : date);
 
-    const getCalendarValue = ((new_date: string | null): string | null => {
+    const getCalendarValue = (new_date: string | null): string | null => {
         if (!new_date) return isMobile() ? null : toMoment(start_date || max_date).format(date_format);
         return convertDateFormat(new_date, display_format, date_format);
-    }) as {
-        (new_date: string): string;
-        (new_date: string | null): string | null;
     };
 
     const common_props = {

@@ -65,7 +65,11 @@ const DatePickerCalendar = React.forwardRef<HTMLDivElement, TDatePickerCalendarP
         useBlockScroll(portal_id && is_datepicker_visible ? parent_ref : null);
 
         if (portal_id) {
-            return ReactDOM.createPortal(el_calendar, document.getElementById(portal_id) as HTMLElement);
+            const portal = document.getElementById(portal_id);
+
+            if (portal) {
+                return ReactDOM.createPortal(el_calendar, portal);
+            }
         }
 
         return el_calendar;

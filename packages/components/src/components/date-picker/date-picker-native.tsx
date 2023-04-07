@@ -5,7 +5,7 @@ import Icon from '../icon';
 import Text from '../text';
 
 type TDatePickerNativeProps = Omit<React.HTMLAttributes<HTMLInputElement>, 'onSelect'> & {
-    value: string;
+    value: string | null;
     label: string;
     placeholder: string;
     max_date: moment.Moment;
@@ -19,7 +19,7 @@ type TDatePickerNativeProps = Omit<React.HTMLAttributes<HTMLInputElement>, 'onSe
     onSelect: (selected_date: string) => void;
     onBlur: React.FocusEventHandler<HTMLInputElement>;
     onFocus: React.FocusEventHandler<HTMLInputElement>;
-}
+};
 
 const Native = ({
     id,
@@ -42,17 +42,17 @@ const Native = ({
     const input_ref = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
-        if (input_ref.current) input_ref.current.value = value;
+        if (input_ref.current && value !== null) input_ref.current.value = value;
     }, [value]);
 
-    const handleFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    const handleFocus: React.FocusEventHandler<HTMLInputElement> = e => {
         setIsFocused(true);
         if (typeof onFocus === 'function') {
             onFocus(e);
         }
     };
 
-    const handleBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    const handleBlur: React.FocusEventHandler<HTMLInputElement> = e => {
         setIsFocused(false);
         if (typeof onBlur === 'function') {
             onBlur(e);

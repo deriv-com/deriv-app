@@ -288,6 +288,7 @@ type TModuleStore = {
             demo: string;
             real: string;
         };
+        mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
     };
 };
 

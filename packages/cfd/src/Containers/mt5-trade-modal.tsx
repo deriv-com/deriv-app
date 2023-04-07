@@ -1,15 +1,11 @@
 import React from 'react';
 import { DesktopWrapper, Div100vhContainer, Modal, MobileWrapper, PageOverlay, UILoader } from '@deriv/components';
-import { connect } from '../Stores/connect';
-import RootStore from '../Stores/index';
 import { localize } from '@deriv/translations';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { TCFDDashboardContainer } from '../Components/props.types';
 import DMT5TradeModal from './dmt5-trade-modal';
 import DerivXTradeModal from './derivx-trade-modal';
+import { observer, useStore } from '@deriv/stores';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
     is_eu_user: boolean;
     is_open: boolean;
     onPasswordManager: (
@@ -20,23 +16,18 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    platform: 'mt5' | 'dxtrade';
-    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
-    show_eu_related_content: boolean;
 };
 
-const MT5TradeModal = ({
-    mt5_trade_account,
-    is_eu_user,
-    is_open,
-    onPasswordManager,
-    toggleModal,
-    dxtrade_tokens,
-    platform,
-    is_demo,
-    show_eu_related_content,
-}: TMT5TradeModalProps) => {
+const MT5TradeModal = ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TMT5TradeModalProps) => {
+    const {
+        modules: {
+            cfd: { dxtrade_tokens, mt5_trade_account },
+        },
+        traders_hub: { show_eu_related_content },
+        common: { platform },
+    } = useStore();
+
     const CFDTradeModal = () => {
         if (platform === 'mt5') {
             return (
@@ -92,9 +83,4 @@ const MT5TradeModal = ({
     );
 };
 
-export default connect(({ modules: { cfd }, modules, common, traders_hub }: RootStore) => ({
-    dxtrade_tokens: cfd.dxtrade_tokens,
-    platform: common.platform,
-    mt5_trade_account: modules.cfd.mt5_trade_account,
-    show_eu_related_content: traders_hub.show_eu_related_content,
-}))(MT5TradeModal);
+export default observer(MT5TradeModal);

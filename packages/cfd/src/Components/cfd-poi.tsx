@@ -49,7 +49,7 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
         notifications: { refreshNotifications },
     } = useStore();
 
-    const store_state = {
+    const poi_props = {
         account_status,
         fetchResidenceList,
         is_switching,
@@ -62,6 +62,7 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
         routeBackInApp,
         app_routing_history,
         refreshNotifications,
+        ...props,
     };
 
     const [poi_state, setPOIState] = React.useState<string>('none');
@@ -75,8 +76,7 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
     };
     return (
         <ProofOfIdentityContainerForMt5
-            {...props}
-            {...store_state}
+            {...poi_props}
             height={height}
             is_from_external={true}
             onStateChange={(status: string) => onStateChange(status)}

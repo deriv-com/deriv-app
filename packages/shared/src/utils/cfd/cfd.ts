@@ -10,6 +10,7 @@ const CFD_text: { [key: string]: string } = {
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
+    derivez: 'DerivEz',
     synthetic: 'Derived',
     synthetic_bvi: 'Derived BVI',
     synthetic_svg: 'Derived SVG',
@@ -183,7 +184,9 @@ export const getAccountListKey = (account: TAccount, platform: TPlatform, shortc
         sub_account_type: account.sub_account_type,
         platform,
         shortcode,
-    })}@${platform === CFD_PLATFORMS.DXTRADE ? account.market_type : account.server}`;
+    })}@${
+        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.DERIVEZ ? account.market_type : account.server
+    }`;
 };
 
 export const getCFDPlatformLabel = (platform: TPlatform) => {
@@ -192,6 +195,8 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
             return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
+        case CFD_PLATFORMS.DERIVEZ:
+            return 'Deriv Ez';
         default:
             return '';
     }

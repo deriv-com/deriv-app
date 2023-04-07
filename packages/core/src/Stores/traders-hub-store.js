@@ -112,6 +112,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.is_switching,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
+                this.root_store.client.derivez_accounts_list,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
             ],
@@ -159,6 +160,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.obj_total_balance,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
+                this.root_store.client.derivez_accounts_list,
                 this.root_store.accounts,
                 this.selected_account_type,
                 this.selected_region,
@@ -447,7 +449,7 @@ export default class TradersHubStore extends BaseStore {
                     return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
                 if (platform === CFD_PLATFORMS.DERIVEZ && market_type === 'all') {
-                    return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
+                    return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`); //true:get, false:multi-action
                 }
                 if (
                     platform === CFD_PLATFORMS.MT5 &&
@@ -519,10 +521,12 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
 
-        if (!CFD_PLATFORMS.DERIVEZ) {
+        if (platform === CFD_PLATFORMS.DERIVEZ) {
+            createCFDAccount({ ...account_type, platform });
+        } else {
             enableCFDPasswordModal();
+            createCFDAccount({ ...account_type, platform });
         }
-        createCFDAccount({ ...account_type, platform });
     }
 
     openRealAccount(account_type, platform) {
@@ -685,7 +689,7 @@ export default class TradersHubStore extends BaseStore {
         runInAction(() => {
             this.is_balance_calculating = true;
         });
-        const { accounts, dxtrade_accounts_list, mt5_login_list } = this.root_store.client;
+        const { accounts, dxtrade_accounts_list, mt5_login_list, derivez_accounts_list } = this.root_store.client;
 
         const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
         const platform_demo_account = account_list.find(account => account.is_virtual);
@@ -714,6 +718,10 @@ export default class TradersHubStore extends BaseStore {
         }
         if (Array.isArray(dxtrade_accounts_list)) {
             cfd_accounts = [...cfd_accounts, ...dxtrade_accounts_list];
+        }
+
+        if (Array.isArray(derivez_accounts_list)) {
+            cfd_accounts = [...cfd_accounts, ...derivez_accounts_list];
         }
 
         const cfd_real_accounts = cfd_accounts.filter(

@@ -152,6 +152,13 @@ export default class CFDStore extends BaseStore {
             };
         });
 
+        this.root_store.client.derivez_accounts_list.forEach(account => {
+            // e.g. derivez.real.financial_stp
+            list[getAccountListKey(account, CFD_PLATFORMS.DERIVEZ)] = {
+                ...account,
+            };
+        });
+
         return list;
     }
 
@@ -571,6 +578,15 @@ export default class CFDStore extends BaseStore {
 
                     new_balance = this.root_store.client.mt5_login_list.find(
                         item => item.login === this.current_account.login
+                    )?.balance;
+                    break;
+                }
+                case CFD_PLATFORMS.DERIVEZ: {
+                    await WS.authorized
+                        .tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ)
+                        .then(this.root_store.client.responseTradingPlatformAccountsList);
+                    new_balance = this.root_store.client.derivez_accounts_list.find(
+                        item => item.account_id === this.current_account.account_id
                     )?.balance;
                     break;
                 }

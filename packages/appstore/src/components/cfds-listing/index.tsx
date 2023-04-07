@@ -126,9 +126,7 @@ const CFDsListing = () => {
                     </Text>
                 </div>
             )}
-
             <AddDerivAccount />
-
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold'>
                     {localize('Deriv MT5')}
@@ -208,7 +206,6 @@ const CFDsListing = () => {
                     <hr className='divider' />
                 </div>
             )}
-
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
                     <Text line_height='m' weight='bold'>
@@ -279,7 +276,7 @@ const CFDsListing = () => {
             )}
 
             {is_landing_company_loaded ? (
-                available_derivez_accounts?.map((account: AvailableAccount) => {
+                available_derivez_accounts.map((account: any) => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
                     return has_existing_accounts ? (
@@ -339,6 +336,9 @@ const CFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
+            {
+                //Ending CTrader
+            }
         </ListingContainer>
     );
 };

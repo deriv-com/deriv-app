@@ -54,4 +54,34 @@
             }
         }
     }
+
+    &__upgrading-banner {
+        height: 182px;
+
+        @include mobile {
+            height: 142px;
+        }
+
+        &-description {
+            width: 45%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: baseline;
+
+            @include mobile {
+                width: 70%;
+            }
+        }
+
+        &-button {
+            margin-top: 0.8rem;
+            padding-inline: 6.7rem;
+
+            @include mobile {
+                padding-inline: 1.6rem;
+            }
+        }
+    }
 }

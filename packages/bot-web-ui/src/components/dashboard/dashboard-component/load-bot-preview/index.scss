@@ -276,6 +276,10 @@
             }
 
             & .dc-text {
+                &:hover {
+                    cursor: pointer;
+                }
+
                 @include mobile {
                     width: unset;
                     font-size: var(--text-size-xxs);

@@ -16,8 +16,8 @@ import {
 } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
-    const { traders_hub, client, common, exchange_rates } = useStore();
-    const { selected_account_type, is_eu_user, no_CR_account, no_MF_account, updateExchangeRates } = traders_hub;
+    const { traders_hub, client } = useStore();
+    const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency } = client;
 
     const cfd_real_rate = useCurrencyExcahngeRate(default_currency);
@@ -30,16 +30,18 @@ const AssetSummary = observer(() => {
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
 
-    React.useEffect(() => {
-        updateExchangeRates(exchange_rates?.data);
-    }, [exchange_rates.data]);
-
     const getTotalBalance = () => {
         if (selected_account_type === 'real') {
-            return platform_real_balance + cfd_real_balance * cfd_real_rate;
+            return {
+                balance: platform_real_balance.balance + cfd_real_balance.balance * cfd_real_rate,
+                currency: platform_real_balance.currency,
+            };
         }
 
-        return platform_demo_account.balance + cfd_demo_balance * cfd_demo_rate;
+        return {
+            balance: platform_demo_account.balance + cfd_demo_balance.balance * cfd_demo_rate,
+            currency: platform_demo_account.currency,
+        };
     };
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
@@ -72,7 +74,11 @@ const AssetSummary = observer(() => {
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >
-                        <BalanceText currency={default_currency} balance={getTotalBalance()} underline_style='dotted' />
+                        <BalanceText
+                            currency={getTotalBalance().currency || default_currency}
+                            balance={getTotalBalance().balance}
+                            underline_style='dotted'
+                        />
                     </Popover>
                 </React.Fragment>
             ) : null}

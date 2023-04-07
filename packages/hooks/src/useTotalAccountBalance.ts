@@ -2,11 +2,11 @@ import { useStore } from '@deriv/stores';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const useTotalAccountBalance = (accounts: DetailsOfEachMT5Loginid[]) => {
-    const { client, exchange_rates } = useStore();
-    const { default_currency } = client;
+    const { exchange_rates } = useStore();
+    const currency = accounts[0]?.currency;
 
     const total_balance = accounts.reduce((total, account) => {
-        const base_rate = exchange_rates?.data?.rates?.[default_currency] || 1;
+        const base_rate = exchange_rates?.data?.rates?.[currency] || 1;
         const rate = exchange_rates?.data?.rates?.[account.currency!] || 1;
 
         const exchange_rate = base_rate / rate;
@@ -15,7 +15,10 @@ const useTotalAccountBalance = (accounts: DetailsOfEachMT5Loginid[]) => {
         return total;
     }, 0);
 
-    return total_balance;
+    return {
+        balance: total_balance,
+        currency,
+    };
 };
 
 export default useTotalAccountBalance;

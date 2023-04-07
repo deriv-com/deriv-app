@@ -1,6 +1,6 @@
 import { Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
-import { jurisdiction_verification_contents } from 'Constants/jurisdiction-contents/jurisdiction-verification-contents';
+import { jurisdictionVerificationContents } from 'Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionCardBackProps } from 'Containers/props.types';
 import React from 'react';
 
@@ -17,7 +17,7 @@ const JurisdictionCardBack = ({ card_classname, toggleCardFlip, verification_doc
             />
         </div>
         <Text as='div' size='xxs'>
-            {jurisdiction_verification_contents.short_description}
+            {jurisdictionVerificationContents().short_description}
         </Text>
         <div className={classNames('cfd-card-back-section-items-container', 'cfd-card-back-section-main')}>
             {verification_docs?.map(verification_item => (
@@ -25,19 +25,19 @@ const JurisdictionCardBack = ({ card_classname, toggleCardFlip, verification_doc
                     <div>
                         <Icon
                             icon={
-                                jurisdiction_verification_contents.required_verification_docs[verification_item]?.icon
+                                jurisdictionVerificationContents().required_verification_docs[verification_item]?.icon
                             }
                         />
                     </div>
                     <Text as='span' size='xxs'>
-                        {jurisdiction_verification_contents.required_verification_docs[verification_item]?.text}
+                        {jurisdictionVerificationContents().required_verification_docs[verification_item]?.text}
                     </Text>
                 </div>
             ))}
         </div>
         <div className='cfd-card-section-divider' />
         <div className='cfd-card-back-section-items-container'>
-            {jurisdiction_verification_contents.status_references.map(status_item => (
+            {jurisdictionVerificationContents().status_references.map(status_item => (
                 <div className='cfd-card-back-section-items-sub-container' key={status_item.color}>
                     <div>
                         <Icon icon={status_item.icon} />

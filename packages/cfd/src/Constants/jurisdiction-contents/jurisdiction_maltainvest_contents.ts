@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { TJurisdictionCardItems } from 'Components/props.types';
 
-export const jurisdiction_maltainvest_contents: TJurisdictionCardItems = {
+export const jurisdictionMaltainvestContents = (): TJurisdictionCardItems => ({
     is_over_header_available: false,
     header: localize('Malta'),
     synthetic_contents: [
@@ -92,4 +92,4 @@ export const jurisdiction_maltainvest_contents: TJurisdictionCardItems = {
     ],
     synthetic_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
     financial_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
-};
+});

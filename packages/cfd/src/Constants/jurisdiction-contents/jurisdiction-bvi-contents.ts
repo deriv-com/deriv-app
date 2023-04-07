@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { TJurisdictionCardItems } from 'Components/props.types';
 
-export const jurisdiction_bvi_contents: TJurisdictionCardItems = {
+export const jurisdictionBviContents = (): TJurisdictionCardItems => ({
     is_over_header_available: false,
     header: localize('British Virgin Islands'),
     synthetic_contents: [
@@ -87,4 +87,4 @@ export const jurisdiction_bvi_contents: TJurisdictionCardItems = {
     ],
     synthetic_verification_docs: ['document_number', 'name_and_address'],
     financial_verification_docs: ['document_number', 'name_and_address'],
-};
+});

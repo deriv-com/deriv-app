@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { TJurisdictionCardItems } from 'Components/props.types';
 
-export const jurisdiction_svg_contents: TJurisdictionCardItems = {
+export const jurisdictionSvgContents = (): TJurisdictionCardItems => ({
     is_over_header_available: false,
     header: localize('St. Vincent & Grenadines'),
     synthetic_contents: [
@@ -79,4 +79,4 @@ export const jurisdiction_svg_contents: TJurisdictionCardItems = {
             description: `${localize('Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
         },
     ],
-};
+});

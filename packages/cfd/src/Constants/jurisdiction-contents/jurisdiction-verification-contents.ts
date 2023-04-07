@@ -7,7 +7,7 @@ type TJurisdictionVerificationContents = {
     status_references: Array<TJurisdictionVerificationStatus>;
 };
 
-export const jurisdiction_verification_contents: TJurisdictionVerificationContents = {
+export const jurisdictionVerificationContents = (): TJurisdictionVerificationContents => ({
     short_description: `${localize('We need you to submit these in order to get this account:')}`,
     required_verification_docs: {
         document_number: {
@@ -42,4 +42,4 @@ export const jurisdiction_verification_contents: TJurisdictionVerificationConten
         },
         { icon: 'IcVerificationStatusGreen', text: `${localize('Your document is verified.')}`, color: 'green' },
     ],
-};
+});

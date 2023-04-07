@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { TJurisdictionCardItems } from 'Components/props.types';
 
-export const jurisdiction_labuan_contents: TJurisdictionCardItems = {
+export const jurisdictionLabuanContents = (): TJurisdictionCardItems => ({
     over_header: localize('Straight-through processing'),
     is_over_header_available: true,
     header: localize('Labuan'),
@@ -71,4 +71,4 @@ export const jurisdiction_labuan_contents: TJurisdictionCardItems = {
     ],
     synthetic_verification_docs: ['document_number', 'name_and_address'],
     financial_verification_docs: ['document_number', 'name_and_address'],
-};
+});

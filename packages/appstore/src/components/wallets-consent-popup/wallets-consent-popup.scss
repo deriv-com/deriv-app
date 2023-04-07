@@ -32,8 +32,7 @@
     }
 
     &--info-section {
-        // replace with css variables
-        background: #f1f6ff;
+        background-color: var(--transparent-info);
         border-radius: 0.8rem;
         padding: 1.6rem;
         margin-bottom: 2.4rem;
@@ -51,16 +50,15 @@
             gap: 0.8rem;
         }
     }
-
+    // This won't be needed once everything is merged
     &--footer {
-        // replace with css variables
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
         gap: 0.8rem;
         padding: 1.6rem;
-        box-shadow: inset 0px 2px 0px #f2f3f4;
+        box-shadow: inset 0px 2px 0px var(--general-section-1);
 
         &__btn {
             width: 50%;

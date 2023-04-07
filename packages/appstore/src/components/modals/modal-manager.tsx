@@ -29,6 +29,7 @@ const ModalManager = () => {
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
     const {
+        is_high_risk,
         is_logged_in,
         is_eu,
         is_eu_country,
@@ -103,7 +104,8 @@ const ModalManager = () => {
         enableCFDPasswordModal();
     };
 
-    const [show_test_modal, setShowTestModal] = React.useState(true);
+    // Remove this once everything is merged
+    const [show_test_modal, setShowTestModal] = React.useState(false);
 
     const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
         const current_list_keys = Object.keys(current_list);
@@ -129,7 +131,13 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
-            <WalletsConsentPopup show_test_modal={show_test_modal} setShowTestModal={setShowTestModal} />
+            {/* Remove this once everything is merged */}
+            <WalletsConsentPopup
+                show_test_modal={true}
+                setShowTestModal={setShowTestModal}
+                is_eu={is_eu}
+                is_high_risk={is_high_risk}
+            />
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />

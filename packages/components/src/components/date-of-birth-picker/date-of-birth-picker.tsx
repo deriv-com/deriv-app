@@ -7,12 +7,12 @@ const DateOfBirthPicker = (
 ) => {
     return (
         <DatePicker
-            {...props}
             calendar_view='year'
             readOnly
             display_format='DD-MM-YYYY'
             max_date={toMoment().subtract(18, 'years')}
             min_date={toMoment().subtract(100, 'years')}
+            {...props}
         />
     );
 };

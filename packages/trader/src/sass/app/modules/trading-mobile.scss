@@ -79,6 +79,9 @@
                 padding: 0;
                 font-weight: bold;
                 border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
                 &:focus,
                 &:active,
@@ -112,14 +115,25 @@
             }
         }
     }
-    .barrier_1,
-    .barrier_2 {
-        &__widget {
+    .barrier__modal {
+        &-text {
+            margin: 0.5rem 2.4rem 1.6rem;
+        }
+        &-price {
+            margin: 0rem 2.4rem 1.6rem;
+        }
+        &-input {
             border: 1px solid var(--general-active);
             border-radius: 4px;
             margin-inline: 1.6rem;
-            &:has(input:active, input:focus) {
+            &:has(.input:active, .input:focus, .input:hover) {
                 border: 1px solid var(--border-active);
+            }
+            &:has(.input--error) {
+                border: 1px solid var(--status-danger) !important;
+                .input--error {
+                    border: none !important;
+                }
             }
         }
     }

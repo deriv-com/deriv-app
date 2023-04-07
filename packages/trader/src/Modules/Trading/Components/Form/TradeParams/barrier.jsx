@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal } from '@deriv/components';
+import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
@@ -13,16 +13,16 @@ const Barrier = ({
     barrier_count,
     barrier_pipsize,
     current_focus,
+    // proposal_info,
     duration_unit,
     is_minimized,
     is_absolute_only,
     onChange,
-    // proposal_info,
     setCurrentFocus,
     validation_errors,
 }) => {
     const [show_modal, setShowModal] = React.useState(false);
-
+    // console.log('proposal_info', proposal_info);
     //TODO: Check if we can exctract current price and barier  price
 
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
@@ -120,14 +120,17 @@ const Barrier = ({
                     width='calc(100vw - 32px)'
                     title={localize('Barrier')}
                 >
-                    {/* {current_price} */}
+                    <Text className='barrier__modal-text' as='div' color='less-prominent' size='xs'>
+                        {localize('Current Price')}
+                    </Text>
                     <LabeledQuantityInputMobile
+                        id='dt_barrier_input'
                         input_label={localize('Barrier')}
                         type='number'
                         name={barrier_count === 1 ? 'barrier_1' : 'barrier_2'}
+                        additional_class='barrier__modal-input'
                         value={barrier_count === 1 ? barrier_1 : barrier_2}
                         className={`barrier__fields-${input_class}`}
-                        //Check those classes
                         classNameInput={classNames(
                             'barrier__fields-input',
                             'barrier__fields-barriers-input',
@@ -136,11 +139,17 @@ const Barrier = ({
                         current_focus={current_focus}
                         format={format}
                         onChange={onChange}
+                        error_messages={
+                            (barrier_count === 1 ? validation_errors.barrier_1 : validation_errors.barrier_2) || []
+                        }
+                        error_message_alignment='top'
                         is_float
                         is_signed
                         setCurrentFocus={setCurrentFocus}
                     />
-                    {/* {barrier_price} */}
+                    <Text className='barrier__modal-price' as='div' color='less-prominent' size='xs'>
+                        {localize('Barrier Price:')}
+                    </Text>
                 </Modal>
                 <LabeledQuantityInputMobile
                     input_label={barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
@@ -158,6 +167,7 @@ const Barrier = ({
                         `barrier__fields-barriers-${input_class}-input`
                     )}
                     current_focus={current_focus}
+                    display_as='div'
                     format={format}
                     onChange={onChange}
                     onClick={onClick}
@@ -183,6 +193,7 @@ const Barrier = ({
                             `barrier__fields-barriers-${input_class}-input`
                         )}
                         current_focus={current_focus}
+                        display_as='div'
                         format={format}
                         onChange={onChange}
                         onClick={onClick}

@@ -20,6 +20,7 @@ const InputField = ({
     current_focus,
     data_tip,
     data_value,
+    display_as,
     decimal_point_change,
     error_messages,
     error_message_alignment,
@@ -221,7 +222,11 @@ const InputField = ({
 
     const is_increment_input = is_incrementable && (type === 'number' || type === 'tel');
 
-    const input = (
+    const input = display_as ? (
+        <Text className={classNames('input', classNameInput)} onClick={onClick} as={display_as}>
+            {display_value}
+        </Text>
+    ) : (
         <Input
             ariaLabel={ariaLabel}
             changeValue={changeValue}
@@ -344,6 +349,7 @@ InputField.propTypes = {
     classNameWrapper: PropTypes.string, // CSS class for the component wrapper
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    display_as: PropTypes.string,
     decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,

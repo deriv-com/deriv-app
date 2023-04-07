@@ -42,7 +42,7 @@ const Native = ({
     const input_ref = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
-        if (input_ref.current && value !== null) input_ref.current.value = value;
+        if (input_ref.current) input_ref.current.value = value || '';
     }, [value]);
 
     const handleFocus: React.FocusEventHandler<HTMLInputElement> = e => {

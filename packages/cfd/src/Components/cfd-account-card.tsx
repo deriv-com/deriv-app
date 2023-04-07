@@ -15,6 +15,7 @@ import {
     TCFDAccountCardActionProps,
     TCFDAccountCard,
     TTradingPlatformAccounts,
+    TTradingPlatformAvailableAccount,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
@@ -212,8 +213,10 @@ const CFDAccountCardComponent = ({
         !show_eu_related_content &&
         platform === CFD_PLATFORMS.MT5 &&
         (type.category === 'demo'
-            ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial' | 'all') && !!existing_data
-            : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial' | 'all') && !!existing_data);
+            ? isEligibleForMoreDemoMt5Svg(type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic') &&
+              !!existing_data
+            : isEligibleForMoreRealMt5(type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic') &&
+              !!existing_data);
 
     const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
 

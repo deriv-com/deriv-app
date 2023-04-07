@@ -4,7 +4,7 @@ import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
+import { LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 import { TNewDetailsOfEachMT5Loginid } from '../../types';
@@ -72,7 +72,7 @@ const CFDMT5DemoAccountDisplay = ({
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
-    const openAccountTransferList = (type: 'synthetic' | 'financial' | 'all') => {
+    const openAccountTransferList = (type: TNewDetailsOfEachMT5Loginid['market_type']) => {
         return Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.${type}`)) || '';
     };
 

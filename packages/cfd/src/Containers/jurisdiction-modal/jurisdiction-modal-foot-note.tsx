@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, getMT5Title } from '@deriv/shared';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
 const FooterNote = ({
@@ -13,15 +13,7 @@ const FooterNote = ({
     should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation,
 }: TJurisdictionModalFootNoteProps) => {
-    let account_type_name;
-
-    if (account_type === 'synthetic') {
-        account_type_name = 'Derived';
-    } else if (account_type === 'all') {
-        account_type_name = 'Swap-Free';
-    } else {
-        account_type_name = 'Financial';
-    }
+    const account_type_name = getMT5Title(account_type);
 
     const { poa_pending } = getAuthenticationStatusInfo(account_status);
 

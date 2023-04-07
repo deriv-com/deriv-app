@@ -4,8 +4,7 @@ import { localize } from '@deriv/translations';
 
 let CFD_text_translated: { [key: string]: () => void };
 
-// TODO: add swap_free to this file when ready
-const CFD_text: { [key: string]: string } = {
+export const CFD_text: { [key: string]: string } = {
     dxtrade: 'Deriv X',
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
@@ -26,6 +25,16 @@ const CFD_text: { [key: string]: string } = {
     all_svg: 'Swap-Free SVG',
 } as const;
 
+export const getMT5Title = (account_type: string) => {
+    if (account_type === 'synthetic') {
+        return CFD_text.synthetic;
+    }
+    if (account_type === 'all') {
+        return CFD_text.all;
+    }
+    return CFD_text.financial;
+};
+
 type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
@@ -43,9 +52,20 @@ type TGetCFDAccountKey = TGetAccount & {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
+// dxrade and swap_free both have market_type "all" so check for platform is neccessary
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
-    if (market_type === 'all' && platform !== CFD_PLATFORMS.MT5) {
-        return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
+    if (market_type === 'all') {
+        if (platform === CFD_PLATFORMS.MT5) {
+            // currently we are only supporting SVG for SwapFree
+            switch (shortcode) {
+                case 'svg':
+                    return 'all_svg';
+                default:
+                    return 'all_demo';
+            }
+        } else {
+            return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
+        }
     }
 
     if (market_type === 'gaming' || market_type === 'synthetic') {
@@ -80,15 +100,6 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                 default:
                     return 'financial_demo';
             }
-        }
-    }
-    if (market_type === 'all' && platform === CFD_PLATFORMS.MT5) {
-        // currently we are only supporting SVG for SwapFree
-        switch (shortcode) {
-            case 'svg':
-                return 'all_svg';
-            default:
-                return 'all_demo';
         }
     }
     return undefined;

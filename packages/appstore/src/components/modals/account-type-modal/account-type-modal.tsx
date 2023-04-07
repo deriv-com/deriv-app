@@ -5,29 +5,10 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { useStores } from 'Stores/index';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { TModalContent, TAccountType, TAccountCard, TTradingPlatformAvailableAccount } from './types';
+import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
-
-const derived_account: TAccountType = {
-    title_and_type: localize('Derived'),
-    icon: 'Derived',
-    description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
-};
-
-const financial_account: TAccountType = {
-    title_and_type: localize('Financial'),
-    icon: 'Financial',
-    description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
-};
-
-const swapfree_account: TAccountType = {
-    title_and_type: localize('Swap-Free'),
-    icon: 'SwapFree',
-    description: localize(
-        'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
-    ),
-};
+import { derived_account, financial_account, swapfree_account } from '../../../helpers/account-helper';
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
@@ -133,12 +114,10 @@ const MT5AccountTypeModal = () => {
             case 'Derived':
                 setAccountType({ category: 'real', type: 'synthetic' });
                 break;
-            case 'Financial':
-                setAccountType({ category: 'real', type: 'financial' });
-                break;
             case 'Swap-Free':
                 setAccountType({ category: 'real', type: 'all' });
                 break;
+            case 'Financial':
             default:
                 setAccountType({ category: 'real', type: 'financial' });
                 break;

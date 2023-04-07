@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, getMT5Title } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
@@ -84,16 +84,6 @@ const JurisdictionModal = ({
                 ? available_account.shortcode === 'maltainvest'
                 : available_account.shortcode !== 'maltainvest')
     );
-
-    const getMT5Title = (type: string) => {
-        if (type === 'synthetic') {
-            return 'Derived';
-        }
-        if (type === 'all') {
-            return 'Swap-Free';
-        }
-        return 'Financial';
-    };
 
     const modal_title = show_eu_related_content
         ? localize('Jurisdiction for your Deriv MT5 CFDs account')

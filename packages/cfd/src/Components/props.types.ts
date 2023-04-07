@@ -79,8 +79,10 @@ export type TCFDAccountCard = {
         real: string;
     };
     is_hovered?: boolean;
-    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial' | 'all') => boolean;
-    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial' | 'all') => boolean;
+    isEligibleForMoreDemoMt5Svg: (
+        market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic'
+    ) => boolean;
+    isEligibleForMoreRealMt5: (market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic') => boolean;
     existing_accounts_data?: TExistingData;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;

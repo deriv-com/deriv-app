@@ -110,16 +110,16 @@ export type TJurisdictionCardItems = {
     financial_verification_docs?: TJurisdictionCardItemVerification;
 };
 
-export type TJurisdictionCardBackRequiredDocsItem = {
+export type TJurisdictionVerificationSection = {
     icon: string;
     text: string;
 };
 
 export type TJurisdictionCardBackSectionRequiredDocs = {
-    document_number?: TJurisdictionCardBackRequiredDocsItem;
-    selfie?: TJurisdictionCardBackRequiredDocsItem;
-    identity_document?: TJurisdictionCardBackRequiredDocsItem;
-    name_and_address?: TJurisdictionCardBackRequiredDocsItem;
+    document_number?: TJurisdictionVerificationSection;
+    selfie?: TJurisdictionVerificationSection;
+    identity_document?: TJurisdictionVerificationSection;
+    name_and_address?: TJurisdictionVerificationSection;
 };
 
 type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';

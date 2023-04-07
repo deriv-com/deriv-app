@@ -62,7 +62,5 @@ export const getAccumulatorBarriers = (
 
 export const getBarrierPipSize = (barrier: string) => {
     if (Math.floor(+barrier) === +barrier || barrier.length < 1 || +barrier % 1 === 0 || isNaN(+barrier)) return 0;
-    //if (barrier.length < 1 || isNaN(+barrier)) return 0;
-
     return barrier.toString().split('.')[1]?.length || 0;
 };

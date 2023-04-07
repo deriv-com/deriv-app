@@ -1,16 +1,13 @@
 import { localize } from '@deriv/translations';
-import {
-    TJurisdictionCardBackSectionRequiredDocs,
-    TJurisdictionCardBackSectionStatusReferences,
-} from 'Components/props.types';
+import { TJurisdictionVerificationItems, TJurisdictionVerificationStatus } from 'Components/props.types';
 
-type TJurisdictionCardBackSectionContent = {
+type TJurisdictionVerificationContents = {
     short_description: string;
-    required_verification_docs: TJurisdictionCardBackSectionRequiredDocs;
-    status_references: Array<TJurisdictionCardBackSectionStatusReferences>;
+    required_verification_docs: TJurisdictionVerificationItems;
+    status_references: Array<TJurisdictionVerificationStatus>;
 };
 
-export const jurisdiction_verification_contents: TJurisdictionCardBackSectionContent = {
+export const jurisdiction_verification_contents: TJurisdictionVerificationContents = {
     short_description: `${localize('We need you to submit these in order to get this account:')}`,
     required_verification_docs: {
         document_number: {

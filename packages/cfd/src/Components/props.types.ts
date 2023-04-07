@@ -115,7 +115,7 @@ export type TJurisdictionVerificationSection = {
     text: string;
 };
 
-export type TJurisdictionCardBackSectionRequiredDocs = {
+export type TJurisdictionVerificationItems = {
     document_number?: TJurisdictionVerificationSection;
     selfie?: TJurisdictionVerificationSection;
     identity_document?: TJurisdictionVerificationSection;
@@ -124,7 +124,7 @@ export type TJurisdictionCardBackSectionRequiredDocs = {
 
 type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';
 
-export type TJurisdictionCardBackSectionStatusReferences = {
+export type TJurisdictionVerificationStatus = {
     icon: string;
     text: string;
     color: TJurisdictionVerificationColors;

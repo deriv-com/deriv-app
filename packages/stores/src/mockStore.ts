@@ -261,12 +261,16 @@ const mock = (): TRootStore => {
             toggleShouldShowRealAccountsList: jest.fn(),
             toggleReadyToDepositModal: jest.fn(),
             is_ready_to_deposit_modal_visible: false,
+            is_need_real_account_for_cashier_modal_visible: false,
+            toggleNeedRealAccountForCashierModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
             openModal: jest.fn(),
             content_flag: '',
             is_eu_user: false,
+            is_real: false,
+            selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
         },
         menu: {

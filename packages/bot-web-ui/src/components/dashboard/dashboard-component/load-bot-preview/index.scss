@@ -427,7 +427,9 @@
                 justify-content: flex-end;
 
                 .dc-icon {
-                    cursor: pointer;
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
         }

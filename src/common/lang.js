@@ -12,7 +12,7 @@ const setLanguage = lang => {
 export const getLanguage = () => {
     const parsed_url = parseQueryString().lang || parseQueryString().l;
     const parsed_valid_url =
-        parsed_url.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
+        parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
     const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
     const query_lang = parsed_valid_url ? parsed_valid_url || supported_storage_lang : 'en';
     const is_query_lang_supported = query_lang in supported_languages;

@@ -91,7 +91,8 @@ export type TSelectsFieldNames =
     | 'quick-strategy__type-strategy'
     | 'quick-strategy__symbol'
     | 'quick-strategy__trade-type'
-    | 'quick-strategy__duration-unit';
+    | 'quick-strategy__duration-unit'
+    | '';
 
 export type TInputsFieldNames =
     | 'quick-strategy__duration-value'

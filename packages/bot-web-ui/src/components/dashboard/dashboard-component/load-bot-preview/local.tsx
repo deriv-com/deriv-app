@@ -44,7 +44,6 @@ const LocalComponent = ({
     has_mobile_preview_loaded,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-    // eslint-disable-next-line no-unused-expressions
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const el_ref = React.useRef<HTMLInputElement | null>(null);
     const is_mobile = isMobile();

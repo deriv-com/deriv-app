@@ -50,6 +50,7 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
                     'Fiat2CryptoTransferOverLimit',
                     'Crypto2FiatTransferOverLimit',
                     'Crypto2CryptoTransferOverLimit',
+                    'CryptoLimitAgeVerified',
                 ].includes(error_code)
             ) {
                 setDetails({

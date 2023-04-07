@@ -212,6 +212,7 @@ const mock = (): TRootStore => {
             changeSelectedLanguage: jest.fn(),
             current_language: 'EN',
             is_network_online: false,
+            is_language_changing: false,
         },
         ui: {
             app_contents_scroll_ref: {
@@ -241,12 +242,16 @@ const mock = (): TRootStore => {
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
             is_ready_to_deposit_modal_visible: false,
+            is_need_real_account_for_cashier_modal_visible: false,
+            toggleNeedRealAccountForCashierModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
             openModal: jest.fn(),
             content_flag: '',
             is_eu_user: false,
+            is_real: false,
+            selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
         },
         menu: {

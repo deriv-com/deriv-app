@@ -200,6 +200,7 @@ type TCommonStore = {
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
+    is_language_changing: boolean;
 };
 
 type TUiStore = {
@@ -228,6 +229,8 @@ type TUiStore = {
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     is_ready_to_deposit_modal_visible: boolean;
+    is_need_real_account_for_cashier_modal_visible: boolean;
+    toggleNeedRealAccountForCashierModal: () => void;
 };
 
 type TMenuStore = {
@@ -260,6 +263,8 @@ type TTradersHubStore = {
     is_low_risk_cr_eu_real: boolean;
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
+    is_real: boolean;
+    selectRegion: (region: string) => void;
 };
 
 export type TRootStore = {

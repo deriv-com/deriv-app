@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
-import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
+import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import classNames from 'classnames';
 
 const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_barrier, proposal_info }) => {
@@ -17,7 +17,7 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
         return acc;
     }, []);
     const has_error_or_not_loaded =
-        proposal_info?.ACCU?.has_error || !proposal_info?.ACCU?.id || Object.keys(proposal_info).length === 0;
+        proposal_info?.ACCU?.has_error || !proposal_info?.ACCU?.id || isEmptyObject(proposal_info);
     if (!accumulator_range_list.length) return null;
     return (
         <Fieldset

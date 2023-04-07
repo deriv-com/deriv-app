@@ -110,6 +110,9 @@ const BotBuilder = ({
                                     color: 'var(--text-general)',
                                     padding: '0.6rem',
                                 },
+                                overlay: {
+                                    height: '100%',
+                                },
                                 tooltipContent: {
                                     padding: '0 1rem',
                                 },

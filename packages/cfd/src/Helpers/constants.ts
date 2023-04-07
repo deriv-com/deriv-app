@@ -1,7 +1,25 @@
 import { OSDetect } from '@deriv/shared';
+import { TCFDsPlatformType } from 'Components/props.types';
+
+const platformsText = (platform: TCFDsPlatformType) => {
+    switch (platform) {
+        case 'ctrader':
+            return 'cTrader';
+        case 'derivez':
+            return 'EZ';
+        case 'dxtrade':
+            return 'X';
+        default:
+            return '';
+    }
+};
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
+export const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
+
+export const CTRADER_URL = 'https://ct.deriv.com/';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -46,11 +64,11 @@ const getPlatformCTraderDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
 const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
         case 'ios':
-            return '';
+            return 'a';
         case 'android':
-            return '';
+            return 'a';
         case 'huawei':
-            return '';
+            return 'a';
         default:
             return '';
     }
@@ -105,6 +123,7 @@ export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
     getBrokerName,
+    platformsText,
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
     getPlatformDerivEZDownloadLink,

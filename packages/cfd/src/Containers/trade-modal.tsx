@@ -1,20 +1,17 @@
 import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
-import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
+import {
+    TPasswordBoxProps,
+    TTradingPlatformAccounts,
+    TCFDDashboardContainer,
+    TCFDsPlatformType,
+} from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountDisplay, getCFDPlatformLabel, getCFDAccountKey, isMobile } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDPlatformLabel, getCFDAccountKey, isMobile, capitalizeFirstLetter } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
-import { QRCode } from 'react-qrcode';
-import {
-    getDXTradeWebTerminalLink,
-    getPlatformDXTradeDownloadLink,
-    getPlatformCTraderDownloadLink,
-    getPlatformDerivEZDownloadLink,
-    getPlatformMt5DownloadLink,
-} from '../Helpers/constants';
-
-type TPlatformType = 'dxtrade' | 'derivez' | 'ctrader';
+import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
+import { platformsText, CTRADER_DOWNLOAD_LINK } from '../Helpers/constants';
 
 type TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -29,17 +26,12 @@ type TradeModalProps = {
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
-    platform: TPlatformType;
+    platform: TCFDsPlatformType;
 };
 
 export type TSpecBoxProps = {
     value: string | undefined;
     is_bold?: boolean;
-};
-
-type TDxtradeDesktopDownloadProps = {
-    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
-    is_demo: string;
 };
 
 const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
@@ -91,78 +83,29 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
     </div>
 );
 
-const mobileDownloadLink = (platform: TPlatformType, type: 'ios' | 'android' | 'huawei') => {
-    switch (platform) {
-        case 'dxtrade':
-            return getPlatformDXTradeDownloadLink(type);
-        case 'ctrader':
-            return getPlatformCTraderDownloadLink(type);
-        case 'derivez':
-            return getPlatformDerivEZDownloadLink(type);
-        default:
-            return getPlatformDXTradeDownloadLink(type);
-    }
-};
-
 const getTitle = (market_type: string, is_eu_user: boolean) => {
     if (is_eu_user) localize('MT5 CFDs');
     return market_type;
 };
 
-const DxtradeDesktopDownload = ({ dxtrade_tokens, is_demo }: TDxtradeDesktopDownloadProps) => {
+const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: string) => {
     return (
         <React.Fragment>
-            <a
-                className='cfd-trade-modal__dxtrade-button'
-                href={getDXTradeWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    dxtrade_tokens && dxtrade_tokens[is_demo ? 'demo' : 'real']
-                )}
-                target='_blank'
-                rel='noopener noreferrer'
-            >
-                <Icon className='cfd-trade-modal__dxtrade-button-icon' icon='IcBrandDxtradeWordmark' size={36} />
-                <div className='cfd-trade-modal__dxtrade-button-text'>
-                    <Text color='colored-background' size='xxs' weight='bold'>
-                        <Localize i18n_default_text='Web terminal' />
-                    </Text>
-                </div>
-            </a>
-        </React.Fragment>
-    );
-};
-
-const DerivEZDesktopDownload = () => {
-    return (
-        <React.Fragment>
-            <a className='cfd-trade-modal__dxtrade-button' href={''} target='_blank' rel='noopener noreferrer'>
-                <Icon className='cfd-trade-modal__dxtrade-button-icon' icon='IcBrandDerivEzWordmark' size={36} />
-                <div className='cfd-trade-modal__dxtrade-button-text'>
-                    <Text color='colored-background' size='xxs' weight='bold'>
-                        <Localize i18n_default_text='Web terminal' />
-                    </Text>
-                </div>
-            </a>
-        </React.Fragment>
-    );
-};
-
-const CTraderDesktopDownload = () => {
-    return (
-        <React.Fragment>
-            <a
-                className='cfd-trade-modal__dxtrade-button'
-                href={'https://ct.deriv.com/'}
-                target='_blank'
-                rel='noopener noreferrer'
-            >
-                <Icon className='cfd-trade-modal__dxtrade-button-icon' icon='IcBrandCtraderWordmark' size={36} />
-                <div className='cfd-trade-modal__dxtrade-button-text'>
-                    <Text color='colored-background' size='xxs' weight='bold'>
-                        <Localize i18n_default_text='Web terminal' />
-                    </Text>
-                </div>
-            </a>
+            <Icon
+                icon={platform === 'derivez' ? 'IcBrandDerivEz' : `IcBrand${capitalizeFirstLetter(platform)}`}
+                size={24}
+            />
+            <div className='cfd-trade-modal__desc'>
+                <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
+                    <Localize
+                        i18n_default_text='Deriv {{platform}} {{is_demo}}'
+                        values={{
+                            platform: platformsText(platform),
+                            is_demo: is_demo ? 'Demo' : '',
+                        }}
+                    />
+                </Text>
+            </div>
         </React.Fragment>
     );
 };
@@ -176,68 +119,45 @@ const TradeModal = ({
     is_demo,
     platform,
 }: TradeModalProps) => {
-    const differentQRCodes = (acc_type: TPlatformType) => {
-        if (acc_type === 'dxtrade') {
-            return (
-                <>
-                    <QRCode
-                        value={mobileDownloadLink(acc_type, 'android')}
-                        size={5}
-                        style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
+    const CTraderAndDerivEZDescription = () => {
+        const description = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
+        return (
+            <div className='cfd-trade-modal__login-specs-item'>
+                <Text className='cfd-trade-modal--paragraph'>
+                    <Localize
+                        i18n_default_text='Use your Deriv account email and password to login into the {{ platform }} platform.'
+                        values={{ platform: description }}
                     />
-                    <Text align='center' size='xxs'>
-                        {localize('Scan the QR code to download Deriv X.')}
-                    </Text>
-                </>
-            );
-        } else if (acc_type === 'ctrader') {
-            return (
-                <>
-                    <QRCode
-                        value={mobileDownloadLink(acc_type, 'android')}
-                        size={5}
-                        style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
-                    />
-                    <Text align='center' size='xxs'>
-                        {localize('Scan the QR code to download cTrader.')}
-                    </Text>
-                </>
-            );
-        } else if (acc_type === 'derivez') {
-            return (
-                <>
-                    <QRCode
-                        value={mobileDownloadLink(acc_type, 'android')}
-                        size={5}
-                        style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
-                    />
-                    <Text align='center' size='xxs'>
-                        {localize('Scan the QR code to download Deriv EZ.')}
-                    </Text>
-                </>
-            );
-        }
-        return undefined;
+                </Text>
+            </div>
+        );
     };
-
-    const downloadCenterAppOption = (account_type: TPlatformType) => {
+    const downloadCenterAppOption = (account_type: TCFDsPlatformType) => {
         if (account_type === 'dxtrade') {
             return (
                 <div className='cfd-trade-modal__download-center-app--option'>
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv X on your browser')}
                     </Text>
-                    <DxtradeDesktopDownload is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
+                    <PlatformsDesktopDownload
+                        platform={account_type}
+                        is_demo={is_demo}
+                        dxtrade_tokens={dxtrade_tokens}
+                    />
                 </div>
             );
         } else if (account_type === 'ctrader') {
             return (
-                <>
+                <React.Fragment>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {localize('Run cTrader on your browser')}
                         </Text>
-                        <CTraderDesktopDownload />
+                        <PlatformsDesktopDownload
+                            platform={account_type}
+                            is_demo={is_demo}
+                            dxtrade_tokens={dxtrade_tokens}
+                        />
                     </div>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Icon icon='IcWindowsLogo' size={32} />
@@ -247,7 +167,7 @@ const TradeModal = ({
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={'https://ctrader.com/download/'}
+                            href={CTRADER_DOWNLOAD_LINK}
                             target='_blank'
                             rel='noopener noreferrer'
                         >
@@ -256,7 +176,7 @@ const TradeModal = ({
                             </Text>
                         </a>
                     </div>
-                </>
+                </React.Fragment>
             );
         } else if (account_type === 'derivez') {
             return (
@@ -264,53 +184,21 @@ const TradeModal = ({
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv EZ on your browser')}
                     </Text>
-                    <DerivEZDesktopDownload />
+                    <PlatformsDesktopDownload
+                        platform={account_type}
+                        is_demo={is_demo}
+                        dxtrade_tokens={dxtrade_tokens}
+                    />
                 </div>
             );
         }
         return undefined;
     };
 
-    const qr_code_mobile = isMobile() ? '100%' : '80%';
-
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                {platform === 'derivez' && (
-                    <>
-                        <Icon icon='IcBrandDerivEz' size={24} />
-                        <div className='cfd-trade-modal__desc'>
-                            <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                                {is_demo ? localize('Deriv EZ Demo') : localize('Deriv EZ')}
-                            </Text>
-                        </div>
-                    </>
-                )}
-                {platform === 'ctrader' && (
-                    <>
-                        <Icon icon='IcBrandCtrader' size={24} />
-                        <div className='cfd-trade-modal__desc'>
-                            <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                                {is_demo ? localize('Deriv cTrader Demo') : localize('Deriv cTrader')}
-                            </Text>
-                        </div>
-                    </>
-                )}
-                {platform === 'dxtrade' && (
-                    <>
-                        <Icon icon='IcBrandDxtrade' size={24} />
-                        <div className='cfd-trade-modal__desc'>
-                            <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                                {is_demo ? localize('Deriv X Demo') : localize('Deriv X')}
-                            </Text>
-                            {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
-                                <Text color='less-prominent' size='xxxs' line_height='xxxs'>
-                                    {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
-                                </Text>
-                            )}
-                        </div>
-                    </>
-                )}
+                {PlatformIconsAndDescriptions(platform, is_demo)}
                 {mt5_trade_account?.display_balance && (
                     <Text size='xs' color='profit-success' className='cfd-trade-modal__desc-balance' weight='bold'>
                         <Money
@@ -323,22 +211,9 @@ const TradeModal = ({
                 )}
             </div>
             <div className='cfd-trade-modal__login-specs'>
-                {platform === 'ctrader' && (
-                    <div className='cfd-trade-modal__login-specs-item'>
-                        <Text className='cfd-trade-modal--paragraph'>
-                            {localize('Use your Deriv account email and password to login into the cTrader platform.')}
-                        </Text>
-                    </div>
-                )}
-                {platform === 'derivez' && (
-                    <div className='cfd-trade-modal__login-specs-item'>
-                        <Text className='cfd-trade-modal--paragraph'>
-                            {localize('Use your Deriv account email and password to login into the Deriv EZ platform.')}
-                        </Text>
-                    </div>
-                )}
+                {platform !== 'dxtrade' && <CTraderAndDerivEZDescription />}
                 {platform === 'dxtrade' && (
-                    <>
+                    <React.Fragment>
                         <div className='cfd-trade-modal__login-specs-item'>
                             <Text className='cfd-trade-modal--paragraph'>{localize('Username')}</Text>
                             <SpecBox is_bold value={(mt5_trade_account as TTradingPlatformAccounts)?.login} />
@@ -367,7 +242,7 @@ const TradeModal = ({
                                 />
                             </div>
                         </div>
-                    </>
+                    </React.Fragment>
                 )}
 
                 <div className='cfd-trade-modal__maintenance'>
@@ -400,7 +275,7 @@ const TradeModal = ({
                         </div>
                     )}
                 </div>
-                <div className='cfd-trade-modal__download-center-options--qrcode'>{differentQRCodes(platform)}</div>
+                <div className='cfd-trade-modal__download-center-options--qrcode'>{getPlatformQRCode(platform)}</div>
             </div>
         </div>
     );

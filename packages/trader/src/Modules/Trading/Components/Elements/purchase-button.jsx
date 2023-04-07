@@ -148,7 +148,7 @@ PurchaseButton.propTypes = {
     basis: PropTypes.string,
     buy_info: PropTypes.object,
     currency: PropTypes.string,
-    growth_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    growth_rate: PropTypes.number,
     has_deal_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,

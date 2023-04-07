@@ -228,7 +228,7 @@ const ContractInfo = ({
 ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
-    growth_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    growth_rate: PropTypes.number,
     has_increased: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,

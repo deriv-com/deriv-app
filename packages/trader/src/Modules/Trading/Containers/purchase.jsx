@@ -131,7 +131,7 @@ Purchase.propTypes = {
     active_positions: PropTypes.array,
     basis: PropTypes.string,
     currency: PropTypes.string,
-    growth_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    growth_rate: PropTypes.number,
     has_cancellation: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,

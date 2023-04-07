@@ -8,48 +8,13 @@ const financial_details_config = ({ financial_assessment }) => {
             default_value: financial_assessment?.account_turnover ?? '',
             rules: [['req', localize('Please select an option')]],
         },
-        binary_options_trading_experience: {
-            supported_in: ['maltainvest'],
-            default_value: financial_assessment?.binary_options_trading_experience ?? '',
-            rules: [['req', localize('Please select an option')]],
-        },
-        binary_options_trading_frequency: {
-            supported_in: ['maltainvest'],
-            default_value: financial_assessment?.binary_options_trading_frequency ?? '',
-            rules: [['req', localize('Please select an option')]],
-        },
-        cfd_trading_experience: {
-            supported_in: ['maltainvest'],
-            default_value: financial_assessment?.cfd_trading_experience ?? '',
-            rules: [['req', localize('Please select an option')]],
-        },
-        cfd_trading_frequency: {
-            supported_in: ['maltainvest'],
-            default_value: financial_assessment?.cfd_trading_frequency ?? '',
-            rules: [['req', localize('Please select an option')]],
-        },
         education_level: {
             supported_in: ['maltainvest'],
             default_value: financial_assessment?.education_level ?? '',
             rules: [['req', localize('Please select an option')]],
         },
-        forex_trading_experience: {
-            supported_in: ['maltainvest'],
-            default_value: financial_assessment?.forex_trading_experience ?? '',
-            rules: [['req', localize('Please select an option')]],
-        },
-        forex_trading_frequency: {
-            supported_in: ['maltainvest'],
-            default_value: financial_assessment?.forex_trading_frequency ?? '',
-            rules: [['req', localize('Please select an option')]],
-        },
         employment_industry: {
             default_value: financial_assessment?.employment_industry ?? '',
-            supported_in: ['maltainvest'],
-            rules: [['req', localize('Please select an option')]],
-        },
-        employment_status: {
-            default_value: financial_assessment?.employment_status ?? '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },
@@ -70,16 +35,6 @@ const financial_details_config = ({ financial_assessment }) => {
         },
         occupation: {
             default_value: financial_assessment?.occupation ?? '',
-            supported_in: ['maltainvest'],
-            rules: [['req', localize('Please select an option')]],
-        },
-        other_instruments_trading_experience: {
-            default_value: financial_assessment?.other_instruments_trading_experience ?? '',
-            supported_in: ['maltainvest'],
-            rules: [['req', localize('Please select an option')]],
-        },
-        other_instruments_trading_frequency: {
-            default_value: financial_assessment?.other_instruments_trading_frequency ?? '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Please select an option')]],
         },

@@ -191,6 +191,7 @@ const mock = (): TRootStore => {
             is_crypto: false,
             obj_total_balance: { balance: 0, currency: 'USD' },
             dxtrade_accounts_list: [],
+            default_currency: 'USD',
         },
         common: {
             error: {

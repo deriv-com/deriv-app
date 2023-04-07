@@ -1,10 +1,7 @@
 import * as SocketCache from '_common/base/socket_cache';
-import { reject } from 'lodash';
-
 import { action, computed, makeObservable, observable } from 'mobx';
 import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
@@ -121,7 +118,7 @@ export default class CommonStore extends BaseStore {
             window.localStorage.setItem('i18n_language', key);
         }
 
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             WS.setSettings({
                 set_settings: 1,
                 preferred_language: key,

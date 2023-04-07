@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
-import { StoreProvider, StoreProvider } from '@deriv/stores';
+import { StoreProvider } from '@deriv/stores';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
 import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';

@@ -923,7 +923,6 @@ export default class TradeStore extends BaseStore {
         obj_old_values = {},
         should_forget_first = true
     ) {
-        if (this.is_trade_params_expanded === true) this.setIsTradeParamsExpanded(false);
         // To switch to rise_fall_equal contract type when allow equal is checked on first page refresh or
         // when switch back to Rise/Fall from another contract type i.e.
         if (obj_new_values.contract_type && obj_new_values.contract_type === 'rise_fall' && !!this.is_equal) {

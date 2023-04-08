@@ -72,6 +72,7 @@ export default class ClientStore extends BaseStore {
     account_settings = {};
     account_status = {};
     device_data = {};
+    is_authorize = false;
     is_logging_in = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
@@ -181,6 +182,7 @@ export default class ClientStore extends BaseStore {
             account_settings: observable,
             account_status: observable,
             device_data: observable,
+            is_authorize: observable,
             is_logging_in: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
@@ -331,6 +333,7 @@ export default class ClientStore extends BaseStore {
             setLoginId: action.bound,
             setAccounts: action.bound,
             setSwitched: action.bound,
+            setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
             broadcastAccountChange: action.bound,
@@ -1077,6 +1080,10 @@ export default class ClientStore extends BaseStore {
         LocalStore.set('active_loginid', loginid);
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
+    }
+
+    setIsAuthorize(value) {
+        this.is_authorize = value;
     }
 
     getBasicUpgradeInfo() {
@@ -1854,6 +1861,7 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
+        this.setIsAuthorize(false);
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();

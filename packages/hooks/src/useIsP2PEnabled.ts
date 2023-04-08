@@ -13,12 +13,6 @@ const useIsP2PEnabled = () => {
         invalidate('website_status');
     }, [invalidate, loginid]);
 
-    // if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
-    //     this.root_store.common.routeTo(
-    //         this.root_store.modules.cashier.account_prompt_dialog.last_location ?? routes.cashier_deposit
-    //     );
-    // }
-
     // const p2p_cookie = new (CookieStorage as any)('is_p2p_disabled');
     // p2p_cookie.set('is_p2p_disabled', !is_p2p_visible);
 

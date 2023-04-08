@@ -78,7 +78,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const is_onramp_visible = useOnrampVisible();
     const switchToReal = useSwitchToRealAccount();
     const p2p_notification_count = useP2PNotificationCount();
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const {
+        data: is_p2p_enabled,
+        isSuccess: is_p2p_enabled_success,
+        isLoading: is_p2p_enabled_loading,
+    } = useIsP2PEnabled();
 
     React.useEffect(() => {
         switchToReal();
@@ -103,6 +107,12 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             }
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
+
+    React.useEffect(() => {
+        if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname === routes.cashier_p2p) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_p2p_enabled, is_p2p_enabled_success]);
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = () => {
@@ -140,7 +150,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
     // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
-    if (((!is_logged_in || isMobile()) && is_logging_in) || !is_account_setting_loaded) {
+    if (((!is_logged_in || isMobile()) && is_logging_in) || !is_account_setting_loaded || is_p2p_enabled_loading) {
         return <Loading is_fullscreen />;
     }
 

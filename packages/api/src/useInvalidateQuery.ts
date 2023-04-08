@@ -1,6 +1,6 @@
+import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { TSocketEndpointNames } from '../types';
-import { useCallback } from 'react';
 
 const useInvalidateQuery = () => {
     const queryClient = useQueryClient();

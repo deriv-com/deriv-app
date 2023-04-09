@@ -49,7 +49,6 @@ describe('<P2PCashier />', () => {
             modules: {
                 cashier: {
                     general_store: {
-                        setNotificationCount: jest.fn(),
                         setOnRemount: jest.fn(),
                     },
                 },
@@ -98,7 +97,6 @@ describe('<P2PCashier />', () => {
             modules: {
                 cashier: {
                     general_store: {
-                        setNotificationCount: jest.fn(),
                         setOnRemount: jest.fn(),
                     },
                 },
@@ -148,7 +146,6 @@ describe('<P2PCashier />', () => {
             modules: {
                 cashier: {
                     general_store: {
-                        setNotificationCount: jest.fn(),
                         setOnRemount: jest.fn(),
                     },
                 },

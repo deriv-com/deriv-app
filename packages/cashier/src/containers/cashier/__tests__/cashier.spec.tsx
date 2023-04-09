@@ -8,6 +8,13 @@ import Cashier from '../cashier';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
 
+jest.mock('@deriv/hooks', () => {
+    return {
+        ...jest.requireActual('@deriv/hooks'),
+        useIsP2PEnabled: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
+    };
+});
+
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
 
@@ -62,6 +69,7 @@ describe('<Cashier />', () => {
                 is_logged_in: false,
                 is_logging_in: true,
                 active_accounts: [],
+                is_crypto: jest.fn(),
             },
             notifications: {
                 showAccountSwitchToRealNotification: jest.fn(),
@@ -74,9 +82,7 @@ describe('<Cashier />', () => {
                     general_store: {
                         is_cashier_onboarding: false,
                         is_loading: false,
-                        is_p2p_enabled: false,
                         onMountCommon: jest.fn(),
-                        p2p_notification_count: 0,
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
@@ -118,7 +124,7 @@ describe('<Cashier />', () => {
                 is_logging_in: true,
                 active_accounts: [],
                 is_virtual: false,
-                is_crypto: true,
+                is_crypto: jest.fn(() => true),
             },
             notifications: {
                 showAccountSwitchToRealNotification: jest.fn(),
@@ -131,9 +137,7 @@ describe('<Cashier />', () => {
                     general_store: {
                         is_cashier_onboarding: true,
                         is_loading: true,
-                        is_p2p_enabled: true,
                         onMountCommon: jest.fn(),
-                        p2p_notification_count: 0,
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
@@ -186,6 +190,7 @@ describe('<Cashier />', () => {
                 is_logged_in: true,
                 is_logging_in: true,
                 active_accounts: [],
+                is_crypto: jest.fn(),
             },
             modules: {
                 cashier: {
@@ -195,9 +200,7 @@ describe('<Cashier />', () => {
                     general_store: {
                         is_cashier_onboarding: true,
                         is_loading: true,
-                        is_p2p_enabled: true,
                         onMountCommon: jest.fn(),
-                        p2p_notification_count: 0,
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
@@ -241,6 +244,7 @@ describe('<Cashier />', () => {
     //             is_account_setting_loaded: true,
     //             is_logged_in: true,
     //             is_logging_in: false,
+    //             is_crypto: jest.fn(),
     //         },
     //         modules: {
     //             cashier: {
@@ -250,9 +254,8 @@ describe('<Cashier />', () => {
     //                 general_store: {
     //                     is_cashier_onboarding: false,
     //                     is_loading: false,
-    //                     is_p2p_enabled: true,
+
     //                     onMountCommon: jest.fn(),
-    //                     p2p_notification_count: 0,
     //                     setAccountSwitchListener: jest.fn(),
     //                     setCashierTabIndex: jest.fn(),
     //                     cashier_route_tab_index: 0,
@@ -300,6 +303,7 @@ describe('<Cashier />', () => {
                 is_logged_in: true,
                 is_logging_in: true,
                 active_accounts: [],
+                is_crypto: jest.fn(),
             },
             modules: {
                 cashier: {
@@ -309,9 +313,7 @@ describe('<Cashier />', () => {
                     general_store: {
                         is_cashier_onboarding: true,
                         is_loading: true,
-                        is_p2p_enabled: true,
                         onMountCommon: jest.fn(),
-                        p2p_notification_count: 0,
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
@@ -358,6 +360,7 @@ describe('<Cashier />', () => {
                 is_logged_in: true,
                 is_logging_in: true,
                 active_accounts: [],
+                is_crypto: jest.fn(),
             },
             modules: {
                 cashier: {
@@ -367,9 +370,7 @@ describe('<Cashier />', () => {
                     general_store: {
                         is_cashier_onboarding: true,
                         is_loading: true,
-                        is_p2p_enabled: true,
                         onMountCommon: jest.fn(),
-                        p2p_notification_count: 0,
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,
@@ -415,6 +416,7 @@ describe('<Cashier />', () => {
                 is_logged_in: true,
                 is_logging_in: false,
                 active_accounts: [],
+                is_crypto: jest.fn(),
             },
             modules: {
                 cashier: {
@@ -424,9 +426,7 @@ describe('<Cashier />', () => {
                     general_store: {
                         is_cashier_onboarding: true,
                         is_loading: true,
-                        is_p2p_enabled: true,
                         onMountCommon: jest.fn(),
-                        p2p_notification_count: 0,
                         setAccountSwitchListener: jest.fn(),
                         setCashierTabIndex: jest.fn(),
                         cashier_route_tab_index: 0,

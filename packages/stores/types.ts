@@ -248,6 +248,8 @@ type TUiStore = {
     toggleCancellationWarning: () => void;
     toggleUnsupportedContractModal: () => void;
     toggleReports: () => void;
+    is_need_real_account_for_cashier_modal_visible: boolean;
+    toggleNeedRealAccountForCashierModal: () => void;
 };
 
 type TPortfolioStore = {
@@ -292,6 +294,8 @@ type TTradersHubStore = {
     is_low_risk_cr_eu_real: boolean;
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
+    is_real: boolean;
+    selectRegion: (region: string) => void;
 };
 
 export type TRootStore = {

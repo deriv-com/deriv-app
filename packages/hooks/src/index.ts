@@ -17,7 +17,7 @@ export { default as useHasSvgAccount } from './useHasSvgAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as usePlatformDemoAccount } from './usePlatformDemoAccount';
-export { default as useCurrencyExcahngeRate } from './useCurrencyExcahngeRate';
+export { default as useCurrencyExchangeRate } from './useCurrencyExchangeRate';
 export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';

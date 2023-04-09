@@ -14,7 +14,6 @@ export default class TradersHubStore extends BaseStore {
     selected_account_type;
     selected_region;
     is_onboarding_visited = false;
-    is_balance_calculating = false;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
@@ -23,10 +22,6 @@ export default class TradersHubStore extends BaseStore {
     selected_platform_type = 'options';
     active_index = 0;
     open_failed_verification_for = '';
-    platform_demo_balance = { balance: 0, currency: 'USD' };
-    platform_real_balance = { balance: 0, currency: 'USD' };
-    cfd_demo_balance = { balance: 0, currency: 'USD' };
-    cfd_real_balance = { balance: 0, currency: 'USD' };
     modal_data = {
         active_modal: '',
         data: {},
@@ -43,19 +38,14 @@ export default class TradersHubStore extends BaseStore {
             available_dxtrade_accounts: observable,
             available_mt5_accounts: observable,
             available_platforms: observable,
-            cfd_demo_balance: observable,
-            cfd_real_balance: observable,
             combined_cfd_mt5_accounts: observable,
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
-            is_balance_calculating: observable,
             is_tour_open: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
-            platform_demo_balance: observable,
-            platform_real_balance: observable,
             selected_account: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
@@ -670,10 +660,6 @@ export default class TradersHubStore extends BaseStore {
             }
         });
     }
-
-    updateExchangeRates = data => {
-        this.exchange_rates_2 = data;
-    };
 
     toggleAccountTransferModal() {
         this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;

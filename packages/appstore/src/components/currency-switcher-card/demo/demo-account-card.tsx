@@ -6,15 +6,33 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { useStores } from 'Stores/index';
 import './demo-account-card.scss';
 import { localize } from '@deriv/translations';
+import {
+    useCFDDemoAccounts,
+    useCurrencyExchangeRate,
+    usePlatformDemoAccount,
+    useTotalAccountBalance,
+} from '@deriv/hooks';
 
 const DemoAccountCard = () => {
     const { client, traders_hub } = useStores();
-    const { accounts, loginid, resetVirtualBalance } = client;
-    const { platform_demo_balance, selected_account_type } = traders_hub;
+    const { accounts, loginid, resetVirtualBalance, default_currency } = client;
+    const { selected_account_type } = traders_hub;
 
     const canResetBalance = () => {
         return accounts[loginid]?.balance !== 10000;
     };
+
+    const platform_demo_account = usePlatformDemoAccount();
+    const cfd_demo_accounts = useCFDDemoAccounts();
+    const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
+    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account.currency);
+
+    const DemoAccounttotalBalance = React.useMemo(() => {
+        return {
+            balance: platform_demo_account.balance + cfd_demo_balance.balance * cfd_demo_rate,
+            currency: platform_demo_account.currency,
+        };
+    }, [cfd_demo_balance.balance, cfd_demo_rate, platform_demo_account.balance, platform_demo_account.currency]);
 
     return (
         <CurrencySwitcherContainer
@@ -33,7 +51,11 @@ const DemoAccountCard = () => {
                 )
             }
         >
-            <BalanceText currency={platform_demo_balance.currency} balance={platform_demo_balance.balance} size='xs' />
+            <BalanceText
+                currency={DemoAccounttotalBalance.currency || default_currency}
+                balance={DemoAccounttotalBalance.balance}
+                size='xs'
+            />
         </CurrencySwitcherContainer>
     );
 };

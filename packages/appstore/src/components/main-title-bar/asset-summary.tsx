@@ -10,7 +10,7 @@ import {
     useTotalAccountBalance,
     usePlatformRealAccounts,
     usePlatformDemoAccount,
-    useCurrencyExcahngeRate,
+    useCurrencyExchangeRate,
     useCFDRealAccounts,
     useCFDDemoAccounts,
 } from '@deriv/hooks';
@@ -20,15 +20,15 @@ const AssetSummary = observer(() => {
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency } = client;
 
-    const cfd_real_rate = useCurrencyExcahngeRate(default_currency);
-    const cfd_demo_rate = useCurrencyExcahngeRate(default_currency);
     const platform_real_accounts = usePlatformRealAccounts();
     const platform_demo_account = usePlatformDemoAccount();
     const cfd_real_accounts = useCFDRealAccounts();
     const cfd_demo_accounts = useCFDDemoAccounts();
+    const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
-    const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
+    const cfd_real_rate = useCurrencyExchangeRate(platform_real_balance.currency);
+    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account.currency);
 
     const totalBalance = useMemo(() => {
         if (selected_account_type === 'real') {

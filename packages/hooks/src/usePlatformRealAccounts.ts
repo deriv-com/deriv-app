@@ -15,7 +15,7 @@ const usePlatformRealAccounts = () => {
         return is_maltainvest;
     });
 
-    return platform_real_accounts || [];
+    return platform_real_accounts;
 };
 
 export default usePlatformRealAccounts;

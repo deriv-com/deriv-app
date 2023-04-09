@@ -4,9 +4,9 @@ import useCFDAccounts from './useCFDAccounts';
 const useCFDRealAccounts = () => {
     const { traders_hub } = useStore();
     const { is_eu_user } = traders_hub;
-    const accounts = useCFDAccounts();
+    const cfd_accounts = useCFDAccounts();
 
-    const cfd_real_accounts = accounts.filter(account => {
+    const cfd_real_accounts = cfd_accounts.filter(account => {
         const is_demo = account.account_type === 'demo';
         const is_maltainvest = account.landing_company_short === 'maltainvest';
 

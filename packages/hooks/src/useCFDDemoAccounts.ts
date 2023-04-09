@@ -1,18 +1,9 @@
-import { useStore } from '@deriv/stores';
+import useCFDAccounts from './useCFDAccounts';
 
-const useCFDAccounts = () => {
-    const { client } = useStore();
-    const { accounts, dxtrade_accounts_list, mt5_login_list } = client;
+const useCFDDemoAccounts = () => {
+    const cfd_accounts = useCFDAccounts();
 
-    let cfd_accounts: typeof mt5_login_list = [];
-    if (Array.isArray(mt5_login_list)) {
-        cfd_accounts = [...cfd_accounts, ...mt5_login_list];
-    }
-    if (Array.isArray(dxtrade_accounts_list)) {
-        cfd_accounts = [...cfd_accounts, ...dxtrade_accounts_list];
-    }
-
-    return cfd_accounts;
+    return cfd_accounts.filter(account => account.account_type === 'demo');
 };
 
-export default useCFDAccounts;
+export default useCFDDemoAccounts;

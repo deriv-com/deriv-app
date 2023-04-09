@@ -174,7 +174,7 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
-    dxtrade_accounts_list: any;
+    dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
 };
 
@@ -203,7 +203,6 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
-    getExchangeRate: any;
 };
 
 type TUiStore = {
@@ -262,13 +261,8 @@ type TTradersHubStore = {
     is_real: boolean;
     selectRegion: (region: string) => void;
     selected_account_type: string;
-    platform_real_balance: { balance: number; currency: string };
-    cfd_demo_balance: { balance: number; currency: string };
-    platform_demo_balance: { balance: number; currency: string };
-    cfd_real_balance: { balance: number; currency: string };
     no_CR_account: boolean;
     no_MF_account: boolean;
-    updateExchangeRates: (arg: any) => void;
 };
 
 export type TRootStore = {

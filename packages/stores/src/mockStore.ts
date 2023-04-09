@@ -215,7 +215,6 @@ const mock = (): TRootStore => {
             current_language: 'EN',
             is_network_online: false,
             is_language_changing: false,
-            getExchangeRate: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {
@@ -257,11 +256,6 @@ const mock = (): TRootStore => {
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
             selected_account_type: 'real',
-            platform_real_balance: { balance: 30, currency: 'USD' },
-            cfd_demo_balance: { balance: 30, currency: 'USD' },
-            platform_demo_balance: { balance: 30, currency: 'USD' },
-            cfd_real_balance: { balance: 30, currency: 'USD' },
-            updateExchangeRates: jest.fn(),
             no_CR_account: false,
             no_MF_account: false,
         },

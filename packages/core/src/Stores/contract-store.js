@@ -54,12 +54,15 @@ export default class ContractStore extends BaseStore {
             populateContractUpdateHistory: action.bound,
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
+            refToAddTick: action.bound,
             updateLimitOrder: action.bound,
         });
 
         this.root_store = root_store;
         this.contract_id = contract_id;
     }
+    // Accumulator properties:
+    addTickByPOCResponse = () => null;
 
     // --- Observable properties ---
     digits_info = observable.object({});
@@ -124,7 +127,9 @@ export default class ContractStore extends BaseStore {
 
         const is_multiplier = isMultiplierContract(this.contract_info.contract_type);
         const is_accumulator = isAccumulatorContract(this.contract_info.contract_type);
-
+        if (is_accumulator && contract_info) {
+            this.addTickByPOCResponse(contract_info);
+        }
         if ((is_accumulator || is_multiplier) && contract_info.contract_id && contract_info.limit_order) {
             this.populateContractUpdateConfig(this.contract_info);
         }
@@ -217,6 +222,10 @@ export default class ContractStore extends BaseStore {
         this[name] = value;
         this.validateProperty(name, this[name]);
     }
+
+    refToAddTick = ref => {
+        this.addTickByPOCResponse = ref;
+    };
 
     updateLimitOrder() {
         const limit_order = isAccumulatorContract(this.contract_info.contract_type)

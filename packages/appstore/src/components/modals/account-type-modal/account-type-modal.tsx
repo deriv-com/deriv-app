@@ -8,7 +8,7 @@ import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
-import { derived_account, financial_account, swapfree_account } from '../../../helpers/account-helper';
+import { getDerivedAccount, getFinancialAccount, getSwapFreeAccount } from '../../../helpers/account-helper';
 import { useSwapFreeAccount } from '@deriv/hooks';
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
@@ -51,28 +51,28 @@ const ModalContent = ({
             {is_synthetic_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${derived_account.title_and_type}`)}
-                    description={derived_account.description}
-                    title_and_type={derived_account.title_and_type}
-                    icon={derived_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getDerivedAccount().title_and_type}`)}
+                    description={getDerivedAccount().description}
+                    title_and_type={getDerivedAccount().title_and_type}
+                    icon={getDerivedAccount().icon}
                 />
             )}
             {is_financial_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${financial_account.title_and_type}`)}
-                    description={financial_account.description}
-                    title_and_type={financial_account.title_and_type}
-                    icon={financial_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getFinancialAccount().title_and_type}`)}
+                    description={getFinancialAccount().description}
+                    title_and_type={getFinancialAccount().title_and_type}
+                    icon={getFinancialAccount().icon}
                 />
             )}
             {is_swapfree_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${swapfree_account.title_and_type}`)}
-                    description={swapfree_account.description}
-                    title_and_type={swapfree_account.title_and_type}
-                    icon={swapfree_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getSwapFreeAccount().title_and_type}`)}
+                    description={getSwapFreeAccount().description}
+                    title_and_type={getSwapFreeAccount().title_and_type}
+                    icon={getSwapFreeAccount().icon}
                 />
             )}
         </div>
@@ -110,13 +110,13 @@ const MT5AccountTypeModal = () => {
 
     const set_account_type = () => {
         switch (account_type_card) {
-            case 'Derived':
+            case localize('Derived'):
                 setAccountType({ category: 'real', type: 'synthetic' });
                 break;
-            case 'Swap-Free':
+            case localize('Swap-Free'):
                 setAccountType({ category: 'real', type: 'all' });
                 break;
-            case 'Financial':
+            case localize('Financial'):
             default:
                 setAccountType({ category: 'real', type: 'financial' });
                 break;

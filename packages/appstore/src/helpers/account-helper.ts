@@ -38,22 +38,22 @@ export const getSortedAccountList = (account_list: TAccountProps, accounts: TAcc
     });
 };
 
-export const derived_account: TAccountType = {
+export const getDerivedAccount = (): TAccountType => ({
     title_and_type: localize('Derived'),
     icon: 'Derived',
     description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
-};
+});
 
-export const financial_account: TAccountType = {
+export const getFinancialAccount = (): TAccountType => ({
     title_and_type: localize('Financial'),
     icon: 'Financial',
     description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
-};
+});
 
-export const swapfree_account: TAccountType = {
+export const getSwapFreeAccount = (): TAccountType => ({
     title_and_type: localize('Swap-Free'),
     icon: 'SwapFree',
     description: localize(
         'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
     ),
-};
+});

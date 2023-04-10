@@ -1,5 +1,18 @@
 import { useStore } from '@deriv/stores';
 
+/**
+ * we can use this hook to get the total balance of the given accounts list.
+ * it loops through the accounts list and adds the balance of each account
+ * to the total balance, it also converts the balance to the currency of the
+ * first account in the list
+ * @example:
+ * const accounts_total_balance = useTotalAccountBalance([
+ *      { balance: 100, currency: 'USD' },
+ *      { balance: 50, currency: 'EUR' },
+ *  ]);
+ * @returns \{ balance: 150, currency: 'USD' }
+ */
+
 const useTotalAccountBalance = (accounts: { balance?: number; currency?: string }[]) => {
     const { exchange_rates } = useStore();
     const currency = accounts?.[0]?.currency || 'USD';

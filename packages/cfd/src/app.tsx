@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import PropTypes from 'prop-types';
 import React from 'react';
 import { StoreProvider } from '@deriv/stores';
 import Routes from './Containers/routes.jsx';
 import { MobxContentProvider } from './Stores/connect';
 import initStore from './init-store'; // eslint-disable-line import/extensions
+import { TRootStore } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {
-        root_store: any;
+        root_store: TRootStore;
         WS: any;
     };
 };
@@ -25,13 +25,6 @@ const App = ({ passthrough }: TAppProps) => {
             </StoreProvider>
         </MobxContentProvider>
     );
-};
-
-App.propTypes = {
-    passthrough: PropTypes.shape({
-        root_store: PropTypes.object,
-        WS: PropTypes.object,
-    }),
 };
 
 export default App;

@@ -23,14 +23,15 @@ import Popover from '../../../components/popover';
 import config from '../../../../../../app.config';
 
 const AccountActions = () => {
-    const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state => state.client);
+    const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(
+        state => state.client
+    );
     const { currency_name_map, deposit } = config;
     const { visible, label, url } = deposit;
     const { account_switcher_token, is_bot_running } = useSelector(state => state.ui);
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(setIsHeaderLoaded(true));
     }, []);
@@ -77,6 +78,7 @@ const AccountActions = () => {
                           })
                         : ''}
                     <span className='symbols'>&nbsp;{currency ? currency : translate('No currency assigned')}</span>
+                    {(active_account_name.includes('MF')) && !is_virtual && <div className='is_symbol_multiplier'>{translate('Multipliers')}</div>}
                 </div>
                 <img
                     className={`header__icon header__expand ${is_acc_dropdown_open ? 'open' : ''}`}

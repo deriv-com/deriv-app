@@ -20,11 +20,11 @@ const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
     return (
         <div className='wallets-banner__container wallets-banner__ready-banner'>
             <div className='wallets-banner__ready-banner-description'>
-                <div className={'wallets-banner__ready-banner-tick'}>
-                    <Icon icon='IcAppstoreTick' />
-                </div>
+                {/* <div className={'wallets-banner__ready-banner-tick'}> */}
+                <Icon icon='IcAppstoreTick' />
+                {/* </div> */}
                 <Localize
-                    i18n_default_text="<0>We're setting up your Wallets</0>"
+                    i18n_default_text='<0>Your Wallets are ready</0>'
                     components={[<Text key={0} weight='bold' size={title_size} />]}
                 />
                 <Localize

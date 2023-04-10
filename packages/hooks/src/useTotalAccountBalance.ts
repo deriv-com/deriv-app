@@ -3,7 +3,7 @@ import type { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const useTotalAccountBalance = (accounts: DetailsOfEachMT5Loginid[]) => {
     const { exchange_rates } = useStore();
-    const currency = accounts[0]?.currency || 'USD';
+    const currency = accounts?.[0].currency || 'USD';
 
     const total_balance = accounts.reduce((total, account) => {
         const base_rate = exchange_rates.data?.rates?.[currency] || 1;

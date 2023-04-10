@@ -1,5 +1,6 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
@@ -116,6 +117,7 @@ module.exports = function (env) {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         plugins: [
+            new Dotenv(),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: 'bot/css/bot.main.[contenthash].css',

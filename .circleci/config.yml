@@ -82,6 +82,12 @@ commands:
     description: "Build"
     steps:
       - run:
+          name: "Create environment variables file"
+          command: |
+            echo GD_CLIENT_ID=${GD_CLIENT_ID} > packages/bot-web-ui/.env
+            echo GD_API_KEY=${GD_API_KEY} >> packages/bot-web-ui/.env
+            echo GD_APP_ID=${GD_APP_ID} >> packages/bot-web-ui/.env
+      - run:
           name: "Build all packages"
           command: npm run build:all
 

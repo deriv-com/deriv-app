@@ -80,14 +80,7 @@ export type TError = {
 };
 
 export type TCFDResetPasswordModal = RouteComponentProps & {
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
-    email: string;
-    context?: RootStore;
-    is_cfd_reset_password_modal_enabled: boolean;
-    is_eu: boolean;
-    is_logged_in: boolean;
     platform: CFD_Platform;
-    setCFDPasswordResetModal: (value: boolean) => void;
 };
 
 export type TCFDPasswordSuccessMessage = {

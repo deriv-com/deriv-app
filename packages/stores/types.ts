@@ -278,6 +278,13 @@ type TUiStore = {
     is_switch_to_deriv_account_modal_visible: boolean;
     openSwitchToRealAccountModal: () => void;
     openDerivRealAccountNeededModal: () => void;
+    is_top_up_virtual_open: boolean;
+    is_top_up_virtual_in_progress: boolean;
+    is_top_up_virtual_success: boolean;
+    closeSuccessTopUpModal: () => void;
+    closeTopUpModal: () => void;
+    is_cfd_reset_password_modal_enabled: boolean;
+    setCFDPasswordResetModal: (value: boolean) => void;
 };
 
 type TMenuStore = {
@@ -336,6 +343,15 @@ type TModuleStore = {
         current_list: Record<string, DetailsOfEachMT5Loginid>;
         is_compare_accounts_visible: boolean;
         toggleCompareAccounts: () => void;
+        dxtrade_companies: Record<string, any>;
+        mt5_companies: Record<string, any>;
+        platform: string;
+        topUpVirtual: (platform: string) => void;
+        current_account?: DetailsOfEachMT5Loginid & {
+            display_login: string;
+            category: string;
+            type: string;
+        };
     };
 };
 

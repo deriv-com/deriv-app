@@ -15,7 +15,7 @@ type TDatePickerOnChangeEvent = {
 };
 type TDatePicker = Omit<
     React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,
-    'value'
+    'value' | 'onSelect' | 'is_datepicker_visible'
 > & {
     mode: string;
     start_date: moment.Moment;
@@ -209,7 +209,6 @@ const DatePicker = React.memo((props: TDatePicker) => {
         <React.Fragment>
             <MobileWrapper>
                 <Native
-                    {...common_props}
                     id={id}
                     name={name}
                     onBlur={onBlur}
@@ -218,6 +217,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
                     value={getCalendarValue(date)} // native picker accepts date format yyyy-mm-dd
                     disabled={disabled}
                     data_testid={data_testid}
+                    {...common_props}
                 />
             </MobileWrapper>
             <DesktopWrapper>
@@ -238,18 +238,14 @@ const DatePicker = React.memo((props: TDatePicker) => {
                             data-testid={data_testid}
                         />
                         <Calendar
-                            {...common_props}
                             ref={calendar_ref}
-                            calendar_el_ref={calendar_el_ref}
-                            parent_ref={datepicker_ref}
                             keep_open={keep_open}
                             alignment={alignment}
                             is_datepicker_visible={is_datepicker_visible}
                             onHover={has_range_selection ? onHover : undefined}
                             onSelect={onSelectCalendar}
-                            placement={placement}
-                            style={style}
                             value={getCalendarValue(date)} // Calendar accepts date format yyyy-mm-dd
+                            {...common_props}
                         />
                     </div>
                 </div>

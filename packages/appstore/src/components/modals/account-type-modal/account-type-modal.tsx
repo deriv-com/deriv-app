@@ -9,6 +9,7 @@ import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from '.
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { derived_account, financial_account, swapfree_account } from '../../../helpers/account-helper';
+import { useSwapFreeAccount } from '@deriv/hooks';
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
@@ -105,9 +106,7 @@ const MT5AccountTypeModal = () => {
     const is_synthetic_available = trading_platform_available_accounts.some(
         (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'gaming'
     );
-    const is_swapfree_available = trading_platform_available_accounts.some(
-        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'all'
-    );
+    const is_swapfree_available = useSwapFreeAccount();
 
     const set_account_type = () => {
         switch (account_type_card) {

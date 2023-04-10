@@ -17,6 +17,7 @@ const mock = (): TRootStore => {
                 },
             },
             active_account_landing_company: '',
+            trading_platform_available_accounts: [],
             account_limits: {
                 daily_transfers: {
                     dxtrade: {

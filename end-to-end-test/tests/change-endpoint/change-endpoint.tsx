@@ -7,7 +7,8 @@ export default class ChangeEndpoint {
         this.page = page;
     }
     async cookieDialogHandler() {
-        if (this.page.locator('.cookie-banner'))
+        const elem = this.page.locator('.cookie-banner');
+        if (await elem.isVisible())
             await this.page.locator('.cookie-banner > button[type=submit]', { hasText: /Accept/ }).click();
     }
 

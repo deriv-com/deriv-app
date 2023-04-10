@@ -101,6 +101,7 @@ const RealWalletsUpgrade = () => {
                             toggleModal={closeRealWalletsUpgrade}
                             height='734px'
                             width='1200px'
+                            elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <Modal.Body>
                                 {steps.map((step, index) => {

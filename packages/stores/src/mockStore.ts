@@ -191,6 +191,7 @@ const mock = (): TRootStore => {
             is_crypto: false,
             dxtrade_accounts_list: [],
             default_currency: 'USD',
+            resetVirtualBalance: jest.fn(),
         },
         common: {
             error: {

@@ -1,25 +1,4 @@
-import { getPlatformFromUrl, getUrlBase } from '@deriv/shared';
-
-const PATTERN_SIZE = 5;
-
-export const isRecurringNumberRegex = document_number => document_number.replace(/[.-]*/g, '').match(/([0-9])\1{4,}/g);
-
-const createDocumentPatterns = () => {
-    const ID_PATTERN = '0123456789';
-    const STEPS = 5; // Steps start at 0
-    const reverse_pattern = ID_PATTERN.split('').reverse().join('');
-    const pattern_array = [];
-
-    for (let step = 0; step < STEPS; step++) {
-        const pattern_end = PATTERN_SIZE + step;
-        pattern_array.push(ID_PATTERN.substring(step, pattern_end));
-
-        // Reverse version of the pattern, example: 9876543210
-        pattern_array.push(reverse_pattern.substring(step, pattern_end));
-    }
-
-    return pattern_array;
-};
+import { getUrlBase } from '@deriv/shared';
 
 export const documentAdditionalError = (document_additional, document_additional_format) => {
     let error_message = null;
@@ -33,28 +12,6 @@ export const documentAdditionalError = (document_additional, document_additional
     }
 
     return error_message;
-};
-
-export const isSequentialNumber = document_number => {
-    const trimmed_document_number = document_number.replace(/[.-]*/g, '');
-    const pattern_results = [];
-
-    if (document_number.length >= PATTERN_SIZE) {
-        createDocumentPatterns().forEach(pattern => {
-            pattern_results.push(trimmed_document_number.includes(pattern));
-        });
-    }
-
-    return pattern_results.includes(true);
-};
-
-// function for skipping validation of exact document numbers for QA smileidentity sandbox testing
-export const isIDVWhitelistDocumentNumber = (country, document_type, document_number) => {
-    const is_whitelisted_number =
-        idv_test_document_whitelist.has(country) &&
-        idv_test_document_whitelist.get(country)[document_type] === document_number;
-
-    return is_whitelisted_number && (getPlatformFromUrl().is_test_link || getPlatformFromUrl().is_staging);
 };
 
 export const getRegex = target_regex => {
@@ -215,10 +172,3 @@ const idv_document_data = {
         },
     },
 };
-
-export const idv_test_document_whitelist = new Map([
-    ['gh', { drivers_license: 'B0000000', passport: 'G0000000', ssnit: 'C000000000000', voter_id: '0000000000' }],
-    ['ke', { alien_card: '000000', passport: 'A00000000', national_id: '00000000' }],
-    ['ng', { drivers_license: 'ABC000000000', nin_slip: '00000000000', voter_id: '0000000000000000000' }],
-    ['za', { national_id: '0000000000000', national_id_no_photo: '0000000000000' }],
-]);

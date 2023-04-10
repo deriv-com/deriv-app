@@ -180,6 +180,7 @@ TradeParamsModal.propTypes = {
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
     form_components: MobxPropTypes.arrayOrObservableArray,
     is_open: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     toggleModal: PropTypes.func,

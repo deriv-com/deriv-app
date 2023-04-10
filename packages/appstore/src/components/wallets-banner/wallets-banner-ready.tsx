@@ -5,8 +5,15 @@ import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
 
-const WalletsBannerReady = () => {
-    const image: TWalletsImagesListKeys = isMobile() ? 'ready_mobile' : 'ready_desktop';
+// just for now for testing purpose, in the future 'is_eu' value will be taken from the store
+type TWalletsBannerReady = {
+    is_eu?: boolean;
+};
+
+const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
+    const image: TWalletsImagesListKeys = isMobile()
+        ? `ready_mobile${is_eu ? '_eu' : ''}`
+        : `ready_desktop${is_eu ? '_eu' : ''}`;
     const size: string = isMobile() ? 'xs' : 'm';
 
     return (

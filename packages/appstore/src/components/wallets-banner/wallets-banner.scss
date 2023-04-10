@@ -3,6 +3,7 @@
         position: relative;
         padding-inline: 4.8rem;
         margin-bottom: 2.4rem;
+        overflow: hidden;
 
         border: 1px solid $color-grey-4;
         box-shadow: 0px 12px 16px -4px rgba(14, 14, 14, 0.08), 0px 4px 6px -2px rgba(14, 14, 14, 0.03);
@@ -18,9 +19,11 @@
         position: absolute;
         right: 0;
         bottom: 0;
+        border-top-right-radius: $BORDER_RADIUS * 4;
         border-bottom-right-radius: $BORDER_RADIUS * 4;
 
         @include mobile {
+            border-top-right-radius: $BORDER_RADIUS * 2;
             border-bottom-right-radius: $BORDER_RADIUS * 2;
         }
     }
@@ -83,5 +86,47 @@
                 padding-inline: 1.6rem;
             }
         }
+
+        &-image {
+            opacity: 50%;
+        }
+    }
+
+    &__ready-banner {
+        height: 230px;
+
+        @include mobile {
+            height: 190px;
+        }
+
+        &-description {
+            width: 45%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: baseline;
+
+            @include mobile {
+                width: 70%;
+            }
+        }
+
+        &-button {
+            margin-top: 0.8rem;
+            padding-inline: 6.7rem;
+
+            @include mobile {
+                padding-inline: 1.6rem;
+            }
+        }
+
+        // &-image {
+        //     opacity: 90%;
+
+        //     @include mobile {
+        //         opacity: 100%;
+        //     }
+        // }
     }
 }

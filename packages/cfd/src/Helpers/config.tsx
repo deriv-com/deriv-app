@@ -7,6 +7,7 @@ import {
     getPlatformDerivEZDownloadLink,
     getDXTradeWebTerminalLink,
     platformsText,
+    DERIVEZ_URL,
     CTRADER_URL,
 } from './constants';
 import { Text, Icon } from '@deriv/components';
@@ -59,7 +60,7 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
             case 'ctrader':
                 return CTRADER_URL;
             case 'derivez':
-                return '';
+                return DERIVEZ_URL;
             case 'dxtrade':
                 return getDXTradeWebTerminalLink(
                     is_demo ? 'demo' : 'real',

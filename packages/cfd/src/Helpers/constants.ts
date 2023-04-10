@@ -17,9 +17,11 @@ const platformsText = (platform: TCFDsPlatformType) => {
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-export const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
+const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
 
-export const CTRADER_URL = 'https://ct.deriv.com/';
+const CTRADER_URL = 'https://ct.deriv.com/';
+
+const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -122,6 +124,9 @@ const getMT5WebTerminalLink = ({
 export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
+    CTRADER_URL,
+    DERIVEZ_URL,
+    CTRADER_DOWNLOAD_LINK,
     getBrokerName,
     platformsText,
     getPlatformDXTradeDownloadLink,

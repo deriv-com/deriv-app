@@ -1,19 +1,15 @@
 import React from 'react';
-import { Text, Button, Icon, Money, Popover } from '@deriv/components';
-import {
-    TPasswordBoxProps,
-    TTradingPlatformAccounts,
-    TCFDDashboardContainer,
-    TCFDsPlatformType,
-} from '../Components/props.types';
+import { Text, Icon, Money } from '@deriv/components';
+import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDPlatformLabel, getCFDAccountKey, isMobile, capitalizeFirstLetter } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
 import { platformsText, CTRADER_DOWNLOAD_LINK } from '../Helpers/constants';
+import SpecBox from 'Components/specbox';
+import PasswordBox from 'Components/passwordbox';
 
-type TradeModalProps = {
+type TTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
     is_eu_user: boolean;
     onPasswordManager: (
@@ -28,60 +24,6 @@ type TradeModalProps = {
     is_demo: string;
     platform: TCFDsPlatformType;
 };
-
-export type TSpecBoxProps = {
-    value: string | undefined;
-    is_bold?: boolean;
-};
-
-const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
-    <div className='cfd-trade-modal__spec-box'>
-        <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-trade-modal__spec-text'>
-            {value}
-        </Text>
-        <CFDAccountCopy text={value} className='cfd-trade-modal__spec-copy' />
-    </div>
-);
-
-const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
-    <div className='cfd-trade-modal__password-box'>
-        <div className='cfd-trade-modal__password-text'>
-            <Popover
-                alignment='right'
-                message={localize(
-                    'Use these credentials to log in to your {{platform}} account on the website and mobile apps.',
-                    {
-                        platform: getCFDPlatformLabel(platform),
-                    }
-                )}
-                classNameBubble='cfd-trade-modal__password-tooltip'
-                zIndex={9999}
-            >
-                <Text size='xs'>***************</Text>
-            </Popover>
-        </div>
-        <Popover
-            className='cfd-trade-modal__password-popover'
-            alignment='left'
-            message={localize('Change Password')}
-            relative_render
-            zIndex={9999}
-        >
-            <Button
-                className='cfd-trade-modal__password-action'
-                transparent
-                onClick={onClick}
-                icon={
-                    <Icon
-                        icon='IcEdit'
-                        className='da-article__learn-more-icon'
-                        custom_color='var(--text-less-prominent)'
-                    />
-                }
-            />
-        </Popover>
-    </div>
-);
 
 const getTitle = (market_type: string, is_eu_user: boolean) => {
     if (is_eu_user) localize('MT5 CFDs');
@@ -118,7 +60,7 @@ const TradeModal = ({
     dxtrade_tokens,
     is_demo,
     platform,
-}: TradeModalProps) => {
+}: TTradeModalProps) => {
     const CTraderAndDerivEZDescription = () => {
         const description = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
         return (

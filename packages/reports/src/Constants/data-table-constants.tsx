@@ -7,15 +7,15 @@ import {
     getTotalProfit,
     shouldShowCancellation,
     getGrowthRatePercentage,
+    getCardLabels,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from '../Containers/progress-slider-stream';
-
-import { getCardLabels } from '_common/contract';
+import { TCellContentProps, THeaderProps } from 'Types';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
-import ProfitLossCell from '../Components/profit_loss_cell.jsx';
+import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { ITransformer } from 'mobx-utils';
 
@@ -31,37 +31,9 @@ const map = {
     transfer: 'transfer',
 } as const;
 
-type TKeys = keyof typeof map;
+export type TKeys = keyof typeof map;
 
 const getModeFromValue = (key: TKeys) => map[key] || map.default;
-
-type TCellContentProps = {
-    cell_value: TKeys;
-    passthrough: any;
-    row_obj: any;
-    is_footer: boolean;
-    is_vanilla: boolean;
-};
-
-type THeaderProps = {
-    title: React.ReactNode;
-    is_vanilla: boolean;
-};
-
-type TColumnTemplateType = {
-    key?: string;
-    title?: React.ReactNode;
-    col_index?: string;
-    renderCellContent?: (props: TCellContentProps) => React.ReactNode;
-    renderHeader?: (props: THeaderProps) => React.ReactNode;
-    icon?: string;
-    action_type?: string;
-    refid?: string;
-    date?: string;
-    balance?: string;
-    item?: any;
-    map?: any;
-};
 
 type TMultiplierOpenPositionstemplateProps = {
     currency: string;
@@ -72,7 +44,7 @@ type TMultiplierOpenPositionstemplateProps = {
 };
 
 /* eslint-disable react/display-name, react/prop-types */
-export const getStatementTableColumnsTemplate = (currency: string): TColumnTemplateType[] => [
+export const getStatementTableColumnsTemplate = (currency: string) => [
     {
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
@@ -135,7 +107,7 @@ export const getStatementTableColumnsTemplate = (currency: string): TColumnTempl
         ),
     },
 ];
-export const getProfitTableColumnsTemplate = (currency: string, items_count: number): TColumnTemplateType[] => [
+export const getProfitTableColumnsTemplate = (currency: string, items_count: number) => [
     {
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
@@ -202,7 +174,7 @@ export const getProfitTableColumnsTemplate = (currency: string, items_count: num
         ),
     },
 ];
-export const getOpenPositionsColumnsTemplate = (currency: string): TColumnTemplateType[] => [
+export const getOpenPositionsColumnsTemplate = (currency: string) => [
     {
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
@@ -295,7 +267,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     onClickSell,
     getPositionById,
     server_time,
-}: TMultiplierOpenPositionstemplateProps): TColumnTemplateType[] => [
+}: TMultiplierOpenPositionstemplateProps) => [
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',

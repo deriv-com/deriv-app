@@ -26,6 +26,7 @@ import {
     TContractInfo,
     getCurrentTick,
     getGrowthRatePercentage,
+    getCardLabels,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
@@ -38,7 +39,6 @@ import {
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';
-import { getCardLabels } from '_common/contract';
 import { connect } from 'Stores/connect';
 import type { TRootStore } from 'Stores/index';
 

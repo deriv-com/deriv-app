@@ -4,7 +4,7 @@ import BinaryRoutes from 'Components/Routes';
 import { connect } from 'Stores/connect';
 import ErrorComponent from 'Components/Errors';
 import { TRootStore } from 'Stores/index';
-import { TRoutes } from '../Types';
+import { TRoutes } from 'Types';
 
 const Routes = ({ error, has_error, is_logged_in, is_logging_in, passthrough }: TRoutes) => {
     if (has_error) {

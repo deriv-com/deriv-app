@@ -15,5 +15,7 @@ module.exports = {
         '^Utils/(.*)$': '<rootDir>/src/Utils/$1',
         '^Services/(.*)$': '<rootDir>/src/Services/$1',
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
+        '^Types/(.*)$': '<rootDir>/src/Types/$1',
+        '^Types$': '<rootDir>/src/Types/index.ts',
     },
 };

@@ -1,8 +1,7 @@
 import React from 'react';
 import { ProgressSlider } from '@deriv/components';
-import { getCurrentTick, TContractInfo } from '@deriv/shared';
+import { getCurrentTick, TContractInfo, getCardLabels } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { getCardLabels } from '_common/contract';
 import moment from 'moment';
 import { TRootStore } from 'Stores/index';
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
+import { TInputDateRange } from 'Types';
 
 type TRadioButtonProps = {
     id: string;
@@ -41,13 +42,6 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
     );
 };
 const CUSTOM_KEY = 'custom';
-
-type TInputDateRange = {
-    value?: string;
-    label?: string;
-    duration?: number;
-    onClick?: () => void;
-};
 
 type TCompositeCalendarMobileProps = {
     input_date_range: TInputDateRange;

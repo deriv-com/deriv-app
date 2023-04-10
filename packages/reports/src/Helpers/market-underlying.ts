@@ -1,4 +1,4 @@
-import { getMarketNamesMap, getContractConfig } from '_common/contract';
+import { getContractConfig, getMarketNamesMap } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TMarketInfo = {

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Icon, Money, DesktopWrapper, ContractCard } from '@deriv/components';
-import { getCardLabels } from '_common/contract';
+import { getCardLabels, TContractInfo } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { TRootStore } from 'Stores/index';
-import { TContractInfo } from '@deriv/shared';
 
 type TIndicativeCell = {
     amount: number;

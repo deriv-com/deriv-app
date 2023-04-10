@@ -2,7 +2,7 @@ import React from 'react';
 import { PageError, Dialog } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TErrorComponent } from '../../Types';
+import { TErrorComponent } from 'Types';
 
 const ErrorComponent = ({
     header,

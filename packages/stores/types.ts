@@ -190,6 +190,24 @@ type TClientStore = {
     is_high_risk: boolean;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
+    trading_platform_available_accounts: {
+        market_type: 'financial' | 'gaming';
+        name: string;
+        requirements: {
+            after_first_deposit: {
+                financial_assessment: string[];
+            };
+            compliance: {
+                mt5: string[];
+                tax_information: string[];
+            };
+            signup: string[];
+        };
+        shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+        sub_account_type: string;
+    }[];
+    updateMT5Status: () => void;
+    fetchAccountSettings: () => void;
 };
 
 type TCommonStoreError = {
@@ -295,6 +313,14 @@ type TModuleStore = {
         mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
         real_synthetic_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
         real_financial_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
+        account_type: {
+            type: string;
+            category: string;
+        };
+        jurisdiction_selected_shortcode: string;
+        toggleJurisdictionModal: () => void;
+        has_submitted_cfd_personal_details: boolean;
+        is_jurisdiction_modal_visible: boolean;
     };
 };
 

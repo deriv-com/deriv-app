@@ -222,7 +222,7 @@ export default class CFDStore extends BaseStore {
         this.is_cfd_password_modal_enabled = false;
     }
 
-    createCFDAccount({ category, platform, type, set_password }) {
+    async createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
         this.setAccountType({
             category,
@@ -241,9 +241,15 @@ export default class CFDStore extends BaseStore {
                 account_type: this.account_type.category,
                 market_type: this.account_type.type,
             };
-            this.openCFDAccount(values);
-            this.enableCFDPasswordModal();
-            this.setCFDSuccessDialog(true);
+            const response = await this.openMT5Account(values);
+            if (!response.error) {
+                this.openCFDAccount(values);
+                this.setError(false);
+                this.enableCFDPasswordModal();
+                this.setCFDSuccessDialog(true);
+            } else {
+                this.setError(true, response.error);
+            }
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
                 this.toggleJurisdictionModal();

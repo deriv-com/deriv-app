@@ -1,6 +1,5 @@
 import { GetAccountStatus, GetSettings, LandingCompany, ResidenceList, StatesList } from '@deriv/api-types';
 import { getAuthenticationStatusInfo, isDesktop } from '@deriv/shared';
-
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';

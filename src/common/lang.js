@@ -1,18 +1,6 @@
-import { parseQueryString } from '../common/utils/tools';
-import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
-import { setCookieLanguage } from '../common/utils/cookieManager';
-import { supported_languages, translate, init } from './i18n';
-
-const setLanguage = lang => {
-    setStorage('lang', lang);
-    setCookieLanguage(lang);
-    return lang;
-};
-
-const redirectToSupportedLang = lang => {
-    const new_search = document.location.search.replace(/(lang|l)+=[a-z]{2}/, `l=${lang}`);
-    window.history.pushState(null, '/', new_search);
-};
+import { get as getStorage } from '../common/utils/storageManager';
+import { parseQueryString, redirectToSupportedLang, setLanguage } from '../common/utils/tools';
+import { init, supported_languages, translate } from './i18n';
 
 export const getLanguage = () => {
     const parsed_url = parseQueryString().lang || parseQueryString().l;

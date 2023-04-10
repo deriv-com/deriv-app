@@ -1,9 +1,7 @@
 import React from 'react';
-import { translate } from '../../../../../../common/utils/tools';
-import { getLanguage } from '../../../../../../common/lang';
 import config from '../../../../../../app.config';
-import { set as setStorage } from '../../../../../../common/utils/storageManager';
-import { setCookieLanguage } from '../../../../../../common/utils/cookieManager';
+import { getLanguage } from '../../../../../../common/lang';
+import { redirectToSupportedLang, translate } from '../../../../../../common/utils/tools';
 
 const current_language = getLanguage();
 const toggleModal = () => $('#language-menu-modal').toggleClass('invisible');
@@ -39,10 +37,15 @@ const LanguageItem = ({ lang }) => {
                 self.current.classList.add('language-menu-item__active');
                 if (lang === 'en') {
                     document.location.assign(document.location.origin);
-                    setStorage('lang', lang);
-                    setCookieLanguage(lang);
                 } else {
-                    document.location.search = `l=${lang}`;
+                    const parsed_search_param = document.location.search.match(/(lang|l)+=[a-z]{2}/);
+                    if (parsed_search_param === null) {
+                        // to assign language & reload the page, when the url hasn't search parameters (https://bot.deriv.com)
+                        document.location.search = `l=${lang}`;
+                    } else {
+                        redirectToSupportedLang(lang);
+                        document.location.reload();
+                    }
                 }
             }}
         >

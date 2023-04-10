@@ -1,9 +1,11 @@
 import RenderHTML from 'react-render-html';
-import { translate as i18nTranslate } from '../../common/i18n';
-import { getLanguage } from '../../common/lang';
-import AppIdMap from '../../common/appIdResolver';
-import { trackJSTrack } from '../../common/integrations/trackJSTrack';
 import { TrackJSError } from '../../botPage/view/logger';
+import AppIdMap from '../../common/appIdResolver';
+import { translate as i18nTranslate } from '../../common/i18n';
+import { trackJSTrack } from '../../common/integrations/trackJSTrack';
+import { getLanguage } from '../../common/lang';
+import { setCookieLanguage } from './cookieManager';
+import { set as setStorage } from './storageManager';
 
 export const MAX_MOBILE_WIDTH = 813;
 
@@ -26,6 +28,17 @@ export const getQueryParams = (qs = '') => {
         data[a1] = a3;
     });
     return data;
+};
+
+export const setLanguage = lang => {
+    setStorage('lang', lang);
+    setCookieLanguage(lang);
+    return lang;
+};
+
+export const redirectToSupportedLang = lang => {
+    const new_search = document.location.search.replace(/(lang|l)+=[a-z]{2}/, `l=${lang}`);
+    window.history.pushState(null, '/', new_search);
 };
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];

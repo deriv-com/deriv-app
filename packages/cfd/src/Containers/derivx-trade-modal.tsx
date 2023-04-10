@@ -30,7 +30,6 @@ type TDxTradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
 };

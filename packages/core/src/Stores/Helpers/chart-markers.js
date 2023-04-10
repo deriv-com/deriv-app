@@ -88,11 +88,6 @@ const createTickMarkers = contract_info => {
             +_tick.epoch === +contract_info.exit_tick_time ||
             getSpotCount(contract_info, _idx) === contract_info.tick_count;
         const is_exit_spot = isExitSpot(tick, idx);
-        const exit_spot_index = tick_stream.findIndex(isExitSpot);
-        const is_current_last_spot = idx === tick_stream.length - 1;
-        // const is_current_last_spot = !is_exit_spot && idx === tick_stream.length - 1;
-        const is_preexit_spot = idx === exit_spot_index - 1 || idx === tick_stream.length - 2;
-        const has_accumulator_bold_marker = is_accumulator && (is_preexit_spot || is_current_last_spot || is_exit_spot);
 
         let marker_config;
         if (is_entry_spot) {
@@ -103,16 +98,20 @@ const createTickMarkers = contract_info => {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
-        if (has_accumulator_bold_marker || (is_accumulator && is_middle_spot)) {
-            const spot_className = marker_config.content_config.spot_className;
-            marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
-                has_accumulator_bold_marker ? '-bold' : '-small'
-            }`;
-        }
-        // if (is_current_last_spot && is_accumulator) {
-        //     return;
-        // }
+        if (is_accumulator) {
+            const exit_spot_index = tick_stream.findIndex(isExitSpot);
+            const is_current_last_spot = !is_exit_spot && idx === tick_stream.length - 1;
+            const is_preexit_spot = idx === exit_spot_index - 1 || idx === tick_stream.length - 2;
+            const has_accumulator_bold_marker = is_preexit_spot || is_exit_spot;
 
+            if (is_current_last_spot) return;
+            if (is_middle_spot || has_accumulator_bold_marker) {
+                const spot_className = marker_config.content_config.spot_className;
+                marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
+                    has_accumulator_bold_marker ? '-bold' : '-small'
+                }`;
+            }
+        }
         if (marker_config) {
             result.push(marker_config);
         }

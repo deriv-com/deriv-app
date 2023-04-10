@@ -190,7 +190,7 @@ const InputField = ({
     };
 
     const updateValue = (new_value, is_long_press) => {
-        let formatted_value = new_value;
+        let formatted_value = format ? format(new_value) : new_value;
         if (is_long_press) {
             setLocalValue(formatted_value);
         } else {

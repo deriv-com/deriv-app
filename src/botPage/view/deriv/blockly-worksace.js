@@ -147,6 +147,15 @@ const setElementActions = blockly => {
   addEventHandlers(blockly);
 };
 
+const exportContent = {};
+  exportContent.summaryPanel = () => {
+      globalObserver.emit('summary.export');
+  };
+
+  exportContent.logPanel = () => {
+      globalObserver.emit('log.export');
+  };
+
 const addExportButtonToPanel = panelId => {
   const buttonHtml =
     '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
@@ -191,10 +200,10 @@ const addBindings = blockly => {
     });
   };
 
-    const clearActiveTokens = () => {
-        setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
-        syncWithDerivApp();
-    };
+  const clearActiveTokens = () => {
+      setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
+      syncWithDerivApp();
+  };
 
   $('.panelExitButton').click(function onClick() {
     $(this)
@@ -226,15 +235,6 @@ const addBindings = blockly => {
   $('#tradingViewButton').click(() => {
     tradingView.open();
   });
-
-  const exportContent = {};
-  exportContent.summaryPanel = () => {
-    globalObserver.emit('summary.export');
-  };
-
-  exportContent.logPanel = () => {
-    globalObserver.emit('log.export');
-  };
 
   globalObserver.register('ui.logout', () => {
     saveBeforeUnload();

@@ -206,6 +206,21 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
     }
 };
 
+export const getCFDPlatformNames = (platform: TPlatform) => {
+    switch (platform) {
+        case CFD_PLATFORMS.MT5:
+            return 'MT5';
+        case CFD_PLATFORMS.DXTRADE:
+            return 'Deriv X';
+        case CFD_PLATFORMS.CTRADER:
+            return 'cTrader';
+        case CFD_PLATFORMS.DERIVEZ:
+            return 'deriv EZ';
+        default:
+            return '';
+    }
+};
+
 type TIsLandingCompanyEnabled = {
     landing_companies: LandingCompany;
     platform: TPlatform;

@@ -1,5 +1,5 @@
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import React from 'react';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany, Mt5NewAccount } from '@deriv/api-types';
@@ -19,6 +19,7 @@ import {
     CFD_PLATFORMS,
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
+    getCFDPlatformNames,
     getErrorMessages,
     getLegalEntityName,
     isDesktop,
@@ -540,12 +541,7 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            platform_name:
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? 'MT5'
-                                                    : platform === CFD_PLATFORMS.DXTRADE
-                                                    ? 'Deriv X'
-                                                    : 'cTrader',
+                                            platform_name: getCFDPlatformNames(platform),
                                             account: !show_eu_related_content ? account_title : '',
                                             jurisdiction_shortcode: showJuristiction(),
                                         }}
@@ -556,12 +552,7 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            platform_name:
-                                                platform === CFD_PLATFORMS.MT5
-                                                    ? 'MT5'
-                                                    : platform === CFD_PLATFORMS.DXTRADE
-                                                    ? 'Deriv X'
-                                                    : 'cTrader',
+                                            platform_name: getCFDPlatformNames(platform),
                                             account: account_title,
                                         }}
                                     />

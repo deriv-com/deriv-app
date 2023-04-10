@@ -12,7 +12,7 @@ import {
 } from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile, OSDetect } from '@deriv/shared';
+import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
 
 export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
@@ -30,11 +30,13 @@ export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'a
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
     const qr_code_mobile = isMobile() ? '100%' : '80%';
+    const os = OSDetect();
+    const checkForDesktop = isDesktopOs() ? (os === 'mac' ? 'ios' : 'android') : os;
 
     return (
         <React.Fragment>
             <QRCode
-                value={mobileDownloadLink(acc_type, OSDetect())}
+                value={mobileDownloadLink(acc_type, checkForDesktop)}
                 size={5}
                 style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
             />

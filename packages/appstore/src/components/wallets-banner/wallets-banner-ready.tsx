@@ -1,11 +1,12 @@
 import React from 'react';
-import WalletsImage, { WalletsImagesList } from 'Assets/svgs/wallets';
+import WalletsImage from 'Assets/svgs/wallets';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
+import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
 
 const WalletsBannerReady = () => {
-    const banner: keyof typeof WalletsImagesList = isMobile() ? 'UpgradeMobile' : 'UpgradeDesktop';
+    const image: TWalletsImagesListKeys = isMobile() ? 'ready_mobile' : 'ready_desktop';
     const size: string = isMobile() ? 'xs' : 'm';
 
     return (
@@ -25,7 +26,7 @@ const WalletsBannerReady = () => {
                     large={!isMobile()}
                 />
             </div>
-            <WalletsImage banner={banner} className={'wallets-banner__image'} />
+            <WalletsImage image={image} className={'wallets-banner__image'} />
         </div>
     );
 };

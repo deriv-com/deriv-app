@@ -33,7 +33,7 @@ export const jurisdictionBviContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize(
                 'British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114)'
@@ -78,7 +78,7 @@ export const jurisdictionBviContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize(
                 'British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114)'

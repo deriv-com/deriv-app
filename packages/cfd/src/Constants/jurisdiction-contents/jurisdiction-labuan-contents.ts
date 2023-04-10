@@ -21,7 +21,7 @@ export const jurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
         },
@@ -64,7 +64,7 @@ export const jurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Labuan Financial Services Authority (licence no. MB/18/0024)')}`,
         },

@@ -32,7 +32,7 @@ export const jurisdictionSvgContents = (): TJurisdictionCardItems => ({
             )}`,
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
         },
@@ -74,7 +74,7 @@ export const jurisdictionSvgContents = (): TJurisdictionCardItems => ({
             )}`,
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
         },

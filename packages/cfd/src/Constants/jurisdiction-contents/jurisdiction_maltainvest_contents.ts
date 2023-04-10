@@ -42,7 +42,7 @@ export const jurisdictionMaltainvestContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
         },
@@ -85,7 +85,7 @@ export const jurisdictionMaltainvestContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')}`,
         },

@@ -33,7 +33,7 @@ export const jurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Vanuatu Financial Services Commission')}`,
         },
@@ -76,7 +76,7 @@ export const jurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             ],
         },
         {
-            key: 'regulatorEdr',
+            key: 'regulator',
             title: `${localize('Regulator/EDR')}`,
             description: `${localize('Vanuatu Financial Services Commission')}`,
         },

@@ -216,18 +216,16 @@ export default class PaymentAgentStore {
             this.list.forEach(payment_agent => {
                 const supported_banks = payment_agent?.supported_banks;
                 if (supported_banks) {
-                    let to_include = false;
-                    supported_banks.forEach(supported_bank => {
-                        if (
-                            !to_include &&
-                            supported_bank.payment_method
-                                ?.toLowerCase()
-                                .indexOf((bank || this.selected_bank) as string) !== -1
-                        ) {
-                            to_include = true;
-                        }
-                    });
-                    if (to_include) this.filtered_list.push(payment_agent);
+                    const bank_index = supported_banks
+                        .map(supported_bank =>
+                            getNormalizedPaymentMethod(
+                                supported_bank.payment_method,
+                                Constants.payment_methods
+                            ).toLowerCase()
+                        )
+                        .indexOf(bank || this.selected_bank);
+
+                    if (bank_index !== -1) this.filtered_list.push(payment_agent);
                 }
             });
         } else {

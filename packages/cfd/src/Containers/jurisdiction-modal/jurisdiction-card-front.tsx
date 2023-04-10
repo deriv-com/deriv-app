@@ -28,7 +28,7 @@ const JurisdictionCardFront = ({
         <Text
             as='p'
             weight='bold'
-            color={'prominent'}
+            color='prominent'
             align='center'
             size='xsm'
             className={`${card_classname}__h2-header`}

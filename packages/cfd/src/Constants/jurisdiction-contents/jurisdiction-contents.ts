@@ -13,10 +13,10 @@ type TJurisdictionContent = {
     bvi: TJurisdictionCardItems;
 };
 
-export const jurisdiction_contents: TJurisdictionContent = {
+export const jurisdiction_contents = (): TJurisdictionContent => ({
     svg: jurisdictionSvgContents(),
     bvi: jurisdictionBviContents(),
     vanuatu: jurisdictionVanuatuContents(),
     labuan: jurisdictionLabuanContents(),
     maltainvest: jurisdictionMaltainvestContents(),
-};
+});

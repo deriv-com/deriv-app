@@ -67,21 +67,23 @@ const FooterNote = ({
 };
 
 const JurisdictionModalFootNote = (props: TJurisdictionModalFootNoteProps) => {
-    return props.jurisdiction_selected_shortcode ? (
-        <div data-testid='dt-jurisdiction-footnote' className={`${props.card_classname}__footnote`}>
-            <Text
-                as='p'
-                color='prominent'
-                align='center'
-                size={isMobile() ? 'xxs' : 'xs'}
-                weight='bold'
-                line_height='xs'
-            >
-                <FooterNote {...props} />
-            </Text>
-        </div>
-    ) : (
-        <React.Fragment />
+    return (
+        <React.Fragment>
+            {props.jurisdiction_selected_shortcode && (
+                <div data-testid='dt-jurisdiction-footnote' className={`${props.card_classname}__footnote`}>
+                    <Text
+                        as='p'
+                        color='prominent'
+                        align='center'
+                        size={isMobile() ? 'xxs' : 'xs'}
+                        weight='bold'
+                        line_height='xs'
+                    >
+                        <FooterNote {...props} />
+                    </Text>
+                </div>
+            )}
+        </React.Fragment>
     );
 };
 

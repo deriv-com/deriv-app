@@ -285,6 +285,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            is_real_wallets_upgrade_on: false,
+            toggleWalletsUpgrade: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

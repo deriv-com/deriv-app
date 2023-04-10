@@ -64,7 +64,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         refreshNotifications,
         has_submitted_cfd_personal_details,
         jurisdiction_selected_shortcode,
-        // is_authenticated_with_idv_photoid,
     } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');

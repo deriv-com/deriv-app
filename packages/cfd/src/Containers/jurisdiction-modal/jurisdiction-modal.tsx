@@ -1,6 +1,5 @@
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
-
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';

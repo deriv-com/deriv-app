@@ -16,7 +16,6 @@ import {
 import { Field, FieldProps, Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
 import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
 import { WS, isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
-
 import { InputField } from './cfd-personal-details-form';
 import React from 'react';
 import { localize } from '@deriv/translations';
@@ -85,7 +84,6 @@ export type TCFDPOAProps = {
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
-    // is_authenticated_with_idv_photoid: boolean;
     jurisdiction_selected_shortcode: string;
 };
 type TUpload = {
@@ -100,7 +98,6 @@ const CFDPOA = ({
     onSubmit,
     refreshNotifications,
     jurisdiction_selected_shortcode,
-    // is_authenticated_with_idv_photoid,
     ...props
 }: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isMobile, isDesktop } from '@deriv/shared';
-import WalletsConsentPopup from './wallets-consent-popup';
+import ReadyToUpdateWallets from 'Components/ready-to-update-wallets';
 import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
@@ -15,7 +15,7 @@ export const mockRootStore = mockStore({
     traders_hub: { show_wallet_consent_popup: true, setShouldShowWalletConsentPopup: jest.fn() },
 });
 
-describe('<WalletsConsentPopup />', () => {
+describe('<ReadyToUpdateWallets />', () => {
     let modal_root_el: HTMLDivElement;
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -29,12 +29,7 @@ describe('<WalletsConsentPopup />', () => {
     it('should render modal', () => {
         render(
             <StoreProvider store={mockRootStore}>
-                <WalletsConsentPopup
-                    show_wallet_consent_popup
-                    setShouldShowWalletConsentPopup={jest.fn()}
-                    is_eu={false}
-                    is_high_risk={false}
-                />
+                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
             </StoreProvider>
         );
         expect(screen.getByText('Ready to upgrade?')).toBeInTheDocument();
@@ -43,12 +38,7 @@ describe('<WalletsConsentPopup />', () => {
     it('should not disabled button when the checkbox is active', async () => {
         render(
             <StoreProvider store={mockRootStore}>
-                <WalletsConsentPopup
-                    show_wallet_consent_popup
-                    setShouldShowWalletConsentPopup={jest.fn()}
-                    is_eu={false}
-                    is_high_risk={false}
-                />
+                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
             </StoreProvider>
         );
 
@@ -62,12 +52,7 @@ describe('<WalletsConsentPopup />', () => {
     it('should render info section based on clients country and risk status', () => {
         render(
             <StoreProvider store={mockRootStore}>
-                <WalletsConsentPopup
-                    show_wallet_consent_popup
-                    setShouldShowWalletConsentPopup={jest.fn()}
-                    is_eu={false}
-                    is_high_risk={false}
-                />
+                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
             </StoreProvider>
         );
         expect(
@@ -86,12 +71,7 @@ describe('<WalletsConsentPopup />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(
             <StoreProvider store={mockRootStore}>
-                <WalletsConsentPopup
-                    show_wallet_consent_popup
-                    setShouldShowWalletConsentPopup={jest.fn()}
-                    is_eu={false}
-                    is_high_risk={false}
-                />
+                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
             </StoreProvider>
         );
     });

@@ -19,7 +19,7 @@ import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
-import WalletsConsentPopup from 'Components/wallets-consent-popup';
+import ReadyToUpdateWallets from 'Components/ready-to-update-wallets';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -64,13 +64,7 @@ const ModalManager = () => {
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
     } = ui;
-    const {
-        is_demo,
-        is_account_transfer_modal_open,
-        toggleAccountTransferModal,
-        show_wallet_consent_popup,
-        setShouldShowWalletConsentPopup,
-    } = traders_hub;
+    const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
     const [password_manager, setPasswordManager] = React.useState<{
         is_visible: boolean;
@@ -134,12 +128,8 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
-            <WalletsConsentPopup
-                show_wallet_consent_popup={show_wallet_consent_popup}
-                setShouldShowWalletConsentPopup={setShouldShowWalletConsentPopup}
-                is_eu={is_eu}
-                is_high_risk={is_high_risk}
-            />
+            {/* TODO: Once everything is merged place this in main component */}
+            <ReadyToUpdateWallets is_eu={is_eu} is_high_risk={is_high_risk} />
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />

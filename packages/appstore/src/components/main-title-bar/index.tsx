@@ -12,7 +12,13 @@ import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switche
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
-    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
+    const {
+        selected_region,
+        handleTabItemClick,
+        toggleRegulatorsCompareModal,
+        content_flag,
+        setShouldShowWalletConsentPopup,
+    } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
@@ -22,6 +28,8 @@ const MainTitleBar = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
+                {/* TODO: This is for testing purposes only */}
+                <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold'>

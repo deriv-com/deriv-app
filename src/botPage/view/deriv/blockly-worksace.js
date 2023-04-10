@@ -171,7 +171,6 @@ const addBindings = blockly => {
 
     const clearActiveTokens = () => {
         setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
-        setStorage('active_loginid', null);
         syncWithDerivApp();
     };
 

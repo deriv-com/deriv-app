@@ -9,6 +9,7 @@ import {
     removeAllTokens,
     syncWithDerivApp,
     set as setStorage,
+    get as getStorage,
 } from '../../../../../common/utils/storageManager';
 import {
     updateIsLogged,
@@ -93,9 +94,16 @@ const Header = () => {
         if (active_storage_token) {
             api.authorize(active_storage_token.token)
                 .then(account => {
-                    const active_loginid = account.authorize.loginid;
-                    setStorage('active_loginid', active_loginid);
-                    updateTokenList();
+                    const active_loginid = account.authorize.account_list;
+                    const current_login_id = getStorage('active_loginid') || '';
+                    active_loginid.forEach(acc => {
+                        if (current_login_id === acc.loginid) {
+                            setStorage('active_loginid', current_login_id);
+                        } else {
+                            setStorage('active_loginid', account.authorize.loginid);
+                        }
+                        updateTokenList();
+                    });
                     if (account?.error?.code) return;
                     dispatch(updateActiveToken(active_storage_token.token));
                     dispatch(updateActiveAccount(account.authorize));

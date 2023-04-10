@@ -15,7 +15,9 @@ const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStor
 
     useEffect(() => {
         return () => {
-            memoizedValue.exchange_rates.unmount();
+            Object.values(memoizedValue).forEach(value => {
+                if ('unmount' in value) value.unmount();
+            });
         };
     }, [memoizedValue]);
 

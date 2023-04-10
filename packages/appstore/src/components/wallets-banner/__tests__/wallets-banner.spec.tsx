@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { isMobile } from '@deriv/shared';
 import WalletsBannerUpgrade from '../wallets-banner-upgrade';
+import { TImageTestID } from 'Assets/svgs/wallets/image-types';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -11,6 +12,9 @@ jest.mock('@deriv/shared', () => ({
 
 describe('<WalletsBanner />', () => {
     describe('<WalletsBannerUpgrade />', () => {
+        const desktop: TImageTestID = 'dt_upgrade_desktop';
+        const mobile: TImageTestID = 'dt_upgrade_mobile';
+
         it('Should render properly with right banner if status is eligible', () => {
             render(<WalletsBannerUpgrade />);
             const btn = screen.queryByText('Upgrade now');
@@ -21,17 +25,21 @@ describe('<WalletsBanner />', () => {
         it('Should render image properly for desktop', () => {
             isMobile.mockReturnValue(false);
             render(<WalletsBannerUpgrade />);
-            const image = screen.queryByTestId('UpgradeDesktop');
+            const desktop_image = screen.queryByTestId(desktop);
+            const mobile_image = screen.queryByTestId(mobile);
 
-            expect(image).toBeInTheDocument();
+            expect(desktop_image).toBeInTheDocument();
+            expect(mobile_image).not.toBeInTheDocument();
         });
 
         it('Should render image properly for mobile', () => {
             isMobile.mockReturnValue(true);
             render(<WalletsBannerUpgrade />);
-            const image = screen.queryByTestId('UpgradeMobile');
+            const desktop_image = screen.queryByTestId(desktop);
+            const mobile_image = screen.queryByTestId(mobile);
 
-            expect(image).toBeInTheDocument();
+            expect(mobile_image).toBeInTheDocument();
+            expect(desktop_image).not.toBeInTheDocument();
         });
     });
 });

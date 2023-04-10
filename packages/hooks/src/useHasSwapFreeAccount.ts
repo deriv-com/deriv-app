@@ -1,6 +1,6 @@
 import { useStore } from '@deriv/stores';
 
-const useSwapFreeAccount = () => {
+const useHasSwapFreeAccount = () => {
     const { client } = useStore();
     const { trading_platform_available_accounts } = client;
     const has_swapfree_account = trading_platform_available_accounts.some(
@@ -10,4 +10,4 @@ const useSwapFreeAccount = () => {
     return has_swapfree_account;
 };
 
-export default useSwapFreeAccount;
+export default useHasSwapFreeAccount;

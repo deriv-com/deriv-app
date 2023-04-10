@@ -168,6 +168,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             .filter(type => type.value !== 'rise_fall_equal')
             .findIndex(type => type.value === item?.value);
     };
+
     return (
         <div
             data-testid='dt_contract_widget'

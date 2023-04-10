@@ -10,7 +10,7 @@ import TradingPlatformIcon from 'Assets/wallets';
 
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStores();
-    const { is_real_wallets_upgrade_on, closeRealWalletsUpgrade, content_flag } = traders_hub;
+    const { is_real_wallets_upgrade_on, toggleWalletsUpgrade, content_flag } = traders_hub;
     const [currentStep, setCurrentStep] = React.useState(1);
 
     const eu_user = content_flag === ContentFlag.EU_REAL;
@@ -45,7 +45,13 @@ const RealWalletsUpgrade = () => {
                 />
             ),
             footerActions: [
-                <Button key={0} text={localize('Maybe later')} onClick={closeRealWalletsUpgrade} secondary large />,
+                <Button
+                    key={0}
+                    text={localize('Maybe later')}
+                    onClick={() => toggleWalletsUpgrade(false)}
+                    secondary
+                    large
+                />,
                 <Button key={1} text={localize('Next')} onClick={handleNext} primary large />,
             ],
         },
@@ -86,7 +92,7 @@ const RealWalletsUpgrade = () => {
             ),
             footerActions: [
                 <Button key={0} text={localize('Back')} onClick={handleBack} secondary large />,
-                <Button key={1} text={localize('Next')} onClick={closeRealWalletsUpgrade} primary large />,
+                <Button key={1} text={localize('Next')} onClick={() => toggleWalletsUpgrade(false)} primary large />,
             ],
         },
     ];
@@ -98,7 +104,7 @@ const RealWalletsUpgrade = () => {
                     <DesktopWrapper>
                         <Modal
                             is_open={is_real_wallets_upgrade_on}
-                            toggleModal={closeRealWalletsUpgrade}
+                            toggleModal={() => toggleWalletsUpgrade(false)}
                             height='734px'
                             width='1200px'
                             elements_to_ignore={[document.querySelector('.modal-root')]}
@@ -125,7 +131,7 @@ const RealWalletsUpgrade = () => {
                         <MobileDialog
                             portal_element_id='modal_root'
                             visible={is_real_wallets_upgrade_on}
-                            onClose={closeRealWalletsUpgrade}
+                            onClose={() => toggleWalletsUpgrade(false)}
                             wrapper_classname='wallet-steps'
                         >
                             {steps.map((step, index) => {

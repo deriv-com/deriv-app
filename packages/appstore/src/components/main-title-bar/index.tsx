@@ -12,7 +12,7 @@ import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switche
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStores();
-    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag, openRealWalletsUpgrade } =
+    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag, toggleWalletsUpgrade } =
         traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
@@ -24,7 +24,7 @@ const MainTitleBar = () => {
         <React.Fragment>
             <Button
                 className='dc-dialog__button'
-                onClick={openRealWalletsUpgrade}
+                onClick={() => toggleWalletsUpgrade(true)}
                 has_effect
                 text={localize('Upgrade Wallets')}
                 primary

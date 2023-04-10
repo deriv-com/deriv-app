@@ -82,8 +82,6 @@ export default class TradersHubStore extends BaseStore {
             no_MF_account: computed,
             multipliers_account_status: computed,
             financial_restricted_countries: computed,
-            openRealWalletsUpgrade: action.bound,
-            closeRealWalletsUpgrade: action.bound,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -106,6 +104,7 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
+            toggleWalletsUpgrade: action.bound,
         });
 
         reaction(
@@ -794,11 +793,7 @@ export default class TradersHubStore extends BaseStore {
         openTopUpModal();
     }
 
-    openRealWalletsUpgrade() {
-        this.is_real_wallets_upgrade_on = true;
-    }
-
-    closeRealWalletsUpgrade() {
-        this.is_real_wallets_upgrade_on = false;
+    toggleWalletsUpgrade(value) {
+        this.is_real_wallets_upgrade_on = value;
     }
 }

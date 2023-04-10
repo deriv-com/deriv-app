@@ -1,4 +1,4 @@
-import { getPlatformFromUrl, getUrlBase } from '@deriv/shared';
+import { getUrlBase } from '@deriv/shared';
 
 export const documentAdditionalError = (document_additional, document_additional_format) => {
     let error_message = null;
@@ -172,10 +172,3 @@ const idv_document_data = {
         },
     },
 };
-
-export const idv_test_document_whitelist = new Map([
-    ['gh', { drivers_license: 'B0000000', passport: 'G0000000', ssnit: 'C000000000000', voter_id: '0000000000' }],
-    ['ke', { alien_card: '000000', passport: 'A00000000', national_id: '00000000' }],
-    ['ng', { drivers_license: 'ABC000000000', nin_slip: '00000000000', voter_id: '0000000000000000000' }],
-    ['za', { national_id: '0000000000000', national_id_no_photo: '0000000000000' }],
-]);

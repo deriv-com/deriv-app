@@ -19,7 +19,6 @@ import {
     getDocumentData,
     getRegex,
     preventEmptyClipboardPaste,
-    isIDVWhitelistDocumentNumber,
 } from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 

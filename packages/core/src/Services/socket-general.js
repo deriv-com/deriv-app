@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { flow } from 'mobx';
-import { getLanguage, localize } from '@deriv/translations';
-import { State, getActivePlatform, getPropertyValue, routes, getActionFromUrl, redirectToLogin } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { State, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
@@ -213,18 +213,16 @@ const BinarySocketGeneral = (() => {
                 // DBot handles this internally. Special case: 'client.invalid_token'
                 if (active_platform === 'DBot') return;
 
-                client_store.logout().then(() => {
-                    let redirect_to = routes.trade;
-                    const action = getActionFromUrl();
-                    if (action === 'system_email_change') {
-                        redirectToLogin(false, getLanguage());
-                        return;
-                    }
-                    if (active_platform === 'Deriv MT5') {
-                        redirect_to = routes.mt5;
-                    }
-                    common_store.routeTo(redirect_to);
-                });
+                // const action = getActionFromUrl();
+                if (getActionFromUrl() !== 'system_email_change') {
+                    client_store.logout().then(() => {
+                        let redirect_to = routes.trade;
+                        if (active_platform === 'Deriv MT5') {
+                            redirect_to = routes.mt5;
+                        }
+                        common_store.routeTo(redirect_to);
+                    });
+                }
                 break;
             case 'AuthorizationRequired':
                 // if msg_type is coming from 'buy', behaviour should be handled in app itself.

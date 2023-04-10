@@ -17,17 +17,6 @@ const UpdateEmailModal = ({
     const [is_email_updated, setIsEmailUpdated] = React.useState(false);
     const [update_email_error, setUpdateEmailMessage] = React.useState(null);
 
-    const onClickButton = () => {
-        toggleUpdateEmailModal(false);
-        if (is_logged_in) {
-            logoutClient().then(() => {
-                redirectToLogin(false, getLanguage(), false);
-            });
-        } else {
-            redirectToLogin(false, getLanguage(), false);
-        }
-    };
-
     const api_request = {
         change_email: 'update',
         new_email,
@@ -82,7 +71,13 @@ const UpdateEmailModal = ({
                         />
                     </Text>
                     <Modal.Footer className='change-email-update__footer'>
-                        <Button onClick={onClickButton} has_effect text={localize('Log in')} primary large />
+                        <Button
+                            onClick={() => redirectToLogin(false, getLanguage())}
+                            has_effect
+                            text={localize('Log in')}
+                            primary
+                            large
+                        />
                     </Modal.Footer>
                 </div>
             ) : (

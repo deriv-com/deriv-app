@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { flow } from 'mobx';
-import { State, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
+import { State, getActivePlatform, getPropertyValue, routes, getActionFromUrl, redirectToLogin } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
@@ -217,6 +217,7 @@ const BinarySocketGeneral = (() => {
                     let redirect_to = routes.trade;
                     const action = getActionFromUrl();
                     if (action === 'system_email_change') {
+                        redirectToLogin(false, getLanguage());
                         return;
                     }
                     if (active_platform === 'Deriv MT5') {

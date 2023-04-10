@@ -20,9 +20,9 @@ jest.mock('@deriv/components', () => {
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     usePaymentAgentTransferVisible: jest.fn(() => ({
-        is_payment_agent_transfer_visible: true,
-        is_loading: false,
-        is_success: true,
+        data: true,
+        isLoading: false,
+        isSuccess: true,
     })),
 }));
 

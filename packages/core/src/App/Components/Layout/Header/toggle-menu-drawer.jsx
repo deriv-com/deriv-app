@@ -188,7 +188,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
-    const { is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
+    const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const liveChat = useLiveChat();
     const [is_open, setIsOpen] = React.useState(false);

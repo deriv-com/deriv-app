@@ -63,9 +63,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = general_store;
     const { is_crypto_transactions_visible } = transaction_history;
     const {
-        is_payment_agent_transfer_visible,
-        is_loading: is_payment_agent_checking,
-        is_success,
+        data: is_payment_agent_transfer_visible,
+        isLoading: is_payment_agent_checking,
+        isSuccess: is_success,
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
     const { resetLastLocation } = account_prompt_dialog;

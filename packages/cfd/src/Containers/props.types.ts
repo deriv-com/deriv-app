@@ -174,17 +174,11 @@ export type TJurisdictionCardProps = {
 };
 
 export type TVerificationStatusBannerProps = {
-    account_status: GetAccountStatus;
     account_type: string;
     context: RootStore;
     card_classname: string;
     disabled: boolean;
-    is_virtual: boolean;
     type_of_card: string;
-    real_synthetic_accounts_existing_data: TExistingData;
-    real_financial_accounts_existing_data: TExistingData;
-    should_restrict_bvi_account_creation: boolean;
-    should_restrict_vanuatu_account_creation: boolean;
 };
 
 export type TJurisdictionCheckBoxProps = {

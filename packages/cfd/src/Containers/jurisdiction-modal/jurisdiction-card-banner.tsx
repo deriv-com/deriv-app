@@ -1,24 +1,28 @@
 import React from 'react';
-import RootStore from '../../Stores/index';
-import { connect } from '../../Stores/connect';
 import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TVerificationStatusBannerProps } from '../props.types';
+import { observer, useStore } from '@deriv/stores';
 
 const VerificationStatusBanner = ({
-    account_status,
     account_type,
     card_classname,
     disabled,
-    context,
-    is_virtual,
     type_of_card,
-    should_restrict_bvi_account_creation,
-    should_restrict_vanuatu_account_creation,
-    real_synthetic_accounts_existing_data,
-    real_financial_accounts_existing_data,
 }: TVerificationStatusBannerProps) => {
+    const {
+        client: {
+            account_status,
+            is_virtual,
+            should_restrict_bvi_account_creation,
+            should_restrict_vanuatu_account_creation,
+        },
+        modules: {
+            cfd: { real_financial_accounts_existing_data, real_synthetic_accounts_existing_data },
+        },
+    } = useStore();
+
     const {
         poi_not_submitted_for_vanuatu_maltainvest,
         poi_and_poa_not_submitted,
@@ -188,11 +192,4 @@ const JurisdictionCardBanner = (props: TVerificationStatusBannerProps) => {
     );
 };
 
-export default connect(({ modules: { cfd }, client }: RootStore) => ({
-    account_status: client.account_status,
-    is_virtual: client.is_virtual,
-    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
-    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
-    real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
-    real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
-}))(JurisdictionCardBanner);
+export default observer(JurisdictionCardBanner);

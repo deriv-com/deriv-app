@@ -188,6 +188,8 @@ type TClientStore = {
     account_settings: GetSettings;
     residence_list: ResidenceList;
     is_high_risk: boolean;
+    should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
 };
 
 type TCommonStoreError = {
@@ -291,6 +293,8 @@ type TModuleStore = {
             real: string;
         };
         mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
+        real_synthetic_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
+        real_financial_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     };
 };
 

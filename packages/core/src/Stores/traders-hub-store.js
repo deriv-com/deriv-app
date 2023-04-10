@@ -360,6 +360,14 @@ export default class TradersHubStore extends BaseStore {
                 : localize(
                       'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
                   );
+        const swapfree_account_desc =
+            !this.is_eu_user || this.is_demo_low_risk
+                ? localize(
+                      'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
+                  )
+                : localize(
+                      'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                  );
 
         const all_available_accounts = [
             ...getCFDAvailableAccount(),
@@ -370,6 +378,14 @@ export default class TradersHubStore extends BaseStore {
                 market_type: 'financial',
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
                 availability: 'All',
+            },
+            {
+                name: !this.is_eu_user || this.is_demo_low_risk ? localize('Swap-Free') : localize('CFDs'),
+                description: swapfree_account_desc,
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'all',
+                icon: !this.is_eu_user || this.is_demo_low_risk ? 'SwapFree' : 'CFDs',
+                availability: 'Non-EU',
             },
         ];
         this.available_cfd_accounts = all_available_accounts.map(account => {
@@ -438,6 +454,9 @@ export default class TradersHubStore extends BaseStore {
 
                 if (platform === CFD_PLATFORMS.MT5 && !this.is_eu_user && !maltainvest_account) {
                     return key.startsWith(`${platform}.${selected_account_type}.${market_type}`);
+                }
+                if (platform === CFD_PLATFORMS.MT5 && market_type === 'all') {
+                    return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
                 if (platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
                     return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
@@ -569,8 +588,11 @@ export default class TradersHubStore extends BaseStore {
             this.is_real &&
             !this.is_eu_user &&
             (this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'synthetic') ||
-                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'financial')) &&
-            (isEligibleForMoreRealMt5('synthetic') || isEligibleForMoreRealMt5('financial')) &&
+                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'financial') ||
+                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'all')) &&
+            (isEligibleForMoreRealMt5('synthetic') ||
+                isEligibleForMoreRealMt5('financial') ||
+                isEligibleForMoreRealMt5('all')) &&
             !is_high_risk_client_for_mt5
         );
     }

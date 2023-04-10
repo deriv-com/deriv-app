@@ -5,21 +5,11 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { useStores } from 'Stores/index';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { TModalContent, TAccountType, TAccountCard, TTradingPlatformAvailableAccount } from './types';
+import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
-
-const derived_account: TAccountType = {
-    title_and_type: localize('Derived'),
-    icon: 'Derived',
-    description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
-};
-
-const financial_account: TAccountType = {
-    title_and_type: localize('Financial'),
-    icon: 'Financial',
-    description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
-};
+import { getDerivedAccount, getFinancialAccount, getSwapFreeAccount } from '../../../helpers/account-helper';
+import { useSwapFreeAccount } from '@deriv/hooks';
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
@@ -54,25 +44,35 @@ const ModalContent = ({
     selectAccountTypeCard,
     is_financial_available,
     is_synthetic_available,
+    is_swapfree_available,
 }: TModalContent) => {
     return (
         <div className='account-type-card__wrapper'>
             {is_synthetic_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${derived_account.title_and_type}`)}
-                    description={derived_account.description}
-                    title_and_type={derived_account.title_and_type}
-                    icon={derived_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getDerivedAccount().title_and_type}`)}
+                    description={getDerivedAccount().description}
+                    title_and_type={getDerivedAccount().title_and_type}
+                    icon={getDerivedAccount().icon}
                 />
             )}
             {is_financial_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${financial_account.title_and_type}`)}
-                    description={financial_account.description}
-                    title_and_type={financial_account.title_and_type}
-                    icon={financial_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getFinancialAccount().title_and_type}`)}
+                    description={getFinancialAccount().description}
+                    title_and_type={getFinancialAccount().title_and_type}
+                    icon={getFinancialAccount().icon}
+                />
+            )}
+            {is_swapfree_available && (
+                <AccountCard
+                    account_type_card={account_type_card}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getSwapFreeAccount().title_and_type}`)}
+                    description={getSwapFreeAccount().description}
+                    title_and_type={getSwapFreeAccount().title_and_type}
+                    icon={getSwapFreeAccount().icon}
                 />
             )}
         </div>
@@ -92,6 +92,13 @@ const MT5AccountTypeModal = () => {
     const { trading_platform_available_accounts } = client;
     const { enableApp, disableApp } = ui;
     const { setAppstorePlatform } = common;
+
+    React.useEffect(() => {
+        if (!is_account_type_modal_visible) {
+            selectAccountTypeCard('');
+        }
+    }, [is_account_type_modal_visible, selectAccountTypeCard]);
+
     const is_financial_available = trading_platform_available_accounts.some(
         (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'financial'
     );
@@ -99,11 +106,22 @@ const MT5AccountTypeModal = () => {
     const is_synthetic_available = trading_platform_available_accounts.some(
         (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'gaming'
     );
+    const is_swapfree_available = useSwapFreeAccount();
 
-    const set_account_type = () =>
-        account_type_card === 'Derived'
-            ? setAccountType({ category: 'real', type: 'synthetic' })
-            : setAccountType({ category: 'real', type: 'financial' });
+    const set_account_type = () => {
+        switch (account_type_card) {
+            case localize('Derived'):
+                setAccountType({ category: 'real', type: 'synthetic' });
+                break;
+            case localize('Swap-Free'):
+                setAccountType({ category: 'real', type: 'all' });
+                break;
+            case localize('Financial'):
+            default:
+                setAccountType({ category: 'real', type: 'financial' });
+                break;
+        }
+    };
 
     return (
         <div>
@@ -126,6 +144,7 @@ const MT5AccountTypeModal = () => {
                             selectAccountTypeCard={selectAccountTypeCard}
                             is_financial_available={is_financial_available}
                             is_synthetic_available={is_synthetic_available}
+                            is_swapfree_available={is_swapfree_available}
                         />
                         <Modal.Footer has_separator>
                             <Button
@@ -155,6 +174,7 @@ const MT5AccountTypeModal = () => {
                             selectAccountTypeCard={selectAccountTypeCard}
                             is_financial_available={is_financial_available}
                             is_synthetic_available={is_synthetic_available}
+                            is_swapfree_available={is_swapfree_available}
                         />
                         <Modal.Footer has_separator>
                             <Button

@@ -4,12 +4,15 @@ import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
 import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TTradingPlatformAvailableAccount } from '../../types';
 import { TCFDDashboardContainer } from '../Components/props.types';
 import DMT5TradeModal from './dmt5-trade-modal';
 import DerivXTradeModal from './derivx-trade-modal';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
+    mt5_trade_account: Required<
+        DetailsOfEachMT5Loginid & { market_type?: TTradingPlatformAvailableAccount['market_type'] | 'synthetic' }
+    >;
     is_eu_user: boolean;
     is_open: boolean;
     onPasswordManager: (

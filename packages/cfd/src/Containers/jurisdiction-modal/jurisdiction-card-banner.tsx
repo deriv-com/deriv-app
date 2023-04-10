@@ -18,6 +18,7 @@ const VerificationStatusBanner = ({
     should_restrict_vanuatu_account_creation,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
+    real_swapfree_accounts_existing_data,
 }: TVerificationStatusBannerProps) => {
     const {
         poi_not_submitted_for_vanuatu_maltainvest,
@@ -62,10 +63,22 @@ const VerificationStatusBanner = ({
         }
     };
 
-    const isAccountCreated = () =>
-        account_type === 'synthetic'
-            ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
-            : real_financial_accounts_existing_data?.some(account => account.landing_company_short === type_of_card);
+    const isAccountCreated = () => {
+        switch (account_type) {
+            case 'synthetic':
+                return real_synthetic_accounts_existing_data?.some(
+                    account => account.landing_company_short === type_of_card
+                );
+            case 'all':
+                return real_swapfree_accounts_existing_data?.some(
+                    account => account.landing_company_short === type_of_card
+                );
+            default:
+                return real_financial_accounts_existing_data?.some(
+                    account => account.landing_company_short === type_of_card
+                );
+        }
+    };
 
     if (disabled && isAccountCreated()) {
         // account added
@@ -195,4 +208,5 @@ export default connect(({ modules: { cfd }, client }: RootStore) => ({
     should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
+    real_swapfree_accounts_existing_data: cfd.real_swapfree_accounts_existing_data,
 }))(JurisdictionCardBanner);

@@ -52,7 +52,7 @@ export type TCFDAccountCardActionProps = {
 };
 
 export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
+    market_type: 'financial' | 'gaming' | 'all';
     name: string;
     requirements: {
         after_first_deposit: {
@@ -79,8 +79,10 @@ export type TCFDAccountCard = {
         real: string;
     };
     is_hovered?: boolean;
-    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
-    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
+    isEligibleForMoreDemoMt5Svg: (
+        market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic'
+    ) => boolean;
+    isEligibleForMoreRealMt5: (market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic') => boolean;
     existing_accounts_data?: TExistingData;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
@@ -158,9 +160,9 @@ export type TTradingPlatformAccounts = {
     /**
      * Market type
      */
-    market_type?: 'financial' | 'synthetic';
+    market_type?: 'financial' | 'synthetic' | 'all';
     /**
      * Name of trading platform.
      */
-    platform?: 'dxtrade';
+    platform?: 'dxtrade' | string;
 };

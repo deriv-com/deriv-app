@@ -667,12 +667,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             <SwitchToRealAccountModal />
                             <JurisdictionModal openPasswordModal={openRealPasswordModal} />
                             <MT5TradeModal
-                                current_list={current_list}
                                 is_open={is_mt5_trade_modal_visible}
                                 onPasswordManager={togglePasswordManagerModal}
                                 toggleModal={toggleMT5TradeModal}
                                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
-                                platform={platform}
                             />
                             <div className='cfd-dashboard__maintenance'>
                                 <Icon

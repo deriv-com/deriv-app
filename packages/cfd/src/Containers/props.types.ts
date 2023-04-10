@@ -164,7 +164,6 @@ export type TCFDPasswordManagerModal = {
 
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
-    context: RootStore;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -175,7 +174,6 @@ export type TJurisdictionCardProps = {
 
 export type TVerificationStatusBannerProps = {
     account_type: string;
-    context: RootStore;
     card_classname: string;
     disabled: boolean;
     type_of_card: string;
@@ -183,7 +181,6 @@ export type TVerificationStatusBannerProps = {
 
 export type TJurisdictionCheckBoxProps = {
     class_name: string;
-    context: RootStore;
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
@@ -196,23 +193,10 @@ type TOpenAccountTransferMeta = {
 };
 
 export type TJurisdictionModalProps = {
-    account_status: GetAccountStatus;
-    context: RootStore;
-    disableApp: () => void;
-    enableApp: () => void;
-    is_virtual: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    should_restrict_bvi_account_creation: boolean;
-    should_restrict_vanuatu_account_creation: boolean;
-    show_eu_related_content: boolean;
-    toggleCFDVerificationModal: () => void;
-    real_synthetic_accounts_existing_data: TExistingData;
-    real_financial_accounts_existing_data: TExistingData;
 };
 
 export type TJurisdictionModalContentProps = {
-    context: RootStore;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -227,7 +211,6 @@ export type TJurisdictionModalFootNoteProps = {
     account_status: GetAccountStatus;
     account_type: string;
     card_classname: string;
-    context: RootStore;
     jurisdiction_selected_shortcode: string;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
@@ -264,44 +247,20 @@ export type TCompareAccountContentProps = {
 export type TCompareAccountFooterButtonData = { label: string; action: string };
 
 export type TDMT5CompareModalContentProps = {
-    account_settings: GetSettings;
-    account_status: GetAccountStatus;
-    account_type: TOpenAccountTransferMeta;
-    clearCFDError: () => void;
     content_flag: string;
-    context: RootStore;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
-    has_real_account: boolean;
     is_demo_tab: boolean;
     is_logged_in: boolean;
     is_pre_appstore_setting: boolean;
     is_preappstore_cr_demo_account: boolean;
     is_preappstore_restricted_cr_demo_account: boolean;
     is_real_enabled: boolean;
-    is_virtual: boolean;
     openDerivRealAccountNeededModal: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    openSwitchToRealAccountModal: () => void;
     real_account_creation_unlock_date: string;
-    setAccountSettings: (get_settings_response: GetSettings) => void;
-    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
-    setAppstorePlatform: (platform: string) => void;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
-    should_restrict_bvi_account_creation: boolean;
-    should_restrict_vanuatu_account_creation: boolean;
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
-    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
-    toggleCFDVerificationModal: () => void;
     toggleCompareAccounts: () => void;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    updateMT5Status: () => void;
-    upgradeable_landing_companies: unknown[];
-    no_CR_account: boolean;
-    is_eu_user: boolean;
-    no_MF_account: boolean;
-    financial_restricted_countries: string[];
 };
 
 export type TCFDDbviOnboardingProps = {

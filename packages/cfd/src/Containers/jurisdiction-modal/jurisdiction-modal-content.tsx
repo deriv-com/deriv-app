@@ -9,7 +9,6 @@ const JurisdictionModalContent = ({
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
     financial_available_accounts,
-    context,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
 }: TJurisdictionModalContentProps) => {
@@ -38,7 +37,6 @@ const JurisdictionModalContent = ({
                             <JurisdictionCard
                                 key={`${account_type}_${card}`}
                                 type_of_card={card}
-                                context={context}
                                 disabled={disableCard(card)}
                                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                                 synthetic_available_accounts={synthetic_available_accounts}

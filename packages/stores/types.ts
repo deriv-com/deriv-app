@@ -120,7 +120,9 @@ type TClientStore = {
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
+    is_eu_country: boolean;
     is_eu: boolean;
+    is_uk: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
@@ -208,6 +210,11 @@ type TClientStore = {
     }[];
     updateMT5Status: () => void;
     fetchAccountSettings: () => void;
+    has_real_account: boolean;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
+    upgradeable_landing_companies: unknown[];
+    is_loading: boolean;
+    landing_companies: Record<string, any>;
 };
 
 type TCommonStoreError = {
@@ -270,6 +277,7 @@ type TUiStore = {
     setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
     openSwitchToRealAccountModal: () => void;
+    openDerivRealAccountNeededModal: () => void;
 };
 
 type TMenuStore = {
@@ -298,6 +306,9 @@ type TTradersHubStore = {
     show_eu_related_content: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    no_CR_account: boolean;
+    financial_restricted_countries: string[];
+    no_MF_account: boolean;
 };
 
 type TModuleStore = {
@@ -321,6 +332,10 @@ type TModuleStore = {
         toggleJurisdictionModal: () => void;
         has_submitted_cfd_personal_details: boolean;
         is_jurisdiction_modal_visible: boolean;
+        clearCFDError: () => void;
+        current_list: Record<string, DetailsOfEachMT5Loginid>;
+        is_compare_accounts_visible: boolean;
+        toggleCompareAccounts: () => void;
     };
 };
 

@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import { Table, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag } from '@deriv/shared';
-import { connect } from '../Stores/connect';
-import RootStore from '../Stores/index';
 import {
     TDMT5CompareModalContentProps,
     TCompareAccountContentProps,
@@ -24,6 +22,7 @@ import {
     eu_demo_footer_button,
 } from '../Constants/cfd_compare_account_content';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
+import { observer, useStore } from '@deriv/stores';
 
 const Row = ({
     id,
@@ -146,41 +145,47 @@ const Row = ({
 
 const DMT5CompareModalContent = ({
     content_flag,
-    account_settings,
-    account_status,
-    clearCFDError,
-    current_list,
-    has_real_account,
     is_demo_tab,
     is_logged_in,
     is_pre_appstore_setting,
     is_preappstore_cr_demo_account,
     is_preappstore_restricted_cr_demo_account,
     is_real_enabled,
-    is_virtual,
     openDerivRealAccountNeededModal,
     openPasswordModal,
-    openSwitchToRealAccountModal,
     real_account_creation_unlock_date,
-    setAccountSettings,
-    setAccountType,
-    setAppstorePlatform,
-    setJurisdictionSelectedShortcode,
     setShouldShowCooldownModal,
-    should_restrict_bvi_account_creation,
-    should_restrict_vanuatu_account_creation,
     should_show_derivx,
     show_eu_related_content,
-    toggleCFDVerificationModal,
     toggleCompareAccounts,
-    trading_platform_available_accounts,
-    upgradeable_landing_companies,
-    updateMT5Status,
-    no_CR_account,
-    is_eu_user,
-    no_MF_account,
-    financial_restricted_countries,
 }: TDMT5CompareModalContentProps) => {
+    const {
+        client: {
+            account_settings,
+            account_status,
+            has_real_account,
+            is_virtual,
+            should_restrict_bvi_account_creation,
+            setAccountSettings,
+            should_restrict_vanuatu_account_creation,
+            trading_platform_available_accounts,
+            updateMT5Status,
+            upgradeable_landing_companies,
+        },
+        modules: {
+            cfd: {
+                clearCFDError,
+                current_list,
+                setAccountType,
+                setJurisdictionSelectedShortcode,
+                toggleCFDVerificationModal,
+            },
+        },
+        ui: { openSwitchToRealAccountModal },
+        common: { setAppstorePlatform },
+        traders_hub: { no_CR_account, is_eu_user, no_MF_account, financial_restricted_countries },
+    } = useStore();
+
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 
     const mt5_platforms = trading_platform_available_accounts.map(
@@ -565,28 +570,4 @@ const DMT5CompareModalContent = ({
     );
 };
 
-export default connect(({ modules, client, common, ui, traders_hub }: RootStore) => ({
-    account_settings: client.account_settings,
-    account_status: client.account_status,
-    account_type: modules.cfd.account_type,
-    clearCFDError: modules.cfd.clearCFDError,
-    current_list: modules.cfd.current_list,
-    has_real_account: client.has_active_real_account,
-    has_real_mt5_login: client.has_real_mt5_login,
-    is_virtual: client.is_virtual,
-    openSwitchToRealAccountModal: ui.openSwitchToRealAccountModal,
-    setAccountSettings: client.setAccountSettings,
-    setAccountType: modules.cfd.setAccountType,
-    setJurisdictionSelectedShortcode: modules.cfd.setJurisdictionSelectedShortcode,
-    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
-    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
-    toggleCFDVerificationModal: modules.cfd.toggleCFDVerificationModal,
-    trading_platform_available_accounts: client.trading_platform_available_accounts,
-    updateMT5Status: client.updateMT5Status,
-    upgradeable_landing_companies: client.upgradeable_landing_companies,
-    setAppstorePlatform: common.setAppstorePlatform,
-    no_CR_account: traders_hub.no_CR_account,
-    is_eu_user: traders_hub.is_eu_user,
-    no_MF_account: traders_hub.no_MF_account,
-    financial_restricted_countries: traders_hub.financial_restricted_countries,
-}))(DMT5CompareModalContent);
+export default observer(DMT5CompareModalContent);

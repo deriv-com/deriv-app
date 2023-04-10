@@ -9,7 +9,6 @@ import JurisdictionCardBanner from './jurisdiction-card-banner';
 const JurisdictionCard = ({
     account_type,
     disabled,
-    context,
     jurisdiction_selected_shortcode,
     financial_available_accounts,
     setJurisdictionSelectedShortcode,
@@ -86,7 +85,6 @@ const JurisdictionCard = ({
                     type_of_card={type_of_card}
                     card_classname={card_classname}
                     disabled={disabled}
-                    context={context}
                     account_type={account_type}
                 />
             </div>

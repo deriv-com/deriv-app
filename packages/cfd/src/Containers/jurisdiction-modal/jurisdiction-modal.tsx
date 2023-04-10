@@ -8,7 +8,7 @@ import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { observer, useStore } from '@deriv/stores';
 
-const JurisdictionModal = ({ context, openPasswordModal }: TJurisdictionModalProps) => {
+const JurisdictionModal = ({ openPasswordModal }: TJurisdictionModalProps) => {
     const {
         modules: {
             cfd: {
@@ -172,7 +172,6 @@ const JurisdictionModal = ({ context, openPasswordModal }: TJurisdictionModalPro
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
             />
@@ -181,14 +180,12 @@ const JurisdictionModal = ({ context, openPasswordModal }: TJurisdictionModalPro
                     account_status={account_status}
                     account_type={account_type.type}
                     card_classname={`cfd-jurisdiction-card--${account_type.type}`}
-                    context={context}
                     jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                     should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
                     should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
                 />
                 <JurisdictionCheckBox
                     is_checked={checked}
-                    context={context}
                     onCheck={() => setChecked(!checked)}
                     class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
                     jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
@@ -225,7 +222,6 @@ const JurisdictionModal = ({ context, openPasswordModal }: TJurisdictionModalPro
                         title={modal_title}
                         toggleModal={toggleJurisdictionModal}
                         type='button'
-                        context={context}
                         width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
                     >
                         <ModalContent />
@@ -235,7 +231,6 @@ const JurisdictionModal = ({ context, openPasswordModal }: TJurisdictionModalPro
                     <MobileDialog
                         portal_element_id='deriv_app'
                         title={modal_title}
-                        context={context}
                         visible={is_jurisdiction_modal_visible}
                         onClose={toggleJurisdictionModal}
                     >

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from '../Stores/connect';
-import RootStore from '../Stores/index';
 import { CFD_PLATFORMS, isLandingCompanyEnabled, ContentFlag } from '@deriv/shared';
 import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
 import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content';
+import { observer, useStore } from '@deriv/stores';
 
 type TCompareAccountsReusedProps = {
     landing_companies: LandingCompany;
@@ -22,19 +21,11 @@ type TOpenAccountTransferMeta = {
 };
 
 type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
-    disableApp: () => void;
-    enableApp: () => void;
-    is_compare_accounts_visible: boolean;
-    is_loading: boolean;
-    is_eu: boolean;
     is_real_enabled: boolean;
     residence: string;
     is_demo_tab: boolean;
     has_unmerged_account: boolean;
-    toggleCompareAccounts: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    openDerivRealAccountNeededModal: () => void;
-    context: RootStore;
     real_account_creation_unlock_date: string;
     show_eu_related_content: boolean;
     setShouldShowCooldownModal: (value: boolean) => void;
@@ -94,29 +85,23 @@ const DxtradeCompareAccountContent = ({
 };
 
 const CompareAccountsModal = ({
-    context,
-    disableApp,
-    enableApp,
     has_unmerged_account,
-    is_compare_accounts_visible,
     is_demo_tab,
-    is_eu,
-    is_loading,
-    is_logged_in,
     is_real_enabled,
-    is_uk,
-    landing_companies,
-    openDerivRealAccountNeededModal,
     openPasswordModal,
     platform,
     real_account_creation_unlock_date,
-    residence,
     setShouldShowCooldownModal,
-    toggleCompareAccounts,
-    content_flag,
-    show_eu_related_content,
-    financial_restricted_countries,
 }: TCompareAccountsModalProps) => {
+    const {
+        modules: {
+            cfd: { is_compare_accounts_visible, toggleCompareAccounts },
+        },
+        ui: { disableApp, enableApp, openDerivRealAccountNeededModal },
+        client: { is_loading, is_eu, is_uk, is_logged_in, landing_companies, residence },
+        traders_hub: { content_flag, show_eu_related_content, financial_restricted_countries },
+    } = useStore();
+
     const location = window.location.pathname;
     const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
 
@@ -224,7 +209,6 @@ const CompareAccountsModal = ({
         ) : (
             <DMT5CompareModalContent
                 content_flag={content_flag}
-                context={context}
                 is_demo_tab={is_demo_tab}
                 is_logged_in={is_logged_in}
                 is_pre_appstore_setting={is_pre_appstore_setting}
@@ -292,22 +276,4 @@ const CompareAccountsModal = ({
     );
 };
 
-export default connect(({ modules, ui, client, traders_hub }: RootStore) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
-    is_loading: client.is_populating_mt5_account_list,
-    is_eu: client.is_eu,
-    is_uk: client.is_uk,
-    is_eu_country: client.is_eu_country,
-    is_logged_in: client.is_logged_in,
-    landing_companies: client.landing_companies,
-    residence: client.residence,
-    toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
-    openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
-    selected_region: traders_hub.selected_region,
-    is_eu_user: traders_hub.is_eu_user,
-    content_flag: traders_hub.content_flag,
-    show_eu_related_content: traders_hub.show_eu_related_content,
-    financial_restricted_countries: traders_hub.financial_restricted_countries,
-}))(CompareAccountsModal);
+export default observer(CompareAccountsModal);

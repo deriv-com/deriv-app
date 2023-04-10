@@ -253,6 +253,8 @@ const mock = (): TRootStore => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            is_real_wallets_upgrade_on: false,
+            toggleWalletsUpgrade: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

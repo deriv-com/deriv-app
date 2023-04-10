@@ -178,7 +178,7 @@
         width: 90%;
         height: 4rem;
         position: absolute;
-        border-radius: 8px;
+        border-radius: $BORDER_RADIUS * 2;
         margin-bottom: 1rem;
         border: 1px solid var(--text-info-blue);
         & > p {

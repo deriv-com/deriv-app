@@ -213,7 +213,6 @@ const BinarySocketGeneral = (() => {
                 // DBot handles this internally. Special case: 'client.invalid_token'
                 if (active_platform === 'DBot') return;
 
-                // const action = getActionFromUrl();
                 if (getActionFromUrl() !== 'system_email_change') {
                     client_store.logout().then(() => {
                         let redirect_to = routes.trade;

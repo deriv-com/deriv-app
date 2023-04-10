@@ -27,7 +27,7 @@ export default class OnboardingFlow {
             return Promise.resolve(result);
         });
         expect(server_url).toBe(process.env.ENDPOINT);
-        await suspend(10000);
+        await suspend(1000);
     }
     async demoWizardHandler() {
         await this.page.locator('.static-dashboard-wrapper__header > h2', { hasText: 'CFDs' });
@@ -88,10 +88,10 @@ export default class OnboardingFlow {
         await this.page.click('#dt_core_set-residence-form_signup-residence-select');
         await expect(this.page.getByText(process.env.ACCOUNT_RESIDENCE!)).toBeVisible();
         await this.page.getByText(process.env.ACCOUNT_RESIDENCE!).click();
+        await this.page.click('#dt_core_set-citizenship-form_signup-citizenship-select');
+        await expect(this.page.getByText(process.env.ACCOUNT_CITIZENSHIP!)).toBeVisible();
+        await this.page.getByText(process.env.ACCOUNT_CITIZENSHIP!).click();
         await this.page.getByRole('dialog').getByRole('button', { name: 'Next' }).click();
-        await expect(this.page.getByText(/Citizenship/)).toBeVisible();
-        await expect(this.page.getByText(/Are you a citizen of/)).toBeVisible();
-        await this.page.getByText(/Yes/).click();
         await expect(this.page.getByText(/Keep your account secure/)).toBeVisible();
         await this.page.locator('#dt_core_account-signup-modal_account-signup-password-field');
         await expect(this.page.getByText(/Start trading/)).toBeDisabled();

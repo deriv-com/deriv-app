@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useSwapFreeAccount from '../useSwapFreeAccount';
+import useHasSwapFreeAccount from '../useHasSwapFreeAccount';
 
-describe('useSwapFreeAccount', () => {
-    // this component return the boolean value based on market type
+describe('useHasSwapFreeAccount', () => {
     test('should be true if it has a market type of all', async () => {
         const mock = mockStore({
             client: {
@@ -15,7 +14,7 @@ describe('useSwapFreeAccount', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useSwapFreeAccount(), { wrapper });
+        const { result } = renderHook(() => useHasSwapFreeAccount(), { wrapper });
 
         expect(result.current).toBe(true);
     });
@@ -30,7 +29,7 @@ describe('useSwapFreeAccount', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useSwapFreeAccount(), { wrapper });
+        const { result } = renderHook(() => useHasSwapFreeAccount(), { wrapper });
 
         expect(result.current).toBe(false);
     });
@@ -44,7 +43,7 @@ describe('useSwapFreeAccount', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useSwapFreeAccount(), { wrapper });
+        const { result } = renderHook(() => useHasSwapFreeAccount(), { wrapper });
 
         expect(result.current).toBe(false);
     });

@@ -85,7 +85,6 @@ export type TCFDResetPasswordModal = RouteComponentProps & {
     context?: RootStore;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
-    is_pre_appstore: boolean;
     is_logged_in: boolean;
     platform: CFD_Platform;
     setCFDPasswordResetModal: (value: boolean) => void;

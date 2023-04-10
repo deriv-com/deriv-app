@@ -1,5 +1,5 @@
 export { default as useCountdown } from './useCountdown';
-export { default as useVerifyEmail, type TEmailVerificationType } from './useVerifyEmail';
+export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useNeedAuthentication } from './useNeedAuthentication';
 export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessment';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
@@ -12,4 +12,6 @@ export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useSwitchToRealAccount } from './useSwitchToRealAccount';
-export { default as useSwapFreeAccount } from './useSwapFreeAccount';
+export { default as useHasSwapFreeAccount } from './useHasSwapFreeAccount';
+export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
+export { default as useHasSvgAccount } from './useHasSvgAccount';

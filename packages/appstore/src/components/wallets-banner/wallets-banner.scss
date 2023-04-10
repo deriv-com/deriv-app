@@ -59,6 +59,8 @@
     }
 
     &__upgrading-banner {
+        display: flex;
+        align-items: center;
         height: 182px;
 
         @include mobile {
@@ -67,10 +69,10 @@
 
         &-description {
             width: 45%;
-            height: 100%;
+            height: 80%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-around;
             align-items: baseline;
 
             @include mobile {
@@ -78,33 +80,74 @@
             }
         }
 
-        &-button {
-            margin-top: 0.8rem;
-            padding-inline: 6.7rem;
+        &-circles {
+            span {
+                animation-name: blink;
+                animation-duration: 1.5s;
+                animation-iteration-count: infinite;
+                animation-timing-function: cubic-bezier(1, 0, 0, 1);
+            }
+
+            span:nth-child(2) {
+                animation-delay: 0.5s;
+            }
+
+            span:nth-child(3) {
+                animation-delay: 1s;
+            }
+        }
+
+        &-dot {
+            height: 0.8rem;
+            width: 0.8rem;
+            background-color: $color-grey-6;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.6rem;
 
             @include mobile {
-                padding-inline: 1.6rem;
+                height: 0.5rem;
+                width: 0.5rem;
             }
         }
 
         &-image {
             opacity: 50%;
+            height: 100%;
         }
     }
 
     &__ready-banner {
+        display: flex;
+        align-items: center;
         height: 230px;
+        background-color: #e2f3f3;
 
         @include mobile {
             height: 190px;
         }
 
+        &-tick {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #4ab4b3;
+            border-radius: 50%;
+            width: 4.8rem;
+            height: 4.8rem;
+
+            @include mobile {
+                width: 3.2rem;
+                height: 3.2rem;
+            }
+        }
+
         &-description {
             width: 45%;
-            height: 100%;
+            height: 80%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-around;
             align-items: baseline;
 
             @include mobile {
@@ -114,19 +157,29 @@
 
         &-button {
             margin-top: 0.8rem;
-            padding-inline: 6.7rem;
+            padding-inline: 8.6rem;
 
             @include mobile {
-                padding-inline: 1.6rem;
+                padding-inline: 5rem;
             }
         }
 
-        // &-image {
-        //     opacity: 90%;
+        &-image {
+            opacity: 90%;
+            height: 100%;
 
-        //     @include mobile {
-        //         opacity: 100%;
-        //     }
-        // }
+            @include mobile {
+                opacity: 100%;
+            }
+        }
+    }
+}
+
+@keyframes blink {
+    0% {
+        background-color: $color-red;
+    }
+    100% {
+        opacity: $color-grey-6;
     }
 }

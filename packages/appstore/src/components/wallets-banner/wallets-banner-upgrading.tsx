@@ -1,7 +1,7 @@
 import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
-import { Button, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
 
@@ -14,23 +14,24 @@ const WalletsBannerUpgrading = ({ is_eu }: TWalletsBannerUpgrading) => {
     const image: TWalletsImagesListKeys = isMobile()
         ? `ready_mobile${is_eu ? '_eu' : ''}`
         : `ready_desktop${is_eu ? '_eu' : ''}`;
-    const size: string = isMobile() ? 'xs' : 'm';
+    const title_size = isMobile() ? 'xs' : 'sm';
+    const description_size = isMobile() ? 'xxxs' : 'xs';
 
     return (
         <div className='wallets-banner__container wallets-banner__upgrading-banner'>
             <div className='wallets-banner__upgrading-banner-description'>
-                <div>
-                    <Localize
-                        i18n_default_text='<0>Wallets</0><1> - the best way to organise your funds</1>'
-                        components={[<Text key={0} weight='bold' size={size} />, <Text key={1} size={size} />]}
-                    />
+                <div className='wallets-banner__upgrading-banner-circles'>
+                    <span className='wallets-banner__upgrading-banner-dot' />
+                    <span className='wallets-banner__upgrading-banner-dot' />
+                    <span className='wallets-banner__upgrading-banner-dot' />
                 </div>
-                <Button
-                    className={'wallets-banner__upgrading-banner-button'}
-                    has_effect
-                    text={localize('Upgrade now')}
-                    primary
-                    large={!isMobile()}
+                <Localize
+                    i18n_default_text="<0>We're setting up your Wallets</0>"
+                    components={[<Text key={0} weight='bold' size={title_size} />]}
+                />
+                <Localize
+                    i18n_default_text="<0>This may take up to 2 minutes.  During this time, you won't be able to deposit, withdraw, transfer, and add new accounts.</0>"
+                    components={[<Text key={0} size={description_size} />]}
                 />
             </div>
             <WalletsImage image={image} className={'wallets-banner__image wallets-banner__upgrading-banner-image'} />

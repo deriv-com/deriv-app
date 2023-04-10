@@ -1,6 +1,6 @@
 import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
-import { Button, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
@@ -14,26 +14,33 @@ const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
     const image: TWalletsImagesListKeys = isMobile()
         ? `ready_mobile${is_eu ? '_eu' : ''}`
         : `ready_desktop${is_eu ? '_eu' : ''}`;
-    const size: string = isMobile() ? 'xs' : 'm';
+    const title_size = isMobile() ? 'xs' : 'sm';
+    const description_size = isMobile() ? 'xxxs' : 'xs';
 
     return (
-        <div className='wallets-banner__container wallets-banner__upgrade-banner'>
-            <div className='wallets-banner__upgrade-banner-description'>
-                <div>
-                    <Localize
-                        i18n_default_text='<0>Wallets</0><1> - the best way to organise your funds</1>'
-                        components={[<Text key={0} weight='bold' size={size} />, <Text key={1} size={size} />]}
-                    />
+        <div className='wallets-banner__container wallets-banner__ready-banner'>
+            <div className='wallets-banner__ready-banner-description'>
+                <div className={'wallets-banner__ready-banner-tick'}>
+                    <Icon icon='IcAppstoreTick' />
                 </div>
+                <Localize
+                    i18n_default_text="<0>We're setting up your Wallets</0>"
+                    components={[<Text key={0} weight='bold' size={title_size} />]}
+                />
+                <Localize
+                    i18n_default_text='<0>To complete the upgrade, please log out and log in again to add more accounts and make transactions with your Wallets.</0>'
+                    components={[<Text key={0} size={description_size} />]}
+                />
                 <Button
-                    className={'wallets-banner__upgrade-banner-button'}
+                    // Onclick props will be added here to show the upgrade wallets wizard in stitching user story
+                    className={'wallets-banner__ready-banner-button'}
                     has_effect
-                    text={localize('Upgrade now')}
+                    text={localize('Log out')}
                     primary
                     large={!isMobile()}
                 />
             </div>
-            <WalletsImage image={image} className={'wallets-banner__image'} />
+            <WalletsImage image={image} className={'wallets-banner__image wallets-banner__ready-banner-image'} />
         </div>
     );
 };

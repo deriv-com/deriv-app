@@ -46,7 +46,7 @@ const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }:
 
 const WalletsBanner = () => {
     // just for testing purpose
-    const [migrationStatus, setMigrationStatus] = React.useState<TWalletsMigrationStatus>('in_progress');
+    const [migrationStatus, setMigrationStatus] = React.useState<TWalletsMigrationStatus>('migrated');
     const [isEu, setIsEu] = React.useState(false);
 
     // just for testing purpose too

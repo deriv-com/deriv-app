@@ -58,7 +58,8 @@ const checkForRequiredBlocks = () => {
     if (unattachedPairs.length) {
         unattachedPairs.forEach(pair =>
             displayError(
-                `"${blockLabels[pair.childBlock]}" ${translate('must be added inside:')} "${blockLabels[pair.parentBlock]
+                `"${blockLabels[pair.childBlock]}" ${translate('must be added inside:')} "${
+                    blockLabels[pair.parentBlock]
                 }"`
             )
         );
@@ -71,9 +72,9 @@ const checkForRequiredBlocks = () => {
 export function applyToolboxPermissions() {
     const fn = getTokenList().length ? 'show' : 'hide';
     $('#runButton, #showSummary, #logButton')
-    [fn]()
+        [fn]()
         .prevAll('.toolbox-separator:first')
-    [fn]();
+        [fn]();
 }
 
 const setFileBrowser = () => {
@@ -283,7 +284,7 @@ const addBindings = blockly => {
             limits
                 .getLimits()
                 .then(startBot)
-                .catch(() => { });
+                .catch(() => {});
         } else {
             startBot();
         }

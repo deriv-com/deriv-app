@@ -96,10 +96,10 @@ const Header = () => {
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
                     const current_login_id = getStorage('active_loginid') || '';
-                    active_loginid.forEach((acc) => {
-                        if (current_login_id === acc.loginid){
+                    active_loginid.forEach(acc => {
+                        if (current_login_id === acc.loginid) {
                             setStorage('active_loginid', current_login_id);
-                        }else {
+                        } else {
                             setStorage('active_loginid', account.authorize.loginid);
                         }
                         updateTokenList();

@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import Theme from '../shared/theme.jsx';
-import DataTable from 'Components/data-table/data-table.jsx';
+import DataTable from 'Components/data-table/data-table';
 import 'Components/data-table/data-table.scss';
 import './data-table.stories.css';
 import notes from './README.md';

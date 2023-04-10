@@ -1,10 +1,19 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import Icon from '../icon';
 import Input from '../input';
 
-const DatePickerIcon = ({ icon, ...props }) => <Icon className='dc-datepicker__icon' icon={icon} {...props} />;
+const DatePickerIcon = ({ icon, ...props }:  React.ComponentProps<typeof Icon>) => (
+    <Icon className='dc-datepicker__icon' icon={icon} {...props} />
+);
+
+type TDatePickerInputProps = React.ComponentProps<typeof Input> & {
+    is_placeholder_visible: boolean;
+    is_clearable?: boolean;
+    show_leading_icon?: boolean;
+    onChangeInput: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onClickClear?: () => void;
+};
 
 const DatePickerInput = ({
     className,
@@ -25,7 +34,7 @@ const DatePickerInput = ({
     value,
     required,
     ...common_props
-}) => {
+}: TDatePickerInputProps) => {
     const [is_clear_btn_visible, setIsClearBtnVisible] = React.useState(false);
 
     const onMouseEnter = () => {
@@ -73,7 +82,7 @@ const DatePickerInput = ({
             onClick={onClick}
             placeholder={placeholder}
             readOnly={readOnly}
-            leading_icon={show_leading_icon && OpenIcon}
+            leading_icon={show_leading_icon ? OpenIcon : undefined}
             trailing_icon={show_leading_icon ? undefined : trailing_icon}
             type={readOnly ? 'text' : 'number'}
             value={is_placeholder_visible || !value ? '' : value}
@@ -84,27 +93,6 @@ const DatePickerInput = ({
             {...common_props}
         />
     );
-};
-
-DatePickerInput.propTypes = {
-    className: PropTypes.string,
-    error_messages: PropTypes.array,
-    placeholder: PropTypes.string,
-    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_clearable: PropTypes.bool,
-    name: PropTypes.string,
-    label: PropTypes.string,
-    show_leading_icon: PropTypes.bool,
-    onClick: PropTypes.func,
-    onClickClear: PropTypes.func,
-    value: PropTypes.string,
-    disabled: PropTypes.bool,
-    error: PropTypes.string,
-    is_placeholder_visible: PropTypes.bool,
-    onChangeInput: PropTypes.func,
-    onBlur: PropTypes.func,
-    readOnly: PropTypes.bool,
-    required: PropTypes.bool,
 };
 
 export default DatePickerInput;

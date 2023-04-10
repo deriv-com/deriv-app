@@ -1,25 +1,44 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { addDays, daysFromTodayTo, toMoment, convertDateFormat, getPosition, isMobile } from '@deriv/shared';
 
-import Input from './date-picker-input.jsx';
-import Calendar from './date-picker-calendar.jsx';
-import Native from './date-picker-native.jsx';
+import Input from './date-picker-input';
+import Calendar from './date-picker-calendar';
+import Native from './date-picker-native';
 import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
 
-const DatePicker = React.memo(props => {
+type TDatePickerOnChangeEvent = {
+    date?: string;
+    duration?: number | null | string;
+    target?: { name: string; value: number | string | moment.Moment | null };
+};
+type TDatePicker = Omit<
+    React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,
+    'value' | 'onSelect' | 'is_datepicker_visible' | 'placement' | 'style' | 'calendar_el_ref' | 'parent_ref'
+> & {
+    mode: string;
+    start_date: moment.Moment;
+    value: moment.Moment | string;
+    onChange: (e: TDatePickerOnChangeEvent) => void;
+    footer: React.ReactElement;
+    date_format: string;
+    has_range_selection: boolean;
+};
+
+const DatePicker = React.memo((props: TDatePicker) => {
     const {
-        date_format,
+        alignment = 'bottom',
+        keep_open = false,
+        date_format = 'YYYY-MM-DD',
         disabled,
-        display_format,
+        display_format = 'DD MMM YYYY',
         error,
         footer,
         id,
         label,
         has_range_selection,
-        mode,
+        mode = 'date',
         max_date,
         min_date,
         start_date,
@@ -36,22 +55,22 @@ const DatePicker = React.memo(props => {
         ...other_props
     } = props;
 
-    const datepicker_ref = React.useRef();
-    const calendar_ref = React.useRef();
-    const calendar_el_ref = React.useRef();
+    const datepicker_ref = React.useRef<HTMLDivElement>(null);
+    const calendar_ref = React.useRef<HTMLDivElement>(null);
+    const calendar_el_ref = React.useRef<HTMLDivElement>(null);
     const [placement, setPlacement] = React.useState('');
-    const [style, setStyle] = React.useState({});
-    const [date, setDate] = React.useState(value ? toMoment(value).format(display_format) : '');
-    const [duration, setDuration] = React.useState(daysFromTodayTo(value));
+    const [style, setStyle] = React.useState<React.CSSProperties>({});
+    const [date, setDate] = React.useState<string>(value ? toMoment(value).format(display_format) : '');
+    const [duration, setDuration] = React.useState<number | null | string>(daysFromTodayTo(value));
     const [is_datepicker_visible, setIsDatepickerVisible] = React.useState(false);
-    const [is_placeholder_visible, setIsPlaceholderVisible] = React.useState(placeholder && !value);
+    const [is_placeholder_visible, setIsPlaceholderVisible] = React.useState(!!placeholder && !value);
 
     useOnClickOutside(
         datepicker_ref,
         () => {
             if (is_datepicker_visible) setIsDatepickerVisible(false);
         },
-        e => !calendar_el_ref.current?.contains(e.target)
+        e => !calendar_el_ref.current?.contains(e.target as HTMLDivElement)
     );
 
     React.useEffect(() => {
@@ -82,7 +101,7 @@ const DatePicker = React.memo(props => {
         setIsDatepickerVisible(!is_datepicker_visible);
     };
 
-    const onHover = hovered_date => {
+    const onHover = (hovered_date: string) => {
         if (typeof onChange === 'function') {
             onChange({
                 date: toMoment(hovered_date).format(display_format),
@@ -91,7 +110,7 @@ const DatePicker = React.memo(props => {
         }
     };
 
-    const onSelectCalendar = (selected_date, is_visible = true) => {
+    const onSelectCalendar = (selected_date: string, is_visible = true) => {
         const new_date = toMoment(selected_date).format(display_format);
         const new_duration = mode === 'duration' ? daysFromTodayTo(selected_date) : null;
 
@@ -106,14 +125,14 @@ const DatePicker = React.memo(props => {
                 duration: new_duration,
                 target: {
                     name,
-                    value: getTargetValue(new_date, new_duration),
+                    value: getTargetValue(new_date, new_duration || ''),
                 },
             });
         }
     };
 
-    const onSelectCalendarNative = selected_date => {
-        const new_date = selected_date ? toMoment(selected_date).format(display_format) : null;
+    const onSelectCalendarNative = (selected_date: string) => {
+        const new_date = selected_date ? toMoment(selected_date).format(display_format) : '';
 
         setDate(new_date);
 
@@ -130,16 +149,16 @@ const DatePicker = React.memo(props => {
     /**
      * TODO: currently only works for duration, make it works for date as well
      */
-    const onChangeInput = e => {
-        const new_date = addDays(toMoment(), e.target.value).format(display_format);
+    const onChangeInput: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = e => {
+        const new_date = addDays(toMoment(), isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)).format(
+            display_format
+        );
         const new_duration = mode === 'duration' ? e.target.value : '';
 
         setDate(new_date);
         setDuration(new_duration);
         setIsDatepickerVisible(true);
         setIsPlaceholderVisible(false);
-
-        calendar_ref.current?.setSelectedDate(new_date);
 
         if (typeof onChange === 'function') {
             onChange({
@@ -158,14 +177,14 @@ const DatePicker = React.memo(props => {
      */
     // onClickClear = () => {};
 
-    const getTargetValue = (new_date, new_duration) => {
+    const getTargetValue = (new_date: string | null, new_duration: string | number | null) => {
         const calendar_value = getCalendarValue(new_date) && toMoment(getCalendarValue(new_date));
         return mode === 'duration' ? new_duration : calendar_value;
     };
 
-    const getInputValue = () => (mode === 'duration' ? duration : date);
+    const getInputValue = (): string | number => (mode === 'duration' ? duration || 0 : date);
 
-    const getCalendarValue = new_date => {
+    const getCalendarValue = (new_date: string | null): string | null => {
         if (!new_date) return isMobile() ? null : toMoment(start_date || max_date).format(date_format);
         return convertDateFormat(new_date, display_format, date_format);
     };
@@ -192,15 +211,9 @@ const DatePicker = React.memo(props => {
                 <Native
                     id={id}
                     name={name}
-                    display_format={display_format}
-                    error={error}
-                    label={label}
-                    max_date={max_date}
-                    min_date={min_date}
                     onBlur={onBlur}
                     onFocus={onFocus}
                     onSelect={onSelectCalendarNative}
-                    placeholder={placeholder}
                     value={getCalendarValue(date)} // native picker accepts date format yyyy-mm-dd
                     disabled={disabled}
                     data_testid={data_testid}
@@ -228,7 +241,8 @@ const DatePicker = React.memo(props => {
                             ref={calendar_ref}
                             calendar_el_ref={calendar_el_ref}
                             parent_ref={datepicker_ref}
-                            date_format={date_format}
+                            keep_open={keep_open}
+                            alignment={alignment}
                             is_datepicker_visible={is_datepicker_visible}
                             onHover={has_range_selection ? onHover : undefined}
                             onSelect={onSelectCalendar}
@@ -245,40 +259,5 @@ const DatePicker = React.memo(props => {
 });
 
 DatePicker.displayName = 'DatePicker';
-
-DatePicker.defaultProps = {
-    alignment: 'bottom',
-    date_format: 'YYYY-MM-DD',
-    mode: 'date',
-    display_format: 'DD MMM YYYY',
-    keep_open: false,
-};
-
-DatePicker.propTypes = {
-    error_messages: PropTypes.array,
-    label: PropTypes.string,
-    is_alignment_top: PropTypes.bool,
-    date_format: PropTypes.string,
-    disabled: PropTypes.bool,
-    mode: PropTypes.string,
-    max_date: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    min_date: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    start_date: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    name: PropTypes.string,
-    onFocus: PropTypes.func,
-    portal_id: PropTypes.string,
-    placeholder: PropTypes.string,
-    required: PropTypes.string,
-    type: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    data_testid: PropTypes.string,
-    display_format: PropTypes.string,
-    error: PropTypes.string,
-    footer: PropTypes.node,
-    id: PropTypes.string,
-    has_range_selection: PropTypes.bool,
-    onBlur: PropTypes.func,
-    onChange: PropTypes.func,
-};
 
 export default DatePicker;

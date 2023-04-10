@@ -2,12 +2,11 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, Button } from '@deriv/components';
 import { useStores } from 'Stores/index';
-import './real-wallets-upgrade.scss';
-import IntroducingWallets from './components/introducing-wallets';
-import HowItWorksWallets from './components/how-it-works-wallets';
-import TradingAccountsWallets from './components/trading-accounts-wallets';
+import './components/wallet-steps.scss';
+import WalletSteps from './components/wallet-steps';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import TradingPlatformIcon from 'Assets/wallets';
 
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStores();
@@ -33,44 +32,61 @@ const RealWalletsUpgrade = () => {
     const steps = [
         {
             title: 'introducing_wallets',
-            component: <IntroducingWallets onNext={handleNext} onClose={closeRealWalletsUpgrade} eu_user={eu_user} />,
+            component: (
+                <WalletSteps
+                    icon={<TradingPlatformIcon icon={eu_user ? 'IntroducingWalletsEU' : 'IntroducingWallets'} />}
+                    title={localize('Introducing Wallets')}
+                    description={localize('A better way to manage your funds')}
+                    bullets={[
+                        localize('One Wallet, one currency'),
+                        localize('A Wallet for each currency to focus your funds'),
+                        !eu_user && localize('Get one Wallet, get several - your choice'),
+                    ]}
+                />
+            ),
             footerActions: [
-                { text: localize('Maybe later'), onClick: closeRealWalletsUpgrade, type: 'secondary' },
-                { text: localize('Next'), onClick: handleNext, type: 'primary' },
+                <Button key={0} text={localize('Maybe later')} onClick={closeRealWalletsUpgrade} secondary large />,
+                <Button key={1} text={localize('Next')} onClick={handleNext} primary large />,
             ],
         },
         {
             title: 'how_it_works',
-            component: <HowItWorksWallets onNext={handleNext} onBack={handleBack} />,
+            component: (
+                <WalletSteps
+                    icon={<TradingPlatformIcon icon='HowItWorks' />}
+                    title={localize('How it works')}
+                    description={localize('Get a Wallet, add funds, trade')}
+                    bullets={[
+                        localize('Get a Wallet for the currency you want'),
+                        localize('Add funds to your Wallet via your favourite payment method'),
+                        localize('Move funds to your trading account to start trading'),
+                    ]}
+                />
+            ),
             footerActions: [
-                {
-                    text: localize('Back'),
-                    onClick: handleBack,
-                    type: 'secondary',
-                },
-                {
-                    text: localize('Next'),
-                    onClick: handleNext,
-                    type: 'primary',
-                },
+                <Button key={0} text={localize('Back')} onClick={handleBack} secondary large />,
+                <Button key={1} text={localize('Next')} onClick={handleNext} primary large />,
             ],
         },
         {
             title: 'trading_accounts',
             component: (
-                <TradingAccountsWallets onBack={handleBack} onClose={closeRealWalletsUpgrade} eu_user={eu_user} />
+                <WalletSteps
+                    icon={<TradingPlatformIcon icon='TradingAccounts' />}
+                    title={localize('What happens to my trading accounts')}
+                    description={localize("We'll link them")}
+                    bullets={[
+                        localize(
+                            "We'll connect your existing trading accounts of the same currency to your new Wallet"
+                        ),
+                        !eu_user &&
+                            localize('For example, all your USD trading account(s) will be linked to your USD Wallet'),
+                    ]}
+                />
             ),
             footerActions: [
-                {
-                    text: localize('Back'),
-                    onClick: handleBack,
-                    type: 'secondary',
-                },
-                {
-                    text: localize('Close'),
-                    onClick: closeRealWalletsUpgrade,
-                    type: 'primary',
-                },
+                <Button key={0} text={localize('Back')} onClick={handleBack} secondary large />,
+                <Button key={1} text={localize('Next')} onClick={closeRealWalletsUpgrade} primary large />,
             ],
         },
     ];
@@ -85,7 +101,6 @@ const RealWalletsUpgrade = () => {
                             toggleModal={closeRealWalletsUpgrade}
                             height='734px'
                             width='1200px'
-                            elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <Modal.Body>
                                 {steps.map((step, index) => {
@@ -96,17 +111,12 @@ const RealWalletsUpgrade = () => {
                                 })}
                             </Modal.Body>
                             <Modal.Footer has_separator>
-                                {steps[currentStep - 1].footerActions.map((action, index) => (
-                                    <Button
-                                        key={index}
-                                        className='introducing-wallets--footer--button'
-                                        has_effect
-                                        onClick={action.onClick}
-                                        text={action.text}
-                                        large
-                                        type={action.type}
-                                    />
-                                ))}
+                                {steps.map((step, index) => {
+                                    if (index === currentStep - 1) {
+                                        return <div key={index}>{step.footerActions}</div>;
+                                    }
+                                    return null;
+                                })}
                             </Modal.Footer>
                         </Modal>
                     </DesktopWrapper>
@@ -115,23 +125,22 @@ const RealWalletsUpgrade = () => {
                             portal_element_id='modal_root'
                             visible={is_real_wallets_upgrade_on}
                             onClose={closeRealWalletsUpgrade}
-                            wrapper_classname='introducing-wallets'
+                            wrapper_classname='wallet-steps'
                         >
-                            {currentStep === 1 && (
-                                <IntroducingWallets
-                                    onNext={handleNext}
-                                    onClose={closeRealWalletsUpgrade}
-                                    eu_user={eu_user}
-                                />
-                            )}
-                            {currentStep === 2 && <HowItWorksWallets onNext={handleNext} onBack={handleBack} />}
-                            {currentStep === 3 && (
-                                <TradingAccountsWallets
-                                    onBack={handleBack}
-                                    onClose={closeRealWalletsUpgrade}
-                                    eu_user={eu_user}
-                                />
-                            )}
+                            {steps.map((step, index) => {
+                                if (index === currentStep - 1) {
+                                    return <div key={index}>{step.component}</div>;
+                                }
+                                return null;
+                            })}
+                            <Modal.Footer className='wallet-steps__footer' has_separator>
+                                {steps.map((step, index) => {
+                                    if (index === currentStep - 1) {
+                                        return <div key={index}>{step.footerActions}</div>;
+                                    }
+                                    return null;
+                                })}
+                            </Modal.Footer>
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Fragment>

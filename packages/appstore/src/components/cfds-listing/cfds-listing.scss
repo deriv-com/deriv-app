@@ -26,7 +26,7 @@
     }
 
     &__wrapper {
-        margin: 4rem 6rem 0rem;
+        margin: 4rem 6rem 0;
         display: flex;
         justify-content: center;
         gap: 1.8rem;
@@ -95,7 +95,7 @@
                 height: 4rem;
                 width: 100%;
                 padding: 0.5rem;
-                border-radius: 1.6rem 1.6rem 0rem 0rem;
+                border-radius: 1.6rem 1.6rem 0 0;
                 &-blank {
                     height: 4rem;
                     border-radius: 1.6rem;
@@ -114,7 +114,7 @@
             flex-direction: column;
             gap: 1.2rem;
             height: 100%;
-            margin: 0rem 2rem 2rem;
+            margin: 0 2rem 2rem;
         }
     }
 

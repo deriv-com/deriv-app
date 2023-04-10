@@ -36,9 +36,9 @@ export function trackJSTrack(error) {
     }
 
     if (isProduction()) {
-        if (!default_errors_to_ignore.includes(code)) {
-            TrackJS.track(code || 'Unknown');
-        }
+      if (code && !default_errors_to_ignore.includes(code)){
+          TrackJS.track(code || 'Unknown');
+      }
     }
     return { code, message };
 }

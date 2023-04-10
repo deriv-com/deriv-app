@@ -9,10 +9,10 @@ const scanner = require('i18next-scanner');
 require('./static');
 
 const options = {
-    lngs    : ['en'], // supported languages
+    lngs: ['en'], // supported languages
     resource: {
-        loadPath  : 'src/common/translations/{{lng}}/i10n.json',
-        savePath  : 'src/common/translations/{{lng}}/i10n.json',
+        loadPath: 'src/common/translations/{{lng}}/i10n.json',
+        savePath: 'src/common/translations/{{lng}}/i10n.json',
         jsonIndent: 2,
     },
 };
@@ -90,7 +90,7 @@ gulp.task(
         remoteSrc(
             blocklyLanguages.map(lang => `${lang}.js?_=${Date.now()}`),
             {
-                base: 'https://blockly-demo.appspot.com/static/msg/js/',
+                base: 'https://blockly-demo.appspot.com/static/build/msg/',
             }
         )
             .pipe(rename(path => (path.extname = '.js')))

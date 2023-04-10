@@ -3,14 +3,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { isMobile, isDesktop, parseQueryString } from '../../../../../common/utils/tools';
 import PlatformDropdown from './components/platform-dropdown.jsx';
-import { isLoggedIn, getActiveToken } from '../../utils';
-import { getTokenList, removeAllTokens, syncWithDerivApp } from '../../../../../common/utils/storageManager';
+import { isLoggedIn, getActiveToken, updateTokenList } from '../../utils';
+import {
+    getTokenList,
+    removeAllTokens,
+    syncWithDerivApp,
+    set as setStorage,
+    get as getStorage,
+} from '../../../../../common/utils/storageManager';
 import {
     updateIsLogged,
     resetClient,
     updateActiveAccount,
     updateBalance,
     updateActiveToken,
+    updateAccountType,
 } from '../../store/client-slice';
 import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
@@ -18,6 +25,7 @@ import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
 import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
+import { checkSwitcherType } from '../../../../../common/footer-checks';
 
 const AccountSwitcher = () => {
     const { account_switcher_loader } = useSelector(state => state.ui);
@@ -50,10 +58,18 @@ const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
     const platformDropdownRef = React.useRef();
-    const { is_logged, active_token } = useSelector(state => state.client);
+    const { is_logged, active_token, account_type } = useSelector(state => state.client);
     const { is_bot_running } = useSelector(state => state.ui);
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
+
+    React.useEffect(() => {
+        checkSwitcherType()
+            .then(data => {
+                dispatch(updateAccountType(data));
+            })
+            .catch(error => console.log(error));
+    }, [account_type]);
 
     React.useEffect(() => {
         api.onMessage().subscribe(({ data }) => {
@@ -68,7 +84,6 @@ const Header = () => {
         const token_list = getTokenList();
         const active_storage_token = getActiveToken(token_list);
         const landing_company = active_storage_token?.loginInfo.landing_company_name;
-
         dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
 
         if (!active_storage_token) {
@@ -79,6 +94,16 @@ const Header = () => {
         if (active_storage_token) {
             api.authorize(active_storage_token.token)
                 .then(account => {
+                    const active_loginid = account.authorize.account_list;
+                    const current_login_id = getStorage('active_loginid') || '';
+                    active_loginid.forEach(acc => {
+                        if (current_login_id === acc.loginid) {
+                            setStorage('active_loginid', current_login_id);
+                        } else {
+                            setStorage('active_loginid', account.authorize.loginid);
+                        }
+                        updateTokenList();
+                    });
                     if (account?.error?.code) return;
                     dispatch(updateActiveToken(active_storage_token.token));
                     dispatch(updateActiveAccount(account.authorize));
@@ -108,7 +133,7 @@ const Header = () => {
                 });
             syncWithDerivApp();
         }
-    }, [active_token]);
+    }, [active_token, account_type]);
 
     React.useEffect(() => {
         dispatch(updateIsLogged(isLoggedIn()));

@@ -1,32 +1,31 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
+import { addTokenIfValid, AppConstants, queryToObjectArray } from '../../../../../common/appId';
+import { getLanguage } from '../../../../../common/lang';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 import {
+    convertForDerivStore,
     get as getStorage,
-    set as setStorage,
     getTokenList,
     isDone,
-    convertForDerivStore,
     removeAllTokens,
+    set as setStorage,
 } from '../../../../../common/utils/storageManager';
-import { setShouldReloadWorkspace, updateShowTour } from '../../store/ui-slice';
+import { parseQueryString, translate } from '../../../../../common/utils/tools';
 import _Blockly from '../../../blockly';
-import ToolBox from '../ToolBox';
-import SidebarToggle from '../../components/SidebarToggle';
 import LogTable from '../../../LogTable';
 import TradeInfoPanel from '../../../TradeInfoPanel';
-import { isLoggedIn, getRelatedDeriveOrigin } from '../../utils';
-import { updateActiveAccount, updateActiveToken, updateIsLogged } from '../../store/client-slice';
-import { addTokenIfValid, AppConstants, queryToObjectArray } from '../../../../../common/appId';
-import { parseQueryString } from '../../../../../common/utils/tools';
-import initialize, { applyToolboxPermissions } from '../../blockly-worksace';
-import { observer as globalObserver } from '../../../../../common/utils/observer';
-import BotUnavailableMessage from '../Error/bot-unavailable-message-page.jsx';
 import api from '../../api';
-import Helmet from 'react-helmet';
-import { getLanguage } from '../../../../../common/lang';
-import { translate } from '../../../../../common/utils/tools';
+import initialize, { applyToolboxPermissions } from '../../blockly-worksace';
+import SidebarToggle from '../../components/SidebarToggle';
+import { updateActiveAccount, updateActiveToken, updateIsLogged } from '../../store/client-slice';
+import { setShouldReloadWorkspace, updateShowTour } from '../../store/ui-slice';
+import { getRelatedDeriveOrigin, isLoggedIn } from '../../utils';
+import BotUnavailableMessage from '../Error/bot-unavailable-message-page.jsx';
+import ToolBox from '../ToolBox';
 
 const Main = () => {
 	const [blockly, setBlockly] = React.useState(null);
@@ -117,9 +116,10 @@ const Main = () => {
 				$(".show-on-load").show();
 				$(".barspinner").hide();
 				window.dispatchEvent(new Event("resize"));
-				TrackJS.configure({
-					userId: document.getElementById("active-account-name")?.value,
-				});
+                const userId = document.getElementById('active-account-name')?.value;
+                if (userId) {
+                    TrackJS.configure({ userId });
+                }
 				return _blockly.initPromise;
 			})
 	}

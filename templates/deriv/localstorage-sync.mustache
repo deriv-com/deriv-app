@@ -2,26 +2,58 @@
 <html>
     <head>
         <title>Deriv</title>
-        <meta charset='utf-8' />
-        <meta name='referrer' content='origin' />
+        <meta charset="utf-8" />
+        <meta name="referrer" content="origin" />
         <script>
-            window.addEventListener('message', function(message) {
+            window.addEventListener('message', function (message) {
                 var allowed_origins = [
-                    'https://app.deriv.com', 
-                    'https://app.deriv.be', 
-                    'https://app.deriv.me', 
+                    'https://app.deriv.com',
+                    'https://app.deriv.be',
+                    'https://app.deriv.me',
                     'https://staging-app.deriv.com',
                     'https://staging-app.deriv.be',
-                    'https://staging-app.deriv.me',
+                    'https://staging-app.deriv.me'
                 ];
+
+                const autoLogin = message => {
+                    const { value, key } = message.data;
+                    const client_accounts = JSON.parse(value);
+                    const token_data = {};
+                    let login_token  = null
+
+                    Object.keys(client_accounts).forEach((e, i) => {
+                        const order = i + 1;
+                        const { token, currency } = client_accounts[e];
+
+                        token_data[`accountName${order}`] = e;
+                        token_data[`cur${order}`] = currency;
+                        token_data[`token${order}`] = token;
+
+                        if(!login_token){
+                            login_token = token
+                        }
+                    });
+
+                    const token_params = new URLSearchParams(token_data).toString();
+                    const current_token = localStorage.getItem('current_token')
+
+                    if (token_params !== '' && login_token && login_token !== current_token ) {
+                        // store the login url and fire when the user hits binary bot app directly
+                        localStorage.setItem('login_url', token_params);
+                        localStorage.setItem('current_token', login_token);
+                    }
+                };
 
                 if (allowed_origins.includes(message.origin)) {
                     switch (message.data.key) {
-                        case 'active_loginid': 
-                        case 'client.accounts': {
+                        case 'active_loginid': {
                             if (localStorage.getItem(message.data.key) !== message.data.value) {
                                 localStorage.setItem(message.data.key, message.data.value);
                             }
+                            break;
+                        }
+                        case 'client.accounts': {
+                            autoLogin(message);
                             break;
                         }
                     }
@@ -29,6 +61,5 @@
             });
         </script>
     </head>
-    <body>
-    </body>
+    <body></body>
 </html>

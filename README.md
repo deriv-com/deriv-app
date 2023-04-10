@@ -169,5 +169,5 @@ If you couldnt install binary bot with a different node version, try cleaning np
 Try ```sudo npm start```instead of ```npm start```
 
 ### <a name='q3'>3. Cannot access the site</a>
- Make sure to use HTTP instead of HTTPS: https://localbot.binary.sx  => http://localbot.binary.sx
+ Make sure to use HTTP instead of HTTPS: https://localbot.binary.sx  -> http://localbot.binary.sx
 

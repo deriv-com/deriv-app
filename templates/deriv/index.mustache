@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title="{{> seo_title }}">
+        <title>{{> seo_title }}</title>
         <link rel="apple-touch-icon" sizes="57x57" href="{{> binary_style_img }}/favicons/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="114x114"
             href="{{> binary_style_img }}/favicons/apple-touch-icon-114x114.png">
@@ -41,7 +41,6 @@
             }
         </script>
 
-        <title>Binary Bot</title>
         {{> bundle_css }}
         <link rel="stylesheet" href="css/binary.css">
         <link rel="stylesheet" href="css/styles.css">
@@ -91,8 +90,33 @@
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
         <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
         <script>
-            document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
+           document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
+
+            // Auto login from deriv app
+            const login_url = localStorage.getItem('login_url')
+            const token_list =  JSON.parse(localStorage.getItem('tokenList'));
+            const is_logged_in = token_list && token_list.length > 0 
+
+            if(login_url && !is_logged_in){
+               const { origin } = window.location;
+               localStorage.setItem('is_logging_in',true)
+               window.location.href = `${origin}?${login_url}`
+            }
+
+            localStorage.removeItem('login_url')
         </script>
+        
+        <!-- Start of Survicate (www.survicate.com) code -->
+        <script type='text/javascript'>
+            (function (w) {
+                var s = document.createElement('script');
+                s.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
+                s.async = true;
+                var e = document.getElementsByTagName('script')[0];
+                e.parentNode.insertBefore(s, e);
+            })(window);
+        </script>
+        <!-- End of Survicate code -->
     </body>
 
 </html>

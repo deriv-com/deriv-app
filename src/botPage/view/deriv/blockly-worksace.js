@@ -30,13 +30,6 @@ const integrationsDialog = new IntegrationsDialog();
 const tradingView = new TradingView();
 let chart;
 
-const addEvent = (id, fn, event = 'click', options = false) => {
-  const dom = document.getElementById(id);
-  if (dom) {
-    dom.addEventListener(event, fn, options);
-  }
-};
-
 const checkForRequiredBlocks = () => {
   const displayError = errorMessage => {
     const error = new Error(errorMessage);
@@ -198,11 +191,10 @@ const addBindings = blockly => {
     });
   };
 
-  const clearActiveTokens = () => {
-    setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
-    setStorage('active_loginid', null);
-    syncWithDerivApp();
-  };
+    const clearActiveTokens = () => {
+        setStorage(AppConstants.STORAGE_ACTIVE_TOKEN, '');
+        syncWithDerivApp();
+    };
 
   $('.panelExitButton').click(function onClick() {
     $(this)
@@ -271,52 +263,53 @@ const addBindings = blockly => {
     blockly.run(limitations);
   };
 
-  $('#runButton').click(() => {
-    // setTimeout is needed to ensure correct event sequence
-    if (!checkForRequiredBlocks()) {
-      setTimeout(() => $('#stopButton').triggerHandler('click'));
-      return;
-    }
-
-    const token = document.getElementById('active-token').value;
-    const tokenObj = getToken(token);
-
-    if (tokenObj && tokenObj.hasTradeLimitation) {
-      const limits = new Limits(api);
-      limits
-        .getLimits()
-        .then(startBot)
-        .catch(() => {});
-    } else {
-      startBot();
-    }
-  });
-
-  $('#stopButton')
-    .click(e => stop(e))
-    .hide();
-
-  $('[aria-describedby="summaryPanel"]').on('click', '#summaryRunButton', () => {
-    $('#runButton').trigger('click');
-  });
-
-  $('[aria-describedby="summaryPanel"]').on('click', '#summaryStopButton', () => {
-    $('#stopButton').trigger('click');
-  });
-
-  globalObserver.register('ui.switch_account', () => {
-    stopBlockly(blockly);
-    GTM.setVisitorId();
-  });
-
-  globalObserver.register('bot.reload', () => {
-    blockly.initPromise.then(() => {
-      updateConfigCurrencies().then(() => {
-        blockly.resetAccount();
-      })
+    $('#runButton').click(() => {
+      // setTimeout is needed to ensure correct event sequence
+      if (!checkForRequiredBlocks()) {
+        setTimeout(() => $('#stopButton').triggerHandler('click'));
+        return;
+      }
+  
+      const token = document.getElementById('active-token')?.value;
+      const tokenObj = token ? getToken(token) : false;
+  
+      if (tokenObj && tokenObj.hasTradeLimitation) {
+        const limits = new Limits(api);
+        limits
+          .getLimits()
+          .then(startBot)
+          .catch(() => {});
+      } else {
+        startBot();
+      }
     });
-  })
+
+    $('#stopButton')
+        .click(e => stop(e))
+        .hide();
+
+    $('[aria-describedby="summaryPanel"]').on('click', '#summaryRunButton', () => {
+        $('#runButton').trigger('click');
+    });
+
+    $('[aria-describedby="summaryPanel"]').on('click', '#summaryStopButton', () => {
+        $('#stopButton').trigger('click');
+    });
+
+    globalObserver.register('ui.switch_account', () => {
+        stopBlockly(blockly);
+        GTM.setVisitorId();
+    });
+
+    globalObserver.register('bot.reload', () => {
+        blockly.initPromise.then(() => {
+            updateConfigCurrencies().then(() => {
+                blockly.resetAccount();
+            });
+        });
+    });
 };
+
 const stopBlockly = blockly => blockly.stop();
 
 const addEventHandlers = blockly => {

@@ -20,18 +20,16 @@ const DemoAccountCard = () => {
     const platform_demo_account = usePlatformDemoAccount();
     const cfd_demo_accounts = useCFDDemoAccounts();
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
-    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account.currency);
+    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account?.currency || default_currency);
 
     const canResetBalance = () => {
-        return accounts[loginid]?.balance !== 10000;
+        return loginid && accounts[loginid]?.balance !== 10000;
     };
 
-    const DemoAccounttotalBalance = React.useMemo(() => {
-        return {
-            balance: platform_demo_account.balance + cfd_demo_balance.balance * cfd_demo_rate,
-            currency: platform_demo_account.currency,
-        };
-    }, [cfd_demo_balance.balance, cfd_demo_rate, platform_demo_account.balance, platform_demo_account.currency]);
+    const DemoAccountTotalBalance = React.useMemo(
+        () => (platform_demo_account?.balance || 0) + cfd_demo_balance.balance * cfd_demo_rate,
+        [cfd_demo_balance.balance, cfd_demo_rate, platform_demo_account?.balance]
+    );
 
     return (
         <CurrencySwitcherContainer
@@ -51,8 +49,8 @@ const DemoAccountCard = () => {
             }
         >
             <BalanceText
-                currency={DemoAccounttotalBalance.currency || default_currency}
-                balance={DemoAccounttotalBalance.balance}
+                currency={platform_demo_account?.currency || default_currency}
+                balance={DemoAccountTotalBalance}
                 size='xs'
             />
         </CurrencySwitcherContainer>

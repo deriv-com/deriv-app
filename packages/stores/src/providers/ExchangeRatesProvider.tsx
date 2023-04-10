@@ -10,7 +10,7 @@ const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) =
 
     useEffect(() => {
         subscribe({ payload: { base_currency: 'USD' } });
-    }, []);
+    }, [subscribe]);
 
     useEffect(() => {
         update(data);

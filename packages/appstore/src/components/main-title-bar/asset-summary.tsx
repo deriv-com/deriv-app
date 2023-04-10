@@ -28,7 +28,7 @@ const AssetSummary = observer(() => {
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
     const cfd_real_rate = useCurrencyExchangeRate(platform_real_balance.currency);
-    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account.currency);
+    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account?.currency || default_currency);
 
     const totalBalance = useMemo(() => {
         if (selected_account_type === 'real') {

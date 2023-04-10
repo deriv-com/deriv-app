@@ -5,7 +5,9 @@ const usePlatformDemoAccount = () => {
     const { accounts } = client;
     const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
 
-    return account_list.find(account => account.is_virtual);
+    const platform_demo_account = account_list.find(account => account.is_virtual);
+
+    return platform_demo_account;
 };
 
 export default usePlatformDemoAccount;

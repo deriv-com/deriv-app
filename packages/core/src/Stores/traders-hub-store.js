@@ -141,22 +141,6 @@ export default class TradersHubStore extends BaseStore {
                 this.selected_region = default_region();
             }
         );
-
-        // reaction(
-        //     () => [
-        //         this.root_store.client.balance,
-        //         this.root_store.client.loginid,
-        //         this.root_store.client.obj_total_balance,
-        //         this.root_store.client.mt5_login_list,
-        //         this.root_store.client.dxtrade_accounts_list,
-        //         this.root_store.accounts,
-        //         this.selected_account_type,
-        //         this.selected_region,
-        //     ],
-        //     async () => {
-        //         await this.updatePlatformBalance();
-        //     }
-        // );
     }
 
     async setSwitchEU() {

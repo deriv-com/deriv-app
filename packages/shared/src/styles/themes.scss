@@ -64,15 +64,6 @@
     --app-card-virtual: #{$gradient-virtual};
     --app-card-virtual-swap-free: #{$gradient-virtual-swap-free};
 
-    // Modal
-    --modal-indicator-red-darker: #{$color-red-8};
-    --modal-indicator-red-dark: #{$color-red-9};
-    --modal-indicator-red-light: #{$color-red-10};
-    --modal-indicator-yellow-dark: #{$color-yellow-1};
-    --modal-indicator-yellow-light: #{$color-yellow-2};
-    --modal-indicator-violet-dark: #{$color-violet};
-    --modal-indicator-brown-dark: #{$color-brown};
-
     .theme--light {
         // General
         --general-main-1: #{$color-white};

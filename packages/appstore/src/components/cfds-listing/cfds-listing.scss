@@ -202,25 +202,25 @@
             padding: 0.6rem 1.2rem;
             border-radius: $BORDER_RADIUS;
             &__red-darker {
-                background: var(--modal-indicator-red-darker);
+                background: $color-red-8;
             }
             &__red-dark {
-                background: var(--modal-indicator-red-dark);
+                background: $color-red-9;
             }
             &__red-light {
-                background: var(--modal-indicator-red-light);
+                background: $color-red-10;
             }
             &__yellow-dark {
-                background: var(--modal-indicator-yellow-dark);
+                background: $color-yellow-1;
             }
             &__yellow-light {
-                background: var(--modal-indicator-yellow-light);
+                background: $color-yellow-2;
             }
             &__violet-dark {
-                background: var(--modal-indicator-violet-dark);
+                background: $color-violet;
             }
             &__brown-dark {
-                background: var(--modal-indicator-brown-dark);
+                background: $color-brown;
             }
         }
     }

@@ -5,7 +5,7 @@ const useTotalAccountBalance = (accounts: DetailsOfEachMT5Loginid[]) => {
     const { exchange_rates } = useStore();
     const currency = accounts[0]?.currency || 'USD';
 
-    const total_balance = accounts.reduce((total, account) => {
+    const balance = accounts.reduce((total, account) => {
         const base_rate = exchange_rates.data?.rates?.[currency] || 1;
         const rate = exchange_rates.data?.rates?.[account.currency || 'USD'] || 1;
 
@@ -15,7 +15,7 @@ const useTotalAccountBalance = (accounts: DetailsOfEachMT5Loginid[]) => {
     }, 0);
 
     return {
-        balance: total_balance,
+        balance,
         currency,
     };
 };

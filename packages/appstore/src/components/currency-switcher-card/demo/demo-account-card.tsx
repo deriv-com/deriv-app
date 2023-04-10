@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { Button, Text } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import BalanceText from 'Components/elements/text/balance-text';
-import { useStores } from 'Stores/index';
 import './demo-account-card.scss';
 import { localize } from '@deriv/translations';
 import {
@@ -12,20 +11,20 @@ import {
     usePlatformDemoAccount,
     useTotalAccountBalance,
 } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 
 const DemoAccountCard = () => {
-    const { client, traders_hub } = useStores();
+    const { client, traders_hub } = useStore();
     const { accounts, loginid, resetVirtualBalance, default_currency } = client;
     const { selected_account_type } = traders_hub;
-
-    const canResetBalance = () => {
-        return accounts[loginid]?.balance !== 10000;
-    };
-
     const platform_demo_account = usePlatformDemoAccount();
     const cfd_demo_accounts = useCFDDemoAccounts();
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
     const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account.currency);
+
+    const canResetBalance = () => {
+        return accounts[loginid]?.balance !== 10000;
+    };
 
     const DemoAccounttotalBalance = React.useMemo(() => {
         return {

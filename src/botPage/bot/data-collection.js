@@ -1,14 +1,13 @@
 import crc32 from 'crc-32/crc32';
 import pako from 'pako';
 import { observer } from '../../common/utils/observer';
-import { getTokenList } from '../../common/utils/storageManager';
+import { getTokenList, get as getStorage } from '../../common/utils/storageManager';
 import { isProduction } from '../../common/utils/tools';
 
 export default class DataCollection {
     constructor(workspace) {
         this.workspace = workspace;
         this.loginid = this.getLoginId();
-
         if (isProduction()) {
             observer.register('bot.contract', contract => this.trackTransaction(contract));
             observer.register('bot.running', () => this.trackRun());
@@ -111,12 +110,16 @@ export default class DataCollection {
 
     getLoginId = () => {
         const tokenList = getTokenList();
-
+        const current_login_id = getStorage('active_loginid') || '';
+        let lognin_id = null;
         if (tokenList.length) {
-            return tokenList[0].loginInfo.loginid;
+            tokenList.forEach(token_list => {
+                if (current_login_id === token_list.loginInfo.loginid) {
+                    lognin_id = token_list.loginInfo.loginid;
+                }
+            });
         }
-
-        return null;
+        return lognin_id;
     };
 
     getUTCDate = () => {

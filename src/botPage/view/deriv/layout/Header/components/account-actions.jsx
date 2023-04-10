@@ -30,7 +30,6 @@ const AccountActions = () => {
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(setIsHeaderLoaded(true));
     }, []);
@@ -77,6 +76,9 @@ const AccountActions = () => {
                           })
                         : ''}
                     <span className='symbols'>&nbsp;{currency ? currency : translate('No currency assigned')}</span>
+                    {active_account_name.includes('MF') && !is_virtual && (
+                        <div className='is_symbol_multiplier'>{translate('Multipliers')}</div>
+                    )}
                 </div>
                 <img
                     className={`header__icon header__expand ${is_acc_dropdown_open ? 'open' : ''}`}

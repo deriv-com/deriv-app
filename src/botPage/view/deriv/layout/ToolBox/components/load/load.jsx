@@ -14,16 +14,34 @@ const Load = ({ closeDialog, is_gd_logged_in }) => {
 
     const onChange = e => setLoadType(e.target.value);
 
+    const createFilePicker = () => {
+        google_drive_util
+            .createFilePicker()
+            .then(() => closeDialog())
+            .finally(() => isMounted() && setLoading(false));
+    };
+
     const onSubmit = e => {
         e.preventDefault();
 
         if (load_type === SAVE_LOAD_TYPE.google_drive) {
             setLoading(true);
-
-            google_drive_util
-                .createFilePicker()
-                .then(() => closeDialog())
-                .finally(() => isMounted() && setLoading(false));
+            google_drive_util.client.callback = response => {
+                google_drive_util.removeGdBackground();
+                google_drive_util.access_token = response.access_token;
+                localStorage.setItem('access_token', response.access_token);
+                createFilePicker();
+                if (isMounted()) setLoading(false);
+                closeDialog();
+            };
+            if (!google_drive_util.access_token) {
+                google_drive_util.client.requestAccessToken({ prompt: '' });
+            } else {
+                window.gapi.client.setToken({ access_token: google_drive_util.access_token });
+                createFilePicker();
+                if (isMounted()) setLoading(false);
+                closeDialog();
+            }
         } else {
             // [TODO]: Refactor to use react
             document.getElementById('files').click();

@@ -22,14 +22,21 @@ JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
 const unrecoverable_errors = [
     'InsufficientBalance',
     'CustomLimitsReached',
-    'OfferingsValidationError',
     'InvalidCurrency',
+    'ContractBuyValidationError',
     'NotDefaultCurrency',
     'PleaseAuthenticate',
     'FinancialAssessmentRequired',
+    'PositiveIntegerExpected',
+    'OptionError',
+    'IncorrectPayoutDecimals',
+    'IncorrectStakeDecimals',
+    'NoMFProfessionalClient',
     'AuthorizationRequired',
     'InvalidToken',
+    'DailyLossLimitExceeded',
     'ClientUnwelcome',
+    'PriceMoved',
 ];
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
@@ -38,7 +45,13 @@ const shouldRestartOnError = (bot, error_name = '') =>
     !unrecoverable_errors.includes(error_name) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, error_name = '') => {
-    const stop_errors = ['SellNotAvailableCustom', 'ContractBuyValidationError', 'CustomInvalidProposal'];
+    const stop_errors = [
+        'SellNotAvailableCustom',
+        'CustomInvalidProposal',
+        'ContractCreationFailure',
+        'OfferingsValidationError',
+        'InputValidationFailed',
+    ];
     if (stop_errors.includes(error_name) && botInitialized(bot)) {
         return true;
     }
@@ -181,9 +194,10 @@ export default class Interpreter {
     terminateSession() {
         this.stopped = true;
         this.isErrorTriggered = false;
-
         globalObserver.emit('bot.stop');
         globalObserver.setState({ isRunning: false });
+        const { ticksService } = this.$scope;
+        ticksService.unsubscribeFromTicksService();
     }
 
     stop() {

@@ -14,14 +14,27 @@ const initial_state = {
     total_demo: {},
     is_eu: false,
     is_logged: false,
-    is_gd_logged_in: false,
+    is_gd_logged_in: !!localStorage.getItem('access_token'),
     accounts: {},
+    account_type: {},
 };
 
 export const clientSlice = createSlice({
     name: 'client',
     initialState: initial_state,
     reducers: {
+        updateAccountType: (state, action) => {
+            state.account_type = {
+                ...state.account_type,
+                high_risk: action.payload.high_risk,
+                high_risk_or_eu: action.payload.high_risk_or_eu,
+                low_risk: action.payload.low_risk,
+                low_risk_without_account: action.payload.low_risk_without_account,
+                high_risk_without_account: action.payload.high_risk_without_account,
+                is_multiplier: action.payload.is_multiplier,
+                country_code: action.payload.country_code,
+            };
+        },
         updateIsLogged: (state, action) => {
             state.is_logged = action.payload;
         },
@@ -35,6 +48,9 @@ export const clientSlice = createSlice({
         },
         updateActiveToken: (state, action) => {
             state.active_token = action.payload;
+        },
+        setGdLoggedIn: (state, action) => {
+            state.is_gd_logged_in = action.payload;
         },
         updateBalance: (state, action) => {
             if (action.payload.loginid === state.active_account_name) {
@@ -57,9 +73,6 @@ export const clientSlice = createSlice({
                 };
             }
         },
-        setGdLoggedIn: (state, action) => {
-            state.is_gd_logged_in = action.payload;
-        },
     },
 });
 
@@ -69,6 +82,7 @@ export const {
     updateActiveToken,
     updateActiveAccount,
     updateBalance,
+    updateAccountType,
     setGdLoggedIn,
 } = clientSlice.actions;
 

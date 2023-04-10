@@ -8,23 +8,23 @@ import classNames from 'classnames';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import config from '../../../../../../app.config';
 
-const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
+const TabContent = ({
+    tab = 'real',
+    isActive,
+    setIsAccDropdownOpen,
+    accounts,
+    title = translate('Deriv accounts'),
+}) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
-    const { accounts, active_account_name } = useSelector(state => state.client);
-    const { show_bot_unavailable_page } = useSelector(state => state.ui);
+    const { active_account_name } = useSelector(state => state.client);
     const item_ref = React.useRef([]);
     const isReal = tab === 'real';
     const token_list = getTokenList();
-    const { visible, url, label } = config.add_account;
     const onChangeAccount = acc => {
         const account_token = token_list.find(token => token.accountName === acc);
         if (account_token?.token && acc !== active_account_name) {
-            if (show_bot_unavailable_page) {
-                globalObserver.emit('ui.switch_account', account_token.token);
-            } else {
-                dispatch(setAccountSwitcherToken(account_token?.token));
-            }
+            dispatch(setAccountSwitcherToken(account_token?.token));
             setIsAccDropdownOpen(false);
         }
     };
@@ -37,7 +37,7 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                     onClick={() => setIsAccordionOpen(!isAccordionOpen)}
                 >
                     <div className='account__switcher-accordion-header-text'>
-                        <span>{translate(isReal ? 'Deriv Accounts' : 'Demo Accounts')}</span>
+                        <span>{title}</span>
                         <img
                             className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
                             src='image/deriv/ic-chevron-down.svg'
@@ -46,12 +46,11 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                 </h3>
                 <div className={`account__switcher-list ${isAccordionOpen ? 'open' : ''}`}>
                     {accounts &&
-                        Object.keys(accounts)
+                        accounts
                             .sort((acc, acc1) => {
                                 return acc === active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
                             })
-                            .map((acc, index) => {
-                                const account = accounts[acc];
+                            .map((account, index) => {
                                 const { demo_account, currency, balance } = account;
                                 const currency_icon = demo_account ? 'virtual' : currency?.toLowerCase() || 'unknown';
                                 const getBalance = () => {
@@ -64,16 +63,17 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                                     isReal !== Boolean(demo_account) && (
                                         <div
                                             className={classNames('account__switcher-acc', {
-                                                'account__switcher-acc--active': index === 0,
+                                                'account__switcher-acc--active':
+                                                    active_account_name === account.account,
                                             })}
-                                            key={acc}
+                                            key={account.account}
                                             onClick={e => {
                                                 e.stopPropagation();
-                                                onChangeAccount(acc);
+                                                onChangeAccount(account.account);
                                             }}
                                             ref={el => (item_ref.current[index] = el)}
                                         >
-                                            <input type='hidden' name='account_name' value={acc} />
+                                            <input type='hidden' name='account_name' value={account.account} />
                                             <img src={`image/deriv/currency/ic-currency-${currency_icon}.svg`} />
                                             <span>
                                                 {!currency && (
@@ -81,9 +81,12 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                                                 )}
                                                 {demo_account
                                                     ? translate('Demo')
+                                                    : account.account?.includes('MF') &&
+                                                      active_account_name?.includes('MF')
+                                                    ? 'Multiplers'
                                                     : config.currency_name_map[currency]?.name || currency}
 
-                                                <div className='account__switcher-loginid'>{acc}</div>
+                                                <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>
                                             <span className='account__switcher-balance'>
                                                 {account?.currency && getBalance()}
@@ -96,12 +99,6 @@ const TabContent = ({ tab, isActive, setIsAccDropdownOpen }) => {
                                     )
                                 );
                             })}
-                    {isReal && visible && (
-                        <a href={url} rel='noopener noreferrer' className='account__switcher-add'>
-                            <img className='account__switcher-add-icon' src='image/deriv/ic-add-circle.svg' />
-                            <span className='account__switcher-add-text'>{label}</span>
-                        </a>
-                    )}
                 </div>
             </div>
         </div>

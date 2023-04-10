@@ -15,7 +15,7 @@ type TDatePickerOnChangeEvent = {
 };
 type TDatePicker = Omit<
     React.ComponentProps<typeof Native> & React.ComponentProps<typeof Input> & React.ComponentProps<typeof Calendar>,
-    'value' | 'onSelect' | 'is_datepicker_visible' | 'placement' | 'style'
+    'value' | 'onSelect' | 'is_datepicker_visible' | 'placement' | 'style' | 'calendar_el_ref' | 'parent_ref'
 > & {
     mode: string;
     start_date: moment.Moment;
@@ -239,6 +239,8 @@ const DatePicker = React.memo((props: TDatePicker) => {
                         />
                         <Calendar
                             ref={calendar_ref}
+                            calendar_el_ref={calendar_el_ref}
+                            parent_ref={datepicker_ref}
                             keep_open={keep_open}
                             alignment={alignment}
                             is_datepicker_visible={is_datepicker_visible}

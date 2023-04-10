@@ -16,7 +16,7 @@ const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) =
         update(data);
     }, [update, data]);
 
-    return <>{children}</>;
+    return <React.Fragment>{children}</React.Fragment>;
 };
 
 export default ExchangeRatesProvider;

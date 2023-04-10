@@ -63,7 +63,10 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
 export const isMultiplier = async landing_company_list => {
     const multiplier_account = landing_company_list?.financial_company?.legal_allowed_contract_categories;
     const is_multiplier = multiplier_account?.includes('multiplier');
-    return multiplier_account.length === 1 && is_multiplier;
+    return {
+        is_multiplier: multiplier_account.length === 1 && is_multiplier,
+        country_code: landing_company_list.id,
+    };
 };
 
 export const checkSwitcherType = async () => {
@@ -71,7 +74,7 @@ export const checkSwitcherType = async () => {
     const token_list = await getTokenList();
     const { landing_company } = await api.send({ landing_company: token_list[0]?.loginInfo.country });
 
-    const is_multiplier = await isMultiplier(landing_company);
+    const { is_multiplier, country_code } = await isMultiplier(landing_company);
 
     const { financial_company, gaming_company } = landing_company;
     const account_status = await api.send({ get_account_status: 1 });
@@ -113,5 +116,6 @@ export const checkSwitcherType = async () => {
         high_risk_without_account: high_risk_no_account,
         high_risk_or_eu: is_high_risk_or_eu,
         is_multiplier,
+        country_code,
     };
 };

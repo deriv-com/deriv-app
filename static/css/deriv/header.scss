@@ -651,6 +651,7 @@
             }
 
             &-dropdown {
+                min-width: 20rem;
                 &-wrapper {
                     @include mobile {
                         position: absolute;

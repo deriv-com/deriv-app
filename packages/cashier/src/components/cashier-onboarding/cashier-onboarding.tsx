@@ -66,7 +66,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
     const is_currency_banner_visible =
         (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
 
-    const { all_payment_agent_list, is_loading } = usePaymentAgentList();
+    const { data: all_payment_agent_list, isLoading: is_loading } = usePaymentAgentList();
 
     const is_payment_agent_visible_in_onboarding = Boolean(all_payment_agent_list?.length);
 

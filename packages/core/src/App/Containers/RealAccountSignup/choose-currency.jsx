@@ -30,7 +30,7 @@ const ChooseCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
 
-    const { all_payment_agent_list, is_loading } = usePaymentAgentList();
+    const { data: all_payment_agent_list, isLoading: is_loading } = usePaymentAgentList();
 
     React.useEffect(() => {
         return () => setShouldShowAllAvailableCurrencies(false);

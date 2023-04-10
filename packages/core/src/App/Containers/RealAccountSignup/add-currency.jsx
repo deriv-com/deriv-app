@@ -29,7 +29,7 @@ const AddCurrency = ({
 }) => {
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
-    const { all_payment_agent_list, is_loading } = usePaymentAgentList();
+    const { data: all_payment_agent_list, isLoading: is_loading } = usePaymentAgentList();
 
     const getReorderedCurrencies = React.useMemo(() => {
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(

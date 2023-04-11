@@ -1,70 +1,24 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
 import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
-import { connect } from '../Stores/connect';
-import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
-import RootStore from '../Stores/index';
-import { useStore } from '@deriv/stores';
-
-type TAuthenticationStatus = { document_status: string; identity_status: string };
-
-type TStoreProofOfAddressArgs = {
-    file_uploader_ref: HTMLDivElement | null;
-    values: { [key: string]: string };
-};
-
-type TRemoveNotificationMessage = {
-    key: string;
-    should_show_again: boolean;
-};
-
-type TGetSettings = GetSettings & {
-    upload_file?: string;
-    poi_state?: string;
-};
+import { observer, useStore } from '@deriv/stores';
 
 type TCFDFinancialStpRealAccountSignupProps = {
-    addNotificationByKey: (key: string) => void;
-    authentication_status: TAuthenticationStatus;
-    get_settings: TGetSettings;
-    client_email: string;
-    is_fully_authenticated: boolean;
-    landing_company: LandingCompany;
-    refreshNotifications: () => void;
-    removeNotificationMessage: () => void;
-    removeNotificationByKey: (args: TRemoveNotificationMessage) => void;
-    residence_list: ResidenceList;
-    states_list: StatesList;
-    storeProofOfAddress: TStoreProofOfAddressArgs;
-    fetchStatesList: () => void;
-    account_status: GetAccountStatus;
     onFinish: () => void;
-    jurisdiction_selected_shortcode: string;
-    has_submitted_cfd_personal_details: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
 
-type TItemsState = {
+type TItemsState<T> = {
     body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
-    forwarded_props: Array<Partial<keyof TCFDFinancialStpRealAccountSignupProps>>;
+    forwarded_props: Array<Partial<keyof T>>;
 };
 
-const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    const {
-        account_status,
-        authentication_status,
-        fetchStatesList,
-        get_settings,
-        refreshNotifications,
-        has_submitted_cfd_personal_details,
-        jurisdiction_selected_shortcode,
-    } = props;
-
+const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAccountSignupProps) => {
     const {
         notifications: {
             refreshNotifications,
@@ -88,6 +42,25 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         },
     } = useStore();
 
+    const passthroughProps = {
+        refreshNotifications,
+        removeNotificationMessage,
+        removeNotificationByKey,
+        addNotificationByKey,
+        authentication_status,
+        get_settings,
+        client_email,
+        is_fully_authenticated,
+        landing_company,
+        residence_list,
+        states_list,
+        fetchStatesList,
+        account_status,
+        storeProofOfAddress,
+        jurisdiction_selected_shortcode,
+        has_submitted_cfd_personal_details,
+        onFinish,
+    } as const;
 
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
@@ -96,7 +69,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan } = getAuthenticationStatusInfo(account_status);
 
-    const poi_config: TItemsState = {
+    const poi_config: TItemsState<typeof passthroughProps> = {
         body: CFDPOI,
         form_value: {
             poi_state: 'unknown',
@@ -111,7 +84,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         ],
     };
 
-    const poa_config: TItemsState = {
+    const poa_config: TItemsState<typeof passthroughProps> = {
         body: CFDPOA,
         form_value: {
             address_line_1: get_settings.address_line_1,
@@ -124,7 +97,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         forwarded_props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
     };
 
-    const personal_details_config: TItemsState = {
+    const personal_details_config: TItemsState<typeof passthroughProps> = {
         body: CFDPersonalDetailsContainer,
         form_value: {
             citizen: '',
@@ -155,7 +128,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         ...(should_show_personal_details ? [personal_details_config] : []),
     ];
 
-    const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
+    const [items, setItems] = React.useState<TItemsState<typeof passthroughProps>[]>(verification_configs);
 
     const clearError = () => {
         setFormError('');
@@ -171,12 +144,12 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const unmount = () => {
         is_mounted = false;
-        props.onFinish();
+        onFinish();
     };
 
     const saveFormData = (index: number, value: { [key: string]: string | undefined }) => {
         if (!is_mounted) return; // avoiding state update on unmounted component
-        const cloned_items: TItemsState[] = [...items];
+        const cloned_items: TItemsState<typeof passthroughProps>[] = [...items];
         cloned_items[index].form_value = value;
         setItems(cloned_items);
     };
@@ -196,7 +169,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         } else unmount();
     };
 
-    const getCurrent = (key?: keyof TItemsState) => {
+    const getCurrent = (key?: keyof TItemsState<typeof passthroughProps>) => {
         return key ? items[state_index][key] : items[state_index];
     };
 
@@ -204,14 +177,13 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const form_value = getCurrent('form_value');
 
-    const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(
-        (forwarded_prop, item) => {
-            return Object.assign(forwarded_prop, {
-                [item]: props[item],
-            });
-        },
-        {}
-    );
+    const passthrough = (
+        (getCurrent('forwarded_props') || []) as TItemsState<typeof passthroughProps>['forwarded_props']
+    ).reduce((forwarded_prop, item) => {
+        return Object.assign(forwarded_prop, {
+            [item]: passthroughProps[item],
+        });
+    }, {});
 
     return (
         <Div100vhContainer
@@ -236,21 +208,4 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     );
 };
 
-export default connect(({ client, modules: { cfd }, notifications }: RootStore) => ({
-    addNotificationByKey: notifications.addNotificationMessageByKey,
-    authentication_status: client.authentication_status,
-    get_settings: client.account_settings,
-    client_email: client.email,
-    is_fully_authenticated: client.is_fully_authenticated,
-    landing_company: client.landing_company,
-    refreshNotifications: notifications.refreshNotifications,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-    residence_list: client.residence_list,
-    states_list: client.states_list,
-    fetchStatesList: client.fetchStatesList,
-    storeProofOfAddress: cfd.storeProofOfAddress,
-    account_status: client.account_status,
-    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
-    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
-}))(CFDFinancialStpRealAccountSignup);
+export default observer(CFDFinancialStpRealAccountSignup);

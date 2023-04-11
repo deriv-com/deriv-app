@@ -9,6 +9,7 @@ import type {
     LandingCompany,
     VerifyEmailResponse,
     Mt5NewAccount,
+    StatesList,
 } from '@deriv/api-types';
 
 import type { RouteComponentProps } from 'react-router';
@@ -261,6 +262,14 @@ type TClientStore = {
     dxtrade_status_server: TDXTraderStatusServerType;
     real_account_creation_unlock_date: string;
     is_user_exception: boolean;
+    get_settings: GetSettings & {
+        upload_file?: string;
+        poi_state?: string;
+    };
+    client_email: string;
+    is_fully_authenticated: boolean;
+    states_list: StatesList;
+    fetchStatesList: () => void;
 };
 
 type TCommonStoreError = {
@@ -348,6 +357,7 @@ type TMenuStore = {
 
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
+    addNotificationByKey: (key: string) => void;
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
@@ -371,6 +381,13 @@ type TTradersHubStore = {
     financial_restricted_countries: string[];
     no_MF_account: boolean;
     is_demo: string;
+};
+
+type TStoreProofOfAddressArgs = {
+    file_uploader_ref: HTMLDivElement | null;
+    values: {
+        [key: string]: string;
+    };
 };
 
 type TModuleStore = {
@@ -449,6 +466,7 @@ type TModuleStore = {
             set_password?: number | undefined;
             platform?: string | undefined;
         }) => void;
+        storeProofOfAddress: TStoreProofOfAddressArgs;
     };
 };
 

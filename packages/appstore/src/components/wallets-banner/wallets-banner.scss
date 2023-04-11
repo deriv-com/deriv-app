@@ -80,9 +80,9 @@
             }
         }
 
-        &-circles {
+        &-loading {
             span {
-                animation-name: blink;
+                animation-name: loading;
                 animation-duration: 1.5s;
                 animation-iteration-count: infinite;
                 animation-timing-function: cubic-bezier(1, 0, 0, 1);
@@ -175,7 +175,7 @@
     }
 }
 
-@keyframes blink {
+@keyframes loading {
     0% {
         background-color: $color-red;
     }

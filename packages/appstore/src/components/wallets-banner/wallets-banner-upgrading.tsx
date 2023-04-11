@@ -12,15 +12,15 @@ type TWalletsBannerUpgrading = {
 
 const WalletsBannerUpgrading = ({ is_eu }: TWalletsBannerUpgrading) => {
     const image: TWalletsImagesListKeys = isMobile()
-        ? `ready_mobile${is_eu ? '_eu' : ''}`
-        : `ready_desktop${is_eu ? '_eu' : ''}`;
+        ? `upgrading_mobile${is_eu ? '_eu' : ''}`
+        : `upgrading_desktop${is_eu ? '_eu' : ''}`;
     const title_size = isMobile() ? 'xs' : 'sm';
     const description_size = isMobile() ? 'xxxs' : 'xs';
 
     return (
         <div className='wallets-banner__container wallets-banner__upgrading-banner'>
             <div className='wallets-banner__upgrading-banner-description'>
-                <div className='wallets-banner__upgrading-banner-circles'>
+                <div className='wallets-banner__upgrading-banner-loading' data-testid={'dt_wallets-loading-dots'}>
                     <span className='wallets-banner__upgrading-banner-dot' />
                     <span className='wallets-banner__upgrading-banner-dot' />
                     <span className='wallets-banner__upgrading-banner-dot' />

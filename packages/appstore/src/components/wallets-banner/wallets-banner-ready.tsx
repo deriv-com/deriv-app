@@ -21,7 +21,7 @@ const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
     return (
         <div className='wallets-banner__container wallets-banner__ready-banner'>
             <div className='wallets-banner__ready-banner-description'>
-                <div className={'wallets-banner__ready-banner-tick'}>
+                <div className={'wallets-banner__ready-banner-tick'} data-testid={'dt_wallets-ready-tick'}>
                     <Icon icon='IcAppstoreTickWhite' size={tick_size} />
                 </div>
                 <Localize

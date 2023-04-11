@@ -6,7 +6,7 @@ import WalletSteps from './components/wallet-steps';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
-import { steps } from 'Constants/wallet-steps-config';
+import { steps } from 'Constants/wallet-static-steps-config';
 
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStore();

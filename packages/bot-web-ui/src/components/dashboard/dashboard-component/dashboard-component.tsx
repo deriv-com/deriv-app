@@ -33,7 +33,7 @@ const DashboardTitle = ({ is_mobile, has_dashboard_strategies }: TDashboardMobil
     </div>
 );
 
-const MobileIconGuide = ({ has_dashboard_strategies }: { has_dashboard_strategies: boolean }) => (
+const MobileIconGuide = () => (
     <MobileWrapper>
         <div>
             <Local />

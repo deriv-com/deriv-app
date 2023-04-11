@@ -10,19 +10,19 @@ const ReadyToUpgradeForm = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProps)
     <React.Fragment>
         <WalletsImage className='wallet-wrapper--icon' banner={'ReadyToUpdateWalletsIcon'} />
         <div className='wallet-wrapper--text'>
-            <Text size={isMobile ? 'xsm' : 'm'} align='center' weight='bold' line_height={isMobile ? 'm' : 'l'}>
+            <Text size={isMobile() ? 'xsm' : 'm'} align='center' weight='bold' line_height={isMobile() ? 'm' : 'l'}>
                 <Localize i18n_default_text='Ready to upgrade?' />
             </Text>
-            <Text size={isMobile ? 'xs' : 's'} align='center' line_height={isMobile ? 'm' : 'l'}>
+            <Text size={isMobile() ? 'xs' : 's'} align='center' line_height={isMobile() ? 'm' : 'l'}>
                 <Localize
                     i18n_default_text="This is <0>irreversible.</0> Once you upgrade, the Cashier won't be available anymore. You'll need to
                 use Wallets to deposit, withdraw, and transfer funds."
                     components={
                         <Text
-                            size={isMobile ? 'xs' : 's'}
+                            size={isMobile() ? 'xs' : 's'}
                             weight='bold'
                             align='center'
-                            line_height={isMobile ? 'm' : 'l'}
+                            line_height={isMobile() ? 'm' : 'l'}
                             key={0}
                         />
                     }

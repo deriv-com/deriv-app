@@ -10,6 +10,14 @@
         width: 100%;
     }
 
+    &--checkbox {
+        .dc-checkbox__label {
+            @include mobile {
+                font-size: var(--text-size-xxs);
+            }
+        }
+    }
+
     &--body {
         margin: 0 auto;
         max-width: 73.9rem;

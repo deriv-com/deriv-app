@@ -33,7 +33,12 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpdateWalletsPr
                 <Localize
                     i18n_default_text='<0>Deriv P2P</0> is not supported in wallets yet. This option will be unavailable until further notice.'
                     components={
-                        <Text weight='bold' size={isMobile ? 'xxs' : 'xs'} line_height={isMobile ? 'm' : 'l'} key={0} />
+                        <Text
+                            weight='bold'
+                            size={isMobile() ? 'xxs' : 'xs'}
+                            line_height={isMobile() ? 'm' : 'l'}
+                            key={0}
+                        />
                     }
                 />
             ),
@@ -45,7 +50,12 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpdateWalletsPr
                 <Localize
                     i18n_default_text="You can use <0>payment agents'</0> services to make deposits by adding a Payment agent wallet after the upgrade."
                     components={
-                        <Text weight='bold' size={isMobile ? 'xxs' : 'xs'} line_height={isMobile ? 'm' : 'l'} key={0} />
+                        <Text
+                            weight='bold'
+                            size={isMobile() ? 'xxs' : 'xs'}
+                            line_height={isMobile() ? 'm' : 'l'}
+                            key={0}
+                        />
                     }
                 />
             ),
@@ -64,7 +74,7 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpdateWalletsPr
             {list.map(info => (
                 <div className='wallet-wrapper--info-section__text' key={info.name}>
                     <Icon icon='ic-info-blue' />
-                    <Text size={isMobile ? 'xxs' : 'xs'} line_height={isMobile ? 'm' : 'l'}>
+                    <Text size={isMobile() ? 'xxs' : 'xs'} line_height={isMobile() ? 'm' : 'l'}>
                         {info.content}
                     </Text>
                 </div>

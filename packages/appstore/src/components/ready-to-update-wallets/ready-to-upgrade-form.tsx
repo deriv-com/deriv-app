@@ -3,20 +3,29 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TReadyToUpdateWalletsProps } from './ready-to-update-wallets';
 import UpgradeInformationList from './upgrade-info-list';
+import { isMobile } from '@deriv/shared';
 import WalletsImage from 'Assets/svgs/wallets';
 
 const ReadyToUpgradeForm = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProps) => (
     <React.Fragment>
-        <WalletsImage banner={'ReadyToUpdateWalletsIcon'} />
+        <WalletsImage className='wallet-wrapper--icon' banner={'ReadyToUpdateWalletsIcon'} />
         <div className='wallet-wrapper--text'>
-            <Text size='m' align='center' weight='bold' line_height='l'>
+            <Text size={isMobile ? 'xsm' : 'm'} align='center' weight='bold' line_height={isMobile ? 'm' : 'l'}>
                 <Localize i18n_default_text='Ready to upgrade?' />
             </Text>
-            <Text align='center' line_height='l'>
+            <Text size={isMobile ? 'xs' : 's'} align='center' line_height={isMobile ? 'm' : 'l'}>
                 <Localize
                     i18n_default_text="This is <0>irreversible.</0> Once you upgrade, the Cashier won't be available anymore. You'll need to
                 use Wallets to deposit, withdraw, and transfer funds."
-                    components={<Text weight='bold' align='center' line_height='l' key={0} />}
+                    components={
+                        <Text
+                            size={isMobile ? 'xs' : 's'}
+                            weight='bold'
+                            align='center'
+                            line_height={isMobile ? 'm' : 'l'}
+                            key={0}
+                        />
+                    }
                 />
             </Text>
         </div>

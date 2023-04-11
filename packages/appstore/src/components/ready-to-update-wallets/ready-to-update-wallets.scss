@@ -5,10 +5,9 @@
     height: 100%;
 
     &--icon {
-        max-width: 23.8rem;
+        max-width: 22rem;
         max-height: 15rem;
         width: 100%;
-        height: auto;
     }
 
     &--body {
@@ -43,11 +42,10 @@
         gap: 1.6rem;
 
         &__text {
-            display: flex;
-            flex-direction: row;
+            display: grid;
+            grid-template-columns: 1.6rem 1fr;
+            grid-column-gap: 0.8rem;
             align-items: center;
-            justify-content: flex-start;
-            gap: 0.8rem;
         }
     }
     // This won't be needed once everything is merged

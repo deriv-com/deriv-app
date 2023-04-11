@@ -81,8 +81,9 @@ const ReadyToUpdateWallets = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProp
                     wrapper_classname='wallet-wrapper'
                     visible={show_wallet_consent_popup}
                     has_full_height={true}
+                    onClose={() => setShouldShowWalletConsentPopup(false)}
                 >
-                    <Div100vhContainer className='wallet-wrapper--body' height_offset='12rem'>
+                    <Div100vhContainer className='wallet-wrapper--body' height_offset='15rem'>
                         <ReadyToUpgradeForm is_eu={is_eu} is_high_risk={is_high_risk} />
                         <Checkbox
                             onChange={toggleCheckbox}
@@ -92,13 +93,20 @@ const ReadyToUpdateWallets = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProp
                     </Div100vhContainer>
                     {/* TODO: Once merged with the main component the button will not be needed as it will be handled on the main component */}
                     <div className='wallet-wrapper--footer'>
-                        <Button secondary text={localize('Back')} large className='wallet-wrapper--footer__btn' />
+                        <Button
+                            secondary
+                            text={localize('Back')}
+                            large
+                            className='wallet-wrapper--footer__btn'
+                            onClick={() => setShouldShowWalletConsentPopup(false)}
+                        />
                         <Button
                             primary
                             text={localize('Upgrade to Wallets')}
                             large
                             className='wallet-wrapper--footer__btn'
                             is_disabled={!is_disabled}
+                            onClick={() => setShouldShowWalletConsentPopup(false)}
                         />
                     </div>
                 </MobileDialog>

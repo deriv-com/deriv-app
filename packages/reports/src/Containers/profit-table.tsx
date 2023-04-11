@@ -107,7 +107,7 @@ const ProfitTable = ({
     };
 
     const mobileRowRenderer = ({ row, is_footer }: { row: any; is_footer?: boolean }) => {
-        const duration_type = /^MULTUP|MULTDOWN/.test(row.shortcode) ? '' : row.duration_type;
+        const duration_type = /^(MULTUP|MULTDOWN)/.test(row.shortcode) ? '' : row.duration_type;
         const duration_classname = duration_type ? `duration-type__${duration_type.toLowerCase()}` : '';
 
         if (is_footer) {

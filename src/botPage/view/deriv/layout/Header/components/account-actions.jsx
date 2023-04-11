@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { translate } from '../../../../../../common/utils/tools';
 import Notifications from './notifications.jsx';
 import AccountDropdown from './account-dropdown.jsx';
-import { generateDerivLink } from '../../../utils';
+import { generateDerivLink, isLoggedIn } from '../../../utils';
 import Modal from '../../../components/modal';
 import AccountSwitchModal from './account-switch-modal.jsx';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
@@ -29,12 +29,19 @@ const AccountActions = () => {
     const { currency_name_map, deposit } = config;
     const { visible, label, url } = deposit;
     const { account_switcher_token, is_bot_running } = useSelector(state => state.ui);
+    const { account_type } = useSelector(state => state.client);
     const [is_acc_dropdown_open, setIsAccDropdownOpen] = React.useState(false);
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
+    const is_logged_in = isLoggedIn();
+    
     useEffect(() => {
         dispatch(setIsHeaderLoaded(true));
     }, []);
+
+    useEffect(() => {
+        renderAccountMenu();
+    }, [account_type, is_logged_in])
 
     const onAccept = () => {
         dispatch(setAccountSwitcherToken(''));

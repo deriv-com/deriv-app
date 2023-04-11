@@ -8,7 +8,7 @@ const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => {
     return (
         <React.Fragment>
             <Modal.Body className='wallet-steps'>
-                <Div100vhContainer className='wallet-steps__content' is_disabled={isDesktop()} height_offset='15rem'>
+                <Div100vhContainer className='wallet-steps__content' is_disabled={isDesktop()} height_offset='18.5rem'>
                     {icon}
                     <Text
                         as='h1'

@@ -211,9 +211,6 @@ const CFDsListing = () => {
                 </div>
             )}
 
-            {
-                //Adding CTrader
-            }
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold'>
                     {localize('Deriv cTrader')}
@@ -281,10 +278,6 @@ const CFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
-
-            {
-                //Ending CTrader
-            }
 
             {!is_eu_user && (
                 <div className='cfd-full-row'>

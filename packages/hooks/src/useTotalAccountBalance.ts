@@ -8,7 +8,7 @@ import { useStore } from '@deriv/stores';
  * @example:
  * const accounts_total_balance = useTotalAccountBalance([
  *      { balance: 100, currency: 'USD' },
- *      { balance: 50, currency: 'EUR' },
+ *      { balance: 50, currency: 'USD' },
  *  ]);
  * @returns \{ balance: 150, currency: 'USD' }
  */

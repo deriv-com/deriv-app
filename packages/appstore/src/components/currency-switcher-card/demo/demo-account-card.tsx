@@ -5,12 +5,7 @@ import CurrencySwitcherContainer from 'Components/containers/currency-switcher-c
 import BalanceText from 'Components/elements/text/balance-text';
 import './demo-account-card.scss';
 import { localize } from '@deriv/translations';
-import {
-    useCFDDemoAccounts,
-    useCurrencyExchangeRate,
-    usePlatformDemoAccount,
-    useTotalAccountBalance,
-} from '@deriv/hooks';
+import { usePlatformDemoAccount } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 
 const DemoAccountCard = () => {

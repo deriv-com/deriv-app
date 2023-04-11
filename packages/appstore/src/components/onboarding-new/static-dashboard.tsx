@@ -491,7 +491,7 @@ const StaticDashboard = ({
                                         is_financial_last_step={is_financial_last_step}
                                         is_eu_user={is_eu_user}
                                     />
-                                    <>{isMobile() && !has_account && <Divider />}</>
+                                    <React.Fragment>{isMobile() && !has_account && <Divider />}</React.Fragment>
                                     <StaticCFDAccountManager
                                         type='swap_free'
                                         platform='mt5'

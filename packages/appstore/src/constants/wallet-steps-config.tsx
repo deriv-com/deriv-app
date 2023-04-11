@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import TradingPlatformIcon from 'Assets/wallets';
+import WalletsImage from 'Assets/wallets';
 import React from 'react';
 
 type TStep = {
@@ -11,7 +11,7 @@ type TStep = {
 
 export const steps = (eu_user: boolean): TStep[] => [
     {
-        icon: <TradingPlatformIcon icon={eu_user ? 'IntroducingWalletsEU' : 'IntroducingWallets'} />,
+        icon: <WalletsImage banner={eu_user ? 'IntroducingWalletsEU' : 'IntroducingWallets'} />,
         title: localize('Introducing Wallets'),
         description: localize('A better way to manage your funds'),
         bullets: [
@@ -21,7 +21,7 @@ export const steps = (eu_user: boolean): TStep[] => [
         ],
     },
     {
-        icon: <TradingPlatformIcon icon='HowItWorks' />,
+        icon: <WalletsImage banner='HowItWorks' />,
         title: localize('How it works'),
         description: localize('Get a Wallet, add funds, trade'),
         bullets: [
@@ -31,7 +31,7 @@ export const steps = (eu_user: boolean): TStep[] => [
         ],
     },
     {
-        icon: <TradingPlatformIcon icon='TradingAccounts' />,
+        icon: <WalletsImage banner='TradingAccounts' />,
         title: localize('What happens to my trading accounts'),
         description: localize("We'll link them"),
         bullets: [

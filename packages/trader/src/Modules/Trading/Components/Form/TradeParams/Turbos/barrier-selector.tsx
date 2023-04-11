@@ -40,7 +40,7 @@ const BarrierSelector = observer(() => {
     const header_tooltip_text = ['Long', 'Short'].map(type => (
         <div key={type} className='trade-container__barriers-tooltip'>
             <Localize
-                i18n_default_text="<0>For {{type}}: </0>You will earn profit if the market stays {{payout_status}} the entry spot and doesn't cross the barrier."
+                i18n_default_text="<0>For {{type}}: </0>You will get a payout if the market price stays {{payout_status}} the barrier and doesn't touch or cross the barrier. Otherwise, your payout will be zero."
                 components={[<Text key={0} weight='bold' size='xxs' />]}
                 values={{ type, payout_status: type === 'Long' ? 'above' : 'below' }}
             />

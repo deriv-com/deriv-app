@@ -67,11 +67,16 @@
                 margin-bottom: 1.6rem;
             }
             /* postcss-bem-linter: ignore */
+            h6,
+            span {
+                @include typeface(--small-left-bold-black, none);
+            }
             p,
             ul li {
                 @include typeface(--small-left-normal-black, none);
             }
             h2,
+            h6,
             p,
             ul li {
                 line-height: 1.5;

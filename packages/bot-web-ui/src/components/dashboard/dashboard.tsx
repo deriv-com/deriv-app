@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import React from 'react';
-import ReactJoyride from 'react-joyride';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { getImageLocation } from '../../public-path';
@@ -17,12 +16,12 @@ import RunStrategy from './dashboard-component/run-strategy';
 import {
     DBOT_ONBOARDING,
     getTourSettings,
-    handleJoyrideCallback,
     setTourSettings,
     setTourType,
     tour_status_ended,
     tour_type,
 } from './joyride-config';
+import ReactJoyrideWrapper from './react-joyride-wrapper';
 import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
@@ -231,30 +230,7 @@ const Dashboard = ({
                         (is_mobile ? (
                             <TourSlider />
                         ) : (
-                            <ReactJoyride
-                                steps={DBOT_ONBOARDING}
-                                continuous
-                                callback={handleJoyrideCallback}
-                                spotlightClicks
-                                hideCloseButton
-                                locale={{ back: 'Previous' }}
-                                styles={{
-                                    options: {
-                                        arrowColor: 'var(--general-main-2)',
-                                        backgroundColor: 'var(--general-main-2)',
-                                        primaryColor: 'var(--brand-red-coral)',
-                                        textColor: 'var(--text-general)',
-                                        spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                    },
-                                    buttonBack: {
-                                        border: '0.2rem solid var(--text-less-prominent)',
-                                        marginRight: '1rem',
-                                        borderRadius: '0.4rem',
-                                        color: 'var(--text-general)',
-                                        padding: '0.6rem',
-                                    },
-                                }}
-                            />
+                            <ReactJoyrideWrapper steps={DBOT_ONBOARDING} spotlightClicks hideCloseButton />
                         ))}
                     <Tabs
                         active_index={active_tab}

@@ -4,7 +4,7 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { setColors, blocksCoordinate } from '@deriv/bot-skeleton';
 import LoadModal from 'Components/load-modal';
 import SaveModal from 'Components/save-modal';
-import ReactJoyride from 'react-joyride';
+import ReactJoyrideWrapper from '../react-joyride-wrapper';
 import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -83,21 +83,11 @@ const BotBuilder = ({
                         <TourSlider />
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <ReactJoyride
+                        <ReactJoyrideWrapper
                             steps={BOT_BUILDER_TOUR}
                             run={is_tour_running}
-                            continuous
                             showProgress
-                            callback={handleJoyrideCallback}
-                            locale={{ back: 'Previous' }}
                             styles={{
-                                options: {
-                                    arrowColor: 'var(--general-main-2)',
-                                    backgroundColor: 'var(--general-main-2)',
-                                    primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-general)',
-                                    spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                },
                                 buttonBack: {
                                     border: '0.1rem solid var(--text-less-prominent)',
                                     marginRight: '1rem',

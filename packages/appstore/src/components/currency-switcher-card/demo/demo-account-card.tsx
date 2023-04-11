@@ -5,17 +5,17 @@ import CurrencySwitcherContainer from 'Components/containers/currency-switcher-c
 import BalanceText from 'Components/elements/text/balance-text';
 import './demo-account-card.scss';
 import { localize } from '@deriv/translations';
-import { usePlatformDemoAccount } from '@deriv/hooks';
+import { usePlatformAccounts } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 
 const DemoAccountCard = () => {
     const { client, traders_hub } = useStore();
     const { accounts, loginid, resetVirtualBalance, default_currency } = client;
     const { selected_account_type } = traders_hub;
-    const platform_demo_account = usePlatformDemoAccount();
+    const platform_demo_account = usePlatformAccounts('demo');
 
     const canResetBalance = () => {
-        return loginid in accounts && accounts[loginid]?.balance !== 10000;
+        return loginid && (accounts[loginid]?.balance || 0) !== 10000;
     };
 
     return (

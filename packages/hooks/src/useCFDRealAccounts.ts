@@ -1,17 +1,14 @@
 import { useStore } from '@deriv/stores';
-import useCFDAccounts from './useCFDAccounts';
+import useCFDAllAccounts from './useCFDAllAccounts';
 
 /**
  * we can use this hook to get the real CFD accounts for both Eu and Non-Eu regions.
  * it loops through the all of user's CFD accounts, finds and returns real accounts
- * @example
- * const cfd_real_accounts = useCFDRealAccounts();
- * @returns [{ balance: 100, currency: 'USD' }, { balance: 50, currency: 'EUR' }]
  */
 const useCFDRealAccounts = () => {
     const { traders_hub } = useStore();
     const { is_eu_user } = traders_hub;
-    const cfd_accounts = useCFDAccounts();
+    const cfd_accounts = useCFDAllAccounts();
 
     const cfd_real_accounts = cfd_accounts.filter(account => {
         const is_demo = account.account_type === 'demo';

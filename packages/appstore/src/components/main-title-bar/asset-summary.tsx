@@ -6,24 +6,16 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import {
-    useTotalAccountBalance,
-    usePlatformRealAccounts,
-    usePlatformDemoAccount,
-    useCurrencyExchangeRate,
-    useCFDRealAccounts,
-    useCFDDemoAccounts,
-} from '@deriv/hooks';
+import { useTotalAccountBalance, useCurrencyExchangeRate, useCfdAccounts, usePlatformAccounts } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency } = client;
-
-    const platform_real_accounts = usePlatformRealAccounts();
-    const platform_demo_account = usePlatformDemoAccount();
-    const cfd_real_accounts = useCFDRealAccounts();
-    const cfd_demo_accounts = useCFDDemoAccounts();
+    const platform_real_accounts = usePlatformAccounts('real');
+    const platform_demo_account = usePlatformAccounts('demo');
+    const cfd_real_accounts = useCfdAccounts('real');
+    const cfd_demo_accounts = useCfdAccounts('demo');
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);

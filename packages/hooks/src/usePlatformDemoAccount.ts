@@ -3,8 +3,6 @@ import { useStore } from '@deriv/stores';
 /**
  * we can use this hook to get the platform demo account.
  * it loops through the all of user's accounts, finds and returns demo account
- * @example const platform_demo_account = usePlatformDemoAccount();
- * @returns { balance: 100, currency: 'USD' }
  */
 
 const usePlatformDemoAccount = () => {

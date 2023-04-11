@@ -3,8 +3,6 @@ import { useStore } from '@deriv/stores';
 /**
  * we can use this hook to get all real accounts for both Eu and Non-Eu regions.
  * it loops through the accounts list and returns all real accounts
- * @example const real_accounts = usePlatformRealAccounts();
- * @returns [{ balance: 100, currency: 'USD' }, { balance: 50, currency: 'EUR' }]
  */
 
 const usePlatformRealAccounts = () => {

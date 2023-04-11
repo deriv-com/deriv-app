@@ -1957,7 +1957,9 @@ export default class ClientStore extends BaseStore {
     }
 
     setResidence(residence) {
-        this.accounts[this.loginid].residence = residence;
+        if (this.accounts[this.loginid]) {
+            this.accounts[this.loginid].residence = residence;
+        }
     }
 
     setCitizen(citizen) {
@@ -1965,8 +1967,10 @@ export default class ClientStore extends BaseStore {
     }
 
     setEmail(email) {
-        this.accounts[this.loginid].email = email;
-        this.email = email;
+        if (this.accounts[this.loginid]) {
+            this.accounts[this.loginid].email = email;
+            this.email = email;
+        }
     }
 
     setAccountSettings(settings) {

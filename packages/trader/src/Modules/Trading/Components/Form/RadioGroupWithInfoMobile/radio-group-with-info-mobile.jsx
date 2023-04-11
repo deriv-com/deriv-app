@@ -7,6 +7,7 @@ const RadioGroupWithInfoMobile = ({
     current_value_object,
     onChange,
     info,
+    is_tooltip_disabled = false,
     popover_alignment = 'right',
     toggleModal,
 }) => {
@@ -25,6 +26,7 @@ const RadioGroupWithInfoMobile = ({
             <div className={`trade-params__${contract_name}-ic-info-wrapper`}>
                 <Popover
                     alignment={popover_alignment}
+                    disable_target_icon={is_tooltip_disabled}
                     icon='info'
                     id={`dt_${contract_name}-stake__tooltip`}
                     is_bubble_hover_enabled

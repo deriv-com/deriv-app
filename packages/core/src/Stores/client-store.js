@@ -25,7 +25,7 @@ import {
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { getAccountTitle, getClientAccountType } from './Helpers/client';
+import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
@@ -976,15 +976,12 @@ export default class ClientStore extends BaseStore {
 
     isEligibleForMoreDemoMt5Svg(market_type) {
         const is_synthetic = market_type === 'synthetic';
-        const is_all = market_type === 'all';
-        const is_swap_free_account = is_all ? 'all' : 'financial';
+        const available_account = getAvailableAccount(market_type);
         const existing_demo_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'demo' && this.getIsMarketTypeMatching(account, market_type)
         );
         const has_matching_account = this.trading_platform_available_accounts.some(account => {
-            return (
-                (is_synthetic ? 'gaming' : is_swap_free_account) === account.market_type && account.shortcode === 'svg'
-            );
+            return (is_synthetic ? 'gaming' : available_account) === account.market_type && account.shortcode === 'svg';
         });
         const has_no_svg_account = existing_demo_accounts.every(account => {
             return !(account.landing_company_short === 'svg');
@@ -995,15 +992,14 @@ export default class ClientStore extends BaseStore {
 
     isEligibleForMoreRealMt5(market_type) {
         const is_synthetic = market_type === 'synthetic';
-        const is_all = market_type === 'all';
-        const is_swap_free = is_all ? 'all' : 'financial';
+        const available_account = getAvailableAccount(market_type);
         const existing_real_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
         );
         const available_real_accounts_shortcodes = this.trading_platform_available_accounts
             .filter(
                 account =>
-                    (is_synthetic ? 'gaming' : is_swap_free) === account.market_type &&
+                    (is_synthetic ? 'gaming' : available_account) === account.market_type &&
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);

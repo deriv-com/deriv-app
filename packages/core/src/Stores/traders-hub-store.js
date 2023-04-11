@@ -359,26 +359,28 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableCFDAccounts() {
-        const account_desc =
-            !this.is_eu_user || this.is_demo_low_risk
+        const getAccountDesc = () => {
+            return !this.is_eu_user || this.is_demo_low_risk
                 ? localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.')
                 : localize(
                       'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
                   );
-        const swapfree_account_desc =
-            !this.is_eu_user || this.is_demo_low_risk
+        };
+        const getSwapFreeAccountDesc = () => {
+            return !this.is_eu_user || this.is_demo_low_risk
                 ? localize(
                       'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
                   )
                 : localize(
                       'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
                   );
+        };
 
         const all_available_accounts = [
             ...getCFDAvailableAccount(),
             {
                 name: !this.is_eu_user || this.is_demo_low_risk ? localize('Financial') : localize('CFDs'),
-                description: account_desc,
+                description: getAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'financial',
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
@@ -386,7 +388,7 @@ export default class TradersHubStore extends BaseStore {
             },
             {
                 name: !this.is_eu_user || this.is_demo_low_risk ? localize('Swap-Free') : localize('CFDs'),
-                description: swapfree_account_desc,
+                description: getSwapFreeAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'SwapFree' : 'CFDs',

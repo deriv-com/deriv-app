@@ -148,14 +148,16 @@ const CFDsListing = () => {
                                 availability={selected_region}
                                 clickable_icon
                                 icon={existing_account.icon}
-                                sub_title={localize('{{sub_title}}{{demo}}', {
-                                    sub_title: existing_account?.sub_title,
-                                    demo: is_demo_account ? ' Demo' : '',
-                                })}
-                                name={localize('{{name}}{{demo}}', {
-                                    name: existing_account?.name,
-                                    demo: !has_mt5_account_status && is_demo_get_account ? ' Demo' : '',
-                                })}
+                                sub_title={
+                                    is_demo_account
+                                        ? `${existing_account?.sub_title} ${localize('Demo')}`
+                                        : existing_account?.sub_title
+                                }
+                                name={
+                                    !has_mt5_account_status && is_demo_get_account
+                                        ? `${existing_account?.name} ${localize(' Demo')}`
+                                        : existing_account?.name
+                                }
                                 short_code_and_region={existing_account?.short_code_and_region}
                                 platform={existing_account.platform}
                                 description={existing_account.description}

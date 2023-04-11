@@ -15,7 +15,7 @@ const DemoAccountCard = () => {
     const platform_demo_account = usePlatformDemoAccount();
 
     const canResetBalance = () => {
-        return loginid && accounts[loginid]?.balance !== 10000;
+        return loginid in accounts && accounts[loginid]?.balance !== 10000;
     };
 
     return (

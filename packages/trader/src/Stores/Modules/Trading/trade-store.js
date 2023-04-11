@@ -393,10 +393,11 @@ export default class TradeStore extends BaseStore {
             }
         );
         reaction(
-            () => this.root_store.common.is_language_changing,
+            () => this.root_store.common.current_language,
             () => {
                 this.setValidationRules(getValidationRules());
                 this.changeDurationValidationRules();
+                this.validateAllProperties();
             }
         );
         when(
@@ -1298,7 +1299,6 @@ export default class TradeStore extends BaseStore {
             } else {
                 this.validation_rules.duration.rules.push(['number', duration_options]);
             }
-            this.validateProperty('duration', this.duration);
         }
     }
 

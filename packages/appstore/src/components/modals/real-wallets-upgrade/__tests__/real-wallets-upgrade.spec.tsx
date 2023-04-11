@@ -5,7 +5,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/ui', () => ({
     ...jest.requireActual('@deriv/components'),
-    Wizard: () => <div>Wizard</div>,
+    Modal: () => <div>Modal</div>,
 }));
 
 describe('<RealWalletsUpgrade />', () => {

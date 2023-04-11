@@ -176,7 +176,7 @@ type TClientStore = {
     is_crypto: boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
-    resetVirtualBalance: () => void;
+    resetVirtualBalance: () => Promise<void>;
 };
 
 type TCommonStoreError = {

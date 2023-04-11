@@ -2,7 +2,7 @@ import { useStore } from '@deriv/stores';
 
 /**
  * we can use this hook to get the exchange rate for the given currency.
- * exchange_rates comes from store and inclueds the rates for all currencies based on USD.
+ * exchange_rates comes from store and includes the rates for all currencies based on USD.
  * @example const exchange_rate = useCurrencyExchangeRate('EUR');
  * @returns 1.2
  */

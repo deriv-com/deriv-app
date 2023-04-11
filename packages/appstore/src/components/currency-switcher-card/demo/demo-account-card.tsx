@@ -18,18 +18,10 @@ const DemoAccountCard = () => {
     const { accounts, loginid, resetVirtualBalance, default_currency } = client;
     const { selected_account_type } = traders_hub;
     const platform_demo_account = usePlatformDemoAccount();
-    const cfd_demo_accounts = useCFDDemoAccounts();
-    const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
-    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account?.currency || default_currency);
 
     const canResetBalance = () => {
         return loginid && accounts[loginid]?.balance !== 10000;
     };
-
-    const DemoAccountTotalBalance = React.useMemo(
-        () => (platform_demo_account?.balance || 0) + cfd_demo_balance.balance * cfd_demo_rate,
-        [cfd_demo_balance.balance, cfd_demo_rate, platform_demo_account?.balance]
-    );
 
     return (
         <CurrencySwitcherContainer
@@ -50,7 +42,7 @@ const DemoAccountCard = () => {
         >
             <BalanceText
                 currency={platform_demo_account?.currency || default_currency}
-                balance={DemoAccountTotalBalance}
+                balance={platform_demo_account?.balance || 0}
                 size='xs'
             />
         </CurrencySwitcherContainer>

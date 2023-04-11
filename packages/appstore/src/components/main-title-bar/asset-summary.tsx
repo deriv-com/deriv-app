@@ -29,30 +29,9 @@ const AssetSummary = observer(() => {
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
     const cfd_real_rate = useCurrencyExchangeRate(platform_real_balance.currency);
     const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account?.currency || default_currency);
-
-    const totalBalance = useMemo(() => {
-        if (selected_account_type === 'real') {
-            return {
-                balance: platform_real_balance.balance + cfd_real_balance.balance * cfd_real_rate,
-                currency: platform_real_balance.currency,
-            };
-        }
-
-        return {
-            balance: platform_demo_account.balance + cfd_demo_balance.balance * cfd_demo_rate,
-            currency: platform_demo_account.currency,
-        };
-    }, [
-        cfd_demo_balance.balance,
-        cfd_demo_rate,
-        cfd_real_balance.balance,
-        cfd_real_rate,
-        platform_demo_account.balance,
-        platform_demo_account.currency,
-        platform_real_balance.balance,
-        platform_real_balance.currency,
-        selected_account_type,
-    ]);
+    const is_real = selected_account_type === 'real';
+    const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance * cfd_real_rate;
+    const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance * cfd_demo_rate;
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;
@@ -85,8 +64,12 @@ const AssetSummary = observer(() => {
                         is_bubble_hover_enabled
                     >
                         <BalanceText
-                            currency={totalBalance.currency || default_currency}
-                            balance={totalBalance.balance}
+                            currency={
+                                is_real
+                                    ? platform_real_balance.currency
+                                    : platform_demo_account?.currency || default_currency
+                            }
+                            balance={is_real ? real_total_balance : demo_total_balance}
                             underline_style='dotted'
                         />
                     </Popover>

@@ -365,12 +365,11 @@ const BinarySocketBase = (() => {
             platform,
         });
 
-    const tradingPlatformNewAccount = values => {
+    const tradingPlatformNewAccount = values =>
         deriv_api.send({
             trading_platform_new_account: 1,
             ...values,
         });
-    };
     const triggerMt5DryRun = ({ email }) =>
         deriv_api.send({
             account_type: 'financial',

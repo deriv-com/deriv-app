@@ -449,7 +449,7 @@ export default class TradersHubStore extends BaseStore {
                     return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
                 if (platform === CFD_PLATFORMS.DERIVEZ && market_type === 'all') {
-                    return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`); //true:get, false:multi-action
+                    return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
                 if (
                     platform === CFD_PLATFORMS.MT5 &&

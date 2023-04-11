@@ -223,7 +223,7 @@ export default class CFDStore extends BaseStore {
         this.is_cfd_password_modal_enabled = false;
     }
 
-    createCFDAccount({ category, platform, type, set_password }) {
+    async createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
         this.setAccountType({
             category,
@@ -252,9 +252,13 @@ export default class CFDStore extends BaseStore {
                 market_type: this.account_type.type,
                 company: this.jurisdiction_selected_shortcode,
             };
-            this.openCFDAccount(values);
-            this.enableCFDPasswordModal();
-            this.setCFDSuccessDialog(true);
+            const response = await this.openCFDAccount(values);
+            if (!response.error) {
+                this.enableCFDPasswordModal();
+                this.setCFDSuccessDialog(true);
+            } else {
+                this.setError(true, response.error);
+            }
         }
     }
 

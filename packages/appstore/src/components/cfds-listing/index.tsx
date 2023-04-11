@@ -276,7 +276,7 @@ const CFDsListing = () => {
             )}
 
             {is_landing_company_loaded ? (
-                available_derivez_accounts.map((account: any) => {
+                available_derivez_accounts.map((account: AvailableAccount) => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
                     return has_existing_accounts ? (

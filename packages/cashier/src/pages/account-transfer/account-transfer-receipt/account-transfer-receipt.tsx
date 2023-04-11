@@ -35,7 +35,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     React.useEffect(() => {
         return () => {
             resetAccountTransfer();
-            onClose();
         };
     }, [resetAccountTransfer]);
 

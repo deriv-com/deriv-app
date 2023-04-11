@@ -1638,7 +1638,7 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
 
-            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            await WS.authorized.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
             await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);

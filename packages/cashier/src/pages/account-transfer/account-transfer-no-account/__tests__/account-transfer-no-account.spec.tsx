@@ -2,11 +2,16 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import AccountTransferNoAccount from '../account-transfer-no-account';
 import CashierProviders from '../../../../cashier-providers';
+import { routes } from '@deriv/shared';
+import { createBrowserHistory } from 'history';
+import { Router } from 'react-router';
+import { mockStore, TStores } from '@deriv/stores';
 
 describe('<AccountTransferNoAccount />', () => {
-    let mockRootStore;
+    let mockRootStore: TStores;
+    const history = createBrowserHistory();
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 is_dxtrade_allowed: false,
             },
@@ -14,28 +19,53 @@ describe('<AccountTransferNoAccount />', () => {
                 toggleAccountsDialog: jest.fn(),
             },
             traders_hub: { openModal: jest.fn(), closeModal: jest.fn() },
-        };
+        });
     });
 
-    const renderAccountTransferNoAccount = () => {
-        render(<AccountTransferNoAccount />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
-        });
+    const renderAccountTransferNoAccountWithRouter = () => {
+        render(
+            <Router history={history}>
+                <AccountTransferNoAccount />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            }
+        );
     };
 
-    it('should show "Please create another Deriv, Deriv MT5, or Deriv X account." message and "Create account" button', () => {
-        mockRootStore.client.is_dxtrade_allowed = true;
+    it('should show "Transferring funds will require you to create a second account." message and "Back to traders hub" button', () => {
+        renderAccountTransferNoAccountWithRouter();
 
-        renderAccountTransferNoAccount();
-
-        expect(screen.getByText('Please create another Deriv, Deriv MT5, or Deriv X account.')).toBeInTheDocument();
-        expect(screen.getByText('Create account')).toBeInTheDocument();
+        expect(screen.getByText('Transferring funds will require you to create a second account.')).toBeInTheDocument();
+        expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
     });
 
-    it('should show "Please create another Deriv or Deriv MT5 account." message and "Create account" button', () => {
-        renderAccountTransferNoAccount();
+    it('should show "Transferring funds will require you to create a second account." message and "Back to traders hub" button when is_dxtrade_allowed=true', () => {
+        mockRootStore.client.is_dxtrade_allowed = true;
 
-        expect(screen.getByText('Please create another Deriv or Deriv MT5 account.')).toBeInTheDocument();
-        expect(screen.getByText('Create account')).toBeInTheDocument();
+        renderAccountTransferNoAccountWithRouter();
+
+        expect(screen.getByText('Transferring funds will require you to create a second account.')).toBeInTheDocument();
+        expect(screen.getByText("Back to trader's hub")).toBeInTheDocument();
+    });
+
+    it('should navigate to traders hub, when the "Back to traders hub" button was clicked', () => {
+        renderAccountTransferNoAccountWithRouter();
+
+        const back_to_traders_hub_btn = screen.getByText("Back to trader's hub");
+        fireEvent.click(back_to_traders_hub_btn);
+
+        expect(history.location.pathname).toBe(routes.traders_hub);
+    });
+
+    it('should navigate to traders hub, when the "Back to traders hub" button was clicked and is_dxtrade_allowed=true', () => {
+        mockRootStore.client.is_dxtrade_allowed = true;
+
+        renderAccountTransferNoAccountWithRouter();
+
+        const back_to_traders_hub_btn = screen.getByText("Back to trader's hub");
+        fireEvent.click(back_to_traders_hub_btn);
+
+        expect(history.location.pathname).toBe(routes.traders_hub);
     });
 });

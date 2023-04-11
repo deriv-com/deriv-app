@@ -115,7 +115,13 @@ const DxtradeDesktopDownload = ({ dxtrade_tokens, is_demo }: TDxtradeDesktopDown
                 target='_blank'
                 rel='noopener noreferrer'
             >
-                <Icon className='cfd-trade-modal__dxtrade-button-icon' icon='IcRebrandingDerivx' size={32} />
+                <Icon
+                    className='cfd-trade-modal__dxtrade-button-icon'
+                    icon='IcRebrandingDerivxWordmark'
+                    height={32}
+                    width={42}
+                    description='derivX wordmark'
+                />
                 <div className='cfd-trade-modal__dxtrade-button-text'>
                     <Text color='colored-background' size='xxs' weight='bold'>
                         <Localize i18n_default_text='Web terminal' />

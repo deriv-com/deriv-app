@@ -24,17 +24,17 @@ const JurisdictionCard = ({
 
     const is_synthetic = account_type === 'synthetic';
     const is_swapfree = account_type === 'all';
-    const has_swapfree_accounts = is_swapfree
+    const non_synthetic_accounts = is_swapfree
         ? number_of_swapfree_accounts_to_be_shown
         : number_of_financial_accounts_to_be_shown;
     const [number_of_cards] = React.useState(
-        is_synthetic ? number_of_synthetic_accounts_to_be_shown : has_swapfree_accounts
+        is_synthetic ? number_of_synthetic_accounts_to_be_shown : non_synthetic_accounts
     );
 
     const card_values = jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents];
 
-    const swapfree_card_data = is_swapfree ? card_values.swapfree_contents : card_values.financial_contents;
-    const card_data = is_synthetic ? card_values.synthetic_contents : swapfree_card_data;
+    const non_synthetic_card_data = is_swapfree ? card_values.swapfree_contents : card_values.financial_contents;
+    const card_data = is_synthetic ? card_values.synthetic_contents : non_synthetic_card_data;
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);

@@ -367,13 +367,9 @@ export default class TradersHubStore extends BaseStore {
                   );
         };
         const getSwapFreeAccountDesc = () => {
-            return !this.is_eu_user || this.is_demo_low_risk
-                ? localize(
-                      'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
-                  )
-                : localize(
-                      'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
-                  );
+            return localize(
+                'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
+            );
         };
 
         const all_available_accounts = [
@@ -387,11 +383,11 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'All',
             },
             {
-                name: !this.is_eu_user || this.is_demo_low_risk ? localize('Swap-Free') : localize('CFDs'),
+                name: !this.is_eu_user ? localize('Swap-Free') : '',
                 description: getSwapFreeAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',
-                icon: !this.is_eu_user || this.is_demo_low_risk ? 'SwapFree' : 'CFDs',
+                icon: 'SwapFree',
                 availability: 'Non-EU',
             },
         ];

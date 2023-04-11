@@ -1,9 +1,7 @@
 import { useStore } from '@deriv/stores';
-// This hook is used to check if the client has a Swap-Free account
-// It check for availability of Swap-Free account having market_type 'all'
-// in available trading platform accounts
-// If it is 'all', then the client has a Swap-Free account
 
+// This hook is used to check if the client has a Swap-Free account
+// It checks for availability of market_type 'all' in trading_platform_available_accounts API response
 const useHasSwapFreeAccount = () => {
     const { client } = useStore();
     const { trading_platform_available_accounts } = client;

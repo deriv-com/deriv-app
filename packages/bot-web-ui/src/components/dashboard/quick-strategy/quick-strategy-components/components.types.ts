@@ -87,7 +87,6 @@ export type TQuickStrategyFooter = {
     is_stop_bot_dialog_open: boolean;
     setFieldValue: TSetFieldValue;
     submitForm: FormikProps<TFormValues>['submitForm'];
-    setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
 };
 

@@ -5,19 +5,17 @@ import StopBotModalContent, { TStopBotModalContent } from '../stop-bot-modal-con
 
 type TStopBotModal = TStopBotModalContent & {
     stopMyBot: () => void;
-    loadDataStrategy: () => void;
 };
 
 const StopBotModal = ({
     is_running,
-    is_dialog_open,
     is_contract_dialog_open,
     is_stop_bot_dialog_open,
     is_multiplier,
+    is_dialog_open,
     closeMultiplierContract,
     stopMyBot,
     toggleStopBotDialog,
-    loadDataStrategy,
 }: TStopBotModal) => (
     <StopBotModalContent
         is_running={is_running}
@@ -27,10 +25,7 @@ const StopBotModal = ({
         is_multiplier={is_multiplier}
         closeMultiplierContract={closeMultiplierContract}
         is_dialog_open={is_dialog_open}
-        toggleStopBotDialog={() => {
-            toggleStopBotDialog();
-            loadDataStrategy();
-        }}
+        toggleStopBotDialog={toggleStopBotDialog}
     />
 );
 
@@ -44,5 +39,5 @@ export default connect(({ run_panel, quick_strategy, summary_card }: RootStore) 
     onOkButtonClick: run_panel.onOkButtonClick,
     stopMyBot: run_panel.stopMyBot,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
-    loadDataStrategy: quick_strategy.loadDataStrategy,
+    is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
 }))(StopBotModal);

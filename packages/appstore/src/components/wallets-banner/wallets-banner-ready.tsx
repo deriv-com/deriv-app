@@ -16,12 +16,13 @@ const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
         : `ready_desktop${is_eu ? '_eu' : ''}`;
     const title_size = isMobile() ? 'xs' : 'sm';
     const description_size = isMobile() ? 'xxxs' : 'xs';
+    const tick_size = isMobile() ? 16 : 24;
 
     return (
         <div className='wallets-banner__container wallets-banner__ready-banner'>
             <div className='wallets-banner__ready-banner-description'>
                 <div className={'wallets-banner__ready-banner-tick'}>
-                    <Icon icon='IcAppstoreTickWhite' size={24} />
+                    <Icon icon='IcAppstoreTickWhite' size={tick_size} />
                 </div>
                 <Localize
                     i18n_default_text='<0>Your Wallets are ready</0>'

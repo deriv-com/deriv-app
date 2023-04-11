@@ -22,6 +22,7 @@ const MainTitleBar = () => {
 
     return (
         <React.Fragment>
+            {/* To be replaced with the banner component  */}
             <Button
                 className='dc-dialog__button'
                 onClick={() => toggleWalletsUpgrade(true)}

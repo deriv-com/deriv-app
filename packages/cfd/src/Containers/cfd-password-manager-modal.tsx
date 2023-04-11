@@ -23,11 +23,9 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { FormikErrors } from 'formik';
-import { connect } from '../Stores/connect';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
 import InvestorPasswordManager from './investor-password-manager';
-import RootStore from '../Stores/index';
 import {
     TCountdownComponent,
     TCFDPasswordReset,
@@ -37,6 +35,7 @@ import {
     TFormValues,
     TPasswordManagerModalFormValues,
 } from './props.types';
+import { observer, useStore } from '@deriv/stores';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -66,7 +65,6 @@ const CFDPasswordReset = ({
     account_type,
     account_group,
     server,
-    context,
     password_type,
 }: TCFDPasswordReset) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState<boolean>(false);
@@ -156,7 +154,6 @@ const CFDPasswordManagerTabContent = ({
     setPasswordType,
     multi_step_ref,
     platform,
-    context,
     onChangeActiveTabIndex,
     account_group,
 }: TCFDPasswordManagerTabContent) => {
@@ -292,19 +289,22 @@ const CFDPasswordManagerTabContent = ({
 };
 
 const CFDPasswordManagerModal = ({
-    enableApp,
-    email,
-    disableApp,
     is_visible,
     platform,
-    context,
     selected_login,
     toggleModal,
     selected_account_type,
     selected_account_group,
     selected_server,
-    sendVerifyEmail,
 }: TCFDPasswordManagerModal) => {
+    const {
+        client: { email },
+        modules: {
+            cfd: { sendVerifyEmail },
+        },
+        ui: { enableApp, disableApp },
+    } = useStore();
+
     const multi_step_ref: React.MutableRefObject<undefined> = React.useRef();
     const [index, setIndex] = React.useState<number>(0);
 
@@ -341,7 +341,6 @@ const CFDPasswordManagerModal = ({
                     setPasswordType={setPasswordType}
                     multi_step_ref={multi_step_ref}
                     platform={platform}
-                    context={context}
                     onChangeActiveTabIndex={onChangeActiveTabIndex}
                     account_group={selected_account_group}
                 />
@@ -351,7 +350,6 @@ const CFDPasswordManagerModal = ({
             component: (
                 <CFDPasswordReset
                     server={selected_server}
-                    context={context}
                     sendVerifyEmail={sendVerifyEmail}
                     account_type={selected_account_type}
                     account_group={selected_account_group}
@@ -392,10 +390,4 @@ const CFDPasswordManagerModal = ({
     );
 };
 
-export default connect(({ modules: { cfd }, client, ui }: RootStore) => ({
-    email: client.email,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_eu: client.is_eu,
-    sendVerifyEmail: cfd.sendVerifyEmail,
-}))(CFDPasswordManagerModal);
+export default observer(CFDPasswordManagerModal);

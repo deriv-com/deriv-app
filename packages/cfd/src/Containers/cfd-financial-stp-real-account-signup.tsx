@@ -7,6 +7,7 @@ import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import RootStore from '../Stores/index';
+import { useStore } from '@deriv/stores';
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -30,7 +31,6 @@ type TCFDFinancialStpRealAccountSignupProps = {
     authentication_status: TAuthenticationStatus;
     get_settings: TGetSettings;
     client_email: string;
-    context: RootStore;
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
     refreshNotifications: () => void;
@@ -64,6 +64,31 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         has_submitted_cfd_personal_details,
         jurisdiction_selected_shortcode,
     } = props;
+
+    const {
+        notifications: {
+            refreshNotifications,
+            removeNotificationMessage,
+            removeNotificationByKey,
+            addNotificationByKey,
+        },
+        client: {
+            authentication_status,
+            get_settings,
+            client_email,
+            is_fully_authenticated,
+            landing_company,
+            residence_list,
+            states_list,
+            fetchStatesList,
+            account_status,
+        },
+        modules: {
+            cfd: { storeProofOfAddress, jurisdiction_selected_shortcode, has_submitted_cfd_personal_details },
+        },
+    } = useStore();
+
+
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const state_index = step;
@@ -201,7 +226,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                     index={state_index}
                     onSubmit={nextStep}
                     height='auto'
-                    context={props.context}
                     onCancel={prevStep}
                     onSave={saveFormData}
                     form_error={form_error}

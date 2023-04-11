@@ -1,24 +1,10 @@
-import { RouteComponentProps } from 'react-router';
-import {
-    DetailsOfEachMT5Loginid,
-    GetAccountStatus,
-    GetSettings,
-    LandingCompany,
-    ResidenceList,
-    VerifyEmailResponse,
-} from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, GetAccountStatus, VerifyEmailResponse } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
 import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsContainerProps = {
-    account_settings: GetSettings;
-    getChangeableFields: () => string[];
-    context: RootStore;
-    landing_company: LandingCompany;
-    residence_list: ResidenceList;
-    setAccountSettings: (account_settings: GetSettings) => void;
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
@@ -79,7 +65,7 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = RouteComponentProps & {
+export type TCFDResetPasswordModal = {
     platform: CFD_Platform;
 };
 
@@ -117,7 +103,6 @@ export type TCFDPasswordReset = {
     account_type: string;
     account_group: 'real' | 'demo';
     server: string;
-    context: RootStore;
     password_type: string;
 };
 
@@ -130,7 +115,6 @@ export type TCFDPasswordManagerTabContent = {
     toggleModal: () => void;
     selected_login: string;
     email: string;
-    context: RootStore;
     setPasswordType: (value: string) => void;
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     platform: CFD_Platform;
@@ -139,20 +123,13 @@ export type TCFDPasswordManagerTabContent = {
 };
 
 export type TCFDPasswordManagerModal = {
-    enableApp: () => void;
-    email: string;
-    is_eu: boolean;
-    context: RootStore;
-    disableApp: () => void;
     is_visible: boolean;
     platform: CFD_Platform;
     selected_login: string;
-    selected_account: string;
     toggleModal: () => void;
     selected_account_type: string;
     selected_account_group: 'real' | 'demo';
     selected_server: string;
-    sendVerifyEmail: () => Promise<VerifyEmailResponse>;
 };
 
 export type TJurisdictionCardProps = {
@@ -254,21 +231,4 @@ export type TDMT5CompareModalContentProps = {
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
     toggleCompareAccounts: () => void;
-};
-
-export type TCFDDbviOnboardingProps = {
-    account_status: GetAccountStatus;
-    context: RootStore;
-    disableApp: () => void;
-    enableApp: () => void;
-    fetchAccountSettings: () => void;
-    has_created_account_for_selected_jurisdiction: boolean;
-    has_submitted_cfd_personal_details: boolean;
-    is_cfd_verification_modal_visible: boolean;
-    is_virtual: boolean;
-    jurisdiction_selected_shortcode: string;
-    openPasswordModal: () => void;
-    toggleCFDVerificationModal: () => void;
-    updateAccountStatus: () => void;
-    updateMT5Status: () => void;
 };

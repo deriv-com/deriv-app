@@ -6,6 +6,9 @@ import type {
     LogOutResponse,
     GetSettings,
     ResidenceList,
+    LandingCompany,
+    VerifyEmailResponse,
+    Mt5NewAccount,
 } from '@deriv/api-types';
 
 import type { RouteComponentProps } from 'react-router';
@@ -90,6 +93,27 @@ type TNotification =
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
 
+type TStandPoint = {
+    financial_company: string;
+    gaming_company: string;
+    iom: boolean;
+    malta: boolean;
+    maltainvest: boolean;
+    svg: boolean;
+};
+
+type TMt5StatusServerType = {
+    all: number;
+    platform: number;
+    server_number: number;
+    deposits?: number;
+    withdrawals?: number;
+};
+
+type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
+
+type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
+
 type TClientStore = {
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
@@ -152,9 +176,7 @@ type TClientStore = {
     }: {
         trading_platform_accounts: DetailsOfEachMT5Loginid[];
     }) => DetailsOfEachMT5Loginid[];
-    standpoint: {
-        iom: string;
-    };
+    standpoint: TStandPoint;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
@@ -215,6 +237,30 @@ type TClientStore = {
     upgradeable_landing_companies: unknown[];
     is_loading: boolean;
     landing_companies: Record<string, any>;
+    getChangeableFields: () => string[];
+    landing_company: LandingCompany;
+    country: string;
+    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
+    is_mt5_allowed: boolean;
+    mt5_disabled_signup_types: {
+        real: boolean;
+        demo: boolean;
+    };
+    dxtrade_disabled_signup_types: {
+        real: boolean;
+        demo: boolean;
+    };
+    dxtrade_accounts_list_error: null;
+    has_mt5_real_account_error: boolean;
+    has_mt5_demo_account_error: boolean;
+    has_dxtrade_real_account_error: boolean;
+    has_dxtrade_demo_account_error: boolean;
+    mt5_verification_code: object;
+    dxtrade_verification_code: object;
+    mt5_status_server: TMt5StatusServer;
+    dxtrade_status_server: TDXTraderStatusServerType;
+    real_account_creation_unlock_date: string;
+    is_user_exception: boolean;
 };
 
 type TCommonStoreError = {
@@ -285,6 +331,14 @@ type TUiStore = {
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
     setCFDPasswordResetModal: (value: boolean) => void;
+    openAccountNeededModal: () => void;
+    is_accounts_switcher_on: boolean;
+    openTopUpModal: () => void;
+    NotificationMessages: ({ ...props }) => JSX.Element;
+    toggleShouldShowRealAccountsList: () => void;
+    is_reset_trading_password_modal_visible: boolean;
+    toggleResetTradingPasswordModal: () => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TMenuStore = {
@@ -316,6 +370,7 @@ type TTradersHubStore = {
     no_CR_account: boolean;
     financial_restricted_countries: string[];
     no_MF_account: boolean;
+    is_demo: string;
 };
 
 type TModuleStore = {
@@ -340,7 +395,7 @@ type TModuleStore = {
         has_submitted_cfd_personal_details: boolean;
         is_jurisdiction_modal_visible: boolean;
         clearCFDError: () => void;
-        current_list: Record<string, DetailsOfEachMT5Loginid>;
+        current_list: Record<string, DetailsOfEachMT5Loginid & { enabled: number }>;
         is_compare_accounts_visible: boolean;
         toggleCompareAccounts: () => void;
         dxtrade_companies: Record<string, any>;
@@ -352,6 +407,48 @@ type TModuleStore = {
             category: string;
             type: string;
         };
+        sendVerifyEmail: () => Promise<VerifyEmailResponse>;
+        account_title: string;
+        disableCFDPasswordModal: () => void;
+        error_message: string;
+        error_type?: string;
+        getAccountStatus: (platform: string) => void;
+        has_cfd_error: boolean;
+        is_cfd_password_modal_enabled: boolean;
+        is_cfd_success_dialog_enabled: boolean;
+        setCFDSuccessDialog: (value: boolean) => void;
+        setMt5Error: (state: boolean, obj?: Error) => void;
+        submitMt5Password: (values: { password: string }, actions: any) => void;
+        submitCFDPassword: (values: { password: string } & { platform?: string }, actions: any) => void;
+        cfd_new_account: Mt5NewAccount;
+        is_cfd_verification_modal_visible: boolean;
+        has_created_account_for_selected_jurisdiction: boolean;
+        openPasswordModal: () => void;
+        onMount: () => void;
+        onUnmount: () => void;
+        setCurrentAccount: (
+            data: DetailsOfEachMT5Loginid,
+            meta: {
+                category: string;
+                type?: string | undefined;
+            }
+        ) => void;
+        getRealSyntheticAccountsExistingData: (
+            getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
+        ) => void;
+        getRealFinancialAccountsExistingData: (
+            getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
+        ) => void;
+        toggleMT5TradeModal: () => void;
+        beginRealSignupForMt5: () => void;
+        checkShouldOpenAccount: () => void;
+        is_mt5_trade_modal_visible: boolean;
+        createCFDAccount: (objCFDAccount: {
+            category: string;
+            type: string;
+            set_password?: number | undefined;
+            platform?: string | undefined;
+        }) => void;
     };
 };
 

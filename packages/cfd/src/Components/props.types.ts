@@ -74,9 +74,7 @@ export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
-    is_hovered?: boolean;
     existing_accounts_data?: TExistingData;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
     has_cfd_account_error?: boolean;
     has_real_account?: boolean;
@@ -85,8 +83,6 @@ export type TCFDAccountCard = {
     is_disabled: boolean;
     is_logged_in: boolean;
     is_virtual?: boolean;
-    is_eu?: boolean;
-    onHover?: (value: string | undefined) => void;
     platform: string;
     specs?: { [key: string]: { key: () => string; value: () => string } };
     title: string;

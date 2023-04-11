@@ -11,13 +11,11 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from '../Stores/index';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
-import { connect } from '../Stores/connect';
 import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
-import { TCFDDbviOnboardingProps } from './props.types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
+import { observer, useStore } from '@deriv/stores';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>
@@ -37,22 +35,22 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
     </div>
 );
 
-const CFDDbviOnboarding = ({
-    account_status,
-    context,
-    disableApp,
-    enableApp,
-    fetchAccountSettings,
-    has_created_account_for_selected_jurisdiction,
-    has_submitted_cfd_personal_details,
-    is_cfd_verification_modal_visible,
-    is_virtual,
-    jurisdiction_selected_shortcode,
-    openPasswordModal,
-    toggleCFDVerificationModal,
-    updateAccountStatus,
-    updateMT5Status,
-}: TCFDDbviOnboardingProps) => {
+const CFDDbviOnboarding = () => {
+    const {
+        client: { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status },
+        modules: {
+            cfd: {
+                has_created_account_for_selected_jurisdiction,
+                has_submitted_cfd_personal_details,
+                is_cfd_verification_modal_visible,
+                jurisdiction_selected_shortcode,
+                openPasswordModal,
+                toggleCFDVerificationModal,
+            },
+        },
+        ui: { disableApp, enableApp },
+    } = useStore();
+
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
 
@@ -105,7 +103,6 @@ const CFDDbviOnboarding = ({
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
                 openPasswordModal={openPasswordModal}
-                context={context}
             />
         ) : (
             <CFDFinancialStpRealAccountSignup
@@ -118,7 +115,6 @@ const CFDDbviOnboarding = ({
                         openPasswordModal();
                     }
                 }}
-                context={context}
             />
         );
     };
@@ -140,7 +136,6 @@ const CFDDbviOnboarding = ({
                     toggleModal={toggleCFDVerificationModal}
                     height='700px'
                     width='996px'
-                    context={context}
                     onMount={() => getAccountStatusFromAPI()}
                     exit_classname='cfd-modal--custom-exit'
                 >
@@ -154,7 +149,6 @@ const CFDDbviOnboarding = ({
                     wrapper_classname='cfd-financial-stp-modal'
                     visible={is_cfd_verification_modal_visible}
                     onClose={toggleCFDVerificationModal}
-                    context={context}
                 >
                     {getModalContent()}
                 </MobileDialog>
@@ -163,20 +157,4 @@ const CFDDbviOnboarding = ({
     );
 };
 
-export default connect(({ client, modules: { cfd }, ui }: RootStore) => ({
-    account_status: client.account_status,
-    account_type: cfd.account_type,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    fetchAccountSettings: client.fetchAccountSettings,
-    has_created_account_for_selected_jurisdiction: cfd.has_created_account_for_selected_jurisdiction,
-    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
-    is_cfd_verification_modal_visible: cfd.is_cfd_verification_modal_visible,
-    is_virtual: client.is_virtual,
-    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
-    mt5_login_list: client.mt5_login_list,
-    openPasswordModal: cfd.enableCFDPasswordModal,
-    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
-    updateAccountStatus: client.updateAccountStatus,
-    updateMT5Status: client.updateMT5Status,
-}))(CFDDbviOnboarding);
+export default observer(CFDDbviOnboarding);

@@ -2,17 +2,14 @@ import React from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, isLandingCompanyEnabled, ContentFlag } from '@deriv/shared';
-import { LandingCompany } from '@deriv/api-types';
 import ModalContent from './compare-accounts-content';
 import DMT5CompareModalContent from './mt5-compare-table-content';
 import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content';
 import { observer, useStore } from '@deriv/stores';
+import { LandingCompany } from '@deriv/api-types';
 
 type TCompareAccountsReusedProps = {
-    landing_companies: LandingCompany;
     platform: string;
-    is_logged_in: boolean;
-    is_uk: boolean;
 };
 
 type TOpenAccountTransferMeta = {
@@ -22,19 +19,11 @@ type TOpenAccountTransferMeta = {
 
 type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     is_real_enabled: boolean;
-    residence: string;
     is_demo_tab: boolean;
     has_unmerged_account: boolean;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     real_account_creation_unlock_date: string;
-    show_eu_related_content: boolean;
     setShouldShowCooldownModal: (value: boolean) => void;
-    is_eu_user: string;
-    is_cr_demo_account: boolean;
-    upgradeable_landing_companies: unknown[];
-    landing_company_shortcode: string;
-    content_flag: string;
-    financial_restricted_countries: string[];
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
@@ -43,6 +32,9 @@ type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
     has_unmerged_account: boolean;
     residence: string;
     is_eu: boolean;
+    is_logged_in: boolean;
+    is_uk: boolean;
+    landing_companies: LandingCompany;
 };
 
 // TODO: Remove this component and use one component for both when real released.
@@ -125,7 +117,6 @@ const CompareAccountsModal = ({
 
     const should_show_derivx = is_pre_appstore_setting && has_derivx && !show_eu_related_content;
 
-    const show_preappstore_eu_demo = is_pre_appstore_setting && show_eu_related_content && is_demo_tab;
     const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
 
     const is_preappstore_restricted_cr_demo_account =
@@ -221,7 +212,6 @@ const CompareAccountsModal = ({
                 setShouldShowCooldownModal={setShouldShowCooldownModal}
                 should_show_derivx={should_show_derivx}
                 show_eu_related_content={show_eu_related_content}
-                show_preappstore_eu_demo={show_preappstore_eu_demo}
                 toggleCompareAccounts={toggleCompareAccounts}
             />
         );

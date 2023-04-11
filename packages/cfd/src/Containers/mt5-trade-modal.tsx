@@ -16,15 +16,14 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    is_demo: string;
 };
 
-const MT5TradeModal = ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TMT5TradeModalProps) => {
+const MT5TradeModal = ({ is_eu_user, is_open, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
     const {
         modules: {
             cfd: { dxtrade_tokens, mt5_trade_account },
         },
-        traders_hub: { show_eu_related_content },
+        traders_hub: { show_eu_related_content, is_demo },
         common: { platform },
     } = useStore();
 

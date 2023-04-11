@@ -1,5 +1,7 @@
 import { useStore } from '@deriv/stores';
 
+// check for availability of Swap-Free account in available trading platform accounts
+// and returns the boolean value
 const useHasSwapFreeAccount = () => {
     const { client } = useStore();
     const { trading_platform_available_accounts } = client;

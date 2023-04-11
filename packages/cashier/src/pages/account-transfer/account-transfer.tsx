@@ -112,7 +112,6 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
             setSideNotes={setSideNotes}
             onClickDeposit={onClickDeposit}
             onClickNotes={onClickNotes}
-            onClose={onClose}
         />
     );
 });

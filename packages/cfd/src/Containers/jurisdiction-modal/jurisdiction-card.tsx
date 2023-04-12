@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { SyntheticEvent } from 'react';
-import { jurisdiction_contents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
+import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
@@ -19,7 +19,7 @@ const JurisdictionCard = ({
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const is_synthetic = account_type === 'synthetic';
-    const card_values = jurisdiction_contents()[type_of_card];
+    const card_values = getJurisdictionContents()[type_of_card];
     const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
     const verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs

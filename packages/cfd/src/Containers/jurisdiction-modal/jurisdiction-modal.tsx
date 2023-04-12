@@ -5,7 +5,7 @@ import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
-import { MT5_Jurisdictions, TJurisdictionModalProps } from '../props.types';
+import { TJurisdictionCardType, TJurisdictionModalProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 
@@ -175,7 +175,7 @@ const JurisdictionModal = ({
         }
     };
 
-    const flipCard = (card_name: MT5_Jurisdictions) => {
+    const flipCard = (card_name: TJurisdictionCardType) => {
         setCardFlipStatus({ ...card_flip_status, [card_name]: !card_flip_status[card_name] });
     };
 

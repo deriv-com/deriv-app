@@ -4,9 +4,9 @@ import {
     CFD_PLATFORMS,
     LocalStore,
     State,
-    deriv_urls,
     excludeParamsFromUrlQuery,
     filterUrlQuery,
+    getCurrentdomain,
     getPropertyValue,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -26,7 +26,7 @@ import {
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType } from './Helpers/client';
-import { getLanguage, localize } from '@deriv/translations';
+import { getLanguage, localize, isLanguageAvailable } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 import BaseStore from './base-store';
@@ -1148,8 +1148,7 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
-
+        const domain = getCurrentdomain();
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1595,7 +1594,13 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = authorize_response.authorize.preferred_language;
+            const domain = getCurrentdomain();
+            const lang_from_deriv_com = Cookies.getJSON('user_language', { domain }).toUpperCase();
+            const language =
+                lang_from_deriv_com && isLanguageAvailable(lang_from_deriv_com)
+                    ? lang_from_deriv_com
+                    : authorize_response.authorize.preferred_language;
+
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
@@ -2125,6 +2130,7 @@ export default class ClientStore extends BaseStore {
             search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
+            console.log(search_param_without_account, window.location.hash);
             history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
         }
 

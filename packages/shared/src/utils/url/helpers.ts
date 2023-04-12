@@ -54,3 +54,6 @@ export const isStaging = (domain = window.location.hostname) => {
 
     return is_staging_deriv_app;
 };
+
+export const getCurrentdomain = () =>
+    /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';

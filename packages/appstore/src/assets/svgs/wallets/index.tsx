@@ -1,11 +1,11 @@
 import React from 'react';
-import UpgradeDesktop from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
-import UpgradeMobile from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
+import UpgradeDesktopImage from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
+import UpgradeMobileImage from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
 import { TImageTestID, TWalletsImagesListKeys, WalletsImageProps } from './image-types';
 
 export const WalletsImagesList = {
-    upgrade_desktop: UpgradeDesktop,
-    upgrade_mobile: UpgradeMobile,
+    upgrade_desktop: UpgradeDesktopImage,
+    upgrade_mobile: UpgradeMobileImage,
 } as const;
 
 const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKeys>) => {

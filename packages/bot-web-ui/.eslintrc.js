@@ -54,15 +54,6 @@ module.exports = {
                         ],
                     },
                 ],
-                //not sure we need it: show errors to each developer, i think we need only auto-fix
-
-                // "sort-imports": ["error", {
-                //     "ignoreCase": false,
-                //     "ignoreDeclarationSort": true,
-                //     "ignoreMemberSort": false,
-                //     "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-                //     "allowSeparatedGroups": false
-                // }]
             },
         },
     ],

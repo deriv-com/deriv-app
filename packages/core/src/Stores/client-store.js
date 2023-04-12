@@ -1639,8 +1639,9 @@ export default class ClientStore extends BaseStore {
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-
-            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            if (this.residence) {
+                await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            }
             if (!this.is_virtual) await this.getLimits();
 
             await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
@@ -2256,6 +2257,7 @@ export default class ClientStore extends BaseStore {
                 await WS.authorized.storage
                     .landingCompany(this.accounts[this.loginid].residence)
                     .then(this.responseLandingCompany);
+                console.log(this.is_landing_company_loaded);
                 await WS.authorized.storage.getSettings().then(async response => {
                     this.setAccountSettings(response.get_settings);
                 });

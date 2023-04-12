@@ -84,15 +84,8 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-        const trade_type_sort_order = {
-            Accumulators: 0,
-            Multipliers: 1,
-            Vanillas: 2,
-            'Ups & Downs': 3,
-            'Highs & Lows': 4,
-            Digits: 5,
-        };
-        const ordered_list = list.sort((a, b) => trade_type_sort_order[a.key] - trade_type_sort_order[b.key]);
+        const order_arr = ['Accumulators', 'Multipliers', 'Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
+        const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
         const accumulators_category = ordered_list.filter(({ label }) => label === localize('Accumulators'));
         const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
         const options_category = ordered_list.filter(
@@ -109,15 +102,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             });
         }
 
-        if (accumulators_category.length > 0) {
-            categories.push({
-                label: localize('Accumulators'),
-                contract_categories: accumulators_category,
-                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
-                key: 'Accumulators',
-            });
-        }
-
         if (multipliers_category.length > 0) {
             categories.push({
                 label: localize('Multipliers'),
@@ -131,6 +115,15 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
                 label: localize('Options'),
                 contract_categories: options_category,
                 key: 'Options',
+            });
+        }
+
+        if (accumulators_category.length > 0) {
+            categories.push({
+                label: localize('Accumulators'),
+                contract_categories: accumulators_category,
+                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
+                key: 'Accumulators',
             });
         }
 

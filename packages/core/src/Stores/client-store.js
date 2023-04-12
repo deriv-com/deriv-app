@@ -1595,7 +1595,7 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = false;
             });
             const domain = getCurrentdomain();
-            const lang_from_deriv_com = Cookies.getJSON('user_language', { domain }).toUpperCase();
+            const lang_from_deriv_com = Cookies.getJSON('user_language', { domain })?.toUpperCase();
             const language =
                 lang_from_deriv_com && isLanguageAvailable(lang_from_deriv_com)
                     ? lang_from_deriv_com

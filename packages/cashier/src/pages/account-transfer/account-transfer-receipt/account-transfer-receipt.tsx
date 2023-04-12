@@ -19,10 +19,11 @@ type TAccountTransferReceipt = RouteComponentProps & {
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
-    const { common, client } = useStore();
+    const { common, client, traders_hub } = useStore();
     const { account_transfer } = useCashierStore();
     const { is_from_derivgo } = common;
     const { loginid, switchAccount } = client;
+    const { closeAccountTransferModal } = traders_hub;
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
     const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
@@ -33,6 +34,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     React.useEffect(() => {
         return () => {
             resetAccountTransfer();
+            closeAccountTransferModal();
         };
     }, [resetAccountTransfer]);
 
@@ -44,7 +46,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     const switchAndRedirect = async () => {
         await switchAccount(switch_to.value);
         openStatement();
-        onClose();
     };
 
     const toggleSwitchAlert = () => {
@@ -154,7 +155,17 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button has_effect text={localize('Cancel')} onClick={toggleSwitchAlert} secondary large />
+                    <Button
+                        has_effect
+                        text={localize('Cancel')}
+                        onClick={() => {
+                            toggleSwitchAlert();
+                            setShouldSwitchAccount(false);
+                            onClose?.();
+                        }}
+                        secondary
+                        large
+                    />
                     <Button
                         has_effect
                         text={localize(`Switch to ${switch_to.currency} account`)}

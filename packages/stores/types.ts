@@ -275,6 +275,7 @@ type TTradersHubStore = {
     is_eu_user: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    closeAccountTransferModal: () => void;
 };
 
 /**

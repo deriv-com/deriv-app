@@ -297,6 +297,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_pending_proof_of_ownership: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -2535,6 +2536,10 @@ export default class ClientStore extends BaseStore {
 
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    get is_pending_proof_of_ownership() {
+        return this.account_status?.authentication?.needs_verification?.includes('ownership');
     }
 
     setVisibilityRealityCheck(is_visible) {

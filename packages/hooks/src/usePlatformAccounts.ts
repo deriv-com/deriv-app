@@ -7,7 +7,7 @@ type TPlatformAccountType = 'real' | 'demo';
  * this is a wrapper hook for usePlatformDemoAccount and usePlatformRealAccounts
  * and it returns the accounts list based on the given account_type
  */
-const usePlaformAccounts = (account_type: TPlatformAccountType) => {
+const usePlatformAccounts = (account_type: TPlatformAccountType) => {
     const platform_demo_accounts = usePlatformDemoAccount();
     const platform_real_accounts = usePlatformRealAccounts();
 
@@ -16,4 +16,4 @@ const usePlaformAccounts = (account_type: TPlatformAccountType) => {
     return platform_real_accounts;
 };
 
-export default usePlaformAccounts;
+export default usePlatformAccounts;

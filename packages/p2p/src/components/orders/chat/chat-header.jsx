@@ -4,21 +4,23 @@ import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import { OnlineStatusAvatar } from 'Components/online-status';
 import ExtendedOrderDetails from 'Utils/orders';
-import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { getLastOnlineLabel } from 'Utils/adverts';
 
 const ChatHeaderBody = observer(() => {
-    const { order_store, sendbird_store } = useStores();
+    const { order_store } = useStores();
     const { other_user_details } = order_store.order_information;
-    const icon_background_colour = generateHexColourFromNickname(other_user_details.name);
-    const short_nickname = getShortNickname(other_user_details.name);
 
     return (
         <React.Fragment>
-            <div className='order-chat__header-icon' style={{ backgroundColor: icon_background_colour }}>
-                <Text size='xs' color='colored-background' line_height='m'>
-                    {short_nickname}
-                </Text>
+            <div className='order-chat__header-icon'>
+                <OnlineStatusAvatar
+                    is_online={other_user_details.is_online}
+                    nickname={other_user_details.name}
+                    size={40}
+                    text_size='s'
+                />
             </div>
             <div className='order-chat__header-user'>
                 <Text
@@ -31,17 +33,15 @@ const ChatHeaderBody = observer(() => {
                 >
                     {other_user_details.name}
                 </Text>
-                {sendbird_store.last_other_user_activity && (
-                    <Text
-                        as='p'
-                        className='order-chat__header-user-timestamp'
-                        color='less-prominent'
-                        line_height='m'
-                        size={isMobile() ? 'xxs' : 'xs'}
-                    >
-                        {sendbird_store.last_other_user_activity}
-                    </Text>
-                )}
+                <Text
+                    as='p'
+                    className='order-chat__header-user-timestamp'
+                    color='less-prominent'
+                    line_height='m'
+                    size={isMobile() ? 'xxs' : 'xs'}
+                >
+                    {getLastOnlineLabel(other_user_details.is_online, other_user_details.last_online_time)}
+                </Text>
             </div>
         </React.Fragment>
     );

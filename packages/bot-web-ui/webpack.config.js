@@ -119,7 +119,7 @@ module.exports = function (env) {
         },
         plugins: [
             new Dotenv(),
-            ...(process.env.NODE_ENV !== 'development'
+            ...(process.env.NODE_ENV === 'development'
                 ? []
                 : [
                       new DefinePlugin({

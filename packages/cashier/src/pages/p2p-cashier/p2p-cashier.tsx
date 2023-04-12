@@ -5,6 +5,9 @@ import { getLanguage } from '@deriv/translations';
 import { routes, WS } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+// TODO: Remove this ignorance after migrate p2p to TS and update the main file in package.json
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import P2P from '@deriv/p2p';
 import { get, init, timePromise } from 'Utils/server_time';
 import { useCashierStore } from '../../stores/useCashierStores';

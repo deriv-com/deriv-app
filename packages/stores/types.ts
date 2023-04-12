@@ -15,7 +15,12 @@ type TAccountsList = {
         is_mt?: boolean;
         market_type?: string;
         nativepicker_text?: string;
-        platform_icon?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
         text?: JSX.Element | string;
         value?: string;
     };
@@ -177,16 +182,16 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
+    app_routing_history: unknown[];
     header: string | JSX.Element;
     message: string | JSX.Element;
-    type?: string;
     redirect_label: string;
     redirect_to: string;
+    redirectOnClick: () => void;
+    setError: (has_error: boolean, error: React.ReactNode | null) => void;
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;
-    redirectOnClick: () => void;
-    setError: (has_error: boolean, error: TCommonStoreError | null) => void;
-    app_routing_history: unknown[];
+    type?: string;
 };
 
 type TCommonStore = {
@@ -252,20 +257,36 @@ type TNotificationStore = {
 
 type TTradersHubStore = {
     closeModal: () => void;
-    content_flag: any;
+    content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
+    combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
+        {
+            short_code_and_region: string;
+            login: string;
+            sub_title: string;
+            icon: 'Derived' | 'Financial' | 'Options' | 'CFDs';
+        }[];
+    openModal: (modal_id: string, props?: unknown) => void;
+    selected_account: {
+        login: string;
+        account_id: string;
+    };
     is_low_risk_cr_eu_real: boolean;
-    openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
 };
 
-export type TRootStore = {
+/**
+ * This is the type that contains all the `core` package stores
+ */
+export type TCoreStores = {
     client: TClientStore;
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: Record<string, any>;
+    // This should be `any` as this property will be handled in each package.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

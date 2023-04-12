@@ -90,10 +90,7 @@ export default class TransactionHistoryStore {
     }
 
     sortCryptoTransactions() {
-        // TODO: Check this, using replace on array.
-        this.crypto_transactions.replace(
-            this.crypto_transactions.slice().sort((a, b) => b.submit_date - a.submit_date)
-        );
+        this.crypto_transactions.sort((a, b) => Number(b.submit_date) - Number(a.submit_date));
     }
 
     async cancelCryptoTransaction(transaction_id: string) {

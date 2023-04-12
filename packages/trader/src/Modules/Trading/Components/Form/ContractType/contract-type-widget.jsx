@@ -101,7 +101,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
         const categories = [];
 
-        if (ordered_list.length > 0) {
+        if (list.length > 0) {
             categories.push({
                 label: localize('All'),
                 contract_categories: [...ordered_list],

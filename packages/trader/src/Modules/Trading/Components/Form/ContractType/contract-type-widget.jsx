@@ -86,7 +86,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         const contract_type_category_icon = getContractTypeCategoryIcons();
 
         // Order the list based on categories provided in order_arr
-        const order_arr = ['Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits', 'Accumulators'];
+        const order_arr = ['Accumulators', 'Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
         const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
         const accumulators_category = ordered_list.filter(({ label }) => label === localize('Accumulators'));
         const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
@@ -104,6 +104,15 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             });
         }
 
+        if (accumulators_category.length > 0) {
+            categories.push({
+                label: localize('Accumulators'),
+                contract_categories: accumulators_category,
+                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
+                key: 'Accumulators',
+            });
+        }
+
         if (multipliers_category.length > 0) {
             categories.push({
                 label: localize('Multipliers'),
@@ -117,15 +126,6 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
                 label: localize('Options'),
                 contract_categories: options_category,
                 key: 'Options',
-            });
-        }
-
-        if (accumulators_category.length > 0) {
-            categories.push({
-                label: localize('Accumulators'),
-                contract_categories: accumulators_category,
-                component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
-                key: 'Accumulators',
             });
         }
 

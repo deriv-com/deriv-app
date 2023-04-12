@@ -61,10 +61,10 @@
     &__upgrading-banner {
         display: flex;
         align-items: center;
-        height: 182px;
+        height: 18.2rem;
 
         @include mobile {
-            height: 142px;
+            height: 14.2rem;
         }
 
         &-description {
@@ -120,11 +120,11 @@
     &__ready-banner {
         display: flex;
         align-items: center;
-        height: 230px;
+        height: 23rem;
         background-color: #e2f3f3;
 
         @include mobile {
-            height: 190px;
+            height: 19rem;
         }
 
         &-tick {

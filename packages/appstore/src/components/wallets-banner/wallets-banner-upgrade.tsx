@@ -20,14 +20,14 @@ const WalletsBannerUpgrade = () => {
                 </div>
                 <Button
                     // Onclick props will be added here to show the upgrade wallets wizard in stitching user story
-                    className={'wallets-banner__upgrade-banner-button'}
+                    className='wallets-banner__upgrade-banner-button'
                     has_effect
                     text={localize('Upgrade now')}
                     primary
                     large={!isMobile()}
                 />
             </div>
-            <WalletsImage image={image} className={'wallets-banner__image'} />
+            <WalletsImage image={image} className='wallets-banner__image' />
         </div>
     );
 };

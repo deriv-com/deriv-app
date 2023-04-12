@@ -20,7 +20,7 @@ const WalletsBannerUpgrading = ({ is_eu }: TWalletsBannerUpgrading) => {
     return (
         <div className='wallets-banner__container wallets-banner__upgrading-banner'>
             <div className='wallets-banner__upgrading-banner-description'>
-                <div className='wallets-banner__upgrading-banner-loading' data-testid={'dt_wallets-loading-dots'}>
+                <div className='wallets-banner__upgrading-banner-loading' data-testid='dt_wallets-loading-dots'>
                     <span className='wallets-banner__upgrading-banner-dot' />
                     <span className='wallets-banner__upgrading-banner-dot' />
                     <span className='wallets-banner__upgrading-banner-dot' />
@@ -34,7 +34,7 @@ const WalletsBannerUpgrading = ({ is_eu }: TWalletsBannerUpgrading) => {
                     components={[<Text key={0} size={description_size} />]}
                 />
             </div>
-            <WalletsImage image={image} className={'wallets-banner__image wallets-banner__upgrading-banner-image'} />
+            <WalletsImage image={image} className='wallets-banner__image wallets-banner__upgrading-banner-image' />
         </div>
     );
 };

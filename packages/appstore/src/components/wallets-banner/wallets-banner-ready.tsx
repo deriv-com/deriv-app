@@ -21,7 +21,7 @@ const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
     return (
         <div className='wallets-banner__container wallets-banner__ready-banner'>
             <div className='wallets-banner__ready-banner-description'>
-                <div className={'wallets-banner__ready-banner-tick'} data-testid={'dt_wallets-ready-tick'}>
+                <div className='wallets-banner__ready-banner-tick' data-testid='dt_wallets-ready-tick'>
                     <Icon icon='IcAppstoreTickWhite' size={tick_size} />
                 </div>
                 <Localize
@@ -34,14 +34,14 @@ const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
                 />
                 <Button
                     // Onclick props will be added here to show the upgrade wallets wizard in stitching user story
-                    className={'wallets-banner__ready-banner-button'}
+                    className='wallets-banner__ready-banner-button'
                     has_effect
                     text={localize('Log out')}
                     primary
                     large={!isMobile()}
                 />
             </div>
-            <WalletsImage image={image} className={'wallets-banner__image wallets-banner__ready-banner-image'} />
+            <WalletsImage image={image} className='wallets-banner__image wallets-banner__ready-banner-image' />
         </div>
     );
 };

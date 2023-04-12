@@ -1301,6 +1301,7 @@ export default class TradeStore extends BaseStore {
             } else {
                 this.validation_rules.duration.rules.push(['number', duration_options]);
             }
+            this.validateProperty('duration', this.duration);
         }
     }
 

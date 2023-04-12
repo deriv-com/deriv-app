@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
@@ -6,7 +6,7 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCurrencyExchangeRate, useCfdAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useTotalAccountBalance, useCfdAccounts, usePlatformAccounts } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client } = useStore();
@@ -19,11 +19,9 @@ const AssetSummary = observer(() => {
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
-    const cfd_real_rate = useCurrencyExchangeRate(platform_real_balance.currency);
-    const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account?.currency || default_currency);
     const is_real = selected_account_type === 'real';
-    const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance * cfd_real_rate;
-    const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance * cfd_demo_rate;
+    const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance;
+    const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance;
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts
     const eu_account = is_eu_user && !no_MF_account;

@@ -1223,13 +1223,12 @@ export default class ClientStore extends BaseStore {
     }
 
     responseAuthorize(response) {
-        const new_accounts = Object.create(this.accounts);
-        new_accounts[this.loginid].email = response.authorize.email;
-        new_accounts[this.loginid].currency = response.authorize.currency;
-        new_accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        new_accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
-        new_accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
-        new_accounts[this.loginid].country = response.country;
+        this.accounts[this.loginid].email = response.authorize.email;
+        this.accounts[this.loginid].currency = response.authorize.currency;
+        this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
+        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
+        this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
+        this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
@@ -1959,8 +1958,7 @@ export default class ClientStore extends BaseStore {
     }
 
     setResidence(residence) {
-        const new_accounts = Object.create(this.accounts);
-        new_accounts[this.loginid].residence = residence;
+        this.accounts[this.loginid].residence = residence;
     }
 
     setCitizen(citizen) {
@@ -1968,8 +1966,7 @@ export default class ClientStore extends BaseStore {
     }
 
     setEmail(email) {
-        const new_accounts = Object.create(this.accounts);
-        new_accounts[this.loginid].email = email;
+        this.accounts[this.loginid].email = email;
         this.email = email;
     }
 
@@ -2081,8 +2078,7 @@ export default class ClientStore extends BaseStore {
             const loginid = obj_params[`acct${i}`];
             const token = obj_params[`token${i}`];
             if (loginid && token) {
-                const new_client_object = Object.create(client_object);
-                new_client_object[loginid].token = token;
+                client_object[loginid].token = token;
             }
             i++;
         }

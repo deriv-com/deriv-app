@@ -1,3 +1,6 @@
+$READY-BANNER-BG-COLOR: #e2f3f3;
+$READY-BANNER-TICK-BG-COLOR: #4ab4b3;
+
 .wallets-banner {
     &__container {
         position: relative;
@@ -121,7 +124,7 @@
         display: flex;
         align-items: center;
         height: 23rem;
-        background-color: #e2f3f3;
+        background-color: $READY-BANNER-BG-COLOR;
 
         @include mobile {
             height: 19rem;
@@ -131,7 +134,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #4ab4b3;
+            background-color: $READY-BANNER-TICK-BG-COLOR;
             border-radius: 50%;
             width: 4.8rem;
             height: 4.8rem;

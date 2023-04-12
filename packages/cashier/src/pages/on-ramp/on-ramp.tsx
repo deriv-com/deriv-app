@@ -120,7 +120,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                             list_items={getActivePaths()}
                             value={selected_cashier_path}
                             should_show_empty_option={false}
-                            onChange={(e: TReactFormEvent) => {
+                            onChange={e => {
                                 if (e.currentTarget.value !== selected_cashier_path) {
                                     setSelectedCashierPath(e.currentTarget.value);
                                 }

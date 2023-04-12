@@ -21,7 +21,7 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('<CashierLocked />', () => {
-    it('should show the proper message if there is a cryptocashier maintenance', () => {
+    it('should show the proper message if there is a crypto cashier maintenance', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {

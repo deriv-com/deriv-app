@@ -22,6 +22,7 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
+    CookieStorage,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -2636,7 +2637,12 @@ export default class ClientStore extends BaseStore {
             this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
         );
 
-        return is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+
+        const p2p_cookie = new CookieStorage('is_p2p_disabled');
+        p2p_cookie.set('is_p2p_disabled', !is_p2p_visible);
+
+        return is_p2p_visible;
     }
 }
 /* eslint-enable */

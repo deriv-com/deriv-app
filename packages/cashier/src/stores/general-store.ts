@@ -167,21 +167,13 @@ export default class GeneralStore extends BaseStore {
     }
 
     async onMountCashierOnboarding() {
-        const { account_prompt_dialog, payment_agent } = this.root_store.modules.cashier;
+        const { account_prompt_dialog } = this.root_store.modules.cashier;
 
         if (!this.has_set_currency) {
             this.setHasSetCurrency();
         }
         this.setIsCashierOnboarding(true);
         account_prompt_dialog.resetIsConfirmed();
-
-        this.setLoading(true);
-        // This TS error will be fixed when the constants.js migrated to the TS
-        if (!payment_agent.all_payment_agent_list?.paymentagent_list?.list) {
-            const agent_list = await payment_agent.getAllPaymentAgentList();
-            payment_agent.setAllPaymentAgentList(agent_list);
-        }
-        this.setLoading(false);
     }
 
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount): void {

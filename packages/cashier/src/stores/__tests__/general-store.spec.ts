@@ -53,8 +53,6 @@ beforeEach(() => {
                     is_onramp_tab_visible: false,
                 },
                 payment_agent: {
-                    getAllPaymentAgentList: jest.fn().mockResolvedValue(['PA1', 'PA2']),
-                    setAllPaymentAgentList: jest.fn(),
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
                     filterPaymentAgentList: jest.fn(),
                 },
@@ -165,15 +163,12 @@ describe('GeneralStore', () => {
         general_store.has_set_currency = false;
         const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
         const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
-        const spySetLoading = jest.spyOn(general_store, 'setLoading');
-        const { account_prompt_dialog, payment_agent } = general_store.root_store.modules.cashier;
+        const { account_prompt_dialog } = general_store.root_store.modules.cashier;
         await general_store.onMountCashierOnboarding();
 
         expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
         expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
         expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
-        expect(spySetLoading.mock.calls).toEqual([[true], [false]]);
-        expect(payment_agent.setAllPaymentAgentList).toHaveBeenCalledWith(['PA1', 'PA2']);
     });
 
     it('should calculate proper percentage for account transfer container', () => {

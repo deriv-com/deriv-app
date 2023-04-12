@@ -5,6 +5,7 @@ export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessm
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useDepositLocked } from './useDepositLocked';
+export { default as usePaymentAgentList } from './usePaymentAgentList';
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
 export { default as useHasMaltaInvestAccount } from './useHasMaltaInvestAccount';
 export { default as useHasSetCurrency } from './useHasSetCurrency';

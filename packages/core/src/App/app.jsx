@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { withTranslation } from 'react-i18next';
+import { APIProvider } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
 import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTranslation } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
@@ -71,24 +72,26 @@ const AppWithoutTranslation = ({ root_store }) => {
                 <Router basename={has_base ? `/${base}` : null}>
                     <MobxContentProvider store={root_store}>
                         <StoreProvider store={root_store}>
-                            <PlatformContainer>
-                                <Header />
-                                <ErrorBoundary>
-                                    <AppContents>
-                                        {/* TODO: [trader-remove-client-base] */}
-                                        <Routes passthrough={platform_passthrough} />
-                                    </AppContents>
-                                </ErrorBoundary>
-                                <DesktopWrapper>
-                                    <Footer />
-                                </DesktopWrapper>
-                                <ErrorBoundary>
-                                    <AppModals />
-                                </ErrorBoundary>
-                                <SmartTraderIFrame />
-                                <BinaryBotIFrame />
-                                <AppToastMessages />
-                            </PlatformContainer>
+                            <APIProvider>
+                                <PlatformContainer>
+                                    <Header />
+                                    <ErrorBoundary>
+                                        <AppContents>
+                                            {/* TODO: [trader-remove-client-base] */}
+                                            <Routes passthrough={platform_passthrough} />
+                                        </AppContents>
+                                    </ErrorBoundary>
+                                    <DesktopWrapper>
+                                        <Footer />
+                                    </DesktopWrapper>
+                                    <ErrorBoundary>
+                                        <AppModals />
+                                    </ErrorBoundary>
+                                    <SmartTraderIFrame />
+                                    <BinaryBotIFrame />
+                                    <AppToastMessages />
+                                </PlatformContainer>
+                            </APIProvider>
                         </StoreProvider>
                     </MobxContentProvider>
                 </Router>

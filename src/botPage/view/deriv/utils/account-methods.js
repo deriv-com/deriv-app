@@ -21,7 +21,7 @@ export const updateTokenList = () => {
         const active_token = getActiveToken(token_list);
         if ('loginInfo' in active_token) {
             const current_login_id = getStorage('active_loginid') || '';
-            token_list.forEach((token) => {
+            token_list.forEach(token => {
                 if (current_login_id === token.loginInfo.loginid) {
                     setStorage('active_loginid', token.loginInfo.loginid);
                 }

@@ -11,11 +11,7 @@ import { useTotalAccountBalance, useCurrencyExchangeRate, useCfdAccounts, usePla
 const AssetSummary = observer(() => {
     const { traders_hub, client } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
-    const { is_logging_in, is_switching, default_currency, current_fiat_currency, is_crypto, currency } = client;
-
-    const currency_if_is_crypto = current_fiat_currency ?? default_currency;
-    const total_assets_real_currency = is_crypto ? currency_if_is_crypto : currency;
-
+    const { is_logging_in, is_switching, default_currency } = client;
     const platform_real_accounts = usePlatformAccounts('real');
     const platform_demo_account = usePlatformAccounts('demo');
     const cfd_real_accounts = useCfdAccounts('real');
@@ -23,10 +19,10 @@ const AssetSummary = observer(() => {
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
-    const cfd_real_rate = useCurrencyExchangeRate(total_assets_real_currency);
+    const cfd_real_rate = useCurrencyExchangeRate(platform_real_balance.currency);
     const cfd_demo_rate = useCurrencyExchangeRate(platform_demo_account?.currency || default_currency);
     const is_real = selected_account_type === 'real';
-    const real_total_balance = platform_real_balance.balance * cfd_real_rate + cfd_real_balance.balance * cfd_real_rate;
+    const real_total_balance = platform_real_balance.balance + cfd_real_balance.balance * cfd_real_rate;
     const demo_total_balance = (platform_demo_account?.balance || 0) + cfd_demo_balance.balance * cfd_demo_rate;
 
     const has_active_related_deriv_account = !((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)); // if selected region is non-eu, check active cr accounts, if selected region is eu- check active mf accounts

@@ -110,13 +110,13 @@ const MT5AccountTypeModal = () => {
 
     const set_account_type = () => {
         switch (account_type_card) {
-            case localize('Derived'):
+            case 'Derived':
                 setAccountType({ category: 'real', type: 'synthetic' });
                 break;
-            case localize('Swap-Free'):
+            case 'Swap-Free':
                 setAccountType({ category: 'real', type: 'all' });
                 break;
-            case localize('Financial'):
+            case 'Financial':
             default:
                 setAccountType({ category: 'real', type: 'financial' });
                 break;

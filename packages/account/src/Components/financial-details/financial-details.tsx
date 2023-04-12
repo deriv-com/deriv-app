@@ -70,18 +70,20 @@ const FinancialInformation = ({
     net_income_enum,
     estimated_worth_enum,
     account_turnover_enum,
-}: TFinancialInformationAndTradingExperience) => (
-    <React.Fragment>
-        <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
-        <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
-        <Occupation {...shared_props} occupation_enum={occupation_enum} />
-        <SourceOfWealth {...shared_props} source_of_wealth_enum={source_of_wealth_enum} />
-        <EducationLevel {...shared_props} education_level_enum={education_level_enum} />
-        <NetIncome {...shared_props} net_income_enum={net_income_enum} />
-        <EstimatedWorth {...shared_props} estimated_worth_enum={estimated_worth_enum} />
-        <AccountTurnover {...shared_props} account_turnover_enum={account_turnover_enum} />
-    </React.Fragment>
-);
+}: TFinancialInformationAndTradingExperience) => {
+    return (
+        <React.Fragment>
+            <IncomeSource {...shared_props} income_source_enum={income_source_enum} />
+            <EmploymentIndustry {...shared_props} employment_industry_enum={employment_industry_enum} />
+            <Occupation {...shared_props} occupation_enum={occupation_enum} />
+            <SourceOfWealth {...shared_props} source_of_wealth_enum={source_of_wealth_enum} />
+            <EducationLevel {...shared_props} education_level_enum={education_level_enum} />
+            <NetIncome {...shared_props} net_income_enum={net_income_enum} />
+            <EstimatedWorth {...shared_props} estimated_worth_enum={estimated_worth_enum} />
+            <AccountTurnover {...shared_props} account_turnover_enum={account_turnover_enum} />
+        </React.Fragment>
+    );
+};
 
 const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTradingExperience) => {
     const handleCancel = (values: FormikValues) => {
@@ -127,7 +129,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                 <Div100vhContainer
                                     className={classNames('details-form', 'financial-assessment')}
                                     height_offset='110px'
-                                    is_disabled={isDesktop()}
+                                    is_disabled={false}
                                 >
                                     <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                                         <Localize
@@ -163,15 +165,15 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                                 other_instruments_trading_frequency_enum={
                                                     props.other_instruments_trading_frequency_enum
                                                 }
-                                                income_source_enum={[]}
-                                                employment_status_enum={[]}
-                                                employment_industry_enum={[]}
-                                                occupation_enum={[]}
-                                                source_of_wealth_enum={[]}
-                                                education_level_enum={[]}
-                                                net_income_enum={[]}
-                                                estimated_worth_enum={[]}
-                                                account_turnover_enum={[]}
+                                                income_source_enum={props.income_source_enum}
+                                                employment_status_enum={props.employment_status_enum}
+                                                employment_industry_enum={props.employment_industry_enum}
+                                                occupation_enum={props.occupation_enum}
+                                                source_of_wealth_enum={props.source_of_wealth_enum}
+                                                education_level_enum={props.education_level_enum}
+                                                net_income_enum={props.net_income_enum}
+                                                estimated_worth_enum={props.estimated_worth_enum}
+                                                account_turnover_enum={props.account_turnover_enum}
                                             />
                                         </div>
                                     </ThemedScrollbars>

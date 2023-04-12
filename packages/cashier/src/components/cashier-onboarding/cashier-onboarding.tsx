@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { usePaymentAgentList, useHasFiatCurrency, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
@@ -10,7 +11,6 @@ import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 import SideNote from 'Components/side-note';
 import type { TCashierOnboardingProvider } from './cashier-onboarding-providers';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useHasFiatCurrency, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
 
 type TCashierOnboardingProps = {
     setSideNotes?: (component: React.ReactElement[]) => void;
@@ -18,7 +18,7 @@ type TCashierOnboardingProps = {
 
 const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) => {
     const { client, ui, common } = useStore();
-    const { general_store, payment_agent, account_prompt_dialog } = useCashierStore();
+    const { general_store, account_prompt_dialog } = useCashierStore();
     const {
         accounts,
         available_crypto_currencies,
@@ -45,7 +45,6 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         shouldNavigateAfterChooseCrypto,
         toggleSetCurrencyModal,
     } = ui;
-    const { is_payment_agent_visible_in_onboarding } = payment_agent;
     const { shouldNavigateAfterPrompt } = account_prompt_dialog;
     const { data: is_p2p_enabled } = useIsP2PEnabled();
     const has_fiat_currency = useHasFiatCurrency();
@@ -67,6 +66,10 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
 
     const is_currency_banner_visible =
         (!is_crypto && !can_change_fiat_currency) || (is_crypto && available_crypto_currencies.length > 0);
+
+    const { data: all_payment_agent_list, isLoading: is_loading } = usePaymentAgentList();
+
+    const is_payment_agent_visible_in_onboarding = Boolean(all_payment_agent_list?.length);
 
     React.useEffect(() => {
         onMountCashierOnboarding();
@@ -170,7 +173,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         return options;
     };
 
-    if (is_switching || Object.keys(accounts).length === 0 || !is_landing_company_loaded)
+    if (is_switching || Object.keys(accounts).length === 0 || !is_landing_company_loaded || is_loading)
         return <Loading className='cashier-onboarding__loader' is_fullscreen />;
 
     return (

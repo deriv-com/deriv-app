@@ -872,24 +872,24 @@ export default class NotificationStore extends BaseStore {
             },
             p2p_daily_limit_increase: (currency, max_daily_buy, max_daily_sell) => {
                 return {
-                    action:
-                        routes.cashier_p2p === window.location.pathname
-                            ? {
-                                  onClick: () => {
-                                      this.p2p_redirect_to.redirectTo('my_profile');
-                                      if (this.is_notifications_visible) this.toggleNotificationsModal();
+                    action: window.location.pathname.includes(routes.cashier_p2p)
+                        ? {
+                              onClick: () => {
+                                  this.p2p_redirect_to.redirectTo('my_profile');
+                                  if (this.is_notifications_visible) this.toggleNotificationsModal();
 
-                                      this.removeNotificationMessage({
-                                          key: 'p2p_daily_limit_increase',
-                                          should_show_again: false,
-                                      });
-                                  },
-                                  text: localize('Yes, increase my limits'),
-                              }
-                            : {
-                                  route: routes.cashier_p2p_profile,
-                                  text: localize('Yes, increase my limits'),
+                                  this.removeNotificationMessage({
+                                      key: 'p2p_daily_limit_increase',
+                                      should_show_again: false,
+                                  });
                               },
+                              text: localize('Yes, increase my limits'),
+                          }
+                        : {
+                              // TODO: replace this with proper when fixing routes in p2p
+                              route: routes.cashier_p2p_profile,
+                              text: localize('Yes, increase my limits'),
+                          },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
                     key: 'p2p_daily_limit_increase',
                     message: (

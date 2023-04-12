@@ -104,21 +104,13 @@ export default class GeneralStore extends BaseStore {
     }
 
     async onMountCashierOnboarding() {
-        const { account_prompt_dialog, payment_agent } = this.root_store.modules.cashier;
+        const { account_prompt_dialog } = this.root_store.modules.cashier;
 
         if (!this.has_set_currency) {
             this.setHasSetCurrency();
         }
         this.setIsCashierOnboarding(true);
         account_prompt_dialog.resetIsConfirmed();
-
-        this.setLoading(true);
-        // This TS error will be fixed when the constants.js migrated to the TS
-        if (!payment_agent.all_payment_agent_list?.paymentagent_list?.list) {
-            const agent_list = await payment_agent.getAllPaymentAgentList();
-            payment_agent.setAllPaymentAgentList(agent_list);
-        }
-        this.setLoading(false);
     }
 
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount): void {
@@ -179,7 +171,7 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
+            const { payment_agent, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
@@ -187,9 +179,6 @@ export default class GeneralStore extends BaseStore {
             if (is_logged_in) {
                 if (!switched) {
                     payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
-                    if (!payment_agent_transfer.is_payment_agent) {
-                        payment_agent_transfer.checkIsPaymentAgent();
-                    }
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();
@@ -201,8 +190,7 @@ export default class GeneralStore extends BaseStore {
     async onMountCommon(should_remount?: boolean) {
         const { client, common, modules } = this.root_store;
         const { is_from_derivgo, routeTo } = common;
-        const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
-            modules.cashier;
+        const { account_transfer, onramp, payment_agent, transaction_history } = modules.cashier;
 
         if (client.is_logged_in) {
             // avoid calling this again
@@ -221,10 +209,6 @@ export default class GeneralStore extends BaseStore {
             await payment_agent.setPaymentAgentList();
             await payment_agent.filterPaymentAgentList();
             this.setLoading(false);
-
-            if (!payment_agent_transfer.is_payment_agent) {
-                payment_agent_transfer.checkIsPaymentAgent();
-            }
 
             if (!account_transfer.accounts_list.length) {
                 account_transfer.sortAccountsTransfer(null, is_from_derivgo);

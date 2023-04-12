@@ -24,6 +24,15 @@ jest.mock('@deriv/components', () => {
     };
 });
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    usePaymentAgentTransferVisible: jest.fn(() => ({
+        data: true,
+        isLoading: false,
+        isSuccess: true,
+    })),
+}));
+
 jest.mock('@deriv/shared', () => {
     const original_module = jest.requireActual('@deriv/shared');
 
@@ -90,9 +99,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                     },
-                    payment_agent_transfer: {
-                        is_payment_agent_transfer_visible: false,
-                    },
                     payment_agent: {
                         is_payment_agent_visible: false,
                     },
@@ -144,9 +150,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                    },
-                    payment_agent_transfer: {
-                        is_payment_agent_transfer_visible: true,
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,
@@ -208,9 +211,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    payment_agent_transfer: {
-                        is_payment_agent_transfer_visible: true,
-                    },
                     payment_agent: {
                         is_payment_agent_visible: true,
                     },
@@ -262,9 +262,6 @@ describe('<Cashier />', () => {
     //                 },
     //                 transaction_history: {
     //                     is_crypto_transactions_visible: false,
-    //                 },
-    //                 payment_agent_transfer: {
-    //                     is_payment_agent_transfer_visible: true,
     //                 },
     //                 payment_agent: {
     //                     is_payment_agent_visible: true,
@@ -321,9 +318,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    payment_agent_transfer: {
-                        is_payment_agent_transfer_visible: true,
-                    },
                     payment_agent: {
                         is_payment_agent_visible: true,
                     },
@@ -378,9 +372,6 @@ describe('<Cashier />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                     },
-                    payment_agent_transfer: {
-                        is_payment_agent_transfer_visible: true,
-                    },
                     payment_agent: {
                         is_payment_agent_visible: true,
                     },
@@ -433,9 +424,6 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_crypto_transactions_visible: true,
-                    },
-                    payment_agent_transfer: {
-                        is_payment_agent_transfer_visible: true,
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,

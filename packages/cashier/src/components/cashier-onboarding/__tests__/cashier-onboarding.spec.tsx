@@ -8,8 +8,11 @@ import type { TRootStore } from 'Types';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/hooks', () => {
+    const data = ['PA1', 'PA2'];
+    const isLoading = false;
     return {
         ...jest.requireActual('@deriv/hooks'),
+        usePaymentAgentList: jest.fn(() => ({ data, isLoading })),
         useIsP2PEnabled: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });

@@ -53,14 +53,8 @@ beforeEach(() => {
                     is_onramp_tab_visible: false,
                 },
                 payment_agent: {
-                    getAllPaymentAgentList: jest.fn().mockResolvedValue(['PA1', 'PA2']),
-                    setAllPaymentAgentList: jest.fn(),
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
                     filterPaymentAgentList: jest.fn(),
-                },
-                payment_agent_transfer: {
-                    is_payment_agent: false,
-                    checkIsPaymentAgent: jest.fn(),
                 },
                 transaction_history: {
                     is_crypto_transactions_visible: false,
@@ -129,15 +123,12 @@ describe('GeneralStore', () => {
         general_store.has_set_currency = false;
         const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
         const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
-        const spySetLoading = jest.spyOn(general_store, 'setLoading');
-        const { account_prompt_dialog, payment_agent } = general_store.root_store.modules.cashier;
+        const { account_prompt_dialog } = general_store.root_store.modules.cashier;
         await general_store.onMountCashierOnboarding();
 
         expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
         expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
         expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
-        expect(spySetLoading.mock.calls).toEqual([[true], [false]]);
-        expect(payment_agent.setAllPaymentAgentList).toHaveBeenCalledWith(['PA1', 'PA2']);
     });
 
     it('should calculate proper percentage for account transfer container', () => {
@@ -211,15 +202,6 @@ describe('GeneralStore', () => {
         expect(spyDisposeSwitchAccount).toHaveBeenCalledTimes(1);
         expect(spyOnSwitchAccount).toHaveBeenCalledTimes(1);
         expect(spyOnSwitchAccount).toHaveBeenCalledWith(general_store.accountSwitcherListener);
-    });
-
-    it('should check is the client a payment agent ? when onMountCommon was called', async () => {
-        general_store.root_store.client.is_logged_in = true;
-        await general_store.onMountCommon(false);
-
-        expect(
-            general_store.root_store.modules.cashier.payment_agent_transfer.checkIsPaymentAgent
-        ).toHaveBeenCalledTimes(1);
     });
 
     it('should not call setPaymentAgentList method if is_populating_values is equal to true when onMountCommon was called', async () => {

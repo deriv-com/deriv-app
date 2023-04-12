@@ -7,6 +7,7 @@ import {
     useAccountTransferVisible,
     useIsRealAccountNeededForCashier,
     useIsP2PEnabled,
+    usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -184,12 +185,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_eu,
     } = client;
     const { cashier } = modules;
-    const { payment_agent_transfer, payment_agent } = cashier;
-    const { is_payment_agent_transfer_visible } = payment_agent_transfer;
+    const { payment_agent } = cashier;
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
+    const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
     const liveChat = useLiveChat();
@@ -198,7 +199,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
     const [is_submenu_expanded, expandSubMenu] = React.useState(false);
     const [is_language_change, setIsLanguageChange] = React.useState(false);
-
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
 

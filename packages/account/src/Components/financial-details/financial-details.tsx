@@ -129,7 +129,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                 <Div100vhContainer
                                     className={classNames('details-form', 'financial-assessment')}
                                     height_offset='110px'
-                                    is_disabled={false}
+                                    is_disabled={isDesktop()}
                                 >
                                     <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                                         <Localize

@@ -84,10 +84,15 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const list_with_category = () => {
         const contract_type_category_icon = getContractTypeCategoryIcons();
-
-        // Order the list based on categories provided in order_arr
-        const order_arr = ['Accumulators', 'Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
-        const ordered_list = list.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+        const trade_type_sort_order = {
+            Accumulators: 0,
+            Multipliers: 1,
+            Vanillas: 2,
+            'Ups & Downs': 3,
+            'Highs & Lows': 4,
+            Digits: 5,
+        };
+        const ordered_list = list.sort((a, b) => trade_type_sort_order[a.key] - trade_type_sort_order[b.key]);
         const accumulators_category = ordered_list.filter(({ label }) => label === localize('Accumulators'));
         const multipliers_category = ordered_list.filter(({ label }) => label === localize('Multipliers'));
         const options_category = ordered_list.filter(
@@ -96,7 +101,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
         const categories = [];
 
-        if (list.length > 0) {
+        if (ordered_list.length > 0) {
             categories.push({
                 label: localize('All'),
                 contract_categories: [...ordered_list],

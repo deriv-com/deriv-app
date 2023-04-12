@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    min-height: 38rem;
+    min-height: 36rem;
     width: 27.6em;
     position: relative;
     padding: 1.6rem;
@@ -79,6 +79,24 @@
             background-color: var(--general-section-1);
             padding: 0.3rem;
             border-radius: 0.5rem;
+        }
+    }
+    &__footer-wrapper {
+        @include mobile {
+            background-color: var(--general-main-1);
+            width: 100%;
+            height: 100%;
+            position: sticky;
+            bottom: 0;
+            max-height: 20rem;
+            z-index: 12;
+        }
+        .dc-modal-footer {
+            @include desktop {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
         }
     }
     &__h2-header {
@@ -312,41 +330,8 @@
             justify-content: center;
             align-items: center;
             margin: 1.6rem;
-            &--desktop {
-                display: block;
-                align-items: baseline;
-                flex-flow: column nowrap;
+            gap: 1.6rem;
 
-                &-links {
-                    display: flex;
-                    flex-direction: column;
-                }
-                &-row {
-                    display: flex;
-                    align-items: baseline;
-                    justify-content: center;
-                    margin-bottom: 3.1rem;
-
-                    > svg:first-child {
-                        margin-bottom: 0.4rem;
-                        margin-right: 0.8rem;
-                    }
-                    a > svg {
-                        margin-top: 0.8rem;
-                        margin-right: 0.8rem;
-                    }
-                }
-                &-download {
-                    display: grid;
-                    grid-auto-flow: column;
-                    grid-gap: 0.8rem;
-                    justify-content: center;
-
-                    a {
-                        margin-top: 0.4rem;
-                    }
-                }
-            }
             &--mobile {
                 align-items: center;
                 display: flex;
@@ -364,29 +349,11 @@
                 }
                 &-links {
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
-                    @include mobile {
-                        flex-direction: column;
-                        grid-gap: 0.5rem;
-
-                        padding-top: 2rem;
-                    }
-
-                    &--huawei {
-                        padding-left: 0.4rem;
-
-                        @include mobile {
-                            padding: 0;
-                        }
-                    }
-
-                    &--apple {
-                        @include mobile {
-                            padding: 0;
-                            margin: 0;
-                        }
-                    }
+                    gap: 0.8rem;
                 }
+
                 @include mobile {
                     margin-left: 0;
                     margin-right: unset;
@@ -395,20 +362,16 @@
             &--qrcode {
                 display: flex;
                 flex-direction: column;
+                width: 13.6rem;
+                height: auto;
                 padding: 0.8rem;
-                margin: 0 0.8rem;
                 align-items: center;
-                justify-content: center;
                 border: 1px solid var(--border-disabled);
                 border-radius: 5px;
-                max-width: 14rem;
-                @include mobile {
-                    margin-left: 1.6rem;
-                }
             }
-            @include mobile {
-                align-items: flex-start;
-            }
+        }
+        &-text {
+            margin: 1.6rem;
         }
         &--heading {
             @include typeface(--title-center-bold-black, none);
@@ -1182,6 +1145,10 @@
 
     &-row-demo {
         grid-template-columns: 1.5fr 1fr 1fr 1fr;
+
+        &--restricted {
+            grid-template-columns: 1fr 2fr 1fr;
+        }
         @include mobile {
             width: 116vw;
             height: unset;
@@ -1196,7 +1163,7 @@
     &__table-header {
         grid-template-columns: 0.9fr 1.39fr 2.74fr;
         &__pre-appstore {
-            grid-template-columns: 1fr 1.45fr 2.8fr 0.9fr;
+            grid-template-columns: 11rem 36rem 46rem 13.5rem;
         }
     }
     @for $financial_accounts_count from 0 through 6 {
@@ -1214,6 +1181,10 @@
                     &__pre-appstore {
                         grid-template-columns: 1fr 1fr;
                     }
+                } @else if $synthetic_accounts_count > 0 and $financial_accounts_count == 0 {
+                    &__pre-appstore {
+                        grid-template-columns: 2fr 1fr;
+                    }
                 } @else if $synthetic_accounts_count == 0 {
                     grid-template-columns: 1fr ($financial_accounts_count + fr);
                     &__pre-appstore {
@@ -1226,6 +1197,11 @@
                     }
                 }
             }
+            .cfd-accounts-compare-modal__table-header-for-synthetic-#{$synthetic_accounts_count} {
+                &__pre-appstore {
+                    grid-template-columns: 1fr 2fr 1fr;
+                }
+            }
         }
     }
     &__table-header-item {
@@ -1233,27 +1209,31 @@
     }
 
     &__table-row {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
         &__pre-appstore {
-            grid-template-columns: 1fr 0.78fr 0.67fr 0.78fr 0.67fr 0.65fr 0.7fr 0.9fr;
+            grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
         &--leverage {
-            grid-template-columns: 0.9fr 0.72fr 0.67fr 2.04fr 0.7fr;
+            grid-template-columns: 11rem 38rem 36rem 10rem;
             &__pre-appstore {
-                grid-template-columns: 1fr 0.78fr 0.67fr 2.1fr 0.7fr 0.9fr;
+                grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem;
             }
         }
 
         &--platform {
             &__pre-appstore {
                 grid-template-columns: 1fr 4.25fr 0.9fr;
+                &--restricted {
+                    grid-template-columns: 1fr 2fr 1fr;
+                }
+                grid-template-columns: 11rem 82rem 13.5rem;
             }
         }
 
         &--instruments {
-            grid-template-columns: 0.9fr 1.39fr 1.39fr 0.65fr 0.7fr;
+            grid-template-columns: 11rem 38rem 26rem 10rem 10rem;
             &__pre-appstore {
-                grid-template-columns: 1fr 1.45fr 1.45fr 0.65fr 0.7fr 0.9fr;
+                grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem;
             }
         }
     }
@@ -1266,13 +1246,13 @@
         }
     }
     &__table-footer {
-        grid-template-columns: 0.9fr 0.72fr 0.67fr 0.72fr 0.67fr 0.65fr 0.7fr;
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
+        height: 4.8rem;
         &__pre-appstore {
-            grid-template-columns: 1fr 0.78fr 0.67fr 0.78fr 0.67fr 0.65fr 0.7fr 0.9fr;
-            height: 5.8rem;
+            grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
         &__item {
-            height: 5.8rem;
+            height: 4.8rem;
             justify-content: center;
             &--eu-pre-appstore {
                 height: 4.8rem;

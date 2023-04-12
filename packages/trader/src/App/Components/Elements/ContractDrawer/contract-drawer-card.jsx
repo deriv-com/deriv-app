@@ -18,9 +18,11 @@ const ContractDrawerCard = ({
     currency,
     current_focus,
     getContractById,
+    is_accumulator,
     is_market_closed,
     is_mobile,
     is_multiplier,
+    is_vanilla,
     is_sell_requested,
     is_collapsed,
     onClickCancel,
@@ -70,9 +72,12 @@ const ContractDrawerCard = ({
             current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
+            is_accumulator={is_accumulator}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={is_sold}
+            is_vanilla={is_vanilla}
+            has_progress_slider={has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}
@@ -133,15 +138,17 @@ const ContractDrawerCard = ({
         </ContractCard>
     );
 
+    const has_swipeable_drawer = is_sold || is_multiplier || is_accumulator || is_vanilla;
+
     return (
         <React.Fragment>
             <DesktopWrapper>{contract_card}</DesktopWrapper>
             <MobileWrapper>
                 <SwipeableContractDrawer
-                    onSwipedUp={is_sold || is_multiplier ? onSwipedUp : undefined}
-                    onSwipedDown={is_sold || is_multiplier ? onSwipedDown : undefined}
+                    onSwipedUp={has_swipeable_drawer ? onSwipedUp : undefined}
+                    onSwipedDown={has_swipeable_drawer ? onSwipedDown : undefined}
                 >
-                    {(is_sold || is_multiplier) && (
+                    {has_swipeable_drawer && (
                         <Collapsible.ArrowButton onClick={toggleContractAuditDrawer} is_collapsed={is_collapsed} />
                     )}
                     {contract_card}
@@ -159,10 +166,12 @@ ContractDrawerCard.propTypes = {
     currency: PropTypes.string,
     current_focus: PropTypes.string,
     getContractById: PropTypes.func,
+    is_accumulator: PropTypes.bool,
     is_collapsed: PropTypes.bool,
     is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_vanilla: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,

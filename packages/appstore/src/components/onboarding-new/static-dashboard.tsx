@@ -219,7 +219,7 @@ const StaticDashboard = ({
                                     actions={
                                         <Button
                                             secondary
-                                            className={classNames('', {
+                                            className={classNames('static-dashboard--deposit-button', {
                                                 'static-dashboard--deposit-button-animated':
                                                     is_onboarding_animated.topup,
                                                 'static-dashboard--deposit-button-blurry': is_blurry.topup,
@@ -501,6 +501,37 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
+
+                        <div className='static-dashboard-wrapper__body--header'>
+                            <Text
+                                as='h2'
+                                weight='bold'
+                                size='xs'
+                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
+                            >
+                                {localize('Deriv cTrader')}
+                            </Text>
+                        </div>
+
+                        <div className='static-dashboard-wrapper__body'>
+                            <StaticCFDAccountManager
+                                type='all'
+                                platform='ctrader'
+                                appname={localize('Deriv cTrader')}
+                                description={localize(
+                                    'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.'
+                                )}
+                                loginid={loginid}
+                                currency={currency}
+                                has_account={has_account}
+                                derived_amount={derived_amount}
+                                financial_amount={financial_amount}
+                                is_blurry={is_blurry}
+                                is_onboarding_animated={is_onboarding_animated}
+                                is_eu_user={is_eu_user}
+                            />
+                        </div>
+
                         {!is_eu_user && (
                             <React.Fragment>
                                 <Divider />

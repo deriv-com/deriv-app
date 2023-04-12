@@ -12,7 +12,7 @@ export type RequiredAndNotNull<T> = {
 
 export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'derivez';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'derivez' | 'ctrader';
 export type TBrandData = {
     name: string;
     icon?: string;
@@ -91,6 +91,8 @@ export type TCFDAccountsProps = {
     has_real_account?: boolean;
 };
 
+export type TCFDPlatforms = 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
+
 export type TStaticAccountProps = {
     name: 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
     description: string;
@@ -118,7 +120,8 @@ export type TIconTypes =
     | 'SmartTrader'
     | 'SmartTraderBlue'
     | 'CFDs'
-    | 'DerivEz';
+    | 'DerivEz'
+    | 'CTrader';
 
 export interface AvailableAccount {
     name: string;

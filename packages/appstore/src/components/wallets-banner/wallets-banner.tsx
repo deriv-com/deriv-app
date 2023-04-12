@@ -25,7 +25,7 @@ const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }:
     };
 
     return (
-        <>
+        <React.Fragment>
             <div>
                 <select name='status' onChange={onStatusChangeHandler} value={status}>
                     <option value='ineligible'>ineligible</option>
@@ -40,7 +40,7 @@ const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }:
                 </select>
             </div>
             {children}
-        </>
+        </React.Fragment>
     );
 };
 
@@ -51,7 +51,7 @@ const WalletsBanner = () => {
 
     // just for testing purpose too
     const Wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <>
+        <React.Fragment>
             <BannerSwitcher
                 status={migrationStatus}
                 onChangeStatus={setMigrationStatus}
@@ -59,7 +59,7 @@ const WalletsBanner = () => {
                 onChangeEU={setIsEu}
             />
             {children}
-        </>
+        </React.Fragment>
     );
 
     // the user can upgrade to the wallets

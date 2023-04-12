@@ -15,7 +15,7 @@ type TCFDTopUpDemoModalProps = {
     platform: string;
 };
 
-const CFDTopUpDemoModal = ({ platform }: TCFDTopUpDemoModalProps) => {
+const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
     const {
         ui: {
             is_top_up_virtual_open,
@@ -167,6 +167,6 @@ const CFDTopUpDemoModal = ({ platform }: TCFDTopUpDemoModalProps) => {
             />
         </React.Fragment>
     );
-};
+});
 
-export default observer(CFDTopUpDemoModal);
+export default CFDTopUpDemoModal;

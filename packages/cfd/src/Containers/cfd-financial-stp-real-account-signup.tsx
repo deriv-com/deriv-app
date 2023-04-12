@@ -19,7 +19,7 @@ type TItemsState<T> = {
     forwarded_props: Array<Partial<keyof T>>;
 };
 
-const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAccountSignupProps) => {
+const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialStpRealAccountSignupProps) => {
     const {
         notifications: {
             refreshNotifications,
@@ -211,6 +211,6 @@ const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAcco
             </div>
         </Div100vhContainer>
     );
-};
+});
 
-export default observer(CFDFinancialStpRealAccountSignup);
+export default CFDFinancialStpRealAccountSignup;

@@ -36,7 +36,7 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
     </div>
 );
 
-const CFDDbviOnboarding = () => {
+const CFDDbviOnboarding = observer(() => {
     const {
         client: { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status },
         ui: { disableApp, enableApp },
@@ -155,6 +155,6 @@ const CFDDbviOnboarding = () => {
             </MobileWrapper>
         </React.Suspense>
     );
-};
+});
 
-export default observer(CFDDbviOnboarding);
+export default CFDDbviOnboarding;

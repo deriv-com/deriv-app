@@ -32,7 +32,7 @@ export type TCFDPOIProps = {
     jurisdiction_selected_shortcode: string;
 };
 
-const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
+const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
     const {
         client: {
             account_status,
@@ -83,6 +83,6 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
             citizen_data={citizen_data}
         />
     );
-};
+});
 
-export default observer(CFDPOI);
+export default CFDPOI;

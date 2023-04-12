@@ -1,3 +1,7 @@
+/**  TODO: these store states needs to be
+ properly typed: createCFDAccount and current_list */
+//eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
 import React from 'react';
 import { RouteComponentProps, useLocation } from 'react-router';
 import { Redirect, useHistory } from 'react-router-dom';
@@ -98,7 +102,7 @@ type TPasswordManager = {
     selected_server: string;
 };
 
-const CFDDashboard = (props: TCFDDashboardProps) => {
+const CFDDashboard = observer((props: TCFDDashboardProps) => {
     const {
         client: {
             country,
@@ -662,6 +666,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
             )}
         </React.Fragment>
     );
-};
+});
 
-export default observer(CFDDashboard);
+export default CFDDashboard;

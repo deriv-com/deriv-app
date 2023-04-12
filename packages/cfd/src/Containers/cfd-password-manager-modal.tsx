@@ -289,105 +289,107 @@ const CFDPasswordManagerTabContent = ({
     );
 };
 
-const CFDPasswordManagerModal = ({
-    is_visible,
-    platform,
-    selected_login,
-    toggleModal,
-    selected_account_type,
-    selected_account_group,
-    selected_server,
-}: TCFDPasswordManagerModal) => {
-    const {
-        client: { email },
-        ui: { enableApp, disableApp },
-    } = useStore();
+const CFDPasswordManagerModal = observer(
+    ({
+        is_visible,
+        platform,
+        selected_login,
+        toggleModal,
+        selected_account_type,
+        selected_account_group,
+        selected_server,
+    }: TCFDPasswordManagerModal) => {
+        const {
+            client: { email },
+            ui: { enableApp, disableApp },
+        } = useStore();
 
-    const { sendVerifyEmail } = useCfdStore();
+        const { sendVerifyEmail } = useCfdStore();
 
-    const multi_step_ref: React.MutableRefObject<undefined> = React.useRef();
-    const [index, setIndex] = React.useState<number>(0);
+        const multi_step_ref: React.MutableRefObject<undefined> = React.useRef();
+        const [index, setIndex] = React.useState<number>(0);
 
-    const [password_type, setPasswordType] = React.useState('main');
+        const [password_type, setPasswordType] = React.useState('main');
 
-    if (!selected_login) return null;
+        if (!selected_login) return null;
 
-    const getTitle = () => {
-        return localize('Manage {{platform}} password', {
-            platform: getCFDPlatformLabel(platform),
-        });
-    };
-
-    const getHeader = (i: number) => {
-        if (i === 0) {
+        const getTitle = () => {
             return localize('Manage {{platform}} password', {
                 platform: getCFDPlatformLabel(platform),
             });
-        }
-        return localize('Manage password');
-    };
+        };
 
-    const onChangeActiveTabIndex = (i: number) => {
-        setIndex(i);
-    };
+        const getHeader = (i: number) => {
+            if (i === 0) {
+                return localize('Manage {{platform}} password', {
+                    platform: getCFDPlatformLabel(platform),
+                });
+            }
+            return localize('Manage password');
+        };
 
-    const steps = [
-        {
-            component: (
-                <CFDPasswordManagerTabContent
-                    email={email}
-                    selected_login={selected_login}
-                    toggleModal={toggleModal}
-                    setPasswordType={setPasswordType}
-                    multi_step_ref={multi_step_ref}
-                    platform={platform}
-                    onChangeActiveTabIndex={onChangeActiveTabIndex}
-                    account_group={selected_account_group}
-                />
-            ),
-        },
-        {
-            component: (
-                <CFDPasswordReset
-                    server={selected_server}
-                    sendVerifyEmail={sendVerifyEmail}
-                    account_type={selected_account_type}
-                    account_group={selected_account_group}
-                    password_type={password_type}
-                />
-            ),
-        },
-    ];
+        const onChangeActiveTabIndex = (i: number) => {
+            setIndex(i);
+        };
 
-    return (
-        <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
-                <Modal
-                    className='cfd-password-manager__modal'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={is_visible}
-                    title={getTitle()}
-                    toggleModal={toggleModal}
-                    height='688px'
-                    width='904px'
-                    should_header_stick_body={false}
-                >
-                    <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <PageOverlay
-                    is_open={is_visible}
-                    portal_id='deriv_app'
-                    header={getHeader(index)}
-                    onClickClose={toggleModal}
-                >
-                    <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
-                </PageOverlay>
-            </MobileWrapper>
-        </React.Suspense>
-    );
-};
+        const steps = [
+            {
+                component: (
+                    <CFDPasswordManagerTabContent
+                        email={email}
+                        selected_login={selected_login}
+                        toggleModal={toggleModal}
+                        setPasswordType={setPasswordType}
+                        multi_step_ref={multi_step_ref}
+                        platform={platform}
+                        onChangeActiveTabIndex={onChangeActiveTabIndex}
+                        account_group={selected_account_group}
+                    />
+                ),
+            },
+            {
+                component: (
+                    <CFDPasswordReset
+                        server={selected_server}
+                        sendVerifyEmail={sendVerifyEmail}
+                        account_type={selected_account_type}
+                        account_group={selected_account_group}
+                        password_type={password_type}
+                    />
+                ),
+            },
+        ];
 
-export default observer(CFDPasswordManagerModal);
+        return (
+            <React.Suspense fallback={<UILoader />}>
+                <DesktopWrapper>
+                    <Modal
+                        className='cfd-password-manager__modal'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_visible}
+                        title={getTitle()}
+                        toggleModal={toggleModal}
+                        height='688px'
+                        width='904px'
+                        should_header_stick_body={false}
+                    >
+                        <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <PageOverlay
+                        is_open={is_visible}
+                        portal_id='deriv_app'
+                        header={getHeader(index)}
+                        onClickClose={toggleModal}
+                    >
+                        <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
+                    </PageOverlay>
+                </MobileWrapper>
+            </React.Suspense>
+        );
+    }
+);
+
+export default CFDPasswordManagerModal;

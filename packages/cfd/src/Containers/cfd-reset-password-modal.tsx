@@ -43,7 +43,7 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
 };
 
 // eslint-disable-next-line react/prop-types
-const CFDResetPasswordModal = ({ platform }: TCFDResetPasswordModal) => {
+const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) => {
     const {
         client: { email, is_eu, is_logged_in },
         ui: { is_cfd_reset_password_modal_enabled, setCFDPasswordResetModal },
@@ -267,6 +267,6 @@ const CFDResetPasswordModal = ({ platform }: TCFDResetPasswordModal) => {
             )}
         </Modal>
     );
-};
+});
 
-export default React.memo(observer(CFDResetPasswordModal));
+export default React.memo(CFDResetPasswordModal);

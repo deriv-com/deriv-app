@@ -20,7 +20,7 @@ type TMT5TradeModalProps = {
     toggleModal: () => void;
 };
 
-const MT5TradeModal = ({ is_eu_user, is_open, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
+const MT5TradeModal = observer(({ is_eu_user, is_open, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
     const {
         traders_hub: { show_eu_related_content, is_demo },
         common: { platform },
@@ -87,6 +87,6 @@ const MT5TradeModal = ({ is_eu_user, is_open, onPasswordManager, toggleModal }: 
             </MobileWrapper>
         </React.Suspense>
     );
-};
+});
 
-export default observer(MT5TradeModal);
+export default MT5TradeModal;

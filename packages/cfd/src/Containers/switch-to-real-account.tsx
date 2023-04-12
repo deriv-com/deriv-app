@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
-const SwitchToRealAccountModal = () => {
+const SwitchToRealAccountModal = observer(() => {
     const {
         ui: {
             is_switch_to_deriv_account_modal_visible: is_open,
@@ -37,6 +37,6 @@ const SwitchToRealAccountModal = () => {
             </Text>
         </Dialog>
     );
-};
+});
 
-export default observer(SwitchToRealAccountModal);
+export default SwitchToRealAccountModal;

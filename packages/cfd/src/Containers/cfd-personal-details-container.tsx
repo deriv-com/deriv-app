@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
-const CFDPersonalDetailsContainer = ({ onSubmit }: TCFDPersonalDetailsContainerProps) => {
+const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsContainerProps) => {
     const {
         client: { account_settings, getChangeableFields, landing_company, residence_list, setAccountSettings },
     } = useStore();
@@ -127,6 +127,6 @@ const CFDPersonalDetailsContainer = ({ onSubmit }: TCFDPersonalDetailsContainerP
             <MobileWrapper>{getPersonalDetailsForm()}</MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
-export default observer(CFDPersonalDetailsContainer);
+export default CFDPersonalDetailsContainer;

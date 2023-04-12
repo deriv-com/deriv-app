@@ -5,7 +5,7 @@ import BinaryRoutes from '../Components/Routes';
 import ErrorComponent from '../Components/Errors/error-component.jsx';
 import { observer, useStore } from '@deriv/stores';
 
-const Routes = ({ passthrough }) => {
+const Routes = observer(({ passthrough }) => {
     const {
         client: { is_logged_in, is_logging_in },
         common: { error, has_error },
@@ -16,7 +16,7 @@ const Routes = ({ passthrough }) => {
     }
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
-};
+});
 
 Routes.propTypes = {
     passthrough: PropTypes.object,
@@ -24,4 +24,4 @@ Routes.propTypes = {
 
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
-export default withRouter(observer(Routes));
+export default withRouter(Routes);

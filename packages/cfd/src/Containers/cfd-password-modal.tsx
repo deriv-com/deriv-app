@@ -567,7 +567,7 @@ const CFDPasswordForm = ({
     );
 };
 
-const CFDPasswordModal = ({ form_error, platform }: TCFDPasswordModalProps) => {
+const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
     const {
         client: {
             email,
@@ -917,6 +917,6 @@ const CFDPasswordModal = ({ form_error, platform }: TCFDPasswordModalProps) => {
             />
         </React.Fragment>
     );
-};
+});
 
-export default observer(CFDPasswordModal);
+export default CFDPasswordModal;

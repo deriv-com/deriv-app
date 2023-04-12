@@ -9,7 +9,7 @@ import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
-const JurisdictionModal = ({ openPasswordModal }: TJurisdictionModalProps) => {
+const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalProps) => {
     const {
         client: {
             account_status,
@@ -241,6 +241,6 @@ const JurisdictionModal = ({ openPasswordModal }: TJurisdictionModalProps) => {
             </React.Suspense>
         </div>
     );
-};
+});
 
-export default observer(JurisdictionModal);
+export default JurisdictionModal;

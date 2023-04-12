@@ -10,6 +10,7 @@ import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTrans
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';

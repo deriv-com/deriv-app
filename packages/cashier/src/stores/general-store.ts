@@ -235,7 +235,7 @@ export default class GeneralStore extends BaseStore {
                 client: { is_logged_in, switched },
                 modules,
             } = this.root_store;
-            const { payment_agent, payment_agent_transfer, withdraw } = modules.cashier;
+            const { payment_agent, withdraw } = modules.cashier;
 
             // wait for client settings to be populated in client-store
             await this.WS.wait('get_settings');
@@ -244,9 +244,6 @@ export default class GeneralStore extends BaseStore {
                 if (!switched) {
                     this.checkP2pStatus();
                     payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
-                    if (!payment_agent_transfer.is_payment_agent) {
-                        payment_agent_transfer.checkIsPaymentAgent();
-                    }
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();
@@ -269,8 +266,7 @@ export default class GeneralStore extends BaseStore {
     async onMountCommon(should_remount?: boolean) {
         const { client, common, modules } = this.root_store;
         const { is_from_derivgo, routeTo } = common;
-        const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
-            modules.cashier;
+        const { account_transfer, onramp, payment_agent, transaction_history } = modules.cashier;
 
         this.setNotificationCount(this.p2p_unseen_notifications);
 
@@ -291,10 +287,6 @@ export default class GeneralStore extends BaseStore {
             await payment_agent.setPaymentAgentList();
             await payment_agent.filterPaymentAgentList();
             this.setLoading(false);
-
-            if (!payment_agent_transfer.is_payment_agent) {
-                payment_agent_transfer.checkIsPaymentAgent();
-            }
 
             if (!account_transfer.accounts_list.length) {
                 account_transfer.sortAccountsTransfer(null, is_from_derivgo);

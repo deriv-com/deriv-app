@@ -56,10 +56,6 @@ beforeEach(() => {
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
                     filterPaymentAgentList: jest.fn(),
                 },
-                payment_agent_transfer: {
-                    is_payment_agent: false,
-                    checkIsPaymentAgent: jest.fn(),
-                },
                 transaction_history: {
                     is_crypto_transactions_visible: false,
                     onMount: jest.fn(),
@@ -264,15 +260,6 @@ describe('GeneralStore', () => {
         general_store.checkP2pStatus();
 
         expect(general_store.is_p2p_visible).toBeFalsy();
-    });
-
-    it('should check is the client a payment agent ? when onMountCommon was called', async () => {
-        general_store.root_store.client.is_logged_in = true;
-        await general_store.onMountCommon(false);
-
-        expect(
-            general_store.root_store.modules.cashier.payment_agent_transfer.checkIsPaymentAgent
-        ).toHaveBeenCalledTimes(1);
     });
 
     it('should not call setPaymentAgentList method if is_populating_values is equal to true when onMountCommon was called', async () => {

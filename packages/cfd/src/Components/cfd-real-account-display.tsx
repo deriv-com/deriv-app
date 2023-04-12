@@ -6,7 +6,6 @@ import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deri
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
-// import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TNewDetailsOfEachMT5Loginid } from '../../types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';

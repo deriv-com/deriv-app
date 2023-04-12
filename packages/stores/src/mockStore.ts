@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import type { TStores } from './useStore';
+import { TStores } from '../types';
 
 const mock = (): TStores => {
     return {
@@ -282,10 +282,17 @@ const mock = (): TStores => {
             setP2PRedirectTo: jest.fn(),
         },
         modules: {},
-        counter: {
-            count: 0,
-            increment: jest.fn(),
-            decrement: jest.fn(),
+        exchange_rates: {
+            data: {
+                rates: {
+                    USD: 1,
+                    EUR: 0.9,
+                    GBP: 0.8,
+                    AUD: 1.5,
+                    BTC: 0.0001,
+                },
+            },
+            update: jest.fn(),
             unmount: jest.fn(),
         },
     };

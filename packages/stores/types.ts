@@ -298,6 +298,6 @@ export type TCoreStores = {
     traders_hub: TTradersHubStore;
 };
 
-export type TStores = TRootStore & {
+export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
 };

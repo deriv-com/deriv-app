@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react';
 import { TRootStore } from '../types';
 import { CounterStore } from './stores';
 
@@ -6,10 +6,10 @@ export type TStores = TRootStore & {
     counter: CounterStore;
 };
 
-const StoreContext = React.createContext<TStores | null>(null);
+const StoreContext = createContext<TStores | null>(null);
 
-const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TRootStore }>) => {
-    const memoizedValue = React.useMemo(
+const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
+    const memoizedValue = useMemo(
         () => ({
             ...store,
             counter: new CounterStore(),
@@ -17,7 +17,7 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TRo
         [store]
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         return () => {
             return memoizedValue.counter.unmount();
         };
@@ -27,7 +27,7 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TRo
 };
 
 const useStore = () => {
-    const store = React.useContext(StoreContext);
+    const store = useContext(StoreContext);
 
     if (!store) {
         throw new Error('useStore must be used within StoreContext');

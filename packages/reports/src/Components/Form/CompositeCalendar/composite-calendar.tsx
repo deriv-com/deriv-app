@@ -11,7 +11,7 @@ import CalendarIcon from './calendar-icon';
 import TwoMonthPicker from './two-month-picker';
 import moment from 'moment';
 
-type TCompositeCalendarProps = {
+type TCompositeCalendar = {
     current_focus: string;
     onChange: (values: { [key: string]: moment.Moment }) => void;
     setCurrentFocus: () => void;
@@ -19,13 +19,13 @@ type TCompositeCalendarProps = {
     from: number;
 };
 
-type TTwoMonthPickerLoadableProps = {
+type TTwoMonthPickerLoadable = {
     onChange: (date: moment.Moment) => void;
     isPeriodDisabled: (date: moment.Moment) => boolean;
     value: number;
 };
 
-const TwoMonthPickerLoadable = Loadable<TTwoMonthPickerLoadableProps, typeof TwoMonthPicker>({
+const TwoMonthPickerLoadable = Loadable<TTwoMonthPickerLoadable, typeof TwoMonthPicker>({
     loader: () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker'),
     loading: () => null,
     render(loaded, props) {
@@ -34,7 +34,7 @@ const TwoMonthPickerLoadable = Loadable<TTwoMonthPickerLoadableProps, typeof Two
     },
 });
 
-const CompositeCalendar: React.FC<TCompositeCalendarProps> = props => {
+const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
     const { current_focus, onChange, setCurrentFocus, to, from } = props;
 
     const [show_to, setShowTo] = React.useState(false);

@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 import { TInputDateRange } from 'Types';
 
-type TRadioButtonProps = {
+type TRadioButton = {
     id: string;
     className?: string;
     selected_value?: string;
@@ -14,7 +14,7 @@ type TRadioButtonProps = {
     onChange: (value: { label?: string; value?: string }) => void;
 };
 
-export const RadioButton = ({ id, className, selected_value, value, label, onChange }: TRadioButtonProps) => {
+export const RadioButton = ({ id, className, selected_value, value, label, onChange }: TRadioButton) => {
     return (
         <label
             htmlFor={id}
@@ -43,7 +43,7 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
 };
 const CUSTOM_KEY = 'custom';
 
-type TCompositeCalendarMobileProps = {
+type TCompositeCalendarMobile = {
     input_date_range: TInputDateRange;
     current_focus: string;
     duration_list: Array<TInputDateRange>;
@@ -65,7 +65,7 @@ const CompositeCalendarMobile = React.memo(
         setCurrentFocus,
         from,
         to,
-    }: TCompositeCalendarMobileProps) => {
+    }: TCompositeCalendarMobile) => {
         const date_range = input_date_range || duration_list.find(range => range.value === 'all_time');
 
         const [from_date, setFrom] = React.useState(from && toMoment(from).format('DD MMM YYYY'));

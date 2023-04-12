@@ -1,11 +1,11 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
 
-type TPositionCardLoaderProps = {
+type TPositionCardLoader = {
     speed?: number;
 };
 
-const PositionsCardLoader = ({ speed }: TPositionCardLoaderProps) => (
+const PositionsCardLoader = ({ speed }: TPositionCardLoader) => (
     <ContentLoader
         height={173}
         width={218}

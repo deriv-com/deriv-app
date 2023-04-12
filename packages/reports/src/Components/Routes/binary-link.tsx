@@ -9,7 +9,7 @@ type TBinaryLink = {
 };
 
 const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChildren<Partial<TBinaryLink>>) => {
-    const path = normalizePath(to as string);
+    const path = normalizePath(to!);
     const route = findRouteByPath(path, getRoutesConfig());
 
     if (!route) {

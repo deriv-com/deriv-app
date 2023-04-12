@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { withTranslation } from 'react-i18next';
-import { APIProvider } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
 import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTranslation } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';

@@ -395,9 +395,11 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => this.root_store.common.current_language,
             () => {
-                this.setValidationRules(getValidationRules());
-                this.changeDurationValidationRules();
-                this.validateAllProperties();
+                if (!this.amount) {
+                    this.setValidationRules(getValidationRules());
+                    this.changeDurationValidationRules();
+                    this.validateAllProperties();
+                }
             }
         );
         when(

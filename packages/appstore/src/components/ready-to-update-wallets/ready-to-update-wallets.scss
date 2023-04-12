@@ -5,8 +5,8 @@
     height: 100%;
 
     &--icon {
-        max-width: 22rem;
-        max-height: 15rem;
+        max-width: 20rem;
+        max-height: 12rem;
         width: 100%;
     }
 
@@ -64,7 +64,7 @@
         justify-content: center;
         gap: 0.8rem;
         padding: 1.6rem;
-        box-shadow: inset 0px 2px 0px var(--general-section-1);
+        box-shadow: inset 0rem 0.2rem 0rem var(--general-section-1);
 
         &__btn {
             width: 50%;

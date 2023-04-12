@@ -15,10 +15,11 @@ import { useOnrampVisible, useAccountTransferVisible, useSwitchToRealAccount } f
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
-import { TRootStore, TRoute } from '../../types';
+import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
+import type { TStores } from '@deriv/stores';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
@@ -27,8 +28,8 @@ type TCashierProps = RouteComponentProps & {
     onMount: (should_remount?: boolean) => void;
     setAccountSwitchListener: () => void;
     setTabIndex: (index: number) => void;
-    routeBackInApp: TRootStore['common']['routeBackInApp'];
-    toggleCashier: TRootStore['ui']['toggleCashier'];
+    routeBackInApp: TStores['common']['routeBackInApp'];
+    toggleCashier: TStores['ui']['toggleCashier'];
     resetLastLocation: () => void;
 };
 
@@ -141,7 +142,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const getHeaderTitle = () => {
         if (!isMobile() || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
 
-        return selected_route.getTitle();
+        return selected_route.getTitle?.();
     };
 
     return (
@@ -152,9 +153,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
-                            alignment='center'
-                            id='cashier'
-                            classNameHeader='cashier__tab-header'
                             current_path={location.pathname}
                             is_floating
                             setVerticalTabIndex={setTabIndex}
@@ -194,7 +192,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     </DesktopWrapper>
                     <MobileWrapper>
                         <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
-                            {selected_route && (
+                            {selected_route && selected_route.component && (
                                 <selected_route.component
                                     component_icon={selected_route.icon_component}
                                     history={history}

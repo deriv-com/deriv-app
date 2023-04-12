@@ -72,58 +72,57 @@ export const isMultiplier = landing_company_list => {
 
 export const checkSwitcherType = async () => {
     const is_logged_in = isLoggedIn();
-    if (!is_logged_in) return Promise.reject();
-    if (is_logged_in) {
-        const token_list = await getTokenList();
-        const is_eu = await isEuCountry();
-        if (!token_list[0]?.loginInfo.country) return Promise.reject();
-        const { landing_company } = await api.send({
-            landing_company: token_list[0]?.loginInfo.country });
+    if (!is_logged_in) return null;
+    const token_list = await getTokenList();
+    const is_eu = await isEuCountry();
+    if (!token_list[0]?.loginInfo.country) return null;
+    const { landing_company } = await api.send({
+        landing_company: token_list[0]?.loginInfo.country,
+    });
 
-        const { is_multiplier, country_code } = await isMultiplier(landing_company);
+    const { is_multiplier, country_code } = await isMultiplier(landing_company);
 
-        const { financial_company, gaming_company } = landing_company;
-        const account_status = await api.send({ get_account_status: 1 });
+    const { financial_company, gaming_company } = landing_company;
+    const account_status = await api.send({ get_account_status: 1 });
 
-            
-        const {
-            get_account_status: { risk_classification },
-        } = account_status;
 
-        let is_low_risk = await isLowRisk(financial_company, gaming_company, token_list);
-        let is_high_risk = await isHighRisk(financial_company, gaming_company, risk_classification);
+    const {
+        get_account_status: { risk_classification },
+    } = account_status;
 
-        const client_accounts = JSON.parse(getStorage('client.accounts'));
-        if (isEmptyObject(client_accounts || token_list)) return false;
+    let is_low_risk = await isLowRisk(financial_company, gaming_company, token_list);
+    let is_high_risk = await isHighRisk(financial_company, gaming_company, risk_classification);
 
-        const low_risk_no_account = is_low_risk && Object.keys(client_accounts).length === 1;
+    const client_accounts = JSON.parse(getStorage('client.accounts'));
+    if (isEmptyObject(client_accounts || token_list)) return false;
 
-        const high_risk_no_account = is_high_risk && Object.keys(client_accounts).length === 1;
+    const low_risk_no_account = is_low_risk && Object.keys(client_accounts).length === 1;
 
-        const is_high_risk_or_eu = is_eu && is_high_risk;
+    const high_risk_no_account = is_high_risk && Object.keys(client_accounts).length === 1;
 
-        if (low_risk_no_account) {
-            is_low_risk = false;
-        }
-        if (high_risk_no_account) {
-            is_high_risk = false;
-        }
+    const is_high_risk_or_eu = is_eu && is_high_risk;
 
-        if (is_low_risk) {
-            is_high_risk = false;
-        }
-        if (is_high_risk) {
-            is_low_risk = false;
-        }
-
-        return {
-            low_risk: is_low_risk,
-            high_risk: is_high_risk,
-            low_risk_without_account: low_risk_no_account,
-            high_risk_without_account: high_risk_no_account,
-            high_risk_or_eu: is_high_risk_or_eu,
-            is_multiplier,
-            country_code,
-        };
+    if (low_risk_no_account) {
+        is_low_risk = false;
     }
+    if (high_risk_no_account) {
+        is_high_risk = false;
+    }
+
+    if (is_low_risk) {
+        is_high_risk = false;
+    }
+    if (is_high_risk) {
+        is_low_risk = false;
+    }
+
+    return {
+        low_risk: is_low_risk,
+        high_risk: is_high_risk,
+        low_risk_without_account: low_risk_no_account,
+        high_risk_without_account: high_risk_no_account,
+        high_risk_or_eu: is_high_risk_or_eu,
+        is_multiplier,
+        country_code,
+    };
 };

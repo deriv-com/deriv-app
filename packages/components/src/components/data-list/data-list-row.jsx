@@ -18,11 +18,14 @@ const DataListRow = ({
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        setTimeout(() => {
+        const measure_timeout = setTimeout(() => {
             if (isMounted() && is_dynamic_height) {
                 measure?.();
             }
         });
+        return () => {
+            clearTimeout(measure_timeout);
+        };
     }, [show_desc, is_dynamic_height, measure]);
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>

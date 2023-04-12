@@ -1,16 +1,7 @@
 import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import {
-    routes,
-    validLength,
-    validPassword,
-    getErrorMessages,
-    CFD_PLATFORMS,
-    WS,
-    redirectToLogin,
-} from '@deriv/shared';
+import { validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
@@ -60,8 +51,6 @@ const CFDResetPasswordModal = ({ platform }: TCFDResetPasswordModal) => {
 
     const { current_list } = useCfdStore();
 
-    const history = useHistory();
-
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;
         has_error: boolean;
@@ -88,9 +77,6 @@ const CFDResetPasswordModal = ({ platform }: TCFDResetPasswordModal) => {
         localStorage.removeItem('cfd_reset_password_intent');
         localStorage.removeItem('cfd_reset_password_type');
         localStorage.removeItem('cfd_reset_password_code');
-        if (history.location.pathname !== routes.mt5) {
-            history.push(`${routes.mt5}`);
-        }
     };
     const validatePassword = (values: { new_password: string }) => {
         const errors: { new_password?: string } = {};

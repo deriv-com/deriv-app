@@ -58,18 +58,23 @@ const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
     const platformDropdownRef = React.useRef();
-    const { is_logged, active_token, account_type } = useSelector(state => state.client);
+    const { is_logged, active_token } = useSelector(state => state.client);
     const { is_bot_running } = useSelector(state => state.ui);
+    const is_logged_in = isLoggedIn();
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
-
+   
     React.useEffect(() => {
-        checkSwitcherType()
-            .then(data => {
+        const mountSwitcher = async () => {
+            const res = await checkSwitcherType().then(data => {
                 dispatch(updateAccountType(data));
-            })
-            .catch(error => console.log(error));
-    }, [account_type]);
+            }).catch(error => globalObserver.emit('Error', error));
+            return res;
+        }
+        if (is_logged_in) {
+            mountSwitcher();
+        }
+    }, [is_logged_in]);
 
     React.useEffect(() => {
         api.onMessage().subscribe(({ data }) => {
@@ -91,7 +96,7 @@ const Header = () => {
             dispatch(resetClient());
             dispatch(setAccountSwitcherLoader(false));
         }
-        if (active_storage_token) {
+        if (active_storage_token && active_storage_token.token) {
             api.authorize(active_storage_token.token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
@@ -133,7 +138,7 @@ const Header = () => {
                 });
             syncWithDerivApp();
         }
-    }, [active_token, account_type]);
+    }, [active_token]);
 
     React.useEffect(() => {
         dispatch(updateIsLogged(isLoggedIn()));

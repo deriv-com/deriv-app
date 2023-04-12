@@ -52,13 +52,13 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = React.useMemo(
-        () => Object.values(accounts).some(acc_settings => isCryptocurrency(acc_settings.currency)),
+        () => Object.values(accounts).some(acc_settings => isCryptocurrency(acc_settings.currency || '')),
         [accounts]
     );
     const has_fiat_account = React.useMemo(
         () =>
             Object.values(accounts).some(
-                acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency)
+                acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency || '')
             ),
         [accounts]
     );

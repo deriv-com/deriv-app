@@ -116,6 +116,7 @@ const Account = ({
     is_from_derivgo,
     is_logged_in,
     is_logging_in,
+    is_pending_proof_of_ownership,
     is_virtual,
     is_visible,
     location,
@@ -156,7 +157,7 @@ const Account = ({
             }
 
             if (route.path === shared_routes.proof_of_ownership) {
-                route.is_disabled = is_virtual;
+                route.is_disabled = is_virtual || !is_pending_proof_of_ownership;
             }
         });
     });
@@ -218,6 +219,7 @@ Account.propTypes = {
     is_from_derivgo: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    is_pending_proof_of_ownership: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
@@ -235,6 +237,7 @@ export default connect(({ client, common, ui }) => ({
     is_from_derivgo: common.is_from_derivgo,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_pending_proof_of_ownership: client.is_pending_proof_of_ownership,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

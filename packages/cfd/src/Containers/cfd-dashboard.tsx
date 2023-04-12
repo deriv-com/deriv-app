@@ -550,8 +550,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
-                                    // eslint-disable-next-line react/no-unknown-property
-                                    <div label={localize('Real account')} hash='real'>
+                                    <div label={localize('Real account')} data-hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount
@@ -607,8 +606,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     </div>
                                 )}
                                 {is_demo_enabled && (
-                                    // eslint-disable-next-line react/no-unknown-property
-                                    <div label={localize('Demo account')} hash='demo'>
+                                    <div label={localize('Demo account')} data-hash='demo'>
                                         {platform === CFD_PLATFORMS.DXTRADE && (
                                             <CFDDxtradeDemoAccountDisplay
                                                 is_logged_in={is_logged_in}

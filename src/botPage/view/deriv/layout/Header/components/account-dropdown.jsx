@@ -46,7 +46,6 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     let virtual_accounts = [];
     let eu_accounts = [];
     let non_eu_accounts = [];
-    let real_account = [...non_eu_accounts, ...eu_accounts];
 
     Object.keys(accounts).forEach(account => {
         if (account.startsWith('VR')) virtual_accounts.push({ ...accounts[account], account });
@@ -54,6 +53,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         if (account.startsWith('CR')) non_eu_accounts.push({ ...accounts[account], account });
 
     });
+    let real_account = [...non_eu_accounts, ...eu_accounts];
 
     const getEmptyAccountCountry = (is_country_low_risk) => {
         if (is_country_low_risk && !low_risk_without_account) {

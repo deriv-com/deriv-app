@@ -1,23 +1,23 @@
 import React from 'react';
+import UpgradeDesktop from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
+import UpgradeMobile from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
+import ReadyDesktop from 'Assets/svgs/wallets/wallets-ready-desktop.svg';
+import ReadyDesktopEu from 'Assets/svgs/wallets/wallets-ready-desktop-eu.svg';
+import ReadyMobile from 'Assets/svgs/wallets/wallets-ready-mobile.svg';
+import ReadyMobileEu from 'Assets/svgs/wallets/wallets-ready-mobile-eu.svg';
 import { TImageTestID, TWalletsImagesListKeys, WalletsImageProps } from './image-types';
-import upgrade_desktop from 'Assets/svgs/wallets/wallets-upgrade-desktop.svg';
-import upgrade_mobile from 'Assets/svgs/wallets/wallets-upgrade-mobile.svg';
-import ready_desktop from 'Assets/svgs/wallets/wallets-ready-desktop.svg';
-import ready_desktop_eu from 'Assets/svgs/wallets/wallets-ready-desktop-eu.svg';
-import ready_mobile from 'Assets/svgs/wallets/wallets-ready-mobile.svg';
-import ready_mobile_eu from 'Assets/svgs/wallets/wallets-ready-mobile-eu.svg';
 
 export const WalletsImagesList = {
-    upgrade_desktop,
-    upgrade_mobile,
-    upgrading_desktop: ready_desktop,
-    upgrading_desktop_eu: ready_desktop_eu,
-    upgrading_mobile: ready_mobile,
-    upgrading_mobile_eu: ready_mobile_eu,
-    ready_desktop,
-    ready_desktop_eu,
-    ready_mobile,
-    ready_mobile_eu,
+    upgrade_desktop: UpgradeDesktop,
+    upgrade_mobile: UpgradeMobile,
+    upgrading_desktop: ReadyDesktop,
+    upgrading_desktop_eu: ReadyDesktopEu,
+    upgrading_mobile: ReadyMobile,
+    upgrading_mobile_eu: ReadyMobileEu,
+    ready_desktop: ReadyDesktop,
+    ready_desktop_eu: ReadyDesktopEu,
+    ready_mobile: ReadyMobile,
+    ready_mobile_eu: ReadyMobileEu,
 } as const;
 
 const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKeys>) => {

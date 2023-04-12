@@ -23,6 +23,7 @@ import {
 } from '../Constants/cfd_compare_account_content';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const Row = ({
     id,
@@ -172,19 +173,18 @@ const DMT5CompareModalContent = ({
             updateMT5Status,
             upgradeable_landing_companies,
         },
-        modules: {
-            cfd: {
-                clearCFDError,
-                current_list,
-                setAccountType,
-                setJurisdictionSelectedShortcode,
-                toggleCFDVerificationModal,
-            },
-        },
         ui: { openSwitchToRealAccountModal },
         common: { setAppstorePlatform },
         traders_hub: { no_CR_account, is_eu_user, no_MF_account, financial_restricted_countries },
     } = useStore();
+
+    const {
+        clearCFDError,
+        current_list,
+        setAccountType,
+        setJurisdictionSelectedShortcode,
+        toggleCFDVerificationModal,
+    } = useCfdStore();
 
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
 

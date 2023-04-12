@@ -5,6 +5,7 @@ import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
@@ -37,10 +38,9 @@ const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAcco
             fetchStatesList,
             account_status,
         },
-        modules: {
-            cfd: { storeProofOfAddress, jurisdiction_selected_shortcode, has_submitted_cfd_personal_details },
-        },
     } = useStore();
+
+    const { storeProofOfAddress, jurisdiction_selected_shortcode, has_submitted_cfd_personal_details } = useCfdStore();
 
     const passthroughProps = {
         refreshNotifications,

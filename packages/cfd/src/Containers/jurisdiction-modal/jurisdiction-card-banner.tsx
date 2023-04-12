@@ -4,6 +4,7 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TVerificationStatusBannerProps } from '../props.types';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const VerificationStatusBanner = ({
     account_type,
@@ -18,10 +19,9 @@ const VerificationStatusBanner = ({
             should_restrict_bvi_account_creation,
             should_restrict_vanuatu_account_creation,
         },
-        modules: {
-            cfd: { real_financial_accounts_existing_data, real_synthetic_accounts_existing_data },
-        },
     } = useStore();
+
+    const { real_financial_accounts_existing_data, real_synthetic_accounts_existing_data } = useCfdStore();
 
     const {
         poi_not_submitted_for_vanuatu_maltainvest,

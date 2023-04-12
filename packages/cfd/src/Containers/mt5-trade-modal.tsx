@@ -5,6 +5,7 @@ import DMT5TradeModal from './dmt5-trade-modal';
 import DerivXTradeModal from './derivx-trade-modal';
 import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordReset } from './props.types';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TMT5TradeModalProps = {
     is_eu_user: boolean;
@@ -21,17 +22,19 @@ type TMT5TradeModalProps = {
 
 const MT5TradeModal = ({ is_eu_user, is_open, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
     const {
-        modules: {
-            cfd: { dxtrade_tokens, mt5_trade_account },
-        },
         traders_hub: { show_eu_related_content, is_demo },
         common: { platform },
     } = useStore();
+
+    const { dxtrade_tokens, mt5_trade_account } = useCfdStore();
 
     const CFDTradeModal = () => {
         if (platform === 'mt5') {
             return (
                 <DMT5TradeModal
+                    /**TODO: Add type for mt5_trade_account in the store */
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     mt5_trade_account={mt5_trade_account}
                     show_eu_related_content={show_eu_related_content}
                     onPasswordManager={onPasswordManager}
@@ -42,6 +45,9 @@ const MT5TradeModal = ({ is_eu_user, is_open, onPasswordManager, toggleModal }: 
         }
         return (
             <DerivXTradeModal
+                /**TODO: Add type for mt5_trade_account in the store */
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 mt5_trade_account={mt5_trade_account}
                 is_eu_user={is_eu_user}
                 onPasswordManager={onPasswordManager}

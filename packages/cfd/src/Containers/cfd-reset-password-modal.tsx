@@ -15,6 +15,7 @@ import { localize, Localize, getLanguage } from '@deriv/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
@@ -55,10 +56,9 @@ const CFDResetPasswordModal = ({ platform }: TCFDResetPasswordModal) => {
     const {
         client: { email, is_eu, is_logged_in },
         ui: { is_cfd_reset_password_modal_enabled, setCFDPasswordResetModal },
-        modules: {
-            cfd: { current_list },
-        },
     } = useStore();
+
+    const { current_list } = useCfdStore();
 
     const history = useHistory();
 
@@ -165,6 +165,9 @@ const CFDResetPasswordModal = ({ platform }: TCFDResetPasswordModal) => {
         >
             {!getIsListFetched() && !state.has_error && <Loading is_fullscreen={false} />}
             {getIsListFetched() && !state.has_error && !state.is_finished && (
+                /**TODO: Add type for current_list */
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 <ResetPasswordIntent current_list={current_list} is_eu={is_eu}>
                     {({ type, login }) => (
                         <Formik

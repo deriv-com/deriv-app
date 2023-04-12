@@ -1,3 +1,6 @@
+/**TODO: Add type for current_account in the store */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import React from 'react';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
@@ -6,6 +9,7 @@ import { localize, Localize } from '@deriv/translations';
 import { TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDTopUpDemoModalProps = {
     platform: string;
@@ -20,10 +24,9 @@ const CFDTopUpDemoModal = ({ platform }: TCFDTopUpDemoModalProps) => {
             closeTopUpModal,
             closeSuccessTopUpModal,
         },
-        modules: {
-            cfd: { current_account, dxtrade_companies, mt5_companies, topUpVirtual },
-        },
     } = useStore();
+
+    const { current_account, dxtrade_companies, mt5_companies, topUpVirtual } = useCfdStore();
 
     const getAccountTitle = React.useCallback(() => {
         if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';

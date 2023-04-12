@@ -1,8 +1,8 @@
 import type { TStores } from '@deriv/stores';
-import type CFDStore from '../Stores/Modules/CFD/cfd-store';
+import type { TCFDStore } from './cfd-store.types';
 
 export type TRootStore = TStores & {
     modules: {
-        cfd: CFDStore;
+        cfd: TCFDStore;
     };
 };

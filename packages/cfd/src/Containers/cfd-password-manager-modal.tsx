@@ -36,6 +36,7 @@ import {
     TPasswordManagerModalFormValues,
 } from './props.types';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -299,11 +300,10 @@ const CFDPasswordManagerModal = ({
 }: TCFDPasswordManagerModal) => {
     const {
         client: { email },
-        modules: {
-            cfd: { sendVerifyEmail },
-        },
         ui: { enableApp, disableApp },
     } = useStore();
+
+    const { sendVerifyEmail } = useCfdStore();
 
     const multi_step_ref: React.MutableRefObject<undefined> = React.useRef();
     const [index, setIndex] = React.useState<number>(0);

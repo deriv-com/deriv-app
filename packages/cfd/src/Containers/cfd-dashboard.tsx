@@ -35,6 +35,7 @@ import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordReset } from './props.types';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -99,25 +100,6 @@ type TPasswordManager = {
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
     const {
-        modules: {
-            cfd: {
-                onMount,
-                onUnmount,
-                setAccountType,
-                setCurrentAccount,
-                openPasswordModal,
-                getRealSyntheticAccountsExistingData,
-                getRealFinancialAccountsExistingData,
-                toggleMT5TradeModal,
-                beginRealSignupForMt5,
-                disableCFDPasswordModal,
-                checkShouldOpenAccount,
-                is_mt5_trade_modal_visible,
-                createCFDAccount,
-                current_list,
-                dxtrade_tokens,
-            },
-        },
         client: {
             country,
             landing_companies,
@@ -168,6 +150,24 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         traders_hub: { show_eu_related_content },
         notifications: { refreshNotifications },
     } = useStore();
+
+    const {
+        onMount,
+        onUnmount,
+        setAccountType,
+        setCurrentAccount,
+        enableCFDPasswordModal,
+        getRealSyntheticAccountsExistingData,
+        getRealFinancialAccountsExistingData,
+        toggleMT5TradeModal,
+        beginRealSignupForMt5,
+        disableCFDPasswordModal,
+        checkShouldOpenAccount,
+        is_mt5_trade_modal_visible,
+        createCFDAccount,
+        current_list,
+        dxtrade_tokens,
+    } = useCfdStore();
 
     const [is_demo_enabled, setIsDemoEnabled] = React.useState<boolean>(false);
     const [is_real_enabled, setIsRealEnabled] = React.useState<boolean>(false);
@@ -314,7 +314,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
 
     const openRealPasswordModal = (account_type: TOpenAccountTransferMeta) => {
         setAccountType(account_type);
-        openPasswordModal();
+        enableCFDPasswordModal();
     };
 
     const hasAccount = (category: string, type: string) => {

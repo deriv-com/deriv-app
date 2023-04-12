@@ -16,6 +16,7 @@ import {
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore, observer } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -189,16 +190,6 @@ const CFDAccountCardComponent = ({
     type,
 }: TCFDAccountCard) => {
     const {
-        modules: {
-            cfd: {
-                dxtrade_tokens,
-                setAccountType,
-                setJurisdictionSelectedShortcode,
-                setMT5TradeAccount,
-                toggleCFDVerificationModal,
-                toggleMT5TradeModal,
-            },
-        },
         ui: { setIsAcuityModalOpen, setShouldShowCooldownModal },
         common: { setAppstorePlatform },
         traders_hub: { show_eu_related_content },
@@ -209,6 +200,15 @@ const CFDAccountCardComponent = ({
             real_account_creation_unlock_date,
         },
     } = useStore();
+
+    const {
+        dxtrade_tokens,
+        setAccountType,
+        setJurisdictionSelectedShortcode,
+        setMT5TradeAccount,
+        toggleCFDVerificationModal,
+        toggleMT5TradeModal,
+    } = useCfdStore();
 
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;
 

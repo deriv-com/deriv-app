@@ -32,6 +32,7 @@ import 'Sass/cfd.scss';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -577,27 +578,26 @@ const CFDPasswordModal = ({ form_error, platform }: TCFDPasswordModalProps) => {
             mt5_login_list,
             updateAccountStatus,
         },
-        modules: {
-            cfd: {
-                account_title,
-                account_type,
-                disableCFDPasswordModal,
-                error_message,
-                error_type,
-                getAccountStatus,
-                has_cfd_error,
-                is_cfd_success_dialog_enabled,
-                is_cfd_password_modal_enabled,
-                jurisdiction_selected_shortcode,
-                setMt5Error,
-                setCFDSuccessDialog,
-                submitMt5Password,
-                submitCFDPassword,
-                cfd_new_account,
-            },
-        },
         traders_hub: { show_eu_related_content },
     } = useStore();
+
+    const {
+        account_title,
+        account_type,
+        disableCFDPasswordModal,
+        error_message,
+        error_type,
+        getAccountStatus,
+        has_cfd_error,
+        is_cfd_success_dialog_enabled,
+        is_cfd_password_modal_enabled,
+        jurisdiction_selected_shortcode,
+        setError,
+        setCFDSuccessDialog,
+        submitMt5Password,
+        submitCFDPassword,
+        new_account_response,
+    } = useCfdStore();
 
     const history = useHistory();
 
@@ -667,7 +667,7 @@ const CFDPasswordModal = ({ form_error, platform }: TCFDPasswordModalProps) => {
 
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
-        setMt5Error(false);
+        setError(false);
     };
 
     const closeModal = () => {
@@ -679,7 +679,10 @@ const CFDPasswordModal = ({ form_error, platform }: TCFDPasswordModalProps) => {
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
+            /**TODO: Add type for new_account_response */
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            sessionStorage.setItem('cfd_transfer_to_login_id', new_account_response.login || '');
             history.push(routes.cashier_acc_transfer);
         }
     };

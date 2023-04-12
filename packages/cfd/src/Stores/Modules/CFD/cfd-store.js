@@ -11,8 +11,8 @@ export default class CFDStore extends BaseStore {
     jurisdiction_selected_shortcode = '';
 
     account_type = {
-        category: undefined,
-        type: undefined,
+        category: '',
+        type: '',
     };
 
     mt5_trade_account = {};

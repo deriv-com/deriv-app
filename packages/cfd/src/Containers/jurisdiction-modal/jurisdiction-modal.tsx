@@ -7,22 +7,10 @@ import { TJurisdictionModalProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModal = ({ openPasswordModal }: TJurisdictionModalProps) => {
     const {
-        modules: {
-            cfd: {
-                account_type,
-                is_jurisdiction_modal_visible,
-                jurisdiction_selected_shortcode,
-                real_financial_accounts_existing_data,
-                real_synthetic_accounts_existing_data,
-                setJurisdictionSelectedShortcode,
-                toggleCFDVerificationModal,
-                toggleJurisdictionModal,
-                has_submitted_cfd_personal_details,
-            },
-        },
         client: {
             account_status,
             is_virtual,
@@ -35,6 +23,19 @@ const JurisdictionModal = ({ openPasswordModal }: TJurisdictionModalProps) => {
         traders_hub: { show_eu_related_content },
         ui: { disableApp, enableApp },
     } = useStore();
+
+    const {
+        account_type,
+        is_jurisdiction_modal_visible,
+        jurisdiction_selected_shortcode,
+        real_financial_accounts_existing_data,
+        real_synthetic_accounts_existing_data,
+        setJurisdictionSelectedShortcode,
+        toggleCFDVerificationModal,
+        toggleJurisdictionModal,
+        has_submitted_cfd_personal_details,
+    } = useCfdStore();
+
     const [checked, setChecked] = React.useState(false);
 
     const {

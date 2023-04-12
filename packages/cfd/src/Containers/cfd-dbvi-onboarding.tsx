@@ -16,6 +16,7 @@ import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>
@@ -38,18 +39,17 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 const CFDDbviOnboarding = () => {
     const {
         client: { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status },
-        modules: {
-            cfd: {
-                has_created_account_for_selected_jurisdiction,
-                has_submitted_cfd_personal_details,
-                is_cfd_verification_modal_visible,
-                jurisdiction_selected_shortcode,
-                openPasswordModal,
-                toggleCFDVerificationModal,
-            },
-        },
         ui: { disableApp, enableApp },
     } = useStore();
+
+    const {
+        has_created_account_for_selected_jurisdiction,
+        has_submitted_cfd_personal_details,
+        is_cfd_verification_modal_visible,
+        jurisdiction_selected_shortcode,
+        enableCFDPasswordModal,
+        toggleCFDVerificationModal,
+    } = useCfdStore();
 
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -102,7 +102,7 @@ const CFDDbviOnboarding = () => {
                 account_status={account_status}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
-                openPasswordModal={openPasswordModal}
+                openPasswordModal={enableCFDPasswordModal}
             />
         ) : (
             <CFDFinancialStpRealAccountSignup
@@ -112,7 +112,7 @@ const CFDDbviOnboarding = () => {
                         setShowSubmittedModal(true);
                     } else {
                         toggleCFDVerificationModal();
-                        openPasswordModal();
+                        enableCFDPasswordModal();
                     }
                 }}
             />

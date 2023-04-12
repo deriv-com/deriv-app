@@ -7,6 +7,7 @@ import DMT5CompareModalContent from './mt5-compare-table-content';
 import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content';
 import { observer, useStore } from '@deriv/stores';
 import { LandingCompany } from '@deriv/api-types';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCompareAccountsReusedProps = {
     platform: string;
@@ -86,13 +87,12 @@ const CompareAccountsModal = ({
     setShouldShowCooldownModal,
 }: TCompareAccountsModalProps) => {
     const {
-        modules: {
-            cfd: { is_compare_accounts_visible, toggleCompareAccounts },
-        },
         ui: { disableApp, enableApp, openDerivRealAccountNeededModal },
         client: { is_loading, is_eu, is_uk, is_logged_in, landing_companies, residence },
         traders_hub: { content_flag, show_eu_related_content, financial_restricted_countries },
     } = useStore();
+
+    const { is_compare_accounts_visible, toggleCompareAccountsModal } = useCfdStore();
 
     const location = window.location.pathname;
     const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
@@ -212,7 +212,7 @@ const CompareAccountsModal = ({
                 setShouldShowCooldownModal={setShouldShowCooldownModal}
                 should_show_derivx={should_show_derivx}
                 show_eu_related_content={show_eu_related_content}
-                toggleCompareAccounts={toggleCompareAccounts}
+                toggleCompareAccounts={toggleCompareAccountsModal}
             />
         );
     };
@@ -225,7 +225,7 @@ const CompareAccountsModal = ({
                         className='cfd-dashboard__welcome-message--button'
                         has_effect
                         text={cfd_account_button_label}
-                        onClick={toggleCompareAccounts}
+                        onClick={toggleCompareAccountsModal}
                         secondary
                         disabled={is_loading}
                     />
@@ -238,7 +238,7 @@ const CompareAccountsModal = ({
                             enableApp={enableApp}
                             is_open={is_compare_accounts_visible}
                             title={getCFDModalTitle()}
-                            toggleModal={toggleCompareAccounts}
+                            toggleModal={toggleCompareAccountsModal}
                             type='button'
                             height={getModalStyle().height}
                             width={getModalStyle().width}
@@ -253,7 +253,7 @@ const CompareAccountsModal = ({
                             title={getCFDModalTitle()}
                             wrapper_classname='cfd-dashboard__compare-accounts'
                             visible={is_compare_accounts_visible}
-                            onClose={toggleCompareAccounts}
+                            onClose={toggleCompareAccountsModal}
                             header_classname={is_dxtrade ? '' : 'cfd-accounts-compare-modal-mobile-header'}
                             has_full_height
                         >

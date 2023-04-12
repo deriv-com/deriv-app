@@ -172,6 +172,8 @@ export type TJurisdictionCardProps = {
     disabled: boolean;
 };
 
+export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
+
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;
     account_type: string;

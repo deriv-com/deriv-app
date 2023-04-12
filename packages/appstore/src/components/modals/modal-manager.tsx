@@ -156,7 +156,6 @@ const ModalManager = () => {
             <CFDPasswordManagerModal
                 is_visible={password_manager.is_visible}
                 selected_login={password_manager.selected_login}
-                selected_account={password_manager.selected_account}
                 selected_account_group={password_manager.selected_account_group}
                 selected_account_type={password_manager.selected_account_type}
                 selected_server={password_manager.selected_server}

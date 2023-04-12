@@ -15,6 +15,7 @@ import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -22,7 +23,7 @@ type TMT5TradeModalProps = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;

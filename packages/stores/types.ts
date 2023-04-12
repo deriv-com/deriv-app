@@ -210,7 +210,10 @@ type TClientStore = {
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
     isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
     fetchResidenceList?: () => void;
-    account_settings: GetSettings;
+    account_settings: GetSettings & {
+        upload_file?: string;
+        poi_state?: string;
+    };
     residence_list: ResidenceList;
     is_high_risk: boolean;
     should_restrict_bvi_account_creation: boolean;
@@ -262,11 +265,6 @@ type TClientStore = {
     dxtrade_status_server: TDXTraderStatusServerType;
     real_account_creation_unlock_date: string;
     is_user_exception: boolean;
-    get_settings: GetSettings & {
-        upload_file?: string;
-        poi_state?: string;
-    };
-    client_email: string;
     is_fully_authenticated: boolean;
     states_list: StatesList;
     fetchStatesList: () => void;
@@ -412,7 +410,7 @@ type TModuleStore = {
         has_submitted_cfd_personal_details: boolean;
         is_jurisdiction_modal_visible: boolean;
         clearCFDError: () => void;
-        current_list: Record<string, DetailsOfEachMT5Loginid & { enabled: number }>;
+        current_list: Record<string, DetailsOfEachMT5Loginid & { enabled: number } & DetailsOfEachMT5Loginid[]>;
         is_compare_accounts_visible: boolean;
         toggleCompareAccounts: () => void;
         dxtrade_companies: Record<string, any>;

@@ -185,11 +185,8 @@ const CFDAccountCardComponent = ({
     specs,
     title,
     toggleAccountsDialog,
-    toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     type,
-    real_account_creation_unlock_date,
-    setShouldShowCooldownModal,
 }: TCFDAccountCard) => {
     const {
         modules: {
@@ -199,12 +196,18 @@ const CFDAccountCardComponent = ({
                 setJurisdictionSelectedShortcode,
                 setMT5TradeAccount,
                 toggleCFDVerificationModal,
+                toggleMT5TradeModal,
             },
         },
-        ui: { setIsAcuityModalOpen },
+        ui: { setIsAcuityModalOpen, setShouldShowCooldownModal },
         common: { setAppstorePlatform },
         traders_hub: { show_eu_related_content },
-        client: { updateAccountStatus, isEligibleForMoreRealMt5, isEligibleForMoreDemoMt5Svg },
+        client: {
+            updateAccountStatus,
+            isEligibleForMoreRealMt5,
+            isEligibleForMoreDemoMt5Svg,
+            real_account_creation_unlock_date,
+        },
     } = useStore();
 
     const existing_data = existing_accounts_data?.length ? existing_accounts_data?.[0] : existing_accounts_data;

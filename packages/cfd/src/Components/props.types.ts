@@ -1,4 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TCFDPasswordReset } from 'Containers/props.types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
@@ -20,7 +21,7 @@ export type TPasswordBoxProps = {
 };
 
 export type TType = {
-    category: string;
+    category: TCFDPasswordReset['account_group'];
     type: string;
     platform: string;
 };
@@ -92,15 +93,12 @@ export type TCFDAccountCard = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;
     toggleAccountsDialog?: (arg?: boolean) => void;
-    toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
-    real_account_creation_unlock_date: string;
-    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 export type TTradingPlatformAccounts = {

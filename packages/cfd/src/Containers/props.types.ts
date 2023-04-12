@@ -49,7 +49,7 @@ export type TChangePassword = {
 export type TPasswordResetAndTradingPasswordManager = {
     email: string;
     platform: CFD_Platform;
-    account_group: 'real' | 'demo';
+    account_group: TCFDPasswordReset['account_group'];
     toggleModal?: () => void;
 };
 
@@ -101,7 +101,7 @@ export type TCountdownComponent = {
 export type TCFDPasswordReset = {
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
     account_type: string;
-    account_group: 'real' | 'demo';
+    account_group: 'demo' | 'real' | '';
     server: string;
     password_type: string;
 };
@@ -119,7 +119,7 @@ export type TCFDPasswordManagerTabContent = {
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     platform: CFD_Platform;
     onChangeActiveTabIndex: (value: number) => void;
-    account_group: 'real' | 'demo';
+    account_group: TCFDPasswordReset['account_group'];
 };
 
 export type TCFDPasswordManagerModal = {
@@ -128,7 +128,7 @@ export type TCFDPasswordManagerModal = {
     selected_login: string;
     toggleModal: () => void;
     selected_account_type: string;
-    selected_account_group: 'real' | 'demo';
+    selected_account_group: TCFDPasswordReset['account_group'];
     selected_server: string;
 };
 

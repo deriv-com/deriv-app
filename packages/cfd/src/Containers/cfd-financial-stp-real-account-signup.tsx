@@ -28,8 +28,8 @@ const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAcco
         },
         client: {
             authentication_status,
-            get_settings,
-            client_email,
+            account_settings,
+            email,
             is_fully_authenticated,
             landing_company,
             residence_list,
@@ -48,8 +48,8 @@ const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAcco
         removeNotificationByKey,
         addNotificationByKey,
         authentication_status,
-        get_settings,
-        client_email,
+        account_settings,
+        email,
         is_fully_authenticated,
         landing_company,
         residence_list,
@@ -87,14 +87,14 @@ const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAcco
     const poa_config: TItemsState<typeof passthroughProps> = {
         body: CFDPOA,
         form_value: {
-            address_line_1: get_settings.address_line_1,
-            address_line_2: get_settings.address_line_2,
-            address_city: get_settings.address_city,
-            address_state: get_settings.address_state,
-            address_postcode: get_settings.address_postcode,
+            address_line_1: account_settings.address_line_1,
+            address_line_2: account_settings.address_line_2,
+            address_city: account_settings.address_city,
+            address_state: account_settings.address_state,
+            address_postcode: account_settings.address_postcode,
             upload_file: '',
         },
-        forwarded_props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+        forwarded_props: ['states_list', 'account_settings', 'storeProofOfAddress', 'refreshNotifications'],
     };
 
     const personal_details_config: TItemsState<typeof passthroughProps> = {
@@ -194,6 +194,11 @@ const CFDFinancialStpRealAccountSignup = ({ onFinish }: TCFDFinancialStpRealAcco
         >
             <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>
                 <BodyComponent
+                    /** TODO: Body component is 3 different component in which one of them does not have prop `value`
+                     * it needs a refactor
+                     */
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     value={form_value}
                     index={state_index}
                     onSubmit={nextStep}

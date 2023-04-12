@@ -34,6 +34,7 @@ import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { observer, useStore } from '@deriv/stores';
+import { TCFDPasswordReset } from './props.types';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -85,6 +86,15 @@ export type TCFDDashboardProps = RouteComponentProps & {
     account_status: object;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     platform: 'mt5' | 'dxtrade';
+};
+
+type TPasswordManager = {
+    is_visible: boolean;
+    selected_login: string;
+    selected_account: string;
+    selected_account_type: string;
+    selected_account_group: TCFDPasswordReset['account_group'];
+    selected_server: string;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -153,7 +163,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
             is_reset_trading_password_modal_visible,
             toggleResetTradingPasswordModal,
             openDerivRealAccountNeededModal,
-            setIsAcuityModalOpen,
             setShouldShowCooldownModal,
         },
         traders_hub: { show_eu_related_content },
@@ -165,14 +174,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     const [active_index, setActiveIndex] = React.useState<number>(0);
     const [is_demo_tab, setIsDemoTab] = React.useState<boolean>(false);
     const [is_notification_loaded, setIsNotificationLoaded] = React.useState<boolean>(false);
-    const [password_manager, setPasswordManager] = React.useState<{
-        is_visible: boolean;
-        selected_login: string;
-        selected_account: string;
-        selected_account_type: string;
-        selected_account_group: string;
-        selected_server: string;
-    }>({
+    const [password_manager, setPasswordManager] = React.useState<TPasswordManager>({
         is_visible: false,
         selected_login: '',
         selected_account: '',
@@ -296,7 +298,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     const togglePasswordManagerModal = (
         login?: string,
         title?: string,
-        group?: string,
+        group?: TCFDPasswordReset['account_group'],
         type?: string,
         server?: string
     ) => {
@@ -456,7 +458,6 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 is_visible={password_manager.is_visible}
                                 platform={platform}
                                 selected_login={password_manager.selected_login}
-                                selected_account={password_manager.selected_account}
                                 selected_account_group={password_manager.selected_account_group}
                                 selected_account_type={password_manager.selected_account_type}
                                 selected_server={password_manager.selected_server}
@@ -517,12 +518,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 has_real_account={has_real_account}
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
-                                                toggleMT5TradeModal={toggleMT5TradeModal}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 residence={residence}
                                                 openDerivRealAccountNeededModal={openDerivRealAccountNeededModal}
                                                 should_enable_add_button={should_enable_add_button}
-                                                setIsAcuityModalOpen={setIsAcuityModalOpen}
                                                 real_account_creation_unlock_date={real_account_creation_unlock_date}
                                                 setShouldShowCooldownModal={setShouldShowCooldownModal}
                                                 show_eu_related_content={show_eu_related_content}

@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import DMT5TradeModal from './dmt5-trade-modal';
 import DerivXTradeModal from './derivx-trade-modal';
 import { observer, useStore } from '@deriv/stores';
+import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
     is_eu_user: boolean;
@@ -11,7 +12,7 @@ type TMT5TradeModalProps = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;

@@ -25,7 +25,7 @@ const useTotalAccountBalance = (accounts: { balance?: number; currency?: string 
 
     return {
         balance,
-        currency,
+        currency: total_assets_real_currency,
     };
 };
 

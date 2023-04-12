@@ -1,21 +1,27 @@
 .onboarding-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 3rem;
     background-color: var(--general-hover);
     height: inherit;
 
     .onboarding-header {
-        margin-left: 0.5rem;
+        margin-left: 2.5rem;
+        margin-right: 2.5rem;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+
+        @include mobile {
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
 
         &--deriv-logo {
-            margin-top: 0.5rem;
+            margin-top: 1rem;
         }
 
         &__cross-icon {
-            margin: 3.5rem 3rem 0 0;
             cursor: pointer;
         }
     }

@@ -96,7 +96,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.account_settings,
                 root_store.client.account_status,
                 root_store.client.landing_companies,
-                // root_store.modules?.cashier?.general_store?.is_p2p_visible,
+                root_store.client.is_p2p_enabled,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
@@ -108,8 +108,8 @@ export default class NotificationStore extends BaseStore {
                     root_store.client.is_logged_in &&
                     !root_store.client.is_virtual &&
                     Object.keys(root_store.client.account_status).length > 0 &&
-                    Object.keys(root_store.client.landing_companies).length > 0
-                    // && root_store.modules?.cashier?.general_store?.is_p2p_visible
+                    Object.keys(root_store.client.landing_companies).length > 0 &&
+                    root_store.client.is_p2p_enabled
                 ) {
                     await debouncedGetP2pCompletedOrders();
                 }
@@ -294,8 +294,8 @@ export default class NotificationStore extends BaseStore {
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
             p2p_advertiser_info,
+            is_p2p_enabled,
         } = this.root_store.client;
-        // const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -500,32 +500,43 @@ export default class NotificationStore extends BaseStore {
 
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
-                // if (is_p2p_visible) {
-                this.addNotificationMessage(this.client_notifications.dp2p);
+                if (is_p2p_enabled) {
+                    this.addNotificationMessage(this.client_notifications.dp2p);
 
-                this.p2p_completed_orders?.map(order => {
-                    const { advertiser_details, client_details, id, is_reviewable, status: order_status, type } = order;
+                    this.p2p_completed_orders?.map(order => {
+                        const {
+                            advertiser_details,
+                            client_details,
+                            id,
+                            is_reviewable,
+                            status: order_status,
+                            type,
+                        } = order;
 
-                    if (is_reviewable) {
-                        if (type === 'buy' && order_status === 'completed' && client_details.loginid === loginid)
-                            this.showCompletedOrderNotification(advertiser_details.name, id);
+                        if (is_reviewable) {
+                            if (type === 'buy' && order_status === 'completed' && client_details.loginid === loginid)
+                                this.showCompletedOrderNotification(advertiser_details.name, id);
 
-                        if (type === 'sell' && order_status === 'completed' && advertiser_details.loginid === loginid)
-                            this.showCompletedOrderNotification(client_details.name, id);
-                    }
-                });
+                            if (
+                                type === 'sell' &&
+                                order_status === 'completed' &&
+                                advertiser_details.loginid === loginid
+                            )
+                                this.showCompletedOrderNotification(client_details.name, id);
+                        }
+                    });
 
-                if (upgradable_daily_limits)
-                    this.addNotificationMessage(
-                        this.client_notifications.p2p_daily_limit_increase(
-                            client.currency,
-                            max_daily_buy,
-                            max_daily_sell
-                        )
-                    );
-                // } else {
-                //     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
-                // }
+                    if (upgradable_daily_limits)
+                        this.addNotificationMessage(
+                            this.client_notifications.p2p_daily_limit_increase(
+                                client.currency,
+                                max_daily_buy,
+                                max_daily_sell
+                            )
+                        );
+                } else {
+                    this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p.key });
+                }
                 if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
                     this.addNotificationMessage(this.client_notifications.trustpilot);
                 }

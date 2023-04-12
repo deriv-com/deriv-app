@@ -2622,5 +2622,21 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
+
+    /** @deprecated Use `useIsP2PEnabled` from `@deriv/stores` package instead.
+     *
+     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
+     *
+     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
+     * */
+    get is_p2p_enabled() {
+        const { is_low_risk_cr_eu_real } = this.root_store.traders_hub;
+
+        const is_p2p_supported_currency = Boolean(
+            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
+        );
+
+        return is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+    }
 }
 /* eslint-enable */

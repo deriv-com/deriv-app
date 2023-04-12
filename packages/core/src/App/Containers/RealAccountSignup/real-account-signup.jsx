@@ -111,6 +111,7 @@ const RealAccountSignup = ({
     state_index,
     state_value,
     is_trading_experience_incomplete,
+    is_trading_assessment_for_new_user_enabled,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -487,7 +488,7 @@ const RealAccountSignup = ({
                 }
             />
         );
-    } else if (should_show_risk_warning_modal) {
+    } else if (is_trading_assessment_for_new_user_enabled && should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_warning_modal}
@@ -652,4 +653,5 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
 }))(withRouter(RealAccountSignup));

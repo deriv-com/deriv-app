@@ -20,7 +20,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(false);
     });
 
-    it('should show the proper message if there is a cryptocashier maintenance', () => {
+    it('should show the proper message if there is a crypto cashier maintenance', () => {
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },

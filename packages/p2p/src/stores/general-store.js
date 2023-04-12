@@ -1,5 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { get, init, timePromise } from '../../../cashier/src/utils/server_time';
 import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
@@ -8,7 +9,7 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
-import { api_error_codes } from '../constants/api-error-codes';
+import { api_error_codes } from 'Constants/api-error-codes';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -22,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    external_stores = {};
     feature_level = null;
     formik_ref = null;
     inactive_notification_count = 0;
@@ -38,13 +40,11 @@ export default class GeneralStore extends BaseStore {
     is_restricted = false;
     nickname = null;
     nickname_error = '';
-    notification_count = 0;
     order_table_type = order_list.ACTIVE;
     orders = [];
     parameters = null;
     payment_info = '';
     poi_status = null;
-    props = {};
     review_period;
     saved_form_state = null;
     should_show_real_name = false;
@@ -62,6 +62,12 @@ export default class GeneralStore extends BaseStore {
     ws_subscriptions = {};
     service_token_timeout;
 
+    server_time = {
+        get,
+        init,
+        timePromise,
+    };
+
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
         super(root_store);
@@ -76,6 +82,7 @@ export default class GeneralStore extends BaseStore {
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            external_stores: observable,
             feature_level: observable,
             formik_ref: observable,
             inactive_notification_count: observable,
@@ -90,12 +97,10 @@ export default class GeneralStore extends BaseStore {
             is_restricted: observable,
             nickname: observable,
             nickname_error: observable,
-            notification_count: observable,
             order_table_type: observable,
             orders: observable,
             parameters: observable,
             poi_status: observable,
-            props: observable.ref,
             review_period: observable,
             saved_form_state: observable,
             should_show_real_name: observable,
@@ -104,10 +109,6 @@ export default class GeneralStore extends BaseStore {
             user_blocked_until: observable,
             is_high_risk_fully_authed_without_fa: observable,
             is_modal_open: observable,
-            client: computed,
-            current_focus: computed,
-            form_state: computed,
-            setCurrentFocus: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
@@ -132,8 +133,7 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserId: action.bound,
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
-            setAppProps: action.bound,
-            setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
+            setExternalStores: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
             setSavedFormState: action.bound,
@@ -149,7 +149,6 @@ export default class GeneralStore extends BaseStore {
             setIsModalOpen: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
-            setNotificationCount: action.bound,
             setOrderTableType: action.bound,
             setP2PConfig: action.bound,
             setP2pOrderList: action.bound,
@@ -169,22 +168,6 @@ export default class GeneralStore extends BaseStore {
             updateAdvertiserInfo: action.bound,
             updateP2pNotifications: action.bound,
         });
-    }
-
-    get client() {
-        return { ...this.props?.client } || {};
-    }
-
-    get current_focus() {
-        return this.props?.current_focus;
-    }
-
-    get form_state() {
-        return this.formik_ref;
-    }
-
-    get setCurrentFocus() {
-        return this.props?.setCurrentFocus;
     }
 
     get blocked_until_date_time() {
@@ -289,7 +272,7 @@ export default class GeneralStore extends BaseStore {
     };
 
     getLocalStorageSettingsForLoginId() {
-        const local_storage_settings = this.getLocalStorageSettings()[this.client.loginid];
+        const local_storage_settings = this.getLocalStorageSettings()[this.external_stores.client.loginid];
 
         if (isEmptyObject(local_storage_settings)) {
             return { is_cached: false, notifications: [] };
@@ -314,11 +297,14 @@ export default class GeneralStore extends BaseStore {
 
     handleNotifications(old_orders, new_orders) {
         const { order_store } = this.root_store;
-        const { client, props } = this;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
         new_orders.forEach(new_order => {
-            const order_info = createExtendedOrderDetails(new_order, client.loginid, props.server_time);
+            const order_info = createExtendedOrderDetails(
+                new_order,
+                this.external_stores.client.loginid,
+                this.server_time
+            );
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
             const is_current_order = new_order.id === order_store.order_id;
@@ -341,14 +327,14 @@ export default class GeneralStore extends BaseStore {
                         if (
                             type === buy_sell.BUY &&
                             status === 'completed' &&
-                            client_details.loginid === client.loginid
+                            client_details.loginid === this.external_stores.client.loginid
                         )
                             this.showCompletedOrderNotification(advertiser_details.name, id);
 
                         if (
                             type === buy_sell.SELL &&
                             status === 'completed' &&
-                            advertiser_details.loginid === client.loginid
+                            advertiser_details.loginid === this.external_stores.client.loginid
                         )
                             this.showCompletedOrderNotification(client_details.name, id);
                     } else {
@@ -390,9 +376,9 @@ export default class GeneralStore extends BaseStore {
         const notification_key = `order-${order_id}`;
 
         // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
-        this.props.refreshNotifications();
+        this.external_stores?.notifications.refreshNotifications();
 
-        this.props.addNotificationMessage({
+        this.external_stores?.notifications.addNotificationMessage({
             action: {
                 onClick: () => {
                     if (order_store.order_id === order_id) {
@@ -418,13 +404,10 @@ export default class GeneralStore extends BaseStore {
     showDailyLimitIncreaseNotification() {
         const { upgradable_daily_limits } = this.advertiser_info;
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits;
+        const { client, notifications } = this.external_stores;
 
-        this.props.addNotificationMessage(
-            this.props.client_notifications.p2p_daily_limit_increase(
-                this.client.currency,
-                max_daily_buy,
-                max_daily_sell
-            )
+        notifications.addNotificationMessage(
+            notifications.client_notifications.p2p_daily_limit_increase(client.currency, max_daily_buy, max_daily_sell)
         );
     }
 
@@ -443,7 +426,7 @@ export default class GeneralStore extends BaseStore {
             () => this.user_blocked_until,
             blocked_until => {
                 if (typeof blocked_until === 'number') {
-                    const server_time = this.props.server_time.get();
+                    const server_time = this.server_time.get();
                     const blocked_until_moment = toMoment(blocked_until);
 
                     // Need isAfter instead of setTimeout as setTimeout has a max delay of 24.8 days
@@ -518,11 +501,11 @@ export default class GeneralStore extends BaseStore {
                 exchange_rate_subscription: subscribeWS(
                     {
                         exchange_rates: 1,
-                        base_currency: this.client.currency,
+                        base_currency: this.external_stores.client.currency,
                         subscribe: 1,
                         target_currency:
                             this.root_store.buy_sell_store.selected_local_currency ??
-                            this.client.local_currency_config?.currency,
+                            this.external_stores.client.local_currency_config?.currency,
                     },
                     [this.root_store.floating_rate_store.fetchExchangeRate]
                 ),
@@ -539,7 +522,7 @@ export default class GeneralStore extends BaseStore {
                 this.setIsLoading(false);
             }
 
-            this.props.setP2PRedirectTo({
+            this.external_stores.notifications.setP2PRedirectTo({
                 redirectTo: this.redirectTo,
             });
         });
@@ -547,13 +530,13 @@ export default class GeneralStore extends BaseStore {
 
     subscribeToLocalCurrency() {
         const { floating_rate_store, buy_sell_store } = this.root_store;
-        const client_currency = this.client.local_currency_config?.currency;
+        const client_currency = this.external_stores.client.local_currency_config?.currency;
 
         this.ws_subscriptions?.exchange_rate_subscription?.unsubscribe?.();
         this.ws_subscriptions.exchange_rate_subscription = subscribeWS(
             {
                 exchange_rates: 1,
-                base_currency: this.client.currency,
+                base_currency: this.external_stores.client.currency,
                 subscribe: 1,
                 target_currency:
                     this.active_index > 0 ? client_currency : buy_sell_store.local_currency ?? client_currency,
@@ -577,8 +560,8 @@ export default class GeneralStore extends BaseStore {
         }
 
         this.setActiveIndex(0);
-        this.props.refreshNotifications();
-        this.props.filterNotificationMessages();
+        this.external_stores?.notifications.refreshNotifications();
+        this.external_stores?.notifications.filterNotificationMessages();
     }
 
     onNicknamePopupClose() {
@@ -633,10 +616,6 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_sell_limit = advertiser_sell_limit;
     }
 
-    setAppProps(props) {
-        this.props = props;
-    }
-
     //TODO: Remove this when backend has fixed is_blocked flag issue
     setAdvertiserRelationsResponse(advertiser_relations_response) {
         this.advertiser_relations_response = advertiser_relations_response;
@@ -652,6 +631,10 @@ export default class GeneralStore extends BaseStore {
 
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
+    }
+
+    setExternalStores(external_stores) {
+        this.external_stores = external_stores;
     }
 
     setFeatureLevel(feature_level) {
@@ -720,10 +703,6 @@ export default class GeneralStore extends BaseStore {
 
     setNicknameError(nickname_error) {
         this.nickname_error = nickname_error;
-    }
-
-    setNotificationCount(notification_count) {
-        this.notification_count = notification_count;
     }
 
     setOrderTableType(order_table_type) {
@@ -908,18 +887,13 @@ export default class GeneralStore extends BaseStore {
         user_settings.notifications = notifications;
 
         const p2p_settings = this.getLocalStorageSettings();
-        p2p_settings[this.client.loginid] = user_settings;
+        p2p_settings[this.external_stores.client.loginid] = user_settings;
 
         localStorage.setItem('p2p_settings', JSON.stringify(p2p_settings));
         window.dispatchEvent(new Event('storage'));
 
-        this.setNotificationCount(notification_count);
         this.setActiveNotificationCount(active_notification_count);
         this.setInactiveNotificationCount(inactive_notification_count);
-
-        if (typeof this.props?.setNotificationCount === 'function') {
-            this.props.setNotificationCount(notification_count);
-        }
     }
 
     validatePopup = values => {

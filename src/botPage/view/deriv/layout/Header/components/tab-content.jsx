@@ -13,7 +13,7 @@ const TabContent = ({
     isActive,
     setIsAccDropdownOpen,
     accounts,
-    title = translate('Deriv accounts')
+    title = translate('Deriv account')
 }) => {
    
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);

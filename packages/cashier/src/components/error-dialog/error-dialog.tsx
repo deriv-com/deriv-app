@@ -147,7 +147,8 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
             enableApp={enableApp}
             is_visible={is_visible}
             portal_element_id='modal_root'
-            has_close_icon={details.has_close_icon}
+            dismissable={false}
+            has_close_icon={details.has_close_icon ?? false}
         >
             {/* to avoid the message disappearing before the pop-up */}
             {/* use details.message instead of error.message */}

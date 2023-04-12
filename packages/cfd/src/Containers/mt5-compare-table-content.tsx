@@ -14,14 +14,13 @@ import {
     TCompareAccountRowItem,
 } from './props.types';
 import {
-    eu_real_content,
-    cr_real_content,
-    cr_real_footer_buttons,
-    eu_real_footer_button,
-    preappstore_cr_demo_content,
-    preappstore_cr_demo_footer_buttons,
-    preppstore_eu_demo_content,
-    eu_demo_footer_button,
+    getEuRealContent,
+    getCrRealContent,
+    getCrRealFooterButtons,
+    getPreappstoreCrDemoContent,
+    getPreappstoreCrDemoFooterButtons,
+    getPreappstoreEuDemoContent,
+    getEuFooterButtons,
 } from '../Constants/cfd_compare_account_content';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 
@@ -412,20 +411,20 @@ const DMT5CompareModalContent = ({
 
     const getModalContent = () => {
         if (is_preappstore_cr_demo_account) {
-            return preappstore_cr_demo_content;
+            return getPreappstoreCrDemoContent();
         } else if (show_eu_related_content) {
             if (is_pre_appstore_setting && content_flag === ContentFlag.EU_DEMO) {
-                return preppstore_eu_demo_content;
+                return getPreappstoreEuDemoContent();
             }
-            return eu_real_content;
+            return getEuRealContent();
         }
-        return cr_real_content;
+        return getCrRealContent();
     };
 
     const modal_footer = () => {
-        if (is_preappstore_cr_demo_account) return preappstore_cr_demo_footer_buttons;
-        else if (is_demo_tab && show_eu_related_content) return eu_demo_footer_button;
-        return show_eu_related_content ? eu_real_footer_button : cr_real_footer_buttons;
+        if (is_preappstore_cr_demo_account) return getPreappstoreCrDemoFooterButtons();
+        else if (is_demo_tab && show_eu_related_content) return getEuFooterButtons();
+        return show_eu_related_content ? getEuFooterButtons() : getCrRealFooterButtons();
     };
 
     const shouldShowPendingStatus = (item: TCompareAccountFooterButtonData) => {

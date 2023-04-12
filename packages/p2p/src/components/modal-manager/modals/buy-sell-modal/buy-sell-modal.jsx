@@ -286,7 +286,7 @@ const BuySellModal = () => {
                     width='456px'
                     is_open={is_modal_open}
                     title={<BuySellModalTitle />}
-                    portalId={general_store.props.modal_root_id}
+                    portalId='modal_root'
                     toggleModal={onCancel}
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}

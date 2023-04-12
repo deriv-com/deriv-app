@@ -297,6 +297,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_pending_proof_of_ownership: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -1615,7 +1616,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
@@ -2534,6 +2535,10 @@ export default class ClientStore extends BaseStore {
 
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    get is_pending_proof_of_ownership() {
+        return this.account_status?.authentication?.needs_verification?.includes('ownership');
     }
 
     setVisibilityRealityCheck(is_visible) {

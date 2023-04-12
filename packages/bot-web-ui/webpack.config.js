@@ -119,11 +119,15 @@ module.exports = function (env) {
         },
         plugins: [
             new Dotenv(),
-            new DefinePlugin({
-                'process.env.GD_CLIENT_ID': JSON.stringify(process.env.GD_CLIENT_ID),
-                'process.env.GD_API_KEY': JSON.stringify(process.env.GD_API_KEY),
-                'process.env.GD_APP_ID': JSON.stringify(process.env.GD_APP_ID),
-            }),
+            ...(process.env.NODE_ENV !== 'development'
+                ? []
+                : [
+                      new DefinePlugin({
+                          'process.env.GD_CLIENT_ID': JSON.stringify(process.env.GD_CLIENT_ID),
+                          'process.env.GD_API_KEY': JSON.stringify(process.env.GD_API_KEY),
+                          'process.env.GD_APP_ID': JSON.stringify(process.env.GD_APP_ID),
+                      }),
+                  ]),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: 'bot/css/bot.main.[contenthash].css',

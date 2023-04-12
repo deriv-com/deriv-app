@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
+import { isCryptocurrency, getLimitOrderAmount, isValidToSell, addComma } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
 import Icon from '../../icon';
@@ -77,7 +77,7 @@ const TurbosCardBody = ({
                     is_loss={is_sold && profit ? profit < 0 : false}
                     is_won={is_sold && profit ? profit > 0 : false}
                 >
-                    <Money amount={buy_price} currency={currency} />
+                    <Money amount={is_sold ? profit : buy_price} currency={currency} />
                 </ContractCardItem>
                 <ContractCardItem header={is_sold ? PAYOUT : CURRENT_PRICE} className='dc-contract-card__current-price'>
                     <Money currency={currency} amount={sell_spot || current_spot_display_value} />
@@ -87,11 +87,15 @@ const TurbosCardBody = ({
                     is_crypto={isCryptocurrency(currency)}
                     className='dc-contract-card__buy-price'
                 >
-                    <Money amount={is_sold ? entry_spot : barrier} currency={currency} />
+                    <Money
+                        amount={is_sold ? entry_spot : addComma(barrier)}
+                        currency={currency}
+                        should_format={is_sold}
+                    />
                 </ContractCardItem>
                 {is_sold ? (
                     <ContractCardItem header={BARRIER_LEVEL} className='dc-contract-card__barrier-level'>
-                        <Money amount={barrier} currency={currency} />
+                        <Money amount={addComma(barrier)} currency={currency} should_format={false} />
                     </ContractCardItem>
                 ) : (
                     <div className='dc-contract-card__limit-order-info'>

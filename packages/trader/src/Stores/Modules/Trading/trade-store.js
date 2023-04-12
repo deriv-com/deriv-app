@@ -1245,7 +1245,7 @@ export default class TradeStore extends BaseStore {
 
             // Sometimes the initial barrier doesn't match with current barrier choices received from API.
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
-            if ((this.is_turbos || this.is_vanilla) && response.error.details.barrier_choices) {
+            if ((this.is_turbos || this.is_vanilla) && response.error.details?.barrier_choices) {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.setBarrierChoices(barrier_choices);
@@ -1253,7 +1253,7 @@ export default class TradeStore extends BaseStore {
                     // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
                     // The new list is set and the mid value is assigned
                     const index = Math.floor(this.barrier_choices.length / 2);
-                    this.barrier_1 = this.barrier_choices[index];
+                    this.barrier_1 = this.is_vanilla ? this.barrier_choices[index] : this.barrier_choices[0];
                     this.onChange({
                         target: {
                             name: 'barrier_1',

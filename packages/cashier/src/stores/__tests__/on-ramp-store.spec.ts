@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react';
 import OnRampStore from '../on-ramp-store';
-import OnRampProviders from '../../config/on-ramp-providers';
+import createBanxaProvider from '../../pages/on-ramp/on-ramp-providers';
 import { configure } from 'mobx';
 import { TRootStore, TWebSocket, TOnRampProvider } from 'Types';
 
@@ -27,8 +27,8 @@ beforeEach(() => {
         },
     };
     onramp_store = new OnRampStore(WS as TWebSocket, root_store as TRootStore);
-    onramp_providers = [OnRampProviders.createBanxaProvider(onramp_store)];
-    banxa_provider = OnRampProviders.createBanxaProvider(onramp_store);
+    onramp_providers = [createBanxaProvider(onramp_store)];
+    banxa_provider = createBanxaProvider(onramp_store);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -291,7 +291,7 @@ describe('OnRampStore', () => {
 
     it('should set selected provider', () => {
         const spyPollApiForDepositAddress = jest.spyOn(onramp_store, 'pollApiForDepositAddress');
-        const provider = OnRampProviders.createBanxaProvider(onramp_store);
+        const provider = createBanxaProvider(onramp_store);
         onramp_store.setSelectedProvider(provider);
         expect(onramp_store.selected_provider).toBe(provider);
         expect(onramp_store.is_onramp_modal_open).toBeTruthy();

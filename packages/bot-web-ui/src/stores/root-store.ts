@@ -19,10 +19,41 @@ import SelfExclusionStore from './self-exclusion-store';
 import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
 import DashboardStore from './dashboard-store';
+import { TCoreStore, TDbot, TDerivWS } from 'Types';
 
-// TODO: need to write types for the root store
+// TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
-    constructor(core, ws, dbot) {
+    public core;
+    public ws;
+    public dbot;
+    public notifications;
+    public ui;
+    public common;
+    public server_time;
+    public app: AppStore;
+    public summary_card: SummaryCardStore;
+    public download: DownloadStore;
+    public flyout: FlyoutStore;
+    public flyout_help: FlyoutHelpStore;
+    public google_drive: GoogleDriveStore;
+    public journal: JournalStore;
+    public load_modal: LoadModalStore;
+    public run_panel: RunPanelStore;
+    public save_modal: SaveModalStore;
+    public summary: SummaryStore;
+    public transactions: TransactionsStore;
+    public toolbar: ToolbarStore;
+    public toolbox: ToolboxStore;
+    public quick_strategy: QuickStrategyStore;
+    public route_prompt_dialog: RoutePromptDialogStore;
+    public self_exclusion: SelfExclusionStore;
+    public dashboard: DashboardStore;
+
+    public chart_store: ChartStore;
+    public blockly_store: BlocklyStore;
+    public data_collection_store: DataCollectionStore;
+
+    constructor(core: TCoreStore, ws: TDerivWS, dbot: TDbot) {
         this.core = core;
         this.ui = core.ui;
         this.common = core.common;

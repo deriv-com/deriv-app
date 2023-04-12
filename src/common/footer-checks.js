@@ -85,7 +85,6 @@ export const checkSwitcherType = async () => {
     const { financial_company, gaming_company } = landing_company;
     const account_status = await api.send({ get_account_status: 1 });
 
-
     const {
         get_account_status: { risk_classification },
     } = account_status;

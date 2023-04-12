@@ -16,7 +16,7 @@ const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => {
                         weight='bold'
                         align='center'
                         size={isDesktop ? 'l' : 'm'}
-                        className='wallet-steps-title'
+                        className='wallet-steps__title'
                     >
                         {title}
                     </Text>
@@ -25,12 +25,12 @@ const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => {
                         color='prominent'
                         size={isDesktop ? 'm' : 's'}
                         align='center'
-                        className='wallet-steps-description'
+                        className='wallet-steps__description'
                     >
                         {description}
                     </Text>
                     {bullets.map(bullet => (
-                        <div key={bullet} className='wallet-steps-bullet'>
+                        <div key={bullet} className='wallet-steps__bullet'>
                             {bullet && (
                                 <React.Fragment>
                                     <Icon icon='IcAppstoreTick' />

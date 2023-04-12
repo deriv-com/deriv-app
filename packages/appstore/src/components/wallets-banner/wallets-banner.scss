@@ -26,10 +26,10 @@
     }
 
     &__upgrade-banner {
-        height: 180px;
+        height: 18rem;
 
         @include mobile {
-            height: 108px;
+            height: 10.8rem;
         }
 
         &-description {

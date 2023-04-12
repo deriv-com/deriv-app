@@ -11,9 +11,8 @@ import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-
-import './traders-hub.scss';
 import WalletsBanner from 'Components/wallets-banner';
+import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();

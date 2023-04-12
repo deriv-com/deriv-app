@@ -1,5 +1,6 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
@@ -118,6 +119,11 @@ module.exports = function (env) {
         },
         plugins: [
             new Dotenv(),
+            new DefinePlugin({
+                'process.env.GD_CLIENT_ID': process.env.GD_CLIENT_ID,
+                'process.env.GD_API_KEY': process.env.GD_API_KEY,
+                'process.env.GD_APP_ID': process.env.GD_APP_ID,
+            }),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: 'bot/css/bot.main.[contenthash].css',

@@ -17,7 +17,6 @@ import Options from 'Assets/svgs/trading-platform/ic-appstore-options.svg';
 import SmartTrader from 'Assets/svgs/trading-platform/ic-brand-smarttrader.svg';
 import SmartTraderBlue from 'Assets/svgs/trading-platform/ic-appstore-smarttrader-blue.svg';
 import CFDs from 'Assets/svgs/trading-platform/ic-appstore-cfds.svg';
-import CTrader from 'Assets/svgs/trading-platform/ic-appstore-ctrader.svg';
 import { IconProps } from '../icon-types';
 
 export const PlatformIcons = {
@@ -39,7 +38,6 @@ export const PlatformIcons = {
     SmartTrader,
     SmartTraderBlue,
     CFDs,
-    CTrader,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

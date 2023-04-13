@@ -32,7 +32,7 @@ const calcSecondAvgDiff = (vals, comp, periods, init_avg) => {
         prev = q;
         const prev_avg = i === 1 ? init_avg : r;
         return (prev_avg * (periods - 1) + diff) / periods;
-    }, 0);
+    });
 };
 
 /**

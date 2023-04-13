@@ -25,6 +25,9 @@ const ReactJoyrideWrapper = ({ steps, styles, ...props }: { steps: Step[]; style
                     color: 'var(--text-general)',
                     padding: '0.6rem',
                 },
+                overlay: {
+                    height: '100%',
+                },
                 ...styles,
             }}
         />

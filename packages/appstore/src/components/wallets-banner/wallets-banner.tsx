@@ -62,32 +62,33 @@ const WalletsBanner = () => {
         </React.Fragment>
     );
 
-    // the user can upgrade to the wallets
-    if (migrationStatus === 'eligible' || migrationStatus === 'failed')
-        return (
-            <Wrapper>
-                <WalletsBannerUpgrade />
-            </Wrapper>
-        );
-
-    // the wallets upgrading is in progress
-    if (migrationStatus === 'in_progress')
-        return (
-            <Wrapper>
-                <WalletsBannerUpgrading is_eu={isEu} />
-            </Wrapper>
-        );
-
-    // // the wallets upgrading completed
-    if (migrationStatus === 'migrated')
-        return (
-            <Wrapper>
-                <WalletsBannerReady is_eu={isEu} />
-            </Wrapper>
-        );
-
-    // the user can't upgrade to the wallets (migration_status === 'ineligible')
-    return <Wrapper />;
+    switch (migrationStatus) {
+        // the user can upgrade to the wallets
+        case 'eligible':
+        case 'failed':
+            return (
+                <Wrapper>
+                    <WalletsBannerUpgrade />
+                </Wrapper>
+            );
+        // the wallets upgrading is in progress
+        case 'in_progress':
+            return (
+                <Wrapper>
+                    <WalletsBannerUpgrading is_eu={isEu} />
+                </Wrapper>
+            );
+        // the wallets upgrading completed
+        case 'migrated':
+            return (
+                <Wrapper>
+                    <WalletsBannerReady is_eu={isEu} />
+                </Wrapper>
+            );
+        // the user can't upgrade to the wallets
+        default:
+            return <Wrapper />;
+    }
 };
 
 export default WalletsBanner;

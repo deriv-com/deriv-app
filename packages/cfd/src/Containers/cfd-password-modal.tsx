@@ -156,8 +156,8 @@ type TCFDPasswordModalProps = RouteComponentProps & {
 const getAccountTitle = (
     platform: string,
     account_type: {
-        category?: string | undefined;
-        type?: string | undefined;
+        category?: string;
+        type?: string;
     },
     account_title: string
 ) => {

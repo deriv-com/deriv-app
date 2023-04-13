@@ -1,5 +1,5 @@
+import moment from 'moment';
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -197,6 +197,7 @@ type TCommonStore = {
     platform: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
+    server_time: moment.Moment;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;

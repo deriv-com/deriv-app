@@ -19,17 +19,18 @@ import SelfExclusionStore from './self-exclusion-store';
 import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
 import DashboardStore from './dashboard-store';
-import { TCoreStore, TDbot, TDerivWS } from 'Types';
+import { TDbot, TWebSocket } from 'Types';
+import { TStores } from '@deriv/stores';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
-    public core;
-    public ws;
-    public dbot;
-    public notifications;
-    public ui;
-    public common;
-    public server_time;
+    public core: TStores;
+    public ws: TWebSocket;
+    public dbot: TDbot;
+    public notifications: TStores['notifications'];
+    public ui: TStores['ui'];
+    public common: TStores['common'];
+    public server_time: TStores['common']['server_time'];
     public app: AppStore;
     public summary_card: SummaryCardStore;
     public download: DownloadStore;
@@ -53,7 +54,7 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
-    constructor(core: TCoreStore, ws: TDerivWS, dbot: TDbot) {
+    constructor(core: TStores, ws: TWebSocket, dbot: TDbot) {
         this.core = core;
         this.ui = core.ui;
         this.common = core.common;

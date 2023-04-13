@@ -2,7 +2,7 @@ import React from 'react';
 import ReactJoyride, { Step, Styles } from 'react-joyride';
 import { handleJoyrideCallback } from './joyride-config';
 
-const ReactJoyrideWrapper = ({ steps, style, ...props }: { steps: Step[]; style: Styles }) => {
+const ReactJoyrideWrapper = ({ steps, styles, ...props }: { steps: Step[]; styles: Styles }) => {
     return (
         <ReactJoyride
             steps={steps}
@@ -25,7 +25,7 @@ const ReactJoyrideWrapper = ({ steps, style, ...props }: { steps: Step[]; style:
                     color: 'var(--text-general)',
                     padding: '0.6rem',
                 },
-                ...style,
+                ...styles,
             }}
         />
     );

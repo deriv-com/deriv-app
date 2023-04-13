@@ -88,13 +88,6 @@ const BotBuilder = ({
                             run={is_tour_running}
                             showProgress
                             styles={{
-                                buttonBack: {
-                                    border: '0.1rem solid var(--text-less-prominent)',
-                                    marginRight: '1rem',
-                                    borderRadius: '0.4rem',
-                                    color: 'var(--text-general)',
-                                    padding: '0.6rem',
-                                },
                                 tooltipContent: {
                                     padding: '0 1rem',
                                 },

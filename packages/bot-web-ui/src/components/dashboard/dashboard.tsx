@@ -246,6 +246,9 @@ const Dashboard = ({
                                         textColor: 'var(--text-general)',
                                         spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
                                     },
+                                    overlay: {
+                                        height: '100%',
+                                    },
                                     buttonBack: {
                                         border: '0.2rem solid var(--text-less-prominent)',
                                         marginRight: '1rem',

@@ -1,3 +1,12 @@
+import { datadogLogs } from '@datadog/browser-logs';
+
+datadogLogs.init({
+    clientToken: 'pub1beb6b75d0f9cdc56ad3aaa7a1427322',
+    site: 'us5.datadoghq.com',
+    forwardErrorsToLogs: true,
+    sessionSampleRate: 100,
+});
+
 const REQUESTS = [
     'authorize',
     'balance',
@@ -15,7 +24,14 @@ const REQUESTS = [
 const log = (measures = [], req_type = '') => {
     if (!measures || !measures.length) return null;
     //eslint-disable-next-line no-console
-    console.table(measures);
+    measures.forEach(measure => {
+        datadogLogs.logger.info(measure.name, {
+            name: measure.name,
+            startTime: measure.startTime,
+            duration: measure.duration,
+            detail: measure.detail,
+        });
+    });
     if (measures.length > 1) {
         const max = Math.max(...measures.map(i => i.duration));
         const min = Math.min(...measures.map(i => i.duration));
@@ -64,7 +80,9 @@ class APIMiddleware {
     printStats = () => {
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
-            if (measure && measure.length) log(measure, req_type);
+            if (measure && measure.length) {
+                log(measure, req_type);
+            }
         });
         performance.clearMeasures();
         performance.clearMarks();

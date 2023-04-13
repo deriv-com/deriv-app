@@ -12,7 +12,7 @@
         & > div.dc-dropdown {
             &-container {
                 min-width: 8.2rem;
-                width: 8.2rem;
+                width: auto;
             }
         }
 
@@ -39,7 +39,8 @@
     &--real:focus,
     &--real:hover {
         border: 1px solid var(--status-info);
-        width: 87%;
+        min-width: 87%;
+        width: auto;
         & > .dc-text {
             color: var(--status-info);
         }

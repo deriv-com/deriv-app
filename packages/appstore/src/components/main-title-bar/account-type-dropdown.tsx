@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Dropdown } from '@deriv/components';
-import { account_types } from 'Constants/platform-config';
+import { getAccountTypes } from 'Constants/platform-config';
 import { useStores } from 'Stores';
 import './account-type-dropdown.scss';
 
@@ -20,7 +20,7 @@ const AccountTypeDropdown = () => {
                     'account-type-dropdown',
                     `account-type-dropdown--${selected_account_type}`
                 )}
-                list={account_types}
+                list={getAccountTypes()}
                 onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);

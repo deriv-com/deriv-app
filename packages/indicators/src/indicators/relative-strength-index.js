@@ -14,7 +14,7 @@ const calcFirstAvgDiff = (vals, comp, periods) => {
             const diff = comp(prev, q);
             prev = q;
             return diff + (i === 1 ? 0 : r);
-        }, 0) / periods
+        }) / periods
     );
 };
 

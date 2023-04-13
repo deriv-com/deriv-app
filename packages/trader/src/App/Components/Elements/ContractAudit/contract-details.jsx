@@ -55,38 +55,6 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         return localize('Deal cancellation (active)');
     };
 
-    const barrier_card_info = is_vanilla ? (
-        <React.Fragment>
-            <ContractAuditItem
-                id='dt_bt_label'
-                icon={<Icon icon='IcContractStrike' size={24} />}
-                label={getBarrierLabel(contract_info)}
-                value={getBarrierValue(contract_info) || ' - '}
-            />
-            <ContractAuditItem
-                id='dt_bt_label'
-                icon={<Icon icon='IcContractPayout' size={24} />}
-                label={localize('Payout per point')}
-                value={
-                    `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(currency)}` || ' - '
-                }
-            />
-        </React.Fragment>
-    ) : (
-        <ContractAuditItem
-            id='dt_bt_label'
-            icon={
-                isDigitType(contract_type) ? (
-                    <Icon icon='IcContractTarget' size={24} />
-                ) : (
-                    <Icon icon='IcContractBarrier' size={24} />
-                )
-            }
-            label={getBarrierLabel(contract_info)}
-            value={getBarrierValue(contract_info) || ' - '}
-        />
-    );
-
     let unique_card_info;
 
     if (isMultiplierContract(contract_type)) {
@@ -108,22 +76,57 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                 )}
             </React.Fragment>
         );
-    } else if (isAccumulatorContract(contract_type) || isTurbosContract(contract_type)) {
-        unique_card_info = isNaN(contract_end_time) ? null : (
+    } else {
+        unique_card_info = (
             <React.Fragment>
-                <ContractAuditItem
-                    id='dt_duration_label'
-                    icon={<Icon icon='IcContractDuration' size={24} />}
-                    label={localize('Duration')}
-                    value={tick_count > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
-                />
-                {isTurbosContract(contract_type) && barrier_card_info}
+                {((!isAccumulatorContract(contract_type) && !isTurbosContract(contract_type)) ||
+                    !isNaN(contract_end_time)) && (
+                    <ContractAuditItem
+                        id='dt_duration_label'
+                        icon={<Icon icon='IcContractDuration' size={24} />}
+                        label={localize('Duration')}
+                        value={tick_count > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
+                    />
+                )}
+                {is_vanilla ? (
+                    <React.Fragment>
+                        <ContractAuditItem
+                            id='dt_bt_label'
+                            icon={<Icon icon='IcContractStrike' size={24} />}
+                            label={getBarrierLabel(contract_info)}
+                            value={getBarrierValue(contract_info) || ' - '}
+                        />
+                        <ContractAuditItem
+                            id='dt_bt_label'
+                            icon={<Icon icon='IcContractPayout' size={24} />}
+                            label={localize('Payout per point')}
+                            value={
+                                `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(
+                                    currency
+                                )}` || ' - '
+                            }
+                        />
+                    </React.Fragment>
+                ) : (
+                    !isAccumulatorContract(contract_type) &&
+                    (!isTurbosContract(contract_type) || !isNaN(contract_end_time)) && (
+                        <ContractAuditItem
+                            id='dt_bt_label'
+                            icon={
+                                isDigitType(contract_type) ? (
+                                    <Icon icon='IcContractTarget' size={24} />
+                                ) : (
+                                    <Icon icon='IcContractBarrier' size={24} />
+                                )
+                            }
+                            label={getBarrierLabel(contract_info)}
+                            value={getBarrierValue(contract_info) || ' - '}
+                        />
+                    )
+                )}
             </React.Fragment>
         );
-    } else {
-        unique_card_info = barrier_card_info;
     }
-
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>
             <div className='contract-audit__tabs-content'>

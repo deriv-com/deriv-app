@@ -1,14 +1,18 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TReadyToUpdateWalletsProps } from './ready-to-update-wallets';
 import UpgradeInformationList from './upgrade-info-list';
 import { isMobile } from '@deriv/shared';
 import WalletsImage from 'Assets/svgs/wallets';
 
-const ReadyToUpgradeForm = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProps) => (
+export type TReadyToUpgradeForm = {
+    is_eu: boolean;
+    is_high_risk: boolean;
+};
+
+const ReadyToUpgradeForm = ({ is_eu, is_high_risk }: TReadyToUpgradeForm) => (
     <React.Fragment>
-        <WalletsImage className='wallet-wrapper--icon' banner={'ReadyToUpdateWalletsIcon'} />
+        <WalletsImage image={'ReadyToUpdateWalletsIcon'} className='wallet-wrapper--icon' />
         <div className='wallet-wrapper--text'>
             <Text size={isMobile() ? 'xsm' : 'm'} align='center' weight='bold' line_height={isMobile() ? 'm' : 'l'}>
                 <Localize i18n_default_text='Ready to upgrade?' />

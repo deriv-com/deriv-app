@@ -14,18 +14,11 @@ import ReadyToUpgradeForm from './ready-to-upgrade-form';
 import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 
-export type TReadyToUpdateWalletsProps = {
-    is_eu: boolean;
-    is_high_risk: boolean;
-};
-
-const ReadyToUpdateWallets = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProps) => {
+const ReadyToUpdateWallets = () => {
     const [is_disabled, setIsDisabled] = React.useState(false);
 
-    const store = useStore();
-
-    const { traders_hub } = store;
-
+    const { client, traders_hub } = useStore();
+    const { is_high_risk, is_eu } = client;
     const { show_wallet_consent_popup, setShouldShowWalletConsentPopup } = traders_hub;
 
     const toggleModal = () => {
@@ -41,11 +34,10 @@ const ReadyToUpdateWallets = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProp
             <DesktopWrapper>
                 <Modal
                     is_open={show_wallet_consent_popup}
-                    title={' '}
+                    title=' '
                     width='1200px'
                     height='734px'
                     toggleModal={toggleModal}
-                    has_close_icon_close
                 >
                     <Modal.Body className='wallet-wrapper'>
                         <div className='wallet-wrapper--body'>
@@ -80,7 +72,7 @@ const ReadyToUpdateWallets = ({ is_eu, is_high_risk }: TReadyToUpdateWalletsProp
                     portal_element_id='modal_root'
                     wrapper_classname='wallet-wrapper'
                     visible={show_wallet_consent_popup}
-                    has_full_height={true}
+                    has_full_height
                     onClose={() => setShouldShowWalletConsentPopup(false)}
                 >
                     <Div100vhContainer className='wallet-wrapper--body' height_offset='15rem'>

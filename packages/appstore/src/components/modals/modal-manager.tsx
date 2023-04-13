@@ -29,7 +29,6 @@ const ModalManager = () => {
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
     const {
-        is_high_risk,
         is_logged_in,
         is_eu,
         is_eu_country,
@@ -129,7 +128,7 @@ const ModalManager = () => {
     return (
         <React.Fragment>
             {/* TODO: Once everything is merged place this in main component */}
-            <ReadyToUpdateWallets is_eu={is_eu} is_high_risk={is_high_risk} />
+            <ReadyToUpdateWallets />
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />

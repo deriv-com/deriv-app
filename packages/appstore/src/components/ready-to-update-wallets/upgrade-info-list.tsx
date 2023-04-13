@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TReadyToUpdateWalletsProps } from './ready-to-update-wallets';
+import { TReadyToUpgradeForm } from './ready-to-upgrade-form';
 import { isMobile } from '@deriv/shared';
 
 type TUpgradeInformationList = {
@@ -10,7 +10,7 @@ type TUpgradeInformationList = {
     content: React.ReactElement;
 };
 
-const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpdateWalletsProps) => {
+const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpgradeForm) => {
     const list: TUpgradeInformationList[] = [
         {
             name: 'upgrade_info',
@@ -44,7 +44,7 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpdateWalletsPr
             ),
         },
         {
-            name: 'payment_agent-1',
+            name: 'regular_pa',
             visiblity: !is_high_risk && !is_eu,
             content: (
                 <Localize
@@ -61,7 +61,7 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpdateWalletsPr
             ),
         },
         {
-            name: 'payment_agent-2',
+            name: 'bold_pa',
             visiblity: is_high_risk && !is_eu,
             content: (
                 <Localize i18n_default_text="You can use payment agents' services to make deposits by adding a Payment agent wallet after the upgrade." />
@@ -71,14 +71,18 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpdateWalletsPr
 
     return (
         <React.Fragment>
-            {list.map(info => (
-                <div className='wallet-wrapper--info-section__text' key={info.name}>
-                    <Icon icon='ic-info-blue' />
-                    <Text size={isMobile() ? 'xxs' : 'xs'} line_height={isMobile() ? 'm' : 'l'}>
-                        {info.content}
-                    </Text>
-                </div>
-            ))}
+            {list.map(info => {
+                return (
+                    info.visiblity && (
+                        <div className='wallet-wrapper--info-section__text' key={info.name}>
+                            <Icon icon='ic-info-blue' />
+                            <Text size={isMobile() ? 'xxs' : 'xs'} line_height={isMobile() ? 'm' : 'l'}>
+                                {info.content}
+                            </Text>
+                        </div>
+                    )
+                );
+            })}
         </React.Fragment>
     );
 };

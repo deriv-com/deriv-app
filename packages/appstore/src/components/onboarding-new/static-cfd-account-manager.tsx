@@ -119,6 +119,15 @@ const StaticCFDAccountManager = ({
                 {platform === CFD_PLATFORMS.DERIVEZ && (
                     <TradigPlatformIconProps
                         icon='DerivEz'
+                      size={icon_size}
+                        className={classNames('static-cfd-account-manager--cfds', {
+                            'static-cfd-account-manager__icon--blurry':
+                                is_blurry.icon || is_last_step || is_derivx_last_step,
+                        })}
+                      
+                {platform === CFD_PLATFORMS.CTRADER && (
+                    <TradigPlatformIconProps
+                        icon='CTrader'
                         size={icon_size}
                         className={classNames('static-cfd-account-manager--cfds', {
                             'static-cfd-account-manager__icon--blurry':

@@ -156,6 +156,10 @@
                 justify-content: center;
             }
         }
+
+        &-tooltip {
+            margin-left: 0.4rem;
+        }
     }
     &__data-list {
         flex: 1;

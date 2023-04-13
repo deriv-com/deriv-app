@@ -223,22 +223,33 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                 </Table.Cell>
                 <Table.Cell className='crypto-transactions-history__table-hash'>
                     {transaction_url ? (
-                        <Popover
-                            alignment='right'
-                            className='crypto-transactions-history__table-popover'
-                            message={localize('View transaction on Blockchain')}
-                        >
-                            <a
-                                className='crypto-transactions-history__table-link'
-                                href={transaction_url}
-                                rel='noopener noreferrer'
-                                target='_blank'
+                        <>
+                            <Popover
+                                alignment='right'
+                                className='crypto-transactions-history__table-popover'
+                                message={localize('View transaction on Blockchain')}
                             >
-                                <Text as='p' size='xs' color='red'>
-                                    {status.transaction_hash}
-                                </Text>
-                            </a>
-                        </Popover>
+                                <a
+                                    className='crypto-transactions-history__table-link'
+                                    href={transaction_url}
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                >
+                                    <Text as='p' size='xs' color='red'>
+                                        {status.transaction_hash}
+                                    </Text>
+                                </a>
+                            </Popover>
+                            {transaction_url.includes('CP:') && (
+                                <Popover
+                                    alignment='right'
+                                    className='crypto-transactions-history__table-tooltip'
+                                    message={localize('The details of this transaction is available on CoinsPaid')}
+                                >
+                                    <Icon icon='IcHelpCentre' custom_color='#999999' />
+                                </Popover>
+                            )}
+                        </>
                     ) : (
                         <Text as='p' size='xs' color='red'>
                             {status.transaction_hash}

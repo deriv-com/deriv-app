@@ -14,7 +14,7 @@ const calcFirstAvgDiff = (vals, comp, periods) => {
             const diff = comp(prev, q);
             prev = q;
             return diff + (i === 1 ? 0 : r);
-        }) / periods
+        }, 0) / periods
     );
 };
 
@@ -32,7 +32,7 @@ const calcSecondAvgDiff = (vals, comp, periods, init_avg) => {
         prev = q;
         const prev_avg = i === 1 ? init_avg : r;
         return (prev_avg * (periods - 1) + diff) / periods;
-    });
+    }, 0);
 };
 
 /**

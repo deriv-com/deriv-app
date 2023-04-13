@@ -43,6 +43,7 @@ const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
 const eu_excluded_regex = new RegExp('^mt$');
+const current_domain = getCurrentdomain();
 
 export default class ClientStore extends BaseStore {
     loginid;
@@ -1148,7 +1149,6 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = getCurrentdomain();
         // eslint-disable-next-line max-len
         const {
             loginid,
@@ -1175,12 +1175,12 @@ export default class ClientStore extends BaseStore {
                 preferred_language,
                 user_id,
             };
-            Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
-            Cookies.set('client_information', client_information, { domain });
+            Cookies.set('region', getRegion(landing_company_shortcode, residence), { current_domain });
+            Cookies.set('client_information', client_information, { current_domain });
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('region', { domain });
-            Cookies.remove('client_information', { domain });
+            Cookies.remove('region', { current_domain });
+            Cookies.remove('client_information', { current_domain });
             this.has_cookie_account = false;
         }
     }
@@ -1518,6 +1518,11 @@ export default class ClientStore extends BaseStore {
         ];
 
         const authorize_response = await this.setUserLogin(login_new_user);
+        const getLanguageFromDerivCom = () => {
+            const lang_from_deriv_com = Cookies.getJSON('user_language', { current_domain })?.toUpperCase();
+            const isValidLanguage = lang_from_deriv_com && isLanguageAvailable(lang_from_deriv_com);
+            return isValidLanguage ? lang_from_deriv_com : '';
+        };
 
         if (action_param === 'signup') {
             this.root_store.ui.setIsNewAccount();
@@ -1593,12 +1598,11 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const domain = getCurrentdomain();
-            const lang_from_deriv_com = Cookies.getJSON('user_language', { domain })?.toUpperCase();
+
             const language =
-                lang_from_deriv_com && isLanguageAvailable(lang_from_deriv_com)
-                    ? lang_from_deriv_com
-                    : authorize_response.authorize.preferred_language;
+                LocalStore.get(LANGUAGE_KEY) || // if login from deriv app, language from local storage
+                getLanguageFromDerivCom() || // if login from deriv.com, language from cookie
+                authorize_response.authorize.preferred_language;
 
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));

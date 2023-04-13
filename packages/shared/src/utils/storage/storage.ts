@@ -96,13 +96,12 @@ InScriptStore.prototype = {
         obj = this.store
     ) {
         let key = k;
-        const store_object = Object.create(obj);
         if (!Array.isArray(key)) key = [key];
         if (key.length > 1) {
-            if (!(key[0] in obj) || isEmptyObject(obj[key[0]])) store_object[key[0]] = {};
+            if (!(key[0] in obj) || isEmptyObject(obj[key[0]])) obj[key[0]] = {};
             this.set(key.slice(1), value, obj[key[0]]);
         } else {
-            store_object[key[0]] = value;
+            obj[key[0]] = value;
         }
     },
     getObject(key: string) {

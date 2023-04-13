@@ -12,7 +12,7 @@ const DemoAccountCard = () => {
     const { client, traders_hub } = useStore();
     const { accounts, loginid, resetVirtualBalance, default_currency } = client;
     const { selected_account_type } = traders_hub;
-    const platform_demo_account = usePlatformAccounts('demo');
+    const { demo: platform_demo_account } = usePlatformAccounts();
 
     const canResetBalance = () => {
         return loginid && (accounts[loginid]?.balance || 0) !== 10000;

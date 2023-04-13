@@ -437,9 +437,7 @@ export default class TradersHubStore extends BaseStore {
     getAvailableCTraderAccounts() {
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_ctrader_accounts = this.available_cfd_accounts.filter(
-                account =>
-                    ['EU', 'All'].some(region => region === account.availability) &&
-                    account.platform === CFD_PLATFORMS.CTRADER
+                account => account.platform === CFD_PLATFORMS.CTRADER
             );
             return;
         }
@@ -540,21 +538,17 @@ export default class TradersHubStore extends BaseStore {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
             return;
         }
-        if (platform === CFD_PLATFORMS.CTRADER) {
-            createCFDAccount({ ...account_type, platform });
-        } else {
+        if (platform !== CFD_PLATFORMS.CTRADER) {
             enableCFDPasswordModal();
-            createCFDAccount({ ...account_type, platform });
         }
+        createCFDAccount({ ...account_type, platform });
     }
 
     openRealAccount(account_type, platform) {
         const { client, modules } = this.root_store;
         const { has_active_real_account } = client;
         const { createCFDAccount, enableCFDPasswordModal, toggleJurisdictionModal } = modules.cfd;
-        if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
-            toggleJurisdictionModal();
-        } else if (platform === CFD_PLATFORMS.CTRADER) {
+        if ((has_active_real_account && platform === CFD_PLATFORMS.MT5) || platform === CFD_PLATFORMS.CTRADER) {
             toggleJurisdictionModal();
         } else {
             createCFDAccount({ ...account_type, platform });

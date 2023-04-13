@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const Dotenv = require('dotenv-webpack');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -116,6 +117,7 @@ module.exports = function (env) {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         plugins: [
+            new Dotenv(),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: 'bot/css/bot.main.[contenthash].css',

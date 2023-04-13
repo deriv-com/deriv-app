@@ -35,6 +35,7 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
+        "dotenv-webpack": "^8.0.1",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
         "babel-loader": "^8.1.0",

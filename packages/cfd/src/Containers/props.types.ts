@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -79,7 +78,7 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = RouteComponentProps & {
+export type TCFDResetPasswordModal = {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     context?: RootStore;
@@ -172,6 +171,8 @@ export type TJurisdictionCardProps = {
     type_of_card: string;
     disabled: boolean;
 };
+
+export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;

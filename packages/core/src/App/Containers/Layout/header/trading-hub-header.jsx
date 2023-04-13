@@ -15,6 +15,7 @@ import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dar
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
+import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -109,6 +110,9 @@ const TradingHubHeader = ({
     country_standpoint,
     is_acc_switcher_on,
     toggleAccountsDialog,
+    has_any_real_account,
+    toggleReadyToDepositModal,
+    toggleNeedRealAccountForCashierModal,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -186,6 +190,23 @@ const TradingHubHeader = ({
             </div>
         </React.Fragment>
     );
+    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+
+    const toggleModal = () => {
+        if (!has_any_real_account) {
+            toggleReadyToDepositModal();
+        } else if (window.location.pathname === routes.traders_hub) {
+            toggleNeedRealAccountForCashierModal();
+        }
+    };
+
+    const handleClickCashier = () => {
+        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
+            toggleModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
 
     return (
         <header
@@ -265,6 +286,39 @@ const TradingHubHeader = ({
                 <div className='trading-hub-header__mobile-parent'>
                     <div className='trading-hub-header__menu-middle'>
                         {cashier_routes ? <CashierMobileLinks /> : <DefaultMobileLinks />}
+                        <div className='trading-hub-header__menu-right--items--onboarding'>
+                            <TradingHubOnboarding
+                                is_dark_mode={is_dark_mode}
+                                toggleIsTourOpen={toggleIsTourOpen}
+                                is_mf={is_mf}
+                                is_eu={is_eu}
+                                is_eu_country={is_eu_country}
+                                setIsOnboardingVisited={setIsOnboardingVisited}
+                            />
+                        </div>
+                        <div className='trading-hub-header__menu-right--items--notifications'>
+                            <ShowNotifications
+                                is_notifications_visible={is_notifications_visible}
+                                notifications_count={notifications_count}
+                                toggleNotifications={toggleNotifications}
+                            />
+                        </div>
+                        <Popover
+                            classNameBubble='account-settings-toggle__tooltip'
+                            alignment='bottom'
+                            message={<Localize i18n_default_text='Manage account settings' />}
+                            should_disable_pointer_events
+                            zIndex={9999}
+                        >
+                            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
+                                <Icon icon='IcUserOutline' size={20} />
+                            </BinaryLink>
+                        </Popover>
+                    </div>
+                    <div className='trading-hub-header__cashier-button'>
+                        <Button primary small onClick={handleClickCashier}>
+                            <Localize i18n_default_text='Cashier' />
+                        </Button>
                     </div>
                 </div>
                 <RealAccountSignup />
@@ -302,6 +356,9 @@ TradingHubHeader.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     toggleAccountsDialog: PropTypes.func,
+    has_any_real_account: PropTypes.bool,
+    toggleReadyToDepositModal: PropTypes.func,
+    toggleNeedRealAccountForCashierModal: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -329,4 +386,8 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     is_virtual: client.is_virtual,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleIsTourOpen: traders_hub.toggleIsTourOpen,
+    has_any_real_account: client.has_any_real_account,
+    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
+    toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
+    content_flag: traders_hub.content_flag,
 }))(withRouter(TradingHubHeader));

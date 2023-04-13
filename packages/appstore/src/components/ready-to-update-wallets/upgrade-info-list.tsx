@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TReadyToUpgradeForm } from './ready-to-upgrade-form';
 import { isMobile } from '@deriv/shared';
+import { TReadyToUpgradeForm } from './ready-to-upgrade-form';
 
 type TUpgradeInformationList = {
     name: string;
@@ -10,7 +10,7 @@ type TUpgradeInformationList = {
     content: React.ReactElement;
 };
 
-const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpgradeForm) => {
+const UpgradeInformationList = ({ is_eu }: TReadyToUpgradeForm) => {
     const list: TUpgradeInformationList[] = [
         {
             name: 'upgrade_info',
@@ -44,8 +44,8 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpgradeForm) =>
             ),
         },
         {
-            name: 'regular_pa',
-            visiblity: !is_high_risk && !is_eu,
+            name: 'payment_agents',
+            visiblity: !is_eu,
             content: (
                 <Localize
                     i18n_default_text="You can use <0>payment agents'</0> services to make deposits by adding a Payment agent wallet after the upgrade."
@@ -58,13 +58,6 @@ const UpgradeInformationList = ({ is_high_risk, is_eu }: TReadyToUpgradeForm) =>
                         />
                     }
                 />
-            ),
-        },
-        {
-            name: 'bold_pa',
-            visiblity: is_high_risk && !is_eu,
-            content: (
-                <Localize i18n_default_text="You can use payment agents' services to make deposits by adding a Payment agent wallet after the upgrade." />
             ),
         },
     ];

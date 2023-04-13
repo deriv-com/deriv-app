@@ -1,16 +1,15 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import UpgradeInformationList from './upgrade-info-list';
 import { isMobile } from '@deriv/shared';
 import WalletsImage from 'Assets/svgs/wallets';
+import UpgradeInformationList from './upgrade-info-list';
 
 export type TReadyToUpgradeForm = {
     is_eu: boolean;
-    is_high_risk: boolean;
 };
 
-const ReadyToUpgradeForm = ({ is_eu, is_high_risk }: TReadyToUpgradeForm) => (
+const ReadyToUpgradeForm = ({ is_eu }: TReadyToUpgradeForm) => (
     <React.Fragment>
         <WalletsImage image={'ReadyToUpdateWalletsIcon'} className='wallet-wrapper--icon' />
         <div className='wallet-wrapper--text'>
@@ -34,7 +33,7 @@ const ReadyToUpgradeForm = ({ is_eu, is_high_risk }: TReadyToUpgradeForm) => (
             </Text>
         </div>
         <div className='wallet-wrapper--info-section'>
-            <UpgradeInformationList is_eu={is_eu} is_high_risk={is_high_risk} />
+            <UpgradeInformationList is_eu={is_eu} />
         </div>
     </React.Fragment>
 );

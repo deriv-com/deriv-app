@@ -18,7 +18,7 @@ const ReadyToUpdateWallets = () => {
     const [is_disabled, setIsDisabled] = React.useState(false);
 
     const { client, traders_hub } = useStore();
-    const { is_high_risk, is_eu } = client;
+    const { is_eu } = client;
     const { show_wallet_consent_popup, setShouldShowWalletConsentPopup } = traders_hub;
 
     const toggleModal = () => {
@@ -41,7 +41,7 @@ const ReadyToUpdateWallets = () => {
                 >
                     <Modal.Body className='wallet-wrapper'>
                         <div className='wallet-wrapper--body'>
-                            <ReadyToUpgradeForm is_eu={is_eu} is_high_risk={is_high_risk} />
+                            <ReadyToUpgradeForm is_eu={is_eu} />
                             <Checkbox
                                 onChange={toggleCheckbox}
                                 className='wallet-wrapper--checkbox'
@@ -76,7 +76,7 @@ const ReadyToUpdateWallets = () => {
                     onClose={() => setShouldShowWalletConsentPopup(false)}
                 >
                     <Div100vhContainer className='wallet-wrapper--body' height_offset='15rem'>
-                        <ReadyToUpgradeForm is_eu={is_eu} is_high_risk={is_high_risk} />
+                        <ReadyToUpgradeForm is_eu={is_eu} />
                         <Checkbox
                             onChange={toggleCheckbox}
                             className='wallet-wrapper--checkbox'

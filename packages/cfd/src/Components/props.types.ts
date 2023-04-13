@@ -71,7 +71,7 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+    shortcode: 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
     sub_account_type: string;
     account_type?: 'real' | 'demo';
     landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';

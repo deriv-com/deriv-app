@@ -212,9 +212,7 @@ const CFDsListing = () => {
             )}
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text line_height='m' weight='bold'>
-                    {localize('Deriv cTrader')}
-                </Text>
+                <Text weight='bold'>{localize('Deriv cTrader')}</Text>
             </div>
 
             {is_landing_company_loaded ? (

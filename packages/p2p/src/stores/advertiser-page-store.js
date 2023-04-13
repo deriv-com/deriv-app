@@ -217,9 +217,13 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onUnmount() {
+        const { buy_sell_store } = this.root_store;
+
         if (this.advertiser_info_subscription.unsubscribe) {
             this.advertiser_info_subscription.unsubscribe();
         }
+
+        buy_sell_store.hideAdvertiserPage();
     }
 
     setActiveIndex(active_index) {

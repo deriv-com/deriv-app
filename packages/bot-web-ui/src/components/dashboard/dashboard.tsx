@@ -230,7 +230,16 @@ const Dashboard = ({
                         (is_mobile ? (
                             <TourSlider />
                         ) : (
-                            <ReactJoyrideWrapper steps={DBOT_ONBOARDING} spotlightClicks hideCloseButton />
+                            <ReactJoyrideWrapper
+                                steps={DBOT_ONBOARDING}
+                                spotlightClicks
+                                hideCloseButton
+                                styles={{
+                                    overlay: {
+                                        height: '100%',
+                                    },
+                                }}
+                            />
                         ))}
                     <Tabs
                         active_index={active_tab}

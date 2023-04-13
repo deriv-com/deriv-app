@@ -2126,7 +2126,6 @@ export default class ClientStore extends BaseStore {
             search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
-            console.log(search_param_without_account, window.location.hash);
             history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
         }
 

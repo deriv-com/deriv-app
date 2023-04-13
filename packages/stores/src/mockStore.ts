@@ -1,4 +1,5 @@
 import merge from 'lodash.merge';
+import moment from 'moment';
 import type { TRootStore } from '../types';
 
 const mock = (): TRootStore => {
@@ -213,6 +214,7 @@ const mock = (): TRootStore => {
             current_language: 'EN',
             is_network_online: false,
             is_language_changing: false,
+            server_time: moment(),
         },
         ui: {
             app_contents_scroll_ref: {

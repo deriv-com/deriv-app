@@ -1,31 +1,19 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import BinaryRoutes from './binary-routes';
+import { useStore } from '@deriv/stores';
 
-const Routes = props => {
-    if (props.has_error) {
-        throw new Error({ ...props.error });
+const Routes = () => {
+    const { client, common } = useStore();
+    const { is_logged_in, is_logging_in } = client;
+    const { error, has_error } = common;
+
+    if (has_error) {
+        throw new Error({ ...error });
         // return <ErrorComponent {...props.error} />;
     }
 
-    return (
-        <BinaryRoutes
-            is_logged_in={props.is_logged_in}
-            is_logging_in={props.is_logging_in}
-            passthrough={props.passthrough}
-        />
-    );
-};
-
-Routes.propTypes = {
-    error: MobxPropTypes.objectOrObservableObject,
-    has_error: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    passthrough: PropTypes.object,
+    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} />;
 };
 
 // need to wrap withRouter around connect

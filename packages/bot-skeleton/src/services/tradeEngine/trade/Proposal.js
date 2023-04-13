@@ -55,12 +55,9 @@ export default Engine =>
         }
 
         renewProposalsOnPurchase() {
-            this.unsubscribeProposals().then(() => this.requestProposals());
-        }
-
-        clearProposals() {
             this.data.proposals = [];
             this.store.dispatch(clearProposals());
+            this.requestProposals();
         }
 
         requestProposals() {
@@ -98,11 +95,7 @@ export default Engine =>
             const subscription = api_base.api.onMessage().subscribe(response => {
                 if (response.data.msg_type === 'proposal') {
                     const { passthrough, proposal } = response.data;
-                    if (
-                        proposal &&
-                        this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
-                        !this.data.forget_proposal_ids.includes(proposal.id)
-                    ) {
+                    if (proposal && this.data.proposals.findIndex(p => p.id === proposal.id) === -1) {
                         // Add proposals based on the ID returned by the API.
                         this.data.proposals.push({ ...proposal, ...passthrough });
                         this.checkProposalReady();
@@ -110,31 +103,6 @@ export default Engine =>
                 }
             });
             api_base.pushSubscription(subscription);
-        }
-
-        unsubscribeProposals() {
-            const { proposals } = this.data;
-            const removeForgetProposalById = forget_proposal_id =>
-                (this.data.forget_proposal_ids = this.data.forget_proposal_ids.filter(id => id !== forget_proposal_id));
-
-            this.clearProposals();
-
-            return Promise.all(
-                proposals.map(proposal => {
-                    if (!this.data.forget_proposal_ids.includes(proposal.id)) {
-                        this.data.forget_proposal_ids.push(proposal.id);
-                    }
-
-                    if (proposal.error) {
-                        removeForgetProposalById(proposal.id);
-                        return Promise.resolve();
-                    }
-
-                    return doUntilDone(() => api_base.api.forget(proposal.id)).then(() => {
-                        removeForgetProposalById(proposal.id);
-                    });
-                })
-            );
         }
 
         checkProposalReady() {

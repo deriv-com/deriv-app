@@ -84,7 +84,6 @@ const Native = ({
                 type='date'
                 max={max_date && toMoment(max_date).format('YYYY-MM-DD')}
                 min={min_date && toMoment(min_date).format('YYYY-MM-DD')}
-                error={error}
                 required
                 onBlur={handleBlur}
                 onFocus={handleFocus}

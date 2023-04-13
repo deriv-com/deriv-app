@@ -7,7 +7,7 @@ import type { TStores } from '../../types';
 describe('useStore', () => {
     test('should throw an error if StoreContext has not been provided', async () => {
         const { result } = renderHook(() => useStore());
-        expect(result.error).toEqual(Error('useStore must be used within StoreContext'));
+        expect(result.error).toEqual(Error('useStore must be used within StoreProvider'));
     });
 
     test('should be able to access store data if StoreContext has been provided', async () => {

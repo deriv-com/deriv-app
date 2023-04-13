@@ -5,7 +5,7 @@ const useStore = () => {
     const store = React.useContext(StoreContext);
 
     if (!store) {
-        throw new Error('useStore must be used within StoreContext');
+        throw new Error('useStore must be used within StoreProvider');
     }
 
     return store;

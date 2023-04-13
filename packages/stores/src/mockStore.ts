@@ -283,15 +283,7 @@ const mock = (): TStores => {
         },
         modules: {},
         exchange_rates: {
-            data: {
-                rates: {
-                    USD: 1,
-                    EUR: 0.9,
-                    GBP: 0.8,
-                    AUD: 1.5,
-                    BTC: 0.0001,
-                },
-            },
+            data: undefined,
             update: jest.fn(),
             unmount: jest.fn(),
         },

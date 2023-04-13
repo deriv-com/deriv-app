@@ -15,6 +15,7 @@ const DataListRow = ({
     ...other_props
 }) => {
     const [show_desc, setShowDesc] = React.useState(false);
+    const intervalRef = React.useRef(null);
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
@@ -23,8 +24,10 @@ const DataListRow = ({
                 measure?.();
             }
         });
+        intervalRef.current = measure_timeout;
+
         return () => {
-            clearTimeout(measure_timeout);
+            clearTimeout(intervalRef.current);
         };
     }, [show_desc, is_dynamic_height, measure]);
     return (

@@ -309,8 +309,8 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         if (meta.category === 'real') {
             if (data) {
                 if ('platform' in data && data.platform === CFD_PLATFORMS.DXTRADE)
-                    sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
-                else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+                    sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id || '');
+                else sessionStorage.setItem('cfd_transfer_to_login_id', data.login || '');
 
                 props.disableCFDPasswordModal();
                 props.history.push(routes.cashier_acc_transfer);

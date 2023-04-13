@@ -77,6 +77,26 @@
                 @include mobile {
                     padding: 0 2rem 0 1rem;
                 }
+                &__cashier {
+                    @include mobile {
+                        padding-right: 1rem;
+                    }
+                }
+            }
+
+            &--account-toggle {
+                height: #{$HEADER_HEIGHT - 1px};
+                @include mobile {
+                    height: 3.8rem;
+                }
+                .acc-info__wrapper {
+                    @include mobile {
+                        margin-right: 0;
+                    }
+                    .acc-info__separator {
+                        width: unset;
+                    }
+                }
             }
         }
     }

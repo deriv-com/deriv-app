@@ -13,7 +13,7 @@ type TCashierOnboardingSideNoteProps = {
 const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSideNoteProps) => {
     const { client, ui } = useStore();
     const { general_store } = useCashierStore();
-    const { currency } = client;
+    const { currency, is_eu, loginid, is_low_risk } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
 
@@ -44,17 +44,28 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
         );
     };
 
+    const getHeaderTitle = () => {
+        if (is_low_risk && !is_crypto) {
+            const eu_text = is_eu ? 'EU' : 'non-EU';
+            return (
+                <Localize
+                    i18n_default_text='This is your {{eu_text}} {{currency_code}} account {{loginid}}'
+                    values={{ eu_text, currency_code, loginid }}
+                />
+            );
+        }
+        return (
+            <Localize
+                i18n_default_text='This is your {{currency_code}} account {{loginid}}'
+                values={{ currency_code, loginid }}
+            />
+        );
+    };
+
     return (
         <div>
             <Text className='cashier-onboarding-side-note__text' color='prominent' weight='bold' size='xs' as='p'>
-                {is_crypto ? (
-                    <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />
-                ) : (
-                    <Localize
-                        i18n_default_text='Your fiat account currency is set to {{currency_code}}.'
-                        values={{ currency_code }}
-                    />
-                )}
+                {getHeaderTitle()}
             </Text>
             <Text className='cashier-onboarding-side-note__text' size='xxs' as='p' data-testid='dt_side_note_text'>
                 {getSideNoteDescription()}

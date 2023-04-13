@@ -6,6 +6,7 @@ import { Autocomplete, Icon, Text, useOnClickOutside } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
+import { getPaymentMethodIcon } from 'Utils/payment-method';
 import PropTypes from 'prop-types';
 import './buy-ad-payment-methods-list.scss';
 
@@ -124,7 +125,7 @@ const BuyAdPaymentMethodsList = ({
             <div className='buy-ad-payment-methods-list__container'>
                 {selected_methods.map((payment_method, key) => {
                     const method = my_profile_store.getPaymentMethodDisplayName(payment_method);
-                    const payment_method_icon = method.replace(' ', '');
+                    const payment_method_icon = method.replace(/\s|-/gm, '');
 
                     return (
                         <Formik key={key} enableReinitialize initialValues={{ payment_method: method }}>
@@ -181,14 +182,7 @@ const BuyAdPaymentMethodsList = ({
                                                     hide_list={hide_list}
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={
-                                                        <Icon
-                                                            icon={
-                                                                payment_method_icon === 'BankTransfer' ||
-                                                                payment_method_icon === 'Other'
-                                                                    ? `IcCashier${payment_method_icon}`
-                                                                    : 'IcCashierEwallet'
-                                                            }
-                                                        />
+                                                        <Icon icon={getPaymentMethodIcon(payment_method_icon)} />
                                                     }
                                                     list_items={[method]}
                                                     list_portal_id={list_portal_id ?? 'deriv_app'}

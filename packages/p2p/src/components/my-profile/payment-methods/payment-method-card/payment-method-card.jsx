@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
 import { localize } from 'Components/i18next';
+import { getPaymentMethodIcon } from 'Utils/payment-method';
 import { useStores } from 'Stores';
 import PropTypes from 'prop-types';
 
@@ -28,10 +29,7 @@ const PaymentMethodCard = ({
     const payment_bank_name = payment_method?.fields?.bank_name?.value;
     const payment_name = payment_method?.fields?.name?.value;
     const payment_method_name = payment_method?.display_name.replace(/\s|-/gm, '');
-    const icon_method =
-        payment_method_name === 'BankTransfer' || payment_method_name === 'Other'
-            ? `IcCashier${payment_method_name}`
-            : 'IcCashierEwallet';
+    const method_icon = getPaymentMethodIcon(payment_method_name);
 
     if (is_add) {
         return (
@@ -68,7 +66,7 @@ const PaymentMethodCard = ({
             style={style}
         >
             <div className='payment-method-card__header'>
-                <Icon className='payment-method-card__icon' icon={icon_method} size={medium || small ? 16 : 24} />
+                <Icon className='payment-method-card__icon' icon={method_icon} size={medium || small ? 16 : 24} />
                 {is_vertical_ellipsis_visible && (
                     <Dropdown
                         list={[

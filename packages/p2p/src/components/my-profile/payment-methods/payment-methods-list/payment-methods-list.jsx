@@ -17,10 +17,10 @@ import PaymentMethodCard from '../payment-method-card';
 const PaymentMethodsList = () => {
     const { general_store, my_profile_store } = useStores();
 
-    const independent_categories = ['bank_transfer', 'other'];
+    const independent_categories = ['bank_transfer', 'upi', 'other'];
 
     const sortPaymentMethodsListMethods = payment_methods_list_methods => {
-        const order = ['bank_transfer', 'e_wallet', 'other'];
+        const order = ['bank_transfer', 'e_wallet', 'upi', 'other'];
         return payment_methods_list_methods.sort((i, j) => order.indexOf(i.method) - order.indexOf(j.method));
     };
 
@@ -48,7 +48,10 @@ const PaymentMethodsList = () => {
                                 const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
                                     payment_method =>
                                         payment_method.method === payment_methods_list_method.method ||
+                                        (payment_method.method === 'upi' &&
+                                            payment_methods_list_method.method === 'bank_transfer') ||
                                         (!independent_categories.includes(payment_method.method) &&
+                                            payment_method.method !== 'upi' &&
                                             payment_methods_list_method.method === 'e_wallet')
                                 );
 

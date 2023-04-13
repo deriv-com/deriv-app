@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon, Text } from '@deriv/components';
@@ -7,13 +6,18 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-receipt.scss';
+import { BrowserHistory } from 'history';
 
-const openStatement = (history, resetPaymentAgentTransfer) => {
+const openStatement = (history: BrowserHistory, resetPaymentAgentTransfer: VoidFunction) => {
     history.push(routes.statement);
     resetPaymentAgentTransfer();
 };
 
-const PaymentAgentTransferReceipt = observer(({ history }) => {
+type TPaymentAgentTransferReceipt = {
+    history: BrowserHistory;
+};
+
+const PaymentAgentTransferReceipt = observer(({ history }: TPaymentAgentTransferReceipt) => {
     const { client, common } = useStore();
     const { currency, loginid } = client;
     const { is_from_derivgo } = common;
@@ -21,11 +25,14 @@ const PaymentAgentTransferReceipt = observer(({ history }) => {
     const { receipt, resetPaymentAgentTransfer } = payment_agent_transfer;
 
     return (
-        <div className='cashier__wrapper payment-agent-transfer-receipt__wrapper'>
+        <div
+            className='cashier__wrapper payment-agent-transfer-receipt__wrapper'
+            data-testid='dt_payment_agent_transfer_receipt_wrapper'
+        >
             <div className='cashier__success'>
                 <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                     <Localize i18n_default_text="You've transferred" />{' '}
-                    {formatMoney(currency, receipt.amount_transferred, true)} {getCurrencyDisplayCode(currency)}
+                    {formatMoney(currency, Number(receipt.amount_transferred), true)} {getCurrencyDisplayCode(currency)}
                 </Text>
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='account-transfer__transfer-details-from'>
@@ -47,7 +54,7 @@ const PaymentAgentTransferReceipt = observer(({ history }) => {
                                 {receipt.client_name}
                             </Text>
                             <Text size='xs' line_height='xs' color='less-prominent'>
-                                {receipt.client_id.toUpperCase()}
+                                {receipt.client_id?.toUpperCase() || ''}
                             </Text>
                         </span>
                     </span>
@@ -76,9 +83,5 @@ const PaymentAgentTransferReceipt = observer(({ history }) => {
         </div>
     );
 });
-
-PaymentAgentTransferReceipt.propTypes = {
-    history: PropTypes.object,
-};
 
 export default withRouter(PaymentAgentTransferReceipt);

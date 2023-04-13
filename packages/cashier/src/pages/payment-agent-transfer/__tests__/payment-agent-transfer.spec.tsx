@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
+import { TStores, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -28,10 +29,10 @@ jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-receipt', () =>
 );
 
 describe('<PaymentAgentTransfer />', () => {
-    let history, mockRootStore;
+    let history: BrowserHistory, mockRootStore: TStores, modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
-        const modal_root_el = document.createElement('div');
+        modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });
@@ -41,7 +42,7 @@ describe('<PaymentAgentTransfer />', () => {
     });
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 balance: '100',
                 is_virtual: false,
@@ -67,7 +68,7 @@ describe('<PaymentAgentTransfer />', () => {
                 is_dark_mode_on: false,
                 toggleAccountsDialog: jest.fn(),
             },
-        };
+        });
 
         history = createBrowserHistory();
     });

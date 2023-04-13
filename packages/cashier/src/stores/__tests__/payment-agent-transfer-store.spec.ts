@@ -1,10 +1,23 @@
 import PaymentAgentTransferStore from '../payment-agent-transfer-store';
 import { routes } from '@deriv/shared';
 import { configure } from 'mobx';
+import { TStores, mockStore } from '@deriv/stores';
+import { PaymentAgentListResponse } from '@deriv/api-types';
+import { TWebSocket } from '../../types';
 
 configure({ safeDescriptors: false });
 
-let payment_agent_transfer_store, response_payment_agent, root_store, transfer_data, WS;
+let payment_agent_transfer_store: PaymentAgentTransferStore,
+    response_payment_agent: PaymentAgentListResponse,
+    root_store: TStores,
+    transfer_data: {
+        transfer_to: string;
+        amount: string;
+        description: string;
+        currency: string;
+        dry_run?: number | undefined;
+    },
+    WS: TWebSocket;
 
 beforeEach(() => {
     WS = {
@@ -15,7 +28,7 @@ beforeEach(() => {
             paymentAgentTransfer: jest.fn(),
         },
     };
-    root_store = {
+    root_store = mockStore({
         common: {
             routeTo: jest.fn(),
         },
@@ -42,15 +55,15 @@ beforeEach(() => {
         ui: {
             is_real_acc_signup_on: false,
         },
-    };
-    payment_agent_transfer_store = new PaymentAgentTransferStore({ WS, root_store });
+    });
+    payment_agent_transfer_store = new PaymentAgentTransferStore(WS, root_store);
     response_payment_agent = {
         paymentagent_list: {
             list: [{ paymentagent_loginid: 'CR9000000' }],
         },
     };
     transfer_data = {
-        amount: 100,
+        amount: '100',
         currency: 'USD',
         description: 'This is description',
         transfer_to: 'CR9000000',
@@ -63,7 +76,7 @@ describe('PaymentAgentTransferStore', () => {
     });
 
     it('should check and set is_payment_agent as true value', async () => {
-        WS.authorized.storage.getSettings.mockResolvedValue({
+        (WS.authorized.storage.getSettings as jest.Mock).mockResolvedValue({
             get_settings: { is_authenticated_payment_agent: true },
         });
         await payment_agent_transfer_store.checkIsPaymentAgent();
@@ -72,7 +85,7 @@ describe('PaymentAgentTransferStore', () => {
     });
 
     it('should check and set is_payment_agent as false value', async () => {
-        WS.authorized.storage.getSettings.mockResolvedValue({
+        (WS.authorized.storage.getSettings as jest.Mock).mockResolvedValue({
             get_settings: { is_authenticated_payment_agent: null },
         });
         await payment_agent_transfer_store.checkIsPaymentAgent();
@@ -88,11 +101,13 @@ describe('PaymentAgentTransferStore', () => {
 
     it('should route to /cashier/deposit if there is no payment agent and window.location.pathname ends with /cashier/payment-agent-transfer', () => {
         const windowSpy = jest.spyOn(window, 'window', 'get');
-        windowSpy.mockImplementation(() => ({
-            location: {
-                pathname: routes.cashier_pa_transfer,
-            },
-        }));
+        windowSpy.mockImplementation(
+            jest.fn(() => ({
+                location: {
+                    pathname: routes.cashier_pa_transfer,
+                },
+            })) as jest.Mock
+        );
 
         payment_agent_transfer_store.setIsPaymentAgent(false);
 
@@ -118,7 +133,7 @@ describe('PaymentAgentTransferStore', () => {
 
     it('shoud set correct confirmation transfer value', () => {
         const confirm = {
-            amount: 100,
+            amount: '100',
             client_id: 'CR9000000',
             client_name: 'George',
             description: 'This is description',
@@ -131,7 +146,7 @@ describe('PaymentAgentTransferStore', () => {
 
     it('shoud set correct receipt value', () => {
         const receipt = {
-            amount_transferred: 100,
+            amount_transferred: '100',
             client_id: 'CR9000000',
             client_name: 'George',
         };
@@ -150,8 +165,8 @@ describe('PaymentAgentTransferStore', () => {
         payment_agent_transfer_store.setMinMaxPaymentAgentTransfer(transfer_limit);
 
         expect(payment_agent_transfer_store.transfer_limit).toEqual({
-            min: transfer_limit.min_withdrawal,
-            max: transfer_limit.max_withdrawal,
+            min_withdrawal: transfer_limit.min_withdrawal,
+            max_withdrawal: transfer_limit.max_withdrawal,
         });
     });
 
@@ -203,13 +218,13 @@ describe('PaymentAgentTransferStore', () => {
         await payment_agent_transfer_store.onMountPaymentAgentTransfer();
 
         expect(payment_agent_transfer_store.transfer_limit).toEqual({
-            min: 1,
-            max: 10,
+            min_withdrawal: 1,
+            max_withdrawal: 10,
         });
     });
 
     it('shoud set correct confirmation transfer value if there is no any errors in response (dry_run = 1)', async () => {
-        payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
+        (payment_agent_transfer_store.WS.authorized.paymentAgentTransfer as jest.Mock).mockResolvedValue({
             paymentagent_transfer: 2,
             client_to_full_name: 'George',
         });
@@ -227,7 +242,7 @@ describe('PaymentAgentTransferStore', () => {
 
     it('shoud trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestTryPaymentAgentTransfer', async () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
-        payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
+        (payment_agent_transfer_store.WS.authorized.paymentAgentTransfer as jest.Mock).mockResolvedValue({
             paymentagent_transfer: 0,
             error: {
                 message: 'Error message!',
@@ -243,7 +258,7 @@ describe('PaymentAgentTransferStore', () => {
     });
 
     it('shoud set correct confirmation transfer value if there is no any errors in response (dry_run = 0)', async () => {
-        payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
+        (payment_agent_transfer_store.WS.authorized.paymentAgentTransfer as jest.Mock).mockResolvedValue({
             paymentagent_transfer: 1,
             client_to_full_name: 'George',
         });
@@ -262,7 +277,7 @@ describe('PaymentAgentTransferStore', () => {
 
     it('shoud trigger setErrorMessage callback if there is an error in response (paymentagent_transfer = 0), requestPaymentAgentTransfer', async () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
-        payment_agent_transfer_store.WS.authorized.paymentAgentTransfer.mockResolvedValue({
+        (payment_agent_transfer_store.WS.authorized.paymentAgentTransfer as jest.Mock).mockResolvedValue({
             paymentagent_transfer: 0,
             error: {
                 message: 'Error message!',

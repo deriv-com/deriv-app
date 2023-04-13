@@ -4,6 +4,7 @@ import type { TStores } from './useStore';
 const mock = (): TStores => {
     return {
         client: {
+            account_settings: {},
             accounts: {
                 loginid: {
                     account_type: 'trading',
@@ -243,6 +244,7 @@ const mock = (): TStores => {
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
             is_ready_to_deposit_modal_visible: false,
+            is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
         },

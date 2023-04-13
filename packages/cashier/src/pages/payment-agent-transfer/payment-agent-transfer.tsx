@@ -51,7 +51,7 @@ const PaymentAgentTransfer = observer(() => {
         // for others show them at the bottom of the form next to submit button
         return <Error error={error} />;
     }
-    if (!+balance) {
+    if (!Number(balance)) {
         return <NoBalance />;
     }
     if (is_try_transfer_successful) {

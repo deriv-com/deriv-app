@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
-import PaymentAgentTransferConfirm from '../payment-agent-transfer-confirm.jsx';
+import PaymentAgentTransferConfirm from '../payment-agent-transfer-confirm';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 describe('<PaymentAgentTransferConfirm />', () => {
-    let mockRootStore;
+    let mockRootStore: TStores;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
@@ -18,7 +19,7 @@ describe('<PaymentAgentTransferConfirm />', () => {
     });
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             ui: {
                 disableApp: jest.fn(),
                 enableApp: jest.fn(),
@@ -42,7 +43,7 @@ describe('<PaymentAgentTransferConfirm />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const renderPaymentAgentTransferConfirm = () => {

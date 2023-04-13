@@ -4,8 +4,11 @@ import {
     CashierInformationRequest,
     CashierInformationResponse,
     CryptoConfig,
+    GetAccountSettingsResponse,
     DetailsOfEachMT5Loginid,
     P2PAdvertInfo,
+    PaymentAgentTransferRequest,
+    PaymentAgentTransferResponse,
     TransferBetweenAccountsResponse,
 } from '@deriv/api-types';
 import type { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
@@ -33,6 +36,10 @@ export type TServerError = {
     fields?: string[];
 };
 
+type TStorage = {
+    getSettings: () => Promise<GetAccountSettingsResponse>;
+};
+
 type TServiceTokenRequest = {
     service_token: number;
     service: string;
@@ -55,8 +62,12 @@ type TWebSocketCall = {
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
     cashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
+    paymentAgentTransfer: (
+        request: Omit<PaymentAgentTransferRequest, 'paymentagent_transfer' | 'passthrough' | 'req_id'>
+    ) => Promise<PaymentAgentTransferResponse>;
     p2pAdvertiserInfo?: () => Promise<unknown>;
     send?: (obj: unknown) => Promise<TAuthorizedSend>;
+    storage: TStorage;
     transferBetweenAccounts: (
         account_from?: string,
         account_to?: string,

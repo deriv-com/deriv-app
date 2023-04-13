@@ -1,16 +1,17 @@
 import React from 'react';
 import PaymentAgentTransferReceipt from '../payment-agent-transfer-receipt';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
+import { TStores, mockStore } from '@deriv/stores';
 
 describe('<PaymentAgentTransferReceipt />', () => {
-    let history, mockRootStore;
+    let history: BrowserHistory, mockRootStore: TStores;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'USD',
             },
@@ -25,7 +26,7 @@ describe('<PaymentAgentTransferReceipt />', () => {
                     },
                 },
             },
-        };
+        });
 
         history = createBrowserHistory();
     });
@@ -41,9 +42,9 @@ describe('<PaymentAgentTransferReceipt />', () => {
     };
 
     it('component should render', () => {
-        const { container } = renderPaymentAgentTransferReceipt();
+        renderPaymentAgentTransferReceipt();
 
-        expect(container.querySelector('.payment-agent-transfer-receipt__wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_payment_agent_transfer_receipt_wrapper')).toBeInTheDocument();
     });
 
     it(`should redirect to statement page when click on 'View in statement' button`, () => {

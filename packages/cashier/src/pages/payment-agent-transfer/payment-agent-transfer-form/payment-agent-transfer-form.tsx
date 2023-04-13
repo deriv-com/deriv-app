@@ -1,16 +1,26 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
+import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import ErrorDialog from 'Components/error-dialog';
+import ErrorDialog from '../../../components/error-dialog';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-form.scss';
+import { TTransferLimit } from '../../../types';
 
-const validateTransfer = (values, { balance, currency, transfer_limit }) => {
-    const errors = {};
+type TValidateTransferProps = {
+    balance: string;
+    currency: string;
+    transfer_limit: TTransferLimit;
+};
+
+const validateTransfer = (
+    values: { loginid: string; amount: string; description: string },
+    { balance, currency, transfer_limit }: TValidateTransferProps
+) => {
+    const errors = { loginid: '', amount: '', description: '' };
 
     if (!values.loginid || !/^[A-Za-z]+[0-9]+$/.test(values.loginid)) {
         errors.loginid = localize('Please enter a valid client login ID.');
@@ -19,9 +29,14 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
     const { is_ok, message } = validNumber(values.amount, {
         type: 'float',
         decimals: getDecimalPlaces(currency),
-        ...(transfer_limit.min && {
-            min: transfer_limit.min,
-            max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
+        ...(transfer_limit.min_withdrawal && {
+            min: Number(transfer_limit.min_withdrawal),
+            max:
+                +balance >= Number(transfer_limit.min_withdrawal) &&
+                transfer_limit.max_withdrawal &&
+                +balance < Number(transfer_limit.max_withdrawal)
+                    ? Number(balance)
+                    : Number(transfer_limit.max_withdrawal),
         }),
     });
 
@@ -29,7 +44,7 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         errors.amount = localize('This field is required.');
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
-    } else if (!is_ok) {
+    } else if (!is_ok && message) {
         errors.amount = message;
     }
 
@@ -52,16 +67,19 @@ const PaymentAgentTransferForm = observer(() => {
     } = payment_agent_transfer_store;
     const { setErrorMessage } = error;
 
-    const validateTransferPassthrough = values =>
+    const validateTransferPassthrough = (values: { loginid: string; amount: string; description: string }) =>
         validateTransfer(values, {
-            balance,
+            balance: balance !== undefined ? String(balance) : '',
             currency,
             transfer_limit,
         });
 
-    const onTransferPassthrough = async (values, actions) => {
+    const onTransferPassthrough = async (
+        values: { loginid: string; amount: string; description: string },
+        actions: { setSubmitting: (value: boolean) => void }
+    ) => {
         const payment_agent_transfer = await requestTryPaymentAgentTransfer({
-            amount: values.amount,
+            amount: Number(values.amount),
             currency,
             description: values.description.replace(/\n/g, ' '),
             transfer_to: values.loginid,
@@ -72,7 +90,10 @@ const PaymentAgentTransferForm = observer(() => {
     };
 
     return (
-        <div className='cashier__wrapper payment-agent-transfer-form__container'>
+        <div
+            className='cashier__wrapper payment-agent-transfer-form__container'
+            data-testid='dt_payment_agent_transfer_form_container'
+        >
             <DesktopWrapper>
                 <Text
                     as='h2'
@@ -97,7 +118,7 @@ const PaymentAgentTransferForm = observer(() => {
                 {({ errors, isSubmitting, isValid, touched, handleChange }) => (
                     <Form noValidate>
                         <Field name='loginid'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
                                     onChange={e => {
@@ -105,9 +126,10 @@ const PaymentAgentTransferForm = observer(() => {
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input'
+                                    data-testid='dt_payment_agent_transfer_form_input_loginid'
                                     type='text'
                                     label={localize('Client account number')}
-                                    error={touched.loginid && errors.loginid}
+                                    error={(touched.loginid && errors.loginid) || ''}
                                     required
                                     autoComplete='off'
                                     maxLength={20}
@@ -115,7 +137,7 @@ const PaymentAgentTransferForm = observer(() => {
                             )}
                         </Field>
                         <Field name='amount'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
                                     onChange={e => {
@@ -123,9 +145,10 @@ const PaymentAgentTransferForm = observer(() => {
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input dc-input--no-placeholder'
+                                    data-testid='dt_payment_agent_transfer_form_input_amount'
                                     type='text'
                                     label={localize('Amount')}
-                                    error={touched.amount && errors.amount}
+                                    error={(touched.amount && errors.amount) || ''}
                                     required
                                     trailing_icon={
                                         <span
@@ -143,7 +166,7 @@ const PaymentAgentTransferForm = observer(() => {
                             )}
                         </Field>
                         <Field name='description'>
-                            {({ field }) => (
+                            {({ field }: FieldProps) => (
                                 <Input
                                     {...field}
                                     onChange={e => {
@@ -151,6 +174,7 @@ const PaymentAgentTransferForm = observer(() => {
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input-area'
+                                    data-testid='dt_payment_agent_transfer_form_input_description'
                                     type='textarea'
                                     label={localize('Description')}
                                     error={errors.description}

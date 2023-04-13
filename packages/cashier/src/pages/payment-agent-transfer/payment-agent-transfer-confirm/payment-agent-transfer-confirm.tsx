@@ -19,10 +19,10 @@ const PaymentAgentTransferConfirm = observer(() => {
     return (
         <TransferConfirm
             data={[
-                { label: localize('From account number'), value: loginid, key: 'transfer_from' },
+                { label: localize('From account number'), value: loginid || '', key: 'transfer_from' },
                 {
                     label: [localize('To account number'), localize('Account holder name')],
-                    value: [transfer_to.toUpperCase(), transfer_to_name],
+                    value: [transfer_to?.toUpperCase() || '', transfer_to_name || ''],
                     key: 'transfer_to',
                 },
                 {
@@ -30,15 +30,19 @@ const PaymentAgentTransferConfirm = observer(() => {
                     value: <Money currency={currency} amount={amount} show_currency />,
                     key: 'amount',
                 },
-                { label: localize('Description'), value: description, key: 'description' },
+                { label: localize('Description'), value: description || '', key: 'description' },
             ]}
             error={error}
-            is_payment_agent_transfer
             onClickBack={() => {
                 setIsTryTransferSuccessful(false);
             }}
             onClickConfirm={() => {
-                requestPaymentAgentTransfer({ amount, currency, description, transfer_to });
+                requestPaymentAgentTransfer({
+                    amount: Number(amount),
+                    currency,
+                    description: description || '',
+                    transfer_to: transfer_to || '',
+                });
             }}
         />
     );

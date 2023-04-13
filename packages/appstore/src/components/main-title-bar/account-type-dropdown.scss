@@ -43,7 +43,6 @@
     &--real:hover {
         border: 1px solid var(--status-info);
         min-width: 87%;
-        width: auto;
         & > .dc-text {
             color: var(--status-info);
         }

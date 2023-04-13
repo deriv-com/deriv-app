@@ -1,6 +1,8 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { localize, getAllowedLanguages } from '@deriv/translations';
+import { isMobile, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
 import LanguageRadioButton from 'Components/language-settings';
@@ -13,6 +15,11 @@ type TLanguageSettings = {
 
 const LanguageSettings = ({ changeSelectedLanguage, current_language }: TLanguageSettings) => {
     const { i18n } = useTranslation();
+
+    if (window.location.pathname === routes.languages && isMobile()) {
+        return <Redirect to={routes.traders_hub} />;
+    }
+
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     return (
         <div className='settings-language'>

@@ -16,6 +16,7 @@ export default class CommonStore extends BaseStore {
             server_time: observable,
             current_language: observable,
             is_language_changing: observable,
+            is_mobile_language_menu_open: observable,
             allowed_languages: observable,
             has_error: observable,
             error: observable,
@@ -52,6 +53,7 @@ export default class CommonStore extends BaseStore {
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
             changeSelectedLanguage: action.bound,
+            setMobileLanguageMenuOpen: action.bound,
             getExchangeRate: action.bound,
             routeBackInApp: action.bound,
         });
@@ -60,6 +62,7 @@ export default class CommonStore extends BaseStore {
     server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     current_language = currentLanguage;
     is_language_changing = false;
+    is_mobile_language_menu_open = false;
     allowed_languages = Object.keys(getAllowedLanguages());
     has_error = false;
 
@@ -344,5 +347,9 @@ export default class CommonStore extends BaseStore {
         }
 
         history.push(routes.trade);
+    }
+
+    setMobileLanguageMenuOpen(is_mobile_language_menu_open) {
+        this.is_mobile_language_menu_open = is_mobile_language_menu_open;
     }
 }

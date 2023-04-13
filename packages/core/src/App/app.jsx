@@ -37,7 +37,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(l.pathname);
     const [is_translation_loaded] = useOnLoadTranslation();
     const initCashierStore = () => {
-        root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
+        root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
         root_store.modules.cashier.general_store.init();
     };
     // TODO: investigate the order of cashier store initialization

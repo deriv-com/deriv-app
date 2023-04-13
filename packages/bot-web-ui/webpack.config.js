@@ -1,7 +1,5 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const DefinePlugin = require('webpack').DefinePlugin;
-const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
@@ -118,16 +116,6 @@ module.exports = function (env) {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         plugins: [
-            new Dotenv(),
-            ...(process.env.NODE_ENV === 'development'
-                ? []
-                : [
-                      new DefinePlugin({
-                          'process.env.GD_CLIENT_ID': JSON.stringify(process.env.GD_CLIENT_ID),
-                          'process.env.GD_API_KEY': JSON.stringify(process.env.GD_API_KEY),
-                          'process.env.GD_APP_ID': JSON.stringify(process.env.GD_APP_ID),
-                      }),
-                  ]),
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: 'bot/css/bot.main.[contenthash].css',

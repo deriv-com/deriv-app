@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
-// import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TNewDetailsOfEachMT5Loginid } from '../../types';
 import {
     CFD_PLATFORMS,

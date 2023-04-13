@@ -108,7 +108,6 @@ const MT5AccountTypeModal = () => {
     );
     const is_swapfree_available = useHasSwapFreeAccount();
 
-
     const set_account_type = () => {
         switch (account_type_card) {
             case 'Derived':

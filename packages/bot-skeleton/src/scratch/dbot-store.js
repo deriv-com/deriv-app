@@ -22,7 +22,6 @@ class DBotStore extends DBotStoreInterface {
         this.client = store.client;
         this.dashboard = store.dashboard;
         this.flyout = store.flyout;
-        this.populateConfig = store.populateConfig;
         this.toolbar = store.toolbar;
         this.toolbox = store.toolbox;
         this.save_modal = store.save_modal;

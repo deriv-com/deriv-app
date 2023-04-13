@@ -108,6 +108,7 @@ const MT5AccountTypeModal = () => {
     );
     const is_swapfree_available = useHasSwapFreeAccount();
 
+
     const set_account_type = () => {
         switch (account_type_card) {
             case 'Derived':
@@ -122,7 +123,6 @@ const MT5AccountTypeModal = () => {
                 break;
         }
     };
-
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>

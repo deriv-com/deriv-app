@@ -11,7 +11,7 @@
         border: none;
         & > div.dc-dropdown {
             &-container {
-                min-width: 8.2rem;
+                min-width: 7.1rem;
                 width: auto;
             }
         }
@@ -32,7 +32,10 @@
             line-height: 20px;
             letter-spacing: 0em;
             text-align: left;
-            padding-left: 0.6em;
+            padding-left: 0.4em;
+        }
+        & > .dc-dropdown__display-text {
+            padding-right: 2.3em;
         }
     }
     &--real,
@@ -53,7 +56,7 @@
         width: 90%;
         & > .dc-text {
             color: var(--status-success);
-            padding-left: 0.8em;
+            padding-left: 0.65em;
         }
     }
     &__icon {
@@ -63,11 +66,11 @@
         }
         &--real {
             --fill-color1: var(--status-info) !important;
-            right: 1.8rem;
+            right: 0.7rem;
         }
         &--demo {
             --fill-color1: var(--status-success) !important;
-            right: 1.5rem;
+            right: 1.4rem;
         }
     }
 }

@@ -491,12 +491,9 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get multipliers_account_status() {
-        const {
-            has_maltainvest_account,
-            account_status: { authentication },
-        } = this.root_store.client;
+        const { has_maltainvest_account, account_status } = this.root_store.client;
 
-        const multipliers_account_status = getMultipliersAccountStatus(authentication);
+        const multipliers_account_status = getMultipliersAccountStatus(account_status?.authentication);
         const should_show_status_for_multipliers_account =
             [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(this.content_flag) &&
             has_maltainvest_account &&

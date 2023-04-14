@@ -295,6 +295,9 @@ export default class AccountTransferStore {
         const derivez_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ))
             ?.trading_platform_accounts;
 
+        const ctrader_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER))
+            ?.trading_platform_accounts;
+
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
         const accounts = transfer_between_accounts.accounts?.map(account => {
             if (account.account_type === CFD_PLATFORMS.MT5 && Array.isArray(mt5_login_list) && mt5_login_list.length) {

@@ -24,6 +24,7 @@ type TAccountsList = {
     is_dark_mode_on?: boolean;
     is_virtual?: boolean | number;
     loginid?: string;
+    ctrader_accounts_list?: DetailsOfEachMT5Loginid[];
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];

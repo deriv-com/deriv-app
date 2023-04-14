@@ -64,7 +64,7 @@ const TurbosCardBody = ({
     } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const { BARRIER_LEVEL, BUY_PRICE, CURRENT_PRICE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS, PAYOUT, PROFIT_LOSS } =
+    const { BARRIER, BUY_PRICE, CURRENT_PRICE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS, PAYOUT, PROFIT_LOSS } =
         getCardLabels();
 
     return (
@@ -83,7 +83,7 @@ const TurbosCardBody = ({
                     <Money currency={currency} amount={sell_spot || current_spot_display_value} />
                 </ContractCardItem>
                 <ContractCardItem
-                    header={is_sold ? BUY_PRICE : BARRIER_LEVEL}
+                    header={is_sold ? BUY_PRICE : BARRIER}
                     is_crypto={isCryptocurrency(currency)}
                     className='dc-contract-card__buy-price'
                 >
@@ -94,7 +94,7 @@ const TurbosCardBody = ({
                     />
                 </ContractCardItem>
                 {is_sold ? (
-                    <ContractCardItem header={BARRIER_LEVEL} className='dc-contract-card__barrier-level'>
+                    <ContractCardItem header={BARRIER} className='dc-contract-card__barrier-level'>
                         <Money amount={addComma(barrier)} currency={currency} should_format={false} />
                     </ContractCardItem>
                 ) : (

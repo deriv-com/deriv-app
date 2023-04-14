@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: 'Apply',
-    BARRIER_LEVEL: 'Barrier level',
+    BARRIER: 'Barrier',
     STAKE: 'Stake:',
     CLOSE: 'Close',
     CANCEL: 'Cancel',

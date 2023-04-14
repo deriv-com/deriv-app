@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),
-    BARRIER_LEVEL: localize('Barrier level'),
+    BARRIER: localize('Barrier'),
     BUY_PRICE: localize('Buy price:'),
     CANCEL: localize('Cancel'),
     CLOSE: localize('Close'),

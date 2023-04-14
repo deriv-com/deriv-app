@@ -196,7 +196,7 @@ export const unsupported_contract_types_list = [
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),
-    BARRIER_LEVEL: localize('Barrier level'),
+    BARRIER: localize('Barrier'),
     BUY_PRICE: localize('Buy price:'),
     CANCEL: localize('Cancel'),
     CLOSE: localize('Close'),

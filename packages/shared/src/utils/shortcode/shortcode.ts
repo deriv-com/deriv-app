@@ -37,6 +37,9 @@ const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
 // category_underlying_amount_starttime_endtime_barrier
 const options_regex = new RegExp(`${base_pattern}_([A-Z\\d]+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
 
+// category_underlying_stake_starttime_endtime_barrier_numberofcontracts
+const turbos_vanillas_regex = new RegExp(`${base_pattern}_(\\d+)_([A-Z0-9\\d]+)_([A-Z0-9-\\d]+)_(\\d*\\.?\\d*)`);
+
 export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode => {
     const info_from_shortcode = {
         category: '',
@@ -48,17 +51,27 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
         growth_rate: '',
         growth_frequency: '',
         tick_size_barrier: '',
+        number_of_contracts: '',
     };
 
     const is_accumulators = /^ACCU/i.test(shortcode);
     const is_multipliers = /^MULT/i.test(shortcode);
+    const is_turbos = /^TURBO/i.test(shortcode);
+    const is_vanillas = /^VANILLA/i.test(shortcode);
 
     // First group of regex pattern captures the trade category, second group captures the market's underlying
     let pattern;
     if (is_multipliers) {
         pattern = multipliers_regex;
-    } else pattern = is_accumulators ? accumulators_regex : options_regex;
+    } else if (is_accumulators) {
+        pattern = accumulators_regex;
+    } else if (is_turbos || is_vanillas) {
+        pattern = turbos_vanillas_regex;
+    } else {
+        pattern = options_regex;
+    }
     const extracted = pattern.exec(shortcode);
+
     if (extracted !== null) {
         info_from_shortcode.category = extracted[1].charAt(0).toUpperCase() + extracted[1].slice(1).toLowerCase();
         info_from_shortcode.underlying = extracted[2];
@@ -74,6 +87,7 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
             info_from_shortcode.start_time = extracted[8];
         } else {
             info_from_shortcode.start_time = extracted[4];
+            info_from_shortcode.number_of_contracts = extracted[7];
         }
 
         if (/^(CALL|PUT)$/i.test(info_from_shortcode.category)) {

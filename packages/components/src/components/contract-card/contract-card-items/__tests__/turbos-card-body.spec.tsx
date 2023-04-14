@@ -17,7 +17,7 @@ const contract_info: TContractInfo = {
 };
 
 const mockCardLabels = () => ({
-    BARRIER_LEVEL: 'Barrier level',
+    BARRIER: 'Barrier',
     CURRENT_PRICE: 'Current price',
     STAKE: 'Stake',
     BUY_PRICE: 'Buy price',
@@ -71,7 +71,7 @@ describe('TurbosCardBody', () => {
         const current_price_amount = screen.getByText('1,046.80');
         expect(current_price_amount).toBeInTheDocument();
 
-        const barrier_header = screen.getByText(mockCardLabels().BARRIER_LEVEL);
+        const barrier_header = screen.getByText(mockCardLabels().BARRIER);
         expect(barrier_header).toBeInTheDocument();
         const barrier_level = screen.getByText('10,904.80');
         expect(barrier_level).toBeInTheDocument();
@@ -111,7 +111,7 @@ describe('TurbosCardBody', () => {
         const take_profit_amount = screen.queryByText('-');
         expect(take_profit_amount).not.toBeInTheDocument();
 
-        expect(screen.getByText('Barrier level')).toBeInTheDocument();
+        expect(screen.getByText('Barrier')).toBeInTheDocument();
         expect(screen.queryByText('Current price')).not.toBeInTheDocument();
     });
 });

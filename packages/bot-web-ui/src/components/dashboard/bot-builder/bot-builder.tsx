@@ -44,7 +44,12 @@ const BotBuilder = ({
     //removed used effect here because dark mode is an observable and the component will rerender
     setColors(is_dark_mode_on);
     previewRecentStrategy(selected_strategy_id);
-    if (active_tab === 1) loadFileFromRecent();
+
+    React.useEffect(() => {
+        if (active_tab === 1) {
+            loadFileFromRecent();
+        }
+    }, [is_dark_mode_on]);
 
     React.useEffect(() => {
         onMount();
@@ -104,6 +109,9 @@ const BotBuilder = ({
                                     borderRadius: '0.4rem',
                                     color: 'var(--text-general)',
                                     padding: '0.6rem',
+                                },
+                                overlay: {
+                                    height: '100%',
                                 },
                                 tooltipContent: {
                                     padding: '0 1rem',

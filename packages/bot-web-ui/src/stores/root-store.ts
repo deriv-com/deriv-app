@@ -20,17 +20,17 @@ import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
 import DashboardStore from './dashboard-store';
 import { TDbot, TWebSocket } from 'Types';
-import { TStores } from '@deriv/stores';
+import { TCoreStores } from '@deriv/stores/types';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
-    public core: TStores;
+    public core: TCoreStores;
     public ws: TWebSocket;
     public dbot: TDbot;
-    public notifications: TStores['notifications'];
-    public ui: TStores['ui'];
-    public common: TStores['common'];
-    public server_time: TStores['common']['server_time'];
+    public notifications: TCoreStores['notifications'];
+    public ui: TCoreStores['ui'];
+    public common: TCoreStores['common'];
+    public server_time: TCoreStores['common']['server_time'];
     public app: AppStore;
     public summary_card: SummaryCardStore;
     public download: DownloadStore;
@@ -54,7 +54,7 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
-    constructor(core: TStores, ws: TWebSocket, dbot: TDbot) {
+    constructor(core: TCoreStores, ws: TWebSocket, dbot: TDbot) {
         this.core = core;
         this.ui = core.ui;
         this.common = core.common;

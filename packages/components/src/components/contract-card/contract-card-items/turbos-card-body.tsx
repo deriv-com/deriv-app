@@ -122,10 +122,10 @@ const TurbosCardBody = ({
                 )}
                 <MobileWrapper>
                     <div className='dc-contract-card__status'>
-                        {is_sold && !!profit ? (
-                            <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={profit > 0} />
+                        {is_sold ? (
+                            <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={profit && profit > 0} />
                         ) : (
-                            !is_sold && progress_slider_mobile_el
+                            progress_slider_mobile_el
                         )}
                     </div>
                 </MobileWrapper>

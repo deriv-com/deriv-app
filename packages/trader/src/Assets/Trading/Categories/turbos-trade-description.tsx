@@ -44,7 +44,7 @@ export const TurbosTradeDescription = () => {
                         {text}
                     </Text>
                 ) : (
-                    <Text as='p' key={index}>
+                    <Text as='p' key={index.toString() + text}>
                         {text}
                     </Text>
                 )

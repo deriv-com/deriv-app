@@ -494,13 +494,9 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    min-height: 50rem;
-    width: 26rem;
+    height: 100%;
+    width: 100%;
     cursor: pointer;
-    @include mobile {
-        height: 48rem;
-        width: 100%;
-    }
 
     &:not(.selected-card):hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
@@ -510,18 +506,15 @@
         border: solid 1px var(--border-disabled);
     }
 
-    @include desktop {
-        height: auto;
-    }
-
     &__wrapper {
         margin: 4rem 6rem 0;
         display: flex;
         justify-content: center;
-        gap: 1.8rem;
+        gap: 2rem;
         @include mobile {
             margin: 0;
-            padding: 2rem 4rem;
+            padding: 4rem 4rem;
+            gap: 4rem;
             flex-direction: column;
             align-items: center;
             overflow-y: scroll;
@@ -680,6 +673,34 @@
 }
 
 .cfd-card {
+    &-perspective {
+        perspective: 1000px;
+        @include mobile {
+            width: 100%;
+        }
+    }
+    &-container {
+        transform-style: preserve-3d;
+        transition: transform 0.25s ease-in-out;
+        min-height: 50rem;
+        width: 26rem;
+        @include mobile {
+            height: 48rem;
+            width: 100%;
+        }
+    }
+    &-flipped {
+        transform: rotateY(180deg);
+    }
+    &-front,
+    &-back {
+        position: absolute;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+    &-back {
+        transform: rotateY(180deg);
+    }
     &-section {
         width: 100%;
         display: flex;

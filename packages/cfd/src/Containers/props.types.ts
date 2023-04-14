@@ -184,12 +184,14 @@ export type TJurisdictionCardFrontProps = {
     toggleCardFlip: (event: SyntheticEvent) => void;
     card_values: TJurisdictionCardItems;
     card_data: TJurisdictionCardSection[];
+    is_card_selected: boolean;
 };
 
 export type TJurisdictionCardBackProps = {
     card_classname: string;
     toggleCardFlip: (event: SyntheticEvent) => void;
     verification_docs: TJurisdictionCardItemVerification | undefined;
+    is_card_selected: boolean;
 };
 
 export type TJurisdictionClickableDescriptionProps = {

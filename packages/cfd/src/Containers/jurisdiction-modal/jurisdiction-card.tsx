@@ -20,6 +20,8 @@ const JurisdictionCard = ({
         ? card_values?.synthetic_verification_docs
         : card_values?.financial_verification_docs;
     const [is_card_flipped, setIsCardFlipped] = useState(false);
+    const is_card_selected = jurisdiction_selected_shortcode === type_of_card;
+
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
@@ -30,26 +32,27 @@ const JurisdictionCard = ({
     };
 
     return (
-        <div
-            className={classNames(card_classname, {
-                [`${card_classname}--selected selected-card`]: jurisdiction_selected_shortcode === type_of_card,
-            })}
-            onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
-        >
-            {!is_card_flipped ? (
+        <div className='cfd-card-perspective'>
+            <div
+                className={classNames('cfd-card-container', {
+                    'cfd-card-flipped': is_card_flipped,
+                })}
+                onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
+            >
                 <JurisdictionCardFront
                     card_classname={card_classname}
                     toggleCardFlip={toggleCardFlip}
                     card_values={card_values}
                     card_data={card_data}
+                    is_card_selected={is_card_selected}
                 />
-            ) : (
                 <JurisdictionCardBack
                     card_classname={card_classname}
                     toggleCardFlip={toggleCardFlip}
                     verification_docs={verification_docs}
+                    is_card_selected={is_card_selected}
                 />
-            )}
+            </div>
         </div>
     );
 };

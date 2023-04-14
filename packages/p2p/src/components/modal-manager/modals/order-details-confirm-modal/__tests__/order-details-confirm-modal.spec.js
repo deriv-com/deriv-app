@@ -2,6 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useStores } from 'Stores';
 import OrderDetailsConfirmModal from '../order-details-confirm-modal.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const el_modal = document.createElement('div');
 
@@ -19,25 +20,25 @@ jest.mock('Stores', () => ({
         order_store: {
             confirmOrderRequest: jest.fn(),
             order_information: {
-                account_currency: 'USD',
                 amount: 10,
-                amount_display: '20',
                 id: 1,
-                is_buy_order_for_user: false,
                 local_currency: 'AED',
                 other_user_details: { name: 'P2P' },
                 rate: 2,
             },
+        },
+        sendbird_store: {
+            sendFile: jest.fn(),
         },
     }),
 }));
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: jest.fn(() => ({
+    useModalManagerContext: jest.fn().mockReturnValue({
         hideModal: jest.fn(),
         is_modal_open: true,
-    })),
+    }),
 }));
 
 describe('<OrderDetailsConfirmModal/>', () => {
@@ -52,54 +53,48 @@ describe('<OrderDetailsConfirmModal/>', () => {
     it('should render the modal', () => {
         render(<OrderDetailsConfirmModal />);
 
-        expect(screen.getByText('Have you received payment?')).toBeInTheDocument();
+        expect(screen.getByText('Payment confirmation')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Please confirm only after checking your bank or e-wallet account to make sure you have received payment.'
+                "Please make sure that you've paid 20.00 AED to P2P, and upload the receipt as proof of your payment"
             )
         ).toBeInTheDocument();
-        expect(screen.getByText("I've received 20.00 AED")).toBeInTheDocument();
-        expect(screen.getByText('Cancel')).toBeInTheDocument();
+        expect(screen.getByText('Confirm')).toBeInTheDocument();
+        expect(screen.getByText('Go Back')).toBeInTheDocument();
+        expect(screen.getByText('We accept JPG, PDF, or PNG (up to 2MB).')).toBeInTheDocument();
     });
-
-    it('should render proper texts for buy order', () => {
-        const { order_store } = useStores();
-        const { order_information } = order_store;
-        order_information.is_buy_order_for_user = true;
+    it('should handle GoBack Click', () => {
+        const { hideModal } = useModalManagerContext();
 
         render(<OrderDetailsConfirmModal />);
 
-        expect(screen.getByText('Payment confirmation')).toBeInTheDocument();
-        expect(screen.getByText('Have you paid 20.00 AED to P2P?')).toBeInTheDocument();
-        expect(screen.getByText("Yes, I've paid")).toBeInTheDocument();
-        expect(screen.getByText("I haven't paid yet")).toBeInTheDocument();
+        const cancel_button = screen.getByRole('button', { name: 'Go Back' });
+        expect(cancel_button).toBeInTheDocument();
+        fireEvent.click(cancel_button);
+        expect(hideModal).toHaveBeenCalled();
     });
-
-    it('should enable the release button if user confirms receiving of amount', () => {
-        const { order_store } = useStores();
-        const { order_information } = order_store;
-        order_information.is_buy_order_for_user = false;
-
-        render(<OrderDetailsConfirmModal />);
-
-        fireEvent.click(screen.getByRole('checkbox'));
-        expect(screen.getByRole('button', { name: 'Release 20 USD' })).toBeEnabled();
-    });
-
-    it('should send a request when release button is clicked', async () => {
-        const { order_store } = useStores();
+    it('should send a request when confirm button is clicked', async () => {
+        const { order_store, sendbird_store } = useStores();
+        const { hideModal } = useModalManagerContext();
         const { confirmOrderRequest, order_information } = order_store;
 
         render(<OrderDetailsConfirmModal />);
-
-        fireEvent.click(screen.getByRole('checkbox'));
-        fireEvent.click(screen.getByRole('button', { name: 'Release 20 USD' }));
-
+        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+        const input = screen.getByTestId('dt_file_upload_input');
+        fireEvent.change(input, { target: { files: [file] } });
         await waitFor(() => {
-            expect(confirmOrderRequest).toHaveBeenCalledWith(
-                order_information.id,
-                order_information.is_buy_order_for_user
-            );
+            expect(input.files[0]).toBe(file);
+            expect(input.files).toHaveLength(1);
+        });
+
+        const confirm_button = screen.getByRole('button', { name: 'Confirm' });
+        expect(confirm_button).toBeInTheDocument();
+        expect(confirm_button).toBeEnabled();
+        fireEvent.click(confirm_button);
+        await waitFor(() => {
+            expect(sendbird_store.sendFile).toHaveBeenCalled();
+            expect(confirmOrderRequest).toHaveBeenCalledWith(order_information.id, true);
+            expect(hideModal).toHaveBeenCalled();
         });
     });
 });

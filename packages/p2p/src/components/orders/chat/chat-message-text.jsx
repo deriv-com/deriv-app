@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const ChatMessageText = React.memo(({ children, colour }) => (
     <div className={`order-chat__messages-item-message`}>
-        <Text as='p' color={colour} line_height='m' size='xs'>
+        <Text as='div' color={colour} line_height='m' size='xs'>
             {children}
         </Text>
     </div>

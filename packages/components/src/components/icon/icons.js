@@ -451,6 +451,7 @@ import './common/ic-pause.svg';
 import './common/ic-payment-agent.svg';
 import './common/ic-payment-methods-wallet.svg';
 import './common/ic-pc.svg';
+import './common/ic-pdf.svg';
 import './common/ic-percent-solid.svg';
 import './common/ic-phone.svg';
 import './common/ic-pix-dark.svg';

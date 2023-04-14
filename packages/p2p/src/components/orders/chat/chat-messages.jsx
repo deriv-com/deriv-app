@@ -1,19 +1,21 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ThemedScrollbars } from '@deriv/components';
+import { Text, ThemedScrollbars, Icon } from '@deriv/components';
 import { formatMilliseconds } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import ChatMessageReceipt from 'Components/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Components/orders/chat/chat-message-text.jsx';
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
+import { convertToMB } from 'Utils/file-uploader';
 
 const ChatMessages = observer(() => {
     const { sendbird_store } = useStores();
     const scroll_ref = React.useRef(null);
 
     const isImageType = type => ['image/jpeg', 'image/png', 'image/gif'].includes(type);
+    const isPDFType = type => type === 'application/pdf';
 
     const onImageLoad = event => {
         // Height of element changes after the image is loaded. Accommodate
@@ -34,6 +36,45 @@ const ChatMessages = observer(() => {
 
     if (sendbird_store.chat_messages.length) {
         let current_date = null;
+
+        const getMessageFormat = (chat_message, message_colour) => {
+            if (isImageType(chat_message.file_type))
+                return (
+                    <a
+                        className='order-chat__messages-item-image'
+                        href={chat_message.url}
+                        rel='noopener noreferrer'
+                        target='_blank'
+                    >
+                        <img src={chat_message.url} onLoad={onImageLoad} />
+                    </a>
+                );
+            else if (isPDFType(chat_message.file_type)) {
+                return (
+                    <ChatMessageText colour={message_colour}>
+                        <div className='order-chat__messages-item-pdf'>
+                            <Icon icon='IcPdf' data_testid='dt_pdf_icon' size={20} />
+                            <a href={chat_message.url} rel='noopener noreferrer' target='_blank'>
+                                {chat_message.name}
+                            </a>
+                        </div>
+                        {`${convertToMB(chat_message.size).toFixed(2)}MB`}
+                    </ChatMessageText>
+                );
+            }
+            return (
+                <ChatMessageText colour={message_colour}>
+                    <a
+                        className='order-chat__messages-item-file'
+                        href={chat_message.url}
+                        rel='noopener noreferrer'
+                        target='_blank'
+                    >
+                        {chat_message.name}
+                    </a>
+                </ChatMessageText>
+            );
+        };
 
         return (
             <ThemedScrollbars
@@ -68,27 +109,7 @@ const ChatMessages = observer(() => {
                                     <ChatMessageText colour={message_colour}>{chat_message.message}</ChatMessageText>
                                 )}
                                 {chat_message.message_type === ChatMessage.TYPE_FILE &&
-                                    (isImageType(chat_message.file_type) ? (
-                                        <a
-                                            className='order-chat__messages-item-image'
-                                            href={chat_message.url}
-                                            rel='noopener noreferrer'
-                                            target='_blank'
-                                        >
-                                            <img src={chat_message.url} onLoad={onImageLoad} />
-                                        </a>
-                                    ) : (
-                                        <ChatMessageText colour={message_colour}>
-                                            <a
-                                                className='order-chat__messages-item-file'
-                                                href={chat_message.url}
-                                                rel='noopener noreferrer'
-                                                target='_blank'
-                                            >
-                                                {chat_message.name}
-                                            </a>
-                                        </ChatMessageText>
-                                    ))}
+                                    getMessageFormat(chat_message, message_colour)}
                                 <div className={`order-chat__messages-item-timestamp`}>
                                     <Text color='less-prominent' line_height='s' size='xxxs'>
                                         {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}

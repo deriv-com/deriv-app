@@ -1,27 +1,42 @@
 import React from 'react';
-import { Button, Checkbox, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
 import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value';
+import { getPotSupportedFiles, max_pot_file_size } from 'Utils/file-uploader';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
+import FileUploaderComponent from 'Components/file-uploader-component';
 
 const OrderDetailsConfirmModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
-    const { order_details_store, order_store } = useStores();
-    const {
-        account_currency,
-        amount,
-        amount_display,
-        id,
-        is_buy_order_for_user,
-        local_currency,
-        other_user_details,
-        rate,
-    } = order_store.order_information;
-    const [is_checkbox_checked, setIsCheckboxChecked] = React.useState(false);
+    const { order_details_store, order_store, sendbird_store } = useStores();
+    const { amount, local_currency, other_user_details, rate, id } = order_store.order_information;
+    const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const rounded_rate = roundOffDecimal(rate, setDecimalPlaces(rate, 6));
+
+    const handleAcceptedFiles = files => {
+        if (files.length > 0) {
+            setDocumentFile({ files, error_message: null });
+        }
+    };
+
+    const removeFile = () => {
+        setDocumentFile({ files: [], error_message: null });
+    };
+
+    const handleRejectedFiles = files => {
+        const is_file_too_large = files.length > 0 && files[0].file.size > 2097152;
+        const supported_files = files.filter(each_file => getPotSupportedFiles(each_file.file.name));
+        const error_message =
+            is_file_too_large && supported_files.length > 0
+                ? localize('Cannot upload a file over 2MB')
+                : localize('File uploaded is not supported');
+        setDocumentFile({ files, error_message });
+    };
 
     return (
         <React.Fragment>
@@ -31,81 +46,68 @@ const OrderDetailsConfirmModal = () => {
                 toggleModal={hideModal}
                 has_close_icon
                 renderTitle={() => (
-                    <Text color='prominent' line-height='m' size='s' weight='bold'>
-                        {is_buy_order_for_user ? (
-                            <Localize i18n_default_text='Payment confirmation' />
-                        ) : (
-                            <Localize i18n_default_text='Have you received payment?' />
-                        )}
+                    <Text
+                        color='prominent'
+                        line-height={isMobile() ? 'xl' : 'xxl'}
+                        size={isMobile() ? 'xs' : 's'}
+                        weight='bold'
+                    >
+                        <Localize i18n_default_text='Payment confirmation' />
                     </Text>
                 )}
-                width='440px'
+                width='44rem'
             >
-                <Modal.Body>
-                    <Text color='general' line-height='m' size='xs'>
-                        {is_buy_order_for_user ? (
-                            <Localize
-                                i18n_default_text='Have you paid {{amount}} {{currency}} to {{other_user_name}}?'
-                                values={{
-                                    amount: Number(roundOffDecimal(amount * rounded_rate)).toFixed(2),
-                                    currency: local_currency,
-                                    other_user_name: other_user_details.name,
-                                }}
-                            />
-                        ) : (
-                            <Localize i18n_default_text='Please confirm only after checking your bank or e-wallet account to make sure you have received payment.' />
-                        )}
+                <Modal.Body className='order-details-confirm-modal__body'>
+                    <Text color='general' line-height='xl' size={isMobile() ? 'xxs' : 'xs'}>
+                        <Localize
+                            i18n_default_text="Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}, and upload the receipt as proof of your payment"
+                            values={{
+                                amount: Number(roundOffDecimal(amount * rounded_rate)).toFixed(2),
+                                currency: local_currency,
+                                other_user_name: other_user_details.name,
+                            }}
+                        />
                     </Text>
-                    <Checkbox
-                        className='order-details-card__modal-checkbox'
-                        onChange={() => setIsCheckboxChecked(!is_checkbox_checked)}
-                        defaultChecked={is_checkbox_checked}
-                        label={
-                            is_buy_order_for_user ? (
-                                <Localize i18n_default_text="Yes, I've paid" />
-                            ) : (
-                                <Localize
-                                    i18n_default_text="I've received {{amount}} {{currency}}"
-                                    values={{
-                                        amount: Number(roundOffDecimal(amount * rounded_rate)).toFixed(2),
-                                        currency: local_currency,
-                                    }}
-                                />
-                            )
-                        }
+                    <Text
+                        color='less-prominent'
+                        line-height='xl'
+                        size={isMobile() ? 'xxs' : 'xs'}
+                        as='div'
+                        className='order-details-confirm-modal__file_format'
+                    >
+                        <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 2MB).' />
+                    </Text>
+                    <FileUploaderComponent
+                        accept={'image/png, image/jpeg, image/jpg, application/pdf'}
+                        filename_limit={26}
+                        hover_message={localize('Upload receipt here')}
+                        max_size={max_pot_file_size}
+                        multiple={false}
+                        onDropAccepted={handleAcceptedFiles}
+                        onDropRejected={handleRejectedFiles}
+                        validation_error_message={document_file.error_message}
+                        value={document_file.files}
+                        onClickClose={removeFile}
+                        upload_message={localize('Upload receipt here')}
                     />
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className='order-details-confirm-modal__footer'>
                     {order_details_store.error_message && <FormError message={order_details_store.error_message} />}
                     <Button.Group>
                         <Button secondary type='button' onClick={hideModal} large>
-                            {is_buy_order_for_user ? (
-                                <Localize i18n_default_text="I haven't paid yet" />
-                            ) : (
-                                <Localize i18n_default_text='Cancel' />
-                            )}
+                            <Localize i18n_default_text='Go Back' />
                         </Button>
                         <Button
-                            is_disabled={!is_checkbox_checked}
+                            is_disabled={document_file.files?.length === 0}
                             primary
                             large
                             onClick={() => {
+                                sendbird_store.sendFile(document_file.files[0]);
                                 hideModal();
-                                setIsCheckboxChecked(false);
-                                order_store.confirmOrderRequest(id, is_buy_order_for_user);
+                                order_store.confirmOrderRequest(id, true);
                             }}
                         >
-                            {is_buy_order_for_user ? (
-                                <Localize i18n_default_text='Confirm' />
-                            ) : (
-                                <Localize
-                                    i18n_default_text='Release {{amount}} {{currency}}'
-                                    values={{
-                                        amount: amount_display,
-                                        currency: account_currency,
-                                    }}
-                                />
-                            )}
+                            <Localize i18n_default_text='Confirm' />
                         </Button>
                     </Button.Group>
                 </Modal.Footer>

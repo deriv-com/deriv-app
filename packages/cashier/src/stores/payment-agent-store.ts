@@ -14,6 +14,7 @@ import {
     TPaymentAgentWithdrawRequest,
     TExtendedPaymentAgentList,
     TSupportedBank,
+    TPartialPaymentAgentList,
     TTarget,
     TServerError,
 } from '../types';
@@ -76,11 +77,11 @@ export default class PaymentAgentStore {
         this.WS = WS;
     }
 
-    list: Array<TPaymentAgent> = [];
+    list: Array<TPartialPaymentAgentList> = [];
     agents: Array<TAgent> = [];
     container = Constants.containers.payment_agent;
     error = new ErrorStore();
-    filtered_list: Array<TPaymentAgent> = [];
+    filtered_list: Array<TPartialPaymentAgentList> = [];
     is_name_selected = true;
     is_search_loading = false;
     is_withdraw = false;
@@ -153,7 +154,7 @@ export default class PaymentAgentStore {
         );
     }
 
-    setList(pa_list: TPaymentAgent) {
+    setList(pa_list: TPartialPaymentAgentList) {
         this.list.push(pa_list);
     }
 
@@ -232,7 +233,7 @@ export default class PaymentAgentStore {
         if (this.search_term) {
             this.filtered_list = this.filtered_list.filter(payment_agent => {
                 return payment_agent.name?.toLocaleLowerCase().includes(this.search_term.toLocaleLowerCase());
-            }) as IObservableArray<TPaymentAgent>;
+            }) as IObservableArray<TPartialPaymentAgentList>;
 
             if (this.filtered_list.length === 0) {
                 this.setPaymentAgentSearchWarning(true);

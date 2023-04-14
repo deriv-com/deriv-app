@@ -51,6 +51,7 @@ const DTraderHeader = ({
     is_switching,
     toggleReadyToDepositModal,
     has_any_real_account,
+    is_dark_mode,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -112,7 +113,7 @@ const DTraderHeader = ({
                         )}
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <TradersHubHomeButton />
+                        <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                     </DesktopWrapper>
                     <MenuLinks />
                 </div>
@@ -204,6 +205,7 @@ DTraderHeader.propTypes = {
     is_switching: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
+    is_dark_mode: PropTypes.bool,
 };
 
 export default connect(({ client, common, ui, notifications }) => ({
@@ -240,4 +242,5 @@ export default connect(({ client, common, ui, notifications }) => ({
     is_switching: client.is_switching,
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     has_any_real_account: client.has_any_real_account,
+    is_dark_mode: ui.is_dark_mode_on,
 }))(withRouter(DTraderHeader));

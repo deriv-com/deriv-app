@@ -266,7 +266,7 @@ const TickContract = RawMarkerMaker(
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
         if (start && is_accumulators_trade_without_contract) {
-            // draw 2 barriers with a shade in-between only
+            // draw 2 barriers with a shade between them for ACCU trade without contracts
             draw_shaded_barriers({
                 ctx,
                 start_left: start.left,
@@ -279,25 +279,24 @@ const TickContract = RawMarkerMaker(
             return;
         }
 
-        if (
-            barrier &&
-            barrier_2 &&
-            ((previous_tick && is_accumulators_contract && is_in_contract_details) || (!contract_type && start))
-        ) {
-            // draw 2 barriers with a shade between them for an ongoing ACCU contract:
-            draw_shaded_barriers({
-                ctx,
-                start_left: is_in_contract_details ? previous_tick.left : start.left,
-                fill_color: 'rgba(0, 167, 158, 0.08)',
-                // we should show barrier lines in contract details even when they are outside of the chart:
-                has_persistent_borders: is_in_contract_details,
-                stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                top: barrier,
-                bottom: barrier_2,
-                scale,
-            });
+        if (is_accumulators_contract) {
+            if (barrier && barrier_2 && previous_tick && (status === 'open' || is_in_contract_details)) {
+                // draw 2 barriers with a shade between them for an open ACCU contract
+                draw_shaded_barriers({
+                    ctx,
+                    start_left: previous_tick.left,
+                    fill_color: 'rgba(0, 167, 158, 0.08)',
+                    // we should show barrier lines in contract details even when they are outside of the chart:
+                    has_persistent_borders: is_in_contract_details,
+                    stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                    top: barrier,
+                    bottom: barrier_2,
+                    scale,
+                });
+            }
+
+            if (is_in_contract_details) return;
         }
-        if (is_in_contract_details) return;
         ctx.restore();
 
         if (draw_start_line) {

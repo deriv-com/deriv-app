@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
@@ -11,8 +11,6 @@ const JurisdictionCard = ({
     account_type,
     type_of_card,
     disabled,
-    card_flip_status,
-    flipCard,
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const is_synthetic = account_type === 'synthetic';
@@ -21,14 +19,14 @@ const JurisdictionCard = ({
     const verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs
         : card_values?.financial_verification_docs;
-    const is_card_flipped = card_flip_status[type_of_card];
+    const [is_card_flipped, setIsCardFlipped] = useState(false);
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
 
     const toggleCardFlip = (event: SyntheticEvent) => {
         event.stopPropagation();
-        flipCard(type_of_card);
+        setIsCardFlipped(!is_card_flipped);
     };
 
     return (

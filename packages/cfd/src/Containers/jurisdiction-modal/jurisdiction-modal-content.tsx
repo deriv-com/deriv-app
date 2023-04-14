@@ -12,8 +12,6 @@ const JurisdictionModalContent = ({
     financial_available_accounts,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
-    card_flip_status,
-    flipCard,
 }: TJurisdictionModalContentProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
@@ -50,8 +48,6 @@ const JurisdictionModalContent = ({
                                 account_type={account_type}
                                 type_of_card={card}
                                 disabled={disableCard(card)}
-                                card_flip_status={card_flip_status}
-                                flipCard={flipCard}
                             />
                         )
                 )}

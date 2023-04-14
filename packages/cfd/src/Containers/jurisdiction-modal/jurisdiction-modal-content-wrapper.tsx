@@ -5,7 +5,7 @@ import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shar
 import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { TJurisdictionCardType, TJurisdictionModalContentWrapperProps } from '../props.types';
+import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 
@@ -31,13 +31,6 @@ const JurisdictionModalContentWrapper = ({
     has_submitted_cfd_personal_details,
 }: TJurisdictionModalContentWrapperProps) => {
     const [checked, setChecked] = React.useState(false);
-    const [card_flip_status, setCardFlipStatus] = React.useState({
-        svg: false,
-        bvi: false,
-        vanuatu: false,
-        labuan: false,
-        maltainvest: false,
-    });
 
     const {
         poi_or_poa_not_submitted,
@@ -54,13 +47,6 @@ const JurisdictionModalContentWrapper = ({
                 fetchAccountSettings();
             }
             setJurisdictionSelectedShortcode('');
-            setCardFlipStatus({
-                svg: false,
-                bvi: false,
-                vanuatu: false,
-                labuan: false,
-                maltainvest: false,
-            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_jurisdiction_modal_visible]);
@@ -166,10 +152,6 @@ const JurisdictionModalContentWrapper = ({
         }
     };
 
-    const flipCard = (card_name: TJurisdictionCardType) => {
-        setCardFlipStatus({ ...card_flip_status, [card_name]: !card_flip_status[card_name] });
-    };
-
     return (
         <React.Fragment>
             <JurisdictionModalContent
@@ -181,8 +163,6 @@ const JurisdictionModalContentWrapper = ({
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
-                card_flip_status={card_flip_status}
-                flipCard={flipCard}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
                 <JurisdictionModalFootNote

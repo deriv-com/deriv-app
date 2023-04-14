@@ -177,8 +177,6 @@ export type TJurisdictionCardProps = {
     account_type: string;
     type_of_card: TJurisdictionCardType;
     disabled: boolean;
-    card_flip_status: TCardFlipStatus;
-    flipCard: (cardName: TJurisdictionCardType) => void;
 };
 
 export type TJurisdictionCardFrontProps = {
@@ -286,8 +284,6 @@ export type TJurisdictionModalContentProps = {
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;
-    card_flip_status: TCardFlipStatus;
-    flipCard: (cardName: TJurisdictionCardType) => void;
 };
 
 export type TJurisdictionModalFootNoteProps = {

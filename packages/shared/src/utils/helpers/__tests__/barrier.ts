@@ -1,4 +1,4 @@
-import { buildBarriersConfig, getAccumulatorBarriers } from '../barrier';
+import { buildBarriersConfig } from '../barrier';
 
 describe('buildBarriersConfig', () => {
     const contract_obj = {

@@ -105,7 +105,7 @@ export default class GeneralStore extends BaseStore {
 
     get is_p2p_enabled(): boolean {
         const { content_flag } = this.root_store.traders_hub;
-        const is_eu = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(content_flag);
+        const is_eu = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
         return this.is_p2p_visible && !is_eu;
     }
@@ -144,7 +144,7 @@ export default class GeneralStore extends BaseStore {
 
         const has_usd_currency = account_list.some(account => account.title === 'USD');
         const has_user_fiat_currency = account_list.some(
-            account => account?.title && account.title !== 'Real' && !isCryptocurrency(account?.title)
+            account => account?.title && account.title !== 'Real' && !isCryptocurrency(account?.title || '')
         );
 
         if (is_p2p_disabled || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
@@ -176,6 +176,7 @@ export default class GeneralStore extends BaseStore {
         account_prompt_dialog.resetIsConfirmed();
 
         this.setLoading(true);
+        // This TS error will be fixed when the constants.js migrated to the TS
         if (!payment_agent.all_payment_agent_list?.paymentagent_list?.list) {
             const agent_list = await payment_agent.getAllPaymentAgentList();
             payment_agent.setAllPaymentAgentList(agent_list);
@@ -188,9 +189,11 @@ export default class GeneralStore extends BaseStore {
         const { account_transfer } = modules.cashier;
 
         if (this.active_container === account_transfer.container) {
-            this.percentage = Number(((amount / Number(account_transfer.selected_from.balance)) * 100).toFixed(0));
+            this.percentage = Number(
+                ((Number(amount) / Number(account_transfer.selected_from.balance)) * 100).toFixed(0)
+            );
         } else {
-            this.percentage = Number(((amount / Number(client.balance)) * 100).toFixed(0));
+            this.percentage = Number(((Number(amount) / Number(client.balance)) * 100).toFixed(0));
         }
         if (!isFinite(this.percentage)) {
             this.percentage = 0;
@@ -368,9 +371,8 @@ export default class GeneralStore extends BaseStore {
 
     accountSwitcherListener() {
         const { client, modules } = this.root_store;
-        const { iframe, payment_agent, general_store } = modules.cashier;
-        const { active_container } = general_store;
-        const container = Constants.map_action[active_container];
+        const { iframe, payment_agent } = modules.cashier;
+        const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
 
         client.setVerificationCode('', container);
         iframe.clearIframe();

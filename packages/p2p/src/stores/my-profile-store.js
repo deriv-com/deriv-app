@@ -912,12 +912,12 @@ export default class MyProfileStore extends BaseStore {
                 if (response.error) this.setIsErrorModalOpen(true);
                 else this.setIsDailyLimitSuccessModalOpen(true);
 
-                general_store.props.removeNotificationByKey({
+                general_store.external_stores.notifications.removeNotificationByKey({
                     key: 'p2p_daily_limit_increase',
                     should_show_again: false,
                 });
 
-                general_store.client.setP2pAdvertiserInfo(false);
+                general_store.external_stores.client.setP2pAdvertiserInfo(false);
             }
         });
     }

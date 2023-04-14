@@ -6,14 +6,11 @@ import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
 
 const JurisdictionCard = ({
-    account_type,
-    disabled,
-    context,
     jurisdiction_selected_shortcode,
-    financial_available_accounts,
     setJurisdictionSelectedShortcode,
-    synthetic_available_accounts,
+    account_type,
     type_of_card,
+    disabled,
     card_flip_status,
     flipCard,
 }: TJurisdictionCardProps) => {

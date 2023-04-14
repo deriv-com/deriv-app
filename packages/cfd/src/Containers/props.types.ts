@@ -173,9 +173,6 @@ export type TCFDPasswordManagerModal = {
 
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
-    context: RootStore;
-    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
-    financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
     type_of_card: TJurisdictionCardType;
@@ -281,7 +278,6 @@ export type TJurisdictionModalProps = {
 };
 
 export type TJurisdictionModalContentProps = {
-    context: RootStore;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;

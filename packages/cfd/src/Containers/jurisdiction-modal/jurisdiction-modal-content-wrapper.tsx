@@ -179,7 +179,6 @@ const JurisdictionModalContentWrapper = ({
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
                 card_flip_status={card_flip_status}

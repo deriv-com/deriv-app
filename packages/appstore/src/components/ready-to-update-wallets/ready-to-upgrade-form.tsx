@@ -1,17 +1,18 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import WalletsImage from 'Assets/svgs/wallets';
-import UpgradeInformationList from './upgrade-info-list';
+import getUpgradeInformationList from 'Constants/upgrade-info-lists-config';
 
 export type TReadyToUpgradeForm = {
     is_eu: boolean;
 };
 
 const ReadyToUpgradeForm = ({ is_eu }: TReadyToUpgradeForm) => {
-    const form_line_height = isMobile() ? 'm' : 'l';
     const text_body_size = isMobile() ? 'xs' : 's';
+    const text_info_size = isMobile() ? 'xxs' : 'xs';
+    const form_line_height = isMobile() ? 'm' : 'l';
     return (
         <React.Fragment>
             <WalletsImage image='ready_to_update_wallets_image' className='wallet-wrapper--icon' />
@@ -36,7 +37,16 @@ const ReadyToUpgradeForm = ({ is_eu }: TReadyToUpgradeForm) => {
                 </Text>
             </div>
             <div className='wallet-wrapper--info-section'>
-                <UpgradeInformationList is_eu={is_eu} />
+                {getUpgradeInformationList({ is_eu, text_info_size, form_line_height })
+                    .filter(info => info.visiblity)
+                    .map(({ name, content }) => (
+                        <div className='wallet-wrapper--info-section__text' key={name}>
+                            <Icon icon='ic-info-blue' />
+                            <Text size={text_info_size} line_height={form_line_height}>
+                                {content}
+                            </Text>
+                        </div>
+                    ))}
             </div>
         </React.Fragment>
     );

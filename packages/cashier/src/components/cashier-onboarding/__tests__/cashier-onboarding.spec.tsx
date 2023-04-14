@@ -13,6 +13,7 @@ jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),
         usePaymentAgentList: jest.fn(() => ({ data, isLoading })),
+        useIsP2PEnabled: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });
 
@@ -34,6 +35,8 @@ describe('<CashierOnboarding />', () => {
                 is_landing_company_loaded: true,
                 currency: 'USD',
                 available_crypto_currencies: ['BTC', 'ETH'],
+                account_list: [],
+                is_crypto: jest.fn(),
             },
             common: {
                 is_from_derivgo: false,
@@ -52,8 +55,6 @@ describe('<CashierOnboarding />', () => {
                         setIsCashierOnboarding: jest.fn(),
                         setIsDeposit: jest.fn(),
                         setShouldShowAllAvailableCurrencies: jest.fn(),
-                        showP2pInCashierOnboarding: jest.fn(),
-                        show_p2p_in_cashier_onboarding: true,
                         has_set_currency: true,
                     },
                     account_prompt_dialog: {

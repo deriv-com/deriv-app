@@ -99,42 +99,6 @@ describe('GeneralStore', () => {
         expect(general_store.is_crypto).toBeTruthy();
     });
 
-    it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
-
-    it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        expect(general_store.is_p2p_enabled).toBeTruthy();
-    });
-
-    it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        general_store.root_store.traders_hub.content_flag = ContentFlag.EU_REAL;
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
-
-    // TODO: fix this test once website_status is called after authorized card has been released
-    // it('should show p2p in cashier onboarding if the user account is not virtual, and he has USD account', async () => {
-    //     await general_store.showP2pInCashierOnboarding();
-
-    //     expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
-    // });
-
-    it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has no account with USD currency', async () => {
-        general_store.root_store.client.account_list = [{ title: 'EUR' }];
-        await general_store.showP2pInCashierOnboarding();
-
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
-    });
-
-    it('should not show p2p in cashier onboarding if the user account is not virtual, and has no fiat currency accounts', async () => {
-        general_store.root_store.client.account_list = [{ title: 'BTC' }];
-        await general_store.showP2pInCashierOnboarding();
-
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
-    });
-
     it('should set has_set_currency equal to true if the client has real USD account', () => {
         general_store.setHasSetCurrency();
 
@@ -240,28 +204,6 @@ describe('GeneralStore', () => {
         expect(spyOnSwitchAccount).toHaveBeenCalledWith(general_store.accountSwitcherListener);
     });
 
-    it('should perform proper init invocation when is_logged_in is equal to true', async () => {
-        const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
-        general_store.root_store.client.is_logged_in = true;
-        general_store.init();
-
-        await waitFor(() => {
-            expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
-        });
-
-        // Don't remove eslint here as WS.wait is expected to be called 3 times from init and checkP2pStatus
-        // eslint-disable-next-line testing-library/await-async-utils
-        expect(general_store.WS.wait).toHaveBeenCalledTimes(3);
-        expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
-    });
-
-    it('should set is_p2p_visible equal to false, if there is a virtual account', () => {
-        general_store.root_store.client.is_virtual = true;
-        general_store.checkP2pStatus();
-
-        expect(general_store.is_p2p_visible).toBeFalsy();
-    });
-
     it('should not call setPaymentAgentList method if is_populating_values is equal to true when onMountCommon was called', async () => {
         general_store.is_populating_values = true;
         await general_store.onMountCommon(false);
@@ -340,33 +282,6 @@ describe('GeneralStore', () => {
         general_store.setCashierTabIndex(1);
 
         expect(general_store.cashier_route_tab_index).toBe(1);
-    });
-
-    it('should set notification count', () => {
-        general_store.setNotificationCount(1);
-
-        expect(general_store.p2p_notification_count).toBe(1);
-    });
-
-    it('should set p2p visibility equal to true', () => {
-        general_store.setIsP2pVisible(true);
-
-        expect(general_store.is_p2p_visible).toBeTruthy();
-    });
-
-    it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-            location: {
-                pathname: routes.cashier_p2p,
-                hostname: 'localhost.binary.sx',
-            },
-        }));
-        general_store.setIsP2pVisible(false);
-
-        expect(general_store.is_p2p_visible).toBeFalsy();
-        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
 
     it('should return is_cashier_locked equal to false if account_status is undefined', () => {

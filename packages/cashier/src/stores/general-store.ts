@@ -1,5 +1,5 @@
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
-import { isCryptocurrency, isEmptyObject, routes, ContentFlag, CookieStorage } from '@deriv/shared';
+import { isCryptocurrency, routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
@@ -13,7 +13,6 @@ export default class GeneralStore extends BaseStore {
             calculatePercentage: action.bound,
             cashier_route_tab_index: observable,
             changeSetCurrencyModalTitle: action.bound,
-            checkP2pStatus: action.bound,
             continueRoute: action.bound,
             deposit_target: observable,
             has_set_currency: observable,
@@ -23,14 +22,10 @@ export default class GeneralStore extends BaseStore {
             is_crypto: computed,
             is_deposit: observable,
             is_loading: observable,
-            is_p2p_enabled: computed,
-            is_p2p_visible: observable,
             is_system_maintenance: computed,
             onMountCashierOnboarding: action.bound,
             onMountCommon: action.bound,
             onRemount: observable,
-            p2p_notification_count: observable,
-            p2p_unseen_notifications: computed,
             percentage: observable,
             percentageSelectorSelectionStatus: action.bound,
             payment_agent: observable,
@@ -41,16 +36,12 @@ export default class GeneralStore extends BaseStore {
             setHasSetCurrency: action.bound,
             setIsCashierOnboarding: action.bound,
             setIsDeposit: action.bound,
-            setIsP2pVisible: action.bound,
             setLoading: action.bound,
-            setNotificationCount: action.bound,
             setOnRemount: action.bound,
             setShouldShowAllAvailableCurrencies: action.bound,
             should_percentage_reset: observable,
             should_set_currency_modal_title_change: observable,
             should_show_all_available_currencies: observable,
-            show_p2p_in_cashier_onboarding: observable,
-            showP2pInCashierOnboarding: action.bound,
         });
 
         when(
@@ -83,16 +74,13 @@ export default class GeneralStore extends BaseStore {
     is_cashier_onboarding = true;
     is_deposit = false;
     is_loading = false;
-    is_p2p_visible = false;
     is_populating_values = false;
     onRemount: VoidFunction = () => this;
-    p2p_notification_count = 0;
     percentage = 0;
     payment_agent: PaymentAgentStore | null = null;
     should_percentage_reset = false;
     should_set_currency_modal_title_change = false;
     should_show_all_available_currencies = false;
-    show_p2p_in_cashier_onboarding = false;
 
     setOnRemount(func: VoidFunction): void {
         this.onRemount = func;
@@ -101,57 +89,6 @@ export default class GeneralStore extends BaseStore {
     get is_crypto(): boolean {
         const { currency } = this.root_store.client;
         return !!currency && isCryptocurrency(currency);
-    }
-
-    get is_p2p_enabled(): boolean {
-        const { content_flag } = this.root_store.traders_hub;
-        const is_eu = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
-
-        return this.is_p2p_visible && !is_eu;
-    }
-
-    /**
-     * Gets the notifications from local storage, within p2p_settings, where it checks which notification has
-     * been seen. The number of unseen notifications is displayed in vertical tab, notifications count, for P2P.
-     *
-     * @returns {number} Notifications that have not been seen by the user.
-     */
-    get p2p_unseen_notifications(): number {
-        const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');
-        const local_storage_settings = p2p_settings[this.root_store.client.loginid || ''];
-
-        if (isEmptyObject(local_storage_settings)) {
-            return 0;
-        }
-
-        const unseen_notifications = local_storage_settings.notifications.filter(
-            (notification: { is_seen: boolean }) => !notification.is_seen
-        );
-
-        return unseen_notifications.length;
-    }
-
-    async showP2pInCashierOnboarding(): Promise<void> {
-        const { account_list, is_virtual } = this.root_store.client;
-
-        const authorize = this.WS.wait('authorize');
-        const website_status = this.WS.wait('website_status');
-
-        const supported_currencies = (await website_status)?.website_status?.p2p_config?.supported_currencies;
-        const currency = (await authorize)?.authorize?.currency?.toLowerCase();
-
-        const is_p2p_disabled = !supported_currencies?.includes(currency as string);
-
-        const has_usd_currency = account_list.some(account => account.title === 'USD');
-        const has_user_fiat_currency = account_list.some(
-            account => account?.title && account.title !== 'Real' && !isCryptocurrency(account?.title || '')
-        );
-
-        if (is_p2p_disabled || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
-            this.show_p2p_in_cashier_onboarding = false;
-        } else {
-            this.show_p2p_in_cashier_onboarding = true;
-        }
     }
 
     setHasSetCurrency(): void {
@@ -228,7 +165,6 @@ export default class GeneralStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
-    // Initialize P2P attributes on app load without mounting the entire cashier
     async init() {
         if (this.root_store.modules.cashier) {
             const {
@@ -242,7 +178,6 @@ export default class GeneralStore extends BaseStore {
 
             if (is_logged_in) {
                 if (!switched) {
-                    this.checkP2pStatus();
                     payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
@@ -252,23 +187,10 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    async checkP2pStatus(): Promise<void> {
-        const authorize = this.WS.wait('authorize');
-        const website_status = this.WS.wait('website_status');
-
-        const supported_currencies = (await website_status)?.website_status?.p2p_config?.supported_currencies;
-        const currency = (await authorize)?.authorize?.currency?.toLowerCase();
-
-        const is_p2p_disabled = !supported_currencies?.includes(currency as string);
-        this.setIsP2pVisible(!(is_p2p_disabled || this.root_store.client.is_virtual));
-    }
-
     async onMountCommon(should_remount?: boolean) {
         const { client, common, modules } = this.root_store;
         const { is_from_derivgo, routeTo } = common;
         const { account_transfer, onramp, payment_agent, transaction_history } = modules.cashier;
-
-        this.setNotificationCount(this.p2p_unseen_notifications);
 
         if (client.is_logged_in) {
             // avoid calling this again
@@ -313,22 +235,6 @@ export default class GeneralStore extends BaseStore {
 
     setCashierTabIndex(index: number): void {
         this.cashier_route_tab_index = index;
-    }
-
-    setNotificationCount(notification_count: number): void {
-        this.p2p_notification_count = notification_count;
-    }
-
-    setIsP2pVisible(is_p2p_visible: boolean): void {
-        this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
-            this.root_store.common.routeTo(
-                this.root_store.modules.cashier.account_prompt_dialog.last_location ?? routes.cashier_deposit
-            );
-        }
-
-        const p2p_cookie = new (CookieStorage as any)('is_p2p_disabled');
-        p2p_cookie.set('is_p2p_disabled', !is_p2p_visible);
     }
 
     get is_cashier_locked(): boolean {

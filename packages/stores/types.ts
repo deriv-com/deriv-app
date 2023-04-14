@@ -180,7 +180,7 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
-    is_crypto: boolean;
+    is_crypto: (currency?: string) => boolean;
 };
 
 type TCommonStoreError = {

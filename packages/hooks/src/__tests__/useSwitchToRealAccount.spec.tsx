@@ -19,11 +19,7 @@ const TestComponent = () => {
 
 describe('useSwitchToRealAccount', () => {
     test('should not switch if is already real account', async () => {
-        const mock = mockStore({
-            client: {
-                is_virtual: false,
-            },
-        });
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>
@@ -41,12 +37,11 @@ describe('useSwitchToRealAccount', () => {
         expect(result.current.client.is_virtual).toBe(false);
     });
 
-    test('should not switch if doesnt have real account', () => {
+    test("should not switch if doesn't have real account", () => {
         const history = createMemoryHistory();
         const mock = mockStore({
             client: {
                 is_virtual: true,
-                has_active_real_account: false,
             },
         });
 

@@ -16,3 +16,6 @@ export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useSwitchToRealAccount } from './useSwitchToRealAccount';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
 export { default as useHasSvgAccount } from './useHasSvgAccount';
+export { default as useIsP2PEnabled } from './useIsP2PEnabled';
+export { default as useHasFiatCurrency } from './useHasFiatCurrency';
+export { default as useHasUSDCurrency } from './useHasUSDCurrency';

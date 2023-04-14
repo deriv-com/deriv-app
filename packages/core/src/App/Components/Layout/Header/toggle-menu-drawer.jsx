@@ -6,6 +6,7 @@ import {
     useOnrampVisible,
     useAccountTransferVisible,
     useIsRealAccountNeededForCashier,
+    useIsP2PEnabled,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
@@ -184,13 +185,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_eu,
     } = client;
     const { cashier } = modules;
-    const { general_store, payment_agent } = cashier;
-    const { is_p2p_enabled } = general_store;
+    const { payment_agent } = cashier;
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
-    const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const is_onramp_visible = useOnrampVisible();
+    const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
+    const { data: is_p2p_enabled } = useIsP2PEnabled();
+
     const liveChat = useLiveChat();
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);

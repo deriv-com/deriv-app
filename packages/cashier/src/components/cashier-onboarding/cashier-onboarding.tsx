@@ -39,6 +39,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         show_p2p_in_cashier_onboarding,
     } = general_store;
     const {
+        app_contents_scroll_ref,
         is_dark_mode_on,
         is_mobile,
         openRealAccountSignup,
@@ -51,13 +52,13 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = React.useMemo(
-        () => Object.values(accounts).some(acc_settings => isCryptocurrency(acc_settings.currency)),
+        () => Object.values(accounts).some(acc_settings => isCryptocurrency(acc_settings.currency || '')),
         [accounts]
     );
     const has_fiat_account = React.useMemo(
         () =>
             Object.values(accounts).some(
-                acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency)
+                acc_settings => !acc_settings.is_virtual && !isCryptocurrency(acc_settings.currency || '')
             ),
         [accounts]
     );
@@ -76,6 +77,12 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        return () => {
+            if (app_contents_scroll_ref.current) app_contents_scroll_ref.current.scrollTop = 0;
+        };
+    }, [app_contents_scroll_ref]);
 
     React.useEffect(() => {
         if (

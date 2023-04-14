@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -9,8 +8,18 @@ import {
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
-import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
+import {
+    TTradingPlatformAvailableAccount,
+    TExistingData,
+    TJurisdictionCardSection,
+    TCardFlipStatus,
+    TJurisdictionCardSectionTitleIndicators,
+    TClickableDescription,
+    TJurisdictionCardItems,
+    TJurisdictionCardItemVerification,
+} from '../Components/props.types';
 import RootStore from '../Stores/index';
+import { SyntheticEvent } from 'react';
 
 export type TCFDPersonalDetailsContainerProps = {
     account_settings: GetSettings;
@@ -79,13 +88,12 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = RouteComponentProps & {
+export type TCFDResetPasswordModal = {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     context?: RootStore;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
-    is_pre_appstore: boolean;
     is_logged_in: boolean;
     platform: CFD_Platform;
     setCFDPasswordResetModal: (value: boolean) => void;
@@ -170,9 +178,40 @@ export type TJurisdictionCardProps = {
     financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
-    type_of_card: string;
+    type_of_card: TJurisdictionCardType;
     disabled: boolean;
+    card_flip_status: TCardFlipStatus;
+    flipCard: (cardName: TJurisdictionCardType) => void;
 };
+
+export type TJurisdictionCardFrontProps = {
+    card_classname: string;
+    toggleCardFlip: (event: SyntheticEvent) => void;
+    card_values: TJurisdictionCardItems;
+    card_data: TJurisdictionCardSection[];
+};
+
+export type TJurisdictionCardBackProps = {
+    card_classname: string;
+    toggleCardFlip: (event: SyntheticEvent) => void;
+    verification_docs: TJurisdictionCardItemVerification | undefined;
+};
+
+export type TJurisdictionClickableDescriptionProps = {
+    clickable_description: Array<TClickableDescription>;
+    toggleCardFlip: (event: SyntheticEvent) => void;
+};
+
+export type TJurisdictionTitleIndicatorProps = {
+    title_indicators: TJurisdictionCardSectionTitleIndicators;
+};
+
+export type TJurisdictionCardSectionProps = {
+    card_section_item: TJurisdictionCardSection;
+    toggleCardFlip: (event: SyntheticEvent) => void;
+};
+
+export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;
@@ -239,6 +278,8 @@ export type TJurisdictionModalContentProps = {
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;
+    card_flip_status: TCardFlipStatus;
+    flipCard: (cardName: TJurisdictionCardType) => void;
 };
 
 export type TJurisdictionModalFootNoteProps = {

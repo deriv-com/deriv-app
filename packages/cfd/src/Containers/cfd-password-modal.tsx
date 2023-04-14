@@ -23,6 +23,7 @@ import {
     getLegalEntityName,
     isDesktop,
     isMobile,
+    Jurisdiction,
     routes,
     validLength,
     validPassword,
@@ -55,7 +56,6 @@ type TIconTypeProps = {
     platform: string;
     type?: string;
     show_eu_related_content: boolean;
-    is_pre_appstore: boolean;
 };
 
 type TCFDPasswordFormReusedProps = {
@@ -131,7 +131,6 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     is_dxtrade_allowed: boolean;
-    is_pre_appstore: boolean;
     jurisdiction_selected_shortcode: string;
     platform: string;
     has_cfd_error: boolean;
@@ -153,7 +152,6 @@ const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
     platform,
-    context,
 }: TPasswordModalHeaderProps) => {
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
@@ -187,18 +185,19 @@ const ReviewMessageForMT5 = ({
         return (
             <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
         );
-    } else if (['bvi', 'vanuatu'].includes(jurisdiction_selected_shortcode)) {
+    } else if ([Jurisdiction.BVI, Jurisdiction.VANUATU].includes(jurisdiction_selected_shortcode)) {
         if (manual_status === 'pending') {
             return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
         }
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
-    } else if (['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode)) {
+    } else if ([Jurisdiction.LABUAN, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     }
     return null;
 };
 
-const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_content }: TIconTypeProps) => {
+const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
+    const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         switch (type) {
             case 'all':
@@ -210,7 +209,7 @@ const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_
             default:
                 return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
         }
-    } else if (is_pre_appstore) {
+    } else if (traders_hub) {
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
@@ -222,7 +221,7 @@ const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_
             default:
                 return <TradingPlatformIcon icon='Financial' size={128} />;
         }
-    } else
+    } else {
         switch (type) {
             case 'synthetic':
                 return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
@@ -234,6 +233,7 @@ const IconType = React.memo(({ is_pre_appstore, platform, type, show_eu_related_
             default:
                 return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
         }
+    }
 });
 IconType.displayName = 'IconType';
 
@@ -627,7 +627,6 @@ const CFDPasswordModal = ({
     getAccountStatus,
     history,
     is_logged_in,
-    is_pre_appstore,
     context,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
@@ -663,15 +662,15 @@ const CFDPasswordModal = ({
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
     const getVerificationStatus = () => {
-        if (jurisdiction_selected_shortcode === 'svg') {
+        if (jurisdiction_selected_shortcode === Jurisdiction.SVG) {
             setIsSelectedMT5Verified(true);
-        } else if (jurisdiction_selected_shortcode === 'bvi') {
+        } else if (jurisdiction_selected_shortcode === Jurisdiction.BVI) {
             setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
-        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
+        } else if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
             setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
-        } else if (jurisdiction_selected_shortcode === 'labuan') {
+        } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
             setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
-        } else if (jurisdiction_selected_shortcode === 'maltainvest') {
+        } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
             setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
         }
     };
@@ -813,7 +812,7 @@ const CFDPasswordModal = ({
             ].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== 'maltainvest' ? 'MT5' : '';
+        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
 
         if (category === 'real') {
             return (
@@ -937,7 +936,6 @@ const CFDPasswordModal = ({
                 message={getSubmitText()}
                 icon={
                     <IconType
-                        is_pre_appstore={is_pre_appstore}
                         platform={platform}
                         type={account_type.type}
                         show_eu_related_content={show_eu_related_content}
@@ -991,5 +989,4 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     mt5_login_list: client.mt5_login_list,
     updateAccountStatus: client.updateAccountStatus,
     show_eu_related_content: traders_hub.show_eu_related_content,
-    is_pre_appstore: client.is_pre_appstore,
 }))(withRouter(CFDPasswordModal));

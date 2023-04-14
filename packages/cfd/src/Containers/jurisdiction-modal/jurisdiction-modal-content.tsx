@@ -1,6 +1,7 @@
 import React from 'react';
 import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCard from './jurisdiction-card';
+import { Jurisdiction } from '@deriv/shared';
 
 const JurisdictionModalContent = ({
     account_type,
@@ -12,6 +13,8 @@ const JurisdictionModalContent = ({
     context,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
+    card_flip_status,
+    flipCard,
 }: TJurisdictionModalContentProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
@@ -28,7 +31,13 @@ const JurisdictionModalContent = ({
             ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
             : real_financial_accounts_existing_data?.some(account => account.landing_company_short === type_of_card);
     };
-    const jurisdiction_cards_array = ['svg', 'bvi', 'vanuatu', 'labuan', 'maltainvest'];
+    const jurisdiction_cards_array = [
+        Jurisdiction.SVG,
+        Jurisdiction.BVI,
+        Jurisdiction.VANUATU,
+        Jurisdiction.LABUAN,
+        Jurisdiction.MALTA_INVEST,
+    ];
     return (
         <React.Fragment>
             <div data-testid='dt-jurisdiction-modal-content' className={`${card_classname}__wrapper`}>
@@ -45,6 +54,8 @@ const JurisdictionModalContent = ({
                                 financial_available_accounts={financial_available_accounts}
                                 account_type={account_type}
                                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                                card_flip_status={card_flip_status}
+                                flipCard={flipCard}
                             />
                         )
                 )}

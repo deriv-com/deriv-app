@@ -4,8 +4,8 @@ import { localize } from '@deriv/translations';
 import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
-import { TJurisdictionModalProps } from '../props.types';
+import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
+import { TJurisdictionCardType, TJurisdictionModalProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 
@@ -33,6 +33,13 @@ const JurisdictionModal = ({
     has_submitted_cfd_personal_details,
 }: TJurisdictionModalProps) => {
     const [checked, setChecked] = React.useState(false);
+    const [card_flip_status, setCardFlipStatus] = React.useState({
+        svg: false,
+        bvi: false,
+        vanuatu: false,
+        labuan: false,
+        maltainvest: false,
+    });
 
     const {
         poi_or_poa_not_submitted,
@@ -49,6 +56,13 @@ const JurisdictionModal = ({
                 fetchAccountSettings();
             }
             setJurisdictionSelectedShortcode('');
+            setCardFlipStatus({
+                svg: false,
+                bvi: false,
+                vanuatu: false,
+                labuan: false,
+                maltainvest: false,
+            });
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,16 +91,16 @@ const JurisdictionModal = ({
     );
 
     const modal_title = show_eu_related_content
-        ? localize('Jurisdiction for your Deriv MT5 CFDs account')
-        : localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
+        ? localize('Choose a jurisdiction for your Deriv MT5 CFDs account')
+        : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
               account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
           });
 
-    const is_svg_selected = jurisdiction_selected_shortcode === 'svg';
-    const is_bvi_selected = jurisdiction_selected_shortcode === 'bvi';
-    const is_vanuatu_selected = jurisdiction_selected_shortcode === 'vanuatu';
-    const is_labuan_selected = jurisdiction_selected_shortcode === 'labuan';
-    const is_maltainvest_selected = jurisdiction_selected_shortcode === 'maltainvest';
+    const is_svg_selected = jurisdiction_selected_shortcode === Jurisdiction.SVG;
+    const is_bvi_selected = jurisdiction_selected_shortcode === Jurisdiction.BVI;
+    const is_vanuatu_selected = jurisdiction_selected_shortcode === Jurisdiction.VANUATU;
+    const is_labuan_selected = jurisdiction_selected_shortcode === Jurisdiction.LABUAN;
+    const is_maltainvest_selected = jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
 
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
@@ -160,6 +174,11 @@ const JurisdictionModal = ({
             }
         }
     };
+
+    const flipCard = (card_name: TJurisdictionCardType) => {
+        setCardFlipStatus({ ...card_flip_status, [card_name]: !card_flip_status[card_name] });
+    };
+
     const ModalContent = () => (
         <React.Fragment>
             <JurisdictionModalContent
@@ -172,6 +191,8 @@ const JurisdictionModal = ({
                 context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
+                card_flip_status={card_flip_status}
+                flipCard={flipCard}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
                 <JurisdictionModalFootNote

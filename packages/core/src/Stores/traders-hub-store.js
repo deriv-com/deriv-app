@@ -74,6 +74,7 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             is_eu_selected: computed,
             is_real: computed,
+            is_low_risk_cr_eu_real: computed,
             is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
@@ -259,7 +260,7 @@ export default class TradersHubStore extends BaseStore {
         const { is_logged_in, landing_companies, residence } = this.root_store.client;
         const { financial_company, gaming_company } = landing_companies;
 
-        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
+        //this is a conditional check for countries like Australia/Norway which fulfills one of these following conditions
         const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
 
         if (!is_logged_in) return '';
@@ -292,6 +293,10 @@ export default class TradersHubStore extends BaseStore {
     get show_eu_related_content() {
         const eu_related = [ContentFlag.EU_DEMO, ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU];
         return eu_related.includes(this.content_flag);
+    }
+
+    get is_low_risk_cr_eu_real() {
+        return [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(this.content_flag);
     }
 
     getAvailablePlatforms() {

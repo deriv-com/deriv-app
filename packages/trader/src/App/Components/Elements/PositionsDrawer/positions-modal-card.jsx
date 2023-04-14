@@ -258,7 +258,7 @@ const PositionsModalCard = ({
                             {localize('Entry spot:')}
                         </Text>
                         <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                            <Money amount={contract_info.entry_spot} currency={currency} />
+                            <Money amount={contract_info.entry_spot} />
                         </Text>
                     </div>
                     <div className='positions-modal-card__payout-price'>
@@ -266,7 +266,7 @@ const PositionsModalCard = ({
                             {localize('Strike:')}
                         </Text>
                         <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                            <Money amount={contract_info.barrier} currency={currency} />
+                            <Money amount={contract_info.barrier} />
                         </Text>
                     </div>
                 </div>

@@ -11,6 +11,11 @@ import CashierProviders from '../../../cashier-providers';
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),
+        usePaymentAgentTransferVisible: jest.fn(() => ({
+            data: true,
+            isLoading: false,
+            isSuccess: true,
+        })),
         useIsP2PEnabled: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });
@@ -23,15 +28,6 @@ jest.mock('@deriv/components', () => {
         Loading: jest.fn(() => 'mockedLoading'),
     };
 });
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    usePaymentAgentTransferVisible: jest.fn(() => ({
-        data: true,
-        isLoading: false,
-        isSuccess: true,
-    })),
-}));
 
 jest.mock('@deriv/shared', () => {
     const original_module = jest.requireActual('@deriv/shared');

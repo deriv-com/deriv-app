@@ -46,7 +46,8 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         toggleSetCurrencyModal,
     } = ui;
     const { shouldNavigateAfterPrompt } = account_prompt_dialog;
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const { data: is_p2p_enabled, isLoading: is_p2p_enabled_loading } = useIsP2PEnabled();
+
     const has_usd_currency = useHasUSDCurrency();
 
     const history = useHistory();
@@ -172,7 +173,13 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         return options;
     };
 
-    if (is_switching || Object.keys(accounts).length === 0 || !is_landing_company_loaded || is_loading)
+    if (
+        is_switching ||
+        Object.keys(accounts).length === 0 ||
+        !is_landing_company_loaded ||
+        is_loading ||
+        is_p2p_enabled_loading
+    )
         return <Loading className='cashier-onboarding__loader' is_fullscreen />;
 
     return (

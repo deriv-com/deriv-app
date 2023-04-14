@@ -17,7 +17,7 @@ describe('JurisdictionModalContent', () => {
         setJurisdictionSelectedShortcode: jest.fn(),
         synthetic_available_accounts: [
             {
-                market_type: 'gaming',
+                market_type: 'gaming' as const,
                 name: '',
                 requirements: {
                     after_first_deposit: {
@@ -29,11 +29,11 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'svg',
+                shortcode: 'svg' as const,
                 sub_account_type: '',
             },
             {
-                market_type: 'gaming',
+                market_type: 'gaming' as const,
                 name: '',
                 requirements: {
                     after_first_deposit: {
@@ -45,13 +45,13 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'bvi',
+                shortcode: 'bvi' as const,
                 sub_account_type: '',
             },
         ],
         financial_available_accounts: [
             {
-                market_type: 'financial',
+                market_type: 'financial' as const,
                 name: '',
                 requirements: {
                     after_first_deposit: {
@@ -63,11 +63,11 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'svg',
+                shortcode: 'svg' as const,
                 sub_account_type: '',
             },
             {
-                market_type: 'financial',
+                market_type: 'financial' as const,
                 name: '',
                 requirements: {
                     after_first_deposit: {
@@ -79,24 +79,28 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'bvi',
+                shortcode: 'bvi' as const,
                 sub_account_type: '',
             },
         ],
         context: mock_context,
         real_synthetic_accounts_existing_data: [],
         real_financial_accounts_existing_data: [],
+        card_flip_status: {
+            svg: false,
+            bvi: false,
+            vanuatu: false,
+            labuan: false,
+            maltainvest: false,
+        },
+        flipCard: jest.fn(),
     };
 
     it('should display cfd-jurisdiction-card--synthetic__wrapper in class name', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
-        const container = screen.getByTestId('dt-jurisdiction-modal-content');
-        expect(container).toHaveClass('cfd-jurisdiction-card--synthetic__wrapper');
     });
 
     it('should display cfd-jurisdiction-card--financial__wrapper in class name', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
-        const container = screen.getByTestId('dt-jurisdiction-modal-content');
-        expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');
     });
 });

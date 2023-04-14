@@ -1,7 +1,6 @@
 ## Changes:
 
-Please include a summary of the change and which issue is fixed below:
--   ...
+Please replace this line with a summary of the change and which issue is fixed below.
 
 ### Testing Steps
 ```gherkin
@@ -13,4 +12,4 @@ Then I am taken to a page with the title `Easy and Free Sign Up Online`
 
 ### Screenshots:
 
-Please include screenshots of the change.
+Please replace this line with some screenshots of the change.

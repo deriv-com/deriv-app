@@ -19,6 +19,7 @@ export const deriv_urls = Object.freeze({
     SMARTTRADER_STAGING: `https://staging-smarttrader.${domain_url}`,
     BINARYBOT_PRODUCTION: `https://bot.${domain_url}`,
     BINARYBOT_STAGING: `https://staging-bot.${domain_url}`,
+    DERIV_TEST_LINK_DOMAIN: 'binary.sx',
 });
 
 export const whatsapp_url = 'https://wa.me/35699578341';

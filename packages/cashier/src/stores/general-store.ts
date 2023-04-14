@@ -29,8 +29,6 @@ export default class GeneralStore extends BaseStore {
             onMountCashierOnboarding: action.bound,
             onMountCommon: action.bound,
             onRemount: observable,
-            p2p_notification_count: observable,
-            p2p_unseen_notifications: computed,
             percentage: observable,
             percentageSelectorSelectionStatus: action.bound,
             payment_agent: observable,
@@ -43,7 +41,6 @@ export default class GeneralStore extends BaseStore {
             setIsDeposit: action.bound,
             setIsP2pVisible: action.bound,
             setLoading: action.bound,
-            setNotificationCount: action.bound,
             setOnRemount: action.bound,
             setShouldShowAllAvailableCurrencies: action.bound,
             should_percentage_reset: observable,
@@ -86,7 +83,6 @@ export default class GeneralStore extends BaseStore {
     is_p2p_visible = false;
     is_populating_values = false;
     onRemount: VoidFunction = () => this;
-    p2p_notification_count = 0;
     percentage = 0;
     payment_agent: PaymentAgentStore | null = null;
     should_percentage_reset = false;
@@ -108,27 +104,6 @@ export default class GeneralStore extends BaseStore {
         const is_eu = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.EU_REAL;
 
         return this.is_p2p_visible && !is_eu;
-    }
-
-    /**
-     * Gets the notifications from local storage, within p2p_settings, where it checks which notification has
-     * been seen. The number of unseen notifications is displayed in vertical tab, notifications count, for P2P.
-     *
-     * @returns {number} Notifications that have not been seen by the user.
-     */
-    get p2p_unseen_notifications(): number {
-        const p2p_settings = JSON.parse(localStorage.getItem('p2p_settings') || '{}');
-        const local_storage_settings = p2p_settings[this.root_store.client.loginid || ''];
-
-        if (isEmptyObject(local_storage_settings)) {
-            return 0;
-        }
-
-        const unseen_notifications = local_storage_settings.notifications.filter(
-            (notification: { is_seen: boolean }) => !notification.is_seen
-        );
-
-        return unseen_notifications.length;
     }
 
     async showP2pInCashierOnboarding(): Promise<void> {
@@ -280,8 +255,6 @@ export default class GeneralStore extends BaseStore {
         const { account_transfer, onramp, payment_agent, payment_agent_transfer, transaction_history } =
             modules.cashier;
 
-        this.setNotificationCount(this.p2p_unseen_notifications);
-
         if (client.is_logged_in) {
             // avoid calling this again
             if (this.is_populating_values) {
@@ -329,10 +302,6 @@ export default class GeneralStore extends BaseStore {
 
     setCashierTabIndex(index: number): void {
         this.cashier_route_tab_index = index;
-    }
-
-    setNotificationCount(notification_count: number): void {
-        this.p2p_notification_count = notification_count;
     }
 
     setIsP2pVisible(is_p2p_visible: boolean): void {

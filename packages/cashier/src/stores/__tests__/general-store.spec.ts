@@ -360,12 +360,6 @@ describe('GeneralStore', () => {
         expect(general_store.cashier_route_tab_index).toBe(1);
     });
 
-    it('should set notification count', () => {
-        general_store.setNotificationCount(1);
-
-        expect(general_store.p2p_notification_count).toBe(1);
-    });
-
     it('should set p2p visibility equal to true', () => {
         general_store.setIsP2pVisible(true);
 

@@ -1616,7 +1616,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);

@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import createBanxaProvider from '../pages/on-ramp/on-ramp-providers';
 import BaseStore from './base-store';
-import type { TWebSocket, TRootStore, TOnRampProvider, TServerError } from 'Types';
+import type { TWebSocket, TRootStore, TOnRampProvider, TServerError } from '../types';
 
 export default class OnRampStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {

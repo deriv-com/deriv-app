@@ -5,7 +5,7 @@ import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => {

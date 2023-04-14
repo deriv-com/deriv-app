@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderPopup from '../on-ramp-provider-popup';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../../types';
 import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({

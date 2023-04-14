@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransferConfirm from '../transfer-confirm';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 const mockRootStore: DeepPartial<TRootStore> = {

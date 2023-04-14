@@ -1,4 +1,4 @@
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore, TWebSocket } from '../../types';
 import CryptoFiatConverterStore from '../crypto-fiat-converter-store';
 
 let crypto_fiat_converter_store: CryptoFiatConverterStore,

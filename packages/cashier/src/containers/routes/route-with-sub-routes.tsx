@@ -11,7 +11,7 @@ import {
 } from '@deriv/shared';
 import { TStores } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { TRouteConfig, TRoute } from 'Types';
+import { TRouteConfig, TRoute } from '../../types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & {
     is_logged_in: TStores['client']['is_logged_in'];

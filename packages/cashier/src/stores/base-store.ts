@@ -1,6 +1,6 @@
 import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
 import { isProduction, isEmptyObject, Validator } from '@deriv/shared';
-import type { TRootStore } from 'Types';
+import type { TRootStore } from '../types';
 
 type TListenerResponse = {
     then: (func: VoidFunction) => void;

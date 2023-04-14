@@ -1,6 +1,6 @@
 import IframeStore from '../iframe-store';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore } from '../../types';
 
 configure({ safeDescriptors: false });
 

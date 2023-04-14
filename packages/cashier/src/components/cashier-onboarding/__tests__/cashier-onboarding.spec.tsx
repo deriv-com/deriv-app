@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboarding from '../cashier-onboarding';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import type { TRootStore } from 'Types';
+import type { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboarding />', () => {

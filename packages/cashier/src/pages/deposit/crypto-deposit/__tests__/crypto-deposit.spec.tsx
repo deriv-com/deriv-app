@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
 import CryptoDeposit from '../crypto-deposit';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../../types';
 import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
-import type { TRootStore } from 'Types';
+import type { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboardingSideNote />', () => {

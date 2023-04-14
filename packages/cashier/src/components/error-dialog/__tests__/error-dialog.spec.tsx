@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 const mockRootStore: DeepPartial<TRootStore> = {

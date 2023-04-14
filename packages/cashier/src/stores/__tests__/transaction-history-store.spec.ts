@@ -1,6 +1,6 @@
 import TransactionHistoryStore from '../transaction-history-store';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore, TWebSocket } from '../../types';
 
 configure({ safeDescriptors: false });
 

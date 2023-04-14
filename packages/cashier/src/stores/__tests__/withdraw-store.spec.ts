@@ -1,7 +1,7 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
-import { TWebSocket, TRootStore } from 'Types';
+import { TWebSocket, TRootStore } from '../../types';
 
 configure({ safeDescriptors: false });
 

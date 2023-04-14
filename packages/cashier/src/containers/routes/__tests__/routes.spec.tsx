@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Routes from '../routes';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('../binary-routes', () => jest.fn(() => 'BinaryRoutes'));

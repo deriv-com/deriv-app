@@ -3,7 +3,7 @@ import { isCryptocurrency, isEmptyObject, routes, ContentFlag, CookieStorage } f
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
-import type { TRootStore, TWebSocket } from 'Types';
+import type { TRootStore, TWebSocket } from '../types';
 
 export default class GeneralStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {

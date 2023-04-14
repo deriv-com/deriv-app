@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
 import { useDepositLocked } from '@deriv/hooks';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/hooks', () => ({

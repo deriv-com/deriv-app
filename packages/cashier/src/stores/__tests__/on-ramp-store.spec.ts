@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react';
 import OnRampStore from '../on-ramp-store';
 import createBanxaProvider from '../../pages/on-ramp/on-ramp-providers';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket, TOnRampProvider } from 'Types';
+import { TRootStore, TWebSocket, TOnRampProvider } from '../../types';
 
 configure({ safeDescriptors: false });
 

@@ -1,5 +1,5 @@
 import { routes } from '@deriv/shared';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../types';
 import AccountPromptDialogStore from '../account-prompt-dialog-store';
 
 describe('AccountPromptDialogStore', () => {

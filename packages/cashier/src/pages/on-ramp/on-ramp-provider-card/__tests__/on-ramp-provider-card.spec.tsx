@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderCard from '../on-ramp-provider-card';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../../types';
 import CashierProviders from '../../../../cashier-providers';
 
 describe('<OnRampProviderCard />', () => {

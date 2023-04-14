@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
 import { useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../../types';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
 

@@ -2,7 +2,7 @@ import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
 import { routes, ContentFlag } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import type { TWebSocket, TRootStore } from 'Types';
+import type { TWebSocket, TRootStore } from '../../types';
 
 configure({ safeDescriptors: false });
 

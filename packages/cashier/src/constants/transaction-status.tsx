@@ -1,7 +1,7 @@
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { TStatusCode, TTransactionType } from 'Types';
+import { TStatusCode, TTransactionType } from '../types';
 
 export const getStatus = (transaction_hash: string, transaction_type: TTransactionType, status_code: TStatusCode) => {
     const formatted_transaction_hash = transaction_hash

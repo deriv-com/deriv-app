@@ -1,7 +1,7 @@
 import AccountTransferStore from '../account-transfer-store';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { configure } from 'mobx';
-import type { TTransferAccount, TRootStore, TWebSocket } from 'Types';
+import type { TTransferAccount, TRootStore, TWebSocket } from '../../types';
 
 configure({ safeDescriptors: false });
 

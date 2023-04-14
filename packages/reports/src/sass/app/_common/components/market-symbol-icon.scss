@@ -35,4 +35,28 @@
         align-items: flex-end;
         margin: 0 0 0.4rem 0.4rem;
     }
+
+    @include mobile {
+        width: 0.8rem;
+
+        &__vanilla {
+            width: 100%;
+            .market-symbol-icon {
+                &-name {
+                    width: 55%;
+
+                    .dc-popover {
+                        padding-right: 1rem;
+                    }
+                }
+                &-category {
+                    width: 45%;
+
+                    .dc-popover {
+                        padding-right: 1rem;
+                    }
+                }
+            }
+        }
+    }
 }

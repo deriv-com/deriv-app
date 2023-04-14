@@ -44,7 +44,7 @@ describe('CFDDownloadContainer', () => {
         expect(screen.getByText(/IcMt5DeviceTablet/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5DevicePhone/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationGoogle/i)).toBeInTheDocument();
-        expect(screen.queryByText(/IcInstallationApple/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/IcInstallationApple/i)).toBeInTheDocument();
         expect(screen.getByText(/IcInstallationHuawei/i)).toBeInTheDocument();
     });
 

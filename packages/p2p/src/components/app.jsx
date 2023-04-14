@@ -132,7 +132,7 @@ const App = () => {
             } else if (order_id !== input_order_id) {
                 // Changing query params
                 history.push({
-                    pathname: routes.cashier_p2p,
+                    pathname: routes.p2p_orders,
                     search: current_query_params.toString(),
                     hash: location.hash,
                 });
@@ -192,12 +192,12 @@ const App = () => {
     return (
         // TODO Wrap components with StoreProvider during routing p2p card
         <Router>
-            <Routes />
             <main className='p2p-cashier'>
                 <Notifications />
                 <ModalManagerContextProvider>
                     <ModalManager />
                     <AppContent order_id={order_id} />
+                    <Routes />
                 </ModalManagerContextProvider>
             </main>
         </Router>

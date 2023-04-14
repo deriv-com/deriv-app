@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { get, init, timePromise } from '../../../cashier/src/utils/server_time';
-import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
+import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
@@ -109,6 +109,7 @@ export default class GeneralStore extends BaseStore {
             user_blocked_until: observable,
             is_high_risk_fully_authed_without_fa: observable,
             is_modal_open: observable,
+            active_tab_route: computed,
             blocked_until_date_time: computed,
             is_active_tab: computed,
             is_barred: computed,
@@ -168,6 +169,19 @@ export default class GeneralStore extends BaseStore {
             updateAdvertiserInfo: action.bound,
             updateP2pNotifications: action.bound,
         });
+    }
+
+    get active_tab_route() {
+        switch (this.active_index) {
+            case 1:
+                return routes.p2p_orders;
+            case 2:
+                return routes.p2p_my_ads;
+            case 3:
+                return routes.p2p_my_profile;
+            default:
+                return routes.cashier_p2p;
+        }
     }
 
     get blocked_until_date_time() {

@@ -35,7 +35,7 @@ const AccumulatorsChartElements = ({
                 accumulators_positions.map(({ contract_info }: TAccuContractType) => (
                     <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
                 ))}
-            {should_highlight_current_spot && !!current_symbol_spot_time && (
+            {should_highlight_current_spot && Boolean(current_symbol_spot_time) && (
                 <CurrentSpotEmphasizer
                     current_spot={current_symbol_spot}
                     current_spot_time={current_symbol_spot_time}

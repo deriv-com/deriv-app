@@ -51,7 +51,7 @@ export const getMtCompanies = (is_eu: boolean) => {
     const all_config = {
         account_type: '',
         leverage: 500,
-        short_title: localize('CFDs'),
+        short_title: is_eu ? localize('CFDs') : localize('All'),
     };
     const synthetic_config = {
         account_type: '',

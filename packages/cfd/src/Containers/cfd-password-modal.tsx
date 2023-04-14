@@ -825,7 +825,7 @@ const CFDPasswordModal = ({
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
                             type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
-                            platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : 'Deriv X',
+                            platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                             category: category_label,
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',

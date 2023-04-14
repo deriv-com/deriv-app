@@ -236,14 +236,13 @@ export default class CFDStore extends BaseStore {
             }
         } else if (platform === CFD_PLATFORMS.CTRADER) {
             if (this.account_type.category === 'demo') this.setJurisdictionSelectedShortcode('svg');
-            const values = {
+            const account_creation_values = {
                 platform,
                 account_type: this.account_type.category,
                 market_type: this.account_type.type,
             };
-            const response = await this.openMT5Account(values);
+            const response = await this.openCFDAccount(account_creation_values);
             if (!response.error) {
-                this.openCFDAccount(values);
                 this.setError(false);
                 this.enableCFDPasswordModal();
                 this.setCFDSuccessDialog(true);

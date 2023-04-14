@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button } from '@deriv/components';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button, useOnClickOutside } from '@deriv/components';
 import './components/wallet-steps.scss';
 import WalletSteps from './components/wallet-steps';
 import { ContentFlag } from '@deriv/shared';
@@ -12,6 +12,8 @@ const RealWalletsUpgrade = () => {
     const { traders_hub } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade, content_flag } = traders_hub;
     const eu_user = content_flag === ContentFlag.EU_REAL;
+
+    const wallets_upgrade_ref = React.useRef<HTMLDivElement>(null);
 
     const [currentStep, setCurrentStep] = React.useState(1);
 
@@ -55,47 +57,60 @@ const RealWalletsUpgrade = () => {
         );
     };
 
+    const validateClickOutside = (e: MouseEvent) => {
+        // anywhere outside the modal should close the modal
+        if (wallets_upgrade_ref.current && !wallets_upgrade_ref.current.contains(e.target as Node)) {
+            return false;
+        }
+        return true;
+    };
+
+    useOnClickOutside(wallets_upgrade_ref, handleClose, validateClickOutside);
+
     return (
         <React.Fragment>
             {is_real_wallets_upgrade_on && (
                 <React.Fragment>
                     <DesktopWrapper>
-                        <Modal
-                            is_open={is_real_wallets_upgrade_on}
-                            toggleModal={handleClose}
-                            height='734px'
-                            width='1200px'
-                            elements_to_ignore={[document.querySelector('.modal-root')]}
-                            title={' '}
-                        >
-                            <Modal.Body>
-                                <StepComponent />
-                            </Modal.Body>
-                            <Modal.Footer has_separator>
-                                <Button
-                                    secondary
-                                    large
-                                    onClick={() => {
-                                        if (currentStep === 1) {
-                                            handleClose();
-                                            return;
-                                        }
-                                        handleBack();
-                                    }}
-                                >
-                                    {currentStep === 1 ? localize('Maybe later') : localize('Back')}
-                                </Button>
-                                <Button
-                                    primary
-                                    large
-                                    onClick={() => {
-                                        handleNext();
-                                    }}
-                                >
-                                    {localize('Next')}
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
+                        <div ref={wallets_upgrade_ref}>
+                            <Modal
+                                is_open={is_real_wallets_upgrade_on}
+                                toggleModal={handleClose}
+                                height='734px'
+                                width='1200px'
+                                should_header_stick_body={false}
+                                has_close_icon
+                                title=' '
+                            >
+                                <Modal.Body>
+                                    <StepComponent />
+                                </Modal.Body>
+                                <Modal.Footer has_separator>
+                                    <Button
+                                        secondary
+                                        large
+                                        onClick={() => {
+                                            if (currentStep === 1) {
+                                                handleClose();
+                                                return;
+                                            }
+                                            handleBack();
+                                        }}
+                                    >
+                                        {currentStep === 1 ? localize('Maybe later') : localize('Back')}
+                                    </Button>
+                                    <Button
+                                        primary
+                                        large
+                                        onClick={() => {
+                                            handleNext();
+                                        }}
+                                    >
+                                        {localize('Next')}
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
+                        </div>
                     </DesktopWrapper>
                     <MobileWrapper>
                         <MobileDialog

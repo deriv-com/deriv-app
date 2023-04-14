@@ -276,6 +276,7 @@ export default class ClientStore extends BaseStore {
             has_mt5_account_with_rejected_poa: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
+            should_show_eu_content: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -296,6 +297,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_pending_proof_of_ownership: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -805,6 +807,11 @@ export default class ClientStore extends BaseStore {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
+    }
+
+    get should_show_eu_content() {
+        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
+        return (!this.loginid && this.is_eu_country) || this.is_eu || is_current_mf;
     }
 
     get is_virtual() {
@@ -1590,6 +1597,7 @@ export default class ClientStore extends BaseStore {
             const language = authorize_response.authorize.preferred_language;
             if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
+                await this.root_store.common.changeSelectedLanguage(language);
             }
             if (this.citizen) {
                 await this.onSetCitizen(this.citizen);
@@ -1608,7 +1616,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
@@ -1620,11 +1628,14 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
-            const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
+            if (Object.keys(this.account_settings).length === 0) {
+                this.setAccountSettings((await WS.authorized.cache.getSettings()).get_settings);
+            }
+
+            if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            if (account_settings && !account_settings.residence) {
+            if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
 
@@ -2521,6 +2532,10 @@ export default class ClientStore extends BaseStore {
 
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    get is_pending_proof_of_ownership() {
+        return this.account_status?.authentication?.needs_verification?.includes('ownership');
     }
 
     setVisibilityRealityCheck(is_visible) {

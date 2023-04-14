@@ -1,13 +1,46 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
 import ContractCardItem from './contract-card-item.jsx';
 import ToggleCardDialog from './toggle-card-dialog.jsx';
-import Icon from '../../icon';
-import MobileWrapper from '../../mobile-wrapper';
-import Money from '../../money';
+import Icon from '../../icon/index';
+import MobileWrapper from '../../mobile-wrapper/index';
+import Money from '../../money/index';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { ProposalOpenContract, Proposal, ContractUpdate } from '@deriv/api-types';
+import { TIsValidToSell } from '@deriv/shared/src/utils/contract/contract-types';
+
+type TToastConfig = {
+    key?: number;
+    content: string;
+    timeout?: number;
+    is_bottom?: boolean;
+    type?: string;
+};
+
+export type TContractInfo = Pick<ProposalOpenContract, 'buy_price' | 'sell_price' | 'contract_id'> &
+    Required<Pick<ProposalOpenContract, 'profit'>> & {
+        limit_order?: Proposal['limit_order'];
+    } & TIsValidToSell;
+
+type TAccumulatorCardBody = {
+    addToast?: (toast_config: TToastConfig) => void;
+    connectWithContractUpdate?: (Component: JSX.Element) => unknown;
+    contract_info: TContractInfo;
+    contract_update: ContractUpdate;
+    currency: Required<ProposalOpenContract>['currency'];
+    current_focus?: string | null;
+    error_message_alignment?: string;
+    getCardLabels: () => { [key: string]: string };
+    getContractById?: (value: number) => unknown;
+    indicative?: number;
+    is_sold: ProposalOpenContract['is_sold'];
+    onMouseLeave?: () => void;
+    removeToast?: (key: number) => void;
+    setCurrentFocus?: (value: string) => void;
+    status: string;
+    is_positions?: boolean;
+};
 
 const AccumulatorCardBody = ({
     addToast,
@@ -26,7 +59,7 @@ const AccumulatorCardBody = ({
     setCurrentFocus,
     status,
     is_positions,
-}) => {
+}: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
@@ -105,25 +138,6 @@ const AccumulatorCardBody = ({
             )}
         </React.Fragment>
     );
-};
-
-AccumulatorCardBody.propTypes = {
-    addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    error_message_alignment: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    getContractById: PropTypes.func,
-    indicative: PropTypes.number,
-    is_positions: PropTypes.bool,
-    is_sold: PropTypes.bool,
-    onMouseLeave: PropTypes.func,
-    removeToast: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    status: PropTypes.string,
 };
 
 export default React.memo(AccumulatorCardBody);

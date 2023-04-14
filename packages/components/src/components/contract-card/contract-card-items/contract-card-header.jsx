@@ -10,7 +10,7 @@ import Text from '../../text';
 import ProgressSlider from '../../progress-slider';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
-import TickCounterBar from './tick-counter-bar.jsx';
+import TickCounterBar from './tick-counter-bar';
 
 const ContractCardHeader = ({
     contract_info,

@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import TickCounterBar from '../tick-counter-bar';
 
+type TTickCounterBar = React.ComponentProps<typeof TickCounterBar>;
+
 describe('TickCounterBar', () => {
-    const mock_props = {
+    const mock_props: TTickCounterBar = {
         current_tick: 12345,
         label: 'Ticks',
         max_ticks_duration: 67890,

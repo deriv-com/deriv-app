@@ -10,7 +10,7 @@ import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
-import AccumulatorCardBody from './accumulator-card-body.jsx';
+import AccumulatorCardBody from './accumulator-card-body';
 import MultiplierCardBody from './multiplier-card-body.jsx';
 import VanillaOptionsCardBody from './vanilla-options-card-body.jsx';
 

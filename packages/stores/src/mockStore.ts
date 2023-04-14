@@ -192,6 +192,9 @@ const mock = (): TStores => {
             is_crypto: false,
         },
         common: {
+            changeCurrentLanguage: jest.fn(),
+            changeSelectedLanguage: jest.fn(),
+            current_language: 'EN',
             error: {
                 app_routing_history: [],
                 header: '',
@@ -204,16 +207,15 @@ const mock = (): TStores => {
                 redirectOnClick: jest.fn(),
                 setError: jest.fn(),
             },
-            is_from_derivgo: false,
             has_error: false,
+            is_from_derivgo: false,
+            is_language_changing: false,
+            is_mobile_language_menu_open: false,
+            is_network_online: false,
             platform: '',
             routeBackInApp: jest.fn(),
             routeTo: jest.fn(),
-            changeCurrentLanguage: jest.fn(),
-            changeSelectedLanguage: jest.fn(),
-            current_language: 'EN',
-            is_network_online: false,
-            is_language_changing: false,
+            setMobileLanguageMenuOpen: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {

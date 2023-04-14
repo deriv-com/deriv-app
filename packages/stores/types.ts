@@ -196,17 +196,19 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
+    changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
+    current_language: string;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
+    is_language_changing: boolean;
+    is_mobile_language_menu_open: boolean;
     is_network_online: boolean;
     platform: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
-    changeCurrentLanguage: (new_language: string) => void;
-    changeSelectedLanguage: (key: string) => void;
-    current_language: string;
-    is_language_changing: boolean;
+    setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
 };
 
 type TUiStore = {

@@ -400,7 +400,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 </div>
             </MobileDrawer.SubMenu>
         );
-    }, [is_mobile_language_menu_open, toggleDrawer, is_language_changing]);
+    }, [is_language_changing, is_mobile_language_menu_open, setMobileLanguageMenuOpen, toggleDrawer]);
 
     const HelpCentreRoute = has_border_bottom => {
         return (
@@ -449,7 +449,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 </div>
             </React.Fragment>
         ),
-        [current_language, is_mobile_language_menu_open]
+        [current_language, is_mobile_language_menu_open, setMobileLanguageMenuOpen]
     );
 
     return (

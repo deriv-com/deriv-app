@@ -3,7 +3,7 @@ import { OSDetect } from '@deriv/shared';
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
+const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x-online-trading-app/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 

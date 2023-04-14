@@ -65,7 +65,7 @@ export default class PaymentAgentTransferStore {
             Object.keys(account_settings).length > 0 && is_real_acc_signup_on
                 ? account_settings
                 : (await this.WS.authorized.storage.getSettings()).get_settings;
-        this.setIsPaymentAgent(!!get_settings?.is_authenticated_payment_agent ?? false);
+        this.setIsPaymentAgent(!!get_settings?.is_authenticated_payment_agent);
     }
 
     setIsPaymentAgent(is_payment_agent: boolean) {

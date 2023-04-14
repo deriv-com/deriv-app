@@ -3,7 +3,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { TReactChildren, TSideNotesProps } from '../../types';
+import { TSideNotesProps } from '../../types';
 import './side-note.scss';
 
 type TSideNoteTitle = {
@@ -12,10 +12,9 @@ type TSideNoteTitle = {
     title?: string | JSX.Element;
 };
 
-type TSideNoteBullet = {
-    children: TReactChildren;
+type TSideNoteBullet = React.PropsWithChildren<{
     id: number;
-};
+}>;
 
 type TSideNoteProps = React.PropsWithChildren<{
     className?: string;

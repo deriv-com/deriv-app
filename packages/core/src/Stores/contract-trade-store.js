@@ -27,6 +27,8 @@ export default class ContractTradeStore extends BaseStore {
     // Accumulator barriers data:
     accumulators_high_barrier = '';
     accumulators_low_barrier = '';
+    highlighted_spot = null;
+    highlighted_spot_time = null;
     current_symbol_spot = null;
     current_symbol_spot_time = null;
 
@@ -36,6 +38,8 @@ export default class ContractTradeStore extends BaseStore {
         makeObservable(this, {
             accumulators_high_barrier: observable,
             accumulators_low_barrier: observable,
+            highlighted_spot: observable,
+            highlighted_spot_time: observable,
             current_symbol_spot: observable,
             current_symbol_spot_time: observable,
             contracts: observable.shallow,
@@ -128,13 +132,7 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get should_highlight_current_spot() {
-        return !!(
-            this.current_symbol_spot &&
-            this.accumulators_high_barrier &&
-            this.accumulators_low_barrier &&
-            (this.current_symbol_spot > this.accumulators_high_barrier ||
-                this.current_symbol_spot < this.accumulators_low_barrier)
-        );
+        return !!(this.accumulators_high_barrier && this.accumulators_low_barrier && !!this.highlighted_spot);
     }
 
     get markers_array() {

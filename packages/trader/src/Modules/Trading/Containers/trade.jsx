@@ -463,8 +463,8 @@ Chart.propTypes = {
 
 const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portfolio }) => ({
     all_positions: portfolio.all_positions,
-    current_symbol_spot: contract_trade.current_symbol_spot,
-    current_symbol_spot_time: contract_trade.current_symbol_spot_time,
+    current_symbol_spot: contract_trade.highlighted_spot,
+    current_symbol_spot_time: contract_trade.highlighted_spot_time,
     is_socket_opened: common.is_socket_opened,
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,

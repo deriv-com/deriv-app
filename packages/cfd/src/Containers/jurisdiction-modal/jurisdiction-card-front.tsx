@@ -11,11 +11,17 @@ const JurisdictionCardFront = ({
     card_values,
     card_data,
     is_card_selected,
+    disabled,
 }: TJurisdictionCardFrontProps) => (
     <div
-        className={classNames(card_classname, 'cfd-card-front', {
-            [`${card_classname}--selected selected-card`]: is_card_selected,
-        })}
+        className={classNames(
+            card_classname,
+            'cfd-card-front',
+            {
+                [`${card_classname}--selected selected-card`]: is_card_selected,
+            },
+            { 'cfd-card-disabled-flat': disabled }
+        )}
     >
         <div className={`${card_classname}__card-content-container`}>
             {card_values.is_over_header_available ? (
@@ -24,7 +30,7 @@ const JurisdictionCardFront = ({
                     weight='bold'
                     color='info-blue'
                     align='center'
-                    size='xxs'
+                    size='xs'
                     className={`${card_classname}__card-content-over-header`}
                 >
                     <Localize i18n_default_text={card_values.over_header} />
@@ -51,6 +57,21 @@ const JurisdictionCardFront = ({
                 ))}
             </div>
         </div>
+        {disabled && (
+            <div className={`${card_classname}__card-content-footer`}>
+                <div className={`${card_classname}__card-content-footer-gradient`} />
+                <Text
+                    as='div'
+                    weight='bold'
+                    color='white'
+                    align='center'
+                    size='xs'
+                    className={`${card_classname}__card-content-footer-text`}
+                >
+                    <Localize i18n_default_text='Added' />
+                </Text>
+            </div>
+        )}
     </div>
 );
 

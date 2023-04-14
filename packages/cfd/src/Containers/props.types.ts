@@ -185,6 +185,7 @@ export type TJurisdictionCardFrontProps = {
     card_values: TJurisdictionCardItems;
     card_data: TJurisdictionCardSection[];
     is_card_selected: boolean;
+    disabled: boolean;
 };
 
 export type TJurisdictionCardBackProps = {

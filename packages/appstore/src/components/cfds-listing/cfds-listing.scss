@@ -88,13 +88,28 @@
                 height: 4rem;
                 width: 100%;
                 padding: 0.5rem;
-                border-radius: 1.6rem 1.6rem 0 0;
+                border-radius: 1.4rem 1.4rem 0 0;
                 &-blank {
                     height: 4rem;
-                    border-radius: 1.6rem;
+                    border-radius: 1.4rem;
                     @include mobile {
                         height: 2rem;
                     }
+                }
+            }
+            &-footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                &-gradient {
+                    height: 12rem;
+                    background: linear-gradient(transparent, var(--general-main-2));
+                }
+                &-text {
+                    background: var(--brand-secondary);
+                    height: 4rem;
+                    padding: 1rem;
+                    border-radius: 0 0 1.4rem 1.4rem;
                 }
             }
         }
@@ -141,7 +156,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin: 1.6rem 2.4rem;
+        margin: 3rem 1.6rem 2.4rem;
 
         @include mobile {
             margin: unset;
@@ -190,7 +205,7 @@
     }
     &-container {
         transform-style: preserve-3d;
-        transition: transform 0.25s ease-in-out;
+        transition: transform 0.25s ease-in;
         min-height: 50rem;
         width: 26rem;
         @include mobile {
@@ -280,6 +295,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+    &-disabled {
+        pointer-events: none;
+        &-flat {
+            border: solid 1px var(--border-normal);
+        }
     }
 }
 

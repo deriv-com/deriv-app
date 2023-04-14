@@ -107,7 +107,6 @@ export default class QuickStrategyStore {
     is_contract_dialog_open = false;
     is_stop_bot_dialog_open = false;
     is_strategy_modal_open = false;
-    is_dialog_open = false;
 
     get initial_values() {
         const init = {

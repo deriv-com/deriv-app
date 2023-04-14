@@ -1,7 +1,6 @@
 import { Button } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
 import { TQuickStrategyFooter } from './components.types';
 
@@ -10,21 +9,18 @@ const QuickStrategyFooter = ({
     is_running,
     setFieldValue,
     submitForm,
-    setActiveTab,
     toggleStopBotDialog,
 }: TQuickStrategyFooter) => {
     const handleCreateEdit = React.useCallback(() => {
         setFieldValue('button', 'edit');
         submitForm();
-        setActiveTab(DBOT_TABS.BOT_BUILDER);
     }, [is_submit_enabled]);
 
-    const handleRun = React.useCallback(() => {
-        setActiveTab(DBOT_TABS.BOT_BUILDER);
+    const handleRun = React.useCallback(async () => {
         if (is_running) {
-            toggleStopBotDialog();
-            setFieldValue('button', 'edit');
-            submitForm();
+            await Promise.resolve(setFieldValue('button', 'edit'))
+                .then(() => submitForm())
+                .then(() => toggleStopBotDialog());
         } else {
             setFieldValue('button', 'run');
             submitForm();

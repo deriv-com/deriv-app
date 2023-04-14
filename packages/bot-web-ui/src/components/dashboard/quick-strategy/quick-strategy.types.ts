@@ -180,10 +180,9 @@ export type TQuickStrategyProps = React.PropsWithChildren<{
     onHideDropdownList: TOnHideDropdownList;
     onScrollStopDropdownList: TOnScrollStopDropdownList;
     setActiveTypeStrategyIndex: (index: number) => void;
-    loadDataStrategy: () => void;
     setCurrentFocus: TSetCurrentFocus;
-    setActiveTab: (active_tab: number) => void;
     toggleStopBotDialog: () => void;
+    loadDataStrategy: () => void;
 }>;
 
 export type TQSCache = {

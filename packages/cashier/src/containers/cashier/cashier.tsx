@@ -16,8 +16,8 @@ import {
     useAccountTransferVisible,
     useSwitchToRealAccount,
     useIsP2PEnabled,
-    useP2PNotificationCount,
     usePaymentAgentTransferVisible,
+    useP2PNotificationCount,
 } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import AccountPromptDialog from '../../components/account-prompt-dialog';

@@ -17,10 +17,11 @@ import PaymentMethodCard from '../payment-method-card';
 const PaymentMethodsList = () => {
     const { general_store, my_profile_store } = useStores();
 
-    const independent_categories = ['bank_transfer', 'upi', 'other'];
+    const non_ewallet_payment_methods = ['bank_transfer', 'upi', 'other'];
+    const bank_transfer_categories = ['bank_transfer', 'upi'];
 
     const sortPaymentMethodsListMethods = payment_methods_list_methods => {
-        const order = ['bank_transfer', 'e_wallet', 'upi', 'other'];
+        const order = ['bank_transfer', 'e_wallet', 'other'];
         return payment_methods_list_methods.sort((i, j) => order.indexOf(i.method) - order.indexOf(j.method));
     };
 
@@ -48,11 +49,10 @@ const PaymentMethodsList = () => {
                                 const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
                                     payment_method =>
                                         payment_method.method === payment_methods_list_method.method ||
-                                        (payment_method.method === 'upi' &&
-                                            payment_methods_list_method.method === 'bank_transfer') ||
-                                        (!independent_categories.includes(payment_method.method) &&
-                                            payment_method.method !== 'upi' &&
-                                            payment_methods_list_method.method === 'e_wallet')
+                                        (payment_methods_list_method.method === 'bank_transfer' &&
+                                            bank_transfer_categories.includes(payment_method.method)) ||
+                                        (payment_methods_list_method.method === 'e_wallet' &&
+                                            !non_ewallet_payment_methods.includes(payment_method.method))
                                 );
 
                                 return (
@@ -106,8 +106,10 @@ const PaymentMethodsList = () => {
                                 const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
                                     payment_method =>
                                         payment_method.method === payment_methods_list_method.method ||
-                                        (!independent_categories.includes(payment_method.method) &&
-                                            payment_methods_list_method.method === 'e_wallet')
+                                        (payment_methods_list_method.method === 'bank_transfer' &&
+                                            bank_transfer_categories.includes(payment_method.method)) ||
+                                        (payment_methods_list_method.method === 'e_wallet' &&
+                                            !non_ewallet_payment_methods.includes(payment_method.method))
                                 );
 
                                 return (

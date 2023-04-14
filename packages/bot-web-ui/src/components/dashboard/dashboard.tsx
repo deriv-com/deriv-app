@@ -309,7 +309,7 @@ const Dashboard = ({
     );
 };
 
-export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: RootStore) => ({
+export default connect(({ dashboard, run_panel, load_modal }: RootStore) => ({
     active_tab: dashboard.active_tab,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,

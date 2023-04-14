@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { usePaymentAgentList, useHasFiatCurrency, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
+import { usePaymentAgentList, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
 import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
@@ -47,7 +47,6 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
     } = ui;
     const { shouldNavigateAfterPrompt } = account_prompt_dialog;
     const { data: is_p2p_enabled } = useIsP2PEnabled();
-    const has_fiat_currency = useHasFiatCurrency();
     const has_usd_currency = useHasUSDCurrency();
 
     const history = useHistory();
@@ -167,7 +166,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
 
-        if (is_p2p_enabled || (has_fiat_currency && has_usd_currency)) {
+        if (is_p2p_enabled && has_usd_currency) {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;

@@ -11,15 +11,14 @@ import {
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ReadyToUpgradeForm from './ready-to-upgrade-form';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 
 const ReadyToUpdateWallets = () => {
     const [is_disabled, setIsDisabled] = React.useState(false);
 
     const { client, traders_hub } = useStore();
     const { is_eu } = client;
-    const { show_wallet_consent_popup, setShouldShowWalletConsentPopup } = traders_hub;
+    const { is_eu_user, show_wallet_consent_popup, setShouldShowWalletConsentPopup } = traders_hub;
 
     const toggleModal = () => {
         setShouldShowWalletConsentPopup(!show_wallet_consent_popup);
@@ -41,7 +40,7 @@ const ReadyToUpdateWallets = () => {
                 >
                     <Modal.Body className='wallet-wrapper'>
                         <div className='wallet-wrapper--body'>
-                            <ReadyToUpgradeForm is_eu={is_eu} />
+                            <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} />
                             <Checkbox
                                 onChange={toggleCheckbox}
                                 className='wallet-wrapper--checkbox'
@@ -76,7 +75,7 @@ const ReadyToUpdateWallets = () => {
                     onClose={() => setShouldShowWalletConsentPopup(false)}
                 >
                     <Div100vhContainer className='wallet-wrapper--body' height_offset='15rem'>
-                        <ReadyToUpgradeForm is_eu={is_eu} />
+                        <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} />
                         <Checkbox
                             onChange={toggleCheckbox}
                             className='wallet-wrapper--checkbox'

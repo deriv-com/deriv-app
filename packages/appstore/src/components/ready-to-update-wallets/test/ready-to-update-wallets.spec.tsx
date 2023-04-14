@@ -1,8 +1,9 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isMobile, isDesktop } from '@deriv/shared';
-import ReadyToUpdateWallets from 'Components/ready-to-update-wallets';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import ReadyToUpdateWallets from 'Components/ready-to-update-wallets';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -12,7 +13,7 @@ jest.mock('@deriv/shared', () => ({
 
 export const mockRootStore = mockStore({
     client: { is_eu: false, is_high_risk: false },
-    traders_hub: { show_wallet_consent_popup: true, setShouldShowWalletConsentPopup: jest.fn() },
+    traders_hub: { is_eu_user: false, show_wallet_consent_popup: true, setShouldShowWalletConsentPopup: jest.fn() },
 });
 
 describe('<ReadyToUpdateWallets />', () => {
@@ -29,7 +30,7 @@ describe('<ReadyToUpdateWallets />', () => {
     it('should render modal', () => {
         render(
             <StoreProvider store={mockRootStore}>
-                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
+                <ReadyToUpdateWallets />
             </StoreProvider>
         );
         expect(screen.getByText('Ready to upgrade?')).toBeInTheDocument();
@@ -38,11 +39,11 @@ describe('<ReadyToUpdateWallets />', () => {
     it('should not disabled button when the checkbox is active', async () => {
         render(
             <StoreProvider store={mockRootStore}>
-                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
+                <ReadyToUpdateWallets />
             </StoreProvider>
         );
 
-        fireEvent.click(screen.getByRole('checkbox'));
+        userEvent.click(screen.getByRole('checkbox'));
 
         await waitFor(() => {
             expect(screen.getByText('Upgrade to Wallets')).toBeEnabled();
@@ -52,7 +53,7 @@ describe('<ReadyToUpdateWallets />', () => {
     it('should render info section based on clients country and risk status', () => {
         render(
             <StoreProvider store={mockRootStore}>
-                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
+                <ReadyToUpdateWallets />
             </StoreProvider>
         );
         expect(
@@ -63,7 +64,6 @@ describe('<ReadyToUpdateWallets />', () => {
         expect(
             screen.getByText("Your open positions won't be affected and you can continue trading.")
         ).toBeInTheDocument();
-        // expect(screen.getByText('Deriv P2P is unavailable in Wallets at this time.')).not.toBeInTheDocument();
     });
 
     it('should render "MobileDialog" component in the mobile view', () => {
@@ -71,7 +71,7 @@ describe('<ReadyToUpdateWallets />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(
             <StoreProvider store={mockRootStore}>
-                <ReadyToUpdateWallets is_eu={false} is_high_risk={false} />
+                <ReadyToUpdateWallets />
             </StoreProvider>
         );
     });

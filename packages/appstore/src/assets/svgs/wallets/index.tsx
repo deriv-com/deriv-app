@@ -1,9 +1,9 @@
 import React from 'react';
-import ReadyToUpdateWalletsIcon from './ic-wallet-upgrade-form.svg';
+import ReadyToUpdateWalletsImage from './ready_to_update_wallets_image.svg';
 import { TImageTestID, TWalletsImagesListKeys, WalletsImageProps } from './image-types';
 
 export const WalletsImagesList = {
-    ReadyToUpdateWalletsIcon,
+    ready_to_update_wallets_image: ReadyToUpdateWalletsImage,
 };
 
 const WalletsImage = ({ image, className, width }: WalletsImageProps<TWalletsImagesListKeys>) => {

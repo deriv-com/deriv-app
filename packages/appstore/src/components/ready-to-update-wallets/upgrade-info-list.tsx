@@ -11,6 +11,8 @@ type TUpgradeInformationList = {
 };
 
 const UpgradeInformationList = ({ is_eu }: TReadyToUpgradeForm) => {
+    const text_info_size = isMobile() ? 'xxs' : 'xs';
+    const line_height_info = isMobile() ? 'm' : 'l';
     const list: TUpgradeInformationList[] = [
         {
             name: 'upgrade_info',
@@ -32,14 +34,7 @@ const UpgradeInformationList = ({ is_eu }: TReadyToUpgradeForm) => {
             content: (
                 <Localize
                     i18n_default_text='<0>Deriv P2P</0> is not supported in wallets yet. This option will be unavailable until further notice.'
-                    components={
-                        <Text
-                            weight='bold'
-                            size={isMobile() ? 'xxs' : 'xs'}
-                            line_height={isMobile() ? 'm' : 'l'}
-                            key={0}
-                        />
-                    }
+                    components={<Text weight='bold' size={text_info_size} line_height={line_height_info} key={0} />}
                 />
             ),
         },
@@ -49,14 +44,7 @@ const UpgradeInformationList = ({ is_eu }: TReadyToUpgradeForm) => {
             content: (
                 <Localize
                     i18n_default_text="You can use <0>payment agents'</0> services to make deposits by adding a Payment agent wallet after the upgrade."
-                    components={
-                        <Text
-                            weight='bold'
-                            size={isMobile() ? 'xxs' : 'xs'}
-                            line_height={isMobile() ? 'm' : 'l'}
-                            key={0}
-                        />
-                    }
+                    components={<Text weight='bold' size={text_info_size} line_height={line_height_info} key={0} />}
                 />
             ),
         },
@@ -69,7 +57,7 @@ const UpgradeInformationList = ({ is_eu }: TReadyToUpgradeForm) => {
                     info.visiblity && (
                         <div className='wallet-wrapper--info-section__text' key={info.name}>
                             <Icon icon='ic-info-blue' />
-                            <Text size={isMobile() ? 'xxs' : 'xs'} line_height={isMobile() ? 'm' : 'l'}>
+                            <Text size={text_info_size} line_height={line_height_info}>
                                 {info.content}
                             </Text>
                         </div>

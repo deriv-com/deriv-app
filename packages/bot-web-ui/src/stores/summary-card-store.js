@@ -44,7 +44,6 @@ export default class SummaryCardStore {
             getLimitOrder: action.bound,
             onBotContractEvent: action.bound,
             onChange: action.bound,
-            populateConfig: action.bound,
             populateContractUpdateConfig: action.bound,
             setContractUpdateConfig: action.bound,
             updateLimitOrder: action.bound,
@@ -139,14 +138,6 @@ export default class SummaryCardStore {
     onChange({ name, value }) {
         this[name] = value;
         this.validateProperty(name, this[name]);
-    }
-
-    populateConfig(contract_info) {
-        this.contract_info = contract_info;
-
-        if (this.is_multiplier && contract_info.contract_id && contract_info.limit_order) {
-            this.populateContractUpdateConfig(this.contract_info);
-        }
     }
 
     populateContractUpdateConfig(response) {

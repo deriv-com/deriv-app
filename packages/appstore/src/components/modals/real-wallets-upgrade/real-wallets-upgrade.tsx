@@ -11,7 +11,7 @@ import { steps } from 'Constants/wallet-static-steps-config';
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade, content_flag } = traders_hub;
-    const eu_user = content_flag === ContentFlag.EU_REAL;
+    const eu_user = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.EU_DEMO;
 
     const wallets_upgrade_ref = React.useRef<HTMLDivElement>(null);
 

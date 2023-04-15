@@ -288,7 +288,7 @@ const mock = (): TStores => {
             toggleCashier: jest.fn(),
             setDarkMode: jest.fn(),
             has_real_account_signup_ended: false,
-            notification_messages_ui: null,
+            notification_messages_ui: jest.fn(),
             openRealAccountSignup: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),

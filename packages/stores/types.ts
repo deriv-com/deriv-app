@@ -9,6 +9,7 @@ import type {
     LandingCompany,
     StatesList,
 } from '@deriv/api-types';
+import type { ElementType } from 'react';
 
 import type { RouteComponentProps } from 'react-router';
 
@@ -309,7 +310,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: ({ ...props }) => JSX.Element | null;
+    notification_messages_ui: ElementType;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;

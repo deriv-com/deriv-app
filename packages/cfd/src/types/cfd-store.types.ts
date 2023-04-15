@@ -56,7 +56,7 @@ export type TCFDStore = {
     new_account_response: Mt5NewAccount;
     is_cfd_verification_modal_visible: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
-    openPasswordModal: () => void;
+    enableCFDPasswordModal: () => void;
     onMount: () => void;
     onUnmount: () => void;
     setCurrentAccount: (

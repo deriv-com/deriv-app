@@ -2,8 +2,8 @@
 import React from 'react';
 import Routes from './Containers/routes.jsx';
 import initStore from './init-store'; // eslint-disable-line import/extensions
-import { TRootStore } from '@deriv/stores/types';
 import CFDProviders from './cfd-providers.js';
+import { TRootStore } from './types/root-store.types.js';
 
 type TAppProps = {
     passthrough: {

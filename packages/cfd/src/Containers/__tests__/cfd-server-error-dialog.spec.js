@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { StoreProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import CFDServerErrorDialog from '../cfd-server-error-dialog';
+import CFDProviders from '../../cfd-providers';
 
 describe('<CFDServerErrorDialog /> ', () => {
     beforeAll(() => {
@@ -32,7 +33,7 @@ describe('<CFDServerErrorDialog /> ', () => {
         };
 
         const { container } = render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(container.firstChild).toHaveClass('dc-dialog__wrapper dc-dialog__wrapper--enter');
@@ -56,7 +57,7 @@ describe('<CFDServerErrorDialog /> ', () => {
         };
 
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(screen.getByText(/Sorry, an error occured while processing your request/i)).toBeInTheDocument();
@@ -82,7 +83,7 @@ describe('<CFDServerErrorDialog /> ', () => {
         };
 
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(screen.queryByText(/Sorry, an error occured while processing your request/i)).not.toBeInTheDocument();
@@ -106,7 +107,7 @@ describe('<CFDServerErrorDialog /> ', () => {
         };
 
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         expect(screen.queryByText(/Sorry, an error occured while processing your request/i)).not.toBeInTheDocument();
@@ -130,7 +131,7 @@ describe('<CFDServerErrorDialog /> ', () => {
         };
 
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
         const ok_btn = screen.getByRole('button', { name: /OK/i });

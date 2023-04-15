@@ -20,21 +20,28 @@ describe('CompareAccountsModal', () => {
     let mock_props;
     beforeEach(() => {
         mock_props = {
-            disableApp: jest.fn(),
-            enableApp: jest.fn(),
-            is_compare_accounts_visible: true,
-            is_loading: false,
-            is_logged_in: true,
-            is_eu: false,
-            is_uk: false,
-            is_eu_country: false,
+            ui: {
+                disableApp: jest.fn(),
+                enableApp: jest.fn(),
+                openDerivRealAccountNeededModal: jest.fn(),
+            },
+            modules: {
+                cfd: {
+                    is_compare_accounts_visible: true,
+                    toggleCompareAccounts: jest.fn(),
+                    openPasswordModal: jest.fn(),
+                },
+            },
+            client: {
+                is_populating_mt5_account_list: false,
+                is_logged_in: true,
+                is_eu: false,
+                is_uk: false,
+                residence: 'id',
+            },
             is_real_enabled: true,
             platform: 'mt5',
-            residence: 'id',
             is_demo_tab: true,
-            toggleCompareAccounts: jest.fn(),
-            openPasswordModal: jest.fn(),
-            openDerivRealAccountNeededModal: jest.fn(),
         };
     });
     it('should render the modal', async () => {

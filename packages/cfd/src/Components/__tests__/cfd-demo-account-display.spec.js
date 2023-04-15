@@ -3,12 +3,18 @@ import React from 'react';
 import { CFDDemoAccountDisplay } from '../cfd-demo-account-display';
 
 const mock_connect_props = {
-    dxtrade_tokens: {
-        demo: '',
-        real: '',
+    modules: {
+        cfd: {
+            dxtrade_tokens: {
+                demo: '',
+                real: '',
+            },
+            setMT5TradeAccount: jest.fn(),
+        },
     },
-    setMT5TradeAccount: jest.fn(),
-    isEligibleForMoreDemoMt5Svg: () => true,
+    client: {
+        isEligibleForMoreDemoMt5Svg: () => true,
+    },
 };
 
 describe('<CFDDemoAccountDisplay />', () => {

@@ -6,20 +6,32 @@ import { mockStore } from '@deriv/stores';
 import CFDProviders from '../../cfd-providers';
 
 type TMockPlatformAccounts = {
-    account_type: string;
+    account_type?: 'demo' | 'real';
     balance: number;
-    platform: string;
+    platform?: string;
     display_balance: string;
     display_login: string;
-    landing_company_short: string;
+    landing_company_short?: 'svg' | 'labuan' | 'bvi' | 'malta' | 'maltainvest' | 'vanuatu' | 'seychelles';
     login: string;
-    market_type: string;
+    market_type?: 'financial' | 'synthetic' | 'all';
 };
 
 const mock_connect_props = {
-    dxtrade_tokens: {
-        demo: '',
-        real: '',
+    modules: {
+        cfd: {
+            dxtrade_tokens: {
+                demo: '',
+                real: '',
+            },
+            setMT5TradeAccount: jest.fn(),
+        },
+    },
+    traders_hub: {
+        show_eu_related_content: false,
+    },
+    client: {
+        isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
+        isEligibleForMoreRealMt5: jest.fn(() => true),
     },
 };
 
@@ -76,22 +88,15 @@ describe('CFDAccountCard', () => {
             button_label: 'Top up',
             commission_message: 'No commission',
             descriptor: '',
-            dxtrade_tokens: {
-                demo: '',
-                real: '',
-            },
-            is_hovered: false,
             existing_accounts_data: [],
             has_banner: true,
             has_cfd_account_error: false,
-            is_eu: true,
             has_real_account: true,
             is_accounts_switcher_on: false,
             is_button_primary: true,
             is_disabled: false,
             is_logged_in: true,
             is_virtual: true,
-            onHover: jest.fn(),
             specs: {},
             type: { category: '', type: '', platform: '' },
             title: '',
@@ -101,11 +106,6 @@ describe('CFDAccountCard', () => {
             onPasswordManager: jest.fn(),
             toggleAccountsDialog: jest.fn(),
             toggleShouldShowRealAccountsList: jest.fn(),
-            isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
-            isEligibleForMoreRealMt5: jest.fn(() => true),
-            setMT5TradeAccount: jest.fn(),
-            trading_platform_available_accounts: [],
-            show_eu_related_content: false,
         };
     });
 
@@ -189,7 +189,6 @@ describe('CFDAccountCard', () => {
                 descriptor={synthetic_descriptor}
                 title='Derived'
                 existing_accounts_data={[mt5_acc]}
-                is_eu={false}
             />,
             {
                 wrapper: ({ children }: { children: JSX.Element }) => (
@@ -223,7 +222,6 @@ describe('CFDAccountCard', () => {
                 descriptor={financial_descriptor}
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
-                is_eu={false}
             />,
             {
                 wrapper: ({ children }: { children: JSX.Element }) => (
@@ -283,7 +281,6 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[]}
                 platform='mt5'
-                is_eu={false}
             />,
             {
                 wrapper: ({ children }: { children: JSX.Element }) => (
@@ -308,7 +305,6 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[]}
                 platform='mt5'
-                is_eu={false}
             />,
             {
                 wrapper: ({ children }: { children: JSX.Element }) => (
@@ -333,7 +329,6 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[]}
                 platform='mt5'
-                is_eu={false}
             />,
             {
                 wrapper: ({ children }: { children: JSX.Element }) => (
@@ -485,7 +480,6 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
-                is_eu={false}
             />,
             {
                 wrapper: ({ children }: { children: JSX.Element }) => (

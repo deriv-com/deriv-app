@@ -3,12 +3,6 @@ import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-libra
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {

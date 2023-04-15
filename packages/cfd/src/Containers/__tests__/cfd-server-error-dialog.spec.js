@@ -3,12 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { StoreProvider } from '@deriv/stores';
 import CFDServerErrorDialog from '../cfd-server-error-dialog';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<CFDServerErrorDialog /> ', () => {
     beforeAll(() => {
         const modal_root_el = document.createElement('div');

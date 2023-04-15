@@ -11,12 +11,6 @@ const mock_connect_props = {
     isEligibleForMoreRealMt5: () => true,
 };
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
-}));
-
 describe('<CFDRealAccountDisplay />', () => {
     const TESTED_CASES = {
         EU: 'eu',

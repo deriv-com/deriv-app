@@ -2,12 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDTopUpDemoModal from '../cfd-top-up-demo-modal.tsx';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
 
 describe('CFDTopUpDemoModal', () => {

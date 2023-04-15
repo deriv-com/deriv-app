@@ -75,7 +75,7 @@ export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
-    existing_accounts_data?: TExistingData;
+    existing_accounts_data?: TExistingData | null;
     has_banner?: boolean;
     has_cfd_account_error?: boolean;
     has_real_account?: boolean;

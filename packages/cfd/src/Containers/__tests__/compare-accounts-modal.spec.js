@@ -2,12 +2,6 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import CompareAccountsModal from '../compare-accounts-modal';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('../mt5-compare-table-content', () => jest.fn(() => 'MockedMt5CompareTableContent'));
 
 describe('CompareAccountsModal', () => {
@@ -44,27 +38,35 @@ describe('CompareAccountsModal', () => {
         };
     });
     it('should render the modal', async () => {
-        render(<CompareAccountsModal {...mock_props} />);
+        render(<CompareAccountsModal {...mock_props} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
         await waitFor(() => {
             expect(screen.getByText(/compare available accounts/i)).toBeInTheDocument();
         });
     });
     it('should render the MockedMT5CompareTableContent for mt5', async () => {
-        render(<CompareAccountsModal {...mock_props} />);
+        render(<CompareAccountsModal {...mock_props} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
         await waitFor(() => {
             expect(screen.getByText(/compare available accounts/i)).toBeInTheDocument();
         });
         expect(screen.getByText(/MockedMt5CompareTableContent/i)).toBeInTheDocument();
     });
     it('should render the CompareAccountsModal if the platform is dxtrade', async () => {
-        render(<CompareAccountsModal {...mock_props} platform='dxtrade' />);
+        render(<CompareAccountsModal {...mock_props} platform='dxtrade' />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
         await waitFor(() => {
             expect(screen.getAllByText(/account information/i)[0]).toBeInTheDocument();
         });
         expect(screen.getAllByText(/maximum leverage/i)[0]).toBeInTheDocument();
     });
     it('should render the MockedMt5CompareTableContent if the user is not logged in', async () => {
-        render(<CompareAccountsModal {...mock_props} is_logged_in={false} />);
+        render(<CompareAccountsModal {...mock_props} is_logged_in={false} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
         await waitFor(() => {
             expect(screen.getByText(/compare available accounts/i)).toBeInTheDocument();
         });
@@ -77,7 +79,10 @@ describe('CompareAccountsModal', () => {
                 is_compare_accounts_visible={false}
                 is_demo_tab={false}
                 platform='dxtrade'
-            />
+            />,
+            {
+                wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+            }
         );
         await waitFor(() => {
             expect(screen.getAllByText(/account information/i)[0]).toBeInTheDocument();

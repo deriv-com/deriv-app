@@ -2,12 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
     FormSubHeader: () => <div>FormSubHeader</div>,

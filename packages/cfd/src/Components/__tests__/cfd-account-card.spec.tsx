@@ -2,6 +2,8 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { CFDAccountCard } from '../cfd-account-card';
 import { TCFDAccountCard } from '../props.types';
+import { mockStore } from '@deriv/stores';
+import CFDProviders from '../../cfd-providers';
 
 type TMockPlatformAccounts = {
     account_type: string;
@@ -20,12 +22,6 @@ const mock_connect_props = {
         real: '',
     },
 };
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
-}));
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -126,7 +122,12 @@ describe('CFDAccountCard', () => {
                 descriptor={synthetic_descriptor}
                 title='Derived'
                 existing_accounts_data={[mt5_acc]}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
@@ -154,7 +155,12 @@ describe('CFDAccountCard', () => {
                 descriptor={financial_descriptor}
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5FinancialPlatform/i)).toBeInTheDocument();
@@ -184,7 +190,12 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[mt5_acc]}
                 is_eu={false}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5SyntheticPlatform/i)).toBeInTheDocument();
@@ -213,7 +224,12 @@ describe('CFDAccountCard', () => {
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
                 is_eu={false}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/svg/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5FinancialPlatform/i)).toBeInTheDocument();
@@ -242,7 +258,12 @@ describe('CFDAccountCard', () => {
                 descriptor={financial_descriptor}
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         fireEvent.click(screen.getByRole('button', { name: /top up/i }));
         expect(props.onClickFund).toHaveBeenCalledWith(mt5_acc);
@@ -263,7 +284,12 @@ describe('CFDAccountCard', () => {
                 existing_accounts_data={[]}
                 platform='mt5'
                 is_eu={false}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/add account/i)).toBeInTheDocument();
     });
@@ -283,7 +309,12 @@ describe('CFDAccountCard', () => {
                 existing_accounts_data={[]}
                 platform='mt5'
                 is_eu={false}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/add account/i)).toBeInTheDocument();
     });
@@ -303,7 +334,12 @@ describe('CFDAccountCard', () => {
                 existing_accounts_data={[]}
                 platform='mt5'
                 is_eu={false}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         fireEvent.click(screen.getByText(/add account/i));
         expect(props.onSelectAccount).toHaveBeenCalled();
@@ -324,7 +360,12 @@ describe('CFDAccountCard', () => {
                 platform='mt5'
                 button_label='Add real account'
                 existing_accounts_data={null}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         fireEvent.click(screen.getByText(/add real account/i));
         expect(props.onSelectAccount).toHaveBeenCalled();
@@ -345,7 +386,12 @@ describe('CFDAccountCard', () => {
                 platform='mt5'
                 button_label='Add demo account'
                 existing_accounts_data={null}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         fireEvent.click(screen.getByText(/add demo account/i));
         expect(props.onSelectAccount).toHaveBeenCalled();
@@ -365,7 +411,12 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 platform='mt5'
                 existing_accounts_data={[mt5_labuan_acc]}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/labuan/i)).toBeInTheDocument();
     });
@@ -383,7 +434,12 @@ describe('CFDAccountCard', () => {
                 descriptor={synthetic_descriptor}
                 title='Derived'
                 platform='dxtrade'
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         fireEvent.click(screen.getByText(/fund transfer/i));
         expect(props.onClickFund).toHaveBeenCalled();
@@ -403,7 +459,12 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/icedit/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/icedit/i));
@@ -425,7 +486,12 @@ describe('CFDAccountCard', () => {
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
                 is_eu={false}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
@@ -453,9 +519,13 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={null}
                 platform='dxtrade'
-                is_eu={false}
                 is_logged_in={false}
-            />
+            />,
+            {
+                wrapper: ({ children }: { children: JSX.Element }) => (
+                    <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+                ),
+            }
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(

@@ -5,12 +5,6 @@ import { WS, validPassword } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/account', () => ({
     SentEmailModal: jest.fn(({ should_show_sent_email_modal }) => (
         <div>{should_show_sent_email_modal && <span>SentEmailModal</span>}</div>

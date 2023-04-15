@@ -3,12 +3,6 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import CFDPOI from '../cfd-poi';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
     ProofOfIdentityContainerForMt5: () => <div>ProofOfIdentityContainerForMt5</div>,

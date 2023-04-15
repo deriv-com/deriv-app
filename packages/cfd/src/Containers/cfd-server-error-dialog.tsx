@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const CFDServerErrorDialog = observer(() => {
     const { ui } = useStore();

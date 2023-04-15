@@ -309,7 +309,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: JSX.Element | null;
+    notification_messages_ui: ({ ...props }) => JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;

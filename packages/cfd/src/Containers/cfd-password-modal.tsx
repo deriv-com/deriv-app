@@ -592,7 +592,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         is_cfd_success_dialog_enabled,
         is_cfd_password_modal_enabled,
         jurisdiction_selected_shortcode,
-        setError,
+        setMt5Error: setError,
         setCFDSuccessDialog,
         submitMt5Password,
         submitCFDPassword,
@@ -679,9 +679,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            /**TODO: Add type for new_account_response */
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             sessionStorage.setItem('cfd_transfer_to_login_id', new_account_response.login || '');
             history.push(routes.cashier_acc_transfer);
         }

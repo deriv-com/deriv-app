@@ -1,7 +1,3 @@
-/**  TODO: these store states needs to be
- properly typed: createCFDAccount and current_list */
-//eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
 import React from 'react';
 import { RouteComponentProps, useLocation } from 'react-router';
 import { Redirect, useHistory } from 'react-router-dom';
@@ -105,7 +101,6 @@ type TPasswordManager = {
 const CFDDashboard = observer((props: TCFDDashboardProps) => {
     const {
         client: {
-            country,
             landing_companies,
             isAccountOfTypeDisabled,
             is_logged_in,
@@ -119,8 +114,8 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
             dxtrade_disabled_signup_types,
             has_maltainvest_account,
             dxtrade_accounts_list_error,
-            is_loading,
             residence,
+            is_populating_mt5_account_list: is_loading,
             has_account_error_in_mt5_real_list: has_mt5_real_account_error,
             has_account_error_in_mt5_demo_list: has_mt5_demo_account_error,
             has_account_error_in_dxtrade_real_list: has_dxtrade_real_account_error,
@@ -134,7 +129,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
             website_status: { mt5_status: mt5_status_server, dx_trade_status: dxtrade_status_server },
             upgradeable_landing_companies,
             real_account_creation_unlock_date,
-            account_settings: { dxtrade_user_exception: is_user_exception },
+            account_settings: { dxtrade_user_exception: is_user_exception, residence: country },
         },
         ui: {
             setCFDPasswordResetModal,
@@ -161,7 +156,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
         onUnmount,
         setAccountType,
         setCurrentAccount,
-        enableCFDPasswordModal,
+        openPasswordModal: enableCFDPasswordModal,
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
         toggleMT5TradeModal,
@@ -593,6 +588,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
                             <SwitchToRealAccountModal />
                             <JurisdictionModal openPasswordModal={openRealPasswordModal} />
                             <MT5TradeModal
+                                is_demo=''
                                 is_open={is_mt5_trade_modal_visible}
                                 onPasswordManager={togglePasswordManagerModal}
                                 toggleModal={toggleMT5TradeModal}

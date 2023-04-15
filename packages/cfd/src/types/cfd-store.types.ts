@@ -53,7 +53,7 @@ export type TCFDStore = {
     setMt5Error: (state: boolean, obj?: Error) => void;
     submitMt5Password: (values: { password: string }, actions: any) => void;
     submitCFDPassword: (values: { password: string } & { platform?: string }, actions: any) => void;
-    cfd_new_account: Mt5NewAccount;
+    new_account_response: Mt5NewAccount;
     is_cfd_verification_modal_visible: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
     openPasswordModal: () => void;

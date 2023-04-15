@@ -151,9 +151,6 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
         >
             {!getIsListFetched() && !state.has_error && <Loading is_fullscreen={false} />}
             {getIsListFetched() && !state.has_error && !state.is_finished && (
-                /**TODO: Add type for current_list */
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 <ResetPasswordIntent current_list={current_list} is_eu={is_eu}>
                     {({ type, login }) => (
                         <Formik

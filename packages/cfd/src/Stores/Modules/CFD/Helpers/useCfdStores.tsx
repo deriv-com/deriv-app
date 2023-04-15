@@ -1,8 +1,8 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { useStore } from '@deriv/stores';
-import CFDStore from '../cfd-store';
+import type { TCFDStore } from 'src/types/cfd-store.types';
 
-const CFDStoreContext = createContext<CFDStore | null>(null);
+const CFDStoreContext = createContext<TCFDStore | null>(null);
 
 export const CFDStoreProvider = ({ children }: PropsWithChildren<unknown>) => {
     const { modules } = useStore();

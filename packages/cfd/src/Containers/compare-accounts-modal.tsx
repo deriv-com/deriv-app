@@ -100,7 +100,7 @@ const CompareAccountsModal = observer(
             traders_hub: { content_flag, show_eu_related_content, financial_restricted_countries },
         } = useStore();
 
-        const { is_compare_accounts_visible, toggleCompareAccountsModal } = useCfdStore();
+        const { is_compare_accounts_visible, toggleCompareAccounts: toggleCompareAccountsModal } = useCfdStore();
 
         const location = window.location.pathname;
         const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');

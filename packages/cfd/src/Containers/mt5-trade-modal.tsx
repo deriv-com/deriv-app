@@ -34,9 +34,6 @@ const MT5TradeModal = observer(
             if (platform === 'mt5') {
                 return (
                     <DMT5TradeModal
-                        /**TODO: Add type for mt5_trade_account in the store */
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         mt5_trade_account={mt5_trade_account}
                         show_eu_related_content={show_eu_related_content}
                         onPasswordManager={onPasswordManager}
@@ -47,9 +44,6 @@ const MT5TradeModal = observer(
             }
             return (
                 <DerivXTradeModal
-                    /**TODO: Add type for mt5_trade_account in the store */
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
                     mt5_trade_account={mt5_trade_account}
                     is_eu_user={is_eu_user}
                     onPasswordManager={onPasswordManager}

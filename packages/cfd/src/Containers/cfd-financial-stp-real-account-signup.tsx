@@ -25,7 +25,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
             refreshNotifications,
             removeNotificationMessage,
             removeNotificationByKey,
-            addNotificationByKey,
+            addNotificationMessageByKey,
         },
         client: {
             authentication_status,
@@ -46,7 +46,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
         refreshNotifications,
         removeNotificationMessage,
         removeNotificationByKey,
-        addNotificationByKey,
+        addNotificationMessageByKey,
         authentication_status,
         account_settings,
         email,
@@ -75,7 +75,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
             poi_state: 'unknown',
         },
         forwarded_props: [
-            'addNotificationByKey',
+            'addNotificationMessageByKey',
             'authentication_status',
             'refreshNotifications',
             'removeNotificationMessage',

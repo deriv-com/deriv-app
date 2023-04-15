@@ -202,6 +202,7 @@ type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
+    website_status: { mt5_status: TMt5StatusServer; dx_trade_status: TDXTraderStatusServerType };
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
@@ -240,14 +241,13 @@ type TClientStore = {
     }[];
     updateMT5Status: () => void;
     fetchAccountSettings: () => void;
-    has_real_account: boolean;
     setAccountSettings: (get_settings_response: GetSettings) => void;
     upgradeable_landing_companies: unknown[];
-    is_loading: boolean;
+    is_populating_mt5_account_list: boolean;
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
     landing_companies: Record<string, any>;
     getChangeableFields: () => string[];
     landing_company: LandingCompany;
-    country: string;
     isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_mt5_allowed: boolean;
     mt5_disabled_signup_types: {
@@ -259,16 +259,11 @@ type TClientStore = {
         demo: boolean;
     };
     dxtrade_accounts_list_error: null;
-    has_mt5_real_account_error: boolean;
-    has_mt5_demo_account_error: boolean;
-    has_dxtrade_real_account_error: boolean;
-    has_dxtrade_demo_account_error: boolean;
-    mt5_verification_code: object;
-    dxtrade_verification_code: object;
-    mt5_status_server: TMt5StatusServer;
-    dxtrade_status_server: TDXTraderStatusServerType;
+    has_account_error_in_mt5_real_list: boolean;
+    has_account_error_in_mt5_demo_list: boolean;
+    has_account_error_in_dxtrade_real_list: boolean;
+    has_account_error_in_dxtrade_demo_list: boolean;
     real_account_creation_unlock_date: string;
-    is_user_exception: boolean;
     is_fully_authenticated: boolean;
     states_list: StatesList;
     fetchStatesList: () => void;
@@ -345,10 +340,9 @@ type TUiStore = {
     openAccountNeededModal: () => void;
     is_accounts_switcher_on: boolean;
     openTopUpModal: () => void;
-    NotificationMessages: ({ ...props }) => JSX.Element;
     toggleShouldShowRealAccountsList: () => void;
     is_reset_trading_password_modal_visible: boolean;
-    toggleResetTradingPasswordModal: () => void;
+    setResetTradingPasswordModalOpen: () => void;
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
@@ -359,7 +353,7 @@ type TMenuStore = {
 
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
-    addNotificationByKey: (key: string) => void;
+    addNotificationMessageByKey: (key: string) => void;
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
@@ -393,7 +387,6 @@ type TTradersHubStore = {
     no_CR_account: boolean;
     financial_restricted_countries: string[];
     no_MF_account: boolean;
-    is_demo: string;
 };
 
 /**

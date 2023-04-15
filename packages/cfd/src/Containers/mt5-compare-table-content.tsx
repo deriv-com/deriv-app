@@ -164,7 +164,7 @@ const DMT5CompareModalContent = observer(
             client: {
                 account_settings,
                 account_status,
-                has_real_account,
+                has_active_real_account: has_real_account,
                 is_virtual,
                 should_restrict_bvi_account_creation,
                 setAccountSettings,

@@ -18,75 +18,78 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
+    is_demo: string;
 };
 
-const MT5TradeModal = observer(({ is_eu_user, is_open, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
-    const {
-        traders_hub: { show_eu_related_content, is_demo },
-        common: { platform },
-    } = useStore();
+const MT5TradeModal = observer(
+    ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TMT5TradeModalProps) => {
+        const {
+            traders_hub: { show_eu_related_content },
+            common: { platform },
+        } = useStore();
 
-    const { dxtrade_tokens, mt5_trade_account } = useCfdStore();
+        const { dxtrade_tokens, mt5_trade_account } = useCfdStore();
 
-    const CFDTradeModal = () => {
-        if (platform === 'mt5') {
+        const CFDTradeModal = () => {
+            if (platform === 'mt5') {
+                return (
+                    <DMT5TradeModal
+                        /**TODO: Add type for mt5_trade_account in the store */
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        mt5_trade_account={mt5_trade_account}
+                        show_eu_related_content={show_eu_related_content}
+                        onPasswordManager={onPasswordManager}
+                        toggleModal={toggleModal}
+                        dxtrade_tokens={dxtrade_tokens}
+                    />
+                );
+            }
             return (
-                <DMT5TradeModal
+                <DerivXTradeModal
                     /**TODO: Add type for mt5_trade_account in the store */
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     mt5_trade_account={mt5_trade_account}
-                    show_eu_related_content={show_eu_related_content}
+                    is_eu_user={is_eu_user}
                     onPasswordManager={onPasswordManager}
                     toggleModal={toggleModal}
                     dxtrade_tokens={dxtrade_tokens}
+                    is_demo={is_demo}
                 />
             );
-        }
-        return (
-            <DerivXTradeModal
-                /**TODO: Add type for mt5_trade_account in the store */
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                mt5_trade_account={mt5_trade_account}
-                is_eu_user={is_eu_user}
-                onPasswordManager={onPasswordManager}
-                toggleModal={toggleModal}
-                dxtrade_tokens={dxtrade_tokens}
-                is_demo={is_demo}
-            />
-        );
-    };
+        };
 
-    return (
-        <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
-                <Modal
-                    is_open={is_open}
-                    title={localize('Trade')}
-                    toggleModal={toggleModal}
-                    should_header_stick_body={false}
-                    width='600px'
-                    exit_classname='cfd-modal--custom-exit'
-                >
-                    <CFDTradeModal />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <PageOverlay
-                    is_open={is_open}
-                    portal_id='deriv_app'
-                    header='Trade'
-                    onClickClose={toggleModal}
-                    header_classname='cfd-trade-modal__mobile-title'
-                >
-                    <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
+        return (
+            <React.Suspense fallback={<UILoader />}>
+                <DesktopWrapper>
+                    <Modal
+                        is_open={is_open}
+                        title={localize('Trade')}
+                        toggleModal={toggleModal}
+                        should_header_stick_body={false}
+                        width='600px'
+                        exit_classname='cfd-modal--custom-exit'
+                    >
                         <CFDTradeModal />
-                    </Div100vhContainer>
-                </PageOverlay>
-            </MobileWrapper>
-        </React.Suspense>
-    );
-});
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <PageOverlay
+                        is_open={is_open}
+                        portal_id='deriv_app'
+                        header='Trade'
+                        onClickClose={toggleModal}
+                        header_classname='cfd-trade-modal__mobile-title'
+                    >
+                        <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
+                            <CFDTradeModal />
+                        </Div100vhContainer>
+                    </PageOverlay>
+                </MobileWrapper>
+            </React.Suspense>
+        );
+    }
+);
 
 export default MT5TradeModal;

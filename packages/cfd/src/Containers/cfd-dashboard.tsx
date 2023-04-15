@@ -156,7 +156,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
         onUnmount,
         setAccountType,
         setCurrentAccount,
-        openPasswordModal: enableCFDPasswordModal,
+        enableCFDPasswordModal,
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
         toggleMT5TradeModal,

@@ -1,9 +1,11 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import TicksHistoryCounter from '../ticks-history-counter';
 
+type TTicksHistoryCounter = React.ComponentProps<typeof TicksHistoryCounter>;
+
 describe('TicksHistoryCounter', () => {
-    let mock_props;
+    let mock_props: TTicksHistoryCounter;
     beforeEach(() => {
         mock_props = {
             has_progress_dots: false,
@@ -15,10 +17,10 @@ describe('TicksHistoryCounter', () => {
         render(<TicksHistoryCounter {...mock_props} />);
 
         const accu_stats_wrapper = screen.getByTestId('dt_accu_stats_history_counter');
-        expect(accu_stats_wrapper).toHaveTextContent(1234);
+        expect(accu_stats_wrapper).toHaveTextContent('1234');
         expect(accu_stats_wrapper).toHaveClass('accumulators-stats__history-counter');
         expect(accu_stats_wrapper).not.toHaveClass('accumulators-stats__history-counter--emphasized');
-        expect(accu_stats_wrapper.firstElementChild).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_accumulators-stats__progress-dots')).not.toBeInTheDocument();
     });
 
     it('should render TicksHistoryCounter with dots and not highlighted', () => {
@@ -27,10 +29,10 @@ describe('TicksHistoryCounter', () => {
         render(<TicksHistoryCounter {...mock_props} />);
 
         const accu_stats_wrapper = screen.getByTestId('dt_accu_stats_history_counter');
-        expect(accu_stats_wrapper).toHaveTextContent(1234);
+        expect(accu_stats_wrapper).toHaveTextContent('1234');
         expect(accu_stats_wrapper).toHaveClass('accumulators-stats__history-counter');
         expect(accu_stats_wrapper).not.toHaveClass('accumulators-stats__history-counter--emphasized');
-        expect(accu_stats_wrapper.firstElementChild).toHaveClass('accumulators-stats__progress-dots');
+        expect(screen.getByTestId('dt_accumulators-stats__progress-dots')).toBeInTheDocument();
     });
 
     it('should render TicksHistoryCounter with dots and highlighted', () => {
@@ -40,9 +42,9 @@ describe('TicksHistoryCounter', () => {
         render(<TicksHistoryCounter {...mock_props} />);
 
         const accu_stats_wrapper = screen.getByTestId('dt_accu_stats_history_counter');
-        expect(accu_stats_wrapper).toHaveTextContent(0);
+        expect(accu_stats_wrapper).toHaveTextContent('0');
         expect(accu_stats_wrapper).toHaveClass('accumulators-stats__history-counter');
         expect(accu_stats_wrapper).toHaveClass('accumulators-stats__history-counter--emphasized');
-        expect(accu_stats_wrapper.firstElementChild).toHaveClass('accumulators-stats__progress-dots');
+        expect(screen.getByTestId('dt_accumulators-stats__progress-dots')).toBeInTheDocument();
     });
 });

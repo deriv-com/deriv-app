@@ -1,11 +1,22 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv/shared';
 import { MobileWrapper } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { connect } from '../../../../../../Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
+import { TCoreStores } from '@deriv/stores/types';
+import { useStore } from '@deriv/stores';
+
+type TAccumulatorsAmountMobile = {
+    amount: ReturnType<typeof useStore>['trade']['amount'];
+    currency: ReturnType<typeof useStore>['trade']['currency'];
+    current_focus: ReturnType<typeof useStore>['ui']['current_focus'];
+    is_nativepicker: boolean;
+    is_single_currency: ReturnType<typeof useStore>['client']['is_single_currency'];
+    onChange: ReturnType<typeof useStore>['trade']['onChange'];
+    setCurrentFocus: ReturnType<typeof useStore>['ui']['setCurrentFocus'];
+};
 
 const AccumulatorsAmountMobile = ({
     amount,
@@ -15,7 +26,7 @@ const AccumulatorsAmountMobile = ({
     is_single_currency,
     onChange,
     setCurrentFocus,
-}) => {
+}: TAccumulatorsAmountMobile) => {
     return (
         <>
             <MobileWrapper>
@@ -48,17 +59,7 @@ const AccumulatorsAmountMobile = ({
     );
 };
 
-AccumulatorsAmountMobile.propTypes = {
-    amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    is_nativepicker: PropTypes.bool,
-    is_single_currency: PropTypes.bool,
-    onChange: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-};
-
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ modules, client, ui }: TCoreStores) => ({
     amount: modules.trade.amount,
     currency: modules.trade.currency,
     current_focus: ui.current_focus,

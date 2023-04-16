@@ -127,6 +127,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                             className={classNames({
                                 [`dc-mobile-dialog__${wrapper_classname}`]: wrapper_classname,
                             })}
+                            data-testid='dt_mobile_dialog_stats'
                         >
                             {children}
                         </div>

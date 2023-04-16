@@ -5,7 +5,6 @@ import { MobileWrapper } from '@deriv/components';
 import { connect } from '../../../../../../Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
-import { TCoreStores } from '@deriv/stores/types';
 import { useStore } from '@deriv/stores';
 
 type TAccumulatorsAmountMobile = {
@@ -59,7 +58,7 @@ const AccumulatorsAmountMobile = ({
     );
 };
 
-export default connect(({ modules, client, ui }: TCoreStores) => ({
+export default connect(({ modules, client, ui }) => ({
     amount: modules.trade.amount,
     currency: modules.trade.currency,
     current_focus: ui.current_focus,

@@ -1,11 +1,25 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Loading, Modal, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
+import { useStore } from '@deriv/stores';
 
-const AccumulatorsStatsManualModal = ({ icon_classname, is_dark_theme, is_manual_open, title, toggleManual }) => {
+type TAccumulatorsStatsManualModal = {
+    icon_classname: string;
+    is_dark_theme?: ReturnType<typeof useStore>['ui']['is_dark_mode_on'];
+    is_manual_open: boolean;
+    title: string;
+    toggleManual: () => void;
+};
+
+const AccumulatorsStatsManualModal = ({
+    icon_classname,
+    is_dark_theme,
+    is_manual_open,
+    title,
+    toggleManual,
+}: TAccumulatorsStatsManualModal) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const is_mobile = isMobile();
     // memoize file paths for videos and open the modal only after we get them
@@ -24,7 +38,13 @@ const AccumulatorsStatsManualModal = ({ icon_classname, is_dark_theme, is_manual
 
     return (
         <React.Fragment>
-            <Icon icon='IcInfoOutline' onClick={toggleManual} size={16} className={icon_classname} />
+            <Icon
+                icon='IcInfoOutline'
+                onClick={toggleManual}
+                size={16}
+                className={icon_classname}
+                data_testid='dt_ic_info_icon'
+            />
             <Modal
                 is_open={is_manual_open && !!mp4_src && !!webm_src}
                 should_header_stick_body={false}
@@ -65,14 +85,6 @@ const AccumulatorsStatsManualModal = ({ icon_classname, is_dark_theme, is_manual
             </Modal>
         </React.Fragment>
     );
-};
-
-AccumulatorsStatsManualModal.propTypes = {
-    icon_classname: PropTypes.string,
-    is_dark_theme: PropTypes.bool,
-    is_manual_open: PropTypes.bool,
-    title: PropTypes.string,
-    toggleManual: PropTypes.func,
 };
 
 export { AccumulatorsStatsManualModal };

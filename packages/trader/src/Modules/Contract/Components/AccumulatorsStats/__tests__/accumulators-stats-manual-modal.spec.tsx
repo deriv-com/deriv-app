@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { AccumulatorsStatsManualModal } from '../accumulators-stats-manual-modal';
 
+type TModal = React.FC<{
+    children: ReactNode;
+    is_open: boolean;
+    title: string;
+    toggleModal: () => void;
+}> & {
+    Body?: React.FC<{
+        children: ReactNode;
+    }>;
+};
+
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
-    const Modal = jest.fn(
-        ({ children, is_open, title, toggleModal }) =>
-            is_open && (
-                <div data-testid='modal'>
-                    <h3>{title}</h3>
-                    <div onClick={toggleModal}>IcCross</div>
-                    {children}
-                </div>
-            )
+    const Modal: TModal = jest.fn(({ children, is_open, title, toggleModal }) =>
+        is_open ? (
+            <div data-testid='modal'>
+                <h3>{title}</h3>
+                <div onClick={toggleModal}>IcCross</div>
+                {children}
+            </div>
+        ) : null
     );
     Modal.Body = jest.fn(({ children }) => <div>{children}</div>);
     return {
@@ -52,7 +62,7 @@ describe('AccumulatorsStatsManualModal', () => {
         expect(props.is_manual_open).toBeTruthy();
 
         rerender(<AccumulatorsStatsManualModal {...props} />);
-        expect(screen.getByRole('heading', 'Stats')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Stats' })).toBeInTheDocument();
         expect(screen.getByTestId('dt_accumulators_stats_manual_video')).toBeInTheDocument();
         expect(screen.getByText(/stats show the history of consecutive tick counts/i)).toBeInTheDocument();
     });

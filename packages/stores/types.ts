@@ -279,9 +279,16 @@ type TTradersHubStore = {
 };
 
 type TTradeStore = {
+    accumulator_range_list: number[];
     amount: number;
     currency: string;
+    growth_rate: number;
     onChange: React.ChangeEventHandler<Element>;
+    tick_history_stats: {
+        ticks_stayed_in: number[];
+        last_tick_epoch: number;
+    };
+    tick_size_barrier: number;
 };
 
 /**

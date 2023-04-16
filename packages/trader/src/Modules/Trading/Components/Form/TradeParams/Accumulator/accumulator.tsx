@@ -1,23 +1,29 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import NumberSelector from 'App/Components/Form/number-selector.jsx';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import NumberSelector from '../../../../../../App/Components/Form/number-selector.jsx';
+import Fieldset from '../../../../../../App/Components/Form/fieldset.jsx';
+import { connect } from '../../../../../../Stores/connect';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 import classNames from 'classnames';
+import { useStore } from '@deriv/stores';
 
-const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_barrier }) => {
+type TAccumulator = {
+    accumulator_range_list: ReturnType<typeof useStore>['trade']['accumulator_range_list'];
+    growth_rate: ReturnType<typeof useStore>['trade']['growth_rate'];
+    onChange: ReturnType<typeof useStore>['trade']['onChange'];
+    tick_size_barrier: ReturnType<typeof useStore>['trade']['tick_size_barrier'];
+};
+
+const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_barrier }: TAccumulator) => {
+    if (!accumulator_range_list.length) return null;
     // splitting accumulator_range_list into rows containing 5 values each:
-    const arr_arr_numbers = accumulator_range_list.reduce((acc, _el, index) => {
+    const arr_arr_numbers: number[][] = accumulator_range_list.reduce((acc: number[][], _el, index) => {
         if (index % 5 === 0) {
             acc.push(accumulator_range_list.slice(index, index + 5));
         }
         return acc;
     }, []);
 
-    if (!accumulator_range_list.length) return null;
     return (
         <Fieldset
             className={classNames('trade-container__fieldset', 'accumulator')}
@@ -40,13 +46,6 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
             />
         </Fieldset>
     );
-};
-
-Accumulator.propTypes = {
-    accumulator_range_list: MobxPropTypes.arrayOrObservableArray,
-    growth_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    onChange: PropTypes.func,
-    tick_size_barrier: PropTypes.number,
 };
 
 export default connect(({ modules }) => ({

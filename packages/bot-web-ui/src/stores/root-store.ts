@@ -1,3 +1,5 @@
+import { TCoreStores } from '@deriv/stores/types';
+import { TDbot, TWebSocket } from 'Types';
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
@@ -19,8 +21,6 @@ import SummaryStore from './summary-store';
 import ToolbarStore from './toolbar-store';
 import ToolboxStore from './toolbox-store';
 import TransactionsStore from './transactions-store';
-import { TDbot, TWebSocket } from 'Types';
-import { TCoreStores } from '@deriv/stores/types';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {

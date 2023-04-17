@@ -15,8 +15,8 @@ import {
 } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import IconRadio from './icon-radio';
 import { connect } from 'Stores/connect';
+import IconRadio from './icon-radio';
 
 type TSaveModalForm = {
     bot_name: string;

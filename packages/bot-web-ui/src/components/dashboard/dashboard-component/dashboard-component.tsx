@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
 import UserGuide from './user-guide';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 
 type TDashboard = {
     dashboard_strategies: [];

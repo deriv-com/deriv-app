@@ -2,10 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import RecentWorkspace from './recent-workspace';
-import WorkspaceControl from './workspace-control';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/root-store';
+import RecentWorkspace from './recent-workspace';
+import WorkspaceControl from './workspace-control';
 
 type TRecentComponentProps = {
     is_explanation_expand: boolean;

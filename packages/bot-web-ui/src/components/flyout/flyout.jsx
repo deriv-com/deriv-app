@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { help_content_config } from 'Utils/help-content/help-content.config';
+import { connect } from 'Stores/connect';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents';
-import { connect } from 'Stores/connect';
-import { help_content_config } from 'Utils/help-content/help-content.config';
 
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>

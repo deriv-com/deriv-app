@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { SIDEBAR_INTRO } from './constants';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { SIDEBAR_INTRO } from './constants';
 
 type TInfoPanel = {
     has_started_onboarding_tour: boolean;

@@ -4,12 +4,12 @@ import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { useComponentVisibility } from '../../hooks/useComponentVisibility';
-import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
-import './index.scss';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { useComponentVisibility } from '../../hooks/useComponentVisibility';
+import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
+import './index.scss';
 
 type TRecentWorkspace = {
     active_tab: number;

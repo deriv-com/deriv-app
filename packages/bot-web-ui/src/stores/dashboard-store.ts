@@ -1,7 +1,7 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
+import { clearInjectionDiv } from 'Constants/load-modal';
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
-import { clearInjectionDiv } from 'Constants/load-modal';
 
 export interface IDashboardStore {
     active_tab: number;

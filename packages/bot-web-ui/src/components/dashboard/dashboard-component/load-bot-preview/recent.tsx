@@ -4,13 +4,13 @@ import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import { TWorkspace } from 'Stores/load-modal-store';
 import SaveModal from '../../../save-modal';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import './index.scss';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
-import { TWorkspace } from 'Stores/load-modal-store';
 
 type TRecentComponent = {
     dashboard_strategies: Array<TWorkspace>;

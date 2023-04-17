@@ -4,6 +4,10 @@ import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import Chart from 'Components/chart';
+import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import { getImageLocation } from '../../public-path';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
@@ -21,10 +25,6 @@ import ReactJoyrideWrapper from './react-joyride-wrapper';
 import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
-import Chart from 'Components/chart';
-import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 
 type TDialogOptions = {
     title: string;

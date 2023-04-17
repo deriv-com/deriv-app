@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 
 type TToolbox = {
     hasSubCategory: (param: HTMLCollection) => boolean;

@@ -2,10 +2,10 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import ToolbarButton from './toolbar-button';
-import WorkspaceGroup from './workspace-group';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import ToolbarButton from './toolbar-button';
+import WorkspaceGroup from './workspace-group';
 
 type TToolbar = {
     active_tab: string;

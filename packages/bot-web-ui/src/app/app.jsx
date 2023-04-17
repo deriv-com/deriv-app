@@ -1,9 +1,6 @@
 import React from 'react'; // eslint-disable-line import/first
 import { ApiHelpers, DBot, ServerTime, setColors } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
-import BlocklyLoading from '../components/blockly-loading';
-import './app.scss';
-import '../public-path'; // Leave this here (at the top)! OK boss!
 import {
     Audio,
     BotFooterExtensions,
@@ -13,9 +10,12 @@ import {
     RoutePromptDialog,
 } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import GTM from 'Utils/gtm';
 import RootStore from 'Stores';
 import { MobxContentProvider } from 'Stores/connect';
-import GTM from 'Utils/gtm';
+import BlocklyLoading from '../components/blockly-loading';
+import './app.scss';
+import '../public-path'; // Leave this here (at the top)! OK boss!
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;

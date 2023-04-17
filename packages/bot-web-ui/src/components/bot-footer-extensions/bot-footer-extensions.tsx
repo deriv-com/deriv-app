@@ -1,7 +1,7 @@
 import React from 'react';
-import SecurityAndPrivacy from './security-and-privacy';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import SecurityAndPrivacy from './security-and-privacy';
 
 type TPopulateFooterExtensionsProps = {
     position: string;

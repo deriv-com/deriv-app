@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
 
 type TTourTriggrerDialog = {
     active_tab: number;

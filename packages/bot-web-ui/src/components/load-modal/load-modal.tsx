@@ -2,14 +2,14 @@ import React from 'react';
 import { MobileFullPageModal, Modal, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { tabs_title } from 'Constants/load-modal';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/root-store';
 import GoogleDrive from '../dashboard/dashboard-component/load-bot-preview/google-drive';
 import Local from './local';
 import LocalFooter from './local-footer';
 import Recent from './recent';
 import RecentFooter from './recent-footer';
-import { tabs_title } from 'Constants/load-modal';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
 
 type TLoadModalProps = {
     active_index: number;

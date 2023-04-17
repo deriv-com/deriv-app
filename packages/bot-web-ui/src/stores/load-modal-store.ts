@@ -3,8 +3,8 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import RootStore from './root-store';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
+import RootStore from './root-store';
 
 export type TWorkspace = {
     id: string;

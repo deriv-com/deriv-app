@@ -6,9 +6,9 @@ import { ActiveSymbols, ForgetRequest } from '@deriv/api-types';
 // @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import { isDesktop, isMobile } from '@deriv/shared';
-import ToolbarWidgets from './toolbar-widgets';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import ToolbarWidgets from './toolbar-widgets';
 
 interface TChartProps {
     chart_type: string;

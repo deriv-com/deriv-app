@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { ContractCard, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TSummaryCardProps } from './summary-card.types';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
+import { connectWithContractUpdate } from 'Utils/multiplier';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { connectWithContractUpdate } from 'Utils/multiplier';
+import { TSummaryCardProps } from './summary-card.types';
 
 const SummaryCard = ({
     addToast,

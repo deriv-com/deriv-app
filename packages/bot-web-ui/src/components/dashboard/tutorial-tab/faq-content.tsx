@@ -2,9 +2,9 @@ import React from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TDescription } from './tutorial-content';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
+import { TDescription } from './tutorial-content';
 
 type TFAQContent = {
     faq_list: TFAQList[];

@@ -2,9 +2,9 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import Download from 'Components/download';
 import { TJournalToolsProps } from '../journal.types';
 import { FilterDialog } from '.';
-import Download from 'Components/download';
 
 const JournalTools = ({
     checked_filters,

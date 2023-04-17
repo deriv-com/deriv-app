@@ -1,8 +1,8 @@
 import React from 'react';
-import JurisdictionModalContent from '../jurisdiction-modal-content';
 import RootStore from 'Stores/index';
 import { render, screen } from '@testing-library/react';
 import { Jurisdiction } from '@deriv/shared';
+import JurisdictionModalContent from '../jurisdiction-modal-content';
 
 describe('JurisdictionModalContent', () => {
     const mock_store = {

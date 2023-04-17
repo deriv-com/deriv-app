@@ -10,11 +10,8 @@ const JurisdictionModalContent = ({
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
     financial_available_accounts,
-    context,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
-    card_flip_status,
-    flipCard,
 }: TJurisdictionModalContentProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
@@ -45,17 +42,12 @@ const JurisdictionModalContent = ({
                     card =>
                         cardsToBeShown(card) && (
                             <JurisdictionCard
-                                key={`${account_type}_${card}`}
-                                type_of_card={card}
-                                context={context}
-                                disabled={disableCard(card)}
+                                key={card}
                                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                                synthetic_available_accounts={synthetic_available_accounts}
-                                financial_available_accounts={financial_available_accounts}
-                                account_type={account_type}
                                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                                card_flip_status={card_flip_status}
-                                flipCard={flipCard}
+                                account_type={account_type}
+                                type_of_card={card}
+                                disabled={disableCard(card)}
                             />
                         )
                 )}

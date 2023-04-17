@@ -173,15 +173,10 @@ export type TCFDPasswordManagerModal = {
 
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
-    context: RootStore;
-    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
-    financial_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
     type_of_card: TJurisdictionCardType;
     disabled: boolean;
-    card_flip_status: TCardFlipStatus;
-    flipCard: (cardName: TJurisdictionCardType) => void;
 };
 
 export type TJurisdictionCardFrontProps = {
@@ -189,12 +184,15 @@ export type TJurisdictionCardFrontProps = {
     toggleCardFlip: (event: SyntheticEvent) => void;
     card_values: TJurisdictionCardItems;
     card_data: TJurisdictionCardSection[];
+    is_card_selected: boolean;
+    disabled: boolean;
 };
 
 export type TJurisdictionCardBackProps = {
     card_classname: string;
     toggleCardFlip: (event: SyntheticEvent) => void;
     verification_docs: TJurisdictionCardItemVerification | undefined;
+    is_card_selected: boolean;
 };
 
 export type TJurisdictionClickableDescriptionProps = {
@@ -281,7 +279,6 @@ export type TJurisdictionModalProps = {
 };
 
 export type TJurisdictionModalContentProps = {
-    context: RootStore;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
@@ -290,8 +287,6 @@ export type TJurisdictionModalContentProps = {
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;
-    card_flip_status: TCardFlipStatus;
-    flipCard: (cardName: TJurisdictionCardType) => void;
 };
 
 export type TJurisdictionModalFootNoteProps = {

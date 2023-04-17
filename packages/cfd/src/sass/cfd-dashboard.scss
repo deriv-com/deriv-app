@@ -527,46 +527,6 @@
         box-shadow: 0 1.2rem 1.8rem 0.8rem var(--shadow-menu);
     }
 
-    &__verification-status,
-    &__verification-status--pending,
-    &__verification-status--account_added,
-    &__verification-status--poi_verified,
-    &__verification-status--not_submitted,
-    &__verification-status--hint {
-        width: 100%;
-        min-height: 2.4rem;
-        display: flex;
-
-        * {
-            margin: auto;
-        }
-
-        &--pending {
-            background-color: #ffad3a;
-            border-radius: 0.5rem;
-        }
-
-        &--poi_verified {
-            background: var(--text-status-info-blue);
-            border-radius: 0.5rem;
-            padding: 0.1rem;
-        }
-        &--account_added {
-            background-color: #4bb4b3;
-            border-radius: 0.5rem;
-        }
-
-        &--failed {
-            background-color: #ec3f3f;
-            border-radius: 0.5rem;
-        }
-        &--not_submitted {
-            background-color: var(--general-section-1);
-            padding: 0.3rem;
-            border-radius: 0.5rem;
-        }
-    }
-
     &__card {
         &-content {
             &-container {

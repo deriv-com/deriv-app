@@ -37,45 +37,6 @@
         box-shadow: 0 1.2rem 1.8rem 0.8rem var(--shadow-menu);
     }
 
-    &__verification-status,
-    &__verification-status--pending,
-    &__verification-status--account_added,
-    &__verification-status--poi_verified,
-    &__verification-status--not_submitted,
-    &__verification-status--hint {
-        width: 100%;
-        min-height: 2.4rem;
-        display: flex;
-
-        * {
-            margin: auto;
-        }
-
-        &--pending {
-            background-color: $color-yellow;
-            border-radius: 0.5rem;
-        }
-
-        &--poi_verified {
-            background: var(--text-status-info-blue);
-            border-radius: 0.5rem;
-        }
-        &--account_added {
-            background-color: $color-green-1;
-            border-radius: 0.5rem;
-        }
-
-        &--failed {
-            background-color: $color-red-1;
-            border-radius: 0.5rem;
-        }
-        &--not_submitted {
-            background-color: var(--general-section-1);
-            padding: 0.3rem;
-            border-radius: 0.5rem;
-        }
-    }
-
     &__card {
         &-content {
             &-container {

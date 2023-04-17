@@ -309,6 +309,7 @@ export default class TradeStore extends BaseStore {
             pushPurchaseDataToGtm: action.bound,
             refresh: action.bound,
             requestProposal: action.bound,
+            resetAccumulatorData: action.bound,
             resetErrorServices: action.bound,
             resetPreviousSymbol: action.bound,
             setActiveSymbols: action.bound,
@@ -357,6 +358,7 @@ export default class TradeStore extends BaseStore {
                     this.expiry_date = date;
                 }
                 this.setDefaultGrowthRate();
+                this.resetAccumulatorData();
             }
         );
         reaction(
@@ -389,6 +391,7 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.stop_loss;
                     delete this.validation_rules.take_profit;
                 }
+                this.resetAccumulatorData();
             }
         );
         reaction(
@@ -408,6 +411,12 @@ export default class TradeStore extends BaseStore {
         return this.active_symbols.some(
             symbol_info => symbol_info.symbol === this.symbol && symbol_info.exchange_is_open === 1
         );
+    }
+
+    resetAccumulatorData() {
+        if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
+            this.root_store.contract_trade.clearAccumulatorBarriersData();
+        }
     }
 
     setDefaultGrowthRate() {
@@ -1158,25 +1167,36 @@ export default class TradeStore extends BaseStore {
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier = tick_size_barrier;
-            const { accumulators_high_barrier, accumulators_low_barrier } = this.root_store.contract_trade || {};
-            if (
-                spot &&
-                accumulators_high_barrier &&
-                (spot > accumulators_high_barrier || spot < accumulators_low_barrier)
-            ) {
-                this.root_store.contract_trade.highlighted_spot = spot;
-                this.root_store.contract_trade.highlighted_spot_time = spot_time;
-            } else {
-                this.root_store.contract_trade.highlighted_spot = null;
-                this.root_store.contract_trade.highlighted_spot_time = null;
+            const {
+                accumulator_barriers_data: { accumulators_high_barrier, accumulators_low_barrier } = {},
+                updateAccumulatorBarriersData,
+            } = this.root_store.contract_trade || {};
+            if (updateAccumulatorBarriersData) {
+                if (
+                    spot &&
+                    accumulators_high_barrier &&
+                    (spot > accumulators_high_barrier || spot < accumulators_low_barrier)
+                ) {
+                    updateAccumulatorBarriersData({
+                        highlighted_spot: spot,
+                        highlighted_spot_time: spot_time,
+                    });
+                } else {
+                    updateAccumulatorBarriersData({
+                        highlighted_spot: null,
+                        highlighted_spot_time: null,
+                    });
+                }
+                // clearTimeout(this.accu_barriers_timeout_id);
+                // this.accu_barriers_timeout_id = setTimeout(() => {
+                updateAccumulatorBarriersData({
+                    current_symbol_spot: spot,
+                    current_symbol_spot_time: spot_time,
+                    accumulators_high_barrier: high_barrier,
+                    accumulators_low_barrier: low_barrier,
+                });
+                // }, 300);
             }
-            // clearTimeout(this.accu_barriers_timeout_id);
-            // this.accu_barriers_timeout_id = setTimeout(() => {
-            this.root_store.contract_trade.current_symbol_spot = spot;
-            this.root_store.contract_trade.current_symbol_spot_time = spot_time;
-            this.root_store.contract_trade.accumulators_high_barrier = high_barrier;
-            this.root_store.contract_trade.accumulators_low_barrier = low_barrier;
-            // }, 300);
         }
 
         if (!this.main_barrier || this.main_barrier?.shade) {

@@ -302,9 +302,7 @@ const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
 
 const Chart = props => {
     const {
-        // accumulator_barriers_data,
-        current_symbol_spot: current_spot,
-        current_symbol_spot_time: current_spot_time,
+        accumulator_barriers_data,
         all_positions,
         topWidgets,
         charts_ref,
@@ -335,6 +333,7 @@ const Chart = props => {
         wsSendRequest,
         wsSubscribe,
     } = props;
+    const { current_spot, current_spot_time } = accumulator_barriers_data || {};
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (
@@ -432,6 +431,7 @@ const Chart = props => {
 };
 
 Chart.propTypes = {
+    accumulator_barriers_data: PropTypes.object,
     all_positions: PropTypes.array,
     topWidgets: PropTypes.func,
     charts_ref: PropTypes.object,
@@ -439,8 +439,6 @@ Chart.propTypes = {
     chart_type: PropTypes.string,
     chart_layout: PropTypes.any,
     chartStateChange: PropTypes.func,
-    current_symbol_spot: PropTypes.number,
-    current_symbol_spot_time: PropTypes.number,
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
@@ -462,9 +460,8 @@ Chart.propTypes = {
 };
 
 const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portfolio }) => ({
+    accumulator_barriers_data: contract_trade.accumulator_barriers_data,
     all_positions: portfolio.all_positions,
-    current_symbol_spot: contract_trade.highlighted_spot,
-    current_symbol_spot_time: contract_trade.highlighted_spot_time,
     is_socket_opened: common.is_socket_opened,
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,

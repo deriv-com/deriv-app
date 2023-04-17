@@ -26,7 +26,7 @@ const RiskComponent = ({ low_risk_without_non_eu, low_risk_without_eu, non_eu_ac
         },
         {
             title: translate('Deriv Account'),
-            switcher_type: (high_risk_without_account || high_risk_or_eu) && eu_accounts?.length,
+            switcher_type: (high_risk_without_account || high_risk_or_eu) && !eu_accounts?.length,
             option: type === high_risk_or_eu ? translate('Multipliers') : translate('Options & Multipliers'),
             label: translate('Add'),
         },
@@ -38,7 +38,7 @@ const RiskComponent = ({ low_risk_without_non_eu, low_risk_without_eu, non_eu_ac
         },
         {
             title: translate('EU Deriv Account'),
-            switcher_type: low_risk_without_eu && eu_accounts?.length,
+            switcher_type: low_risk_without_eu && !eu_accounts?.length,
             option: translate('Options & Multipliers'),
             label: translate('Add'),
         },
@@ -47,7 +47,7 @@ const RiskComponent = ({ low_risk_without_non_eu, low_risk_without_eu, non_eu_ac
     return (
         <>
             {risk_array.map(({ title, switcher_type, option, label }, index) => {
-                const is_end = risk_array.length === (index + 1);
+                const is_end = risk_array.length === index + 1;
                 if (switcher_type) {
                     return (
                         <React.Fragment key={title + index}>
@@ -55,25 +55,24 @@ const RiskComponent = ({ low_risk_without_non_eu, low_risk_without_eu, non_eu_ac
                             <div className='account__switcher-container__content'>
                                 <div
                                     className={classNames('account__switcher-container__content', {
-                                        'account__switcher-container__content--low-risk': switcher_type === low_risk_without_account,
-                                        'account__switcher-container__content--high-risk': switcher_type === high_risk_without_account || high_risk_or_eu,
+                                        'account__switcher-container__content--low-risk':
+                                            switcher_type === low_risk_without_account,
+                                        'account__switcher-container__content--high-risk':
+                                            switcher_type === high_risk_without_account || high_risk_or_eu,
                                     })}
                                 >
                                     <img src={'image/options-and-multipliers.png'} />
                                     <div className='account__switcher-container__content__option'>{option}</div>
                                 </div>
                                 <a href={url} rel='noopener noreferrer'>
-                                    <button className='account__switcher-container__content__action'>
-                                        {label}
-                                    </button>
+                                    <button className='account__switcher-container__content__action'>{label}</button>
                                 </a>
                             </div>
                             {!is_end && <Separator />}
                         </React.Fragment>
-                    )
+                    );
                 }
-                }
-            )}
+            })}
         </>
     );
 };

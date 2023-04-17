@@ -650,7 +650,7 @@
 
             &-dropdown {
                 min-width: 20rem;
-                @include mobile{
+                @include mobile {
                     width: 90%;
                 }
                 &-wrapper {

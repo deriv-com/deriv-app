@@ -122,6 +122,7 @@ const Header = () => {
                     dispatch(updateActiveToken(active_storage_token.token));
                     dispatch(updateActiveAccount(account.authorize));
                     dispatch(setAccountSwitcherLoader(false));
+                    if (!globalObserver.getState('is_subscribed_to_balance')) {
                         api.send({
                             balance: 1,
                             account: 'all',
@@ -137,6 +138,7 @@ const Header = () => {
                             .catch(e => {
                                 globalObserver.emit('Error', e);
                             });
+                    }
                 })
                 .catch(() => {
                     removeAllTokens();

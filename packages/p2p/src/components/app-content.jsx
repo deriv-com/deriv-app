@@ -14,6 +14,7 @@ import { localize } from './i18next';
 import NicknameForm from './nickname-form';
 import TemporarilyBarredHint from './temporarily-barred-hint';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useP2PNotificationCount } from '@deriv/hooks';
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
@@ -21,6 +22,7 @@ const AppContent = ({ order_id }) => {
     const {
         notifications: { setP2POrderProps },
     } = useStore();
+    const notification_count = useP2PNotificationCount();
     const history = useHistory();
 
     React.useEffect(() => {
@@ -81,7 +83,7 @@ const AppContent = ({ order_id }) => {
                 <TemporarilyBarredHint />
                 <BuySell />
             </div>
-            <div label={localize('Orders')} />
+            <div data-count={notification_count} label={localize('Orders')} />
             <div label={localize('My ads')}>
                 <TemporarilyBarredHint />
             </div>

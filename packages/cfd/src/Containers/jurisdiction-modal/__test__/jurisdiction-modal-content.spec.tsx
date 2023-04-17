@@ -2,6 +2,7 @@ import React from 'react';
 import JurisdictionModalContent from '../jurisdiction-modal-content';
 import RootStore from 'Stores/index';
 import { render, screen } from '@testing-library/react';
+import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionModalContent', () => {
     const mock_store = {
@@ -29,7 +30,7 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'svg' as const,
+                shortcode: Jurisdiction.SVG,
                 sub_account_type: '',
             },
             {
@@ -45,7 +46,7 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'bvi' as const,
+                shortcode: Jurisdiction.BVI,
                 sub_account_type: '',
             },
             {
@@ -61,7 +62,7 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'vanuatu' as const,
+                shortcode: Jurisdiction.VANUATU,
                 sub_account_type: '',
             },
         ],
@@ -79,7 +80,7 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'svg' as const,
+                shortcode: Jurisdiction.SVG,
                 sub_account_type: '',
             },
             {
@@ -95,7 +96,7 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'bvi' as const,
+                shortcode: Jurisdiction.BVI,
                 sub_account_type: '',
             },
             {
@@ -111,7 +112,7 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'vanuatu' as const,
+                shortcode: Jurisdiction.VANUATU,
                 sub_account_type: '',
             },
             {
@@ -127,7 +128,7 @@ describe('JurisdictionModalContent', () => {
                     },
                     signup: [''],
                 },
-                shortcode: 'labuan' as const,
+                shortcode: Jurisdiction.LABUAN,
                 sub_account_type: '',
             },
         ],

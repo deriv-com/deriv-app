@@ -251,7 +251,16 @@ describe('JurisdictionModalContent', () => {
         ).toBeInTheDocument();
     });
 
-    const highriskCommonRenderCheck = () => {
+    it('should display only financial svg for highrisk clients', () => {
+        mock_props.financial_available_accounts = [
+            { ...mock_props.financial_available_accounts[0], shortcode: Jurisdiction.SVG },
+        ];
+        mock_props.synthetic_available_accounts = [
+            { ...mock_props.synthetic_available_accounts[0], shortcode: Jurisdiction.SVG },
+        ];
+        render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
+        const container = screen.getByTestId('dt-jurisdiction-modal-content');
+        expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');
         expect(screen.queryByText('British Virgin Islands')).not.toBeInTheDocument();
         expect(screen.queryByText('Vanuatu')).not.toBeInTheDocument();
         expect(screen.queryByText('Labuan')).not.toBeInTheDocument();
@@ -266,19 +275,6 @@ describe('JurisdictionModalContent', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
-    };
-
-    it('should display only financial svg for highrisk clients', () => {
-        mock_props.financial_available_accounts = [
-            { ...mock_props.financial_available_accounts[0], shortcode: Jurisdiction.SVG },
-        ];
-        mock_props.synthetic_available_accounts = [
-            { ...mock_props.synthetic_available_accounts[0], shortcode: Jurisdiction.SVG },
-        ];
-        render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
-        const container = screen.getByTestId('dt-jurisdiction-modal-content');
-        expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');
-        highriskCommonRenderCheck();
         expect(screen.getByText('170+')).toBeInTheDocument();
         expect(screen.getByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
@@ -295,7 +291,20 @@ describe('JurisdictionModalContent', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--synthetic__wrapper');
-        highriskCommonRenderCheck();
+        expect(screen.queryByText('British Virgin Islands')).not.toBeInTheDocument();
+        expect(screen.queryByText('Vanuatu')).not.toBeInTheDocument();
+        expect(screen.queryByText('Labuan')).not.toBeInTheDocument();
+        expect(screen.queryByText('Malta')).not.toBeInTheDocument();
+        expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
+        expect(screen.getByText('Assets')).toBeInTheDocument();
+        expect(screen.getByText('Leverage')).toBeInTheDocument();
+        expect(screen.getByText('1:1000')).toBeInTheDocument();
+        expect(screen.getByText('Verifications')).toBeInTheDocument();
+        expect(
+            screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')
+        ).toBeInTheDocument();
+        expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
+        expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
         expect(screen.getByText('Synthetics, Basket indices and Derived FX')).toBeInTheDocument();
     });

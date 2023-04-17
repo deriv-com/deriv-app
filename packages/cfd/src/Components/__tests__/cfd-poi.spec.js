@@ -10,11 +10,12 @@ jest.mock('@deriv/account', () => ({
 
 describe('<CFDPOI />', () => {
     let props;
+    let mockRootStore;
 
     const ProofOfIdentityContainerForMt5 = 'ProofOfIdentityContainerForMt5';
 
     beforeEach(() => {
-        const mockRootStore = {
+        mockRootStore = {
             client: {
                 account_status: {
                     authentication: {

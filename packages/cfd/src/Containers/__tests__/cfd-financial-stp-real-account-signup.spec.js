@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
+import CFDProviders from '../../cfd-providers';
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
@@ -62,117 +63,129 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         jest.clearAllMocks();
     });
 
-    const mock_props = {
-        addNotificationByKey: jest.fn(),
-        fetchStatesList: jest.fn(),
-        openPendingDialog: jest.fn(),
-        refreshNotifications: jest.fn(),
-        removeNotificationByKey: jest.fn(),
-        removeNotificationMessage: jest.fn(),
-        storeProofOfAddress: jest.fn(),
-        toggleModal: jest.fn(),
-        authentication_status: {
-            document_status: 'none',
-            identity_status: 'none',
+    let mockRootStore = {
+        notifications: {
+            addNotificationByKey: jest.fn(),
+            refreshNotifications: jest.fn(),
+            removeNotificationByKey: jest.fn(),
+            removeNotificationMessage: jest.fn(),
         },
-        client_email: 'mock@gmail.com',
-        get_settings: {
-            account_opening_reason: '',
-            address_city: 'MUDGEERABA',
-            address_line_1: "29 Ross Street, .'",
-            address_line_2: ".'",
-            address_postcode: '111',
-            address_state: '',
-            allow_copiers: 0,
-            citizen: '',
-            client_tnc_status: 'Version 4.2.0 2020-08-07',
-            country: 'Singapore',
-            country_code: 'sg',
-            date_of_birth: 984960000,
+        client: {
+            account_settings: {
+                account_opening_reason: '',
+                address_city: 'MUDGEERABA',
+                address_line_1: "29 Ross Street, .'",
+                address_line_2: ".'",
+                address_postcode: '111',
+                address_state: '',
+                allow_copiers: 0,
+                citizen: '',
+                client_tnc_status: 'Version 4.2.0 2020-08-07',
+                country: 'Singapore',
+                country_code: 'sg',
+                date_of_birth: 984960000,
+                email: 'mock@gmail.com',
+                email_consent: 1,
+                feature_flag: {
+                    wallet: 0,
+                },
+                first_name: 'mahdiyeh',
+                has_secret_answer: 1,
+                immutable_fields: ['residence'],
+                is_authenticated_payment_agent: 0,
+                last_name: 'am',
+                non_pep_declaration: 1,
+                phone: '+651213456',
+                place_of_birth: null,
+                preferred_language: 'EN',
+                request_professional_status: 0,
+                residence: 'Singapore',
+                salutation: '',
+                tax_identification_number: null,
+                tax_residence: null,
+                user_hash: '823341c18bfccb391b6bb5d77ab7e6a83991f82669c1ba4e5b01dbd2fd71c7fe',
+            },
+            authentication_status: {
+                document_status: 'none',
+                identity_status: 'none',
+            },
             email: 'mock@gmail.com',
-            email_consent: 1,
-            feature_flag: {
-                wallet: 0,
+            is_fully_authenticated: true,
+            landing_company: {
+                config: {
+                    tax_details_required: 1,
+                    tin_format: ['^\\d{15}$'],
+                    tin_format_description: '999999999999999',
+                },
+                dxtrade_financial_company: {},
+                dxtrade_gaming_company: {},
+                financial_company: {},
+                gaming_company: {},
+                id: 'id',
+                minimum_age: 18,
+                mt_financial_company: {},
+                mt_gaming_company: {},
+                name: 'Indonesia',
+                virtual_company: 'virtual',
             },
-            first_name: 'mahdiyeh',
-            has_secret_answer: 1,
-            immutable_fields: ['residence'],
-            is_authenticated_payment_agent: 0,
-            last_name: 'am',
-            non_pep_declaration: 1,
-            phone: '+651213456',
-            place_of_birth: null,
-            preferred_language: 'EN',
-            request_professional_status: 0,
-            residence: 'Singapore',
-            salutation: '',
-            tax_identification_number: null,
-            tax_residence: null,
-            user_hash: '823341c18bfccb391b6bb5d77ab7e6a83991f82669c1ba4e5b01dbd2fd71c7fe',
-        },
-        is_fully_authenticated: true,
-        landing_company: {
-            config: {
-                tax_details_required: 1,
-                tin_format: ['^\\d{15}$'],
-                tin_format_description: '999999999999999',
-            },
-            dxtrade_financial_company: {},
-            dxtrade_gaming_company: {},
-            financial_company: {},
-            gaming_company: {},
-            id: 'id',
-            minimum_age: 18,
-            mt_financial_company: {},
-            mt_gaming_company: {},
-            name: 'Indonesia',
-            virtual_company: 'virtual',
-        },
-        residence_list: [
-            {
-                identity: {
-                    services: {
-                        idv: {
-                            documents_supported: {},
-                            has_visual_sample: 0,
-                            is_country_supported: 0,
-                        },
-                        onfido: {
-                            documents_supported: {
-                                passport: {
-                                    display_name: 'Passport',
-                                },
+            residence_list: [
+                {
+                    identity: {
+                        services: {
+                            idv: {
+                                documents_supported: {},
+                                has_visual_sample: 0,
+                                is_country_supported: 0,
                             },
-                            is_country_supported: 0,
+                            onfido: {
+                                documents_supported: {
+                                    passport: {
+                                        display_name: 'Passport',
+                                    },
+                                },
+                                is_country_supported: 0,
+                            },
                         },
                     },
+                    phone_idd: '93',
+                    text: 'Afghanistan',
+                    value: 'af',
                 },
-                phone_idd: '93',
-                text: 'Afghanistan',
-                value: 'af',
+            ],
+            fetchStatesList: jest.fn(),
+            states_list: {
+                text: 'Central Singapore',
+                value: '01',
             },
-        ],
-        states_list: {
-            text: 'Central Singapore',
-            value: '01',
+        },
+        modules: {
+            cfd: {
+                storeProofOfAddress: jest.fn(),
+            },
         },
     };
 
     it('should render CFDFinancialStpRealAccountSignup component', () => {
-        render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
+        render(<CFDFinancialStpRealAccountSignup />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
+        });
 
         expect(screen.getByTestId('dt_cfd_financial_stp_modal_body')).toBeInTheDocument();
     });
 
     it('should render properly for the first step content', () => {
-        render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
+        render(<CFDFinancialStpRealAccountSignup />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
+        });
 
         testAllStepsFn(steps, 0);
     });
 
     it('should render properly for the second step content', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce([1, () => {}]);
-        render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
+        render(<CFDFinancialStpRealAccountSignup />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
 
         testAllStepsFn(steps, 1);
     });

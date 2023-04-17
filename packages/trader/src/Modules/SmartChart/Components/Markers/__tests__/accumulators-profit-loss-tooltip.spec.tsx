@@ -2,8 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccumulatorsProfitLossTooltip from '../accumulators-profit-loss-tooltip';
 
-type TAccumulatorsProfitLossTooltip = React.ComponentProps<typeof AccumulatorsProfitLossTooltip>;
-
 jest.mock('Modules/SmartChart', () => ({
     ...jest.requireActual('Modules/SmartChart'),
     FastMarker: jest.fn(({ children, className }) => <div className={className}>{children}</div>),
@@ -11,7 +9,7 @@ jest.mock('Modules/SmartChart', () => ({
 jest.mock('../accumulators-profit-loss-text', () => () => 'AccumulatorsProfitLossText');
 
 describe('AccumulatorsProfitLossTooltip', () => {
-    const props: TAccumulatorsProfitLossTooltip = {
+    const props: React.ComponentProps<typeof AccumulatorsProfitLossTooltip> = {
         className: 'profit-loss-tooltip',
         currency: 'USD',
         current_spot: 6468.95,

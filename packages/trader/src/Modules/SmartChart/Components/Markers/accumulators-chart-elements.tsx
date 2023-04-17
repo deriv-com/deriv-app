@@ -4,13 +4,13 @@ import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
 import CurrentSpotEmphasizer from './current-spot-emphasizer.jsx';
 import { ProposalOpenContract } from '@deriv/api-types';
 
-type TAccuContractType = {
+type TPositions = {
     contract_info: Omit<React.ComponentProps<typeof AccumulatorsProfitLossTooltip>, 'className' | 'alignment'> &
         Required<Pick<ProposalOpenContract, 'underlying' | 'shortcode' | 'contract_id' | 'contract_type'>>;
 };
 
 type TAccumulatorsChartElements = {
-    all_positions: TAccuContractType[];
+    all_positions: TPositions[];
     current_symbol_spot?: number | null;
     current_symbol_spot_time: number;
     should_highlight_current_spot: boolean;
@@ -32,10 +32,10 @@ const AccumulatorsChartElements = ({
     return (
         <React.Fragment>
             {!!accumulators_positions.length &&
-                accumulators_positions.map(({ contract_info }: TAccuContractType) => (
+                accumulators_positions.map(({ contract_info }: TPositions) => (
                     <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
                 ))}
-            {should_highlight_current_spot && Boolean(current_symbol_spot_time) && (
+            {should_highlight_current_spot && !!current_symbol_spot_time && (
                 <CurrentSpotEmphasizer
                     current_spot={current_symbol_spot}
                     current_spot_time={current_symbol_spot_time}

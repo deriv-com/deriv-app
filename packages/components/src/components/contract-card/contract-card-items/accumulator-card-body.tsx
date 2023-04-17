@@ -18,14 +18,6 @@ type TToastConfig = {
     type?: string;
 };
 
-type TConnectWithContractUpdateReturn = {
-    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
-    contract_update_take_profit: number | string;
-    contract_update_stop_loss: number | string;
-    has_contract_update_take_profit: boolean;
-    has_contract_update_stop_loss: boolean;
-};
-
 export type TContractInfo = Pick<ProposalOpenContract, 'buy_price' | 'sell_price' | 'contract_id'> &
     Required<Pick<ProposalOpenContract, 'profit'>> & {
         limit_order?: Proposal['limit_order'];
@@ -33,7 +25,7 @@ export type TContractInfo = Pick<ProposalOpenContract, 'buy_price' | 'sell_price
 
 type TAccumulatorCardBody = {
     addToast?: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate?: (Component: JSX.Element) => TConnectWithContractUpdateReturn;
+    connectWithContractUpdate?: (Component: JSX.Element) => JSX.Element;
     contract_info: TContractInfo;
     contract_update: ContractUpdate;
     currency: Required<ProposalOpenContract>['currency'];

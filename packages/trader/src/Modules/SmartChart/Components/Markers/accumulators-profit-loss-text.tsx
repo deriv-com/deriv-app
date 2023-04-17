@@ -9,17 +9,11 @@ type TAccumulatorsProfitLossText = Omit<
     'alignment' | 'exit_tick' | 'exit_tick_time' | 'high_barrier' | 'is_sold'
 >;
 
-type TActions = {
-    INC: string;
-    DEC: string;
-    ADD10: string;
-};
-
-const ACTIONS: TActions = {
+const ACTIONS = {
     INC: 'increment',
     DEC: 'decrement',
     ADD10: 'add10',
-};
+} as const;
 
 const AccumulatorsProfitLossText = ({
     current_spot,
@@ -33,7 +27,7 @@ const AccumulatorsProfitLossText = ({
     const prev_profit = React.useRef<number>(profit);
     const prev_profit_tenth = +prev_profit.current?.toFixed(2).split('.')[1][0];
     const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
-    const profit_tenth_ref = React.useRef<number>(0);
+    const profit_tenth_ref = React.useRef(0);
     const interval_id_ref = React.useRef<ReturnType<typeof setInterval>>();
     const fading_in_timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
     const sliding_timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
@@ -45,7 +39,7 @@ const AccumulatorsProfitLossText = ({
     const sign = profit > 0 ? '+' : '';
 
     const runThroughTenthDigit = (
-        action: TActions[keyof TActions],
+        action: typeof ACTIONS[keyof typeof ACTIONS],
         interval_ms: number,
         start: number,
         end: number

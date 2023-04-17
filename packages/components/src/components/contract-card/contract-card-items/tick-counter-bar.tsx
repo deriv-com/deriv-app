@@ -1,8 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Text from '../../text';
 
-const TickCounterBar = ({ current_tick, label, max_ticks_duration }) => (
+type TTickCounterBar = {
+    current_tick: number;
+    label: string;
+    max_ticks_duration: number;
+};
+const TickCounterBar = ({ current_tick, label, max_ticks_duration }: TTickCounterBar) => (
     <div className='dc-tick-counter-bar__container'>
         <div className='dc-tick-counter-bar__track'>
             <Text size='xxs' weight='bold' className='dc-tick-counter-bar__text'>
@@ -11,11 +15,5 @@ const TickCounterBar = ({ current_tick, label, max_ticks_duration }) => (
         </div>
     </div>
 );
-
-TickCounterBar.propTypes = {
-    current_tick: PropTypes.number,
-    label: PropTypes.string,
-    max_ticks_duration: PropTypes.number,
-};
 
 export default React.memo(TickCounterBar);

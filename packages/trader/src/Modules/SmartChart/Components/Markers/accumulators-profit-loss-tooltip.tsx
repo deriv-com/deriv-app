@@ -20,7 +20,7 @@ type TAccumulatorsProfitLossTooltip = {
 } & TPickProposalOpenContract &
     TProposalOpenContractProfit;
 
-type TRef = {
+export type TRef = {
     setPosition: (position: { epoch: number | null; price: number | null }) => void;
 };
 
@@ -90,7 +90,7 @@ const AccumulatorsProfitLossTooltip = ({
     if (!is_sold && current_spot_time && high_barrier)
         return (
             <AccumulatorsProfitLossText
-                currency={currency || ''}
+                currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
                 profit={profit}

@@ -2,16 +2,12 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
-import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
+import AccumulatorsProfitLossTooltip, { TRef } from './accumulators-profit-loss-tooltip';
 
 type TAccumulatorsProfitLossText = Omit<
     React.ComponentProps<typeof AccumulatorsProfitLossTooltip>,
     'alignment' | 'exit_tick' | 'exit_tick_time' | 'high_barrier' | 'is_sold'
 >;
-
-type TRef = {
-    setPosition: (position: { epoch: number | null; price: number | null }) => void;
-};
 
 type TActions = {
     INC: string;
@@ -38,7 +34,7 @@ const AccumulatorsProfitLossText = ({
     const prev_profit_tenth = +prev_profit.current?.toFixed(2).split('.')[1][0];
     const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
     const profit_tenth_ref = React.useRef<number>(0);
-    const interval_id_ref = React.useRef<NodeJS.Timeout>();
+    const interval_id_ref = React.useRef<ReturnType<typeof setInterval>>();
     const fading_in_timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
     const sliding_timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
     const profit_portions_array = profit.toFixed(2).split('.');

@@ -32,12 +32,9 @@ describe('<AccumulatorCardBody />', () => {
         currency: 'USD',
     };
     it('should display Take profit: label and - as value when take_profit is not available', () => {
-        const contract_update_prop = {
-            take_profit: {
-                order_amount: null,
-            },
-        };
-        render(<AccumulatorCardBody {...mock_props} contract_update={contract_update_prop} />);
+        if (mock_props?.contract_update?.take_profit?.order_amount)
+            mock_props.contract_update.take_profit.order_amount = null;
+        render(<AccumulatorCardBody {...mock_props} />);
         expect(screen.getByText('Take profit:')).toBeInTheDocument();
         expect(screen.getByText('-')).toBeInTheDocument();
     });

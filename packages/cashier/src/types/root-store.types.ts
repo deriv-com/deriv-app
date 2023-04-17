@@ -1,6 +1,9 @@
 import type { TStores } from '@deriv/stores';
-import type CashierStore from '../../stores/cashier-store';
+import type CashierStore from '../stores/cashier-store';
 
+/**
+ * @deprecated - Use `TStores` from `@deriv/stores` instead of this type.
+ */
 export type TRootStore = TStores & {
     modules: {
         cashier: CashierStore;

@@ -73,9 +73,6 @@
             max-width: 100%;
             display: none;
         }
-        &--disabled {
-            color: var(--text-disabled);
-        }
     }
     &__picker {
         opacity: 0;
@@ -87,13 +84,13 @@
     }
     &--disabled {
         .dc-select-native__display-text {
-            color: var(--text-disabled);
+            color: var(--text-less-prominent);
         }
         .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
-            color: var(--text-disabled);
+            color: var(--text-less-prominent);
         }
         .dc-icon {
-            --fill-color1: var(--text-disabled);
+            --fill-color1: var(--text-less-prominent);
         }
     }
     &--error {

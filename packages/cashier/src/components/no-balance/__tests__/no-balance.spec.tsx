@@ -6,6 +6,7 @@ import { routes } from '@deriv/shared';
 import { useDepositLocked } from '@deriv/hooks';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -24,10 +25,10 @@ jest.mock('@deriv/hooks', () => ({
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
-    let mockRootStore;
+    let mockRootStore: TStores;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'USD',
                 mt5_login_list: [
@@ -39,11 +40,11 @@ describe('<NoBalance />', () => {
             },
             modules: {
                 cashier: {
-                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(false) },
                     general_store: { setCashierTabIndex: jest.fn() },
                 },
             },
-        };
+        });
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
     });
 
     it('component should render', () => {

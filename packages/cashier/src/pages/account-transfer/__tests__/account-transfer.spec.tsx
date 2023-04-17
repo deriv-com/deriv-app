@@ -5,16 +5,7 @@ import { useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -25,7 +16,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     WS: {
-        wait: (...payload) => {
+        wait: (...payload: unknown[]) => {
             return Promise.resolve([...payload]);
         },
     },
@@ -39,9 +30,9 @@ jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTrans
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
 describe('<AccountTransfer />', () => {
-    let mockRootStore;
+    let mockRootStore: TStores;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 is_switching: false,
                 is_virtual: false,
@@ -57,7 +48,6 @@ describe('<AccountTransfer />', () => {
             },
             modules: {
                 cashier: {
-                    deposit: { is_deposit_locked: useDepositLocked.mockReturnValue(true) },
                     general_store: {
                         setActiveTab: jest.fn(),
                         is_cashier_locked: false,
@@ -80,12 +70,13 @@ describe('<AccountTransfer />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const props = {
         setSideNotes: jest.fn(),
     };
+    (useDepositLocked as jest.Mock).mockReturnValue(true);
 
     const renderAccountTransfer = () => {
         render(<AccountTransfer {...props} />, {

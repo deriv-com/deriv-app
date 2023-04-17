@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -10,9 +11,9 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<CryptoTransactionsRenderer />', () => {
-    let mockRootStore;
+    let mockRootStore: TStores;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             modules: {
                 cashier: {
                     transaction_history: {
@@ -25,7 +26,7 @@ describe('<CryptoTransactionsRenderer />', () => {
             client: {
                 currency: 'BTC',
             },
-        };
+        });
     });
     const props = {
         row: {

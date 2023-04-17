@@ -24,7 +24,7 @@ jest.mock('@deriv/shared', () => {
         ...original_module,
         isMobile: jest.fn(() => false),
         WS: {
-            wait: (...payload) => {
+            wait: (...payload: unknown[]) => {
                 return Promise.resolve([...payload]);
             },
         },

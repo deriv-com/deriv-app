@@ -3,17 +3,18 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 
-let mockRootStore;
+let mockRootStore: TStores;
 
 describe('<AccountTransferForm />', () => {
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 account_limits: {
                     daily_transfers: {
@@ -89,7 +90,7 @@ describe('<AccountTransferForm />', () => {
             traders_hub: {
                 selected_account: {},
             },
-        };
+        });
     });
     beforeAll(() => {
         const modal_root_el = document.createElement('div');

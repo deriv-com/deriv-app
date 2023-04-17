@@ -1,10 +1,11 @@
 import React from 'react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import WithdrawalLocked from '../withdrawal-locked';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 type TStatus = 'document' | 'none' | 'pending' | '';
 
@@ -48,10 +49,10 @@ const setAccountStatus = (identity_status: TStatus, document_status: TStatus, ne
 };
 
 describe('WithdrawalLocked', () => {
-    let history, mockRootStore;
+    let history: BrowserHistory, mockRootStore: TStores;
     beforeEach(() => {
         history = createBrowserHistory();
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 account_status: setAccountStatus('pending', '', ''),
             },
@@ -65,7 +66,7 @@ describe('WithdrawalLocked', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const renderWithdrawalLocked = () => {

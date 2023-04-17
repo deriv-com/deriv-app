@@ -2,13 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Withdraw from '../withdraw';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
 
 describe('<Withdraw />', () => {
-    let mockRootStore;
+    let mockRootStore: TStores;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 verification_code: { payment_withdraw: 'code' },
             },
@@ -27,7 +28,7 @@ describe('<Withdraw />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     it('should render the cashier container component', () => {

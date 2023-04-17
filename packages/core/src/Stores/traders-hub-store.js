@@ -260,7 +260,7 @@ export default class TradersHubStore extends BaseStore {
         const { is_logged_in, landing_companies, residence } = this.root_store.client;
         const { financial_company, gaming_company } = landing_companies;
 
-        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
+        //this is a conditional check for countries like Australia/Norway which fulfills one of these following conditions
         const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
 
         if (!is_logged_in) return '';

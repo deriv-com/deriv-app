@@ -30,7 +30,7 @@ const OnRampProviderPopup = observer(() => {
     let timeout_clipboard: ReturnType<typeof setTimeout>;
 
     const onClickCopyDepositAddress = () => {
-        copyToClipboard(deposit_address);
+        copyToClipboard(deposit_address || '');
 
         timeout_clipboard = setTimeout(() => {
             setIsCopied(false);
@@ -47,7 +47,7 @@ const OnRampProviderPopup = observer(() => {
     // (vs embedding an <iframe>)
     React.useEffect(() => {
         if (should_show_widget && widget_html) {
-            selected_provider.onMountWidgetContainer(el_onramp_widget_container_ref);
+            selected_provider?.onMountWidgetContainer(el_onramp_widget_container_ref);
         }
     }, [selected_provider, should_show_widget, widget_html]);
 
@@ -70,7 +70,7 @@ const OnRampProviderPopup = observer(() => {
                 {widget_error ? (
                     <div className='on-ramp__widget-container-error'>{widget_error}</div>
                 ) : (
-                    <div dangerouslySetInnerHTML={{ __html: widget_html }} />
+                    <div dangerouslySetInnerHTML={{ __html: widget_html || '' }} />
                 )}
             </div>
         );
@@ -108,12 +108,12 @@ const OnRampProviderPopup = observer(() => {
                             <Localize i18n_default_text="Please copy the crypto address you see below. You'll need it to deposit your cryptocurrency." />
                         </Text>
                         <div className='on-ramp__popup-deposit-address'>
-                            <Popover zIndex={9998} alignment='right' message={localize('Copied!')} is_open={is_copied}>
+                            <Popover zIndex='9998' alignment='right' message={localize('Copied!')} is_open={is_copied}>
                                 <input
                                     className={classNames('on-ramp__popup-deposit-address-text', {
                                         'on-ramp__popup-deposit-address-text--dark': is_dark_mode_on,
                                     })}
-                                    defaultValue={deposit_address}
+                                    defaultValue={deposit_address || ''}
                                     disabled
                                     onFocus={e => e.preventDefault()}
                                 />

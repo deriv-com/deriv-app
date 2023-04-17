@@ -37,8 +37,7 @@ describe('<CryptoDeposit />', () => {
     };
 
     it('should show loader', () => {
-        // TODO: use mockStore for tests after TStores type will be updated
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -67,7 +66,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show proper breadcrumbs', () => {
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -97,7 +96,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -131,7 +130,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show proper error message and button', () => {
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -165,7 +164,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should trigger onClick callback when the user clicks "Refresh" button', () => {
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -197,7 +196,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show proper messages for BTC cryptocurrency', () => {
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -237,7 +236,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show proper messages for ETH cryptocurrency', () => {
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'ETH',
             },
@@ -272,7 +271,7 @@ describe('<CryptoDeposit />', () => {
 
     it('should show proper messages for selected options for ETH, USDC, eUSDT cryptocurrency', () => {
         const checkMessagesForOptions = (currency, token) => {
-            const mock_root_store: TStores = mockStore({
+            const mock_root_store = mockStore({
                 client: {
                     currency,
                 },
@@ -398,7 +397,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show "RecentTransactions" in Mobile mode', () => {
-        const mock_root_store: TStores = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 currency: 'BTC',
             },

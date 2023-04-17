@@ -1,7 +1,8 @@
 import { routes } from '@deriv/shared';
 import PaymentAgentStore from '../payment-agent-store';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket } from '../../types';
+import { TWebSocket } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -77,7 +78,7 @@ describe('PaymentAgentStore', () => {
     };
 
     beforeEach(() => {
-        const root_store = {
+        const root_store = mockStore({
             client: {
                 currency: 'USD',
                 residence: 'id',
@@ -93,7 +94,7 @@ describe('PaymentAgentStore', () => {
                     },
                 },
             },
-        };
+        });
         const WS = {
             allPaymentAgentList: () =>
                 Promise.resolve({
@@ -114,7 +115,7 @@ describe('PaymentAgentStore', () => {
             wait: () => Promise.resolve(),
         };
 
-        payment_agent_store = new PaymentAgentStore(WS as unknown as TWebSocket, root_store as unknown as TRootStore);
+        payment_agent_store = new PaymentAgentStore(WS as unknown as TWebSocket, root_store);
     });
 
     beforeAll(() => {

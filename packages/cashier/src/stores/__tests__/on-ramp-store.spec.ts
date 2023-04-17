@@ -2,23 +2,24 @@ import { waitFor } from '@testing-library/react';
 import OnRampStore from '../on-ramp-store';
 import createBanxaProvider from '../../pages/on-ramp/on-ramp-providers';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket, TOnRampProvider } from '../../types';
+import { TWebSocket, TOnRampProvider } from '../../types';
+import { mockStore, TStores } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
 let banxa_provider: TOnRampProvider,
     onramp_store: OnRampStore,
     onramp_providers: TOnRampProvider[],
-    root_store: DeepPartial<TRootStore>,
+    root_store: TStores,
     WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
-    root_store = {
+    root_store = mockStore({
         client: {
             is_virtual: false,
             currency: 'BTC',
         },
-    };
+    });
     WS = {
         authorized: {
             cashier: jest.fn().mockResolvedValueOnce({
@@ -26,7 +27,7 @@ beforeEach(() => {
             }),
         },
     };
-    onramp_store = new OnRampStore(WS as TWebSocket, root_store as TRootStore);
+    onramp_store = new OnRampStore(WS as TWebSocket, root_store);
     onramp_providers = [createBanxaProvider(onramp_store)];
     banxa_provider = createBanxaProvider(onramp_store);
 });

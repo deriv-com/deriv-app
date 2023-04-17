@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
 import { useDepositLocked } from '@deriv/hooks';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 import { beforeEach } from '@jest/globals';
 
@@ -17,7 +17,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if there is a crypto cashier maintenance', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -49,7 +49,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto withdrawal is suspended', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -81,7 +81,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto deposit is suspended', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -114,7 +114,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if there is a cashier maintenance', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -146,7 +146,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client does not provide residence', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['no_residence'],
@@ -178,7 +178,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the documents are expired', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['documents_expired'],
@@ -210,7 +210,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has cashier_locked_status', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['cashier_locked_status'],
@@ -240,7 +240,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has disabled_status', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['disabled_status'],
@@ -270,7 +270,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client account has no currency', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_CURRENCY'],
@@ -300,7 +300,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client is not fully authenticated', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_AUTHENTICATE'],
@@ -328,7 +328,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has ask_financial_risk_approval status', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_FINANCIAL_RISK_APPROVAL'],
@@ -359,7 +359,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client is high risk and has no FA', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['FinancialAssessmentRequired'],
@@ -391,7 +391,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has ask_tin_information', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_TIN_INFORMATION'],
@@ -419,7 +419,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has ask_uk_funds_protection', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_UK_FUNDS_PROTECTION'],
@@ -447,7 +447,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client does not set 30-day turnover limit', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_SELF_EXCLUSION_MAX_TURNOVER_SET'],
@@ -479,7 +479,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has missing required profile fields', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_FIX_DETAILS'],
@@ -511,7 +511,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has self-exluded from the website', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['SelfExclusion'],
@@ -546,7 +546,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has unwelcome_status', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['unwelcome_status'],
@@ -575,7 +575,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has no_withdrawal_or_trading_status', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['no_withdrawal_or_trading_status'],
@@ -605,7 +605,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has withdrawal_locked_status', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['withdrawal_locked_status'],
@@ -635,7 +635,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has only_pa_withdrawals_allowed_status', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['only_pa_withdrawals_allowed_status'],
@@ -665,7 +665,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should prioritize cashier locked message if the client has a combo of deposit and cashier locked reasons', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_AUTHENTICATE', 'unwelcome_status'],
@@ -693,7 +693,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show cashier locked message if the client has a combo of deposit and withdrawal locked reasons', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['no_withdrawal_or_trading_status', 'unwelcome_status'],
@@ -723,7 +723,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {
-        const mockRootStore: TStores = mockStore({
+        const mockRootStore = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['PACommisionWithdrawalLimit'],

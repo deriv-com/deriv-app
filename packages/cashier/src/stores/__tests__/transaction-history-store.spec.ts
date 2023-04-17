@@ -1,6 +1,7 @@
 import TransactionHistoryStore from '../transaction-history-store';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket } from '../../types';
+import { TWebSocket } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -20,12 +21,12 @@ describe('TransactionHistoryStore', () => {
             transaction_type: 'withdrawal',
         },
     ];
-    const root_store: DeepPartial<TRootStore> = {
+    const root_store = mockStore({
         client: {
             currency: 'BTC',
             switched: false,
         },
-    };
+    });
     const WS: DeepPartial<TWebSocket> = {
         authorized: {
             cashierPayments: () =>
@@ -43,7 +44,7 @@ describe('TransactionHistoryStore', () => {
     };
 
     beforeEach(() => {
-        transaction_history_store = new TransactionHistoryStore(WS as TWebSocket, root_store as TRootStore);
+        transaction_history_store = new TransactionHistoryStore(WS as TWebSocket, root_store);
     });
 
     it('should load crypto transactions properly', async () => {

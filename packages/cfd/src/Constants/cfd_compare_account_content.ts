@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { TCompareAccountContentProps, TCompareAccountFooterButtonData } from '../Containers/props.types';
 
-export const eu_real_content: TCompareAccountContentProps[] = [
+export const getEuRealContent = (): TCompareAccountContentProps[] => [
     {
         id: 'platform',
         attribute: localize('Platform'),
@@ -59,7 +59,7 @@ export const eu_real_content: TCompareAccountContentProps[] = [
         },
     },
 ];
-export const cr_real_content: TCompareAccountContentProps[] = [
+export const getCrRealContent = (): TCompareAccountContentProps[] => [
     {
         id: 'platform',
         attribute: localize('Platform'),
@@ -171,7 +171,7 @@ export const cr_real_content: TCompareAccountContentProps[] = [
     },
 ];
 
-export const cr_real_footer_buttons: TCompareAccountFooterButtonData[] = [
+export const getCrRealFooterButtons = (): TCompareAccountFooterButtonData[] => [
     { label: localize('Add'), action: 'synthetic_svg' },
     { label: localize('Add'), action: 'synthetic_bvi' },
     { label: localize('Add'), action: 'synthetic_vanuatu' },
@@ -181,15 +181,11 @@ export const cr_real_footer_buttons: TCompareAccountFooterButtonData[] = [
     { label: localize('Add'), action: 'financial_labuan' },
     { label: localize('Add'), action: 'derivx' },
 ];
-export const eu_real_footer_button: TCompareAccountFooterButtonData[] = [
+export const getEuFooterButtons = (): TCompareAccountFooterButtonData[] => [
     { label: localize('Add'), action: 'financial_maltainvest' },
 ];
 
-export const eu_demo_footer_button: TCompareAccountFooterButtonData[] = [
-    { label: localize('Add'), action: 'financial_maltainvest' },
-];
-
-export const preappstore_cr_demo_content: TCompareAccountContentProps[] = [
+export const getPreappstoreCrDemoContent = (): TCompareAccountContentProps[] => [
     {
         id: 'platform',
         attribute: localize('Platform'),
@@ -238,13 +234,13 @@ export const preappstore_cr_demo_content: TCompareAccountContentProps[] = [
     },
 ];
 
-export const preappstore_cr_demo_footer_buttons: TCompareAccountFooterButtonData[] = [
+export const getPreappstoreCrDemoFooterButtons = (): TCompareAccountFooterButtonData[] => [
     { label: localize('Add'), action: 'synthetic_svg' },
     { label: localize('Add'), action: 'financial_svg' },
     { label: localize('Add'), action: 'derivx' },
 ];
 
-export const preppstore_eu_demo_content: TCompareAccountContentProps[] = [
+export const getPreappstoreEuDemoContent = (): TCompareAccountContentProps[] => [
     {
         id: 'leverage',
         attribute: localize('Maximum leverage'),

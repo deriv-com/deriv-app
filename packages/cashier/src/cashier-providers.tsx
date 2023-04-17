@@ -3,9 +3,9 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { ThemeProvider } from '@deriv/ui';
 import { CashierStoreProvider } from './stores/useCashierStores';
-import { TRootStore } from 'Types';
+import type { TCoreStores } from '@deriv/stores/types';
 
-const CashierProviders = ({ children, store }: React.PropsWithChildren<{ store: TRootStore }>) => {
+const CashierProviders = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
     return (
         <StoreProvider store={store}>
             <CashierStoreProvider>

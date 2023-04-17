@@ -58,8 +58,8 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
                                 phone: [{ phone_number: '+12345678' }],
                                 text: 'Payment Agent of CR90000102 (Created from Script)',
                                 url: [
-                                    { url: 'http://www.MyPAMyAdventure.com/' },
-                                    { url: 'http://www.MyPAMyAdventure2.com/' },
+                                    { url: 'https://www.MyPAMyAdventure.com/' },
+                                    { url: 'https://www.MyPAMyAdventure2.com/' },
                                 ],
                                 value: 'CR90000102',
                             },
@@ -70,8 +70,8 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
                                 phone: [{ phone_number: '+1234567822' }],
                                 text: 'Payment Agent of CR90000100 (Created from Script)',
                                 url: [
-                                    { url: 'http://www.MyPAMyAdventure1.com/' },
-                                    { url: 'http://www.MyPAMyAdventure2.com/' },
+                                    { url: 'https://www.MyPAMyAdventure1.com/' },
+                                    { url: 'https://www.MyPAMyAdventure2.com/' },
                                 ],
                                 value: 'CR90000100',
                             },
@@ -96,7 +96,7 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
             summary: '',
             supported_banks: [{ payment_method: 'MasterCard' }, { payment_method: 'Visa' }],
             supported_payment_methods: [],
-            urls: [{ url: 'http://www.MyPAMyAdventure.com/' }, { url: 'http://www.MyPAMyAdventure2.com/' }],
+            urls: [{ url: 'https://www.MyPAMyAdventure.com/' }, { url: 'https://www.MyPAMyAdventure2.com/' }],
             withdrawal_commission: '0',
         };
     });

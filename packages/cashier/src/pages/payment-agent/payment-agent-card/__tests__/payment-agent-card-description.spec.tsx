@@ -17,7 +17,7 @@ describe('<PaymentAgentCardDescription />', () => {
         summary: '',
         supported_banks: [{ payment_method: 'Visa' }],
         supported_payment_methods: [],
-        urls: [{ url: 'http://www.MyPAMyAdventure2.com/' }, { url: 'http://www.MyPAMyAdventure.com/' }],
+        urls: [{ url: 'https://www.MyPAMyAdventure2.com/' }, { url: 'https://www.MyPAMyAdventure.com/' }],
         withdrawal_commission: '',
     };
 
@@ -26,8 +26,8 @@ describe('<PaymentAgentCardDescription />', () => {
 
         expect(screen.getByText('Payment Agent of CR90000000')).toBeInTheDocument();
         expect(screen.getByText('Further information')).toBeInTheDocument();
-        expect(screen.getByText('http://www.MyPAMyAdventure2.com/,')).toBeInTheDocument();
-        expect(screen.getByText('http://www.MyPAMyAdventure.com/')).toBeInTheDocument();
+        expect(screen.getByText('https://www.MyPAMyAdventure2.com/,')).toBeInTheDocument();
+        expect(screen.getByText('https://www.MyPAMyAdventure.com/')).toBeInTheDocument();
         expect(screen.getByTestId('dt_payment_method_icon')).toBeInTheDocument();
     });
 

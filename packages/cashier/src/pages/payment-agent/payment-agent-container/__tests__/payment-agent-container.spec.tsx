@@ -53,7 +53,7 @@ describe('<PaymentAgentContainer />', () => {
                                 phones: '+12345678',
                                 supported_banks: [{ payment_method: 'Visa' }],
                                 telephone: '+12345678',
-                                url: 'http://www.pa.com',
+                                url: 'https://www.pa.com',
                                 withdrawal_commission: 0,
                             },
                             {
@@ -68,7 +68,7 @@ describe('<PaymentAgentContainer />', () => {
                                 phones: '+12345678',
                                 supported_banks: [{ payment_method: 'Visa' }, { payment_method: 'Mastercard' }],
                                 telephone: '+12345678',
-                                url: 'http://www.pa.com',
+                                url: 'https://www.pa.com',
                                 withdrawal_commission: 0,
                             },
                         ],

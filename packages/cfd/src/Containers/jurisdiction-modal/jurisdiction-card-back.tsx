@@ -6,9 +6,9 @@ import { TJurisdictionCardBackProps } from 'Containers/props.types';
 
 const JurisdictionCardBack = ({
     card_classname,
+    is_card_selected,
     toggleCardFlip,
     verification_docs,
-    is_card_selected,
 }: TJurisdictionCardBackProps) => (
     <div
         className={classNames(card_classname, 'cfd-card-back', {

@@ -7,12 +7,12 @@ import { TJurisdictionModalProps } from '../props.types';
 import JurisdictionModalContentWrapper from './jurisdiction-modal-content-wrapper';
 
 const JurisdictionModal = ({
-    openPasswordModal,
-    context,
     account_type,
+    context,
     disableApp,
     enableApp,
     is_jurisdiction_modal_visible,
+    openPasswordModal,
     show_eu_related_content,
     toggleJurisdictionModal,
 }: TJurisdictionModalProps) => {

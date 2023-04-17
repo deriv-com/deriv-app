@@ -240,13 +240,13 @@ type TOpenAccountTransferMeta = {
 };
 
 type JurisdictionModalCommonProps = {
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    context: RootStore;
     account_type: {
         type: string;
         category: string;
     };
+    context: RootStore;
     is_jurisdiction_modal_visible: boolean;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     show_eu_related_content: boolean;
     toggleJurisdictionModal: () => void;
 };

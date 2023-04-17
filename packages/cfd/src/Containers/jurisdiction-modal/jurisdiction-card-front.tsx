@@ -7,11 +7,11 @@ import JurisdictionCardSection from './jurisdiction-card-section';
 
 const JurisdictionCardFront = ({
     card_classname,
-    toggleCardFlip,
-    card_values,
     card_data,
-    is_card_selected,
+    card_values,
     disabled,
+    is_card_selected,
+    toggleCardFlip,
 }: TJurisdictionCardFrontProps) => (
     <div
         className={classNames(

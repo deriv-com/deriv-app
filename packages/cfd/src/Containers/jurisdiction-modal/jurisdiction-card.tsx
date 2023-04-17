@@ -6,11 +6,11 @@ import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
 
 const JurisdictionCard = ({
+    account_type,
+    disabled,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
-    account_type,
     type_of_card,
-    disabled,
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const is_synthetic = account_type === 'synthetic';

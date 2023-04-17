@@ -216,7 +216,7 @@ const mock = (): TStores => {
             changeSelectedLanguage: jest.fn(),
             current_language: 'EN',
             is_network_online: false,
-            server_time: moment(),
+            server_time: undefined,
             is_language_changing: false,
         },
         ui: {
@@ -289,7 +289,6 @@ const mock = (): TStores => {
             setP2PRedirectTo: jest.fn(),
         },
         portfolio: {
-            getContractById: jest.fn(),
             active_positions: [],
             error: {
                 header: '',
@@ -309,12 +308,10 @@ const mock = (): TStores => {
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),
             onMount: jest.fn(),
-            onClickRemove: jest.fn(),
             removePositionById: jest.fn(),
         },
         contract_trade: {
             getContractById: jest.fn(),
-            toggleSetCurrencyModal: jest.fn(),
         },
         modules: {},
         counter: {

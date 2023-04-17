@@ -49,7 +49,7 @@ type TCompositeCalendarMobile = {
     duration_list: Array<TInputDateRange>;
     onChange: (
         value: { from: moment.Moment | null; to: moment.Moment; is_batch: boolean },
-        extra_data: { date_range: any }
+        extra_data: { date_range: TInputDateRange }
     ) => void;
     setCurrentFocus: (focus: string) => void;
     from: number;

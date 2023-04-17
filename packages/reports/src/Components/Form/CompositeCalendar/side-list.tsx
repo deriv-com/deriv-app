@@ -25,9 +25,9 @@ const isActive = (from: number, to: number, flag: number) => {
 const SideList = ({ items, from, to }: TSideList) => (
     <ul className='composite-calendar__prepopulated-list'>
         {items.map(item => {
-            const { duration, ...rest_of_props } = item;
+            const { duration, label, onClick } = item;
             const is_active = isActive(from, to, duration);
-            return <ListItem key={duration} is_active={is_active} {...rest_of_props} />;
+            return <ListItem key={duration} is_active={is_active} label={label} onClick={onClick} />;
         })}
     </ul>
 );

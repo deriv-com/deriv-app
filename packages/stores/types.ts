@@ -58,6 +58,12 @@ type TMenuItem = {
     text: () => string;
 };
 
+type TAddToastProps = {
+    key: string;
+    content: string;
+    type: string;
+};
+
 type TButtonProps = {
     onClick: () => void;
     text: string;
@@ -163,7 +169,7 @@ type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
-    setVisibilityRealityCheck: (value: number) => void;
+    setVisibilityRealityCheck: (value: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => void;
@@ -212,7 +218,7 @@ type TCommonStore = {
     platform: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
-    server_time: Moment;
+    server_time?: Moment;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
@@ -220,7 +226,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
-    addToast: () => void;
+    addToast: (toast_config: TAddToastProps) => void;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
@@ -247,34 +253,31 @@ type TUiStore = {
     toggleLanguageSettingsModal: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
-    removeToast: () => void;
+    removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
-    toggleCancellationWarning: () => void;
-    toggleUnsupportedContractModal: () => void;
-    toggleReports: () => void;
+    toggleCancellationWarning: (state_change: boolean) => void;
+    toggleUnsupportedContractModal: (state_change: boolean) => void;
+    toggleReports: (is_visible: boolean) => void;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
 };
 
 type TPortfolioStore = {
-    getContractById: (id: number) => ProposalOpenContract;
     active_positions: ProposalOpenContract[];
     error: TCommonStoreError;
     getPositionById: (id: number) => ProposalOpenContract;
     is_loading: boolean;
     is_multiplier: boolean;
-    onClickCancel: () => void;
-    onClickSell: () => void;
+    onClickCancel: (contract_id: number) => void;
+    onClickSell: (contract_id: number) => void;
     onMount: () => void;
-    onClickRemove: () => void;
     removePositionById: (id: number) => void;
 };
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
-    toggleSetCurrencyModal: () => void;
 };
 
 type TMenuStore = {

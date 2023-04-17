@@ -4,7 +4,7 @@ import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@d
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, toMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TStores } from '@deriv/stores';
+import type { TStores } from '@deriv/stores';
 import CompositeCalendarMobile from './composite-calendar-mobile';
 import SideList from './side-list';
 import CalendarIcon from './calendar-icon';
@@ -72,13 +72,9 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
         },
     ]);
 
-    const wrapper_ref = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    const wrapper_ref = React.useRef<HTMLInputElement>(null);
 
-    useOnClickOutside(wrapper_ref, event => {
-        event?.stopPropagation();
-        event?.preventDefault();
-        hideCalendar();
-    });
+    const validateClickOutside = (event: MouseEvent) => !wrapper_ref.current?.contains(event.target as Node);
 
     const selectDateRange = (new_from?: number) => {
         hideCalendar();
@@ -113,8 +109,18 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
         }
     };
 
+    useOnClickOutside(
+        wrapper_ref,
+        event => {
+            event?.stopPropagation();
+            event?.preventDefault();
+            hideCalendar();
+        },
+        validateClickOutside
+    );
+
     const setToDate = (date: moment.Moment) => {
-        updateState('to', toMoment(date as unknown as number).endOf('day'));
+        updateState('to', toMoment(date).endOf('day'));
     };
 
     const setFromDate = (date: moment.Moment) => {

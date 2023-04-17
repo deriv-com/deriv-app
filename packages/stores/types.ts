@@ -1,11 +1,5 @@
-import type {
-    Authorize,
-    DetailsOfEachMT5Loginid,
-    GetAccountStatus,
-    GetLimits,
-    LogOutResponse,
-    ProposalOpenContract,
-} from '@deriv/api-types';
+import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -106,9 +100,7 @@ type TClientStore = {
         };
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus & {
-        p2p_status?: string;
-    };
+    account_status: GetAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -262,18 +254,6 @@ type TNotificationStore = {
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
-};
-
-type TContractStore = {
-    contract_info: ProposalOpenContract;
-    contract_update_take_profit: number | string;
-    contract_update_stop_loss: number | string;
-    clearContractUpdateConfigValues: () => void;
-    has_contract_update_take_profit: false;
-    has_contract_update_stop_loss: false;
-    updateLimitOrder: () => void;
-    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
-    onChange: (param: { name: string; value: string | number | boolean }) => void;
 };
 
 type TTradersHubStore = {

@@ -2,11 +2,6 @@ import React from 'react';
 import { getStaticUrl, PlatformContext, setUrlLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 
-export type TPlatformContext = {
-    is_appstore?: boolean;
-    is_pre_appstore?: boolean;
-};
-
 type TStaticUrl = React.HTMLAttributes<HTMLAnchorElement> & {
     href?: string;
     is_document?: boolean;
@@ -14,7 +9,7 @@ type TStaticUrl = React.HTMLAttributes<HTMLAnchorElement> & {
 };
 
 const StaticUrl = ({ href, is_document, is_eu_url = false, children = null, ...props }: TStaticUrl) => {
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const getHref = () => {
         setUrlLanguage(getLanguage());
         return getStaticUrl(href, { is_appstore }, is_document, is_eu_url);

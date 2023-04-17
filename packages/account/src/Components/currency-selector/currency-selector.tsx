@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group';
 import RadioButton from './radio-button';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import { TAuthAccountInfo, TCurrencyConfig, TPlatformContext, TRealAccount, TFormValidation } from 'Types';
+import { TAuthAccountInfo, TCurrencyConfig, TRealAccount, TFormValidation } from 'Types';
 
 export const Hr = () => <div className='currency-hr' />;
 
@@ -75,7 +75,7 @@ const CurrencySelector = ({
     is_eu,
     ...props
 }: TCurrencySelector) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);

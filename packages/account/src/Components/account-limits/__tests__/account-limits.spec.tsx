@@ -290,7 +290,7 @@ describe('<AccountLimits/>', () => {
 
     it('withdrawal_limits_table should show `Total withdrawal limit` if is_fully_authenticated is false and is_appstore is true', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
                     <AccountLimits {...props} is_fully_authenticated={false} />
                 </BrowserRouter>
@@ -301,7 +301,7 @@ describe('<AccountLimits/>', () => {
 
     it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false and is_appstore is true', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
+            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <AccountLimits {...props} is_fully_authenticated={false} />
             </PlatformContext.Provider>
         );
@@ -310,7 +310,7 @@ describe('<AccountLimits/>', () => {
 
     it('withdrawal_limits_table should show the verfiy button when is_fully_authenticated is false and is_appstore is true', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
                     <AccountLimits {...props} is_fully_authenticated={false} />
                 </BrowserRouter>
@@ -328,7 +328,7 @@ describe('<AccountLimits/>', () => {
 
     it('withdrawal_limits_table should show total withdrawn and withdrawn remaining details', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
                     <AccountLimits {...props} is_fully_authenticated={false} />
                 </BrowserRouter>
@@ -347,7 +347,7 @@ describe('<AccountLimits/>', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
                     <AccountLimits {...props} is_fully_authenticated={false} />
                 </BrowserRouter>
@@ -360,7 +360,7 @@ describe('<AccountLimits/>', () => {
         (isMobile as jest.Mock).mockReturnValue(false);
         (isDesktop as jest.Mock).mockReturnValue(true);
         render(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
+            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
                     <AccountLimits {...props} is_app_settings={false} is_fully_authenticated={false} />
                 </BrowserRouter>

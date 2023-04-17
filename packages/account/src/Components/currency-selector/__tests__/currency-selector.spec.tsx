@@ -358,7 +358,7 @@ describe('<CurrencySelector/>', () => {
             value: 150,
         });
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <CurrencySelector {...props} />
             </PlatformContext.Provider>
         );

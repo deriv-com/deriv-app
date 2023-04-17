@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Loading, ThemedScrollbars, Text, ButtonLink } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
@@ -51,10 +51,6 @@ type TAccountLimits = {
     should_show_article?: boolean;
 };
 
-type TPlarformContext = {
-    is_appstore: boolean;
-};
-
 const AccountLimits = ({
     account_limits,
     currency,
@@ -73,7 +69,7 @@ const AccountLimits = ({
     const isMounted = useIsMounted();
     const [is_loading, setLoading] = React.useState(false);
     const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
-    const { is_appstore } = React.useContext<Partial<TPlarformContext>>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         if (is_virtual) {

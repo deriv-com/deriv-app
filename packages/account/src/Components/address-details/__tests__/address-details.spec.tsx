@@ -197,7 +197,7 @@ describe('<AddressDetails/>', () => {
 
     it('should render AddressDetails component for appstore', async () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <AddressDetails {...mock_props} />
             </PlatformContext.Provider>
         );

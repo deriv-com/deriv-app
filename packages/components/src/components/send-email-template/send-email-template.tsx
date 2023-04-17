@@ -4,7 +4,6 @@ import { PlatformContext } from '@deriv/shared';
 import Icon from '../icon/icon';
 import Button from '../button/button';
 import Text from '../text';
-import { TPlatformContext } from '../static-url/static-url';
 
 type TSendEmailTemplate = {
     className?: string;
@@ -33,7 +32,7 @@ const SendEmailTemplate = ({
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
     const [resend_email_btn_text, setResendEmailBtnText] = React.useState(txt_resend);
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const timeout_limit = resend_timeout || 60;
     let resend_interval: number;

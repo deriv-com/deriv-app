@@ -48,10 +48,6 @@ type TAddressDetails = {
     value: FormikValues;
 };
 
-type TPlatformContext = {
-    is_appstore: boolean;
-};
-
 type TFormValidation = {
     warnings: { [key: string]: string };
     errors: { [key: string]: string };
@@ -109,7 +105,7 @@ const AddressDetails = ({
     has_real_account,
     ...props
 }: TAddressDetails) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 

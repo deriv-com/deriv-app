@@ -21,10 +21,6 @@ export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;
 };
 
-export type TPlatformContext = {
-    is_appstore: boolean;
-};
-
 export type TCurrencyConfig = {
     fractional_digits: number;
     is_deposit_suspended: 0 | 1;

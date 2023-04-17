@@ -14,14 +14,10 @@ const JurisdictionCardFront = ({
     toggleCardFlip,
 }: TJurisdictionCardFrontProps) => (
     <div
-        className={classNames(
-            card_classname,
-            'cfd-card-front',
-            {
-                [`${card_classname}--selected selected-card`]: is_card_selected,
-            },
-            { 'cfd-card-disabled-flat': disabled }
-        )}
+        className={classNames(card_classname, 'cfd-card-front', {
+            [`${card_classname}--selected selected-card`]: is_card_selected,
+            'cfd-card-disabled-flat': disabled,
+        })}
     >
         <div className={`${card_classname}__card-content-container`}>
             {card_values.is_over_header_available ? (

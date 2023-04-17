@@ -17,7 +17,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if there is a crypto cashier maintenance', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -38,7 +38,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -49,7 +49,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto withdrawal is suspended', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -70,7 +70,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -81,7 +81,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto deposit is suspended', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -103,7 +103,7 @@ describe('<CashierLocked />', () => {
         (useDepositLocked as jest.Mock).mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -114,7 +114,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if there is a cashier maintenance', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -135,7 +135,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -146,7 +146,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client does not provide residence', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['no_residence'],
@@ -167,7 +167,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -178,7 +178,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the documents are expired', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['documents_expired'],
@@ -199,7 +199,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -210,7 +210,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has cashier_locked_status', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['cashier_locked_status'],
@@ -231,7 +231,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -240,7 +240,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has disabled_status', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['disabled_status'],
@@ -261,7 +261,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -270,7 +270,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client account has no currency', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_CURRENCY'],
@@ -291,7 +291,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -300,7 +300,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client is not fully authenticated', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_AUTHENTICATE'],
@@ -321,14 +321,14 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
     });
 
     it('should show the proper message if the client has ask_financial_risk_approval status', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_FINANCIAL_RISK_APPROVAL'],
@@ -349,7 +349,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByTestId('dt_financial_assessment_link')).toHaveAttribute(
@@ -359,7 +359,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client is high risk and has no FA', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['FinancialAssessmentRequired'],
@@ -380,7 +380,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -391,7 +391,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has ask_tin_information', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_TIN_INFORMATION'],
@@ -412,14 +412,14 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/You have not provided your tax identification number./i)).toBeInTheDocument();
     });
 
     it('should show the proper message if the client has ask_uk_funds_protection', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_UK_FUNDS_PROTECTION'],
@@ -440,14 +440,14 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
     });
 
     it('should show the proper message if the client does not set 30-day turnover limit', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_SELF_EXCLUSION_MAX_TURNOVER_SET'],
@@ -468,7 +468,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -479,7 +479,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has missing required profile fields', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_FIX_DETAILS'],
@@ -500,7 +500,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -511,7 +511,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has self-exluded from the website', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['SelfExclusion'],
@@ -537,7 +537,7 @@ describe('<CashierLocked />', () => {
         (useDepositLocked as jest.Mock).mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -546,7 +546,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has unwelcome_status', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['unwelcome_status'],
@@ -568,14 +568,14 @@ describe('<CashierLocked />', () => {
         (useDepositLocked as jest.Mock).mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent('Please contact us via live chat.');
     });
 
     it('should show the proper message if the client has no_withdrawal_or_trading_status', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['no_withdrawal_or_trading_status'],
@@ -596,7 +596,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -605,7 +605,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has withdrawal_locked_status', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['withdrawal_locked_status'],
@@ -626,7 +626,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -635,7 +635,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has only_pa_withdrawals_allowed_status', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['only_pa_withdrawals_allowed_status'],
@@ -656,7 +656,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -665,7 +665,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should prioritize cashier locked message if the client has a combo of deposit and cashier locked reasons', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['ASK_AUTHENTICATE', 'unwelcome_status'],
@@ -686,14 +686,14 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
     });
 
     it('should show cashier locked message if the client has a combo of deposit and withdrawal locked reasons', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['no_withdrawal_or_trading_status', 'unwelcome_status'],
@@ -714,7 +714,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -723,7 +723,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: ['PACommisionWithdrawalLimit'],
@@ -744,7 +744,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(

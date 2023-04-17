@@ -20,7 +20,7 @@ jest.mock('Components/cashier-locked', () => {
 
 describe('<DepositLocked />', () => {
     it('should show the proof of identity document verification message', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -44,7 +44,7 @@ describe('<DepositLocked />', () => {
         });
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('<DepositLocked />', () => {
     });
 
     it('should show the proof of address document verification message', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -76,7 +76,7 @@ describe('<DepositLocked />', () => {
         });
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -84,7 +84,7 @@ describe('<DepositLocked />', () => {
     });
 
     it('should show the terms and conditions accept button', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -100,7 +100,7 @@ describe('<DepositLocked />', () => {
         });
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
@@ -112,7 +112,7 @@ describe('<DepositLocked />', () => {
     });
 
     it('should show the financial assessment completion message', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 account_status: {
                     cashier_validation: [],
@@ -128,7 +128,7 @@ describe('<DepositLocked />', () => {
         });
 
         render(<DepositLocked />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(

@@ -4,7 +4,7 @@ import TransferConfirm from '../transfer-confirm';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
-const mockRootStore = mockStore({
+const mock_root_store = mockStore({
     ui: {
         disableApp: jest.fn(),
         enableApp: jest.fn(),
@@ -35,7 +35,7 @@ describe('<TransferConfirm />', () => {
 
     it('should show proper icon, messages and buttons', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         const [back_btn, transfer_now_btn] = screen.getAllByRole('button');
@@ -69,7 +69,7 @@ describe('<TransferConfirm />', () => {
                 }}
             />,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 
@@ -80,7 +80,7 @@ describe('<TransferConfirm />', () => {
 
     it('should trigger onClickBack method when the client clicks on Back button', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         const [back_btn, _] = screen.getAllByRole('button');
@@ -91,7 +91,7 @@ describe('<TransferConfirm />', () => {
 
     it('should enable Transfer now button when checkbox is checked', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         const el_checkbox = screen.getByRole('checkbox');
@@ -102,7 +102,7 @@ describe('<TransferConfirm />', () => {
     });
     it('should show proer checkbox label text when is_payment_agent_withdraw property is equal to true/false', () => {
         const { rerender } = render(<TransferConfirm {...props} is_payment_agent_withdraw />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -118,7 +118,7 @@ describe('<TransferConfirm />', () => {
 
     it('should trigger onClickConfirm method when the client clicks on Transfer now button', () => {
         render(<TransferConfirm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         const el_checkbox = screen.getByRole('checkbox');

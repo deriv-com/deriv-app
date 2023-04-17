@@ -38,17 +38,17 @@ jest.mock('Pages/withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
 
 describe('<Cashier />', () => {
     let history: BrowserHistory;
-    const renderWithRouter = (component: JSX.Element, mockRootStore: TStores) => {
+    const renderWithRouter = (component: JSX.Element, mock_root_store: TStores) => {
         history = createBrowserHistory();
         return {
             ...render(<Router history={history}>{component}</Router>, {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }),
         };
     };
 
     it('should show the loading component if client_tnc_status is not yet loaded or not yet logged in', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
                 is_from_derivgo: true,
@@ -97,13 +97,13 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
     it('should render the component if client_tnc_status is loaded', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
                 is_from_derivgo: true,
@@ -154,7 +154,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
         expect(screen.getByRole('link', { name: 'Deposit' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Withdrawal' })).toBeInTheDocument();
@@ -169,7 +169,7 @@ describe('<Cashier />', () => {
     it('should go to payment methods page if the learn more about payment methods button is clicked', () => {
         window.open = jest.fn();
 
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
                 is_from_derivgo: true,
@@ -218,7 +218,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
         const learn_more_btn = screen.getByRole('button', { name: 'Learn more about payment methods' });
         fireEvent.click(learn_more_btn);
@@ -228,7 +228,7 @@ describe('<Cashier />', () => {
 
     // TODO: Fix this test case
     // it('should redirect to trade page if the close button is clicked ', () => {
-    //     const mockRootStore = mockStore({
+    //     const mock_root_store = mockStore({
     //         common: {
     //             routeBackInApp: jest.fn(),
     //             is_from_derivgo: true,
@@ -273,17 +273,17 @@ describe('<Cashier />', () => {
     //         },
     //     });
 
-    //     renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
+    //     renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
     //     const close_btn = screen.getByTestId('page_overlay_header_close');
     //     fireEvent.click(close_btn);
 
-    //     expect(mockRootStore.common!.routeBackInApp).toHaveBeenCalled();
+    //     expect(mock_root_store.common!.routeBackInApp).toHaveBeenCalled();
     //     expect(history.location.pathname).toBe('/');
     // });
 
     it('should go to selected route page on desktop', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
                 is_from_derivgo: true,
@@ -332,7 +332,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
         const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
         fireEvent.click(withdrawal_link);
@@ -341,7 +341,7 @@ describe('<Cashier />', () => {
     });
 
     it('should not render the side note if on crypto transactions page', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
                 is_from_derivgo: true,
@@ -390,7 +390,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
         expect(screen.queryByTestId('vertical_tab_side_note')).not.toBeInTheDocument();
     });
@@ -398,7 +398,7 @@ describe('<Cashier />', () => {
     it('should show the selected route page on mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
                 is_from_derivgo: true,
@@ -447,7 +447,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
         const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
         fireEvent.click(withdrawal_link);

@@ -11,7 +11,7 @@ jest.mock('../binary-routes', () => jest.fn(() => 'BinaryRoutes'));
 describe('<Routes />', () => {
     it('should show error messages when "has_error = true"', () => {
         const history = createBrowserHistory();
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 is_logged_in: false,
                 is_logging_in: false,
@@ -36,7 +36,7 @@ describe('<Routes />', () => {
                 <Routes />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 
@@ -47,7 +47,7 @@ describe('<Routes />', () => {
 
     it('should render <BinaryRoutes /> component when "has_error = false"', () => {
         const history = createBrowserHistory();
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 is_logged_in: false,
                 is_logging_in: false,
@@ -62,7 +62,7 @@ describe('<Routes />', () => {
                 <Routes />
             </Router>,
             {
-                wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 

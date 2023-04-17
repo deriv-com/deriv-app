@@ -68,7 +68,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <Loading /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -110,7 +110,7 @@ describe('<Deposit />', () => {
         });
 
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
@@ -121,7 +121,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <Virtual /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -160,14 +160,14 @@ describe('<Deposit />', () => {
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Virtual')).toBeInTheDocument();
     });
 
     it('should render <CashierLocked /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -206,7 +206,7 @@ describe('<Deposit />', () => {
         });
 
         const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
@@ -221,7 +221,7 @@ describe('<Deposit />', () => {
     });
 
     it('should render <FundsProtection /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -260,14 +260,14 @@ describe('<Deposit />', () => {
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('FundsProtection')).toBeInTheDocument();
     });
 
     it('should render <DepositLocked /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -307,14 +307,14 @@ describe('<Deposit />', () => {
         (useDepositLocked as jest.Mock).mockReturnValue(true);
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('DepositLocked')).toBeInTheDocument();
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -353,14 +353,14 @@ describe('<Deposit />', () => {
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
 
     it('should render <Error /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -399,14 +399,14 @@ describe('<Deposit />', () => {
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
     it('should render <CryptoDeposit /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -446,14 +446,14 @@ describe('<Deposit />', () => {
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('CryptoDeposit')).toBeInTheDocument();
     });
 
     it('should render <Real /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -492,14 +492,14 @@ describe('<Deposit />', () => {
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Real')).toBeInTheDocument();
     });
 
     it('should render <CashierOnboarding /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -538,14 +538,14 @@ describe('<Deposit />', () => {
         });
 
         render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('CashierOnboarding')).toBeInTheDocument();
     });
 
     it('should trigger "setSideNotes" callback', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -588,7 +588,7 @@ describe('<Deposit />', () => {
         const setSideNotes = jest.fn();
 
         render(<Deposit setSideNotes={setSideNotes} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(setSideNotes).toHaveBeenCalledTimes(2);

@@ -11,7 +11,7 @@ jest.mock('@deriv/components', () => ({
 
 describe('<OnRampProviderPopup />', () => {
     it('should not render <OnRampProviderPopup /> component', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -36,14 +36,14 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.queryByTestId('dti_on-ramp_popup')).not.toBeInTheDocument();
     });
 
     it('should show loader', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -72,14 +72,14 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should show widget', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -108,14 +108,14 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Widget error')).toBeInTheDocument();
     });
 
     it('should show dialog with proper messages and buttons', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -144,14 +144,14 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Please go to the Deposit page to get an address.')).toBeInTheDocument();
     });
 
     it('should show dialog with proper messages and buttons', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -180,7 +180,7 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -193,7 +193,7 @@ describe('<OnRampProviderPopup />', () => {
     });
 
     it('should trigger onClick callbacks in dialog when the user clicks "Cancel" and "Go to Deposit page" buttons', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -222,22 +222,22 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         const cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         fireEvent.click(cancel_btn);
 
-        expect(mockRootStore.modules.cashier.onramp.setIsOnRampModalOpen).toHaveBeenCalledTimes(1);
+        expect(mock_root_store.modules.cashier.onramp.setIsOnRampModalOpen).toHaveBeenCalledTimes(1);
 
         const go_to_deposit_page_btn = screen.getByRole('button', { name: 'Go to Deposit page' });
         fireEvent.click(go_to_deposit_page_btn);
 
-        expect(mockRootStore.modules.cashier.onramp.onClickGoToDepositPage).toHaveBeenCalledTimes(1);
+        expect(mock_root_store.modules.cashier.onramp.onClickGoToDepositPage).toHaveBeenCalledTimes(1);
     });
 
     it('should show proper messages and buttons', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -266,7 +266,7 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -288,7 +288,7 @@ describe('<OnRampProviderPopup />', () => {
     });
 
     it('should trigger onFocus method when the user clicks on deposit address field', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -317,7 +317,7 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         const deposit_address_input = screen.getByRole('textbox');
@@ -325,7 +325,7 @@ describe('<OnRampProviderPopup />', () => {
     });
 
     it('should trigger onClick calbacks when the user clicks on "Cancel" and "Continue" buttons', () => {
-        const mockRootStore = mockStore({
+        const mock_root_store = mockStore({
             ui: {
                 is_dark_mode_on: true,
             },
@@ -354,17 +354,17 @@ describe('<OnRampProviderPopup />', () => {
         });
 
         render(<OnRampProviderPopup />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         const cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         fireEvent.click(cancel_btn);
 
-        expect(mockRootStore.modules.cashier.onramp.setIsOnRampModalOpen).toHaveBeenCalledTimes(1);
+        expect(mock_root_store.modules.cashier.onramp.setIsOnRampModalOpen).toHaveBeenCalledTimes(1);
 
         const continue_btn = screen.getByRole('button', { name: 'Continue' });
         fireEvent.click(continue_btn);
 
-        expect(mockRootStore.modules.cashier.onramp.onClickDisclaimerContinue).toHaveBeenCalledTimes(1);
+        expect(mock_root_store.modules.cashier.onramp.onClickDisclaimerContinue).toHaveBeenCalledTimes(1);
     });
 });

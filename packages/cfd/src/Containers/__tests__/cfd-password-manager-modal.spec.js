@@ -2,6 +2,8 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
+import CFDProviders from '../../cfd-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -61,8 +63,19 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.ts', 
 });
 
 describe('<CFDPasswordManagerModal />', () => {
+    const mockRootStore = {
+        ui: {
+            enableApp: jest.fn(),
+            disableApp: jest.fn(),
+        },
+        client: {
+            email: 'test@domain.com',
+        },
+    };
     const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        render(<BrowserRouter>{component}</BrowserRouter>, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
+        });
     };
     let modal_root_el;
 
@@ -79,9 +92,6 @@ describe('<CFDPasswordManagerModal />', () => {
     afterEach(cleanup);
 
     const mock_props = {
-        enableApp: jest.fn(),
-        email: 'test@domain.com',
-        disableApp: jest.fn(),
         is_visible: true,
         platform: 'mt5',
         selected_login: 'MTD20103241',

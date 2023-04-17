@@ -1,6 +1,7 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { CFDDemoAccountDisplay } from '../cfd-demo-account-display';
+import CFDProviders from '../../cfd-providers';
 
 const mock_connect_props = {
     modules: {

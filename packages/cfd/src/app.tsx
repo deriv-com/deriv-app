@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import Routes from './Containers/routes.jsx';
 import initStore from './init-store'; // eslint-disable-line import/extensions
 import CFDProviders from './cfd-providers';
-import { TRootStore } from './types/root-store.types';
+import { TCoreStore } from '../../account/src/Stores/index.js';
 
 type TAppProps = {
     passthrough: {
-        root_store: TRootStore;
-        WS: any;
+        root_store: TCoreStore;
+        WS: unknown;
     };
 };
 

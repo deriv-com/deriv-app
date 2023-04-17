@@ -23,7 +23,6 @@ export type TCFDPOIProps = {
     index: number;
     onSubmit: (index: number, value: TCFDValue) => void;
     value: TCFDValue;
-    account_status?: GetAccountStatus;
     addNotificationMessageByKey: (key: string) => void;
     height: string;
     onSave: (index: number, values: TFormValues) => void;

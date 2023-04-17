@@ -22,3 +22,11 @@
         margin: 2.4rem 0 0.5rem;
     }
 }
+
+.ads-page {
+    margin-top: 4.5rem;
+
+    @include mobile {
+        margin-top: 11.8rem;
+    }
+}

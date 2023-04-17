@@ -54,72 +54,64 @@ const TurbosCardBody = ({
     status,
 }: TTurbosCardBody) => {
     const {
+        bid_price,
         buy_price,
         profit,
         barrier,
-        current_spot_display_value,
+        entry_spot_display_value,
         limit_order = {},
-        sell_spot,
-        entry_spot,
+        sell_price,
     } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
-    const { BARRIER, BUY_PRICE, CURRENT_PRICE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS, PAYOUT, PROFIT_LOSS } =
-        getCardLabels();
+    const contract_value = is_sold ? sell_price : bid_price;
+    const { BARRIER, CONTRACT_VALUE, ENTRY_SPOT, TAKE_PROFIT, TOTAL_PROFIT_LOSS, PURCHASE_PRICE } = getCardLabels();
 
     return (
         <React.Fragment>
             <div className={classNames('dc-contract-card-items-wrapper dc-contract-card--turbos')}>
                 <ContractCardItem
-                    className='dc-contract-card__stake'
-                    header={is_sold ? PROFIT_LOSS : STAKE}
+                    className='dc-contract-card__buy-price'
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={is_sold && profit ? profit < 0 : false}
-                    is_won={is_sold && profit ? profit > 0 : false}
+                    header={PURCHASE_PRICE}
                 >
-                    <Money amount={is_sold ? profit : buy_price} currency={currency} />
+                    <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                <ContractCardItem header={is_sold ? PAYOUT : CURRENT_PRICE} className='dc-contract-card__current-price'>
-                    <Money currency={currency} amount={sell_spot || current_spot_display_value} />
+                <ContractCardItem header={CONTRACT_VALUE} className='dc-contract-card__contract-value'>
+                    <Money amount={contract_value} currency={currency} />
                 </ContractCardItem>
                 <ContractCardItem
-                    header={is_sold ? BUY_PRICE : BARRIER}
+                    header={ENTRY_SPOT}
                     is_crypto={isCryptocurrency(currency)}
-                    className='dc-contract-card__buy-price'
+                    className='dc-contract-card__entry-spot'
                 >
-                    <Money
-                        amount={is_sold ? entry_spot : addComma(barrier)}
-                        currency={currency}
-                        should_format={is_sold}
-                    />
+                    <Money amount={`${entry_spot_display_value}`} />
                 </ContractCardItem>
-                {is_sold ? (
-                    <ContractCardItem header={BARRIER} className='dc-contract-card__barrier-level'>
-                        <Money amount={addComma(barrier)} currency={currency} should_format={false} />
+
+                <div className='dc-contract-card__limit-order-info'>
+                    <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
+                        {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                        {is_valid_to_sell && (
+                            <ToggleCardDialog
+                                addToast={addToast}
+                                connectWithContractUpdate={connectWithContractUpdate}
+                                contract_id={contract_info.contract_id}
+                                current_focus={current_focus}
+                                error_message_alignment={error_message_alignment}
+                                getCardLabels={getCardLabels}
+                                getContractById={getContractById}
+                                is_turbos
+                                onMouseLeave={onMouseLeave}
+                                removeToast={removeToast}
+                                setCurrentFocus={setCurrentFocus}
+                                status={status}
+                            />
+                        )}
                     </ContractCardItem>
-                ) : (
-                    <div className='dc-contract-card__limit-order-info'>
-                        <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
-                            {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
-                            {is_valid_to_sell && (
-                                <ToggleCardDialog
-                                    addToast={addToast}
-                                    connectWithContractUpdate={connectWithContractUpdate}
-                                    contract_id={contract_info.contract_id}
-                                    current_focus={current_focus}
-                                    error_message_alignment={error_message_alignment}
-                                    getCardLabels={getCardLabels}
-                                    getContractById={getContractById}
-                                    is_turbos
-                                    onMouseLeave={onMouseLeave}
-                                    removeToast={removeToast}
-                                    setCurrentFocus={setCurrentFocus}
-                                    status={status}
-                                />
-                            )}
-                        </ContractCardItem>
-                    </div>
-                )}
+                </div>
+                <ContractCardItem header={BARRIER} className='dc-contract-card__barrier-level'>
+                    <Money amount={addComma(barrier)} currency={currency} should_format={false} />
+                </ContractCardItem>
                 <MobileWrapper>
                     <div className='dc-contract-card__status'>
                         {is_sold ? (
@@ -130,7 +122,7 @@ const TurbosCardBody = ({
                     </div>
                 </MobileWrapper>
             </div>
-            {!is_sold && !!profit && (
+            {!!profit && (
                 <ContractCardItem
                     className='dc-contract-card-item__total-profit-loss'
                     header={TOTAL_PROFIT_LOSS}

@@ -10,22 +10,17 @@ const contract_info: TContractInfo = {
     buy_price: 1044.0,
     profit: 50,
     barrier: '10904.80',
-    current_spot_display_value: '1046.80',
-    sell_spot: 1046.8,
-    entry_spot: 1054,
-    is_valid_to_sell: 1,
+    entry_spot_display_value: '1046.80',
+    sell_price: 1046.8,
 };
 
 const mockCardLabels = () => ({
     BARRIER: 'Barrier',
-    CURRENT_PRICE: 'Current price',
-    STAKE: 'Stake',
-    BUY_PRICE: 'Buy price',
+    CONTRACT_VALUE: 'Contract value',
+    ENTRY_SPOT: 'Entry spot',
     TAKE_PROFIT: 'Take profit',
     TOTAL_PROFIT_LOSS: 'Total profit/loss',
-    PAYOUT: 'Payout',
-    PROFIT_LOSS: 'Profit/Loss',
-    POTENTIAL_PROFIT_LOSS: 'Potential profit/loss',
+    PURCHASE_PRICE: 'Buy price',
 });
 
 describe('TurbosCardBody', () => {
@@ -58,18 +53,17 @@ describe('TurbosCardBody', () => {
         });
     });
 
-    // is_sold = false
-    it('renders stake amount correctly', () => {
+    it('renders header and values correctly', () => {
         render(<TurbosCardBody {...mock_props} />);
-        const stake_header = screen.getByText(mockCardLabels().STAKE);
-        expect(stake_header).toBeInTheDocument();
-        const stake_amount = screen.getByText('1,044.00');
-        expect(stake_amount).toBeInTheDocument();
+        const buy_price_header = screen.getByText(mockCardLabels().PURCHASE_PRICE);
+        expect(buy_price_header).toBeInTheDocument();
+        const buy_price_amount = screen.getByText('1,044.00');
+        expect(buy_price_amount).toBeInTheDocument();
 
-        const current_price_header = screen.getByText(mockCardLabels().CURRENT_PRICE);
-        expect(current_price_header).toBeInTheDocument();
-        const current_price_amount = screen.getByText('1,046.80');
-        expect(current_price_amount).toBeInTheDocument();
+        const entry_spot_header = screen.getByText(mockCardLabels().ENTRY_SPOT);
+        expect(entry_spot_header).toBeInTheDocument();
+        const entry_spot_amount = screen.getByText('1,046.80');
+        expect(entry_spot_amount).toBeInTheDocument();
 
         const barrier_header = screen.getByText(mockCardLabels().BARRIER);
         expect(barrier_header).toBeInTheDocument();
@@ -85,33 +79,5 @@ describe('TurbosCardBody', () => {
         expect(total_profit_loss_header).toBeInTheDocument();
         const total_profit_loss_amount = screen.getByText('50.00');
         expect(total_profit_loss_amount).toBeInTheDocument();
-    });
-
-    // is_sold = true
-    it('renders headers when contract is sold', () => {
-        render(<TurbosCardBody {...mock_props} is_sold />);
-
-        const profit_loss_header = screen.getByText(mockCardLabels().PROFIT_LOSS);
-        expect(profit_loss_header).toBeInTheDocument();
-        const profit_loss_amount = screen.getByText('50.00');
-        expect(profit_loss_amount).toBeInTheDocument();
-
-        const payout_header = screen.getByText(mockCardLabels().PAYOUT);
-        expect(payout_header).toBeInTheDocument();
-        const payout_amount = screen.getByText('1,046.80');
-        expect(payout_amount).toBeInTheDocument();
-
-        const buy_price_header = screen.getByText(mockCardLabels().BUY_PRICE);
-        expect(buy_price_header).toBeInTheDocument();
-        const buy_price_amount = screen.getByText('10,904.80');
-        expect(buy_price_amount).toBeInTheDocument();
-
-        const take_profit_header = screen.queryByText(mockCardLabels().TAKE_PROFIT);
-        expect(take_profit_header).not.toBeInTheDocument();
-        const take_profit_amount = screen.queryByText('-');
-        expect(take_profit_amount).not.toBeInTheDocument();
-
-        expect(screen.getByText('Barrier')).toBeInTheDocument();
-        expect(screen.queryByText('Current price')).not.toBeInTheDocument();
     });
 });

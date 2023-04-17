@@ -101,9 +101,9 @@ const Header = () => {
         const current_login_id = getStorage('active_loginid') || '';
         if (active_storage_token && active_storage_token.token) {
             let logged_in_token = active_storage_token.token;
-            Object.entries(client_accounts).map(pair => {
-                if (current_login_id === pair[0]){
-                    logged_in_token = pair[1].token;
+            Object.entries(client_accounts).map(active_account => {
+                if (current_login_id === active_account[0]){
+                    logged_in_token = active_account[1].token;
                 }
             })
             api.authorize(logged_in_token)

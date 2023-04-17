@@ -2,7 +2,17 @@ import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
 
 export type TRootStore = ReturnType<typeof useStore>;
-export type TContractStore = TRootStore['contract_store'];
+export type TContractStore = {
+    contract_info: ProposalOpenContract;
+    contract_update_take_profit: number | string;
+    contract_update_stop_loss: number | string;
+    clearContractUpdateConfigValues: () => void;
+    has_contract_update_take_profit: boolean;
+    has_contract_update_stop_loss: boolean;
+    updateLimitOrder: () => void;
+    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
+    onChange: (param: { name: string; value: string | number | boolean }) => void;
+};
 
 export type TContractInfo = ProposalOpenContract & {
     contract_update?: ContractUpdate;

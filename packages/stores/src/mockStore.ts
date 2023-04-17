@@ -260,17 +260,6 @@ const mock = (): TStores => {
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
         },
-        contract_store: {
-            contract_info: {},
-            contract_update_take_profit: '',
-            contract_update_stop_loss: '',
-            clearContractUpdateConfigValues: jest.fn(),
-            has_contract_update_take_profit: false,
-            has_contract_update_stop_loss: false,
-            updateLimitOrder: jest.fn(),
-            validation_errors: { contract_update_stop_loss: [], contract_update_take_profit: [] },
-            onChange: jest.fn(),
-        },
         menu: {
             attach: jest.fn(),
             update: jest.fn(),

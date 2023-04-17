@@ -81,6 +81,7 @@ const TradingAssessmentExistingUser = observer(() => {
                     />
                 }
                 has_icon
+                has_sub_header
             />
         );
     } else if (should_show_trade_assessment_form) {

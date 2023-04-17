@@ -6,6 +6,7 @@ export type TTransactionItem = {
     is_valid_to_cancel: number;
     status_code: string;
     status_message: string;
-    submit_date: number;
+    submit_date: string;
+    transaction_hash: string;
     transaction_type: string;
 };

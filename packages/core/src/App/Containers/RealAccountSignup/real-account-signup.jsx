@@ -105,6 +105,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         should_show_appropriateness_warning_modal,
         should_show_risk_warning_modal,
         real_account_signup: state_value,
+        is_trading_assessment_for_new_user_enabled,
     } = ui;
     const { show_eu_related_content } = traders_hub;
     const continueRoute = modules.cashier.general_store.continueRoute;
@@ -488,7 +489,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                 }
             />
         );
-    } else if (should_show_risk_warning_modal) {
+    } else if (is_trading_assessment_for_new_user_enabled && should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_warning_modal}

@@ -84,7 +84,7 @@ const Content = ({ is_routed, items, selected }: TContent) => {
             {is_routed ? (
                 <Switch>
                     {items.map(({ value, component, path, icon }, idx) => {
-                        const Component = (value as React.ElementType) || (component as React.ElementType);
+                        const Component = (value as React.ElementType) || component;
                         return (
                             <Route
                                 key={idx}

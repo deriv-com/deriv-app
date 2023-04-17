@@ -1,5 +1,11 @@
-import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
+import type {
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetLimits,
+    LogOutResponse,
+    ProposalOpenContract,
+} from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -256,6 +262,18 @@ type TNotificationStore = {
     setP2PRedirectTo: () => void;
 };
 
+type TContractStore = {
+    contract_info: ProposalOpenContract;
+    contract_update_take_profit: number | string;
+    contract_update_stop_loss: number | string;
+    clearContractUpdateConfigValues: () => void;
+    has_contract_update_take_profit: false;
+    has_contract_update_stop_loss: false;
+    updateLimitOrder: () => void;
+    validation_errors: { contract_update_stop_loss: string[]; contract_update_take_profit: string[] };
+    onChange: (param: { name: string; value: string | number | boolean }) => void;
+};
+
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
@@ -288,6 +306,7 @@ export type TCoreStores = {
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modules: any;
+    contract_store: TContractStore;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

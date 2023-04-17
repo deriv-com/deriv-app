@@ -1,5 +1,5 @@
-import { Text } from '@deriv/components';
 import React from 'react';
+import { Text } from '@deriv/components';
 import { TJurisdictionCardSectionProps } from '../props.types';
 import JurisdictionClickableDescription from './jurisdiction-clickable-description';
 import JurisdictionTitleIndicator from './jurisdiction-title-indicator';

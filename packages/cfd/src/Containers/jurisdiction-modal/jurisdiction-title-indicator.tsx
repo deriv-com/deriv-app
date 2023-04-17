@@ -1,7 +1,7 @@
-import { Text } from '@deriv/components';
-import classNames from 'classnames';
-import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 import React from 'react';
+import classNames from 'classnames';
+import { Text } from '@deriv/components';
+import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 
 const JurisdictionTitleIndicator = ({ title_indicators }: TJurisdictionTitleIndicatorProps) => {
     return title_indicators.type === 'displayText' ? (

@@ -1,6 +1,6 @@
+import React from 'react';
 import { Text } from '@deriv/components';
 import { TJurisdictionClickableDescriptionProps } from 'Containers/props.types';
-import React from 'react';
 
 const JurisdictionClickableDescription = ({
     clickable_description,

@@ -1,7 +1,7 @@
 import React from 'react';
+import { Jurisdiction } from '@deriv/shared';
 import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCard from './jurisdiction-card';
-import { Jurisdiction } from '@deriv/shared';
 
 const JurisdictionModalContent = ({
     account_type,

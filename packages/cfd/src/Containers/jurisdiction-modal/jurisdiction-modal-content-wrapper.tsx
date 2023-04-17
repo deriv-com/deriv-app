@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
-import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 

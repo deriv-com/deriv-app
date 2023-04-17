@@ -45,18 +45,6 @@ const App = () => {
             history.push(routes.cashier_p2p);
         }
 
-        if (/\/orders$/.test(location.pathname)) {
-            history.push(routes.p2p_orders);
-            general_store.setActiveIndex(1);
-        } else if (/\/my-ads$/.test(location.pathname)) {
-            history.push(routes.p2p_my_ads);
-            general_store.setActiveIndex(2);
-        } else if (/\/my-profile$/.test(location.pathname)) {
-            history.push(routes.p2p_advertiser_page);
-            setShouldShowProfile(true);
-            general_store.setActiveIndex(3);
-        }
-
         ServerTime.init(general_store.server_time);
 
         // force safari refresh on back/forward
@@ -73,6 +61,18 @@ const App = () => {
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
         });
+
+        if (/\/orders$/.test(location.pathname)) {
+            history.push(routes.p2p_orders);
+            general_store.setActiveIndex(1);
+        } else if (/\/my-ads$/.test(location.pathname)) {
+            history.push(routes.p2p_my_ads);
+            general_store.setActiveIndex(2);
+        } else if (/\/my-profile$/.test(location.pathname)) {
+            history.push(routes.p2p_my_profile);
+            setShouldShowProfile(true);
+            general_store.setActiveIndex(3);
+        }
 
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -192,7 +192,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in) {
+    if (is_logging_in || general_store.is_loading) {
         return <Loading is_fullscreen />;
     }
 

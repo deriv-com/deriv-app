@@ -317,13 +317,6 @@ const getModules = () => {
                     ],
                 },
                 {
-                    path: routes.cashier_p2p_profile,
-                    component: Cashier,
-                    getTitle: () => localize('Deriv P2P'),
-                    icon_component: 'IcDp2p',
-                    is_invisible: true,
-                },
-                {
                     path: routes.cashier_p2p_verification,
                     component: Cashier,
                     getTitle: () => localize('Deriv P2P'),

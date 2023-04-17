@@ -887,7 +887,7 @@ export default class NotificationStore extends BaseStore {
                           }
                         : {
                               // TODO: replace this with proper when fixing routes in p2p
-                              route: routes.cashier_p2p_profile,
+                              route: routes.p2p_my_profile,
                               text: localize('Yes, increase my limits'),
                           },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,

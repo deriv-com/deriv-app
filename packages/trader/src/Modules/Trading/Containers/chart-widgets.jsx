@@ -4,7 +4,6 @@ import Digits from 'Modules/Contract/Components/Digits';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import { connect } from 'Stores/connect';
 import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
-import ControlWidgets from '../../SmartChart/Components/control-widgets.jsx';
 import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
 import { symbolChange } from '../../SmartChart/Helpers/symbol';
 
@@ -76,10 +75,3 @@ export const ChartBottomWidgets = ({ digits, tick, show_accumulators_stats }) =>
         Widget={show_accumulators_stats ? <AccumulatorsStats /> : <DigitsWidget digits={digits} tick={tick} />}
     />
 );
-
-export const ChartControlWidgets = connect(({ contract_trade }) => ({
-    updateChartType: contract_trade.updateChartType,
-    updateGranularity: contract_trade.updateGranularity,
-}))(({ updateChartType, updateGranularity }) => (
-    <ControlWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-));

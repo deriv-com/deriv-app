@@ -1,22 +1,17 @@
 import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
+import { observer, useStore } from '@deriv/stores';
 
-const RadioGroupOptionsModal = ({
-    accumulator_range_list,
-    enableApp,
-    disableApp,
-    growth_rate,
-    is_open,
-    modal_title,
-    onChange,
-    tick_size_barrier,
-    toggleModal,
-}) => {
+const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }) => {
+    const { accumulator_range_list, growth_rate, onChange, tick_size_barrier } = useTraderStore();
+    const {
+        ui: { enableApp, disableApp },
+    } = useStore();
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
 
@@ -62,13 +57,6 @@ const RadioGroupOptionsModal = ({
             </Modal>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules, ui }) => ({
-    accumulator_range_list: modules.trade.accumulator_range_list,
-    growth_rate: modules.trade.growth_rate,
-    onChange: modules.trade.onChange,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    tick_size_barrier: modules.trade.tick_size_barrier,
-}))(RadioGroupOptionsModal);
+export default RadioGroupOptionsModal;

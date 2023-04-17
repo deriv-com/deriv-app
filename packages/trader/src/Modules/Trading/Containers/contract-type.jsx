@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { MobileWrapper, usePrevious } from '@deriv/components';
 import { unsupported_contract_types_list } from '@deriv/shared';
@@ -8,18 +7,23 @@ import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
-import { connect } from 'Stores/connect';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer, useStore } from '@deriv/stores';
 
-const Contract = ({
-    contract_type,
-    contract_types_list,
-    is_digit_view,
-    is_equal,
-    is_virtual,
-    onChange,
-    symbol,
-    current_language,
-}) => {
+const Contract = observer(() => {
+    const {
+        contract_type,
+        contract_types_list,
+        is_mobile_digit_view_selected: is_digit_view,
+        is_equal,
+        onChange,
+        symbol,
+    } = useTraderStore();
+    const {
+        common: { current_language },
+        client: { is_virtual },
+    } = useStore();
+
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
@@ -46,26 +50,6 @@ const Contract = ({
             />
         </React.Fragment>
     );
-};
+});
 
-Contract.propTypes = {
-    contract_type: PropTypes.string,
-    contract_types_list: PropTypes.object,
-    is_digit_view: PropTypes.bool,
-    is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_virtual: PropTypes.bool,
-    onChange: PropTypes.func,
-    symbol: PropTypes.string,
-    current_language: PropTypes.string,
-};
-
-export default connect(({ modules, client, common }) => ({
-    contract_type: modules.trade.contract_type,
-    contract_types_list: modules.trade.contract_types_list,
-    is_digit_view: modules.trade.is_mobile_digit_view_selected,
-    is_equal: modules.trade.is_equal,
-    is_virtual: client.is_virtual,
-    onChange: modules.trade.onChange,
-    symbol: modules.trade.symbol,
-    current_language: common.current_language,
-}))(Contract);
+export default Contract;

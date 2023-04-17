@@ -240,28 +240,28 @@ type TOpenAccountTransferMeta = {
 };
 
 export type TJurisdictionModalContentWrapperProps = {
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    context: RootStore;
+    account_status: GetAccountStatus;
     account_type: {
         type: string;
         category: string;
     };
-    account_status: GetAccountStatus;
+    context: RootStore;
+    fetchAccountSettings: () => void;
+    has_submitted_cfd_personal_details: boolean;
     is_jurisdiction_modal_visible: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     real_financial_accounts_existing_data: TExistingData;
     real_synthetic_accounts_existing_data: TExistingData;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    toggleJurisdictionModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
     show_eu_related_content: boolean;
     toggleCFDVerificationModal: () => void;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    toggleJurisdictionModal: () => void;
     updateMT5Status: () => void;
-    fetchAccountSettings: () => void;
-    has_submitted_cfd_personal_details: boolean;
 };
 
 export type TJurisdictionModalProps = {

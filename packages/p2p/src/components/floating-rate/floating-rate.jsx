@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
@@ -20,7 +20,11 @@ const FloatingRate = ({
     data_testid,
     ...props
 }) => {
-    const { floating_rate_store, general_store } = useStores();
+    const {
+        ui: { current_focus, setCurrentFocus },
+    } = useStore();
+
+    const { floating_rate_store } = useStores();
     const os = mobileOSDetect();
     const { name, value, required } = props;
     const market_feed = value ? percentOf(floating_rate_store.market_rate, value) : floating_rate_store.market_rate;
@@ -54,7 +58,7 @@ const FloatingRate = ({
                     })}
                     classNameDynamicSuffix='dc-input-suffix'
                     classNameWrapper={classNames({ 'dc-input-wrapper--error': error_messages })}
-                    current_focus={general_store.current_focus}
+                    current_focus={current_focus}
                     decimal_point_change={2}
                     id='floating_rate_input'
                     inline_prefix='%'
@@ -66,7 +70,7 @@ const FloatingRate = ({
                     name={name}
                     onBlur={onBlurHandler}
                     onChange={change_handler}
-                    setCurrentFocus={general_store.setCurrentFocus}
+                    setCurrentFocus={setCurrentFocus}
                     required={required}
                     type={isMobile() && os !== 'iOS' ? 'tel' : 'number'}
                     value={value}

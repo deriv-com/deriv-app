@@ -1,18 +1,25 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Loading, useStateCallback } from '@deriv/components';
-import { WS } from '@deriv/shared';
+import PropTypes from 'prop-types';
+import { Button, Loading, useStateCallback } from '@deriv/components';
+import { WS, getPlatformRedirect, platform } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import PoaExpired from 'Components/poa/status/expired';
-import PoaUnverified from 'Components/poa/status/unverified';
 import PoaNeedsReview from 'Components/poa/status/needs-review';
-import PoaSubmitted from 'Components/poa/status/submitted';
-import PoaVerified from 'Components/poa/status/verified';
 import PoaNotRequired from 'Components/poa/status/not-required';
 import PoaStatusCodes from 'Components/poa/status/status-codes';
+import PoaSubmitted from 'Components/poa/status/submitted';
+import PoaVerified from 'Components/poa/status/verified';
+import PoaUnverified from 'Components/poa/status/unverified';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 import { populateVerificationStatus } from '../Helpers/verification';
 
-const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, has_restricted_mt5_account, refreshNotifications }) => {
+const ProofOfAddressContainer = ({
+    is_mx_mlt,
+    is_switching,
+    has_restricted_mt5_account,
+    refreshNotifications,
+    app_routing_history,
+}) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
         allow_document_upload: false,
@@ -81,13 +88,30 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, has_restricted_mt5_a
         is_age_verified,
     } = authentication_status;
 
+    const from_platform = getPlatformRedirect(app_routing_history);
+
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform.ref);
+
+    const redirect_button = should_show_redirect_btn ? (
+        <Button
+            primary
+            className='proof-of-identity__redirect'
+            onClick={() => {
+                const url = platforms[from_platform.ref]?.url;
+                window.location.href = url;
+            }}
+        >
+            <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
+        </Button>
+    ) : null;
+
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (
         !allow_document_upload ||
         (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
     )
         return <PoaNotRequired />;
-    if (has_submitted_poa) return <PoaSubmitted needs_poi={needs_poi} />;
+    if (has_submitted_poa) return <PoaSubmitted needs_poi={needs_poi} redirect_button={redirect_button} />;
     if (
         resubmit_poa ||
         allow_poa_resubmission ||
@@ -100,9 +124,9 @@ const ProofOfAddressContainer = ({ is_mx_mlt, is_switching, has_restricted_mt5_a
         case PoaStatusCodes.none:
             return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
         case PoaStatusCodes.pending:
-            return <PoaNeedsReview needs_poi={needs_poi} />;
+            return <PoaNeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
         case PoaStatusCodes.verified:
-            return <PoaVerified needs_poi={needs_poi} />;
+            return <PoaVerified needs_poi={needs_poi} redirect_button={redirect_button} />;
         case PoaStatusCodes.expired:
             return <PoaExpired onClick={handleResubmit} />;
         case PoaStatusCodes.rejected:

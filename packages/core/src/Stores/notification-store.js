@@ -1,6 +1,9 @@
 import debounce from 'lodash.debounce';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import {
+    LocalStore,
     daysSince,
     formatDate,
     formatMoney,
@@ -12,24 +15,21 @@ import {
     isEmptyObject,
     isMobile,
     isMultiplierContract,
-    LocalStore,
     platform_name,
     routes,
     unique,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import React from 'react';
 import { WS } from 'Services';
-import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
-import BaseStore from './base-store';
 import {
     excluded_notifications,
     getCashierValidations,
     getStatusValidations,
     hasMissingRequiredField,
 } from './Helpers/client-notifications';
+import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
+import BaseStore from './base-store';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -107,8 +107,8 @@ export default class NotificationStore extends BaseStore {
                 if (
                     root_store.client.is_logged_in &&
                     !root_store.client.is_virtual &&
-                    Object.keys(root_store.client.account_status).length > 0 &&
-                    Object.keys(root_store.client.landing_companies).length > 0 &&
+                    Object.keys(root_store.client.account_status || {}).length > 0 &&
+                    Object.keys(root_store.client.landing_companies || {}).length > 0 &&
                     root_store.modules?.cashier?.general_store?.is_p2p_visible
                 ) {
                     await debouncedGetP2pCompletedOrders();
@@ -116,8 +116,8 @@ export default class NotificationStore extends BaseStore {
 
                 if (
                     !root_store.client.is_logged_in ||
-                    (Object.keys(root_store.client.account_status).length > 0 &&
-                        Object.keys(root_store.client.landing_companies).length > 0)
+                    (Object.keys(root_store.client.account_status || {}).length > 0 &&
+                        Object.keys(root_store.client.landing_companies || {}).length > 0)
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
@@ -181,9 +181,9 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    notification.key.includes('svg') ||
+                    (notification.key && notification.key.includes('svg')) ||
                     notification.key === 'p2p_daily_limit_increase' ||
-                    !excluded_notifications.includes(notification.key)
+                    (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
                 }
@@ -290,10 +290,10 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             is_poi_dob_mismatch,
-            is_risky_client,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
+            is_pending_proof_of_ownership,
             p2p_advertiser_info,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
@@ -311,6 +311,7 @@ export default class NotificationStore extends BaseStore {
         const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.acuity_mt5_download.key
         );
+
         let has_missing_required_field;
 
         if (is_logged_in) {
@@ -341,10 +342,10 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
-            if (is_risky_client && is_financial_information_incomplete) {
-                this.addNotificationMessage(this.client_notifications.risk_client);
+            if (malta_account && is_financial_information_incomplete) {
+                this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
-                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
+                this.removeNotificationByKey({ key: this.client_notifications.need_fa });
             }
 
             if (is_poi_dob_mismatch) {
@@ -407,21 +408,16 @@ export default class NotificationStore extends BaseStore {
                 const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'locked';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
                 const poo_required = ownership?.requests?.length > 0 && ownership?.status?.toLowerCase() !== 'rejected';
-                const poo_rejected =
-                    needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() === 'rejected';
+                const poo_rejected = is_pending_proof_of_ownership && ownership?.status?.toLowerCase() === 'rejected';
                 const svg_needs_poi_poa =
                     cr_account &&
                     status.includes('allow_document_upload') &&
-                    (identity?.status === 'none' || identity?.status === 'rejected') &&
-                    (document?.status === 'none' || document?.status === 'rejected');
+                    identity?.status === 'none' &&
+                    document?.status === 'none';
                 const svg_needs_poa =
-                    cr_account &&
-                    status.includes('allow_document_upload') &&
-                    (document?.status === 'none' || document?.status === 'rejected');
+                    cr_account && status.includes('allow_document_upload') && document?.status === 'none';
                 const svg_needs_poi =
-                    cr_account &&
-                    status.includes('allow_document_upload') &&
-                    (identity?.status === 'none' || identity?.status === 'rejected');
+                    cr_account && status.includes('allow_document_upload') && identity?.status === 'none';
                 const svg_poi_expired = cr_account && identity?.status === 'expired';
 
                 this.addVerificationNotifications(
@@ -880,24 +876,24 @@ export default class NotificationStore extends BaseStore {
             },
             p2p_daily_limit_increase: (currency, max_daily_buy, max_daily_sell) => {
                 return {
-                    action:
-                        routes.cashier_p2p === window.location.pathname
-                            ? {
-                                  onClick: () => {
-                                      this.p2p_redirect_to.redirectTo('my_profile');
-                                      if (this.is_notifications_visible) this.toggleNotificationsModal();
+                    action: window.location.pathname.includes(routes.cashier_p2p)
+                        ? {
+                              onClick: () => {
+                                  this.p2p_redirect_to.redirectTo('my_profile');
+                                  if (this.is_notifications_visible) this.toggleNotificationsModal();
 
-                                      this.removeNotificationMessage({
-                                          key: 'p2p_daily_limit_increase',
-                                          should_show_again: false,
-                                      });
-                                  },
-                                  text: localize('Yes, increase my limits'),
-                              }
-                            : {
-                                  route: routes.cashier_p2p_profile,
-                                  text: localize('Yes, increase my limits'),
+                                  this.removeNotificationMessage({
+                                      key: 'p2p_daily_limit_increase',
+                                      should_show_again: false,
+                                  });
                               },
+                              text: localize('Yes, increase my limits'),
+                          }
+                        : {
+                              // TODO: replace this with proper when fixing routes in p2p
+                              route: routes.cashier_p2p_profile,
+                              text: localize('Yes, increase my limits'),
+                          },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
                     key: 'p2p_daily_limit_increase',
                     message: (
@@ -1430,8 +1426,8 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            risk_client: {
-                key: 'risk_client',
+            need_fa: {
+                key: 'need_fa',
                 header: localize('You can only make deposits.'),
                 message: (
                     <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
@@ -1441,6 +1437,8 @@ export default class NotificationStore extends BaseStore {
                     route: routes.financial_assessment,
                     text: localize('Start assessment'),
                 },
+                should_show_again: true,
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
             },
             svg_needs_poi_poa: {
                 key: 'svg_needs_poi_poa',
@@ -1518,9 +1516,9 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            message.key.includes('svg') || message.key === 'p2p_daily_limit_increase'
+            (message.key && message.key.includes('svg')) || message.key === 'p2p_daily_limit_increase'
                 ? message
-                : !excluded_notifications.includes(message.key)
+                : excluded_notifications && !excluded_notifications.includes(message.key)
         );
     }
 
@@ -1569,6 +1567,23 @@ export default class NotificationStore extends BaseStore {
             type: 'danger',
             should_show_again: true,
             platform: 'Account',
+        });
+    };
+
+    showAccountSwitchToRealNotification = (loginid, currency) => {
+        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
+
+        this.addNotificationMessage({
+            key: 'switched_to_real',
+            header: localize('Switched to real account'),
+            message: (
+                <Localize
+                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
+                    values={{ loginid, currency, regulation }}
+                />
+            ),
+            type: 'info',
+            should_show_again: true,
         });
     };
 

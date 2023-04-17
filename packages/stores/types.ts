@@ -1,4 +1,5 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
+import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -14,7 +15,12 @@ type TAccountsList = {
         is_mt?: boolean;
         market_type?: string;
         nativepicker_text?: string;
-        platform_icon?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
         text?: JSX.Element | string;
         value?: string;
     };
@@ -99,9 +105,7 @@ type TClientStore = {
     balance?: string | number;
     can_change_fiat_currency: boolean;
     cfd_score: number;
-    is_cfd_score_available: boolean;
     setCFDScore: (score: number) => void;
-    setIsCFDScoreAvailable: (is_set: boolean) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -120,7 +124,7 @@ type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
-    is_pre_appstore: boolean;
+    is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -173,7 +177,6 @@ type TClientStore = {
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
-    is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     should_allow_poinc_authentication: boolean;
@@ -181,16 +184,16 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
+    app_routing_history: unknown[];
     header: string | JSX.Element;
     message: string | JSX.Element;
-    type?: string;
     redirect_label: string;
     redirect_to: string;
+    redirectOnClick: () => void;
+    setError: (has_error: boolean, error: React.ReactNode | null) => void;
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;
-    redirectOnClick: () => void;
-    setError: (has_error: boolean, error: TCommonStoreError | null) => void;
-    app_routing_history: unknown[];
+    type?: string;
 };
 
 type TCommonStore = {
@@ -202,29 +205,39 @@ type TCommonStore = {
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
+    changeSelectedLanguage: (key: string) => void;
+    current_language: string;
+    is_language_changing: boolean;
 };
 
 type TUiStore = {
+    app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
-    is_dark_mode_on: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_dark_mode_on: boolean;
+    is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    sub_section_index: number;
+    setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
+    toggleLanguageSettingsModal: () => void;
+    toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
-    setSubSectionIndex: (index: number) => void;
+    is_ready_to_deposit_modal_visible: boolean;
+    is_need_real_account_for_cashier_modal_visible: boolean;
+    toggleNeedRealAccountForCashierModal: () => void;
 };
 
 type TMenuStore = {
@@ -240,21 +253,42 @@ type TNotificationStore = {
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
+    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
 };
 
 type TTradersHubStore = {
     closeModal: () => void;
-    content_flag: any;
-    openModal: (modal_id: string, props?: any) => void;
+    content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
+    combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
+        {
+            short_code_and_region: string;
+            login: string;
+            sub_title: string;
+            icon: 'Derived' | 'Financial' | 'Options' | 'CFDs';
+        }[];
+    openModal: (modal_id: string, props?: unknown) => void;
+    selected_account: {
+        login: string;
+        account_id: string;
+    };
+    is_low_risk_cr_eu_real: boolean;
+    is_eu_user: boolean;
+    is_real: boolean;
+    selectRegion: (region: string) => void;
 };
 
-export type TRootStore = {
+/**
+ * This is the type that contains all the `core` package stores
+ */
+export type TCoreStores = {
     client: TClientStore;
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: Record<string, any>;
+    // This should be `any` as this property will be handled in each package.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

@@ -378,6 +378,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .cfd-personal-details-modal__form & {
                 margin: unset;
+                max-width: unset;
             }
 
             &--2-cols {
@@ -494,6 +495,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include mobile {
                     width: auto;
                     text-align: center;
+                    align-self: center;
                     &--dashboard {
                         margin: 0 1.6rem;
                         text-align: left;

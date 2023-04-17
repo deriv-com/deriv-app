@@ -1,27 +1,16 @@
 import React from 'react';
-import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import {
-    documentAdditionalError,
-    getDocumentData,
-    getRegex,
-    isRecurringNumberRegex,
-    isSequentialNumber,
-    preventEmptyClipboardPaste,
-} from './utils';
-import { useToggleValidation } from '../../hooks/useToggleValidation';
+import { documentAdditionalError, getDocumentData, getRegex, preventEmptyClipboardPaste } from './utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
-    const location = useLocation();
-    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -47,7 +36,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         setDocumentList(
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+                const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key);
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
@@ -115,9 +104,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
-        const is_sequential_number = isSequentialNumber(document_number);
-        const is_recurring_number = isRecurringNumberRegex(document_number);
         const needs_additional_document = !!document_type.additional;
+        const is_document_number_invalid = document_number === document_type.example_format;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -135,10 +123,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (
-            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
-            document_number === document_type.example_format
-        ) {
+        } else if (is_document_number_invalid) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
@@ -210,7 +195,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                         type='text'
                                                         label={localize('Choose the document type')}
                                                         list_items={document_list}
-                                                        value={values.document_type.text}
+                                                        value={values.document_type.text ?? ''}
                                                         onBlur={e => {
                                                             handleBlur(e);
                                                             if (!getDocument(e.target.value)) {

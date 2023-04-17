@@ -24,7 +24,6 @@ const ALL_LANGUAGES = Object.freeze({
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
-        ID: 'Indonesian',
         PT: 'Português',
         ES: 'Español',
         RU: 'Русский',
@@ -101,6 +100,7 @@ const i18n_config = {
         hashTransKey(defaultValue: string) {
             return crc32(defaultValue);
         },
+        useSuspense: false,
     },
     lng: initial_language,
     fallbackLng: 'EN',

@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
 import StarRating from 'Components/star-rating';
@@ -23,7 +24,10 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
-    const { general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const {
+        notifications: { removeNotificationByKey, removeNotificationMessage, setP2POrderProps },
+    } = useStore();
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const {
@@ -63,6 +67,8 @@ const OrderDetails = observer(() => {
     const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const [remaining_review_time, setRemainingReviewTime] = React.useState(null);
 
+    const history = useHistory();
+
     const page_title = is_buy_order_for_user
         ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
         : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
@@ -85,10 +91,22 @@ const OrderDetails = observer(() => {
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
 
-        if (order_channel_url) {
-            sendbird_store.setChatChannelUrl(order_channel_url);
+        const handleChatChannelCreation = () => {
+            if (order_channel_url) {
+                sendbird_store.setChatChannelUrl(order_channel_url);
+            } else {
+                sendbird_store.createChatForNewOrder(order_store.order_id);
+            }
+        };
+
+        // TODO: remove condition check and settimeout once access chat_channel_url from p2p_order_create is activated in BO, since chat channel url response is always delayed
+        // Added delay only for first time order creation, since response is delayed. To be removed after feature release.
+        if (buy_sell_store.is_create_order_subscribed) {
+            setTimeout(() => {
+                handleChatChannelCreation();
+            }, 1250);
         } else {
-            sendbird_store.createChatForNewOrder(order_store.order_id);
+            handleChatChannelCreation();
         }
 
         return () => {
@@ -97,11 +115,17 @@ const OrderDetails = observer(() => {
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
             order_store.setActiveOrder(null);
-            general_store.props.setP2POrderProps({
+            setP2POrderProps({
                 order_id: order_store.order_id,
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
                 setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
             });
+            history.replace({
+                search: '',
+                hash: location.hash,
+            });
+            buy_sell_store.setIsCreateOrderSubscribed(false);
+            buy_sell_store.unsubscribeCreateOrder();
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -120,10 +144,10 @@ const OrderDetails = observer(() => {
             is_user_recommended_previously,
             onClickDone: () => {
                 order_store.setOrderRating(id);
-                general_store.props.removeNotificationMessage({
+                removeNotificationMessage({
                     key: `order-${id}`,
                 });
-                general_store.props.removeNotificationByKey({
+                removeNotificationByKey({
                     key: `order-${id}`,
                 });
             },

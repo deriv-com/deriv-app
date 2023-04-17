@@ -35,7 +35,7 @@ export const steps = (eu_user: boolean): TStep[] => [
         ],
     },
     {
-        icon: <WalletsImage banner='TradingAccounts' />,
+        icon: <WalletsImage banner={eu_user ? 'TradingAccountsEU' : 'TradingAccounts'} />,
         title: localize('What happens to my trading accounts'),
         description: localize("We'll link them"),
         bullets: [

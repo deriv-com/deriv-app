@@ -4,6 +4,10 @@
     display: grid;
     place-content: center;
 
+    @include mobile {
+        padding: 0;
+    }
+
     &__content {
         max-width: 77.6rem;
         margin: 0 auto;
@@ -13,10 +17,18 @@
 
     &__title {
         padding-top: 2rem;
+
+        @include mobile {
+            font-size: var(--text-size-m);
+        }
     }
 
     &__description {
         padding: 0.5rem 0 1.5rem;
+
+        @include mobile {
+            font-size: var(--text-size-sm);
+        }
     }
 
     &__bullet {
@@ -26,8 +38,18 @@
         text-align: center;
         justify-content: center;
 
+        @include mobile {
+            justify-content: left;
+        }
+
         &-text {
-            padding-left: 1rem;
+            @include mobile {
+                text-align: left;
+            }
+        }
+
+        &-icon {
+            margin-right: 1rem;
         }
     }
 

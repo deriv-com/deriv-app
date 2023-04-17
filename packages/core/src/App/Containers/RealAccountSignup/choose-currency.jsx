@@ -1,32 +1,30 @@
 import { Field, Formik } from 'formik';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { reorderCurrencies, routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import CurrencyProvider from './choose-currency';
 import './currency-selector.scss';
+import { observer, useStore } from '@deriv/stores';
 
 const CRYPTO_CURRENCY_TYPE = 'crypto';
 
-const ChooseCurrency = ({
-    account_list,
-    all_payment_agent_list,
-    available_crypto_currencies,
-    closeRealAccountSignup,
-    continueRouteAfterChooseCrypto,
-    currency_title,
-    deposit_target,
-    has_fiat,
-    legal_allowed_currencies,
-    openRealAccountSignup,
-    switchAccount,
-    should_show_all_available_currencies,
-    setShouldShowCancel,
-    setShouldShowAllAvailableCurrencies,
-}) => {
+const ChooseCurrency = observer(() => {
+    const { client, modules, ui } = useStore();
+    const {
+        account_list,
+        available_crypto_currencies,
+        currency: currency_title,
+        has_fiat,
+        upgradeable_currencies: legal_allowed_currencies,
+        switchAccount,
+    } = client;
+    const { closeRealAccountSignup, continueRouteAfterChooseCrypto, openRealAccountSignup, setShouldShowCancel } = ui;
+    const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
+    const setShouldShowAllAvailableCurrencies = modules.cashier.general_store.setShouldShowAllAvailableCurrencies;
+    const all_payment_agent_list = modules.cashier.payment_agent.all_payment_agent_list;
+    const deposit_target = modules.cashier.general_store.deposit_target;
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
 
@@ -158,38 +156,6 @@ const ChooseCurrency = ({
             )}
         </Formik>
     );
-};
+});
 
-ChooseCurrency.propTypes = {
-    account_list: PropTypes.array,
-    all_payment_agent_list: PropTypes.array,
-    available_crypto_currencies: PropTypes.array,
-    closeRealAccountSignup: PropTypes.func,
-    continueRouteAfterChooseCrypto: PropTypes.func,
-    currency_title: PropTypes.string,
-    deposit_target: PropTypes.string,
-    has_fiat: PropTypes.bool,
-    legal_allowed_currencies: PropTypes.array,
-    openRealAccountSignup: PropTypes.func,
-    setShouldShowAllAvailableCurrencies: PropTypes.func,
-    setShouldShowCancel: PropTypes.func,
-    should_show_all_available_currencies: PropTypes.bool,
-    switchAccount: PropTypes.func,
-};
-
-export default connect(({ client, modules, ui }) => ({
-    account_list: client.account_list,
-    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
-    available_crypto_currencies: client.available_crypto_currencies,
-    closeRealAccountSignup: ui.closeRealAccountSignup,
-    continueRouteAfterChooseCrypto: ui.continueRouteAfterChooseCrypto,
-    currency_title: client.currency,
-    deposit_target: modules.cashier.general_store.deposit_target,
-    has_fiat: client.has_fiat,
-    legal_allowed_currencies: client.upgradeable_currencies,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    setShouldShowCancel: ui.setShouldShowCancel,
-    switchAccount: client.switchAccount,
-    should_show_all_available_currencies: modules.cashier.general_store.should_show_all_available_currencies,
-    setShouldShowAllAvailableCurrencies: modules.cashier.general_store.setShouldShowAllAvailableCurrencies,
-}))(ChooseCurrency);
+export default ChooseCurrency;

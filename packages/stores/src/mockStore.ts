@@ -258,6 +258,15 @@ const mock = (): TRootStore => {
             attach: jest.fn(),
             update: jest.fn(),
         },
+        gtm: {
+            visitorId: ' ',
+            common_variables: ' ',
+            accountSwitcherListener: jest.fn(),
+            pushDataLayer: jest.fn(),
+            pushTransactionData: jest.fn(),
+            eventHandler: jest.fn(),
+            setLoginFlag: jest.fn(),
+        },
         notifications: {
             addNotificationMessage: jest.fn(),
             client_notifications: {},

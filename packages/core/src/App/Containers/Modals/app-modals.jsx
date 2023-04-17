@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { ContentFlag, moduleLoader } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
@@ -11,6 +10,7 @@ import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
+import { observer, useStore } from '@deriv/stores';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -57,30 +57,34 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
-const AppModals = ({
-    is_account_needed_modal_on,
-    is_acuity_modal_open,
-    is_closing_create_real_account_modal,
-    is_welcome_modal_visible,
-    is_reality_check_visible,
-    is_set_residence_modal_visible,
-    is_close_mx_mlt_account_modal_visible,
-    is_close_uk_account_modal_visible,
-    is_logged_in,
-    should_show_cooldown_modal,
-    should_show_assessment_complete_modal,
-    is_trading_assessment_for_new_user_enabled,
-    fetchFinancialAssessment,
-    setCFDScore,
-    content_flag,
-    active_account_landing_company,
-    is_deriv_account_needed_modal_visible,
-    is_warning_scam_message_modal_visible,
-    is_ready_to_deposit_modal_visible,
-    is_trading_experience_incomplete,
-    should_show_risk_accept_modal,
-    is_need_real_account_for_cashier_modal_visible,
-}) => {
+const AppModals = observer(() => {
+    const { client, ui, traders_hub } = useStore();
+    const {
+        is_logged_in,
+        is_reality_check_visible,
+        fetchFinancialAssessment,
+        setCFDScore,
+        landing_company_shortcode: active_account_landing_company,
+        is_trading_experience_incomplete,
+    } = client;
+    const {
+        is_welcome_modal_visible,
+        is_account_needed_modal_on,
+        is_acuity_modal_open,
+        is_closing_create_real_account_modal,
+        is_close_mx_mlt_account_modal_visible,
+        is_close_uk_account_modal_visible,
+        is_set_residence_modal_visible,
+        should_show_cooldown_modal,
+        should_show_assessment_complete_modal,
+        is_trading_assessment_for_new_user_enabled,
+        is_deriv_account_needed_modal_visible,
+        is_warning_scam_message_modal_visible,
+        is_ready_to_deposit_modal_visible,
+        is_need_real_account_for_cashier_modal_visible,
+        should_show_risk_accept_modal,
+    } = ui;
+    const { content_flag } = traders_hub;
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
 
@@ -169,32 +173,6 @@ const AppModals = ({
             {ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null}
         </>
     );
-};
+});
 
-export default connect(({ client, ui, traders_hub }) => ({
-    is_welcome_modal_visible: ui.is_welcome_modal_visible,
-    is_account_needed_modal_on: ui.is_account_needed_modal_on,
-    is_acuity_modal_open: ui.is_acuity_modal_open,
-    is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
-    is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
-    is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
-    is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
-    is_real_acc_signup_on: ui.is_real_acc_signup_on,
-    is_logged_in: client.is_logged_in,
-    is_reality_check_visible: client.is_reality_check_visible,
-    has_maltainvest_account: client.has_maltainvest_account,
-    fetchFinancialAssessment: client.fetchFinancialAssessment,
-    setCFDScore: client.setCFDScore,
-    setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
-    should_show_cooldown_modal: ui.should_show_cooldown_modal,
-    should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
-    is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
-    active_account_landing_company: client.landing_company_shortcode,
-    is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
-    is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
-    is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
-    is_need_real_account_for_cashier_modal_visible: ui.is_need_real_account_for_cashier_modal_visible,
-    content_flag: traders_hub.content_flag,
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
-}))(AppModals);
+export default AppModals;

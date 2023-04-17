@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Dialog, Text, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
 import './close-uk-account-modal.scss';
+import { observer, useStore } from '@deriv/stores';
 
 export const CloseUKAccountContent = ({ showCloseUKAccountPopup, removeNotificationMessageByKey }) => (
     <>
@@ -60,15 +59,12 @@ export const CloseUKAccountContent = ({ showCloseUKAccountPopup, removeNotificat
     </>
 );
 
-const CloseUKAccountModal = ({
-    is_logged_in,
-    is_loading,
-    is_close_uk_account_modal_visible,
-    removeNotificationMessageByKey,
-    showCloseUKAccountPopup,
-}) => {
+const CloseUKAccountModal = observer(() => {
+    const { client, notifications, ui } = useStore();
     const [is_visible, setIsVisible] = React.useState(false);
-
+    const { is_logged_in } = client;
+    const { is_loading, is_close_uk_account_modal_visible, showCloseUKAccountPopup } = ui;
+    const { removeNotificationMessageByKey } = notifications;
     React.useEffect(() => {
         setIsVisible(is_logged_in && is_close_uk_account_modal_visible);
     }, [is_logged_in, is_close_uk_account_modal_visible]);
@@ -83,20 +79,6 @@ const CloseUKAccountModal = ({
             </Dialog>
         </div>
     );
-};
+});
 
-CloseUKAccountModal.propTypes = {
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_close_uk_account_modal_visible: PropTypes.bool,
-    removeNotificationMessageByKey: PropTypes.func,
-    showCloseUKAccountPopup: PropTypes.func,
-};
-
-export default connect(({ client, notifications, ui }) => ({
-    is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
-    is_loading: ui.is_loading,
-    is_logged_in: client.is_logged_in,
-    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
-    showCloseUKAccountPopup: ui.showCloseUKAccountPopup,
-}))(CloseUKAccountModal);
+export default CloseUKAccountModal;

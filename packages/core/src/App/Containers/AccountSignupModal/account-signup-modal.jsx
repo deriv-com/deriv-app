@@ -6,12 +6,12 @@ import { Button, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { connect } from 'Stores/connect';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 import validateSignupFields from './validate-signup-fields.jsx';
+import { observer, useStore } from '@deriv/stores';
 
 const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
@@ -159,18 +159,11 @@ AccountSignup.propTypes = {
     isModalVisible: PropTypes.func,
 };
 
-const AccountSignupModal = ({
-    enableApp,
-    disableApp,
-    clients_country,
-    is_loading,
-    is_visible,
-    is_logged_in,
-    logout,
-    onSignup,
-    residence_list,
-    toggleAccountSignupModal,
-}) => {
+const AccountSignupModal = observer(() => {
+    const { ui, client } = useStore();
+    const { onSignup, residence_list, logout, is_logged_in, clients_country } = client;
+    const { toggleAccountSignupModal, is_account_signup_modal_visible, enableApp, disableApp, is_loading } = ui;
+    const is_visible = is_account_signup_modal_visible;
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
         if (is_visible && is_logged_in) {
@@ -196,30 +189,6 @@ const AccountSignupModal = ({
             />
         </Dialog>
     );
-};
+});
 
-AccountSignupModal.propTypes = {
-    clients_country: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logout: PropTypes.func,
-    onSignup: PropTypes.func,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    toggleAccountSignupModal: PropTypes.func,
-};
-
-export default connect(({ ui, client }) => ({
-    is_visible: ui.is_account_signup_modal_visible,
-    toggleAccountSignupModal: ui.toggleAccountSignupModal,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_loading: ui.is_loading,
-    onSignup: client.onSignup,
-    is_logged_in: client.is_logged_in,
-    residence_list: client.residence_list,
-    clients_country: client.clients_country,
-    logout: client.logout,
-}))(AccountSignupModal);
+export default AccountSignupModal;

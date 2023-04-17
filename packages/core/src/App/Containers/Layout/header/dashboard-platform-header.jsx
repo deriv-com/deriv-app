@@ -7,8 +7,8 @@ import { useHistory, withRouter } from 'react-router-dom';
 import { BinaryLink } from 'App/Components/Routes';
 import PropTypes from 'prop-types';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import { connect } from 'Stores/connect';
 import platform_config from 'App/Constants/platform-config';
+import { observer, useStore } from '@deriv/stores';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
@@ -94,22 +94,13 @@ const AccountBalance = ({ balance, currency }) => {
     );
 };
 
-const DashboardPlatformHeader = ({
-    app_routing_history,
-    balance,
-    currency,
-    disableApp,
-    enableApp,
-    header_extension,
-    is_logged_in,
-    is_mt5_allowed,
-    is_notifications_visible,
-    is_settings_modal_on,
-    notifications_count,
-    settings_extension,
-    toggleNotifications,
-    toggleSettingsModal,
-}) => {
+const DashboardPlatformHeader = observer(({ is_settings_modal_on, settings_extension, toggleSettingsModal }) => {
+    const { client, common, notifications, ui } = useStore();
+    const { balance, currency, is_logged_in, is_mt5_allowed } = client;
+    const { app_routing_history } = common;
+    const { is_notifications_visible, toggleNotificationsModal: toggleNotifications } = notifications;
+    const { disableApp, enableApp, header_extension } = ui;
+    const notifications_count = notifications.notifications.length;
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -160,35 +151,12 @@ const DashboardPlatformHeader = ({
             </div>
         </header>
     );
-};
+});
 
 DashboardPlatformHeader.propTypes = {
-    app_routing_history: PropTypes.array,
-    balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    currency: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    header_extension: PropTypes.any,
-    is_logged_in: PropTypes.bool,
-    is_mt5_allowed: PropTypes.bool,
-    is_notifications_visible: PropTypes.bool,
     notifications_count: PropTypes.number,
-    toggleNotifications: PropTypes.func,
-    toggleSettingsModal: PropTypes.func,
     settings_extension: PropTypes.array,
     is_settings_modal_on: PropTypes.bool,
 };
 
-export default connect(({ client, common, notifications, ui }) => ({
-    app_routing_history: common.app_routing_history,
-    balance: client.balance,
-    currency: client.currency,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    header_extension: ui.header_extension,
-    is_logged_in: client.is_logged_in,
-    is_mt5_allowed: client.is_mt5_allowed,
-    is_notifications_visible: notifications.is_notifications_visible,
-    notifications_count: notifications.notifications.length,
-    toggleNotifications: notifications.toggleNotificationsModal,
-}))(withRouter(DashboardPlatformHeader));
+export default withRouter(DashboardPlatformHeader);

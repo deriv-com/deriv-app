@@ -1,21 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const ResetPasswordModal = ({
-    disableApp,
-    enableApp,
-    is_loading,
-    is_visible,
-    logoutClient,
-    verification_code,
-    toggleResetPasswordModal,
-}) => {
+const ResetPasswordModal = observer(() => {
+    const { client, ui } = useStore();
+    const { logout: logoutClient } = client;
+    const {
+        disableApp,
+        enableApp,
+        is_loading,
+        is_reset_password_modal_visible: is_visible,
+        toggleResetPasswordModal,
+    } = ui;
+    const verification_code = client.verification_code.reset_password;
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         // Error would be returned on invalid token (and the like) cases.
@@ -158,24 +159,6 @@ const ResetPasswordModal = ({
             )}
         </Formik>
     );
-};
+});
 
-ResetPasswordModal.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
-    verification_code: PropTypes.string,
-    toggleResetPasswordModal: PropTypes.func,
-};
-
-export default connect(({ ui, client }) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    is_loading: ui.is_loading,
-    is_visible: ui.is_reset_password_modal_visible,
-    logoutClient: client.logout,
-    toggleResetPasswordModal: ui.toggleResetPasswordModal,
-    verification_code: client.verification_code.reset_password,
-}))(ResetPasswordModal);
+export default ResetPasswordModal;

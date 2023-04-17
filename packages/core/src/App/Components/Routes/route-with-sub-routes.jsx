@@ -11,9 +11,11 @@ import {
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import Page404 from 'Modules/Page404';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const RouteWithSubRoutes = route => {
+const RouteWithSubRoutes = observer(route => {
+    const { common } = useStore();
+    const { checkAppId } = common;
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier')) {
             return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
@@ -28,7 +30,7 @@ const RouteWithSubRoutes = route => {
 
         // check if by re-rendering content should Platform app_id  change or not,
         if (is_valid_route) {
-            route.checkAppId();
+            checkAppId();
         }
 
         if (route.component === Redirect) {
@@ -73,9 +75,6 @@ const RouteWithSubRoutes = route => {
     };
 
     return <Route exact={route.exact} path={route.path} render={renderFactory} />;
-};
+});
 
-export default connect(({ gtm, common }) => ({
-    pushDataLayer: gtm.pushDataLayer,
-    checkAppId: common.checkAppId,
-}))(RouteWithSubRoutes);
+export default RouteWithSubRoutes;

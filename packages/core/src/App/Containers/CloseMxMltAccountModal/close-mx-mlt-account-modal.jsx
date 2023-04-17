@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Dialog, Text, Button, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import PropTypes from 'prop-types';
 import './close-mx-mlt-account-modal.scss';
 import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
 
 export const CloseMxMltAccountContent = ({
     country_standpoint,
@@ -128,16 +127,11 @@ export const CloseMxMltAccountContent = ({
     );
 };
 
-const CloseMxMltAccountModal = ({
-    is_logged_in,
-    is_loading,
-    country_standpoint,
-    has_malta_account,
-    can_have_mlt_account,
-    is_close_mx_mlt_account_modal_visible,
-    removeNotificationMessageByKey,
-    showCloseMxMltAccountPopup,
-}) => {
+const CloseMxMltAccountModal = observer(() => {
+    const { client, notifications, ui } = useStore();
+    const { is_logged_in, has_malta_account, can_have_mlt_account, country_standpoint } = client;
+    const { is_close_mx_mlt_account_modal_visible, is_loading, showCloseMxMltAccountPopup } = ui;
+    const { removeNotificationMessageByKey } = notifications;
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -167,27 +161,6 @@ const CloseMxMltAccountModal = ({
             </Dialog>
         </div>
     );
-};
+});
 
-CloseMxMltAccountModal.propTypes = {
-    country_standpoint: PropTypes.object,
-    can_have_mlt_account: PropTypes.bool,
-    has_malta_account: PropTypes.bool,
-
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_close_mx_mlt_account_modal_visible: PropTypes.bool,
-    removeNotificationMessageByKey: PropTypes.func,
-    showCloseMxMltAccountPopup: PropTypes.func,
-};
-
-export default connect(({ client, notifications, ui }) => ({
-    is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
-    is_loading: ui.is_loading,
-    is_logged_in: client.is_logged_in,
-    country_standpoint: client.country_standpoint,
-    can_have_mlt_account: client.can_have_mlt_account,
-    has_malta_account: client.has_malta_account,
-    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
-    showCloseMxMltAccountPopup: ui.showCloseMxMltAccountPopup,
-}))(CloseMxMltAccountModal);
+export default CloseMxMltAccountModal;

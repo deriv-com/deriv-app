@@ -260,6 +260,16 @@ type TTradersHubStore = {
     selectRegion: (region: string) => void;
 };
 
+type TGtmStore = {
+    visitorId: string;
+    common_variables: string;
+    accountSwitcherListener: () => void;
+    pushDataLayer: (event: string) => void;
+    pushTransactionData: () => void;
+    eventHandler: () => void;
+    setLoginFlag: () => void;
+};
+
 export type TRootStore = {
     client: TClientStore;
     common: TCommonStore;
@@ -268,4 +278,5 @@ export type TRootStore = {
     modules: Record<string, any>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
+    gtm: TGtmStore;
 };

@@ -1,24 +1,15 @@
 import React from 'react';
-import RootStore from 'Stores/index';
 import { Button, Modal, Text, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getUrlBase } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import 'Sass/app/modules/acuity-download.scss';
+import { observer, useStore } from '@deriv/stores';
 
-type TAcuityDownloadModal = {
-    is_acuity_modal_open: boolean;
-    is_eu: boolean;
-    current_language: string;
-    setIsAcuityModalOpen: (value: boolean) => void;
-};
-
-const AcuityDownloadModal = ({
-    is_acuity_modal_open,
-    is_eu,
-    current_language,
-    setIsAcuityModalOpen,
-}: TAcuityDownloadModal) => {
+const AcuityDownloadModal = observer(() => {
+    const { client, ui, common } = useStore();
+    const { is_eu } = client;
+    const { is_acuity_modal_open, setIsAcuityModalOpen } = ui;
+    const { current_language } = common;
     const closeModal = () => setIsAcuityModalOpen(false);
 
     const openDownloadLink = () => {
@@ -109,11 +100,6 @@ const AcuityDownloadModal = ({
             </div>
         </Modal>
     );
-};
+});
 
-export default connect(({ client, ui, common }: RootStore) => ({
-    is_acuity_modal_open: ui.is_acuity_modal_open,
-    is_eu: client.is_eu,
-    current_language: common.current_language,
-    setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
-}))(AcuityDownloadModal);
+export default AcuityDownloadModal;

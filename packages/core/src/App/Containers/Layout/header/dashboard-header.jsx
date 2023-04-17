@@ -1,10 +1,8 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { PlatformContext, redirectToLogin, redirectToSignUp, routes, isDesktop, isMobile } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import DerivLogo from 'Assets/SvgComponents/header/deriv-logo.svg';
 import DerivLogoDark from 'Assets/SvgComponents/header/deriv-logo-dark.svg';
 import DerivLogoDarkMobile from 'Assets/SvgComponents/header/deriv-logo-dark-mobile.svg';
@@ -14,6 +12,7 @@ import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
 import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
+import { observer, useStore } from '@deriv/stores';
 
 const LoggedInHeader = ({ is_dark_mode }) => {
     const history = useHistory();
@@ -108,7 +107,10 @@ const HeaderPreloader = () => (
     </div>
 );
 
-const DashboardHeader = ({ is_dark_mode, is_logged_in, is_logging_in }) => {
+const DashboardHeader = observer(() => {
+    const { client, ui } = useStore();
+    const { is_logged_in, is_logging_in } = client;
+    const { is_dark_mode } = ui;
     if (is_logging_in) {
         return <HeaderPreloader />;
     }
@@ -118,16 +120,6 @@ const DashboardHeader = ({ is_dark_mode, is_logged_in, is_logging_in }) => {
     }
 
     return <LoggedOutHeader />;
-};
+});
 
-DashboardHeader.propTypes = {
-    is_dark_mode: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-};
-
-export default connect(({ client, ui }) => ({
-    is_dark_mode: ui.is_dark_mode_on,
-    is_logged_in: client.is_logged_in,
-    is_logging_in: client.is_logging_in,
-}))(DashboardHeader);
+export default DashboardHeader;

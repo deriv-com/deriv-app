@@ -1,24 +1,28 @@
 import React from 'react';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { RiskToleranceWarningModal, TradingAssessmentForm, tradingAssessmentConfig } from '@deriv/account';
 import TradingExperienceModal from './trading-experience-modal.jsx';
+import { observer, useStore } from '@deriv/stores';
 
-const TradingAssessmentExistingUser = ({
-    updateAccountStatus,
-    active_account_landing_company,
-    should_show_trade_assessment_form,
-    setShouldShowTradeAssessmentForm,
-    setFinancialAndTradingAssessment,
-    should_show_risk_warning_modal,
-    setShouldShowRiskWarningModal,
-    setShouldShowWarningModal,
-    setShouldShowAssessmentCompleteModal,
-    setIsTradingAssessmentForExistingUserEnabled,
-    setIsTradingAssessmentForNewUserEnabled,
-}) => {
+const TradingAssessmentExistingUser = observer(() => {
     // Get the Trading assessment questions and initial_value
+    const { client, ui } = useStore();
+    const {
+        setFinancialAndTradingAssessment,
+        updateAccountStatus,
+        landing_company_shortcode: active_account_landing_company,
+    } = client;
+    const {
+        should_show_risk_warning_modal,
+        setShouldShowRiskWarningModal,
+        setShouldShowWarningModal,
+        should_show_trade_assessment_form,
+        setShouldShowTradeAssessmentForm,
+        setShouldShowAssessmentCompleteModal,
+        setIsTradingAssessmentForExistingUserEnabled,
+        setIsTradingAssessmentForNewUserEnabled,
+    } = ui;
     const [form_values, setFormValue] = React.useState({});
     const [assessment_questions, setAssessmentQuestions] = React.useState({});
     const [should_move_to_next, setShouldMoveToNext] = React.useState(false);
@@ -122,18 +126,6 @@ const TradingAssessmentExistingUser = ({
         );
     }
     return <TradingExperienceModal />;
-};
+});
 
-export default connect(({ client, ui }) => ({
-    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
-    should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
-    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
-    setShouldShowWarningModal: ui.setShouldShowWarningModal,
-    should_show_trade_assessment_form: ui.should_show_trade_assessment_form,
-    setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
-    setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
-    updateAccountStatus: client.updateAccountStatus,
-    setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
-    active_account_landing_company: client.landing_company_shortcode,
-    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
-}))(TradingAssessmentExistingUser);
+export default TradingAssessmentExistingUser;

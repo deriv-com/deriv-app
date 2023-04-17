@@ -15,12 +15,12 @@ import NetworkStatus, {
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
-import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 import { routes } from '@deriv/shared';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -35,26 +35,26 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
     );
 };
 
-const TradingHubFooter = ({
-    current_language,
-    enableApp,
-    footer_extensions,
-    is_app_disabled,
-    is_eu,
-    is_logged_in,
-    is_route_modal_on,
-    is_settings_modal_on,
-    is_language_settings_modal_on,
-    is_virtual,
-    disableApp,
-    landing_company_shortcode,
-    toggleSettingsModal,
-    toggleLanguageSettingsModal,
-    settings_extension,
-    setDarkMode,
-    is_dark_mode,
-    show_eu_related_content,
-}) => {
+const TradingHubFooter = observer(() => {
+    const { client, common, ui, traders_hub } = useStore();
+    const { show_eu_related_content } = traders_hub;
+    const { is_logged_in, is_eu, landing_company_shortcode, is_virtual } = client;
+    const { current_language } = common;
+    const {
+        enableApp,
+        footer_extensions,
+        settings_extension,
+        is_app_disabled,
+        is_route_modal_on,
+        is_settings_modal_on,
+        is_language_settings_modal_on,
+        disableApp,
+        toggleSettingsModal,
+        toggleLanguageSettingsModal,
+        is_dark_mode_on: is_dark_mode,
+        setDarkMode,
+    } = ui;
+
     let footer_extensions_left = [];
     let footer_extensions_right = [];
     if (footer_extensions.filter) {
@@ -127,49 +127,10 @@ const TradingHubFooter = ({
             </div>
         </footer>
     );
-};
+});
 
 TradingHubFooter.propTypes = {
-    is_app_disabled: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_route_modal_on: PropTypes.bool,
-    is_settings_modal_on: PropTypes.bool,
-    is_language_settings_modal_on: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
     location: PropTypes.object,
-    toggleSettingsModal: PropTypes.func,
-    toggleLanguageSettingsModal: PropTypes.func,
-    settings_extension: PropTypes.array,
-    is_virtual: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    footer_extensions: PropTypes.array,
-    is_dark_mode: PropTypes.bool,
-    setDarkMode: PropTypes.func,
-    show_eu_related_content: PropTypes.bool,
 };
 
-export default withRouter(
-    connect(({ client, common, ui, traders_hub }) => ({
-        current_language: common.current_language,
-        enableApp: ui.enableApp,
-        footer_extensions: ui.footer_extensions,
-        settings_extension: ui.settings_extension,
-        is_app_disabled: ui.is_app_disabled,
-        is_route_modal_on: ui.is_route_modal_on,
-        is_logged_in: client.is_logged_in,
-        is_eu: client.is_eu,
-        is_loading: ui.is_loading,
-        is_settings_modal_on: ui.is_settings_modal_on,
-        is_language_settings_modal_on: ui.is_language_settings_modal_on,
-        is_virtual: client.is_virtual,
-        landing_company_shortcode: client.landing_company_shortcode,
-        disableApp: ui.disableApp,
-        toggleSettingsModal: ui.toggleSettingsModal,
-        toggleLanguageSettingsModal: ui.toggleLanguageSettingsModal,
-        is_dark_mode: ui.is_dark_mode_on,
-        setDarkMode: ui.setDarkMode,
-        show_eu_related_content: traders_hub.show_eu_related_content,
-    }))(TradingHubFooter)
-);
+export default withRouter(TradingHubFooter);

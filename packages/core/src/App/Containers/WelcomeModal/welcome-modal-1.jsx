@@ -1,19 +1,14 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { connect } from 'Stores/connect';
 import { Modal, ThemedScrollbars } from '@deriv/components';
 import Welcome from './welcome.jsx';
+import { observer, useStore } from '@deriv/stores';
 
-const WelcomeModal = props => {
-    const {
-        country_standpoint,
-        is_eu,
-        can_have_mf_account,
-        can_have_mlt_account,
-        toggleWelcomeModal,
-        history,
-        toggleShouldShowMultipliersOnboarding,
-    } = props;
+const WelcomeModal = observer(props => {
+    const { history } = props;
+    const { client, ui } = useStore();
+    const { country_standpoint, is_eu, can_have_mf_account, can_have_mlt_account } = client;
+    const { toggleWelcomeModal, toggleShouldShowMultipliersOnboarding } = ui;
     const switchPlatform = React.useCallback(
         ({ route, should_show_multiplier } = {}) => {
             toggleWelcomeModal({ is_visible: false, should_persist: true });
@@ -36,15 +31,6 @@ const WelcomeModal = props => {
             </ThemedScrollbars>
         </Modal>
     );
-};
+});
 
-export default withRouter(
-    connect(({ client, ui }) => ({
-        country_standpoint: client.country_standpoint,
-        is_eu: client.is_eu,
-        can_have_mf_account: client.can_have_mf_account,
-        can_have_mlt_account: client.can_have_mlt_account,
-        toggleWelcomeModal: ui.toggleWelcomeModal,
-        toggleShouldShowMultipliersOnboarding: ui.toggleShouldShowMultipliersOnboarding,
-    }))(WelcomeModal)
-);
+export default withRouter(WelcomeModal);

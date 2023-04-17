@@ -3,40 +3,24 @@ import { getStatusBadgeConfig } from '@deriv/account';
 import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
 
 type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
-    account_list: object[];
     //TODO: Replace the type with a proper one when ts migration cards merged
     //TODO: Replace the type with a proper one when ts migration cards merged
-    accounts: any;
-    closeModal: () => void;
     is_visible: boolean;
-    loginid: string;
-    openRealAccountSignup: (account_type: string) => void;
-    openFailedVerificationModal: (from_account: string) => void;
-    selected_region: string;
-    switchAccount: (loginid: string) => void;
-    multipliers_account_status: string | null;
 };
 
-const CurrencySelectionModal = ({
-    account_list,
-    accounts,
-    closeModal,
-    is_visible,
-    loginid: current_loginid,
-    openRealAccountSignup,
-    openFailedVerificationModal,
-    selected_region,
-    switchAccount,
-    multipliers_account_status,
-}: CurrencySelectionModalProps) => {
+const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalProps) => {
+    const { client, traders_hub, ui } = useStore();
+    const { account_list, accounts, loginid: current_loginid, switchAccount } = client;
+    const { closeModal, selected_region, openFailedVerificationModal, multipliers_account_status } = traders_hub;
+    const { openRealAccountSignup } = ui;
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
         openFailedVerificationModal,
@@ -114,16 +98,6 @@ const CurrencySelectionModal = ({
             </div>
         </Modal>
     );
-};
+});
 
-export default connect(({ client, traders_hub, ui }: RootStore) => ({
-    account_list: client.account_list,
-    accounts: client.accounts,
-    closeModal: traders_hub.closeModal,
-    loginid: client.loginid,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    selected_region: traders_hub.selected_region,
-    switchAccount: client.switchAccount,
-    openFailedVerificationModal: traders_hub.openFailedVerificationModal,
-    multipliers_account_status: traders_hub.multipliers_account_status,
-}))(CurrencySelectionModal);
+export default CurrencySelectionModal;

@@ -2,10 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { connect } from 'Stores/connect';
 import { Modal, Carousel, Icon, Button, ThemedScrollbars, Text } from '@deriv/components';
 import { routes, isMobile, getPlatformSettings } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 
 const WelcomeColumn = ({
     className,
@@ -110,7 +110,10 @@ WelcomeColumn.propTypes = {
     title: PropTypes.string,
 };
 
-const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_allowed }) => {
+const WelcomeModal = observer(({ history }) => {
+    const { client, ui } = useStore();
+    const { is_bot_allowed, is_dxtrade_allowed } = client;
+    const { toggleWelcomeModal } = ui;
     const [hovered, setHovered] = React.useState(null);
     const [column_width, setColumnWidth] = React.useState(320);
     const carouselRef = React.useRef(null);
@@ -266,12 +269,6 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_bot_allowed, is_dxtrade_
             </ThemedScrollbars>
         </Modal>
     );
-};
+});
 
-export default withRouter(
-    connect(({ ui, client }) => ({
-        toggleWelcomeModal: ui.toggleWelcomeModal,
-        is_bot_allowed: client.is_bot_allowed,
-        is_dxtrade_allowed: client.is_dxtrade_allowed,
-    }))(WelcomeModal)
-);
+export default withRouter(WelcomeModal);

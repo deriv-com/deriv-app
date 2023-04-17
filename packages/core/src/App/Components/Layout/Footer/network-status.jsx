@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const NetworkStatus = ({ is_mobile, status }) => {
+const NetworkStatus = observer(({ is_mobile }) => {
+    const { common } = useStore();
+    const { network_status } = common;
+    const status = network_status;
     const network_status_element = (
         <div
             data-testid='dt_network_status_element'
@@ -38,15 +41,10 @@ const NetworkStatus = ({ is_mobile, status }) => {
             )}
         </div>
     );
-};
+});
 
 NetworkStatus.propTypes = {
     is_mobile: PropTypes.bool,
-    status: PropTypes.object,
 };
 
-export { NetworkStatus };
-
-export default connect(({ common }) => ({
-    status: common.network_status,
-}))(NetworkStatus);
+export default NetworkStatus;

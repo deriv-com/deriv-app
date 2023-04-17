@@ -5,28 +5,24 @@ import React from 'react';
 import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import CurrencyProvider from './choose-currency';
 import './currency-selector.scss';
+import { observer, useStore } from '@deriv/stores';
 
 const CRYPTO_CURRENCY_TYPE = 'crypto';
 const FIAT_CURRENCY_TYPE = 'fiat';
 
-const AddCurrency = ({
-    all_payment_agent_list,
-    available_crypto_currencies,
-    has_fiat,
-    legal_allowed_currencies,
-    onSubmit,
-    openRealAccountSignup,
-    setShouldShowAllAvailableCurrencies,
-    deposit_target,
-    hasNoAvailableCrypto,
-    is_add_crypto,
-    is_add_fiat,
-}) => {
+const AddCurrency = observer(({ onSubmit, hasNoAvailableCrypto, is_add_crypto, is_add_fiat }) => {
+    const { client, modules, ui } = useStore();
+    const { available_crypto_currencies, has_fiat, upgradeable_currencies: legal_allowed_currencies } = client;
+    const { cashier } = modules;
+
+    const setShouldShowAllAvailableCurrencies = cashier.general_store.setShouldShowAllAvailableCurrencies;
+    const deposit_target = cashier.general_store.deposit_target;
+    const all_payment_agent_list = cashier.payment_agent.all_payment_agent_list;
+    const { openRealAccountSignup } = ui;
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
 
@@ -217,28 +213,13 @@ const AddCurrency = ({
             )}
         </Formik>
     );
-};
+});
 
 AddCurrency.propTypes = {
-    all_payment_agent_list: PropTypes.array,
-    available_crypto_currencies: PropTypes.array,
-    has_fiat: PropTypes.bool,
-    legal_allowed_currencies: PropTypes.array,
-    openRealAccountSignup: PropTypes.func,
-    setShouldShowAllAvailableCurrencies: PropTypes.func,
-    deposit_target: PropTypes.string,
     onSubmit: PropTypes.func,
     is_add_crypto: PropTypes.bool,
     is_add_fiat: PropTypes.bool,
     hasNoAvailableCrypto: PropTypes.func,
 };
 
-export default connect(({ client, modules, ui }) => ({
-    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
-    available_crypto_currencies: client.available_crypto_currencies,
-    has_fiat: client.has_fiat,
-    legal_allowed_currencies: client.upgradeable_currencies,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    setShouldShowAllAvailableCurrencies: modules.cashier.general_store.setShouldShowAllAvailableCurrencies,
-    deposit_target: modules.cashier.general_store.deposit_target,
-}))(AddCurrency);
+export default AddCurrency;

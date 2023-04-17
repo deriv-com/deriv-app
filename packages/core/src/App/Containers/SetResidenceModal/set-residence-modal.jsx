@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { website_name } from '@deriv/shared';
 import ResidenceForm from './set-residence-form.jsx';
 import 'Sass/app/modules/set-residence.scss';
+import { observer, useStore } from '@deriv/stores';
 
 // TODO: Move some of these functions to helpers since some of them are shared with AccountSignUpModal
 const isResidenceText = (item, values) => item.text.toLowerCase() === values.residence.toLowerCase();
@@ -93,15 +93,16 @@ SetResidence.propTypes = {
     toggleModalVisibility: PropTypes.func,
 };
 
-const SetResidenceModal = ({
-    enableApp,
-    disableApp,
-    is_loading,
-    is_visible,
-    onSetResidence,
-    residence_list,
-    toggleSetResidenceModal,
-}) => {
+const SetResidenceModal = observer(() => {
+    const { ui, client } = useStore();
+    const {
+        is_set_residence_modal_visible: is_visible,
+        toggleSetResidenceModal,
+        enableApp,
+        disableApp,
+        is_loading,
+    } = ui;
+    const { onSetResidence, residence_list } = client;
     if (residence_list.length < 1) return null;
     return (
         <Dialog
@@ -119,24 +120,6 @@ const SetResidenceModal = ({
             />
         </Dialog>
     );
-};
+});
 
-SetResidenceModal.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    onSetResidence: PropTypes.func,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    toggleSetResidenceModal: PropTypes.func,
-};
-
-export default connect(({ ui, client }) => ({
-    is_visible: ui.is_set_residence_modal_visible,
-    toggleSetResidenceModal: ui.toggleSetResidenceModal,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_loading: ui.is_loading,
-    onSetResidence: client.onSetResidence,
-    residence_list: client.residence_list,
-}))(SetResidenceModal);
+export default SetResidenceModal;

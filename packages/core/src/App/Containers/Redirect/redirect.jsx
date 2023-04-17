@@ -3,23 +3,20 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { loginUrl, routes, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { WS } from 'Services';
+import { observer, useStore } from '@deriv/stores';
 
-const Redirect = ({
-    history,
-    currency,
-    setVerificationCode,
-    verification_code,
-    hasAnyRealAccount,
-    openRealAccountSignup,
-    setResetTradingPasswordModalOpen,
-    toggleAccountSignupModal,
-    toggleResetPasswordModal,
-    setNewEmail,
-    toggleResetEmailModal,
-    toggleUpdateEmailModal,
-}) => {
+const Redirect = observer(({ history }) => {
+    const { client, ui } = useStore();
+    const { currency, setVerificationCode, verification_code, hasAnyRealAccount, setNewEmail } = client;
+    const {
+        openRealAccountSignup,
+        setResetTradingPasswordModalOpen,
+        toggleAccountSignupModal,
+        toggleResetPasswordModal,
+        toggleResetEmailModal,
+        toggleUpdateEmailModal,
+    } = ui;
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -187,40 +184,10 @@ const Redirect = ({
     }
 
     return null;
-};
+});
 
 Redirect.propTypes = {
-    currency: PropTypes.string,
-    loginid: PropTypes.string,
-    getServerTime: PropTypes.object,
-    hasAnyRealAccount: PropTypes.bool,
     history: PropTypes.object,
-    openRealAccountSignup: PropTypes.func,
-    setResetTradingPasswordModalOpen: PropTypes.func,
-    setVerificationCode: PropTypes.func,
-    setNewEmail: PropTypes.func,
-    toggleAccountSignupModal: PropTypes.func,
-    toggleResetPasswordModal: PropTypes.func,
-    toggleResetEmailModal: PropTypes.func,
-    toggleUpdateEmailModal: PropTypes.func,
-    verification_code: PropTypes.object,
 };
 
-export default withRouter(
-    connect(({ client, ui }) => ({
-        currency: client.currency,
-        loginid: client.loginid,
-        is_eu: client.is_eu,
-        setVerificationCode: client.setVerificationCode,
-        verification_code: client.verification_code,
-        fetchResidenceList: client.fetchResidenceList,
-        hasAnyRealAccount: client.hasAnyRealAccount,
-        openRealAccountSignup: ui.openRealAccountSignup,
-        setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
-        toggleAccountSignupModal: ui.toggleAccountSignupModal,
-        toggleResetPasswordModal: ui.toggleResetPasswordModal,
-        setNewEmail: client.setNewEmail,
-        toggleResetEmailModal: ui.toggleResetEmailModal,
-        toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
-    }))(Redirect)
-);
+export default withRouter(Redirect);

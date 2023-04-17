@@ -9,45 +9,52 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import { connect } from 'Stores/connect';
 import platform_config from 'App/Constants/platform-config';
 import { withRouter } from 'react-router-dom';
+import { observer, useStore } from '@deriv/stores';
 
-const DefaultHeader = ({
-    acc_switcher_disabled_message,
-    account_type,
-    addNotificationMessage,
-    app_routing_history,
-    balance,
-    client_notifications,
-    country_standpoint,
-    currency,
-    disableApp,
-    enableApp,
-    header_extension,
-    history,
-    is_acc_switcher_disabled,
-    is_acc_switcher_on,
-    is_app_disabled,
-    is_bot_allowed,
-    is_dxtrade_allowed,
-    is_eu,
-    is_logged_in,
-    is_logging_in,
-    is_mt5_allowed,
-    is_notifications_visible,
-    is_route_modal_on,
-    is_trading_assessment_for_existing_user_enabled,
-    is_virtual,
-    notifications_count,
-    openRealAccountSignup,
-    platform,
-    removeNotificationMessage,
-    toggleAccountsDialog,
-    toggleNotifications,
-    is_landing_company_loaded,
-    is_switching,
-}) => {
+const DefaultHeader = observer(({ history }) => {
+    const { client, common, ui, notifications } = useStore();
+    const {
+        is_landing_company_loaded,
+        is_switching,
+        is_virtual,
+        is_bot_allowed,
+        is_eu,
+        is_logged_in,
+        is_logging_in,
+        is_mt5_allowed,
+        is_dxtrade_allowed,
+        currency,
+        country_standpoint,
+        account_type,
+        balance,
+    } = client;
+
+    const {
+        disableApp,
+        enableApp,
+        header_extension,
+        is_account_switcher_disabled: is_acc_switcher_disabled,
+        is_accounts_switcher_on: is_acc_switcher_on,
+        is_app_disabled,
+        account_switcher_disabled_message: acc_switcher_disabled_message,
+        is_route_modal_on,
+        openRealAccountSignup,
+        toggleAccountsDialog,
+        is_trading_assessment_for_existing_user_enabled,
+    } = ui;
+
+    const {
+        addNotificationMessage,
+        client_notifications,
+        is_notifications_visible,
+        removeNotificationMessage,
+        toggleNotificationsModal: toggleNotifications,
+    } = notifications;
+
+    const notifications_count = notifications.notifications.length;
+    const { app_routing_history, platform } = common;
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
@@ -155,75 +162,10 @@ const DefaultHeader = ({
             <NewVersionNotification onUpdate={addUpdateNotification} />
         </header>
     );
-};
+});
 
 DefaultHeader.propTypes = {
-    acc_switcher_disabled_message: PropTypes.string,
-    account_type: PropTypes.string,
-    addNotificationMessage: PropTypes.func,
-    app_routing_history: PropTypes.array,
-    balance: PropTypes.string,
-    client_notifications: PropTypes.object,
-    currency: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    header_extension: PropTypes.any,
-    is_acc_switcher_disabled: PropTypes.bool,
-    is_acc_switcher_on: PropTypes.bool,
-    is_app_disabled: PropTypes.bool,
-    is_bot_allowed: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_mt5_allowed: PropTypes.bool,
-    is_dxtrade_allowed: PropTypes.bool,
-    is_notifications_visible: PropTypes.bool,
-    is_route_modal_on: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    is_trading_assessment_for_existing_user_enabled: PropTypes.bool,
-    notifications_count: PropTypes.number,
-    openRealAccountSignup: PropTypes.func,
-    platform: PropTypes.string,
-    removeNotificationMessage: PropTypes.func,
-    toggleAccountsDialog: PropTypes.func,
-    toggleNotifications: PropTypes.func,
-    country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    is_landing_company_loaded: PropTypes.bool,
-    is_switching: PropTypes.bool,
 };
 
-export default connect(({ client, common, ui, notifications }) => ({
-    acc_switcher_disabled_message: ui.account_switcher_disabled_message,
-    account_type: client.account_type,
-    addNotificationMessage: notifications.addNotificationMessage,
-    app_routing_history: common.app_routing_history,
-    balance: client.balance,
-    client_notifications: notifications.client_notifications,
-    currency: client.currency,
-    country_standpoint: client.country_standpoint,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    header_extension: ui.header_extension,
-    is_acc_switcher_disabled: ui.is_account_switcher_disabled,
-    is_acc_switcher_on: !!ui.is_accounts_switcher_on,
-    is_app_disabled: ui.is_app_disabled,
-    is_bot_allowed: client.is_bot_allowed,
-    is_eu: client.is_eu,
-    is_logged_in: client.is_logged_in,
-    is_logging_in: client.is_logging_in,
-    is_mt5_allowed: client.is_mt5_allowed,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
-    is_notifications_visible: notifications.is_notifications_visible,
-    is_route_modal_on: ui.is_route_modal_on,
-    is_virtual: client.is_virtual,
-    notifications_count: notifications.notifications.length,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    platform: common.platform,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
-    toggleNotifications: notifications.toggleNotificationsModal,
-    is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
-    is_landing_company_loaded: client.is_landing_company_loaded,
-    is_switching: client.is_switching,
-}))(withRouter(DefaultHeader));
+export default withRouter(DefaultHeader);

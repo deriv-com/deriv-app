@@ -4,22 +4,15 @@ import { localize } from '@deriv/translations';
 import { currencySelectorConfig } from '@deriv/account';
 import { website_name, generateValidationFunction } from '@deriv/shared';
 import { Text } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import CurrencySelector from './currency-selector';
 import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/set-currency.scss';
 import 'Sass/change-account.scss';
+import { observer, useStore } from '@deriv/stores';
 
-const SetCurrency = ({
-    setLoading,
-    onSuccessSetAccountCurrency,
-    onError,
-    available_crypto_currencies,
-    has_fiat,
-    landing_company_shortcode,
-    is_loading,
-    ...props
-}) => {
+const SetCurrency = observer(({ setLoading, onSuccessSetAccountCurrency, onError, is_loading, ...props }) => {
+    const { client } = useStore();
+    const { available_crypto_currencies, has_fiat, landing_company_shortcode } = client;
     const form_error = React.useState('');
     const form_value = React.useState({ currency: '' });
 
@@ -99,17 +92,6 @@ const SetCurrency = ({
             />
         </div>
     );
-};
+});
 
-export default connect(({ client }) => ({
-    available_crypto_currencies: client.available_crypto_currencies,
-    can_change_fiat_currency: client.can_change_fiat_currency,
-    currency: client.currency,
-    current_currency_type: client.current_currency_type,
-    current_fiat_currency: client.current_fiat_currency,
-    is_eu: client.is_eu,
-    has_fiat: client.has_fiat,
-    landing_company_shortcode: client.landing_company_shortcode,
-    setCurrency: client.setAccountCurrency,
-    createCryptoAccount: client.createCryptoAccount,
-}))(SetCurrency);
+export default SetCurrency;

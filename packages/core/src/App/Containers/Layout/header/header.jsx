@@ -4,10 +4,12 @@ import DefaultHeader from './default-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
 import TradingHubHeader from './trading-hub-header.jsx';
 import DTraderHeader from './dtrader-header.jsx';
-import { connect } from 'Stores/connect';
 import { useLocation } from 'react-router-dom';
+import { observer, useStore } from '@deriv/stores';
 
-const Header = ({ is_logged_in }) => {
+const Header = observer(() => {
+    const { client } = useStore();
+    const { is_logged_in } = client;
     const { is_appstore } = React.useContext(PlatformContext);
     const { pathname } = useLocation();
     const trading_hub_routes =
@@ -29,8 +31,6 @@ const Header = ({ is_logged_in }) => {
         return null;
     }
     return <DefaultHeader />;
-};
+});
 
-export default connect(({ client }) => ({
-    is_logged_in: client.is_logged_in,
-}))(Header);
+export default Header;

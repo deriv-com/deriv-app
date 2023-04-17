@@ -1,11 +1,13 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Loading } from '@deriv/components';
 import { WS } from 'Services';
 import UnlinkPasswordModal from '../UnlinkPasswordModal';
 import ResetPasswordModal from '../ResetPasswordModal';
+import { observer, useStore } from '@deriv/stores';
 
-const ResetOrUnlinkPasswordModal = ({ is_logged_in }) => {
+const ResetOrUnlinkPasswordModal = observer(() => {
+    const { client } = useStore();
+    const { is_logged_in } = client;
     const [state, dispatch] = React.useReducer(
         (old_state, updated_state) => {
             return {
@@ -45,8 +47,6 @@ const ResetOrUnlinkPasswordModal = ({ is_logged_in }) => {
     }
 
     return <ResetPasswordModal />;
-};
+});
 
-export default connect(({ client }) => ({
-    is_logged_in: client.is_logged_in,
-}))(ResetOrUnlinkPasswordModal);
+export default ResetOrUnlinkPasswordModal;

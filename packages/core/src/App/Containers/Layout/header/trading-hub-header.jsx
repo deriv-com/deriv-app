@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
@@ -8,13 +7,13 @@ import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
 import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -83,28 +82,21 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
     );
 };
 
-const TradingHubHeader = ({
-    header_extension,
-    is_app_disabled,
-    is_dark_mode,
-    is_eu_country,
-    is_eu,
-    is_logged_in,
-    is_mt5_allowed,
-    is_notifications_visible,
-    is_route_modal_on,
-    loginid,
-    modal_data,
-    notifications_count,
-    platform,
-    setIsOnboardingVisited,
-    toggleIsTourOpen,
-    toggleNotifications,
-    has_any_real_account,
-    is_virtual,
-    toggleReadyToDepositModal,
-    toggleNeedRealAccountForCashierModal,
-}) => {
+const TradingHubHeader = observer(() => {
+    const { client, common, notifications, ui, traders_hub } = useStore();
+    const {
+        header_extension,
+        is_app_disabled,
+        is_dark_mode_on: is_dark_mode,
+        is_route_modal_on,
+        toggleReadyToDepositModal,
+        toggleNeedRealAccountForCashierModal,
+    } = ui;
+    const { platform } = common;
+    const { is_eu_country, is_eu, is_logged_in, is_mt5_allowed, has_any_real_account, is_virtual, loginid } = client;
+    const { setIsOnboardingVisited, toggleIsTourOpen, modal_data } = traders_hub;
+    const { is_notifications_visible, toggleNotificationsModal: toggleNotifications } = notifications;
+    const notifications_count = notifications.notifications.length;
     const is_mf = loginid?.startsWith('MF');
 
     const filterPlatformsForClients = payload =>
@@ -233,57 +225,6 @@ const TradingHubHeader = ({
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );
-};
+});
 
-TradingHubHeader.propTypes = {
-    content_flag: PropTypes.string,
-    header_extension: PropTypes.any,
-    is_app_disabled: PropTypes.bool,
-    is_dark_mode: PropTypes.bool,
-    is_eu_country: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_mt5_allowed: PropTypes.bool,
-    is_notifications_visible: PropTypes.bool,
-    is_route_modal_on: PropTypes.bool,
-    is_settings_modal_on: PropTypes.bool,
-    loginid: PropTypes.string,
-    modal_data: PropTypes.object,
-    notifications_count: PropTypes.number,
-    platform: PropTypes.string,
-    setIsOnboardingVisited: PropTypes.func,
-    settings_extension: PropTypes.array,
-    should_show_exit_traders_modal: PropTypes.bool,
-    switchToCRAccount: PropTypes.func,
-    toggleIsTourOpen: PropTypes.func,
-    toggleNotifications: PropTypes.func,
-    has_any_real_account: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    toggleReadyToDepositModal: PropTypes.func,
-    toggleNeedRealAccountForCashierModal: PropTypes.func,
-};
-
-export default connect(({ client, common, notifications, ui, traders_hub }) => ({
-    header_extension: ui.header_extension,
-    is_app_disabled: ui.is_app_disabled,
-    is_dark_mode: ui.is_dark_mode_on,
-    is_eu_country: client.is_eu_country,
-    is_eu: client.is_eu,
-    is_logged_in: client.is_logged_in,
-    is_mt5_allowed: client.is_mt5_allowed,
-    is_notifications_visible: notifications.is_notifications_visible,
-    is_route_modal_on: ui.is_route_modal_on,
-    modal_data: traders_hub.modal_data,
-    notifications_count: notifications.notifications.length,
-    toggleNotifications: notifications.toggleNotificationsModal,
-    loginid: client.loginid,
-    platform: common.platform,
-    setIsOnboardingVisited: traders_hub.setIsOnboardingVisited,
-    should_show_exit_traders_modal: traders_hub.should_show_exit_traders_modal,
-    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
-    has_any_real_account: client.has_any_real_account,
-    is_virtual: client.is_virtual,
-    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
-    toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
-    content_flag: traders_hub.content_flag,
-}))(withRouter(TradingHubHeader));
+export default withRouter(TradingHubHeader);

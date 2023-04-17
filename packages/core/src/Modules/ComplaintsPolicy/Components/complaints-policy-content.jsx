@@ -1,8 +1,8 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { getLegalEntityName } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import 'Sass/app/modules/complaints-policy.scss';
+import { observer, useStore } from '@deriv/stores';
 
 const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
     // * mt5_login_list returns these:
@@ -251,7 +251,9 @@ const getSubmissionOfAComplaintText = landing_company_shortcode => (
     </React.Fragment>
 );
 
-const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
+const Content = observer(({ landing_company_shortcode }) => {
+    const { client } = useStore();
+    const { is_uk, mt5_login_list } = client;
     const policy_content = [
         {
             title: localize('1. Introduction'),
@@ -447,9 +449,6 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
             <div className='complaints-policy__wrapper'>{modal_content}</div>
         </div>
     );
-};
+});
 
-export default connect(({ client }) => ({
-    is_uk: client.is_uk,
-    mt5_login_list: client.mt5_login_list,
-}))(Content);
+export default Content;

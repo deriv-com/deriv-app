@@ -13,10 +13,10 @@ import {
     useOnClickOutside,
 } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
-import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { isEmptyObject, isMobile, LocalStore, toTitleCase, routes } from '@deriv/shared';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
+import { observer, useStore } from '@deriv/stores';
 
 const NotificationsList = ({ notifications, toggleDialog }) => {
     const getNotificationitemIcon = item => {
@@ -164,15 +164,12 @@ const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog,
 
 NotificationListWrapper.displayName = 'NotificationListWrapper';
 
-const NotificationsDialog = ({
-    is_visible,
-    loginid,
-    notifications,
-    toggleDialog,
-    removeNotificationMessage,
-    removeNotificationMessageByKey,
-    removeNotifications,
-}) => {
+const NotificationsDialog = observer(({ is_visible, toggleDialog }) => {
+    const { client, notifications } = useStore();
+    const { loginid } = client;
+    const { removeNotificationMessage, removeNotifications, removeNotificationMessageByKey } = notifications;
+    const notificationAr = notifications.notifications;
+
     const wrapper_ref = React.useRef();
 
     const handleClickOutside = event => {
@@ -189,7 +186,7 @@ const NotificationsDialog = ({
         }
         LocalStore.setObject('p2p_settings', p2p_settings);
 
-        return notifications.map(item => {
+        return notificationAr.map(item => {
             removeNotificationMessageByKey(item.key);
             removeNotificationMessage({
                 key: item.key,
@@ -212,7 +209,7 @@ const NotificationsDialog = ({
                     onClose={toggleDialog}
                 >
                     <NotificationListWrapper
-                        notifications={notifications}
+                        notifications={notificationAr}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
                         clearNotifications={clearNotifications}
@@ -231,7 +228,7 @@ const NotificationsDialog = ({
                     unmountOnExit
                 >
                     <NotificationListWrapper
-                        notifications={notifications}
+                        notifications={notificationAr}
                         ref={wrapper_ref}
                         toggleDialog={toggleDialog}
                         removeNotificationMessage={removeNotificationMessage}
@@ -243,25 +240,12 @@ const NotificationsDialog = ({
             </DesktopWrapper>
         </React.Fragment>
     );
-};
+});
 
 NotificationsDialog.propTypes = {
     is_visible: PropTypes.bool,
-    loginid: PropTypes.string,
-    notifications: PropTypes.array,
+    notificationAr: PropTypes.array,
     toggleDialog: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
-    removeNotificationByKey: PropTypes.func,
-    removeNotificationMessageByKey: PropTypes.func,
-    removeNotifications: PropTypes.func,
 };
 
-export default connect(({ common, client, notifications }) => ({
-    app_routing_history: common.app_routing_history,
-    loginid: client.loginid,
-    notifications: notifications.notifications,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    removeNotifications: notifications.removeNotifications,
-    removeNotificationMessageByKey: notifications.removeNotificationMessageByKey,
-}))(NotificationsDialog);
+export default NotificationsDialog;

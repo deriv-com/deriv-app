@@ -5,13 +5,13 @@ import ReactDOM from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { getPathname, getPlatformSettings, isMobile, routes } from '@deriv/shared';
 import 'Sass/app/_common/components/app-notification-message.scss';
-import { connect } from 'Stores/connect';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
 import { useLocation } from 'react-router-dom';
 import { excluded_notifications, priority_toast_messages } from '../../Stores/Helpers/client-notifications';
+import { observer, useStore } from '@deriv/stores';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -73,20 +73,16 @@ const NotificationsContent = ({
     );
 };
 
-const AppNotificationMessages = ({
-    is_notification_loaded,
-    is_mt5,
-    marked_notifications,
-    notification_messages,
-    removeNotificationMessage,
-    stopNotificationLoading,
-    markNotificationMessage,
-    landing_company_shortcode,
-    has_iom_account,
-    has_malta_account,
-    is_logged_in,
-    should_show_popups,
-}) => {
+const AppNotificationMessages = observer(({ is_notification_loaded, is_mt5, stopNotificationLoading }) => {
+    const { client, notifications } = useStore();
+    const {
+        notification_messages,
+        marked_notifications,
+        removeNotificationMessage,
+        markNotificationMessage,
+        should_show_popups,
+    } = notifications;
+    const { has_iom_account, has_malta_account, is_logged_in, landing_company_shortcode } = client;
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
 
@@ -103,7 +99,7 @@ const AppNotificationMessages = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_mt5, notifications_ref]);
 
-    const notifications = notification_messages.filter(message => {
+    const notificationsMsg = notification_messages.filter(message => {
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
@@ -149,7 +145,7 @@ const AppNotificationMessages = ({
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
 
-    const filtered_excluded_notifications = notifications.filter(message =>
+    const filtered_excluded_notifications = notificationsMsg.filter(message =>
         priority_toast_messages.includes(message.key) ? message : excluded_notifications.includes(message.key)
     );
 
@@ -181,50 +177,12 @@ const AppNotificationMessages = ({
             </Portal>
         </div>
     ) : null;
-};
+});
 
 AppNotificationMessages.propTypes = {
-    has_iom_account: PropTypes.bool,
-    has_malta_account: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
     is_mt5: PropTypes.bool,
     is_notification_loaded: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
-    marked_notifications: PropTypes.array,
-    markNotificationMessage: PropTypes.func,
-    notification_messages: PropTypes.arrayOf(
-        PropTypes.shape({
-            closeOnClick: PropTypes.func,
-            delay: PropTypes.number,
-            header: PropTypes.string,
-            is_auto_close: PropTypes.bool,
-            message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-            size: PropTypes.oneOf(['small']),
-            type: PropTypes.oneOf([
-                'warning',
-                'info',
-                'success',
-                'danger',
-                'contract_sold',
-                'news',
-                'announce',
-                'close_mx_mlt',
-            ]),
-        })
-    ),
-    removeNotificationMessage: PropTypes.func,
-    should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
 };
 
-export default connect(({ client, notifications }) => ({
-    marked_notifications: notifications.marked_notifications,
-    notification_messages: notifications.notification_messages,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    markNotificationMessage: notifications.markNotificationMessage,
-    landing_company_shortcode: client.landing_company_shortcode,
-    has_iom_account: client.has_iom_account,
-    has_malta_account: client.has_malta_account,
-    is_logged_in: client.is_logged_in,
-    should_show_popups: notifications.should_show_popups,
-}))(AppNotificationMessages);
+export default AppNotificationMessages;

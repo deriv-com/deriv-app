@@ -1,10 +1,12 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Popover, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
+import { observer, useStore } from '@deriv/stores';
 
-const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
+const LiveChat = observer(({ is_mobile_drawer }) => {
+    const { client } = useStore();
+    const { has_cookie_account } = client;
     const liveChat = useLiveChat(has_cookie_account);
 
     if (!liveChat.isReady) return null;
@@ -32,8 +34,6 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
             </Popover>
         </div>
     );
-};
+});
 
-export default connect(({ client }) => ({
-    has_cookie_account: client.has_cookie_account,
-}))(LiveChat);
+export default LiveChat;

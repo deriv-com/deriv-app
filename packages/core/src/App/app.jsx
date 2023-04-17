@@ -50,16 +50,13 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(initCFDStore, []);
 
     React.useEffect(() => {
-        const getTranslations = async () => {
-            await initializeTranslations();
-            // TODO: [translation-to-shared]: add translation implemnentation in shared
-            setUrlLanguage(getLanguage());
-            initFormErrorMessages(FORM_ERROR_MESSAGES);
-            setSharedCFDText(CFD_TEXT);
-            root_store.common.setPlatform();
-        };
+        initializeTranslations();
 
-        getTranslations();
+        // TODO: [translation-to-shared]: add translation implemnentation in shared
+        setUrlLanguage(getLanguage());
+        initFormErrorMessages(FORM_ERROR_MESSAGES);
+        setSharedCFDText(CFD_TEXT);
+        root_store.common.setPlatform();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

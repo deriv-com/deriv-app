@@ -36,10 +36,6 @@ import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 export type TCFDPasswordFormValues = { password: string };
 
-// type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
-// market_type?: 'synthetic' | 'financial' | 'gaming';
-// };
-
 type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
 
 type TPasswordModalHeaderProps = {

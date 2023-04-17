@@ -1,7 +1,5 @@
 import React from 'react';
 import { TDropdownItems, TDropdowns, TSelectedValuesSelect } from '../quick-strategy.types';
-import { TDataFields } from './data/data-fields';
-import { TDataUniqInput } from './data/data-uniq-input-obj';
 import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
 import { data_fields, data_uniq_input_obj, Description, DurationFields, Inputs, Selects } from '.';
 
@@ -59,7 +57,7 @@ const QuickStrategyFields = React.memo(
                         trailing_icon_message,
                         zIndex,
                         is_able_disabled,
-                    } = item as TDataFields;
+                    } = item;
 
                     const is_uniq_strategy_field = item?.is_uniq_strategy_field;
                     const is_input_field = is_uniq_strategy_field || !!input_value;

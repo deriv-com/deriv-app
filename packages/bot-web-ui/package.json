@@ -71,6 +71,7 @@
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-charts": "1.1.8",
         "@deriv/shared": "^1.0.0",
+        "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",

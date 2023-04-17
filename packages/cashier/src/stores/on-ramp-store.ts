@@ -1,9 +1,9 @@
 import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
 import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
-import OnrampProviders from 'Config/on-ramp-providers';
+import createBanxaProvider from '../pages/on-ramp/on-ramp-providers';
 import BaseStore from './base-store';
-import type { TWebSocket, TRootStore, TOnRampProvider } from 'Types';
+import type { TWebSocket, TRootStore, TOnRampProvider, TServerError } from 'Types';
 
 export default class OnRampStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -45,11 +45,11 @@ export default class OnRampStore extends BaseStore {
         this.WS = WS;
 
         this.onClientInit(async () => {
-            this.setOnrampProviders([OnrampProviders.createBanxaProvider(this)]);
+            this.setOnrampProviders([createBanxaProvider(this)]);
         });
     }
 
-    api_error: string | null = null;
+    api_error: TServerError | null = null;
     deposit_address: string | null = null;
     disposeGetWidgetHtmlReaction: IReactionDisposer | null = null;
     disposeThirdPartyJsReaction: IReactionDisposer | null = null;
@@ -199,8 +199,8 @@ export default class OnRampStore extends BaseStore {
                 if (response.error) {
                     this.setApiError(response.error);
                     should_clear_interval = true;
-                } else {
-                    const { address } = response.cashier.deposit;
+                } else if (typeof response.cashier !== 'string' && response.cashier?.deposit) {
+                    const address = response.cashier?.deposit.address;
 
                     if (address || should_allow_empty_address) {
                         this.setDepositAddress(address);
@@ -232,7 +232,7 @@ export default class OnRampStore extends BaseStore {
         this.setWidgetHtml(null);
     }
 
-    setApiError(api_error: string | null) {
+    setApiError(api_error: TServerError | null) {
         this.api_error = api_error;
     }
 

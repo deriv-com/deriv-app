@@ -202,7 +202,6 @@ const Flyout = props => {
         is_visible && (
             <div
                 id='gtm-search-results'
-                gtm-search-term={search_term}
                 className={classNames('flyout', {
                     flyout__search: is_search_flyout,
                     flyout__help: is_help_content,

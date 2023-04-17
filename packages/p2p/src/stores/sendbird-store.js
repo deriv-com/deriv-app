@@ -1,5 +1,5 @@
 import SendBird from 'sendbird';
-import { epochToMoment } from '@deriv/shared';
+import { epochToMoment, toMoment } from '@deriv/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
@@ -188,7 +188,7 @@ export default class SendbirdStore extends BaseStore {
         const custom_type = '';
 
         this.active_chat_channel.getPreviousMessagesByTimestamp(
-            timestamp || this.root_store.general_store.props.server_time.get().utc().valueOf(),
+            timestamp || toMoment(this.root_store.general_store.server_time.get()).utc().valueOf(),
             is_inclusive_of_timestamp,
             result_size,
             reverse_results,
@@ -213,7 +213,7 @@ export default class SendbirdStore extends BaseStore {
             requestWS({ service: 'sendbird', service_token: 1 }).then(service_token_response => {
                 if (service_token_response.error) return;
 
-                const { server_time } = this.root_store.general_store.props;
+                const { server_time } = this.root_store.general_store;
                 const { service_token } = service_token_response;
 
                 this.setChatInfo({
@@ -225,7 +225,7 @@ export default class SendbirdStore extends BaseStore {
                 // Refresh chat token ±1 hour before it expires (BE will refresh the token
                 // when we request within 2 hours of the token expiring)
                 const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
-                const delay_ms = expiry_moment.diff(server_time.get().clone().subtract(1, 'hour'));
+                const delay_ms = expiry_moment.diff(toMoment(server_time.get()).clone().subtract(1, 'hour'));
 
                 this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
             });
@@ -386,7 +386,7 @@ export default class SendbirdStore extends BaseStore {
 
         // Add a placeholder message with a pending indicator
         const placeholder_msg_options = {
-            created_at: this.root_store.general_store.props.server_time.get().utc(),
+            created_at: toMoment(this.root_store.general_store.server_time.get()).utc(),
             chat_channel_url: this.active_chat_channel.url,
             message,
             id: msg_identifier,

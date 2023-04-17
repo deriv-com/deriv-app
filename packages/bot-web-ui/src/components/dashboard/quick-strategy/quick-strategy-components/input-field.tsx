@@ -30,7 +30,7 @@ const InputField = ({
         if (is_uniq_strategy_field) {
             return uniq_selected_input;
         }
-        return idx ? (data_fields[idx] as TDataFields) : {};
+        return idx ? data_fields[idx] : {};
     };
 
     const {

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import ReactJoyride from 'react-joyride';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -13,12 +12,12 @@ import DashboardComponent from './dashboard-component';
 import {
     DBOT_ONBOARDING,
     getTourSettings,
-    handleJoyrideCallback,
     setTourSettings,
     setTourType,
     tour_status_ended,
     tour_type,
 } from './joyride-config';
+import ReactJoyrideWrapper from './react-joyride-wrapper';
 import TourSlider from './tour-slider';
 import TourTriggrerDialog from './tour-trigger-dialog';
 import Tutorial from './tutorial-tab';
@@ -231,30 +230,7 @@ const Dashboard = ({
                         (is_mobile ? (
                             <TourSlider />
                         ) : (
-                            <ReactJoyride
-                                steps={DBOT_ONBOARDING}
-                                continuous
-                                callback={handleJoyrideCallback}
-                                spotlightClicks
-                                hideCloseButton
-                                locale={{ back: 'Previous' }}
-                                styles={{
-                                    options: {
-                                        arrowColor: 'var(--general-main-2)',
-                                        backgroundColor: 'var(--general-main-2)',
-                                        primaryColor: 'var(--brand-red-coral)',
-                                        textColor: 'var(--text-general)',
-                                        spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                    },
-                                    buttonBack: {
-                                        border: '0.2rem solid var(--text-less-prominent)',
-                                        marginRight: '1rem',
-                                        borderRadius: '0.4rem',
-                                        color: 'var(--text-general)',
-                                        padding: '0.6rem',
-                                    },
-                                }}
-                            />
+                            <ReactJoyrideWrapper steps={DBOT_ONBOARDING} spotlightClicks hideCloseButton />
                         ))}
                     <Tabs
                         active_index={active_tab}
@@ -306,7 +282,7 @@ const Dashboard = ({
     );
 };
 
-export default connect(({ dashboard, quick_strategy, run_panel, load_modal }: RootStore) => ({
+export default connect(({ dashboard, run_panel, load_modal }: RootStore) => ({
     active_tab: dashboard.active_tab,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,

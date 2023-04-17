@@ -1,4 +1,5 @@
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { formatDate, isEnded, isBot } from '@deriv/shared';
 import { log_types } from '@deriv/bot-skeleton';
 import { formatDate, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
@@ -158,12 +159,6 @@ export default class TransactionsStore {
             }
         );
 
-        // Attempt to load cached transactions on client loginid change.
-        const disposeClientLoginIdListener = reaction(
-            () => client.loginid,
-            () => (this.elements = getStoredItemsByUser(this.TRANSACTION_CACHE, client.loginid, []))
-        );
-
         // User could've left the page mid-contract. On initial load, try
         // to recover any pending contracts so we can reflect accurate stats
         // and transactions.
@@ -174,7 +169,6 @@ export default class TransactionsStore {
 
         return () => {
             disposeTransactionElementsListener();
-            disposeClientLoginIdListener();
             disposeRecoverContracts();
         };
     }
@@ -221,13 +215,17 @@ export default class TransactionsStore {
         const { ws, core } = this.root_store;
         const positions = core.portfolio.positions;
 
-        ws.authorized.subscribeProposalOpenContract(contract_id, response => {
-            this.is_called_proposal_open_contract = true;
-            if (!response.error) {
-                const { proposal_open_contract } = response;
-                this.updateResultsCompletedContract(proposal_open_contract);
-            }
-        });
+        // TODO: the idea is to remove the POC calls completely
+        // but adding this check to prevent making POC calls only for bot as of now
+        if (!isBot()) {
+            ws.authorized.subscribeProposalOpenContract(contract_id, response => {
+                this.is_called_proposal_open_contract = true;
+                if (!response.error) {
+                    const { proposal_open_contract } = response;
+                    this.updateResultsCompletedContract(proposal_open_contract);
+                }
+            });
+        }
 
         if (!this.is_called_proposal_open_contract) {
             if (!this.elements.length) {

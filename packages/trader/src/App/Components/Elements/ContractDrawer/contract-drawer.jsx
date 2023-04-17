@@ -14,27 +14,18 @@ import {
 } from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { connect } from 'Stores/connect';
 import ContractDrawerCard from './contract-drawer-card.jsx';
 import { SwipeableContractAudit } from './swipeable-components.jsx';
+import { observer, useStore } from '@deriv/stores';
 
-const ContractDrawer = ({
-    contract_info,
-    contract_update,
-    contract_update_history,
-    is_accumulator,
-    is_mobile,
-    is_sell_requested,
-    is_dark_theme,
-    is_market_closed,
-    is_multiplier,
-    is_vanilla,
-    onClickCancel,
-    onClickSell,
-    server_time,
-    status,
-    toggleHistoryTab,
-}) => {
+const ContractDrawer = observer(({ is_accumulator, is_multiplier, is_vanilla, toggleHistoryTab }) => {
+    const {
+        contract_replay: {
+            indicative_status: status,
+            contract_store: { contract_info, contract_update_history },
+        },
+        ui: { is_dark_mode_on: is_dark_theme },
+    } = useStore();
     const { currency, exit_tick_display_value, is_sold } = contract_info;
     const contract_drawer_ref = React.useRef();
     const contract_drawer_card_ref = React.useRef();
@@ -65,21 +56,13 @@ const ContractDrawer = ({
         return (
             <React.Fragment>
                 <ContractDrawerCard
-                    contract_info={contract_info}
-                    contract_update={contract_update}
                     currency={currency}
                     is_accumulator={is_accumulator}
-                    is_mobile={is_mobile}
-                    is_market_closed={is_market_closed}
                     is_multiplier={is_multiplier}
                     is_vanilla={is_vanilla}
-                    is_sell_requested={is_sell_requested}
                     is_collapsed={should_show_contract_audit}
-                    onClickCancel={onClickCancel}
-                    onClickSell={onClickSell}
                     onSwipedUp={() => setShouldShowContractAudit(true)}
                     onSwipedDown={() => setShouldShowContractAudit(false)}
-                    server_time={server_time}
                     status={status}
                     toggleContractAuditDrawer={() => setShouldShowContractAudit(!should_show_contract_audit)}
                 />
@@ -172,32 +155,13 @@ const ContractDrawer = ({
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
 ContractDrawer.propTypes = {
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    contract_update_history: PropTypes.array,
     is_accumulator: PropTypes.bool,
-    is_chart_loading: PropTypes.bool,
-    is_dark_theme: PropTypes.bool,
-    is_market_closed: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_vanilla: PropTypes.bool,
-    is_history_tab_active: PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
-    onClickCancel: PropTypes.func,
-    onClickContractUpdate: PropTypes.func,
-    onClickSell: PropTypes.func,
-    server_time: PropTypes.object,
-    status: PropTypes.string,
     toggleHistoryTab: PropTypes.func,
 };
 
-export default withRouter(
-    connect(({ common, ui }) => ({
-        server_time: common.server_time,
-        is_mobile: ui.is_mobile,
-    }))(ContractDrawer)
-);
+export default withRouter(ContractDrawer);

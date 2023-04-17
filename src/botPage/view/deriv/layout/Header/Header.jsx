@@ -27,6 +27,7 @@ import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { checkSwitcherType } from '../../../../../common/footer-checks';
 
+// [Todo] We will update this during the API improvement process
 let is_subscribed = false;
 const AccountSwitcher = () => {
     const { account_switcher_loader } = useSelector(state => state.ui);

@@ -11,7 +11,7 @@ import {
     RoutePromptDialog,
 } from 'Components';
 import BlocklyLoading from '../components/blockly-loading';
-import { MobxContentProvider } from 'Stores/connect';
+import { StoreProvider } from '@deriv/stores';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
@@ -84,7 +84,7 @@ const App = ({ passthrough }) => {
     return is_loading ? (
         <Loading />
     ) : (
-        <MobxContentProvider store={root_store_instance.current}>
+        <StoreProvider store={{ ...root_store_instance.current, ...root_store_instance.current.core }}>
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
@@ -95,7 +95,7 @@ const App = ({ passthrough }) => {
                 <BotBuilder />
                 <RoutePromptDialog />
             </div>
-        </MobxContentProvider>
+        </StoreProvider>
     );
 };
 

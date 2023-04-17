@@ -1,7 +1,8 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
-import { TWebSocket, TRootStore } from '../../types';
+import { TWebSocket } from '../../types';
+import { mockStore, TStores } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -15,10 +16,10 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('WithdrawStore', () => {
-    let withdraw_store: WithdrawStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
+    let withdraw_store: WithdrawStore, root_store: TStores, WS: DeepPartial<TWebSocket>;
 
     beforeEach(() => {
-        root_store = {
+        root_store = mockStore({
             client: {
                 account_list: [
                     {
@@ -82,7 +83,7 @@ describe('WithdrawStore', () => {
                     },
                 },
             },
-        };
+        });
         WS = {
             authorized: {
                 cashier: jest.fn(() => Promise.resolve({ cashier: 'https://deriv.com' })),
@@ -91,7 +92,7 @@ describe('WithdrawStore', () => {
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
         };
 
-        withdraw_store = new WithdrawStore(WS as TWebSocket, root_store as TRootStore);
+        withdraw_store = new WithdrawStore(WS as TWebSocket, root_store);
     });
 
     it('should set is_withdraw_confirmed', () => {
@@ -301,11 +302,11 @@ describe('WithdrawStore', () => {
         const { setConverterFromError } = withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
         withdraw_store.crypto_config = { currencies_config: { USD: { minimum_withdrawal: 2000 } } };
-        isMobile.mockReturnValueOnce(true);
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalled();
 
-        isMobile.mockReturnValueOnce(false);
+        (isMobile as jest.Mock).mockReturnValueOnce(false);
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalledWith(
             'Your balance (1,000.00 USD) is less than the current minimum withdrawal allowed (2,000.00 USD). Please top up your account to continue with your withdrawal.'
@@ -317,7 +318,7 @@ describe('WithdrawStore', () => {
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
         const error_message = 'Should be a valid number.';
 
-        validNumber.mockReturnValue({ is_ok: false, message: error_message });
+        (validNumber as jest.Mock).mockReturnValue({ is_ok: false, message: error_message });
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalledWith(error_message);
 

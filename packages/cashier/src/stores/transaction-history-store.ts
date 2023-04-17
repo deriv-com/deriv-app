@@ -1,9 +1,10 @@
 import { action, observable, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
-import { TWebSocket, TRootStore, TTransactionItem } from '../types';
+import { TWebSocket, TTransactionItem } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class TransactionHistoryStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public WS: TWebSocket, public root_store: TStores) {
         makeObservable(this, {
             crypto_transactions: observable,
             is_crypto_transactions_cancel_modal_visible: observable,

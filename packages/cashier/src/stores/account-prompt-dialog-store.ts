@@ -1,9 +1,9 @@
 import { observable, action, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
-import type { TRootStore } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class AccountPromptDialogStore {
-    constructor(public root_store: TRootStore) {
+    constructor(public root_store: TStores) {
         makeObservable(this, {
             should_show: observable,
             is_confirmed: observable,

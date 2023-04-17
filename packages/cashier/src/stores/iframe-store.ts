@@ -1,11 +1,11 @@
 import { action, makeObservable, observable } from 'mobx';
 import Constants from '../constants/constants';
-import { TRootStore } from '../types';
+import { TStores } from '@deriv/stores';
 
 type TOnIframeLoadedCallback = (ev: MessageEvent) => void;
 
 export default class IframeStore {
-    constructor(public root_store: TRootStore) {
+    constructor(public root_store: TStores) {
         makeObservable(this, {
             iframe_height: observable,
             iframe_url: observable,

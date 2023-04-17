@@ -1,12 +1,13 @@
 import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
-import { isCryptocurrency, isEmptyObject, routes, ContentFlag, CookieStorage } from '@deriv/shared';
+import { isCryptocurrency, routes, ContentFlag, CookieStorage } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
-import type { TRootStore, TWebSocket } from '../types';
+import type { TWebSocket } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class GeneralStore extends BaseStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public WS: TWebSocket, public root_store: TStores) {
         super({ root_store });
 
         makeObservable(this, {
@@ -73,7 +74,7 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container = Constants.containers.deposit;
+    active_container: keyof typeof Constants.containers = Constants.containers.deposit;
     cashier_route_tab_index = 0;
     deposit_target = '';
     has_set_currency = false;
@@ -122,11 +123,11 @@ export default class GeneralStore extends BaseStore {
             account => account?.title && account.title !== 'Real' && !isCryptocurrency(account?.title || '')
         );
 
-        if (is_p2p_disabled || is_virtual || (has_user_fiat_currency && !has_usd_currency)) {
-            this.show_p2p_in_cashier_onboarding = false;
-        } else {
-            this.show_p2p_in_cashier_onboarding = true;
-        }
+        this.show_p2p_in_cashier_onboarding = !(
+            is_p2p_disabled ||
+            is_virtual ||
+            (has_user_fiat_currency && !has_usd_currency)
+        );
     }
 
     setHasSetCurrency(): void {
@@ -335,7 +336,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     setActiveTab(container: string): void {
-        this.active_container = container;
+        this.active_container = container as keyof typeof Constants.containers;
     }
 
     accountSwitcherListener() {

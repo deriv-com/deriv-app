@@ -74,6 +74,8 @@ export type TPaymentAgentWithdrawRequest = Omit<
     'paymentagent_withdraw' | 'passthrough' | 'req_id' | 'paymentagent_loginid'
 > & { loginid: string };
 
+export type TPaymentAgentListResponse = Omit<PaymentAgentListResponse, 'echo_req' | 'msg_type'>;
+
 type TWebSocketCall = {
     cashier: (
         action: string,

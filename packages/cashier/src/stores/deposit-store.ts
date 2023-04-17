@@ -1,10 +1,11 @@
 import { action, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { TRootStore, TWebSocket } from '../types';
+import { TWebSocket } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class DepositStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public WS: TWebSocket, public root_store: TStores) {
         makeObservable(this, {
             container: observable,
             error: observable,

@@ -6,21 +6,22 @@ import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import {
     TWebSocket,
-    TRootStore,
     TAgent,
     TPaymentAgent,
     TPaymentAgentWithdrawConfirm,
     TPaymentAgentWithdrawReceipt,
     TPaymentAgentWithdrawRequest,
+    TPaymentAgentListResponse,
     TExtendedPaymentAgentList,
     TSupportedBank,
     TPartialPaymentAgentList,
     TTarget,
     TServerError,
 } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class PaymentAgentStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public WS: TWebSocket, public root_store: TStores) {
         makeObservable(this, {
             list: observable,
             agents: observable,
@@ -92,7 +93,7 @@ export default class PaymentAgentStore {
     selected_bank: number | string = 0;
     supported_banks: Array<TSupportedBank> = [];
     active_tab_index = 0;
-    all_payment_agent_list: PaymentAgentListResponse | null = null;
+    all_payment_agent_list: TPaymentAgentListResponse | null = null;
     search_term = '';
     has_payment_agent_search_warning = false;
     onRemount: VoidFunction | null = null;
@@ -118,7 +119,7 @@ export default class PaymentAgentStore {
         // TODO: set residence in client-store from authorize so it's faster
         await this.WS.wait('get_settings');
         const { residence, currency } = this.root_store.client;
-        return this.WS.authorized.paymentAgentList(residence, currency) as Promise<PaymentAgentListResponse>;
+        return this.WS.authorized.paymentAgentList(residence, currency) as Promise<TPaymentAgentListResponse>;
     }
 
     async getPaymentAgentDetails(): Promise<PaymentAgentDetailsResponse['paymentagent_details']> {
@@ -401,7 +402,7 @@ export default class PaymentAgentStore {
         return this.WS.allPaymentAgentList(this.root_store.client.residence);
     }
 
-    setAllPaymentAgentList(list: PaymentAgentListResponse) {
+    setAllPaymentAgentList(list: TPaymentAgentListResponse) {
         this.all_payment_agent_list = list;
     }
 

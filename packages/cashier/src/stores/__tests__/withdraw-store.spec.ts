@@ -238,6 +238,7 @@ describe('WithdrawStore', () => {
             prompt_client_to_authenticate: 0,
             risk_classification: '',
             status: [],
+            p2p_status: 'none',
         };
         expect(withdraw_store.is_withdrawal_locked).toBeFalsy();
     });
@@ -280,11 +281,11 @@ describe('WithdrawStore', () => {
         const { percentageSelectorSelectionStatus } = withdraw_store.root_store.modules.cashier.general_store;
         const spyValidateWithdrawFromAmount = jest.spyOn(withdraw_store, 'validateWithdrawFromAmount');
 
-        withdraw_store.setWithdrawPercentageSelectorResult(100);
+        withdraw_store.setWithdrawPercentageSelectorResult('100');
         expect(setConverterFromAmount).toHaveBeenCalledWith(100);
         expect(spyValidateWithdrawFromAmount).toHaveBeenCalled();
 
-        withdraw_store.setWithdrawPercentageSelectorResult(0);
+        withdraw_store.setWithdrawPercentageSelectorResult('0');
         expect(resetConverter).toHaveBeenCalled();
         expect(setIsTimerVisible).toHaveBeenCalledWith(false);
         expect(percentageSelectorSelectionStatus).toHaveBeenCalledWith(false);

@@ -11,7 +11,8 @@ import PaymentAgentStore from './payment-agent-store';
 import PaymentAgentTransferStore from './payment-agent-transfer-store';
 import TransactionHistoryStore from './transaction-history-store';
 import WithdrawStore from './withdraw-store';
-import type { TRootStore, TWebSocket } from '../types';
+import type { TWebSocket } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class CashierStore {
     account_prompt_dialog: AccountPromptDialogStore;
@@ -28,7 +29,7 @@ export default class CashierStore {
     transaction_history: TransactionHistoryStore;
     withdraw: WithdrawStore;
 
-    constructor(public root_store: TRootStore, public WS: TWebSocket) {
+    constructor(public root_store: TStores, public WS: TWebSocket) {
         this.account_prompt_dialog = new AccountPromptDialogStore(root_store);
         this.account_transfer = new AccountTransferStore(WS, root_store);
         this.crypto_fiat_converter = new CryptoFiatConverterStore(WS, root_store);

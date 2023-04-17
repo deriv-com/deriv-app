@@ -90,9 +90,7 @@ beforeEach(() => {
 
 describe('GeneralStore', () => {
     it('should set function on remount', () => {
-        // TODO: Check this
-        // const remountFunc = () => 'function';
-        general_store.setOnRemount('function');
+        general_store.setOnRemount(() => 'function');
 
         expect(general_store.onRemount).toBe('function');
     });
@@ -388,6 +386,7 @@ describe('GeneralStore', () => {
             prompt_client_to_authenticate: 0,
             risk_classification: '',
             status: [],
+            p2p_status: 'none',
         };
         expect(general_store.is_cashier_locked).toBeFalsy();
     });
@@ -407,6 +406,7 @@ describe('GeneralStore', () => {
             prompt_client_to_authenticate: 0,
             risk_classification: '',
             status: [],
+            p2p_status: 'none',
         };
         expect(general_store.is_system_maintenance).toBeFalsy();
     });

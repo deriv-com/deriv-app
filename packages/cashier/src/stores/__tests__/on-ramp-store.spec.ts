@@ -80,14 +80,14 @@ describe('OnRampStore', () => {
 
     it('should return proper onramp popup modal title if should_show_widget = false and there is selected provider with should_show_dialog = true', () => {
         onramp_store.setSelectedProvider(banxa_provider);
-        onramp_store.setApiError('API Error');
+        onramp_store.setApiError({ code: 'API Error', message: 'API Error' });
 
         expect(onramp_store.onramp_popup_modal_title).toBe('Our server cannot retrieve an address.');
     });
 
     it('should return empty string to render header + close icon if should_show_widget = false and there is selected provider with should_show_dialog = false', () => {
         onramp_store.setSelectedProvider(banxa_provider);
-        onramp_store.setApiError('');
+        onramp_store.setApiError({ code: '', message: '' });
 
         expect(onramp_store.onramp_popup_modal_title).toBe(' ');
     });
@@ -261,7 +261,7 @@ describe('OnRampStore', () => {
     });
 
     it('should set api error', () => {
-        onramp_store.setApiError('API error');
+        onramp_store.setApiError({ code: 'API Error', message: 'API Error' });
 
         expect(onramp_store.api_error).toBe('API error');
     });

@@ -3,10 +3,11 @@ import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import createBanxaProvider from '../pages/on-ramp/on-ramp-providers';
 import BaseStore from './base-store';
-import type { TWebSocket, TRootStore, TOnRampProvider, TServerError } from '../types';
+import type { TWebSocket, TOnRampProvider, TServerError } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class OnRampStore extends BaseStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public WS: TWebSocket, public root_store: TStores) {
         super({ root_store });
 
         makeObservable(this, {

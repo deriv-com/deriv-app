@@ -7,13 +7,13 @@ import {
     TPaymentAgentTransferRequest,
     TPaymentAgentTransferReceipt,
     TPaymentAgentTransferConfirm,
-    TRootStore,
     TTransferLimit,
     TWebSocket,
 } from '../types';
+import { TStores } from '@deriv/stores';
 
 export default class PaymentAgentTransferStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public WS: TWebSocket, public root_store: TStores) {
         makeObservable(this, {
             container: observable,
             error: observable,
@@ -41,7 +41,7 @@ export default class PaymentAgentTransferStore {
     }
 
     container = Constants.containers.payment_agent_transfer;
-    error: TRootStore['modules']['cashier']['error'] = new ErrorStore();
+    error: TStores['modules']['cashier']['error'] = new ErrorStore();
     is_payment_agent = false;
     is_try_transfer_successful = false;
     is_transfer_successful = false;

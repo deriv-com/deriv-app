@@ -18,12 +18,13 @@ import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
 import Constants from '../constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
+import type { TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
+import { TStores } from '@deriv/stores';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
 export default class AccountTransferStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public WS: TWebSocket, public root_store: TStores) {
         makeObservable(this, {
             accounts_list: observable,
             container: observable,

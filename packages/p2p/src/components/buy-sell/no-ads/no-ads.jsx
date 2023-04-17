@@ -33,9 +33,11 @@ const NoAds = ({ is_ads_page = false }) => {
                         size='s'
                         weight='bold'
                     >
-                        <Localize
-                            i18n_default_text={is_ads_page ? 'You have no ads.' : 'No ads for this currency 😞'}
-                        />
+                        {is_ads_page ? (
+                            <Localize i18n_default_text='You have no ads.' />
+                        ) : (
+                            <Localize i18n_default_text='No ads for this currency 😞' />
+                        )}
                     </Text>
                     <Text className='no-ads__message' align='center' color='general' line_height='m' size='s'>
                         <Localize i18n_default_text='Looking to buy or sell USD? You can post your own ad for others to respond.' />
@@ -47,7 +49,11 @@ const NoAds = ({ is_ads_page = false }) => {
                         large
                         onClick={onClickButton}
                     >
-                        <Localize i18n_default_text={is_ads_page ? 'Create new ad' : 'Create ad'} />
+                        {is_ads_page ? (
+                            <Localize i18n_default_text='Create new ad' />
+                        ) : (
+                            <Localize i18n_default_text='Create ad' />
+                        )}
                     </Button>
                 </React.Fragment>
             ) : (

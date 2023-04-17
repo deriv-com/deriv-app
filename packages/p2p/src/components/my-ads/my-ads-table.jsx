@@ -145,7 +145,7 @@ const MyAdsTable = () => {
         );
     }
 
-    return <NoAds is_ads_page={true} />;
+    return <NoAds is_ads_page />;
 };
 
 export default observer(MyAdsTable);

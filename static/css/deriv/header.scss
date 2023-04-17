@@ -625,9 +625,7 @@
                 padding: 0 16px;
 
                 &__manage {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    @include position_center;
                     color: #333333;
                     border: 1px solid #999999;
                     border-radius: 4px;
@@ -638,7 +636,7 @@
                     height: 2rem;
                     font-family: unset;
                     font-weight: 600;
-
+                    width: 10rem;
                 }
 
                 &--demo {
@@ -652,6 +650,9 @@
 
             &-dropdown {
                 min-width: 20rem;
+                @include mobile{
+                    width: 90%;
+                }
                 &-wrapper {
                     @include mobile {
                         position: absolute;
@@ -879,6 +880,7 @@
                         color: #333333;
                         @include position_center;
                         padding: 3px 8px 3px 8px;
+                        font-weight: bold;
                     }
                 }
 
@@ -958,16 +960,15 @@
 
             &-total {
                 &--link {
+                    @include position_center;
                     color: rgb(255, 0, 17);
                     font-size: 0.869565rem;
                     cursor: pointer;
                     font-weight: normal;
-                    margin: 4px 16px;
                     line-height: 2;
                 }
 
                 @include mobile {
-                    width: 278px;
                     background: var(--general-main-1);
                 }
 

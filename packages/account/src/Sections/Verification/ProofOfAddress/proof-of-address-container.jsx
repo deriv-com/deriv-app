@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Loading, useStateCallback } from '@deriv/components';
-import { WS, getPlatformRedirect, platform } from '@deriv/shared';
+import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import PoaExpired from 'Components/poa/status/expired';
 import PoaNeedsReview from 'Components/poa/status/needs-review';

@@ -12,7 +12,7 @@ import {
 } from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
+import { isMobile, OSDetect, isDesktopOs, CFD_PLATFORMS } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
 
 export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
@@ -42,8 +42,11 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
             />
             <Text align='center' size='xxs'>
                 <Localize
-                    i18n_default_text='Scan the QR code to download Deriv {{ platform }}.'
-                    values={{ platform: platformsText(acc_type) }}
+                    i18n_default_text='Scan the QR code to download {{deriv}} {{ platform }}.'
+                    values={{
+                        platform: platformsText(acc_type),
+                        deriv: acc_type !== CFD_PLATFORMS.CTRADER ? 'Deriv' : '',
+                    }}
                 />
             </Text>
         </React.Fragment>
@@ -94,11 +97,21 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
                 target='_blank'
                 rel='noopener noreferrer'
             >
-                <Icon
-                    className='cfd-trade-modal__dxtrade-button-icon'
-                    icon={`IcBrand${platforms_icons()}Wordmark`}
-                    size={36}
-                />
+                {platform === 'ctrader' ? (
+                    <Icon
+                        className='cfd-trade-modal__dxtrade-button-icon'
+                        icon={`IcBrandCtraderWordmark`}
+                        width={64}
+                        height={14}
+                    />
+                ) : (
+                    <Icon
+                        className='cfd-trade-modal__dxtrade-button-icon'
+                        icon={`IcBrand${platforms_icons()}Wordmark`}
+                        width={32}
+                        height={7}
+                    />
+                )}
                 <div className='cfd-trade-modal__dxtrade-button-text'>
                     <Text color='colored-background' size='xxs' weight='bold'>
                         <Localize i18n_default_text='Web terminal' />

@@ -293,6 +293,12 @@
         padding-top: 2rem;
         padding-bottom: 5.8rem;
 
+        &-description {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
         &-app {
             display: flex;
             flex-direction: column;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
 import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter, mobileOSDetect } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
 import { platformsText, CTRADER_DOWNLOAD_LINK } from '../Helpers/constants';
@@ -30,6 +30,21 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
     return market_type;
 };
 
+const downloadCenterDescription = (platform: TCFDsPlatformType) => (
+    <React.Fragment>
+        <Text size='xs' line_height='l' weight='bold'>
+            <Localize
+                i18n_default_text='Download {{deriv}} {{platform_names}} on your phone to trade with the Deriv {{ platform }} account'
+                values={{
+                    deriv: platform !== CFD_PLATFORMS.CTRADER ? 'Deriv' : '',
+                    platform: platformsText(platform),
+                    platform_names: platform !== 'derivez' ? platformsText(platform) : 'GO',
+                }}
+            />
+        </Text>
+    </React.Fragment>
+);
+
 const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: string) => {
     return (
         <React.Fragment>
@@ -40,10 +55,11 @@ const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: stri
             <div className='cfd-trade-modal__desc'>
                 <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                     <Localize
-                        i18n_default_text='Deriv {{platform}} {{is_demo}}'
+                        i18n_default_text='{{deriv}} {{platform}} {{is_demo}}'
                         values={{
                             platform: platformsText(platform),
                             is_demo: is_demo ? 'Demo' : '',
+                            deriv: platform !== 'ctrader' ? 'Deriv' : '',
                         }}
                     />
                 </Text>
@@ -199,6 +215,7 @@ const TradeModal = ({
                 </div>
             </div>
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
+            <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription(platform)}</div>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links--apple'>

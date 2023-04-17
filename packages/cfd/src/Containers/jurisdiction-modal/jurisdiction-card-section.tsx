@@ -14,17 +14,21 @@ const JurisdictionCardSection = ({ card_section_item, toggleCardFlip }: TJurisdi
                 <JurisdictionTitleIndicator title_indicators={card_section_item.title_indicators} />
             )}
         </div>
-        {card_section_item.clickable_description ? (
-            <JurisdictionClickableDescription
-                clickable_description={card_section_item.clickable_description}
-                toggleCardFlip={toggleCardFlip}
-            />
-        ) : (
-            card_section_item.description && (
-                <Text as='span' size='xxs'>
-                    {card_section_item.description}
-                </Text>
-            )
+        {(card_section_item.clickable_description || card_section_item.description) && (
+            <div className={`cfd-card-section-description-height-${card_section_item.key.toLowerCase()}`}>
+                {card_section_item.clickable_description ? (
+                    <JurisdictionClickableDescription
+                        clickable_description={card_section_item.clickable_description}
+                        toggleCardFlip={toggleCardFlip}
+                    />
+                ) : (
+                    card_section_item.description && (
+                        <Text as='span' size='xxs'>
+                            {card_section_item.description}
+                        </Text>
+                    )
+                )}
+            </div>
         )}
     </div>
 );

@@ -167,7 +167,7 @@
     &-container {
         transform-style: preserve-3d;
         transition: transform 0.25s ease-in;
-        min-height: 50rem;
+        min-height: 54rem;
         width: 26rem;
         @include mobile {
             height: 48rem;
@@ -218,6 +218,17 @@
             }
             &__brown-dark {
                 background: $color-brown;
+            }
+        }
+        &-description-height {
+            @include desktop {
+                &-assets {
+                    min-height: 3.2rem;
+                }
+                &-verifications,
+                &-regulator {
+                    min-height: 4.8rem;
+                }
             }
         }
     }

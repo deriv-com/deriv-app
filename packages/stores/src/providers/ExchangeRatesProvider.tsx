@@ -13,7 +13,7 @@ const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) =
     }, [subscribe]);
 
     useEffect(() => {
-        update(data);
+        if (data) update(data);
     }, [update, data]);
 
     return <React.Fragment>{children}</React.Fragment>;

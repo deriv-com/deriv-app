@@ -6,6 +6,7 @@ import { connect } from '../../../../../../Stores/connect';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 import classNames from 'classnames';
 import { useStore } from '@deriv/stores';
+import { TCoreStores } from '@deriv/stores/types.js';
 
 type TAccumulator = {
     accumulator_range_list: ReturnType<typeof useStore>['trade']['accumulator_range_list'];
@@ -48,7 +49,7 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
     );
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules }: TCoreStores) => ({
     accumulator_range_list: modules.trade.accumulator_range_list,
     growth_rate: modules.trade.growth_rate,
     onChange: modules.trade.onChange,

@@ -6,6 +6,7 @@ import { connect } from '../../../../../../Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
 import { useStore } from '@deriv/stores';
+import { TCoreStores } from '@deriv/stores/types';
 
 type TAccumulatorsAmountMobile = {
     amount: ReturnType<typeof useStore>['trade']['amount'];
@@ -58,7 +59,7 @@ const AccumulatorsAmountMobile = ({
     );
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ modules, client, ui }: TCoreStores) => ({
     amount: modules.trade.amount,
     currency: modules.trade.currency,
     current_focus: ui.current_focus,

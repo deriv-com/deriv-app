@@ -9,6 +9,7 @@ import TicksHistoryCounter from './ticks-history-counter';
 import { AccumulatorsStatsManualModal } from './accumulators-stats-manual-modal';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
 import { useStore } from '@deriv/stores';
+import { TCoreStores } from '@deriv/stores/types';
 
 type TAccumulatorStats = {
     is_dark_theme?: ReturnType<typeof useStore>['ui']['is_dark_mode_on'];
@@ -96,7 +97,7 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
     );
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui }: TCoreStores) => ({
     is_dark_theme: ui.is_dark_mode_on,
     ticks_history_stats: modules.trade.ticks_history_stats,
 }))(AccumulatorsStats);

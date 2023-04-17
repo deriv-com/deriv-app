@@ -31,14 +31,6 @@ describe('<AccumulatorCardBody />', () => {
         status: 'profit',
         currency: 'USD',
     };
-    it('should display Take profit: label and - as value when take_profit is not available', () => {
-        if (mock_props?.contract_update?.take_profit?.order_amount)
-            mock_props.contract_update.take_profit.order_amount = null;
-        render(<AccumulatorCardBody {...mock_props} />);
-        expect(screen.getByText('Take profit:')).toBeInTheDocument();
-        expect(screen.getByText('-')).toBeInTheDocument();
-    });
-
     it('should display all contract card items, label, and values', () => {
         render(<AccumulatorCardBody {...mock_props} />);
         expect(screen.getByText('Stake:')).toBeInTheDocument();
@@ -49,5 +41,13 @@ describe('<AccumulatorCardBody />', () => {
         expect(screen.getByText('111.00')).toBeInTheDocument();
         expect(screen.getByText('Take profit:')).toBeInTheDocument();
         expect(screen.getByText('300.00')).toBeInTheDocument();
+    });
+
+    it('should display Take profit: label and - as value when take_profit is not available', () => {
+        if (mock_props?.contract_update?.take_profit?.order_amount)
+            mock_props.contract_update.take_profit.order_amount = null;
+        render(<AccumulatorCardBody {...mock_props} />);
+        expect(screen.getByText('Take profit:')).toBeInTheDocument();
+        expect(screen.getByText('-')).toBeInTheDocument();
     });
 });

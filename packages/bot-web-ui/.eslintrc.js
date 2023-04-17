@@ -39,6 +39,11 @@ module.exports = {
                                 '^@',
                                 // Packages starting with `~`
                                 '^~',
+                                '^Components',
+                                '^Constants',
+                                '^Utils',
+                                '^Types',
+                                '^Stores',
                                 // Imports starting with `../`
                                 '^\\.\\.(?!/?$)',
                                 '^\\.\\./?$',

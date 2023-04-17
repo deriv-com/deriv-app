@@ -5,8 +5,7 @@ import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv/hooks';
-import { TRootStore } from '../../../types';
-import { mockStore } from '@deriv/stores';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -39,7 +38,7 @@ const cashier_mock = {
 };
 
 describe('<PaymentAgent />', () => {
-    const renderPaymentAgent = (mock_root_store: TRootStore) => {
+    const renderPaymentAgent = (mock_root_store: TStores) => {
         return render(
             <Router history={createBrowserHistory()}>
                 <CashierProviders store={mock_root_store}>
@@ -56,7 +55,7 @@ describe('<PaymentAgent />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderPaymentAgent(mock_root_store as TRootStore);
+        renderPaymentAgent(mock_root_store);
 
         expect(mock_root_store.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
         expect(screen.getByText('mockedPaymentAgentList')).toBeInTheDocument();
@@ -70,7 +69,7 @@ describe('<PaymentAgent />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderPaymentAgent(mock_root_store as TRootStore);
+        renderPaymentAgent(mock_root_store);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
@@ -82,7 +81,7 @@ describe('<PaymentAgent />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderPaymentAgent(mock_root_store as TRootStore);
+        renderPaymentAgent(mock_root_store);
 
         expect(
             screen.getByText(/You need to switch to a real money account to use this feature./i)
@@ -97,7 +96,7 @@ describe('<PaymentAgent />', () => {
             modules: { cashier: cashier_mock },
         });
         mockUseCashierLocked.mockReturnValue(true);
-        renderPaymentAgent(mock_root_store as TRootStore);
+        renderPaymentAgent(mock_root_store);
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
@@ -109,7 +108,7 @@ describe('<PaymentAgent />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        const { unmount } = renderPaymentAgent(mock_root_store as TRootStore);
+        const { unmount } = renderPaymentAgent(mock_root_store);
 
         unmount();
         expect(mock_root_store.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(0);
@@ -123,7 +122,7 @@ describe('<PaymentAgent />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderPaymentAgent(mock_root_store as TRootStore);
+        renderPaymentAgent(mock_root_store);
 
         expect(mock_root_store.modules.cashier.payment_agent.setActiveTabIndex).toHaveBeenCalledWith(1);
     });

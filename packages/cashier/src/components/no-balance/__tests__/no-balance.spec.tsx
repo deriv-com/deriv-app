@@ -5,7 +5,6 @@ import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
-import { TRootStore } from '../../../types';
 import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
@@ -35,9 +34,7 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => (
-                    <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-                ),
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 
@@ -52,9 +49,7 @@ describe('<NoBalance />', () => {
                 <NoBalance />
             </Router>,
             {
-                wrapper: ({ children }) => (
-                    <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-                ),
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 

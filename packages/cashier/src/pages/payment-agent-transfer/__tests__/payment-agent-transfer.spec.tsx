@@ -5,8 +5,7 @@ import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv/hooks';
-import { TRootStore } from '../../../types';
-import { mockStore } from '@deriv/stores';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -67,7 +66,7 @@ describe('<PaymentAgentTransfer />', () => {
         mockUseCashierLocked.mockReturnValue(false);
     });
 
-    const renderPaymentAgentTransfer = (mock_root_store: TRootStore) => {
+    const renderPaymentAgentTransfer = (mock_root_store: TStores) => {
         return render(
             <Router history={createBrowserHistory()}>
                 <CashierProviders store={mock_root_store}>
@@ -85,7 +84,7 @@ describe('<PaymentAgentTransfer />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(screen.getByText('mockedPaymentAgentTransferForm')).toBeInTheDocument();
     });
@@ -98,7 +97,7 @@ describe('<PaymentAgentTransfer />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(
             screen.getByText(/You need to switch to a real money account to use this feature./i)
@@ -121,7 +120,7 @@ describe('<PaymentAgentTransfer />', () => {
                 },
             },
         });
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
@@ -135,7 +134,7 @@ describe('<PaymentAgentTransfer />', () => {
             modules: { cashier: cashier_mock },
         });
         mockUseCashierLocked.mockReturnValue(true);
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(screen.getByText('mockedCashierLocked')).toBeInTheDocument();
     });
@@ -156,7 +155,7 @@ describe('<PaymentAgentTransfer />', () => {
                 },
             },
         });
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(screen.getByText('mockedError')).toBeInTheDocument();
     });
@@ -169,7 +168,7 @@ describe('<PaymentAgentTransfer />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(screen.getByText('mockedNoBalance')).toBeInTheDocument();
     });
@@ -190,7 +189,7 @@ describe('<PaymentAgentTransfer />', () => {
                 },
             },
         });
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(screen.getByText('mockedPaymentAgentTransferConfirm')).toBeInTheDocument();
     });
@@ -211,7 +210,7 @@ describe('<PaymentAgentTransfer />', () => {
                 },
             },
         });
-        renderPaymentAgentTransfer(mock_root_store as TRootStore);
+        renderPaymentAgentTransfer(mock_root_store);
 
         expect(screen.getByText('mockedPaymentAgentTransferReceipt')).toBeInTheDocument();
     });

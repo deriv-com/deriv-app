@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
-import { TRootStore } from '../../../types';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/hooks', () => ({
@@ -35,9 +34,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -63,9 +60,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -91,9 +86,7 @@ describe('<CashierLocked />', () => {
         mockUseDepositLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -118,9 +111,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -146,9 +137,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -174,9 +163,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -202,9 +189,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -228,9 +213,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -254,9 +237,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -280,9 +261,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
@@ -304,9 +283,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByTestId('dt_financial_assessment_link')).toHaveAttribute(
@@ -331,9 +308,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -359,9 +334,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/You have not provided your tax identification number./i)).toBeInTheDocument();
@@ -383,9 +356,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -407,9 +378,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -435,9 +404,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(
@@ -465,9 +432,7 @@ describe('<CashierLocked />', () => {
         mockUseDepositLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -491,9 +456,7 @@ describe('<CashierLocked />', () => {
         mockUseDepositLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent('Please contact us via live chat.');
@@ -515,9 +478,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -541,9 +502,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -567,9 +526,7 @@ describe('<CashierLocked />', () => {
         });
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -593,9 +550,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
@@ -617,9 +572,7 @@ describe('<CashierLocked />', () => {
         mockUseCashierLocked.mockReturnValue(true);
 
         const { container } = render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(container).toHaveTextContent(
@@ -643,9 +596,7 @@ describe('<CashierLocked />', () => {
         });
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(

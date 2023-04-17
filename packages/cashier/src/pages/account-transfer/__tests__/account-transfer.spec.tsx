@@ -5,8 +5,7 @@ import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { TRootStore } from '../../../types';
-import { mockStore } from '@deriv/stores';
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
@@ -62,7 +61,7 @@ describe('<AccountTransfer />', () => {
         onClose: jest.fn(),
     };
 
-    const renderAccountTransfer = (store: TRootStore) => {
+    const renderAccountTransfer = (store: TStores) => {
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => <CashierProviders store={store}>{children}</CashierProviders>,
         });
@@ -82,7 +81,7 @@ describe('<AccountTransfer />', () => {
                 cashier: cashier_mock,
             },
         });
-        renderAccountTransfer(mock_root_store as TRootStore);
+        renderAccountTransfer(mock_root_store);
 
         expect(await screen.findByText('mockedAccountTransferForm')).toBeInTheDocument();
     });
@@ -103,7 +102,7 @@ describe('<AccountTransfer />', () => {
             },
         });
 
-        renderAccountTransfer(mock_root_store as TRootStore);
+        renderAccountTransfer(mock_root_store);
 
         await waitFor(() => {
             expect(props.setSideNotes).toHaveBeenCalledWith(null);
@@ -129,7 +128,7 @@ describe('<AccountTransfer />', () => {
 
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>
+                <CashierProviders store={mock_root_store}>
                     <Router history={history}>{children}</Router>
                 </CashierProviders>
             ),
@@ -156,7 +155,7 @@ describe('<AccountTransfer />', () => {
             },
         });
 
-        renderAccountTransfer(mock_root_store as TRootStore);
+        renderAccountTransfer(mock_root_store);
 
         expect(await screen.findByText('mockedCashierLocked')).toBeInTheDocument();
     });
@@ -182,7 +181,7 @@ describe('<AccountTransfer />', () => {
             },
         });
 
-        renderAccountTransfer(mock_root_store as TRootStore);
+        renderAccountTransfer(mock_root_store);
 
         expect(await screen.findByText('Transfers are locked')).toBeInTheDocument();
     });
@@ -208,7 +207,7 @@ describe('<AccountTransfer />', () => {
             },
         });
 
-        renderAccountTransfer(mock_root_store as TRootStore);
+        renderAccountTransfer(mock_root_store);
 
         expect(await screen.findByText('mockedError')).toBeInTheDocument();
     });
@@ -234,7 +233,7 @@ describe('<AccountTransfer />', () => {
             },
         });
 
-        renderAccountTransfer(mock_root_store as TRootStore);
+        renderAccountTransfer(mock_root_store);
 
         expect(await screen.findByText('mockedAccountTransferNoAccount')).toBeInTheDocument();
     });
@@ -264,7 +263,7 @@ describe('<AccountTransfer />', () => {
 
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => (
-                <CashierProviders store={mock_root_store as TRootStore}>
+                <CashierProviders store={mock_root_store}>
                     <Router history={history}>{children}</Router>
                 </CashierProviders>
             ),
@@ -294,7 +293,7 @@ describe('<AccountTransfer />', () => {
             },
         });
 
-        renderAccountTransfer(mock_root_store as TRootStore);
+        renderAccountTransfer(mock_root_store);
 
         expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
     });

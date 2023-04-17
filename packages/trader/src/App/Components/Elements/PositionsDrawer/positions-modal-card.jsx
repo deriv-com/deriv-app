@@ -5,17 +5,18 @@ import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
+    addComma,
     getContractPath,
+    getEndTime,
+    getSymbolDisplayName,
+    getTotalProfit,
+    hasContractEntered,
     isAccumulatorContract,
     isCryptoContract,
-    isMultiplierContract,
-    isHighLow,
     isCryptocurrency,
-    hasContractEntered,
+    isHighLow,
+    isMultiplierContract,
     isOpen,
-    getSymbolDisplayName,
-    getEndTime,
-    getTotalProfit,
     isVanillaContract,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -258,7 +259,7 @@ const PositionsModalCard = ({
                             {localize('Entry spot:')}
                         </Text>
                         <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                            <Money amount={contract_info.entry_spot} currency={currency} />
+                            {addComma(contract_info.entry_spot)}
                         </Text>
                     </div>
                     <div className='positions-modal-card__payout-price'>
@@ -266,7 +267,7 @@ const PositionsModalCard = ({
                             {localize('Strike:')}
                         </Text>
                         <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                            <Money amount={contract_info.barrier} currency={currency} />
+                            {addComma(contract_info.barrier)}
                         </Text>
                     </div>
                 </div>

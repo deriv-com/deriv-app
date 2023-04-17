@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
+import { addComma, getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ContractCardItem from './contract-card-item.jsx';
@@ -27,11 +27,11 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                     </ContractCardItem>
 
                     <ContractCardItem header={ENTRY_SPOT}>
-                        <Money amount={entry_spot_display_value} />
+                        {addComma(entry_spot_display_value)}
                     </ContractCardItem>
 
                     <ContractCardItem header={STRIKE}>
-                        <Money amount={barrier} />
+                        {addComma(barrier)}
                     </ContractCardItem>
                 </div>
                 <ContractCardItem
@@ -60,7 +60,7 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                         </ContractCardItem>
 
                         <ContractCardItem header={ENTRY_SPOT}>
-                            <Money amount={entry_spot_display_value} currency={currency} />
+                            {addComma(entry_spot_display_value)}
                         </ContractCardItem>
                     </div>
 
@@ -70,7 +70,7 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                         </ContractCardItem>
 
                         <ContractCardItem header={STRIKE}>
-                            <Money amount={barrier} currency={currency} />
+                            {addComma(barrier)}
                         </ContractCardItem>
                     </div>
 

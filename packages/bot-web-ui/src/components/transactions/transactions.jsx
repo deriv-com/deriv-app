@@ -1,15 +1,15 @@
-import classnames from 'classnames';
-import { Icon, DesktopWrapper, DataList, ThemedScrollbars, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { useNewRowTransition, isMobile } from '@deriv/shared';
-import { PropTypes } from 'prop-types';
 import React from 'react';
+import classnames from 'classnames';
+import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+import { DataList, DesktopWrapper, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile, useNewRowTransition } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import Transaction from './transaction.jsx';
 import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
 import { connect } from 'Stores/connect';
-import Transaction from './transaction.jsx';
 
 const TransactionItem = ({ row, is_new_row }) => {
     const { in_prop } = useNewRowTransition(is_new_row);

@@ -1,17 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { setColors, blocksCoordinate } from '@deriv/bot-skeleton';
-import LoadModal from 'Components/load-modal';
-import SaveModal from 'Components/save-modal';
 import ReactJoyride from 'react-joyride';
-import AppStore from 'Stores/app-store';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { blocksCoordinate, setColors } from '@deriv/bot-skeleton';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
 import QuickStrategy from '../quick-strategy';
 import TourSlider from '../tour-slider';
 import WorkspaceWrapper from './workspace-wrapper';
+import LoadModal from 'Components/load-modal';
+import SaveModal from 'Components/save-modal';
+import AppStore from 'Stores/app-store';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TBotBuilder = {
     app: AppStore;

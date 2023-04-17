@@ -1,32 +1,32 @@
-import { FormikProps, FormikErrors } from 'formik';
+import { FormikErrors, FormikProps } from 'formik';
 import {
     TCreateStrategy,
+    TDropdownItems,
+    TDropdowns,
+    TDurationOptions,
     TDurationUnitDropdown,
-    TTypeStrategiesDropdown,
+    TFormValues,
+    TGetSizeDesc,
+    TInputBaseFields,
+    TInputsFieldNames,
+    TMarketOption,
     TOnChangeDropdownItem,
     TOnChangeInputValue,
     TOnHideDropdownList,
     TOnScrollStopDropdownList,
-    TSymbolDropdown,
-    TTradeTypeDropdown,
-    TTradeType,
-    TDurationOptions,
-    TSetCurrentFocus,
-    TTypeStrategy,
-    TSetFieldValue,
-    TFormValues,
-    TMarketOption,
-    TGetSizeDesc,
     TQuickStrategyFormValues,
-    TSelectsFieldNames,
-    TDropdowns,
     TSelectedValuesSelect,
-    TDropdownItems,
-    TInputBaseFields,
-    TInputsFieldNames,
+    TSelectsFieldNames,
+    TSetCurrentFocus,
+    TSetFieldValue,
+    TSymbolDropdown,
+    TTradeType,
+    TTradeTypeDropdown,
+    TTypeStrategiesDropdown,
+    TTypeStrategy,
 } from '../quick-strategy.types';
-import { TDataUniqInput } from './data/data-uniq-input-obj';
 import { TCommonInputsProperties } from './data/common-input-properties';
+import { TDataUniqInput } from './data/data-uniq-input-obj';
 
 export type TQuickStrategyForm = {
     active_index: number;

@@ -1,8 +1,8 @@
 import React from 'react';
-import { SelectField } from '.';
-import { TSelectsFieldNames, TDropdownItems } from '../quick-strategy.types';
-import { TSelects } from './components.types';
 import { isMobile } from '@deriv/shared';
+import { TDropdownItems, TSelectsFieldNames } from '../quick-strategy.types';
+import { TSelects } from './components.types';
+import { SelectField } from '.';
 
 const Selects = ({
     field_name,

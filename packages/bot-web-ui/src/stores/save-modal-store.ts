@@ -1,11 +1,11 @@
-import { getSavedWorkspaces, save, saveWorkspaceToRecent, save_types, updateWorkspaceName } from '@deriv/bot-skeleton';
-import { localize } from '@deriv/translations';
-import { MAX_STRATEGIES } from 'Constants/bot-contents';
-import { button_status } from 'Constants/button-status';
 import localForage from 'localforage';
 import LZString from 'lz-string';
 import { action, makeObservable, observable } from 'mobx';
+import { getSavedWorkspaces, save, save_types, saveWorkspaceToRecent, updateWorkspaceName } from '@deriv/bot-skeleton';
+import { localize } from '@deriv/translations';
 import RootStore from './root-store';
+import { MAX_STRATEGIES } from 'Constants/bot-contents';
+import { button_status } from 'Constants/button-status';
 
 interface ISaveModalStore {
     is_save_modal_open: boolean;

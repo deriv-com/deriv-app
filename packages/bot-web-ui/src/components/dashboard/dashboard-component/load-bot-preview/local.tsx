@@ -1,14 +1,14 @@
+import React from 'react';
+import classNames from 'classnames';
 import { Dialog, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import classNames from 'classnames';
-import { DBOT_TABS } from 'Constants/bot-contents';
-import { clearInjectionDiv } from 'Constants/load-modal';
-import React from 'react';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import BotPreview from './bot-preview';
 import './index.scss';
+import { DBOT_TABS } from 'Constants/bot-contents';
+import { clearInjectionDiv } from 'Constants/load-modal';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TWorkspace = {
     id: string;

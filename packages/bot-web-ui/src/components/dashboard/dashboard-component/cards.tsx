@@ -1,14 +1,14 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
+import React from 'react';
+import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
+import GoogleDrive from './load-bot-preview/google-drive';
+import Recent from './load-bot-preview/recent';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import SaveModalStore from 'Stores/save-modal-store';
-import GoogleDrive from './load-bot-preview/google-drive';
-import Recent from './load-bot-preview/recent';
 
 type TCardProps = {
     dialog_options: { [key: string]: string };

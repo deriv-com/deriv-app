@@ -1,5 +1,5 @@
-import { useObserver } from 'mobx-react';
 import React from 'react';
+import { useObserver } from 'mobx-react';
 
 const isClassComponent = Component =>
     !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);

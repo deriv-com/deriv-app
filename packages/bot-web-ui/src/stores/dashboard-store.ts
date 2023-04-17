@@ -1,5 +1,5 @@
-import { observable, action, reaction, makeObservable } from 'mobx';
-import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
+import { action, makeObservable, observable, reaction } from 'mobx';
+import { setTourSettings, tour_type, TTourType } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 import { clearInjectionDiv } from 'Constants/load-modal';
 

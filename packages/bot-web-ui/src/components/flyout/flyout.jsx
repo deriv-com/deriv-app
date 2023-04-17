@@ -1,13 +1,13 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { localize } from '@deriv/translations';
+import { Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
-import { Icon, ThemedScrollbars, Input, Text } from '@deriv/components';
-import { help_content_config } from 'Utils/help-content/help-content.config';
-import { connect } from 'Stores/connect';
+import { localize } from '@deriv/translations';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents';
+import { connect } from 'Stores/connect';
+import { help_content_config } from 'Utils/help-content/help-content.config';
 
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>

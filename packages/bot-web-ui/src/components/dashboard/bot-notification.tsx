@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Toast } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from 'Stores/root-store';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/root-store';
 
 type TBotNotification = {
     show_toast: boolean;

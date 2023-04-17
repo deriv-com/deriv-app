@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import './index.scss';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import './index.scss';
 
 type TRecentFooter = {
     is_open_button_loading: boolean;

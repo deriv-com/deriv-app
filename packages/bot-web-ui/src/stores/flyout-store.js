@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action, computed, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
 import GTM from 'Utils/gtm';
 

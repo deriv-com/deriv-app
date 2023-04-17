@@ -1,9 +1,7 @@
-import { computed, observable, action, runInAction, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import GTM from 'Utils/gtm';
-import { getSetting, storeSetting } from 'Utils/settings';
+import { localize } from '@deriv/translations';
 import {
     TDropdownItems,
     TDropdowns,
@@ -29,6 +27,8 @@ import {
     TTypeStrategy,
 } from '../components/dashboard/quick-strategy/quick-strategy.types';
 import RootStore from './root-store';
+import GTM from 'Utils/gtm';
+import { getSetting, storeSetting } from 'Utils/settings';
 
 export default class QuickStrategyStore {
     root_store: RootStore;

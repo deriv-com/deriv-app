@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TDownloadProps = {
     onClickDownloadTransaction: () => void;

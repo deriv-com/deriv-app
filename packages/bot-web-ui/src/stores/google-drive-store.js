@@ -1,6 +1,6 @@
-import { observable, action, makeObservable } from 'mobx';
-import { localize, getLanguage } from '@deriv/translations';
-import { importExternal, config } from '@deriv/bot-skeleton';
+import { action, makeObservable, observable } from 'mobx';
+import { config, importExternal } from '@deriv/bot-skeleton';
+import { getLanguage, localize } from '@deriv/translations';
 import { button_status } from 'Constants/button-status';
 
 export default class GoogleDriveStore {

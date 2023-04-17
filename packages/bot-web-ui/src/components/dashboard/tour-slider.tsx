@@ -1,10 +1,10 @@
 import React from 'react';
-import { ProgressBarOnboarding, Text, Icon } from '@deriv/components';
+import classNames from 'classnames';
+import { Icon, ProgressBarOnboarding, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { BOT_BUILDER_MOBILE, DBOT_ONBOARDING_MOBILE, TStepMobile } from './joyride-config';
-import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
-import classNames from 'classnames';
+import RootStore from 'Stores/index';
 
 type TTourButton = {
     type?: string;

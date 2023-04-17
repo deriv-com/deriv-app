@@ -1,6 +1,6 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
 import { connect } from 'Stores/connect';

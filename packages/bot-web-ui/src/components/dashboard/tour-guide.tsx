@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, Loading } from '@deriv/components';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import { Loading, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TTourGuide = {
     content: string[];

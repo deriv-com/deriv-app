@@ -1,7 +1,7 @@
+import React from 'react';
 import { Button } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import React from 'react';
 import { TQuickStrategyFooter } from './components.types';
 
 const QuickStrategyFooter = ({

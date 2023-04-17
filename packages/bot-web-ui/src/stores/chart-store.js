@@ -1,5 +1,4 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-
 // import { tabs_title } from '../constants/bot-contents';
 import { ServerTime } from '@deriv/bot-skeleton';
 

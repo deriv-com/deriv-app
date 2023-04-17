@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
 import classNames from 'classnames';
+import { Icon } from '@deriv/components';
 import { SIDEBAR_INTRO } from './constants';
 import IntroCard from './intro-card';
 

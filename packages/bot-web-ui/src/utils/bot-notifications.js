@@ -1,5 +1,5 @@
-import { localize } from '@deriv/translations';
 import { platform_name } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 export const switch_account_notification = {
     key: 'bot_switch_account',

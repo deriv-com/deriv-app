@@ -1,7 +1,7 @@
 import React from 'react';
+import StopBotModalContent, { TStopBotModalContent } from '../stop-bot-modal-content';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/root-store';
-import StopBotModalContent, { TStopBotModalContent } from '../stop-bot-modal-content';
 
 type TStopBotModal = TStopBotModalContent & {
     stopMyBot: () => void;

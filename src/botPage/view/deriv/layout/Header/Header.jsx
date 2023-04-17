@@ -99,13 +99,9 @@ const Header = () => {
         }
         const client_accounts = JSON.parse(getStorage('client.accounts'));
         const current_login_id = getStorage('active_loginid') || '';
-        if (active_storage_token && active_storage_token.token) {
-            let logged_in_token = active_storage_token.token;
-            Object.entries(client_accounts).map(active_account => {
-                if (current_login_id === active_account[0]){
-                    logged_in_token = active_account[1].token;
-                }
-            })
+        const logged_in_token = client_accounts[current_login_id]?.token || active_storage_token?.token || '';
+
+        if (logged_in_token) {
             api.authorize(logged_in_token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
@@ -119,7 +115,7 @@ const Header = () => {
                         updateTokenList();
                     });
                     if (account?.error?.code) return;
-                    dispatch(updateActiveToken(active_storage_token.token));
+                    dispatch(updateActiveToken(logged_in_token));
                     dispatch(updateActiveAccount(account.authorize));
                     dispatch(setAccountSwitcherLoader(false));
                     if (!globalObserver.getState('is_subscribed_to_balance')) {

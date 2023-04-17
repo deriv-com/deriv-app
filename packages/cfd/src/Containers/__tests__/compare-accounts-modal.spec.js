@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import CompareAccountsModal from '../compare-accounts-modal';
+import CFDProviders from '../../cfd-providers';
 
 jest.mock('../mt5-compare-table-content', () => jest.fn(() => 'MockedMt5CompareTableContent'));
 

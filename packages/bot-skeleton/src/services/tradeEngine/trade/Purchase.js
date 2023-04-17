@@ -29,7 +29,7 @@ export default Engine =>
                     buy,
                 });
 
-                this.subscribeToOpenContract(buy.contract_id);
+                this.contractId = buy.contract_id;
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
                 delayIndex = 0;

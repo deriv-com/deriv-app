@@ -2,8 +2,9 @@ import { action, computed, observable, makeObservable } from 'mobx';
 import { routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { PaymentAgentTransferRequest, PaymentAgentListResponse } from '@deriv/api-types';
+import { PaymentAgentListResponse } from '@deriv/api-types';
 import {
+    TPaymentAgentTransferRequest,
     TPaymentAgentTransferReceipt,
     TPaymentAgentTransferConfirm,
     TRootStore,
@@ -137,7 +138,7 @@ export default class PaymentAgentTransferStore {
         currency,
         description,
         transfer_to,
-    }: PaymentAgentTransferRequest) => {
+    }: TPaymentAgentTransferRequest) => {
         this.error.setErrorMessage('');
         const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,
@@ -167,7 +168,7 @@ export default class PaymentAgentTransferStore {
         currency,
         description,
         transfer_to,
-    }: PaymentAgentTransferRequest) => {
+    }: TPaymentAgentTransferRequest) => {
         this.error.setErrorMessage('');
         const payment_agent_transfer = await this.WS.authorized.paymentAgentTransfer({
             amount,

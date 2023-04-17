@@ -37,14 +37,6 @@ export type TPaymentAgentWithdrawReceipt = {
     payment_agent_url?: Array<{ url: string }>;
 };
 
-export type TPaymentAgentWithdrawRequest = {
-    amount: string;
-    currency: string;
-    dry_run?: number;
-    loginid: string;
-    verification_code: string;
-};
-
 export type TPartialPaymentAgentList = {
     currency?: string;
     deposit_commission?: string;

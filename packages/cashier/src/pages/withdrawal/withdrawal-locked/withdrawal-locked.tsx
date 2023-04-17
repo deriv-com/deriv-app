@@ -21,9 +21,9 @@ const WithdrawalLocked = observer(() => {
         is_10k_withdrawal_limit_reached: is_10K_limit,
         error: { is_ask_financial_risk_approval },
     } = withdraw;
-    const document = account_status.authentication?.document;
-    const identity = account_status.authentication?.identity;
-    const needs_verification = account_status.authentication?.needs_verification;
+    const document = account_status?.authentication?.document;
+    const identity = account_status?.authentication?.identity;
+    const needs_verification = account_status?.authentication?.needs_verification;
     const is_poi_needed = is_10K_limit && identity?.status !== 'verified';
     const has_poi_submitted = identity?.status !== 'none';
     const is_poa_needed = is_10K_limit && (needs_verification?.includes('document') || document?.status !== 'verified');

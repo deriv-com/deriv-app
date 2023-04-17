@@ -8,14 +8,11 @@ import ChatMessageReceipt from 'Components/orders/chat/chat-message-receipt.jsx'
 import ChatMessageText from 'Components/orders/chat/chat-message-text.jsx';
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
-import { convertToMB } from 'Utils/file-uploader';
+import { convertToMB, isImageType, isPDFType } from 'Utils/file-uploader';
 
 const ChatMessages = observer(() => {
     const { sendbird_store } = useStores();
     const scroll_ref = React.useRef(null);
-
-    const isImageType = type => ['image/jpeg', 'image/png', 'image/gif'].includes(type);
-    const isPDFType = type => type === 'application/pdf';
 
     const onImageLoad = event => {
         // Height of element changes after the image is loaded. Accommodate
@@ -37,7 +34,7 @@ const ChatMessages = observer(() => {
     if (sendbird_store.chat_messages.length) {
         let current_date = null;
 
-        const getMessageFormat = (chat_message, message_colour) => {
+        const getMessageFormat = (chat_message, message_color) => {
             if (isImageType(chat_message.file_type))
                 return (
                     <a
@@ -51,7 +48,7 @@ const ChatMessages = observer(() => {
                 );
             else if (isPDFType(chat_message.file_type)) {
                 return (
-                    <ChatMessageText colour={message_colour}>
+                    <ChatMessageText color={message_color}>
                         <div className='order-chat__messages-item-pdf'>
                             <Icon icon='IcPdf' data_testid='dt_pdf_icon' size={20} />
                             <a href={chat_message.url} rel='noopener noreferrer' target='_blank'>
@@ -63,7 +60,7 @@ const ChatMessages = observer(() => {
                 );
             }
             return (
-                <ChatMessageText colour={message_colour}>
+                <ChatMessageText color={message_color}>
                     <a
                         className='order-chat__messages-item-file'
                         href={chat_message.url}
@@ -87,7 +84,7 @@ const ChatMessages = observer(() => {
                 {sendbird_store.chat_messages.map(chat_message => {
                     const is_my_message = chat_message.sender_user_id === sendbird_store.chat_info.user_id;
                     const message_date = formatMilliseconds(chat_message.created_at, 'MMMM D, YYYY');
-                    const message_colour = is_my_message ? 'colored-background' : 'general';
+                    const message_color = is_my_message ? 'colored-background' : 'general';
                     const should_render_date = current_date !== message_date && Boolean((current_date = message_date));
 
                     return (
@@ -106,10 +103,10 @@ const ChatMessages = observer(() => {
                                 )}
                             >
                                 {chat_message.message_type === ChatMessage.TYPE_USER && (
-                                    <ChatMessageText colour={message_colour}>{chat_message.message}</ChatMessageText>
+                                    <ChatMessageText color={message_color}>{chat_message.message}</ChatMessageText>
                                 )}
                                 {chat_message.message_type === ChatMessage.TYPE_FILE &&
-                                    getMessageFormat(chat_message, message_colour)}
+                                    getMessageFormat(chat_message, message_color)}
                                 <div className={`order-chat__messages-item-timestamp`}>
                                     <Text color='less-prominent' line_height='s' size='xxxs'>
                                         {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}

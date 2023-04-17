@@ -5,7 +5,7 @@ import { Localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
 import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value';
-import { getPotSupportedFiles, max_pot_file_size } from 'Utils/file-uploader';
+import { max_pot_file_size, getErrorMessage } from 'Utils/file-uploader';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
@@ -29,13 +29,7 @@ const OrderDetailsConfirmModal = () => {
     };
 
     const handleRejectedFiles = files => {
-        const is_file_too_large = files.length > 0 && files[0].file.size > 2097152;
-        const supported_files = files.filter(each_file => getPotSupportedFiles(each_file.file.name));
-        const error_message =
-            is_file_too_large && supported_files.length > 0
-                ? localize('Cannot upload a file over 2MB')
-                : localize('File uploaded is not supported');
-        setDocumentFile({ files, error_message });
+        setDocumentFile({ files, error_message: getErrorMessage(files) });
     };
 
     return (
@@ -98,7 +92,7 @@ const OrderDetailsConfirmModal = () => {
                             <Localize i18n_default_text='Go Back' />
                         </Button>
                         <Button
-                            is_disabled={document_file.files?.length === 0}
+                            is_disabled={document_file.files?.length === 0 || document_file.error_message}
                             primary
                             large
                             onClick={() => {

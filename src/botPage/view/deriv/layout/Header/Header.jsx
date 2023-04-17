@@ -56,6 +56,7 @@ const AccountSwitcher = () => {
     return <AuthButtons />;
 };
 
+
 const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
@@ -100,11 +101,15 @@ const Header = () => {
             dispatch(resetClient());
             dispatch(setAccountSwitcherLoader(false));
         }
-        if (active_storage_token && active_storage_token.token) {
-            api.authorize(active_storage_token.token)
+        const client_accounts = JSON.parse(getStorage('client.accounts'));
+        const current_login_id = getStorage('active_loginid') || '';
+        const logged_in_token = client_accounts[current_login_id]?.token || active_storage_token?.token || '';
+
+        if (logged_in_token) {
+            api.authorize(logged_in_token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
-                    const current_login_id = getStorage('active_loginid') || '';
+                    
                     active_loginid.forEach(acc => {
                         if (current_login_id === acc.loginid) {
                             setStorage('active_loginid', current_login_id);
@@ -114,7 +119,7 @@ const Header = () => {
                         updateTokenList();
                     });
                     if (account?.error?.code) return;
-                    dispatch(updateActiveToken(active_storage_token.token));
+                    dispatch(updateActiveToken(logged_in_token));
                     dispatch(updateActiveAccount(account.authorize));
                     dispatch(setAccountSwitcherLoader(false));
                     if (!is_subscribed) {

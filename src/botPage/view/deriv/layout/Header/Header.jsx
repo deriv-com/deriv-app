@@ -54,7 +54,6 @@ const AccountSwitcher = () => {
     return <AuthButtons />;
 };
 
-let is_called = false;
 
 const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
@@ -65,16 +64,14 @@ const Header = () => {
     const is_logged_in = isLoggedIn();
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
-
+   
     React.useEffect(() => {
         const mountSwitcher = async () => {
-            const res = await checkSwitcherType()
-                .then(data => {
-                    dispatch(updateAccountType(data));
-                })
-                .catch(error => globalObserver.emit('Error', error));
+            const res = await checkSwitcherType().then(data => {
+                dispatch(updateAccountType(data));
+            }).catch(error => globalObserver.emit('Error', error));
             return res;
-        };
+        }
         if (is_logged_in) {
             mountSwitcher();
         }
@@ -105,14 +102,14 @@ const Header = () => {
         if (active_storage_token && active_storage_token.token) {
             let logged_in_token = active_storage_token.token;
             Object.entries(client_accounts).map(pair => {
-                if (current_login_id === pair[0]) {
+                if (current_login_id === pair[0]){
                     logged_in_token = pair[1].token;
                 }
-            });
+            })
             api.authorize(logged_in_token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
-
+                    
                     active_loginid.forEach(acc => {
                         if (current_login_id === acc.loginid) {
                             setStorage('active_loginid', current_login_id);
@@ -125,8 +122,6 @@ const Header = () => {
                     dispatch(updateActiveToken(active_storage_token.token));
                     dispatch(updateActiveAccount(account.authorize));
                     dispatch(setAccountSwitcherLoader(false));
-                    if (!is_called) {
-                        is_called = true;
                         api.send({
                             balance: 1,
                             account: 'all',
@@ -136,13 +131,12 @@ const Header = () => {
                                 globalObserver.setState({
                                     balance: Number(balance.balance),
                                     currency: balance.currency,
-                                    //is_subscribed_to_balance: true,
+                                    is_subscribed_to_balance: true,
                                 });
                             })
                             .catch(e => {
                                 globalObserver.emit('Error', e);
                             });
-                    }
                 })
                 .catch(() => {
                     removeAllTokens();

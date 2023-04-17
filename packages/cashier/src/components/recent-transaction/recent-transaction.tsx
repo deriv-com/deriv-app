@@ -4,19 +4,14 @@ import { ButtonLink, Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { getStatus } from 'Constants/transaction-status';
+import { getStatus } from '../../constants/transaction-status';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './recent-transaction.scss';
 
 const RecentTransaction = observer(() => {
-    const {
-        client,
-        modules: {
-            cashier: { transaction_history },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const { currency } = client;
-
+    const { transaction_history } = useCashierStore();
     const { crypto_transactions, onMount, setIsCryptoTransactionsVisible } = transaction_history;
 
     React.useEffect(() => {
@@ -29,7 +24,7 @@ const RecentTransaction = observer(() => {
     let { address_hash, submit_date, transaction_type } = crypto_transactions[0];
     const { status_code, transaction_hash } = crypto_transactions[0];
     const status = getStatus(transaction_hash, transaction_type, status_code);
-    submit_date = epochToMoment(submit_date).format('MMM D, YYYY');
+    submit_date = epochToMoment(Number(submit_date)).format('MMM D, YYYY');
     transaction_type = transaction_type[0].toUpperCase() + transaction_type.slice(1);
     address_hash = `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`;
 

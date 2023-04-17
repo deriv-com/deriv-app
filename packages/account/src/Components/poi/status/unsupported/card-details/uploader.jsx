@@ -96,7 +96,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
 
     const ValidationErrorMessage = open => (
         <div className={`${ROOT_CLASS}__uploader-details`}>
-            {image.errors.map((error, index) => (
+            {image.errors?.map((error, index) => (
                 <Text key={index} as='p' size='xs' color='secondary' align='center'>
                     {error}
                 </Text>

@@ -11,6 +11,7 @@ const domain_url = supported_domains.includes(domain_url_initial) ? domain_url_i
 export const deriv_urls = Object.freeze({
     DERIV_HOST_NAME: domain_url,
     DERIV_COM_PRODUCTION: `https://${domain_url}`,
+    DERIV_COM_PRODUCTION_EU: `https://eu.${domain_url}`,
     DERIV_COM_STAGING: `https://staging.${domain_url}`,
     DERIV_APP_PRODUCTION: `https://app.${domain_url}`,
     DERIV_APP_STAGING: `https://staging-app.${domain_url}`,

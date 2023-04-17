@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider } from '@deriv/stores';
 import Withdraw from '../withdraw';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
 
@@ -32,9 +32,9 @@ describe('<Withdraw />', () => {
 
     it('should render the cashier container component', () => {
         render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <Withdraw />
-            </StoreProvider>
+            </CashierProviders>
         );
 
         expect(mockRootStore.modules.cashier.withdraw.onMountWithdraw).toHaveBeenCalledWith('code');

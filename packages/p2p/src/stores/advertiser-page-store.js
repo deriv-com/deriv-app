@@ -17,7 +17,6 @@ export default class AdvertiserPageStore extends BaseStore {
     is_loading = true;
     is_loading_adverts = true;
     is_submit_disabled = true;
-    show_ad_popup = false;
     submitForm = () => {};
 
     constructor(root_store) {
@@ -36,13 +35,13 @@ export default class AdvertiserPageStore extends BaseStore {
             is_loading: observable,
             is_loading_adverts: observable,
             is_submit_disabled: observable,
-            show_ad_popup: observable,
             submitForm: observable,
             account_currency: computed,
             advert: computed,
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
+            getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
             onCancel: action.bound,
             onCancelClick: action.bound,
@@ -62,7 +61,6 @@ export default class AdvertiserPageStore extends BaseStore {
             setIsLoading: action.bound,
             setIsLoadingAdverts: action.bound,
             setIsSubmitDisabled: action.bound,
-            setShowAdPopup: action.bound,
             setSubmitForm: action.bound,
             showAdPopup: action.bound,
             showBlockUserModal: action.bound,
@@ -110,12 +108,6 @@ export default class AdvertiserPageStore extends BaseStore {
                 } else {
                     const { list } = response.p2p_advert_list;
 
-                    list.forEach(item => {
-                        item.payment_method_names = buy_sell_store.getSupportedPaymentMethods(
-                            item.payment_method_names
-                        );
-                    });
-
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
                 }
@@ -126,15 +118,44 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     setAdvertiserInfo(response) {
+        const { general_store } = this.root_store;
+
         if (response.error) {
             this.setErrorMessage(response.error);
         } else {
             const { p2p_advertiser_info } = response;
             this.setCounterpartyAdvertiserInfo(p2p_advertiser_info);
-            this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
+
+            // TODO: uncomment this when BE has fixed is_blocked flag issue for block user overlay
+            // this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
+
+            // TODO: remove this when above issue is fixed
+            this.setIsCounterpartyAdvertiserBlocked(
+                general_store.advertiser_relations_response.some(
+                    advertiser => p2p_advertiser_info.id === advertiser.id
+                ) || !!p2p_advertiser_info.is_blocked
+            );
         }
 
         this.setIsLoading(false);
+    }
+
+    getCounterpartyAdvertiserList(advertiser_id) {
+        this.setIsLoading(true);
+        requestWS({
+            p2p_advert_list: 1,
+            advertiser_id,
+        }).then(response => {
+            if (response) {
+                if (!response.error) {
+                    const { list } = response.p2p_advert_list;
+                    this.setAdverts(list.filter(advert => advert.counterparty_type === this.counterparty_type));
+                } else {
+                    this.setErrorMessage(response.error);
+                }
+            }
+            this.setIsLoading(false);
+        });
     }
 
     handleTabItemClick(idx) {
@@ -147,12 +168,14 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onCancel() {
-        this.root_store.general_store.setIsBlockUserModalOpen(false);
+        if (this.root_store.general_store.isCurrentModal('BlockUserModal')) {
+            this.root_store.general_store.hideModal();
+        }
         this.setIsDropdownMenuVisible(false);
     }
 
     onCancelClick() {
-        this.setShowAdPopup(false);
+        this.root_store.general_store.hideModal();
     }
 
     onConfirmClick(order_info) {
@@ -178,6 +201,7 @@ export default class AdvertiserPageStore extends BaseStore {
             !this.is_counterparty_advertiser_blocked,
             this.advertiser_details_id
         );
+        if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(this.advertiser_details_id);
         this.setIsDropdownMenuVisible(false);
     }
 
@@ -244,10 +268,6 @@ export default class AdvertiserPageStore extends BaseStore {
         this.is_submit_disabled = is_submit_disabled;
     }
 
-    setShowAdPopup(show_ad_popup) {
-        this.show_ad_popup = show_ad_popup;
-    }
-
     setSubmitForm(submitFormFn) {
         this.submitForm = submitFormFn;
     }
@@ -256,7 +276,9 @@ export default class AdvertiserPageStore extends BaseStore {
         if (!this.root_store.general_store.is_advertiser) {
             this.root_store.buy_sell_store.showVerification();
         } else {
-            this.setShowAdPopup(true);
+            this.root_store.general_store.showModal({
+                key: 'BuySellModal',
+            });
         }
     }
 
@@ -265,7 +287,9 @@ export default class AdvertiserPageStore extends BaseStore {
             !this.is_counterparty_advertiser_blocked &&
             this.counterparty_advertiser_info.id !== this.root_store.general_store.advertiser_id
         ) {
-            this.root_store.general_store.setIsBlockUserModalOpen(true);
+            this.root_store.general_store.showModal({
+                key: 'BlockUserModal',
+            });
         }
     }
 }

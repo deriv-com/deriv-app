@@ -1,43 +1,45 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
+import { useDepositLocked } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
-import { Real, Virtual } from 'Components/cashier-container';
-import { CashierOnboarding, CashierOnboardingSideNote } from 'Components/cashier-onboarding';
-import CashierLocked from 'Components/cashier-locked';
-import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
-import Error from 'Components/error';
-import FundsProtection from 'Components/funds-protection';
-import USDTSideNote from 'Components/usdt-side-note';
-import RecentTransaction from 'Components/recent-transaction';
+import { Real, Virtual } from '../../components/cashier-container';
+import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
+import CashierLocked from '../../components/cashier-locked';
+import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import Error from '../../components/error';
+import FundsProtection from '../../components/funds-protection';
+import USDTSideNote from '../../components/usdt-side-note';
+import RecentTransaction from '../../components/recent-transaction';
 import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
-import SideNote from 'Components/side-note';
+import SideNote from '../../components/side-note';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
 };
 
 const Deposit = observer(({ setSideNotes }: TDeposit) => {
-    const { client, modules } = useStore();
+    const { client, traders_hub } = useStore();
     const {
         can_change_fiat_currency,
         currency,
         current_currency_type,
-        is_eu,
         is_switching,
         is_virtual,
         landing_company_shortcode,
     } = client;
-    const { cashier } = modules;
-    const { iframe, deposit, transaction_history, general_store } = cashier;
-    const { clearIframe, iframe_height, iframe_url } = iframe;
-    const { container, error, is_deposit_locked, onMountDeposit: onMount } = deposit;
+    const { iframe, deposit, transaction_history, general_store } = useCashierStore();
+    const { iframe_height, iframe_url } = iframe;
+    const { container, error, onMountDeposit: onMount } = deposit;
+    const { is_low_risk_cr_eu_real } = traders_hub;
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
         onMount: recentTransactionOnMount,
     } = transaction_history;
     const {
+        cashier_route_tab_index: tab_index,
         is_cashier_locked,
         is_cashier_onboarding,
         is_crypto,
@@ -46,11 +48,12 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_system_maintenance,
         setActiveTab,
         setIsDeposit,
-        cashier_route_tab_index: tab_index,
     } = general_store;
+    const is_deposit_locked = useDepositLocked();
 
     const is_fiat_currency_banner_visible_for_MF_clients =
         landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
+
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
             recentTransactionOnMount();
@@ -67,6 +70,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setActiveTab, onMount, container, error.setErrorMessage]);
+
     React.useEffect(() => {
         if (typeof setSideNotes === 'function') {
             if (is_switching || is_deposit) setSideNotes(null);
@@ -77,7 +81,11 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
                 if (side_notes.length > 0) {
-                    setSideNotes([<SideNote key={0}>{side_notes}</SideNote>]);
+                    setSideNotes([
+                        <SideNote has_title={false} key={0}>
+                            {side_notes}
+                        </SideNote>,
+                    ]);
                 }
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
@@ -89,7 +97,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions, is_cashier_onboarding, iframe_height]);
+    }, [currency, tab_index, crypto_transactions, crypto_transactions?.length, is_cashier_onboarding, iframe_height]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;
@@ -115,7 +123,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         return <CryptoTransactionsHistory />;
     }
 
-    if (is_deposit || is_eu) {
+    if (is_deposit || is_low_risk_cr_eu_real) {
         if (error.message) {
             return <Error error={error} />;
         }
@@ -130,12 +138,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                         <CashierOnboardingSideNote is_crypto={false} />
                     </SideNote>
                 )}
-                <Real
-                    iframe_height={iframe_height}
-                    iframe_url={iframe_url}
-                    is_loading={is_loading}
-                    clearIframe={clearIframe}
-                />
+                <Real is_deposit />
             </>
         );
     }

@@ -10,8 +10,9 @@ const TradeParamsLoader = ({ speed }) => (
                 height={214}
                 width={344}
                 speed={speed}
-                primaryColor={'var(--general-section-1)'}
-                secondaryColor={'var(--general-hover)'}
+                backgroundColor={'var(--general-section-1)'}
+                foregroundColor={'var(--general-hover)'}
+                viewBox='0 0 344 176'
             >
                 <rect x='148' y='24' rx='3' ry='3' width='40' height='4' />
                 <rect x='8' y='40' rx='4' ry='4' width='328' height='40' />
@@ -25,8 +26,8 @@ const TradeParamsLoader = ({ speed }) => (
                 height={548}
                 width={240}
                 speed={speed}
-                primaryColor={'var(--general-section-1)'}
-                secondaryColor={'var(--general-hover)'}
+                backgroundColor={'var(--general-section-1)'}
+                foregroundColor={'var(--general-hover)'}
             >
                 <rect x='0' y='0' rx='4' ry='4' width='240' height='76' />
                 <rect x='0' y='84' rx='4' ry='4' width='240' height='132' />

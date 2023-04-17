@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TReactMouseEvent } from 'Types';
+import { TReactMouseEvent } from '../../types';
 
 type TPercentageSelectorProps = {
     amount: number;

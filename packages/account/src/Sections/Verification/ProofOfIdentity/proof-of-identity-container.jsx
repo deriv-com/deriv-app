@@ -1,21 +1,22 @@
-import React from 'react';
 import { Button, Loading } from '@deriv/components';
-import { getPlatformRedirect, WS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
+import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { identity_status_codes, service_code } from './proof-of-identity-utils';
+
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
-import NotRequired from 'Components/poi/status/not-required';
-import Unsupported from 'Components/poi/status/unsupported';
-import Verified from 'Components/poi/status/verified';
-import Limited from 'Components/poi/status/limited';
 import Expired from 'Components/poi/status/expired';
-import UploadComplete from 'Components/poi/status/upload-complete';
-import POISubmission from './proof-of-identity-submission.jsx';
-import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
-import { identity_status_codes, service_code } from './proof-of-identity-utils';
+import Limited from 'Components/poi/status/limited';
+import { Localize } from '@deriv/translations';
+import NotRequired from 'Components/poi/status/not-required';
+import Onfido from './onfido.jsx';
+import POISubmission from './proof-of-identity-submission.jsx';
+import React from 'react';
+import Unsupported from 'Components/poi/status/unsupported';
+import UploadComplete from 'Components/poi/status/upload-complete';
+import Verified from 'Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
+import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = ({
     account_status,
@@ -40,7 +41,8 @@ const ProofOfIdentityContainer = ({
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
     const from_platform = getPlatformRedirect(app_routing_history);
-    const should_show_redirect_btn = from_platform.name === 'P2P';
+
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform.ref);
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
@@ -96,11 +98,22 @@ const ProofOfIdentityContainer = ({
         return <NotRequired />;
     }
 
-    const redirect_button = should_show_redirect_btn && (
-        <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
+    const redirect_button = should_show_redirect_btn ? (
+        <Button
+            primary
+            className='proof-of-identity__redirect'
+            onClick={() => {
+                if (platforms[from_platform.ref].is_hard_redirect) {
+                    const url = platforms[from_platform.ref]?.url;
+                    window.location.href = url;
+                } else {
+                    routeBackTo(from_platform.route);
+                }
+            }}
+        >
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
-    );
+    ) : null;
 
     if (
         identity_status === identity_status_codes.none ||
@@ -131,9 +144,7 @@ const ProofOfIdentityContainer = ({
     } else if (
         !identity_last_attempt ||
         // Prioritise verified status from back office. How we know this is if there is mismatch between current statuses (Should be refactored)
-        (identity_status === identity_status_codes.verified && identity_status !== identity_last_attempt.status) ||
-        // Prioritise pending status from back office. We can't rely on last attempt as it doesn't get updated after manual upload (Should be refactored)
-        identity_status === identity_status_codes.pending
+        (identity_status === identity_status_codes.verified && identity_status !== identity_last_attempt.status)
     ) {
         switch (identity_status) {
             case identity_status_codes.pending:
@@ -142,6 +153,7 @@ const ProofOfIdentityContainer = ({
                         is_from_external={!!is_from_external}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
+                        is_manual_upload={manual?.status === 'pending'}
                     />
                 );
             case identity_status_codes.verified:
@@ -197,6 +209,9 @@ const ProofOfIdentityContainer = ({
                     manual={manual}
                     is_from_external={is_from_external}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
+                    handleRequireSubmission={handleRequireSubmission}
                 />
             );
         default:

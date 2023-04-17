@@ -1,15 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoFiatConverter from '../crypto-fiat-converter';
-import { StoreProvider } from '@deriv/stores';
 import { Formik } from 'formik';
 import * as formik from 'formik';
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CashierProviders from '../../../cashier-providers';
 
 describe('<CryptoFiatConverter />', () => {
     let mockRootStore, mockProps;
@@ -40,11 +34,11 @@ describe('<CryptoFiatConverter />', () => {
 
     const renderCryptoFiatConverter = () => {
         return render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <Formik>
                     <CryptoFiatConverter {...mockProps} />
                 </Formik>
-            </StoreProvider>
+            </CashierProviders>
         );
     };
 

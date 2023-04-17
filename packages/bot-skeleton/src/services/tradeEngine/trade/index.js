@@ -71,7 +71,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.data = {
             contract: {},
             proposals: [],
-            forget_proposal_ids: [],
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }
@@ -95,7 +94,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         globalObserver.emit('bot.running');
 
         this.tradeOptions = tradeOptions;
-
         this.store.dispatch(start());
         this.checkLimits(tradeOptions);
         this.makeProposals({ ...this.options, ...tradeOptions });
@@ -112,7 +110,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
             // event, wait a couple seconds for the API to give us the correct "proposal_open_contract"
             // response, if there's none after x seconds. Send an explicit request, which _should_
             // solve the issue. This is a backup!
-            api_base.api.onMessage().subscribe(({ data }) => {
+            const subscription = api_base.api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'transaction' && data.transaction.action === 'sell') {
                     this.transaction_recovery_timeout = setTimeout(() => {
                         const { contract } = this.data;
@@ -129,6 +127,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                 this.token = api_base.token;
                 resolve();
             });
+            api_base.pushSubscription(subscription);
         });
     }
 

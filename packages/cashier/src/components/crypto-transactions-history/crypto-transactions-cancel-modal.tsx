@@ -1,14 +1,11 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { observer } from '@deriv/stores';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 const CryptoTransactionsCancelModal = observer(() => {
-    const {
-        modules: {
-            cashier: { transaction_history },
-        },
-    } = useStore();
+    const { transaction_history } = useCashierStore();
     const {
         cancelCryptoTransaction,
         hideCryptoTransactionsCancelModal,

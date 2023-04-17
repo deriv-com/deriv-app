@@ -4,14 +4,10 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
-import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
-import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
-import { CurrencySelectorModal } from 'Components/buy-sell/currency-selector';
-import FilterModal from './filter-modal';
 import './buy-sell.scss';
 
 const BuySell = () => {
@@ -39,7 +35,11 @@ const BuySell = () => {
     if (buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                <PageReturn onClick={buy_sell_store.hideVerification} page_title={localize('Verification')} />
+                <PageReturn
+                    className='buy-sell__page-return'
+                    onClick={buy_sell_store.hideVerification}
+                    page_title={localize('Verification')}
+                />
                 <Verification />
             </React.Fragment>
         );
@@ -47,7 +47,6 @@ const BuySell = () => {
 
     return (
         <div className='buy-sell'>
-            <FilterModal />
             <BuySellHeader table_type={buy_sell_store.table_type} />
             <BuySellTable
                 key={buy_sell_store.table_type}
@@ -56,14 +55,6 @@ const BuySell = () => {
                 showAdvertiserPage={buy_sell_store.showAdvertiserPage}
                 onScroll={onScroll}
             />
-            <BuySellModal
-                selected_ad={buy_sell_store.selected_ad_state}
-                should_show_popup={buy_sell_store.should_show_popup}
-                setShouldShowPopup={buy_sell_store.setShouldShowPopup}
-                table_type={buy_sell_store.table_type}
-            />
-            <RateChangeModal onMount={buy_sell_store.setShouldShowPopup} />
-            <CurrencySelectorModal is_modal_open={buy_sell_store.should_show_currency_selector_modal} />
         </div>
     );
 };

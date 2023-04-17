@@ -1,17 +1,18 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import PaymentAgentContainer from '../payment-agent-container';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 const DepositTab = observer(() => {
-    const { modules } = useStore();
-    const { payment_agent, general_store } = modules.cashier;
+    const { payment_agent, general_store } = useCashierStore();
 
     React.useEffect(() => {
         payment_agent.onMountPaymentAgentList();
     }, [payment_agent]);
 
     return (
+        // TODO: Check `is_deposit` TS type-check error after migrating payment-agents to TS
         <div>{general_store.is_loading ? <Loading is_fullscreen={false} /> : <PaymentAgentContainer is_deposit />}</div>
     );
 });

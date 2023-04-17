@@ -61,8 +61,8 @@ const ApiTokenClipboard = ({
     const onMouseLeaveHandler = () => {
         if (!is_copied) setIsPopoverOpen(false);
     };
-    /* two timeouts help to prevent popup window blinking. 
-    without early hiding the popup we will see shortly the description message like during hovering. 
+    /* two timeouts help to prevent popup window blinking.
+    without early hiding the popup we will see shortly the description message like during hovering.
     this bug appears when popup is handled outside like here
     */
     const onClick = () => {
@@ -117,7 +117,7 @@ const ApiTokenClipboard = ({
                 classNameBubble='dc-clipboard__popover'
                 message={is_copied ? success_message : info_message}
                 is_open={is_popover_open}
-                zIndex={'9999'}
+                zIndex='9999'
             >
                 <Icon
                     icon={`${is_copied ? 'IcCheckmarkCircle' : 'IcClipboard'}`}

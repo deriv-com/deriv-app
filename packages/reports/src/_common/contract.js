@@ -19,6 +19,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: localize('Buy price:'),
     POTENTIAL_PAYOUT: localize('Payout limit:'),
     TICK: localize('Tick '),
+    TICKS: localize('Ticks'),
     WON: localize('Won'),
     LOST: localize('Lost'),
     DAYS: localize('days'),
@@ -67,19 +68,19 @@ export const getMarketNamesMap = () => ({
     FRXXAUUSD: localize('Gold/USD'),
     FRXXPDUSD: localize('Palladium/USD'),
     FRXXPTUSD: localize('Platinum/USD'),
-    OTC_AEX: localize('Dutch Index'),
-    OTC_AS51: localize('Australian Index'),
-    OTC_DJI: localize('Wall Street Index'),
-    OTC_FCHI: localize('French Index'),
-    OTC_FTSE: localize('UK Index'),
-    OTC_GDAXI: localize('German Index'),
-    OTC_HSI: localize('Hong Kong Index'),
+    OTC_AEX: localize('Netherlands 25'),
+    OTC_AS51: localize('Australia 200'),
+    OTC_DJI: localize('Wall Street 30'),
+    OTC_FCHI: localize('France 40'),
+    OTC_FTSE: localize('UK 100'),
+    OTC_GDAXI: localize('Germany 40'),
+    OTC_HSI: localize('Hong Kong 50'),
     OTC_IBEX35: localize('Spanish Index'),
-    OTC_N225: localize('Japanese Index'),
-    OTC_NDX: localize('US Tech Index'),
-    OTC_SPC: localize('US Index'),
-    OTC_SSMI: localize('Swiss Index'),
-    OTC_SX5E: localize('Euro 50 Index'),
+    OTC_N225: localize('Japan 225'),
+    OTC_NDX: localize('US Tech 100'),
+    OTC_SPC: localize('US 500'),
+    OTC_SSMI: localize('Swiss 20'),
+    OTC_SX5E: localize('Euro 50'),
     R_10: localize('Volatility 10 Index'),
     R_25: localize('Volatility 25 Index'),
     R_50: localize('Volatility 50 Index'),
@@ -94,14 +95,16 @@ export const getMarketNamesMap = () => ({
     RDBEAR: localize('Bear Market Index'),
     RDBULL: localize('Bull Market Index'),
     STPRNG: localize('Step Index'),
-    WLDAUD: localize('AUD Index'),
-    WLDEUR: localize('EUR Index'),
-    WLDGBP: localize('GBP Index'),
-    WLDXAU: localize('Gold Index'),
-    WLDUSD: localize('USD Index'),
+    WLDAUD: localize('AUD Basket'),
+    WLDEUR: localize('EUR Basket'),
+    WLDGBP: localize('GBP Basket'),
+    WLDXAU: localize('Gold Basket'),
+    WLDUSD: localize('USD Basket'),
     '1HZ10V': localize('Volatility 10 (1s) Index'),
     '1HZ100V': localize('Volatility 100 (1s) Index'),
+    '1HZ150V': localize('Volatility 150 (1s) Index'),
     '1HZ200V': localize('Volatility 200 (1s) Index'),
+    '1HZ250V': localize('Volatility 250 (1s) Index'),
     '1HZ300V': localize('Volatility 300 (1s) Index'),
     JD10: localize('Jump 10 Index'),
     JD25: localize('Jump 25 Index'),
@@ -201,6 +204,11 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        button_name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Accumulator' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -257,6 +265,14 @@ export const getSupportedContracts = is_high_low => ({
         name: <Localize i18n_default_text='Down' />,
         position: 'bottom',
     },
+    VANILLALONGCALL: {
+        name: <Localize i18n_default_text='Call' />,
+        position: 'top',
+    },
+    VANILLALONGPUT: {
+        name: <Localize i18n_default_text='Put' />,
+        position: 'bottom',
+    },
 });
 
 export const getContractConfig = is_high_low => ({
@@ -264,8 +280,9 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type];
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
 export const getContractTypePosition = (type, is_high_low = false) =>

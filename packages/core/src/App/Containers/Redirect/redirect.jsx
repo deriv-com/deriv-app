@@ -139,12 +139,25 @@ const Redirect = ({
             }
             break;
         }
+        case 'add_account_multiplier': {
+            WS.wait('get_account_status').then(() => {
+                if (!currency) return openRealAccountSignup('set_currency');
+                return openRealAccountSignup('maltainvest');
+            });
+            const ext_platform_url = url_params.get('ext_platform_url');
+            if (ext_platform_url) {
+                history.push(`${routes.root}?ext_platform_url=${ext_platform_url}`);
+                redirected_to_route = true;
+            }
+            break;
+        }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
             sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
-            window.location.href = loginUrl({
+            const new_href = loginUrl({
                 language: getLanguage(),
             });
+            window.location.href = new_href;
             break;
         }
         case 'trading_platform_investor_password_reset': {
@@ -199,7 +212,6 @@ export default withRouter(
         currency: client.currency,
         loginid: client.loginid,
         is_eu: client.is_eu,
-        is_eu_country: client.is_eu_country,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,
         fetchResidenceList: client.fetchResidenceList,

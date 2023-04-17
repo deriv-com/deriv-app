@@ -3,8 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import Withdrawal from '../withdrawal';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
@@ -30,16 +31,10 @@ describe('<Withdrawal />', () => {
     let history, mockRootStore, setSideNotes;
     beforeEach(() => {
         history = createBrowserHistory();
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 balance: '1000',
                 currency: 'USD',
-                current_currency_type: '',
-                is_switching: false,
-                is_virtual: false,
-                verification_code: {
-                    payment_withdraw: '',
-                },
             },
             modules: {
                 cashier: {
@@ -71,17 +66,17 @@ describe('<Withdrawal />', () => {
                     },
                 },
             },
-        };
+        });
         setSideNotes = jest.fn();
     });
 
     const renderWithdrawal = (is_rerender = false) => {
         const ui = (
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <Router history={history}>
                     <Withdrawal setSideNotes={setSideNotes} />
                 </Router>
-            </StoreProvider>
+            </CashierProviders>
         );
         return is_rerender ? ui : render(ui);
     };
@@ -118,12 +113,12 @@ describe('<Withdrawal />', () => {
 
     it('should render <WithdrawalLocked /> component', () => {
         mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
-        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
+        renderWithdrawal();
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
         mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
-        rerender(renderWithdrawal(true) as JSX.Element);
+        renderWithdrawal(true);
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });

@@ -23,8 +23,8 @@ const MyProfileHeader = () => {
             value: my_profile_tabs.AD_TEMPLATE,
         },
         {
-            text: localize('Blocked advertisers'),
-            value: my_profile_tabs.BLOCKED_ADVERTISERS,
+            text: localize('My counterparties'),
+            value: my_profile_tabs.MY_COUNTERPARTIES,
         },
     ];
 

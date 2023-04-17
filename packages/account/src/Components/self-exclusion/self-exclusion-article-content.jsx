@@ -127,7 +127,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
                                       className='link'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={getStaticUrl('/contact-us', { is_deriv_crypto })}
+                                      href={getStaticUrl('/contact_us', { is_deriv_crypto })}
                                   />,
                               ]}
                           />

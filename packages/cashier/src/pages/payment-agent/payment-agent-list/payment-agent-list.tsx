@@ -3,13 +3,14 @@ import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
-import SideNote from 'Components/side-note';
-import { TSideNotesProps } from 'Types';
+import { observer } from '@deriv/stores';
+import SideNote from '../../../components/side-note';
+import { TSideNotesProps } from '../../../types';
 import DepositTab from './deposit-tab';
 import WithdrawalTab from './withdrawal-tab';
 import MissingPaymentMethodNote from '../missing-payment-method-note';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-list.scss';
 
 type TProps = {
@@ -17,8 +18,7 @@ type TProps = {
 };
 
 const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
-    const { modules } = useStore();
-    const { payment_agent, general_store } = modules.cashier;
+    const { payment_agent, general_store } = useCashierStore();
 
     React.useEffect(() => {
         if (!general_store.is_loading && !payment_agent.is_try_withdraw_successful) {
@@ -48,6 +48,19 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
                     onTabItemClick={payment_agent.setActiveTab}
                     top
                     header_fit_content={isDesktop()}
+                    center={false}
+                    bottom={false}
+                    active_icon_color={''}
+                    background_color={''}
+                    fit_content={false}
+                    icon_color={''}
+                    icon_size={0}
+                    is_100vw={false}
+                    is_full_width={false}
+                    is_overflow_hidden={false}
+                    is_scrollable={false}
+                    should_update_hash={false}
+                    single_tab_has_no_label={false}
                 >
                     <div label={localize('Deposit')}>
                         <DepositTab />

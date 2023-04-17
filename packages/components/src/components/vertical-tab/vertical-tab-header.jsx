@@ -35,7 +35,10 @@ const VerticalTabHeader = ({
     const handleClick = () => onChange(item);
     const id = `dc_${getKebabCase(label)}_link`;
     const is_disabled = !!item.is_disabled;
+    const is_hidden = !!item.is_hidden;
     const count = item.count || 0;
+
+    if (is_hidden) return null;
 
     return is_routed ? (
         <NavLink

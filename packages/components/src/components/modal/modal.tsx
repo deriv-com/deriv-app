@@ -6,7 +6,11 @@ import Body from './modal-body';
 import Footer from './modal-footer';
 import Text from '../text/text';
 import Icon from '../icon/icon';
-import { useOnClickOutside, IClickEvent } from '../../hooks';
+import { useOnClickOutside } from '../../hooks';
+
+interface IClickEvent extends MouseEvent {
+    path?: HTMLElement[];
+}
 
 type TModalElement = {
     className?: string;
@@ -78,7 +82,7 @@ const ModalElement = ({
         modal_root_ref.current?.querySelectorAll(portal_elements_selector.join(', ')).length;
 
     const validateClickOutside = (e: IClickEvent): boolean => {
-        const is_absolute_modal_visible = document.getElementById('modal_root_absolute')?.hasChildNodes();
+        const is_absolute_modal_visible = document.getElementById('popup_root')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
             has_close_icon &&

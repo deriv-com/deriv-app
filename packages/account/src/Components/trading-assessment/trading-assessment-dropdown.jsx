@@ -1,9 +1,17 @@
 import React from 'react';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, getLanguage } from '@deriv/translations';
+import classNames from 'classnames';
 
-const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
+const TradingAssessmentDropdown = ({
+    disabled_items,
+    item_list,
+    onChange,
+    values,
+    setFieldValue,
+    setEnableNextSection,
+}) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
     }, [values]);
@@ -28,13 +36,22 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                             <React.Fragment>
                                 <DesktopWrapper>
                                     <Dropdown
-                                        classNameDisplay='trading-assessment__wrapper__dropdown--mobile--display'
+                                        classNameDisplay={classNames(
+                                            'trading-assessment__wrapper__dropdown--mobile--display',
+                                            {
+                                                'trading-frequency--field':
+                                                    question.form_control ===
+                                                        'trading_frequency_financial_instruments' &&
+                                                    ['ID', 'FR'].includes(getLanguage()),
+                                            }
+                                        )}
                                         is_align_text_left
                                         name={question?.question_text}
                                         placeholder={question?.question_text}
                                         list={question?.answer_options}
                                         onChange={e => onChange(e, question.form_control, setFieldValue)}
                                         value={values[question.form_control]}
+                                        disabled={disabled_items.includes(question.form_control)}
                                     />
                                 </DesktopWrapper>
                                 <MobileWrapper>
@@ -51,6 +68,7 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                                         }}
                                         value={values[question.form_control]}
                                         hide_top_placeholder
+                                        disabled={disabled_items.includes(question.form_control)}
                                     />
                                 </MobileWrapper>
                             </React.Fragment>

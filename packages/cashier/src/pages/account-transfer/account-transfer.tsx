@@ -1,29 +1,29 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { WS } from '@deriv/shared';
+import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TSideNotesProps } from 'Types';
-import Error from 'Components/error';
-import NoBalance from 'Components/no-balance';
-import { Virtual } from 'Components/cashier-container';
-import CashierLocked from 'Components/cashier-locked';
-import CryptoTransactionsHistory from 'Components/crypto-transactions-history';
+import { TSideNotesProps } from '../../types';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import { Virtual } from '../../components/cashier-container';
+import CashierLocked from '../../components/cashier-locked';
+import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import AccountTransferReceipt from './account-transfer-receipt';
 import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
+import { useCashierStore } from '../../stores/useCashierStores';
 
 type TAccountTransferProps = {
-    setSideNotes: (notes: TSideNotesProps) => void;
+    onClickDeposit?: () => void;
+    onClickNotes?: () => void;
+    onClose: () => void;
+    setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
-const AccountTransfer = observer(({ setSideNotes }: TAccountTransferProps) => {
-    const {
-        modules: {
-            cashier: { account_transfer, general_store, transaction_history },
-        },
-        client,
-    } = useStore();
+const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSideNotes }: TAccountTransferProps) => {
+    const { client } = useStore();
+    const { account_transfer, general_store, transaction_history } = useCashierStore();
 
     const {
         accounts_list,
@@ -45,6 +45,7 @@ const AccountTransfer = observer(({ setSideNotes }: TAccountTransferProps) => {
     const { is_switching, is_virtual } = client;
 
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
+    const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
@@ -96,16 +97,24 @@ const AccountTransfer = observer(({ setSideNotes }: TAccountTransferProps) => {
         return <AccountTransferNoAccount />;
     }
     if (has_no_accounts_balance) {
-        return <NoBalance />;
+        return <NoBalance onClickDeposit={onClickDeposit} />;
     }
     if (is_transfer_confirm) {
-        return <AccountTransferReceipt />;
+        return <AccountTransferReceipt onClose={onClose} />;
     }
-    if (is_crypto_transactions_visible) {
+    if (!is_from_outside_cashier && is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
 
-    return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
+    return (
+        <AccountTransferForm
+            error={error}
+            setSideNotes={setSideNotes}
+            onClickDeposit={onClickDeposit}
+            onClickNotes={onClickNotes}
+            onClose={onClose}
+        />
+    );
 });
 
 export default AccountTransfer;

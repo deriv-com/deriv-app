@@ -107,9 +107,9 @@ describe('CFDAccountCard', () => {
             toggleShouldShowRealAccountsList: jest.fn(),
             isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
             isEligibleForMoreRealMt5: jest.fn(() => true),
-            toggleMT5TradeModal: jest.fn(),
             setMT5TradeAccount: jest.fn(),
             trading_platform_available_accounts: [],
+            show_eu_related_content: false,
         };
     });
 
@@ -130,7 +130,7 @@ describe('CFDAccountCard', () => {
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5SyntheticPlatform/i)).toBeInTheDocument();
         expect(screen.getAllByText(/synthetic/i)[0]).toBeInTheDocument();
         expect(
             screen.getByText(/trade cfds on our synthetic indices that simulate real-world market movement./i)
@@ -157,7 +157,7 @@ describe('CFDAccountCard', () => {
             />
         );
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
-        expect(screen.getByText(/IcMt5CfdPlatform/i)).toBeInTheDocument();
+        expect(screen.getByText(/IcMt5FinancialPlatform/i)).toBeInTheDocument();
         expect(screen.getAllByText(/financial/i)[0]).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -246,26 +246,6 @@ describe('CFDAccountCard', () => {
         );
         fireEvent.click(screen.getByRole('button', { name: /top up/i }));
         expect(props.onClickFund).toHaveBeenCalledWith(mt5_acc);
-    });
-
-    it('should call toggleMT5TradeModal when trade button is clicked', () => {
-        const type = {
-            type: 'financial',
-            category: 'real',
-            platform: 'mt5',
-        };
-        render(
-            <CFDAccountCard
-                {...props}
-                type={type}
-                descriptor={financial_descriptor}
-                title='Financial'
-                existing_accounts_data={[mt5_acc]}
-            />
-        );
-        fireEvent.click(screen.getByRole('button', { name: /trade/i }));
-        expect(props.toggleMT5TradeModal).toHaveBeenCalled();
-        expect(props.setMT5TradeAccount).toHaveBeenCalledWith(mt5_acc);
     });
 
     it("should show add account button if the user doesn't have an existing account", () => {

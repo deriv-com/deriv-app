@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import ErrorStore from 'Stores/error-store';
+import ErrorStore from '../../stores/error-store';
 import './error.scss';
 
 type TErrorComponentProps = {
@@ -11,7 +11,7 @@ type TErrorComponentProps = {
     footer?: JSX.Element;
     header?: JSX.Element | string;
     message?: JSX.Element;
-    onClickButton?: () => void;
+    onClickButton?: VoidFunction;
 };
 
 type TErrorFields = {
@@ -32,7 +32,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
             </Text>
         )}
         {button_link && (
-            <ButtonLink className='error__button' to={button_link} onClick={onClickButton} primary large>
+            <ButtonLink className='error__button' to={button_link} onClick={onClickButton} size='large'>
                 <span className='dc-btn__text'>{button_text}</span>
             </ButtonLink>
         )}
@@ -116,7 +116,7 @@ const Error = ({ error }: { error: ErrorStore }) => {
                     footer={
                         <Localize
                             i18n_default_text='Need help? <0>Contact us</0>.'
-                            components={[<StaticUrl key={0} className='link' href='help-centre' />]}
+                            components={[<StaticUrl key={0} className='link' href='help-centre' is_document={false} />]}
                         />
                     }
                 />

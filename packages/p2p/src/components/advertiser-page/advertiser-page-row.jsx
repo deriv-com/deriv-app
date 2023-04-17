@@ -2,16 +2,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { generateEffectiveRate } from 'Utils/format-value';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './advertiser-page.scss';
 
-const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
+const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
-    const { currency } = general_store.client;
+    const {
+        client: { currency },
+    } = useStore();
     const {
         effective_rate,
         local_currency,
@@ -22,6 +25,7 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
         rate_type,
         rate,
     } = advert;
+    const { showModal } = useModalManagerContext();
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
@@ -37,7 +41,9 @@ const AdvertiserPageRow = ({ row: advert, showAdPopup }) => {
 
     const showAdForm = () => {
         buy_sell_store.setSelectedAdState(advert);
-        showAdPopup(advert);
+        showModal({
+            key: 'BuySellModal',
+        });
     };
 
     if (isMobile()) {
@@ -138,7 +144,6 @@ AdvertiserPageRow.displayName = 'AdvertiserPageRow';
 AdvertiserPageRow.propTypes = {
     advert: PropTypes.object,
     row: PropTypes.object,
-    showAdPopup: PropTypes.func,
 };
 
 export default observer(AdvertiserPageRow);

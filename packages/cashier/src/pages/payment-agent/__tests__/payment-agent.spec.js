@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
-import { StoreProvider } from '@deriv/stores';
+import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -53,9 +53,9 @@ describe('<PaymentAgent />', () => {
     const renderPaymentAgent = () => {
         return render(
             <Router history={createBrowserHistory()}>
-                <StoreProvider store={mockRootStore}>
+                <CashierProviders store={mockRootStore}>
                     <PaymentAgent setSideNotes={jest.fn()} />
-                </StoreProvider>
+                </CashierProviders>
             </Router>
         );
     };

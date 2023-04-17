@@ -1,11 +1,11 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
 import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
-import CFDPOA, { TCFDPOAProps } from '../Components/cfd-poa';
-import CFDPOI from '../Components/cfd-poi';
 import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
+import CFDPOA from '../Components/cfd-poa';
+import CFDPOI from '../Components/cfd-poi';
+import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import RootStore from '../Stores/index';
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -43,32 +43,35 @@ type TCFDFinancialStpRealAccountSignupProps = {
     account_status: GetAccountStatus;
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
+    has_submitted_cfd_personal_details: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
 
 type TItemsState = {
-    header: { [key: string]: string };
-    body: ({ onSave, index, onSubmit, refreshNotifications, ...props }: TCFDPOAProps) => JSX.Element;
+    body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof TCFDFinancialStpRealAccountSignupProps>>;
 };
 
 const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSignupProps) => {
-    const { account_status, authentication_status, fetchStatesList, refreshNotifications } = props;
+    const {
+        account_status,
+        authentication_status,
+        fetchStatesList,
+        get_settings,
+        refreshNotifications,
+        has_submitted_cfd_personal_details,
+        jurisdiction_selected_shortcode,
+    } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const state_index = step;
-    const height = 'auto';
     let is_mounted = React.useRef(true).current;
 
-    const { need_poi_for_vanuatu, need_poi_for_bvi_labuan_maltainvest } = getAuthenticationStatusInfo(account_status);
+    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan } = getAuthenticationStatusInfo(account_status);
 
     const poi_config: TItemsState = {
-        header: {
-            active_title: localize('Complete your proof of identity'),
-            title: localize('Proof of identity'),
-        },
         body: CFDPOI,
         form_value: {
             poi_state: 'unknown',
@@ -84,32 +87,48 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const poa_config: TItemsState = {
-        header: {
-            active_title: localize('Complete your proof of address'),
-            title: localize('Proof of address'),
-        },
         body: CFDPOA,
         form_value: {
-            address_line_1: props.get_settings.address_line_1,
-            address_line_2: props.get_settings.address_line_2,
-            address_city: props.get_settings.address_city,
-            address_state: props.get_settings.address_state,
-            address_postcode: props.get_settings.address_postcode,
+            address_line_1: get_settings.address_line_1,
+            address_line_2: get_settings.address_line_2,
+            address_city: get_settings.address_city,
+            address_state: get_settings.address_state,
+            address_postcode: get_settings.address_postcode,
             upload_file: '',
         },
         forwarded_props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
     };
 
+    const personal_details_config: TItemsState = {
+        body: CFDPersonalDetailsContainer,
+        form_value: {
+            citizen: '',
+            place_of_birth: '',
+            tax_residence: '',
+            tax_identification_number: '',
+            account_opening_reason: '',
+        },
+        forwarded_props: ['residence_list', 'landing_company'],
+    };
+
     const should_show_poi = () => {
-        if (props.jurisdiction_selected_shortcode === 'vanuatu' && need_poi_for_vanuatu) {
-            return true;
+        if (jurisdiction_selected_shortcode === 'vanuatu' || jurisdiction_selected_shortcode === 'maltainvest') {
+            return need_poi_for_vanuatu_maltainvest;
         }
-        return need_poi_for_bvi_labuan_maltainvest;
+        return need_poi_for_bvi_labuan;
     };
     const should_show_poa = !(
         authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
     );
-    const verification_configs = [...(should_show_poi() ? [poi_config] : []), ...(should_show_poa ? [poa_config] : [])];
+
+    const should_show_personal_details =
+        !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== 'maltainvest';
+
+    const verification_configs = [
+        ...(should_show_poi() ? [poi_config] : []),
+        ...(should_show_poa ? [poa_config] : []),
+        ...(should_show_personal_details ? [personal_details_config] : []),
+    ];
 
     const [items, setItems] = React.useState<TItemsState[]>(verification_configs);
 
@@ -156,7 +175,8 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         return key ? items[state_index][key] : items[state_index];
     };
 
-    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA;
+    const BodyComponent = getCurrent('body') as typeof CFDPOI & typeof CFDPOA & typeof CFDPersonalDetailsContainer;
+
     const form_value = getCurrent('form_value');
 
     const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(
@@ -180,7 +200,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
                     value={form_value}
                     index={state_index}
                     onSubmit={nextStep}
-                    height={height}
+                    height='auto'
                     context={props.context}
                     onCancel={prevStep}
                     onSave={saveFormData}
@@ -208,4 +228,5 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     storeProofOfAddress: cfd.storeProofOfAddress,
     account_status: client.account_status,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
+    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
 }))(CFDFinancialStpRealAccountSignup);

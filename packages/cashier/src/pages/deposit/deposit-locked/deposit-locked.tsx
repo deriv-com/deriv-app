@@ -4,10 +4,19 @@ import { Icon, Checklist, StaticUrl, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
+import CashierLocked from '../../../components/cashier-locked';
+import { useCashierStore } from '../../../stores/useCashierStores';
+
+type TItems = {
+    button_text?: string;
+    onClick: () => void;
+    status: string;
+    is_disabled?: boolean;
+    content: string | JSX.Element;
+};
 
 const DepositLocked = observer(() => {
-    const { client, modules } = useStore();
+    const { client } = useStore();
     const {
         account_status,
         is_financial_account,
@@ -16,8 +25,7 @@ const DepositLocked = observer(() => {
         is_trading_experience_incomplete,
         standpoint,
     } = client;
-    const { cashier } = modules;
-    const { deposit } = cashier;
+    const { deposit } = useCashierStore();
     const { onMountDeposit: onMount } = deposit;
 
     // handle authentication locked
@@ -43,7 +51,7 @@ const DepositLocked = observer(() => {
     };
 
     // handle all deposits lock status
-    const items = [
+    const items: TItems[] = [
         ...(is_poi_needed && has_poi_submitted
             ? [
                   {
@@ -68,7 +76,14 @@ const DepositLocked = observer(() => {
                       content: (
                           <Localize
                               i18n_default_text='Accept our updated <0>terms and conditions</0>'
-                              components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
+                              components={[
+                                  <StaticUrl
+                                      key={0}
+                                      className='link'
+                                      href='terms-and-conditions'
+                                      is_document={false}
+                                  />,
+                              ]}
                           />
                       ),
                       status: 'button-action',

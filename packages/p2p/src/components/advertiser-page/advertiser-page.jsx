@@ -5,9 +5,7 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
-import { buy_sell } from 'Constants/buy-sell';
-import RateChangeModal from 'Components/buy-sell/rate-change-modal.jsx';
-import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
@@ -17,18 +15,19 @@ import StarRating from 'Components/star-rating';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import TradeBadge from '../trade-badge/trade-badge.jsx';
 import BlockUserOverlay from './block-user/block-user-overlay';
-import BlockUserModal from 'Components/block-user/block-user-modal';
-import ErrorModal from 'Components/error-modal/error-modal';
 import classNames from 'classnames';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
-    const { general_store, advertiser_page_store, buy_sell_store } = useStores();
+    const { general_store, advertiser_page_store, buy_sell_store, my_profile_store } = useStores();
+    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
     const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
+
     const {
         basic_verification,
         buy_orders_count,
@@ -49,7 +48,6 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
-    const [is_error_modal_open, setIsErrorModalOpen] = React.useState(false);
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
@@ -59,7 +57,26 @@ const AdvertiserPage = () => {
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
                 advertiser_page_store.onTabChange();
-                if (general_store.block_unblock_user_error) setIsErrorModalOpen(true);
+                if (general_store.block_unblock_user_error) {
+                    showModal({
+                        key: 'ErrorModal',
+                        props: {
+                            error_message: general_store.block_unblock_user_error,
+                            error_modal_title: 'Unable to block advertiser',
+                            has_close_icon: false,
+                            onClose: () => {
+                                buy_sell_store.hideAdvertiserPage();
+                                if (general_store.active_index !== 0)
+                                    my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
+                                advertiser_page_store.onCancel();
+                                general_store.setBlockUnblockUserError('');
+                                hideModal();
+                            },
+                            width: isMobile() ? '90rem' : '40rem',
+                        },
+                    });
+                    general_store.setBlockUnblockUserError(null);
+                }
             },
             { fireImmediately: true }
         );
@@ -70,6 +87,16 @@ const AdvertiserPage = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useRegisterModalProps({
+        key: 'BlockUserModal',
+        props: {
+            advertiser_name: name,
+            is_advertiser_blocked: !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert,
+            onCancel: advertiser_page_store.onCancel,
+            onSubmit: advertiser_page_store.onSubmit,
+        },
+    });
 
     if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
@@ -86,38 +113,14 @@ const AdvertiserPage = () => {
                     !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert,
             })}
         >
-            <RateChangeModal onMount={advertiser_page_store.setShowAdPopup} />
-            <ErrorModal
-                error_message={general_store.block_unblock_user_error}
-                error_modal_title='Unable to block advertiser'
-                has_close_icon={false}
-                is_error_modal_open={is_error_modal_open}
-                setIsErrorModalOpen={is_open => {
-                    if (!is_open) buy_sell_store.hideAdvertiserPage();
-                    advertiser_page_store.onCancel();
-                    general_store.setBlockUnblockUserError('');
-                }}
-                width={isMobile() ? '90rem' : '40rem'}
-            />
-            <BlockUserModal
-                advertiser_name={name}
-                is_advertiser_blocked={!!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert}
-                is_block_user_modal_open={
-                    general_store.is_block_user_modal_open && !general_store.block_unblock_user_error
-                }
-                onCancel={advertiser_page_store.onCancel}
-                onSubmit={advertiser_page_store.onSubmit}
-            />
-            <BuySellModal
-                selected_ad={advertiser_page_store.advert}
-                should_show_popup={advertiser_page_store.show_ad_popup}
-                setShouldShowPopup={advertiser_page_store.setShowAdPopup}
-                table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
-            />
             <div className='advertiser-page__page-return-header'>
                 <PageReturn
                     className='buy-sell__advertiser-page-return'
-                    onClick={buy_sell_store.hideAdvertiserPage}
+                    onClick={() => {
+                        buy_sell_store.hideAdvertiserPage();
+                        if (general_store.active_index === general_store.path.my_profile)
+                            my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
+                    }}
                     page_title={localize("Advertiser's page")}
                 />
                 {!is_my_advert && (
@@ -128,7 +131,11 @@ const AdvertiserPage = () => {
             </div>
             <BlockUserOverlay
                 is_visible={!!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert}
-                onClickUnblock={() => general_store.setIsBlockUserModalOpen(true)}
+                onClickUnblock={() =>
+                    showModal({
+                        key: 'BlockUserModal',
+                    })
+                }
             >
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>
@@ -175,7 +182,6 @@ const AdvertiserPage = () => {
                                     </div>
                                 </div>
                             </MobileWrapper>
-
                             <div className='advertiser-page__rating'>
                                 <DesktopWrapper>
                                     <React.Fragment>

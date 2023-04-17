@@ -1,10 +1,19 @@
+@keyframes closeDrawerWrapper {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 @include mobile {
     /** disabling pull to refresh on iOS / Android browsers */
     /* postcss-bem-linter: ignore */
     body,
     .deriv-app,
     .modal-root,
-    .dc-mobile-drawer__wrapper {
+    .dc-mobile-drawer__overlay {
         /* Break the flow */
         position: absolute !important;
         top: 0 !important;
@@ -22,6 +31,15 @@
         /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
         @supports (-webkit-touch-callout: none) {
             position: fixed !important;
+        }
+    }
+    .dc-mobile-drawer__overlay {
+        position: fixed !important;
+        &.exit {
+            animation-name: closeDrawerWrapper;
+            animation-delay: 1s;
+            animation-duration: 0.1s;
+            animation-fill-mode: forwards;
         }
     }
     .body {
@@ -51,6 +69,15 @@
             position: absolute;
             right: 1.6rem;
         }
+        .dc-toast-popup-mobile {
+            display: inherit;
+            max-width: calc(100vw - 1.6rem);
+            position: absolute;
+            width: calc(100vw - 1.2rem);
+            top: 0.4rem;
+            left: 1.2rem;
+            right: 1.2rem;
+        }
     }
 }
 
@@ -72,15 +99,14 @@
     font-size: 1.6rem;
     z-index: 9999;
     font-weight: bold;
+    gap: 2.4rem;
 
     &__icon {
-        width: 59px;
-        height: 64px;
+        width: 8rem;
+        height: 6.2rem;
     }
     &__message {
         padding: 1.6rem 11rem;
-        line-height: 1.4;
-
         &--landscape {
             @media screen and (orientation: portrait) {
                 display: none;
@@ -89,7 +115,7 @@
 
         &--portrait {
             text-align: center;
-            margin-top: 2rem;
+            line-height: var(--text-lh-m);
             @media screen and (orientation: landscape) {
                 display: none;
             }
@@ -98,12 +124,6 @@
 
     @include desktop {
         display: none;
-    }
-
-    @include tablet {
-        @media screen and (orientation: portrait) {
-            display: none;
-        }
     }
 
     @include mobile {

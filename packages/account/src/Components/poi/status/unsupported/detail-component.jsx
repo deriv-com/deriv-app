@@ -100,7 +100,7 @@ const DetailComponent = ({
         case STATUS.IS_UPLOADING:
             return <Loading is_fullscreen={false} is_slow_loading status={[localize('Uploading documents')]} />;
         case STATUS.IS_COMPLETED:
-            return <UploadComplete is_from_external={true} needs_poa={false} />;
+            return <UploadComplete is_from_external={true} needs_poa={false} is_manual_upload />;
         case STATUS.IS_FAILED:
             return <PoiUnsupportedFailed error={response_error} />;
         default:

@@ -4,12 +4,12 @@ import React, { HTMLProps } from 'react';
 type TGeneralCardComponentsProps = HTMLProps<HTMLDivElement>;
 
 type TCardProps = HTMLProps<HTMLDivElement> & {
-    header: React.ReactNode;
-    renderHeader: () => React.ReactNode;
-    content: React.ReactNode;
-    renderContent: () => React.ReactNode;
-    footer: React.ReactNode;
-    renderFooter: () => React.ReactNode;
+    header?: React.ReactNode;
+    renderHeader?: () => React.ReactNode;
+    content?: React.ReactNode;
+    renderContent?: () => React.ReactNode;
+    footer?: React.ReactNode;
+    renderFooter?: () => React.ReactNode;
 };
 
 const CardRoot = ({ children, className, ...props }: TGeneralCardComponentsProps) => (

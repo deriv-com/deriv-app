@@ -296,7 +296,7 @@ describe('ContractTypeMenu', () => {
         const dt_contract_dropdown = screen.getByTestId('dt_contract_dropdown');
         fireEvent.click(dt_contract_dropdown);
 
-        expect(screen.getByTestId('contract_wrapper')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_contract_wrapper')).toBeInTheDocument();
     });
 
     it('should search in the input', () => {

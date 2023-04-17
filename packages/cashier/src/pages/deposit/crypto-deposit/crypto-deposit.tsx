@@ -3,15 +3,16 @@ import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import CashierBreadcrumb from '../../../components/cashier-breadcrumb';
 import QRCode from 'qrcode.react';
-import RecentTransaction from 'Components/recent-transaction';
+import RecentTransaction from '../../../components/recent-transaction';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-deposit.scss';
 
 const CryptoDeposit = observer(() => {
-    const { client, modules } = useStore();
-    const { cashier } = modules;
+    const { client } = useStore();
     const { currency } = client;
-    const { onramp, transaction_history, general_store } = cashier;
+    const { onramp, transaction_history, general_store } = useCashierStore();
     const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
@@ -128,6 +129,7 @@ const CryptoDeposit = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
+            <CashierBreadcrumb is_crypto_deposit />
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text
@@ -197,7 +199,7 @@ const CryptoDeposit = observer(() => {
                             (currency === 'ETH' && option_list_value === option_list[4].value) ||
                             (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
                             <>
-                                <QRCode className='qrcode' value={deposit_address} size={160} includeMargin />
+                                <QRCode className='qrcode' value={deposit_address || ''} size={160} includeMargin />
                                 <div className='crypto-deposit__clipboard-wrapper'>
                                     <Text
                                         className='crypto-deposit__address-hash'
@@ -210,7 +212,7 @@ const CryptoDeposit = observer(() => {
                                     </Text>
                                     <Clipboard
                                         className='crypto-deposit__clipboard'
-                                        text_copy={deposit_address}
+                                        text_copy={deposit_address || ''}
                                         info_message={isMobile() ? '' : localize('copy')}
                                         icon='IcCashierClipboard'
                                         success_message={localize('copied!')}
@@ -232,7 +234,7 @@ const CryptoDeposit = observer(() => {
                         <Localize i18n_default_text='Use our fiat onramp services to buy and deposit cryptocurrency into your Deriv account.' />
                     </Text>
                 </div>
-                <ButtonLink className='crypto-deposit__fiat-onramp-button' has_effect to='/cashier/on-ramp'>
+                <ButtonLink className='crypto-deposit__fiat-onramp-button' to='/cashier/on-ramp'>
                     <Text as='p' weight='bold' color='colored-background' size='xs'>
                         <Localize i18n_default_text='Try our Fiat onramp' />
                     </Text>

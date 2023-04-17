@@ -10,7 +10,13 @@ const EmptyTradeHistoryMessage = ({
 }) => (
     <React.Fragment>
         <div className='empty-trade-history'>
-            <Icon icon={component_icon} className='empty-trade-history__icon' color='disabled' size={96} />
+            <Icon
+                data_testid='dt_empty_trade_history_icon'
+                icon={component_icon}
+                className='empty-trade-history__icon'
+                color='disabled'
+                size={96}
+            />
             <Text size='xs' align='center' color='disabled' className='empty-trade-history__text'>
                 {!has_selected_date ? localized_message : localized_period_message}
             </Text>

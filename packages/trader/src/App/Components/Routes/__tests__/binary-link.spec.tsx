@@ -1,48 +1,38 @@
-// TODO refactor old tests in this component
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { routes } from '@deriv/shared';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { BinaryLink } from '../index';
 
-// configure({ adapter: new Adapter() });
+type TMockBinaryLink = {
+    to?: string;
+};
 
-describe('<BinaryLink />', () => {
-    it('should render one <BinaryLink /> component', () => {
-        // const wrapper = shallow(<BinaryLink />);
-        // expect(wrapper).toHaveLength(1);
+const MockBinaryLink = ({ to }: TMockBinaryLink) => (
+    <BrowserRouter>
+        <BinaryLink active_class='active_class' to={to}>
+            <div data-testid='dt_child' />
+        </BinaryLink>
+    </BrowserRouter>
+);
+
+describe('BinaryLink component', () => {
+    it('should render "children" when passed in', () => {
+        render(<MockBinaryLink />);
+        expect(screen.getByTestId('dt_child')).toBeInTheDocument();
     });
-    // it('should render children when passed in', () => {
-    //     const child_div = <div className='sweet-child-of-mine' />;
-    //     const wrapper = shallow(<BinaryLink>{child_div}</BinaryLink>);
-    //     expect(wrapper.contains(child_div)).toBe(true);
-    // });
-    // it("should render one <Navlink /> when property 'to' is passed", () => {
-    //     const wrapper = shallow(<BinaryLink to='/' />);
-    //     expect(wrapper.find(NavLink)).toHaveLength(1);
-    // });
-    // it("should not render <Navlink /> when property 'to' is not passed", () => {
-    //     const wrapper = shallow(<BinaryLink />);
-    //     expect(wrapper.find(NavLink)).toHaveLength(0);
-    // });
-    // it("should render <a /> when property 'to' is not passed", () => {
-    //     const wrapper = shallow(<BinaryLink />);
-    //     expect(wrapper.contains(<a />)).toBe(true);
-    // });
-    // it("should not render <a> when property 'to' is passed", () => {
-    //     const wrapper = shallow(<BinaryLink to={routes.trade} />);
-    //     expect(wrapper.contains(<a />)).toBe(false);
-    // });
-    // it('should render component with props if any given', () => {
-    //     const wrapper = shallow(<BinaryLink className='a-cool-classname' />);
-    //     expect(wrapper.find('.a-cool-classname').exists());
-    // });
-    // it('should throw error if the route given is not a valid route', () => {
-    //     let error;
-    //     try {
-    //         shallow(<BinaryLink to='/wrongRoute' />);
-    //     } catch (e) {
-    //         error = e;
-    //     }
-    //     expect(error).toBeInstanceOf(Error);
-    // });
+
+    it('should have "active_class" when passed in', () => {
+        render(<MockBinaryLink to='/' />);
+        expect(screen.getByTestId('dt_binary_link')).toHaveClass('active_class');
+    });
+
+    it('should render "NavLink" when "to" property is passed', () => {
+        render(<MockBinaryLink to='/' />);
+        expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
+    });
+
+    it('should render "a" element whe property "to" is not passed', () => {
+        render(<MockBinaryLink />);
+        expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
+    });
 });

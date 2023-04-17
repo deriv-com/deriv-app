@@ -3,9 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
 import CryptoDeposit from '../crypto-deposit';
-import { TRootStore } from '../../../../types';
+import { TRootStore } from 'Types';
+import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -32,11 +32,14 @@ describe('<CryptoDeposit />', () => {
     const renderWithRouter = (component: JSX.Element, mockRootStore: TRootStore) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
     };
 
     it('should show loader', () => {
+        // TODO: use mockStore for tests after TStores type will be updated
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 currency: 'BTC',
@@ -63,6 +66,70 @@ describe('<CryptoDeposit />', () => {
         renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
+    });
+
+    it('should show proper breadcrumbs', () => {
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+
+        expect(screen.getByText(/cashier/i)).toBeInTheDocument();
+        expect(screen.getByText(/deposit cryptocurrencies/i)).toBeInTheDocument();
+    });
+
+    it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+
+        const el_breadcrumb_cashier = screen.queryByText(/cashier/i);
+
+        if (el_breadcrumb_cashier) {
+            fireEvent.click(el_breadcrumb_cashier);
+            expect(mockRootStore.modules?.cashier.general_store.setIsDeposit).toHaveBeenCalledWith(false);
+        }
     });
 
     it('should show proper error message and button', () => {
@@ -361,7 +428,11 @@ describe('<CryptoDeposit />', () => {
             <Router history={history}>
                 <CryptoDeposit />
             </Router>,
-            { wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider> }
+            {
+                wrapper: ({ children }) => (
+                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+                ),
+            }
         );
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();

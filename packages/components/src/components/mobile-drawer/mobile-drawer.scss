@@ -1,10 +1,36 @@
 /* @define dc-mobile-drawer; weak */
+@keyframes openDrawer {
+    0% {
+        transform: translateX(-100%);
+    }
+    60%,
+    100% {
+        transform: translateX(0);
+    }
+    80% {
+        transform: translateX(-5%);
+    }
+}
+
+@keyframes closeDrawer {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 .dc-mobile-drawer {
     position: absolute;
     top: 0;
     left: 0;
     will-change: transform;
-    transform: translate3d(0, 0, 0);
+    transform: translateX(-100%);
+    animation-name: openDrawer;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    z-index: 10000;
 
     &__container {
         display: flex;
@@ -14,6 +40,14 @@
         background-color: var(--general-main-2);
         box-shadow: 0 16px 16px 0 var(--shadow-menu), 0 0 16px 0 var(--shadow-menu);
     }
+
+    &-header {
+        &__title--pre-appstore {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
     &__header {
         display: flex;
         width: 100%;
@@ -54,6 +88,7 @@
             display: flex;
             width: 100%;
             justify-content: space-between;
+            transition: all 0.2s;
         }
     }
     &__subheader {
@@ -85,6 +120,12 @@
             height: 5.6rem;
             padding: 0 1.6rem 0 4.8rem;
             align-items: center;
+
+            &--hidden {
+                visibility: hidden;
+                height: 0;
+                padding: 0;
+            }
 
             &-icon {
                 width: 16px;
@@ -189,8 +230,11 @@
             border-top: 1px solid var(--general-section-2);
         }
     }
-    &__wrapper {
+    &__overlay {
         z-index: 9999 !important;
         background-color: var(--overlay-outside-dialog) !important;
+    }
+    &.exit {
+        animation: closeDrawer 0.3s;
     }
 }

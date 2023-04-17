@@ -1,0 +1,24 @@
+.no-ads {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.4rem;
+
+    @include mobile {
+        margin-top: calc(17.2rem + 2.6rem);
+    }
+
+    &__button {
+        margin-top: 2.4rem;
+    }
+
+    &__message {
+        @include mobile {
+            width: 32rem;
+        }
+    }
+
+    &__title {
+        margin: 2.4rem 0 0.5rem;
+    }
+}

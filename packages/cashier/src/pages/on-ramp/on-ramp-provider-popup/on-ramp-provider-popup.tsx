@@ -3,46 +3,34 @@ import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv/components';
 import { getKebabCase, website_name, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import { TProviderDetails, TRootStore, TUiStore } from 'Types';
+import { observer, useStore } from '@deriv/stores';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
-type TOnRampProviderPopupProps = {
-    api_error: string;
-    deposit_address: string;
-    is_dark_mode_on: TUiStore['is_dark_mode_on'];
-    is_deposit_address_loading: boolean;
-    is_requesting_widget_html: boolean;
-    onClickDisclaimerContinue: () => void;
-    onClickGoToDepositPage: () => void;
-    selected_provider: TProviderDetails;
-    setIsOnRampModalOpen: (boolean: boolean) => void;
-    should_show_dialog: boolean;
-    should_show_widget: boolean;
-    widget_error: string;
-    widget_html: string;
-};
-
-const OnRampProviderPopup = ({
-    api_error,
-    deposit_address,
-    is_dark_mode_on,
-    is_deposit_address_loading,
-    is_requesting_widget_html,
-    onClickDisclaimerContinue,
-    onClickGoToDepositPage,
-    selected_provider,
-    setIsOnRampModalOpen,
-    should_show_dialog,
-    should_show_widget,
-    widget_error,
-    widget_html,
-}: TOnRampProviderPopupProps) => {
+const OnRampProviderPopup = observer(() => {
+    const { ui } = useStore();
+    const { is_dark_mode_on } = ui;
+    const { onramp } = useCashierStore();
+    const {
+        api_error,
+        deposit_address,
+        is_deposit_address_loading,
+        is_requesting_widget_html,
+        onClickDisclaimerContinue,
+        onClickGoToDepositPage,
+        selected_provider,
+        setIsOnRampModalOpen,
+        should_show_dialog,
+        should_show_widget,
+        widget_error,
+        widget_html,
+    } = onramp;
     const el_onramp_widget_container_ref = React.useRef(null);
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
+
     let timeout_clipboard: ReturnType<typeof setTimeout>;
 
     const onClickCopyDepositAddress = () => {
-        copyToClipboard(deposit_address);
+        copyToClipboard(deposit_address || '');
 
         timeout_clipboard = setTimeout(() => {
             setIsCopied(false);
@@ -51,6 +39,7 @@ const OnRampProviderPopup = ({
 
     React.useEffect(() => {
         return () => clearTimeout(timeout_clipboard);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // JS executed after "on-ramp__widget-container" has been added to the DOM.
@@ -58,7 +47,7 @@ const OnRampProviderPopup = ({
     // (vs embedding an <iframe>)
     React.useEffect(() => {
         if (should_show_widget && widget_html) {
-            selected_provider.onMountWidgetContainer(el_onramp_widget_container_ref);
+            selected_provider?.onMountWidgetContainer(el_onramp_widget_container_ref);
         }
     }, [selected_provider, should_show_widget, widget_html]);
 
@@ -81,7 +70,7 @@ const OnRampProviderPopup = ({
                 {widget_error ? (
                     <div className='on-ramp__widget-container-error'>{widget_error}</div>
                 ) : (
-                    <div dangerouslySetInnerHTML={{ __html: widget_html }} />
+                    <div dangerouslySetInnerHTML={{ __html: widget_html || '' }} />
                 )}
             </div>
         );
@@ -119,12 +108,12 @@ const OnRampProviderPopup = ({
                             <Localize i18n_default_text="Please copy the crypto address you see below. You'll need it to deposit your cryptocurrency." />
                         </Text>
                         <div className='on-ramp__popup-deposit-address'>
-                            <Popover zIndex={9998} alignment='right' message={localize('Copied!')} is_open={is_copied}>
+                            <Popover zIndex='9998' alignment='right' message={localize('Copied!')} is_open={is_copied}>
                                 <input
                                     className={classNames('on-ramp__popup-deposit-address-text', {
                                         'on-ramp__popup-deposit-address-text--dark': is_dark_mode_on,
                                     })}
-                                    defaultValue={deposit_address}
+                                    defaultValue={deposit_address || ''}
                                     disabled
                                     onFocus={e => e.preventDefault()}
                                 />
@@ -192,20 +181,6 @@ const OnRampProviderPopup = ({
             )}
         </div>
     );
-};
+});
 
-export default connect(({ modules, ui }: TRootStore) => ({
-    api_error: modules.cashier.onramp.api_error,
-    deposit_address: modules.cashier.onramp.deposit_address,
-    is_dark_mode_on: ui.is_dark_mode_on,
-    is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
-    is_requesting_widget_html: modules.cashier.onramp.is_requesting_widget_html,
-    onClickDisclaimerContinue: modules.cashier.onramp.onClickDisclaimerContinue,
-    onClickGoToDepositPage: modules.cashier.onramp.onClickGoToDepositPage,
-    selected_provider: modules.cashier.onramp.selected_provider,
-    setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
-    should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    should_show_widget: modules.cashier.onramp.should_show_widget,
-    widget_error: modules.cashier.onramp.widget_error,
-    widget_html: modules.cashier.onramp.widget_html,
-}))(OnRampProviderPopup);
+export default OnRampProviderPopup;

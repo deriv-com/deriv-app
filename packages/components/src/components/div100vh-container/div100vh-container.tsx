@@ -27,8 +27,8 @@ type TDiv100vhContainer = {
 const Div100vhContainer = ({
     children,
     className,
-    is_bypassed,
-    is_disabled,
+    is_bypassed = false,
+    is_disabled = false,
     id,
     height_offset,
     max_autoheight_offset,
@@ -38,6 +38,10 @@ const Div100vhContainer = ({
         height: max_autoheight_offset ? '' : height_rule,
         maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : '',
     };
+    React.useEffect(() => {
+        // forcing resize event to make Div100vh re-render when height_offset has changed:
+        window.dispatchEvent(new Event('resize'));
+    }, [height_offset]);
     if (is_bypassed) return children as JSX.Element;
     return (
         <Div100vh id={id} className={className} style={is_disabled ? {} : height_style} data-testid='dt_div_100_vh'>

@@ -15,8 +15,8 @@ const PlatformSwitcherLoader = ({ is_mobile, speed }) => {
             height={logo_size}
             width={container_width}
             speed={speed}
-            primaryColor={'var(--general-section-1)'}
-            secondaryColor={'var(--general-hover)'}
+            backgroundColor={'var(--general-section-1)'}
+            foregroundColor={'var(--general-hover)'}
         >
             <rect x={container_margin} y='0' rx='4' ry='4' width={logo_size} height={logo_size} />
             <rect x={name_x} y={name_y} rx='4' ry='4' width={name_width} height={name_height} />

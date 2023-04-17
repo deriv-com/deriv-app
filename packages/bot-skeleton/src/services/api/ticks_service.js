@@ -184,7 +184,7 @@ export default class TicksService {
     }
 
     observe() {
-        api_base.api.onMessage().subscribe(({ data }) => {
+        const subscription = api_base.api.onMessage().subscribe(({ data }) => {
             if (data.msg_type === 'tick') {
                 const { tick } = data;
                 const { symbol, id } = tick;
@@ -207,6 +207,7 @@ export default class TicksService {
                 }
             }
         });
+        api_base.pushSubscription(subscription);
     }
 
     requestStream(options) {

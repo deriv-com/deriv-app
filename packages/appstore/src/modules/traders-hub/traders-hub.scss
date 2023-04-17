@@ -1,0 +1,60 @@
+.traders-hub {
+    width: 100%;
+    padding: 5rem 4rem;
+
+    @include mobile {
+        padding: 2rem;
+    }
+
+    &__main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+    }
+
+    &__button-toggle {
+        margin-top: 3rem;
+        border-radius: $BORDER_RADIUS;
+        padding: 0.4rem;
+        background-color: var(--general-section-1);
+    }
+
+    &--mobile {
+        overflow: scroll !important;
+
+        &--eu-user {
+            @include mobile {
+                height: calc(550px) !important;
+            }
+        }
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+
+.disclamer {
+    position: fixed;
+    bottom: 3.6rem;
+    width: 100%;
+    height: 5rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    backface-visibility: hidden;
+    background: var(--icon-grey-background);
+
+    @include mobile {
+        height: 8rem;
+        border: 1px solid var(--icon-grey-background);
+    }
+
+    &-text {
+        padding: 0 3rem;
+
+        @include mobile {
+            padding: 0 1.5rem;
+        }
+    }
+}

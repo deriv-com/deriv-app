@@ -1,4 +1,6 @@
+//Configures which trade types have barrier rendered when selected
 export const CONTRACT_SHADES = {
+    ACCU: 'NONE_DOUBLE',
     CALL: 'ABOVE',
     PUT: 'BELOW',
     CALLE: 'ABOVE',
@@ -13,6 +15,8 @@ export const CONTRACT_SHADES = {
     ASIAND: 'BELOW',
     MULTUP: 'ABOVE',
     MULTDOWN: 'BELOW',
+    VANILLALONGCALL: 'NONE_SINGLE',
+    VANILLALONGPUT: 'NONE_SINGLE',
 };
 
 // Default non-shade according to number of barriers

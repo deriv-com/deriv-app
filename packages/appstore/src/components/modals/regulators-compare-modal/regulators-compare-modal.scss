@@ -1,0 +1,107 @@
+.regulators-compare-table {
+    display: flex;
+    flex-flow: column nowrap;
+    background: inherit;
+    position: relative;
+
+    &__table-header,
+    &__table-row {
+        grid-template-columns: 1.58fr 2.3fr 2.3fr;
+        border-bottom: none;
+        min-height: 4rem;
+    }
+
+    &__table-row-wrapper {
+        .regulators-compare-table__table-row {
+            &:first-child {
+                background-color: var(--button-primary-light-default);
+            }
+        }
+    }
+
+    &__table-header-item,
+    &__table-row-item {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .dc-table {
+        margin: 2.5rem 4.9rem;
+        &__header {
+            border: none;
+            height: 4rem;
+        }
+        &__cell:not(.regulators-compare-table__table-empty-cell),
+        &__head:not(.regulators-compare-table__table-empty-cell) {
+            border: 1px solid var(--general-active);
+            margin-left: -1px;
+            margin-bottom: -1px;
+        }
+        &__cell {
+            padding: 1rem 0.8rem;
+        }
+    }
+    @include mobile {
+        .dc-table {
+            height: 100%;
+            margin: 1.6rem 1.7rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: auto;
+
+            &__cell {
+                &--fixed {
+                    background-color: var(--general-main-1);
+                }
+            }
+        }
+        &__table {
+            &-header,
+            &-row {
+                width: 120vw;
+                grid-template-columns: 0.36fr 1fr 1fr;
+            }
+        }
+
+        .regulators-compare-table {
+            &__table-empty-cell.dc-table {
+                &__cell--fixed {
+                    margin-left: -1px;
+                    border-right: 1px solid var(--general-active);
+                    background-color: var(--general-main-1);
+                }
+            }
+            &__table-row {
+                .dc-table__cell {
+                    background-color: var(--general-main-1);
+                }
+
+                &:first-child {
+                    background-color: var(--button-primary-light-default);
+
+                    .dc-table__cell {
+                        background-color: unset;
+
+                        &--fixed {
+                            background-color: var(--general-main-1);
+
+                            &:before {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                bottom: 0;
+                                right: 0;
+                                left: 0;
+                                z-index: -1;
+                                background-color: var(--button-primary-light-default);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.dc-modal-header--regulator-modal {
+    border-bottom: 1px solid var(--border-normal);
+}

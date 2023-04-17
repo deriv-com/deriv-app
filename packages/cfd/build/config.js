@@ -7,7 +7,7 @@ const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',
     cleanupOutdatedCaches: true,
-    exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+    exclude: [/CNAME$/, /index\.html$/, /custom404\.html$/],
     skipWaiting: true,
     clientsClaim: true,
 });

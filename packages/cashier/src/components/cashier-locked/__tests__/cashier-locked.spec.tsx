@@ -1,12 +1,27 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
-import { StoreProvider } from '@deriv/stores';
-import { TRootStore } from '../../../types';
-import type { DeepPartial } from '@deriv/stores/types';
+import { useDepositLocked } from '@deriv/hooks';
+import { TRootStore } from 'Types';
+import CashierProviders from '../../../cashier-providers';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+}));
 
 describe('<CashierLocked />', () => {
-    it('should show the proper message if there is a cryptocashier maintenance', () => {
+    it('should show the proper message if there is a crypto cashier maintenance', () => {
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 account_status: {
@@ -15,15 +30,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -42,15 +65,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -69,15 +100,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'crypto',
-                is_deposit_lock: true,
+                is_deposit_lock: useDepositLocked.mockReturnValue(true),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -96,15 +135,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: true } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -123,15 +170,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -150,15 +205,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -177,22 +240,28 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(
-            screen.getByText(
-                'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
+        );
     });
 
     it('should show the proper message if the client has disabled_status', () => {
@@ -204,22 +273,28 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(
-            screen.getByText(
-                'Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'
+        );
     });
 
     it('should show the proper message if the client account has no currency', () => {
@@ -231,15 +306,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -256,15 +339,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
@@ -279,15 +370,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByTestId('dt_financial_assessment_link')).toHaveAttribute(
@@ -305,15 +404,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -332,15 +439,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/You have not provided your tax identification number./i)).toBeInTheDocument();
@@ -355,15 +470,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your cashier is locked./i)).toBeInTheDocument();
@@ -378,15 +501,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -405,15 +536,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(
@@ -436,22 +575,28 @@ describe('<CashierLocked />', () => {
                 },
                 loginid: 'CR9000000',
                 current_currency_type: 'fiat',
-                is_deposit_lock: true,
+                is_deposit_lock: useDepositLocked.mockReturnValue(true),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(
-            screen.getByText(
-                /If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat./i
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            /If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat./i
+        );
     });
 
     it('should show the proper message if the client has unwelcome_status', () => {
@@ -463,18 +608,26 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: true,
+                is_deposit_lock: useDepositLocked.mockReturnValue(true),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(screen.getByText('Please contact us via live chat.')).toBeInTheDocument();
+        expect(container).toHaveTextContent('Please contact us via live chat.');
     });
 
     it('should show the proper message if the client has no_withdrawal_or_trading_status', () => {
@@ -486,22 +639,28 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(
-            screen.getByText(
-                'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
+        );
     });
 
     it('should show the proper message if the client has withdrawal_locked_status', () => {
@@ -513,22 +672,28 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(
-            screen.getByText(
-                'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
+        );
     });
 
     it('should show the proper message if the client has only_pa_withdrawals_allowed_status', () => {
@@ -540,20 +705,28 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(
-            screen.getByText('You can only make deposits. Please contact us via live chat for more information.')
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'You can only make deposits. Please contact us via live chat for more information.'
+        );
     });
 
     it('should prioritize cashier locked message if the client has a combo of deposit and cashier locked reasons', () => {
@@ -565,15 +738,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(screen.getByText(/Your account has not been authenticated./i)).toBeInTheDocument();
@@ -588,22 +769,28 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: false,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: true, is_system_maintenance: false } } },
         };
 
-        render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+        const { container } = render(<CashierLocked />, {
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
-        expect(
-            screen.getByText(
-                'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
-            )
-        ).toBeInTheDocument();
+        expect(container).toHaveTextContent(
+            'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
+        );
     });
 
     it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {
@@ -615,15 +802,23 @@ describe('<CashierLocked />', () => {
                 accounts: undefined,
                 loginid: undefined,
                 current_currency_type: 'fiat',
-                is_deposit_lock: false,
+                is_deposit_lock: useDepositLocked.mockReturnValue(false),
                 is_withdrawal_lock: true,
                 is_identity_verification_needed: false,
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
             },
             modules: { cashier: { general_store: { is_cashier_locked: false, is_system_maintenance: false } } },
         };
 
         render(<CashierLocked />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore as TRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
+            ),
         });
 
         expect(

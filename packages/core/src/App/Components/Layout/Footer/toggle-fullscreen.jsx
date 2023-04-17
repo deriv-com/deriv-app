@@ -55,7 +55,7 @@ const ToggleFullScreen = () => {
                 {is_full_screen ? (
                     <Icon icon='IcFullScreenRestore' className='footer__icon' />
                 ) : (
-                    <Icon icon='IcFullScreen' className='footer__icon' />
+                    <Icon data_testid='dt_icon' icon='IcFullScreen' className='footer__icon' />
                 )}
             </Popover>
         </a>

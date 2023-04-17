@@ -1,17 +1,11 @@
 import React from 'react';
+import { useRequest } from '@deriv/api';
 import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
 import './funds-protection.scss';
 
-const FundsProtection = observer(() => {
-    const {
-        modules: {
-            cashier: {
-                deposit: { submitFundsProtection },
-            },
-        },
-    } = useStore();
+const FundsProtection = () => {
+    const { mutate } = useRequest('tnc_approval', { onSuccess: () => location.reload() });
 
     return (
         <div className='funds-protection'>
@@ -36,11 +30,11 @@ const FundsProtection = observer(() => {
                     />
                 }
             </p>
-            <Button onClick={submitFundsProtection} primary large type='submit'>
+            <Button onClick={() => mutate([{ payload: { ukgc_funds_protection: 1 } }])} primary large type='submit'>
                 {localize('Deposit now')}
             </Button>
         </div>
     );
-});
+};
 
 export default FundsProtection;

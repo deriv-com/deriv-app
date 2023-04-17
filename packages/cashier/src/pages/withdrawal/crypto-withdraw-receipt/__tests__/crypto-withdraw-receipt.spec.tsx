@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { StoreProvider } from '@deriv/stores';
 import CryptoWithdrawReceipt from '../crypto-withdraw-receipt';
+import CashierProviders from '../../../../cashier-providers';
 
 describe('<CryptoWithdrawReceipt />', () => {
     let mockRootStore;
@@ -32,7 +32,7 @@ describe('<CryptoWithdrawReceipt />', () => {
                     },
                     withdraw: {
                         blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
-                        resetWithrawForm: jest.fn(),
+                        resetWithdrawForm: jest.fn(),
                         setIsWithdrawConfirmed: jest.fn(),
                         withdraw_amount: 0.0002,
                     },
@@ -43,9 +43,9 @@ describe('<CryptoWithdrawReceipt />', () => {
 
     const renderCryptoWithdrawReceipt = () => {
         return render(
-            <StoreProvider store={mockRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <CryptoWithdrawReceipt />
-            </StoreProvider>
+            </CashierProviders>
         );
     };
 

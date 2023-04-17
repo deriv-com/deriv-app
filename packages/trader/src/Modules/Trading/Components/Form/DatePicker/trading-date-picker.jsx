@@ -45,7 +45,7 @@ const TradingDatePicker = ({
     const getMinDuration = () => {
         return hasIntradayDurationUnit(duration_units_list)
             ? toMoment(server_time).clone()
-            : toMoment(server_time).clone().add(duration_min_max.daily.min, 'second');
+            : toMoment(server_time).clone().add(duration_min_max?.daily?.min, 'second');
     };
 
     const getMomentContractStartDateTime = () => {

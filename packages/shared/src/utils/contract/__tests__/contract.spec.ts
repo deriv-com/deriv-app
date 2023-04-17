@@ -271,7 +271,7 @@ describe('getDisplayStatus', () => {
             buy_price: 100,
             bid_price: 0,
         };
-        expect(ContractUtils.getDisplayStatus(contract_info)).toEqual('loss');
+        expect(ContractUtils.getDisplayStatus(contract_info)).toEqual('lost');
     });
     it('should return won if contract is ended and profit is zero', () => {
         const contract_info: TGetDisplayStatus = {

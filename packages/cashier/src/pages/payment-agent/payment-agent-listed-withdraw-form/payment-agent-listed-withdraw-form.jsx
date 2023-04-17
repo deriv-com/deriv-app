@@ -1,13 +1,13 @@
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
 import { Button, Input, Loading, Money, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import ErrorDialog from 'Components/error-dialog';
+import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-listed-withdraw-form.scss';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) => {
@@ -34,19 +34,13 @@ const validateWithdrawal = (values, { balance, currency, payment_agent = {} }) =
 };
 
 const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
-    const {
-        client,
-        modules: {
-            cashier: { general_store, payment_agent: payment_agenr_store },
-        },
-    } = useStore();
-
+    const { client } = useStore();
+    const { general_store, payment_agent: payment_agent_store } = useCashierStore();
     const {
         balance,
         currency,
         verification_code: { payment_agent_withdraw: verification_code },
     } = client;
-
     const { is_crypto, is_loading } = general_store;
     const {
         error,
@@ -54,7 +48,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }) => {
         agents: payment_agent_list,
         requestTryPaymentAgentWithdraw,
         selected_bank,
-    } = payment_agenr_store;
+    } = payment_agent_store;
 
     React.useEffect(() => {
         onMount();

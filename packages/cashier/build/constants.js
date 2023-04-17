@@ -18,6 +18,7 @@ const {
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const ALIASES = {
+    Assets: path.resolve(__dirname, '../src/assets'),
     Components: path.resolve(__dirname, '../src/components'),
     Config: path.resolve(__dirname, '../src/config'),
     Containers: path.resolve(__dirname, '../src/containers'),

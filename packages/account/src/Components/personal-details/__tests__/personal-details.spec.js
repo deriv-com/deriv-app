@@ -374,7 +374,7 @@ describe('<PersonalDetails/>', () => {
         runCommonFormfieldsTests();
     });
 
-    it('should not show disabled fields', () => {
+    it('should not enable fields which are disabled and empty', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
                 <PersonalDetails
@@ -384,20 +384,18 @@ describe('<PersonalDetails/>', () => {
                         'first_name',
                         'last_name',
                         'date_of_birth',
-                        'place_of_birth',
-                        'citizen',
                         'account_opening_reason',
                     ]}
                 />
             </PlatformContext.Provider>
         );
-        expect(screen.getByRole('radio', { name: /mr/i })).toBeDisabled();
-        expect(screen.getByRole('radio', { name: /ms/i })).toBeDisabled();
+        expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
+        expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
         expect(screen.getByTestId('first_name')).toBeDisabled();
         expect(screen.getByTestId('last_name')).toBeDisabled();
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('place_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('citizenship')).toBeDisabled();
+        expect(screen.getByTestId('place_of_birth')).not.toBeDisabled();
+        expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is not disabled by BE, so enable the field
     });
 
     it('should disable citizen field if the client is_fully_authenticated', () => {
@@ -704,7 +702,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 
@@ -720,11 +718,25 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
 
-        fireEvent.scroll(screen.getByRole('heading', { name: /account opening reason/i }), {
+        fireEvent.scroll(screen.getByTestId('dt_personal_details_container'), {
             target: { scrollY: 100 },
         });
 
         expect(screen.queryByText(tax_residence_pop_over_text)).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
+    });
+
+    it('should autopopulate tax_residence for MF clients', () => {
+        const new_props = {
+            ...props,
+            is_mf: true,
+            value: {
+                ...props.value,
+                tax_residence: 'Malta',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        const el_tax_residence = screen.getByTestId('selected_value');
+        expect(el_tax_residence).toHaveTextContent('Malta');
     });
 });

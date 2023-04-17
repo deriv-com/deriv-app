@@ -1,5 +1,13 @@
 name: Deriv App ID Generator
 
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  pull-requests: write
+  statuses: write
+
 on:
     issue_comment:
         types: [edited]
@@ -14,6 +22,7 @@ jobs:
               uses: binary-com/vercel-preview-url-action@v1.0.5
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
             - name: Generate Deriv App ID for deployment Preview URL
               id: generate_app_id
               uses: binary-com/deriv-app-id-action@v1
@@ -36,7 +45,7 @@ jobs:
 
                       - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
                       - **URLs**:
-                          - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                          - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=red.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
                           - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
                       - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
 
@@ -46,14 +55,14 @@ jobs:
                         ```
                         - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
                         - **URLs**:
-                            - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
+                            - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=red.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
                             - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
                         - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
                         ```
                       </details>
 
             - name: Store generated URL in artifact
-              run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
+              run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=red.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
             - name: Upload artifact
               uses: actions/upload-artifact@master
               with:

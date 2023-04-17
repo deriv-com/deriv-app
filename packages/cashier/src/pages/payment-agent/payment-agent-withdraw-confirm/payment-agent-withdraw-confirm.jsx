@@ -1,21 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Money } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import TransferConfirm from 'Components/transfer-confirm';
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 const PaymentAgentWithdrawConfirm = observer(({ verification_code }) => {
-    const {
-        client,
-        modules: {
-            cashier: { payment_agent },
-        },
-    } = useStore();
-
+    const { client } = useStore();
     const { loginid: client_loginid } = client;
-
+    const { payment_agent } = useCashierStore();
     const {
         confirm: { amount, currency, loginid, payment_agent_name },
         error,

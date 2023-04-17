@@ -333,7 +333,7 @@ const Chart = props => {
         wsSendRequest,
         wsSubscribe,
     } = props;
-    const { current_spot, current_spot_time } = accumulator_barriers_data || {};
+    const { highlighted_spot, highlighted_spot_time } = accumulator_barriers_data || {};
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (
@@ -420,8 +420,8 @@ const Chart = props => {
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
-                    current_symbol_spot={current_spot}
-                    current_symbol_spot_time={current_spot_time}
+                    current_symbol_spot={highlighted_spot}
+                    current_symbol_spot_time={highlighted_spot_time}
                     should_highlight_current_spot={should_highlight_current_spot}
                     symbol={symbol}
                 />

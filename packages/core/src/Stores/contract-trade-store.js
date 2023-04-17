@@ -151,7 +151,7 @@ export default class ContractTradeStore extends BaseStore {
             this.accumulator_barriers_data || {};
         if (
             trade_type === 'accumulator' &&
-            this.last_contract.contract_info?.status !== 'open' &&
+            (this.last_contract.contract_info?.status !== 'open' || !this.last_contract.contract_info?.high_barrier) &&
             current_symbol_spot_time
         ) {
             markers.push({

@@ -1,13 +1,13 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
-import type { TRootStore } from '../../../types';
+import { mockStore, TStores } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboardingSideNote />', () => {
-    let mockRootStore: DeepPartial<TRootStore>;
+    let mockRootStore: TStores;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'USD',
             },
@@ -21,7 +21,7 @@ describe('<CashierOnboardingSideNote />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const props = {

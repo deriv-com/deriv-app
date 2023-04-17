@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OnRampProviderCard from '../on-ramp-provider-card';
-import { TRootStore } from '../../../../types';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../../cashier-providers';
 
 describe('<OnRampProviderCard />', () => {
@@ -27,7 +27,7 @@ describe('<OnRampProviderCard />', () => {
     };
 
     it('should show proper messages and button', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             ui: {
                 is_dark_mode_on: false,
                 is_mobile: false,
@@ -39,12 +39,10 @@ describe('<OnRampProviderCard />', () => {
                     },
                 },
             },
-        };
+        });
 
         render(<OnRampProviderCard provider={provider} />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Banxa')).toBeInTheDocument();
@@ -57,7 +55,7 @@ describe('<OnRampProviderCard />', () => {
     });
 
     it('should show proper icons in dark_mode', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             ui: {
                 is_dark_mode_on: true,
                 is_mobile: false,
@@ -69,12 +67,10 @@ describe('<OnRampProviderCard />', () => {
                     },
                 },
             },
-        };
+        });
 
         render(<OnRampProviderCard provider={provider} />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
         expect(screen.getByTestId('dti_provider_icon_dark')).toBeInTheDocument();
@@ -82,7 +78,7 @@ describe('<OnRampProviderCard />', () => {
     });
 
     it('should trigger onClick callback, when "Select" button is clicked', () => {
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mockRootStore = mockStore({
             ui: {
                 is_dark_mode_on: false,
                 is_mobile: false,
@@ -94,17 +90,15 @@ describe('<OnRampProviderCard />', () => {
                     },
                 },
             },
-        };
+        });
 
         render(<OnRampProviderCard provider={provider} />, {
-            wrapper: ({ children }) => (
-                <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-            ),
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
         });
 
         const btn = screen.getByRole('button', { name: 'Select' });
         fireEvent.click(btn);
 
-        expect(mockRootStore.modules!.cashier!.onramp!.setSelectedProvider).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.modules.cashier.onramp.setSelectedProvider).toHaveBeenCalledTimes(1);
     });
 });

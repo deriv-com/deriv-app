@@ -1,13 +1,14 @@
 import AccountTransferStore from '../account-transfer-store';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { configure } from 'mobx';
-import type { TTransferAccount, TRootStore, TWebSocket } from '../../types';
+import type { TTransferAccount, TWebSocket } from '../../types';
+import { mockStore, TStores } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
 let accounts: TTransferAccount[],
     account_transfer_store: AccountTransferStore,
-    root_store: DeepPartial<TRootStore>,
+    root_store: TStores,
     WS: DeepPartial<TWebSocket>;
 
 const CR_eUSDT_account: TTransferAccount = {
@@ -135,7 +136,7 @@ beforeEach(() => {
         }),
         wait: jest.fn(),
     };
-    root_store = {
+    root_store = mockStore({
         client: {
             account_status: {
                 status: ['status'],
@@ -183,8 +184,8 @@ beforeEach(() => {
             },
             combined_cfd_mt5_accounts: [],
         },
-    };
-    account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store as TRootStore);
+    });
+    account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -347,7 +348,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set transfer fee equal to 2', () => {
-        getCurrencies.mockReturnValueOnce({ USD: { transfer_between_accounts: { fees: { BTC: 2 } } } });
+        (getCurrencies as jest.Mock).mockReturnValueOnce({ USD: { transfer_between_accounts: { fees: { BTC: 2 } } } });
         account_transfer_store.setSelectedFrom({ currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
         account_transfer_store.setTransferFee();
@@ -356,7 +357,9 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set transfer fee equal to 0 if transfer fee is undefined', () => {
-        getCurrencies.mockReturnValueOnce({ USD: { transfer_between_accounts: { fees: { BTC: undefined } } } });
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
+            USD: { transfer_between_accounts: { fees: { BTC: undefined } } },
+        });
         account_transfer_store.setSelectedFrom({ currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
         account_transfer_store.setTransferFee();
@@ -379,7 +382,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set proper transfer limit for mt5 transfer', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { limits_mt5: { min: 1, max: 10 } } },
         });
 
@@ -390,7 +393,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set proper transfer limit for dxtrade transfer', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { limits_dxtrade: { min: 10, max: 100 } } },
         });
 
@@ -401,7 +404,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set proper transfer limit for other types of transfers', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { balance: 500, limits: { min: 100, max: 1000 } } },
         });
 
@@ -412,7 +415,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set max transfer limit equal to the current "selected from" balance, if there is no max transfer fee in response', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { balance: 500, limits: { min: 100 } } },
         });
 
@@ -423,7 +426,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set min transfer limit equal to null, if there is no min transfer fee in response', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { balance: 500, limits: { max: 1000 } } },
         });
 
@@ -805,7 +808,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set error message, if converter_from_amount is not valid number when calling validateTransferFromAmount method', () => {
-        validNumber.mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
+        (validNumber as jest.Mock).mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
         account_transfer_store.validateTransferFromAmount();
 
         expect(
@@ -823,7 +826,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set error message, if converter_to_amount is not valid number when calling validateTransferToAmount method', () => {
-        validNumber.mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
+        (validNumber as jest.Mock).mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
         account_transfer_store.validateTransferToAmount();
 
         expect(

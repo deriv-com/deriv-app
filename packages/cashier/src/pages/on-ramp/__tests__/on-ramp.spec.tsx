@@ -3,19 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
 import { useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
-import { TRootStore } from '../../../types';
+import { mockStore, TStores } from '@deriv/stores';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -46,10 +36,10 @@ jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
     return onRampProviderPopup;
 });
 describe('<OnRamp />', () => {
-    let mockRootStore: DeepPartial<TRootStore>, props: TOnRampProps;
+    let mockRootStore: TStores, props: TOnRampProps;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 is_switching: false,
                 account_status: {
@@ -85,7 +75,7 @@ describe('<OnRamp />', () => {
                     },
                 },
             },
-        };
+        });
         props = {
             setSideNotes: jest.fn(),
             menu_options: [
@@ -107,10 +97,11 @@ describe('<OnRamp />', () => {
                 },
             ],
         };
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
     });
     const renderOnRamp = (is_rerender = false) => {
         const ui = (
-            <CashierProviders store={mockRootStore as TRootStore}>
+            <CashierProviders store={mockRootStore}>
                 <OnRamp {...props} />
             </CashierProviders>
         );
@@ -142,7 +133,7 @@ describe('<OnRamp />', () => {
             mockRootStore.modules.cashier.general_store.is_cashier_locked = false;
         }
         if (mockRootStore.modules?.cashier?.deposit) {
-            mockRootStore.modules.cashier.deposit.is_deposit_locked = useDepositLocked.mockReturnValue(true);
+            (useDepositLocked as jest.Mock).mockReturnValue(true);
         }
         rerender(renderOnRamp(true) as JSX.Element);
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();

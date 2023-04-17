@@ -2,14 +2,15 @@ import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
 import { routes, ContentFlag } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import type { TWebSocket, TRootStore } from '../../types';
+import type { TWebSocket } from '../../types';
+import { mockStore, TStores } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
-let general_store: GeneralStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
+let general_store: GeneralStore, root_store: TStores, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
-    root_store = {
+    root_store = mockStore({
         client: {
             account_list: [{ is_virtual: false, title: 'USD' }],
             account_status: {
@@ -77,14 +78,14 @@ beforeEach(() => {
             toggleSetCurrencyModal: jest.fn(),
         },
         traders_hub: { content_flag: ContentFlag.CR_DEMO },
-    };
+    });
     WS = {
         authorized: {
             p2pAdvertiserInfo: jest.fn().mockResolvedValueOnce({ error: { code: 'advertiser_error' } }),
         },
         wait: jest.fn(),
     };
-    general_store = new GeneralStore(WS as TWebSocket, root_store as TRootStore);
+    general_store = new GeneralStore(WS as TWebSocket, root_store);
 });
 
 describe('GeneralStore', () => {

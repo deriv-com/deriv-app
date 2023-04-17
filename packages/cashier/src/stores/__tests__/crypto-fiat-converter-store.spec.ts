@@ -1,9 +1,8 @@
-import { TRootStore, TWebSocket } from '../../types';
+import { TWebSocket } from '../../types';
+import { mockStore, TStores } from '@deriv/stores';
 import CryptoFiatConverterStore from '../crypto-fiat-converter-store';
 
-let crypto_fiat_converter_store: CryptoFiatConverterStore,
-    root_store: DeepPartial<TRootStore>,
-    WS: DeepPartial<TWebSocket>;
+let crypto_fiat_converter_store: CryptoFiatConverterStore, root_store: TStores, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     WS = {
@@ -17,7 +16,7 @@ beforeEach(() => {
             },
         }),
     };
-    root_store = {
+    root_store = mockStore({
         modules: {
             cashier: {
                 account_transfer: {
@@ -37,8 +36,8 @@ beforeEach(() => {
                 },
             },
         },
-    };
-    crypto_fiat_converter_store = new CryptoFiatConverterStore(WS as TWebSocket, root_store as TRootStore);
+    });
+    crypto_fiat_converter_store = new CryptoFiatConverterStore(WS as TWebSocket, root_store);
 });
 
 describe('CryptoFiatConverterStore', () => {

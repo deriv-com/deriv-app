@@ -4,13 +4,13 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboarding from '../cashier-onboarding';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import type { TRootStore } from '../../../types';
+import { mockStore, TStores } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboarding />', () => {
-    let mockRootStore: DeepPartial<TRootStore>;
+    let mockRootStore: TStores;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 accounts: { CR90000001: { is_virtual: 0, currency: 'USD' } },
                 account_status: {
@@ -55,7 +55,7 @@ describe('<CashierOnboarding />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const props = () => ({

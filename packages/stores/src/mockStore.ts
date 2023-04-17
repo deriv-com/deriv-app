@@ -1,4 +1,5 @@
 import merge from 'lodash.merge';
+import moment from 'moment';
 import type { TStores } from './useStore';
 
 const mock = (): TStores => {
@@ -154,6 +155,7 @@ const mock = (): TStores => {
             responseTradingPlatformAccountsList: jest.fn(),
             standpoint: {
                 iom: '',
+                malta: '',
             },
             switchAccount: jest.fn(),
             verification_code: {
@@ -184,6 +186,7 @@ const mock = (): TStores => {
             setBalanceOtherAccounts: jest.fn(),
             setInitialized: jest.fn(),
             setLogout: jest.fn(),
+            setVisibilityRealityCheck: jest.fn(),
             setP2pAdvertiserInfo: jest.fn(),
             setPreSwitchAccount: jest.fn(),
             switched: false,
@@ -213,6 +216,7 @@ const mock = (): TStores => {
             changeSelectedLanguage: jest.fn(),
             current_language: 'EN',
             is_network_online: false,
+            server_time: moment(),
             is_language_changing: false,
         },
         ui: {
@@ -225,12 +229,14 @@ const mock = (): TStores => {
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
             is_mobile: false,
+            is_reports_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),
             setCurrentFocus: jest.fn(),
             toggleAccountsDialog: jest.fn(),
             toggleCashier: jest.fn(),
             setDarkMode: jest.fn(),
+            setReportsTabIndex: jest.fn(),
             has_real_account_signup_ended: false,
             notification_messages_ui: null,
             openRealAccountSignup: jest.fn(),
@@ -239,6 +245,13 @@ const mock = (): TStores => {
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
+            addToast: jest.fn(),
+            removeToast: jest.fn(),
+            reports_route_tab_index: 1,
+            should_show_cancellation_warning: false,
+            toggleCancellationWarning: jest.fn(),
+            toggleUnsupportedContractModal: jest.fn(),
+            toggleReports: jest.fn(),
             setSubSectionIndex: jest.fn(),
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
@@ -274,6 +287,34 @@ const mock = (): TStores => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
+        },
+        portfolio: {
+            getContractById: jest.fn(),
+            active_positions: [],
+            error: {
+                header: '',
+                message: '',
+                type: '',
+                redirect_label: '',
+                redirect_to: '',
+                should_clear_error_on_click: false,
+                should_show_refresh: false,
+                redirectOnClick: jest.fn(),
+                setError: jest.fn(),
+                app_routing_history: [],
+            },
+            getPositionById: jest.fn(),
+            is_loading: false,
+            is_multiplier: false,
+            onClickCancel: jest.fn(),
+            onClickSell: jest.fn(),
+            onMount: jest.fn(),
+            onClickRemove: jest.fn(),
+            removePositionById: jest.fn(),
+        },
+        contract_trade: {
+            getContractById: jest.fn(),
+            toggleSetCurrencyModal: jest.fn(),
         },
         modules: {},
         counter: {

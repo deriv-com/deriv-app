@@ -2,7 +2,7 @@
 
 // TODO: Add test cases for this
 type TRoute = {
-    component?: React.ElementType;
+    component?: React.ComponentType<any>;
     default?: boolean;
     exact?: boolean;
     getTitle?: () => string;

@@ -9,11 +9,11 @@ import moment from 'moment';
 type TProgressSliderProps = {
     className?: string;
     current_tick: number;
-    expiry_time: number & string;
+    expiry_time: number;
     getCardLabels: () => { [key: string]: string }; // TODO Use the one from shared workspace after migration
     is_loading: boolean;
     server_time: moment.Moment;
-    start_time: number & string;
+    start_time: number;
     ticks_count: number;
 };
 

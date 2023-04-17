@@ -18,24 +18,20 @@ const ContractCardSell = ({ contract_info, getCardLabels, is_sell_requested, mea
         measure?.();
     }, [should_show_sell, measure]);
 
+    if (!should_show_sell) return null;
+    if (!is_valid_to_sell)
+        return <div className='dc-contract-card__no-resale-msg'>{getCardLabels().RESALE_NOT_OFFERED}</div>;
+
     return (
-        should_show_sell && (
-            <React.Fragment>
-                {is_valid_to_sell ? (
-                    <Button
-                        className={classNames('dc-btn--sell', {
-                            'dc-btn--loading': is_sell_requested,
-                        })}
-                        is_disabled={is_sell_requested}
-                        text={getCardLabels().SELL}
-                        onClick={onClick}
-                        secondary
-                    />
-                ) : (
-                    <div className='dc-contract-card__no-resale-msg'>{getCardLabels().RESALE_NOT_OFFERED}</div>
-                )}
-            </React.Fragment>
-        )
+        <Button
+            className={classNames('dc-btn--sell', {
+                'dc-btn--loading': is_sell_requested,
+            })}
+            is_disabled={is_sell_requested}
+            text={getCardLabels().SELL}
+            onClick={onClick}
+            secondary
+        />
     );
 };
 

@@ -11,6 +11,7 @@
             "Stores/*": ["./src/Stores/*"],
             "templates/*": ["./src/templates/*"],
             "Utils/*": ["./src/Utils/*"],
+            "Types": ["./src/Types"],
             "@deriv/*": ["../*/src"]
         },
         "outDir": "./dist",

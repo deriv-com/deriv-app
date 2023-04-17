@@ -34,15 +34,10 @@ const JurisdictionCard = ({
     return (
         <div className='cfd-card-perspective'>
             <div
-                className={classNames(
-                    'cfd-card-container',
-                    {
-                        'cfd-card-flipped': is_card_flipped,
-                    },
-                    {
-                        'cfd-card-disabled': disabled,
-                    }
-                )}
+                className={classNames('cfd-card-container', {
+                    'cfd-card-flipped': is_card_flipped,
+                    'cfd-card-disabled': disabled,
+                })}
                 onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
             >
                 <JurisdictionCardFront

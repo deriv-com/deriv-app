@@ -24,7 +24,7 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+            files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
             rules: {
                 'simple-import-sort/imports': [
                     'error',
@@ -50,6 +50,8 @@ module.exports = {
                                 '^.+\\.s?css$',
                                 // Side effect imports
                                 '^\\u0000',
+                                // Delete the empty line copied as the next line of the last import
+                                '\\s*',
                             ],
                         ],
                     },

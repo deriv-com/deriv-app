@@ -27,6 +27,7 @@ import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { checkSwitcherType } from '../../../../../common/footer-checks';
 
+let is_subscribed = false;
 const AccountSwitcher = () => {
     const { account_switcher_loader } = useSelector(state => state.ui);
     const { is_logged } = useSelector(state => state.client);
@@ -63,14 +64,16 @@ const Header = () => {
     const is_logged_in = isLoggedIn();
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
-   
+
     React.useEffect(() => {
         const mountSwitcher = async () => {
-            const res = await checkSwitcherType().then(data => {
-                dispatch(updateAccountType(data));
-            }).catch(error => globalObserver.emit('Error', error));
+            const res = await checkSwitcherType()
+                .then(data => {
+                    dispatch(updateAccountType(data));
+                })
+                .catch(error => globalObserver.emit('Error', error));
             return res;
-        }
+        };
         if (is_logged_in) {
             mountSwitcher();
         }
@@ -113,7 +116,8 @@ const Header = () => {
                     dispatch(updateActiveToken(active_storage_token.token));
                     dispatch(updateActiveAccount(account.authorize));
                     dispatch(setAccountSwitcherLoader(false));
-                    if (!globalObserver.getState('is_subscribed_to_balance')) {
+                    if (!is_subscribed) {
+                        is_subscribed = true;
                         api.send({
                             balance: 1,
                             account: 'all',
@@ -123,7 +127,6 @@ const Header = () => {
                                 globalObserver.setState({
                                     balance: Number(balance.balance),
                                     currency: balance.currency,
-                                    is_subscribed_to_balance: true,
                                 });
                             })
                             .catch(e => {

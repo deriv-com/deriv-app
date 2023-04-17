@@ -33,7 +33,7 @@ const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => {
                         <div key={bullet} className='wallet-steps__bullet'>
                             {bullet && (
                                 <React.Fragment>
-                                    <Icon icon='IcAppstoreTick' />
+                                    <Icon icon='IcAppstoreTick' className='wallet-steps__bullet-icon' />
                                     <Text as='p' color='prominent' align='center' className='wallet-steps__bullet-text'>
                                         {bullet}
                                     </Text>

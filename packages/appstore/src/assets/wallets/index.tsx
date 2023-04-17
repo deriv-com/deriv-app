@@ -3,12 +3,14 @@ import IntroducingWallets from 'Assets/wallets/introducing-wallets.svg';
 import IntroducingWalletsEU from 'Assets/wallets/introducing-wallets-eu.svg';
 import HowItWorks from 'Assets/wallets/how-it-works.svg';
 import TradingAccounts from 'Assets/wallets/trading-accounts.svg';
+import TradingAccountsEU from 'Assets/wallets/trading-accounts-eu.svg';
 
 export const WalletsImagesList = {
     IntroducingWallets,
     IntroducingWalletsEU,
     HowItWorks,
     TradingAccounts,
+    TradingAccountsEU,
 };
 
 type WalletsImageProps<T> = {

@@ -40,14 +40,21 @@ const App = () => {
         general_store.getWebsiteStatus();
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
-        if (/\/verification$/.test(history?.location.pathname)) {
+        if (/\/verification$/.test(location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
             history.push(routes.cashier_p2p);
         }
 
-        if (/\/profile$/.test(history?.location.pathname)) {
-            history.push(routes.cashier_p2p);
+        if (/\/orders$/.test(location.pathname)) {
+            history.push(routes.p2p_orders);
+            general_store.setActiveIndex(1);
+        } else if (/\/my-ads$/.test(location.pathname)) {
+            history.push(routes.p2p_my_ads);
+            general_store.setActiveIndex(2);
+        } else if (/\/my-profile$/.test(location.pathname)) {
+            history.push(routes.p2p_advertiser_page);
             setShouldShowProfile(true);
+            general_store.setActiveIndex(3);
         }
 
         ServerTime.init(general_store.server_time);

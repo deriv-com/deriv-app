@@ -24,7 +24,7 @@ const AccumulatorsStatsManualModal = ({
     const is_mobile = isMobile();
     // memoize file paths for videos and open the modal only after we get them
     const getVideoSource = React.useCallback(
-        extension => {
+        (extension: string) => {
             return getUrlBase(
                 `/public/images/common/accumulators_manual_${is_mobile ? 'mobile' : 'desktop'}${
                     is_dark_theme ? '_dark' : ''

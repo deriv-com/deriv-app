@@ -1,15 +1,15 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { AccumulatorsStatsManualModal } from '../accumulators-stats-manual-modal';
 
 type TModal = React.FC<{
-    children: ReactNode;
+    children: React.ReactNode;
     is_open: boolean;
     title: string;
     toggleModal: () => void;
 }> & {
     Body?: React.FC<{
-        children: ReactNode;
+        children: React.ReactNode;
     }>;
 };
 
@@ -42,7 +42,7 @@ describe('AccumulatorsStatsManualModal', () => {
     modal_root_el.setAttribute('id', 'modal_root');
     document.body.appendChild(modal_root_el);
 
-    let props;
+    let props: React.ComponentProps<typeof AccumulatorsStatsManualModal>;
     beforeEach(() => {
         props = {
             title: 'Stats',

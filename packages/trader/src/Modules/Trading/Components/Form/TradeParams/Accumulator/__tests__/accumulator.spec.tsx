@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Accumulator from '../accumulator';
 
+type TAccumulatorProps = React.ComponentProps<typeof Accumulator>;
+
 const mock_connect_props = {
     accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
     onChange: jest.fn(),
@@ -11,7 +13,8 @@ const mock_connect_props = {
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
+    connect: () => (Component: React.FC<TAccumulatorProps>) => (props: TAccumulatorProps) =>
+        Component({ ...props, ...mock_connect_props }),
 }));
 
 describe('Accumulator', () => {

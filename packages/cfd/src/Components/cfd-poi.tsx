@@ -1,5 +1,4 @@
 import { ProofOfIdentityContainerForMt5 } from '@deriv/account';
-import { GetAccountStatus } from '@deriv/api-types';
 import React from 'react';
 import { useStore, observer } from '@deriv/stores';
 

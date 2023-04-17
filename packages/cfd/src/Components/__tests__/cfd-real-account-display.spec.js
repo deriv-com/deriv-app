@@ -210,7 +210,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render Derived & Financial cards with enabled buttons on Deriv MT5 when is_logged_in=true & is_eu=false', () => {
         render(<CFDRealAccountDisplay {...props} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
         });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -226,7 +226,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render Derived & Financial cards without "Add real account" buttons on Deriv MT5 when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
         });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -243,7 +243,7 @@ describe('<CFDRealAccountDisplay />', () => {
                 account_settings={account_settings_eu}
             />,
             {
-                wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+                wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
             }
         );
 
@@ -258,7 +258,7 @@ describe('<CFDRealAccountDisplay />', () => {
     it('should render a CFDs card only without "Add real account" button on Deriv MT5 when is_logged_in=false & is_eu_country=true (also when redirected from Deriv X platform)', () => {
         props.isSyntheticCardVisible = jest.fn(() => false);
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} show_eu_related_content />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
         });
 
         checkAccountCardsRendering(TESTED_CASES.EU);
@@ -267,7 +267,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render Derived & Financial cards with enabled buttons on Deriv X when is_logged_in=true & is_eu=false', () => {
         render(<CFDRealAccountDisplay {...props} platform='dxtrade' />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
         });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
@@ -291,7 +291,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should render Derived & Financial cards without "Add real account" buttons on Deriv X when is_logged_in=false & is_eu_country=false', () => {
         render(<CFDRealAccountDisplay {...props} is_logged_in={false} platform='dxtrade' />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
         });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DXTRADE);
@@ -300,7 +300,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should show "Switch to your real account", which opens Account Switcher, on Deriv X cards when has_real_account=true & is_virtual=true', () => {
         render(<CFDRealAccountDisplay {...props} is_virtual platform='dxtrade' />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
         });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);
@@ -315,7 +315,7 @@ describe('<CFDRealAccountDisplay />', () => {
 
     it('should disable all "Add real account" buttons when has_cfd_account_error=true', () => {
         render(<CFDRealAccountDisplay {...props} has_cfd_account_error />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore({})()}>{children}</CFDProviders>,
+            wrapper: ({ children }) => <CFDProviders store={mockStore({})}>{children}</CFDProviders>,
         });
 
         checkAccountCardsRendering(TESTED_CASES.NON_EU_DMT5);

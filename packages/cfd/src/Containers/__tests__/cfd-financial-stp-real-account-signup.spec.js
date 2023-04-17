@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
 import CFDProviders from '../../cfd-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),

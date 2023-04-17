@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import CFDTopUpDemoModal from '../cfd-top-up-demo-modal.tsx';
 import CFDProviders from '../../cfd-providers.js';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
 

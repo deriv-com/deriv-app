@@ -1,37 +1,17 @@
 import { getUrlBase } from '@deriv/shared';
 
-const PATTERN_SIZE = 5;
-
-export const isRecurringNumberRegex = document_number => document_number.replace(/[.-]*/g, '').match(/([0-9])\1{4,}/g);
-
-const createDocumentPatterns = () => {
-    const ID_PATTERN = '0123456789';
-    const STEPS = 5; // Steps start at 0
-    const reverse_pattern = ID_PATTERN.split('').reverse().join('');
-    const pattern_array = [];
-
-    for (let step = 0; step < STEPS; step++) {
-        const pattern_end = PATTERN_SIZE + step;
-        pattern_array.push(ID_PATTERN.substring(step, pattern_end));
-
-        // Reverse version of the pattern, example: 9876543210
-        pattern_array.push(reverse_pattern.substring(step, pattern_end));
+export const documentAdditionalError = (document_additional, document_additional_format) => {
+    let error_message = null;
+    if (!document_additional) {
+        error_message = 'Please enter your document number. ';
+    } else {
+        const format_regex = getRegex(document_additional_format);
+        if (!format_regex.test(document_additional)) {
+            error_message = 'Please enter the correct format. ';
+        }
     }
 
-    return pattern_array;
-};
-
-export const isSequentialNumber = document_number => {
-    const trimmed_document_number = document_number.replace(/[.-]*/g, '');
-    const pattern_results = [];
-
-    if (document_number.length >= PATTERN_SIZE) {
-        createDocumentPatterns().forEach(pattern => {
-            pattern_results.push(trimmed_document_number.includes(pattern));
-        });
-    }
-
-    return pattern_results.includes(true);
+    return error_message;
 };
 
 export const getRegex = target_regex => {
@@ -43,13 +23,23 @@ export const getRegex = target_regex => {
 };
 
 export const getDocumentData = (country_code, document_type) => {
-    if (Object.keys(idv_document_data).includes(country_code)) {
-        return idv_document_data[country_code][document_type];
-    }
-    return null;
+    return (
+        (Object.keys(idv_document_data).includes(country_code) && idv_document_data[country_code][document_type]) || {
+            new_display_name: '',
+            example_format: '',
+            sample_image: '',
+        }
+    );
 };
 
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);
+
+export const preventEmptyClipboardPaste = e => {
+    const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
+    if (clipboardData.length === 0) {
+        e.preventDefault();
+    }
+};
 
 // Unsupported Regex List
 const regex = [

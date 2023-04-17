@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
-import CancelAddPaymentMethodModal from '../my-profile/payment-methods/add-payment-method/cancel-add-payment-method-modal.jsx';
 import NoAds from './no-ads/no-ads.jsx';
 
 const BuySellRowRendererComponent = row_props => {
@@ -27,11 +26,14 @@ const BuySellRowRendererComponent = row_props => {
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
-    const { buy_sell_store, general_store, my_profile_store } = useStores();
+    const { buy_sell_store, my_profile_store } = useStores();
+    const {
+        client: { currency },
+    } = useStore();
 
     React.useEffect(
         () => {
-            my_profile_store.setIsCancelAddPaymentMethodModalOpen(false);
+            my_profile_store.getPaymentMethodsList();
             reaction(
                 () => buy_sell_store.is_buy,
                 () => buy_sell_store.fetchAdvertiserAdverts(),
@@ -53,7 +55,6 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <>
-                <CancelAddPaymentMethodModal is_floating />
                 <Table className='buy-sell__table'>
                     <Modal
                         name='sort'
@@ -95,10 +96,7 @@ const BuySellTable = ({ onScroll }) => {
                                     <Localize i18n_default_text='Limits' />
                                 </Table.Head>
                                 <Table.Head>
-                                    <Localize
-                                        i18n_default_text='Rate (1 {{currency}})'
-                                        values={{ currency: general_store.client.currency }}
-                                    />
+                                    <Localize i18n_default_text='Rate (1 {{currency}})' values={{ currency }} />
                                 </Table.Head>
                                 <Table.Head>
                                     <Localize i18n_default_text='Payment methods' />

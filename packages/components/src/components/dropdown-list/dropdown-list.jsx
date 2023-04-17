@@ -19,7 +19,8 @@ const ListItem = ({
         <div
             ref={child_ref}
             // onMouseDown ensures the click handler runs before the onBlur event of Input
-            onMouseDown={() => {
+            onMouseDown={event => {
+                event.stopPropagation();
                 onItemSelection(item);
                 setActiveIndex(index);
             }}

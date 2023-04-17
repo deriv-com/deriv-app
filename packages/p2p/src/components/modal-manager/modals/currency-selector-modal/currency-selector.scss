@@ -1,0 +1,67 @@
+.currency-selector {
+    @include desktop {
+        position: absolute;
+        margin-top: 0.4rem;
+        width: 24rem;
+    }
+
+    &__search-icon {
+        margin-right: 1rem;
+    }
+
+    .dc-dropdown-list {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        margin-top: 0;
+        padding: 0.8rem;
+
+        @include mobile {
+            box-shadow: none;
+            height: 100%;
+            max-height: calc(100% - 11.8rem);
+            overflow: auto;
+            padding: 0;
+            transition: unset;
+        }
+
+        &__item {
+            border-radius: 4px;
+            padding: 0.8rem 1.6rem;
+            min-height: 36px;
+
+            @include mobile {
+                margin: 0.8rem 1.6rem;
+            }
+
+            &--active {
+                font-weight: bold;
+            }
+
+            &--not-found {
+                background: none;
+                word-break: break-word;
+
+                @include mobile {
+                    display: block;
+                    font-weight: bold;
+                    margin-top: 14rem;
+                    text-align: center;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .dc-input {
+        border: 0;
+        border-bottom: 1px solid var(--border-normal);
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        box-shadow: 0 8px 16px 0 var(--shadow-menu);
+        background: var(--general-main-2);
+
+        &__field {
+            padding-left: 3.4rem;
+        }
+    }
+}

@@ -17,7 +17,6 @@ export default class AdvertiserPageStore extends BaseStore {
     is_loading = true;
     is_loading_adverts = true;
     is_submit_disabled = true;
-    show_ad_popup = false;
     submitForm = () => {};
 
     constructor(root_store) {
@@ -36,7 +35,6 @@ export default class AdvertiserPageStore extends BaseStore {
             is_loading: observable,
             is_loading_adverts: observable,
             is_submit_disabled: observable,
-            show_ad_popup: observable,
             submitForm: observable,
             account_currency: computed,
             advert: computed,
@@ -63,7 +61,6 @@ export default class AdvertiserPageStore extends BaseStore {
             setIsLoading: action.bound,
             setIsLoadingAdverts: action.bound,
             setIsSubmitDisabled: action.bound,
-            setShowAdPopup: action.bound,
             setSubmitForm: action.bound,
             showAdPopup: action.bound,
             showBlockUserModal: action.bound,
@@ -110,12 +107,6 @@ export default class AdvertiserPageStore extends BaseStore {
                     this.setErrorMessage(response.error);
                 } else {
                     const { list } = response.p2p_advert_list;
-
-                    list.forEach(item => {
-                        item.payment_method_names = buy_sell_store.getSupportedPaymentMethods(
-                            item.payment_method_names
-                        );
-                    });
 
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
@@ -177,12 +168,14 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onCancel() {
-        this.root_store.general_store.setIsBlockUserModalOpen(false);
+        if (this.root_store.general_store.isCurrentModal('BlockUserModal')) {
+            this.root_store.general_store.hideModal();
+        }
         this.setIsDropdownMenuVisible(false);
     }
 
     onCancelClick() {
-        this.setShowAdPopup(false);
+        this.root_store.general_store.hideModal();
     }
 
     onConfirmClick(order_info) {
@@ -275,10 +268,6 @@ export default class AdvertiserPageStore extends BaseStore {
         this.is_submit_disabled = is_submit_disabled;
     }
 
-    setShowAdPopup(show_ad_popup) {
-        this.show_ad_popup = show_ad_popup;
-    }
-
     setSubmitForm(submitFormFn) {
         this.submitForm = submitFormFn;
     }
@@ -287,7 +276,9 @@ export default class AdvertiserPageStore extends BaseStore {
         if (!this.root_store.general_store.is_advertiser) {
             this.root_store.buy_sell_store.showVerification();
         } else {
-            this.setShowAdPopup(true);
+            this.root_store.general_store.showModal({
+                key: 'BuySellModal',
+            });
         }
     }
 
@@ -296,7 +287,9 @@ export default class AdvertiserPageStore extends BaseStore {
             !this.is_counterparty_advertiser_blocked &&
             this.counterparty_advertiser_info.id !== this.root_store.general_store.advertiser_id
         ) {
-            this.root_store.general_store.setIsBlockUserModalOpen(true);
+            this.root_store.general_store.showModal({
+                key: 'BlockUserModal',
+            });
         }
     }
 }

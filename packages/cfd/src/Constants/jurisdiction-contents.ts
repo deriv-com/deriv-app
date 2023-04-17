@@ -15,7 +15,7 @@ type TJurisdictionContent = {
     bvi: TJurisdictionCardItems;
 };
 
-export const jurisdiction_contents: TJurisdictionContent = {
+export const getJurisdictionContents = (): TJurisdictionContent => ({
     svg: {
         is_over_header_available: false,
         header: localize('St. Vincent & Grenadines'),
@@ -38,8 +38,7 @@ export const jurisdiction_contents: TJurisdictionContent = {
         header: localize('Vanuatu'),
         synthetic_contents: [
             `${localize('Regulated by the Vanuatu Financial Services Commission')}`,
-            `${localize('Registered with the Financial Commission')}`,
-            `${localize('90+ assets: forex, stock indices, commodities and cryptocurrencies')}`,
+            `${localize('30+ assets: synthetics, basket indices and derived FX')}`,
             `${localize('Leverage up to 1:1000')}`,
         ],
         financial_contents: [
@@ -104,4 +103,4 @@ export const jurisdiction_contents: TJurisdictionContent = {
             `${localize('Leverage up to 1:1000')}`,
         ],
     },
-};
+});

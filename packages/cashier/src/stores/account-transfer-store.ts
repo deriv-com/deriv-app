@@ -15,10 +15,10 @@ import {
 } from '@deriv/shared';
 import type { TransferBetweenAccountsResponse } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import AccountTransferGetSelectedError from 'Pages/account-transfer/account-transfer-get-selected-error';
-import Constants from 'Constants/constants';
+import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
+import Constants from '../constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount } from 'Types';
+import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
@@ -41,7 +41,6 @@ export default class AccountTransferStore {
             should_switch_account: observable,
             transfer_fee: observable,
             transfer_limit: observable,
-            is_account_transfer_visible: computed,
             is_transfer_locked: computed,
             setBalanceByLoginId: action.bound,
             setBalanceSelectedFrom: action.bound,
@@ -72,7 +71,7 @@ export default class AccountTransferStore {
     }
 
     accounts_list: Array<TAccount> = [];
-    container = Constants.containers.account_transfer;
+    container: string = Constants.containers.account_transfer;
     error = new ErrorStore();
     has_no_account = false;
     has_no_accounts_balance = false;
@@ -88,14 +87,7 @@ export default class AccountTransferStore {
     account_transfer_amount: string | null = '';
     should_switch_account = false;
     transfer_fee?: number | null = null;
-    transfer_limit: { min?: string | null; max?: string | null } = {};
-
-    get is_account_transfer_visible() {
-        const { has_maltainvest_account, landing_company_shortcode, residence } = this.root_store.client;
-        // cashier Transfer account tab is hidden for iom clients
-        // check for residence to hide the tab before creating a real money account
-        return residence !== 'im' && (landing_company_shortcode !== 'malta' || has_maltainvest_account);
-    }
+    transfer_limit: { min?: string | number; max?: string | number } = {};
 
     get is_transfer_locked() {
         const {
@@ -118,7 +110,8 @@ export default class AccountTransferStore {
     }
 
     setBalanceByLoginId(loginid: string, balance: string | number) {
-        this.accounts_list.find(acc => loginid === acc.value).balance = balance;
+        const account = this.accounts_list.find(acc => loginid === acc.value);
+        if (account) account.balance = balance;
     }
 
     setBalanceSelectedFrom(balance: string | number): void {
@@ -148,7 +141,7 @@ export default class AccountTransferStore {
         const has_updated_account_balance =
             this.has_no_accounts_balance &&
             Object.keys(active_accounts).find(
-                account => !active_accounts[account].is_virtual && active_accounts[account].balance
+                account => !active_accounts[Number(account)].is_virtual && active_accounts[Number(account)].balance
             );
         if (has_updated_account_balance) {
             this.setHasNoAccountsBalance(false);
@@ -273,13 +266,13 @@ export default class AccountTransferStore {
                 (Number(balance) >= (transfer_limit?.min || 0) && Number(balance) <= transfer_limit?.max)
                     ? balance
                     : transfer_limit?.max.toFixed(decimal_places),
-            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : null,
+            min: transfer_limit?.min ? (+transfer_limit?.min).toFixed(decimal_places) : '',
         };
     }
 
     // Using Partial for type to bypass 'msg_type' and 'echo_req' from response type
     async sortAccountsTransfer(
-        response_accounts?: Partial<TransferBetweenAccountsResponse>,
+        response_accounts?: Partial<TransferBetweenAccountsResponse> | null,
         is_from_derivgo?: boolean
     ) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
@@ -352,15 +345,16 @@ export default class AccountTransferStore {
                 const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
                 const a_is_derivez = a.account_type === CFD_PLATFORMS.DERIVEZ;
                 const b_is_derivez = b.account_type === CFD_PLATFORMS.DERIVEZ;
-                const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
-                const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
+                const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency || '');
+                const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency || '');
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
                 const b_is_fiat = !b_is_mt && !b_is_crypto;
                 if (a_is_mt && b_is_mt) {
                     if (a.market_type === 'synthetic') {
                         return -1;
                     }
-                    if (a.sub_account_type === 'financial') {
+                    // Remove ('sub_account_type' in a) when api-types is updated
+                    if ('sub_account_type' in a && a.sub_account_type === 'financial') {
                         return b.market_type === 'synthetic' ? 1 : -1;
                     }
                     return 1;
@@ -377,8 +371,7 @@ export default class AccountTransferStore {
         const arr_accounts: TTransferAccount | TAccount[] = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        const is_from_pre_appstore =
-            this.root_store.client.is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
@@ -396,7 +389,7 @@ export default class AccountTransferStore {
                 sub_account_type: account.sub_account_type,
                 platform: account.account_type,
                 is_eu: this.root_store.client.is_eu,
-            })}`;
+            })}` as TPlatformIcon;
             const non_eu_accounts =
                 account.landing_company_short &&
                 account.landing_company_short !== 'svg' &&
@@ -435,10 +428,7 @@ export default class AccountTransferStore {
 
             const obj_values: TAccount = {
                 text:
-                    is_cfd &&
-                    account.account_type === CFD_PLATFORMS.MT5 &&
-                    this.root_store.client.is_pre_appstore &&
-                    combined_cfd_mt5_account
+                    is_cfd && account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                         ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
                 value: account.loginid,
@@ -450,9 +440,7 @@ export default class AccountTransferStore {
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
                     platform_icon:
-                        account.account_type === CFD_PLATFORMS.MT5 &&
-                        this.root_store.client.is_pre_appstore &&
-                        combined_cfd_mt5_account
+                        account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                             ? combined_cfd_mt5_account.icon
                             : cfd_icon_display,
                     status: account?.status,
@@ -479,11 +467,12 @@ export default class AccountTransferStore {
                     obj_values.error = AccountTransferGetSelectedError(obj_values.value);
                 }
 
-                const { account_id, login } = this.root_store.traders_hub?.selected_account;
+                const login = this.root_store.traders_hub?.selected_account.login;
+                const account_id = this.root_store.traders_hub?.selected_account.account_id;
 
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account
-                if (!is_from_pre_appstore || [account_id, login].includes(account.loginid)) {
+                if (!is_from_outside_cashier || [account_id, login].includes(account.loginid)) {
                     this.setSelectedTo(obj_values);
                 }
             }
@@ -668,13 +657,13 @@ export default class AccountTransferStore {
         this.setTransferLimit();
     };
 
-    setTransferPercentageSelectorResult(amount: number) {
+    setTransferPercentageSelectorResult(amount: string) {
         const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
         const selected_from_currency = this.selected_from.currency;
         const selected_to_currency = this.selected_to.currency;
 
-        if (amount > 0 || Number(this.selected_from.balance) === 0) {
+        if (Number(amount) > 0 || Number(this.selected_from.balance) === 0) {
             crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateTransferFromAmount();
             crypto_fiat_converter.onChangeConverterFromAmount(
@@ -690,7 +679,8 @@ export default class AccountTransferStore {
     }
 
     validateTransferFromAmount() {
-        const { converter_from_amount, setConverterFromError } = this.root_store.modules.cashier.crypto_fiat_converter;
+        const converter_from_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_from_amount;
+        const setConverterFromError = this.root_store.modules.cashier?.crypto_fiat_converter.setConverterFromError;
 
         if (!converter_from_amount) {
             setConverterFromError(localize('This field is required.'));
@@ -702,7 +692,7 @@ export default class AccountTransferStore {
                 max: Number(this.transfer_limit.max),
             });
             if (!is_ok) {
-                setConverterFromError(message);
+                setConverterFromError(message || '');
             } else if (Number(this.selected_from.balance) < +converter_from_amount) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {
@@ -712,7 +702,8 @@ export default class AccountTransferStore {
     }
 
     validateTransferToAmount() {
-        const { converter_to_amount, setConverterToError } = this.root_store.modules.cashier.crypto_fiat_converter;
+        const converter_to_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_to_amount;
+        const setConverterToError = this.root_store.modules.cashier?.crypto_fiat_converter.setConverterToError;
 
         if (converter_to_amount) {
             const currency = this.selected_to.currency;
@@ -721,7 +712,7 @@ export default class AccountTransferStore {
                 decimals: getDecimalPlaces(currency || ''),
             });
             if (!is_ok) {
-                setConverterToError(message);
+                setConverterToError(message || '');
             } else {
                 setConverterToError('');
             }

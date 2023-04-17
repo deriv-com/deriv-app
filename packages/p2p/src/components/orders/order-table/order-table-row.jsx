@@ -1,16 +1,17 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { secondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, routes } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';
-import RatingModal from 'Components/rating-modal';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -34,10 +35,15 @@ const OrderRow = ({ row: order }) => {
         };
     };
     const { general_store, order_store, sendbird_store } = useStores();
+    const {
+        notifications: { removeNotificationByKey, removeNotificationMessage },
+        client: { loginid },
+    } = useStore();
+
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const should_show_order_details = React.useRef(true);
-    const [should_show_rating_modal, setShouldShowRatingModal] = React.useState(false); // Need a separate state to prevent re-render. DON'T REMOVE!
+    const { showModal, hideModal } = useModalManagerContext();
 
     const {
         account_currency,
@@ -68,6 +74,8 @@ const OrderRow = ({ row: order }) => {
     const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);
 
+    const history = useHistory();
+
     const isOrderSeen = order_id => {
         const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
@@ -75,10 +83,46 @@ const OrderRow = ({ row: order }) => {
 
     const onRowClick = () => {
         if (should_show_order_details.current) {
+            const current_query_params = new URLSearchParams(location.search);
+
+            current_query_params.append('order', order.id);
+
+            history.replace({
+                pathname: routes.cashier_p2p,
+                search: current_query_params.toString(),
+                hash: location.hash,
+            });
+
             return order_store.setOrderId(order.id);
         }
 
         return () => {};
+    };
+
+    const showRatingModal = () => {
+        showModal({
+            key: 'RatingModal',
+            props: {
+                is_buy_order_for_user,
+                is_user_recommended_previously,
+                onClickDone: () => {
+                    order_store.setOrderRating(id);
+                    hideModal();
+                    should_show_order_details.current = true;
+                    order_store.setRatingValue(0);
+                    removeNotificationMessage({ key: `order-${id}` });
+                    removeNotificationByKey({ key: `order-${id}` });
+                    order_store.setIsLoading(true);
+                    order_store.setOrders([]);
+                    order_store.loadMoreOrders({ startIndex: 0 });
+                },
+                onClickSkip: () => {
+                    order_store.setRatingValue(0);
+                    hideModal();
+                    should_show_order_details.current = true;
+                },
+            },
+        });
     };
 
     React.useEffect(() => {
@@ -86,9 +130,8 @@ const OrderRow = ({ row: order }) => {
             const { distance, label } = getTimeLeft(order_expiry_milliseconds);
 
             if (distance < 0) {
-                const { client, props } = general_store;
                 setRemainingTime(label);
-                setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
+                setOrderState(createExtendedOrderDetails(order.order_details, loginid, general_store.server_time));
                 clearInterval(interval.current);
                 setIsTimerVisible(false);
             } else {
@@ -103,32 +146,6 @@ const OrderRow = ({ row: order }) => {
 
     return (
         <React.Fragment>
-            <RatingModal
-                is_buy_order_for_user={is_buy_order_for_user}
-                is_rating_modal_open={should_show_rating_modal}
-                is_user_recommended_previously={is_user_recommended_previously}
-                onClickClearRecommendation={() => order_store.setIsRecommended(null)}
-                onClickDone={() => {
-                    order_store.setOrderRating(id);
-                    setShouldShowRatingModal(false);
-                    should_show_order_details.current = true;
-                    order_store.setRatingValue(0);
-                    general_store.props.removeNotificationMessage({ key: `order-${id}` });
-                    general_store.props.removeNotificationByKey({ key: `order-${id}` });
-                    order_store.setIsLoading(true);
-                    order_store.setOrders([]);
-                    order_store.loadMoreOrders({ startIndex: 0 });
-                }}
-                onClickNotRecommended={() => order_store.setIsRecommended(0)}
-                onClickRecommended={() => order_store.setIsRecommended(1)}
-                onClickSkip={() => {
-                    order_store.setRatingValue(0);
-                    setShouldShowRatingModal(false);
-                    should_show_order_details.current = true;
-                }}
-                onClickStar={order_store.handleRating}
-                rating_value={order_store.rating_value}
-            />
             <div onClick={onRowClick}>
                 <DesktopWrapper>
                     <Table.Row
@@ -168,7 +185,7 @@ const OrderRow = ({ row: order }) => {
                                         rating={rating}
                                         onClickUserRatingButton={() => {
                                             should_show_order_details.current = false;
-                                            setShouldShowRatingModal(true);
+                                            showRatingModal();
                                         }}
                                     />
                                 )
@@ -235,7 +252,7 @@ const OrderRow = ({ row: order }) => {
                                             rating={rating}
                                             onClickUserRatingButton={() => {
                                                 should_show_order_details.current = false;
-                                                setShouldShowRatingModal(true);
+                                                showRatingModal();
                                             }}
                                         />
                                     )}

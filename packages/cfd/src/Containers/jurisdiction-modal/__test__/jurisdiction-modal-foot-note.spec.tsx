@@ -205,4 +205,9 @@ describe('JurisdictionModalFootNote', () => {
             )
         ).toBeInTheDocument();
     });
+
+    it('should not render JurisdictionModalFootNote when jurisdiction_shortcode is empty', () => {
+        render(<JurisdictionModalFootNote {...mock_props} jurisdiction_selected_shortcode='' />);
+        expect(screen.queryByTestId('dt-jurisdiction-footnote')).not.toBeInTheDocument();
+    });
 });

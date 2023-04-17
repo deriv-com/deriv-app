@@ -3,7 +3,7 @@ import RealWalletsUpgrade from '../real-wallets-upgrade';
 import { render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/ui', () => ({
+jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Modal: () => <div>Modal</div>,
 }));

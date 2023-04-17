@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { NetworkStatus } from '../network-status.jsx';
+import NetworkStatus from '../network-status.jsx';
 
 const MockNetworkStatus = ({ is_mobile = true }) => (
     <NetworkStatus status={{ class: 'offline' }} is_mobile={is_mobile} />

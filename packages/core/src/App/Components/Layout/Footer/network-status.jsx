@@ -7,8 +7,8 @@ import { observer, useStore } from '@deriv/stores';
 
 const NetworkStatus = observer(({ is_mobile }) => {
     const { common } = useStore();
-    const { network_status } = common;
-    const status = network_status;
+    const { network_status: status } = common;
+
     const network_status_element = (
         <div
             data-testid='dt_network_status_element'

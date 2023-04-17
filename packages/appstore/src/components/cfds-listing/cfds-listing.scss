@@ -266,17 +266,11 @@
             flex-direction: column;
             gap: 1rem;
         }
-
-        &-main {
-            height: 100%;
-        }
-
         &-items-sub-container {
             display: flex;
             align-items: flex-start;
             gap: 1rem;
         }
-
         &-back-button {
             transition: transform 0.25s linear;
             &:hover {

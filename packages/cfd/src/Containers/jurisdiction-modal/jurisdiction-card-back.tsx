@@ -32,7 +32,7 @@ const JurisdictionCardBack = ({
             <Text as='div' size='xxs'>
                 {jurisdictionVerificationContents().short_description}
             </Text>
-            <div className={classNames('cfd-card-back-section-items-container', 'cfd-card-back-section-main')}>
+            <div className={classNames('cfd-card-back-section-items-container')}>
                 {verification_docs?.map(verification_item => (
                     <div key={verification_item} className='cfd-card-back-section-items-sub-container'>
                         <div>

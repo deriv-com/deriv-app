@@ -14,7 +14,7 @@ const WalletsBannerUpgrade = () => {
             <div className='wallets-banner__upgrade-banner-description'>
                 <div>
                     <Localize
-                        i18n_default_text='<0>Wallets</0><1> - the best way to organise your funds</1>'
+                        i18n_default_text='<0>Wallets</0><1> — the best way to organise your funds</1>'
                         components={[<Text key={0} weight='bold' size={size} />, <Text key={1} size={size} />]}
                     />
                 </div>

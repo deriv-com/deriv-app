@@ -28,7 +28,7 @@ describe('JurisdictionModalFootNote', () => {
         account_type: '',
         context: mock_context,
         card_classname: '',
-        jurisdiction_selected_shortcode: '',
+        jurisdiction_selected_shortcode: Jurisdiction.SVG,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };

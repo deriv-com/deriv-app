@@ -5,6 +5,14 @@ import Tab from './tab';
 import { useConstructor } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 
+// TODO: Remove this declaration after changing label to data-label in Tabs component
+declare module 'react' {
+    interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
+        label?: string;
+        hash?: string;
+    }
+}
+
 type TTabsProps = RouteComponentProps & {
     active_icon_color: string;
     active_index?: number;
@@ -120,7 +128,7 @@ const Tabs = ({
 
     const onClickTabItem = (index: number) => {
         if (should_update_hash) {
-            const hash = children[index].props.hash;
+            const hash = children[index].props['data-hash'];
             pushHash(hash);
         }
         setActiveTabIndex(index);
@@ -166,7 +174,9 @@ const Tabs = ({
                     >
                         {React.Children.map(children, (child, index) => {
                             if (!child) return null;
-                            const { count, header_content, icon, label, id } = child.props;
+                            const { icon, label, id } = child.props;
+                            const header_content = child.props['data-header-content'];
+                            const count = child.props['data-count'];
                             return (
                                 <Tab
                                     active_icon_color={active_icon_color}

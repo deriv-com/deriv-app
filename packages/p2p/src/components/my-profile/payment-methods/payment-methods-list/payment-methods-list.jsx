@@ -31,6 +31,16 @@ const PaymentMethodsList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const getFilteredPaymentMethods = (payment_method, payment_methods_list_method) => {
+        return (
+            payment_method.method === payment_methods_list_method.method ||
+            (payment_methods_list_method.method === 'bank_transfer' &&
+                bank_transfer_categories.includes(payment_method.method)) ||
+            (payment_methods_list_method.method === 'e_wallet' &&
+                !non_ewallet_payment_methods.includes(payment_method.method))
+        );
+    };
+
     return (
         <>
             <DesktopWrapper>
@@ -48,11 +58,7 @@ const PaymentMethodsList = () => {
                             (payment_methods_list_method, key) => {
                                 const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
                                     payment_method =>
-                                        payment_method.method === payment_methods_list_method.method ||
-                                        (payment_methods_list_method.method === 'bank_transfer' &&
-                                            bank_transfer_categories.includes(payment_method.method)) ||
-                                        (payment_methods_list_method.method === 'e_wallet' &&
-                                            !non_ewallet_payment_methods.includes(payment_method.method))
+                                        getFilteredPaymentMethods(payment_method, payment_methods_list_method)
                                 );
 
                                 return (
@@ -105,11 +111,7 @@ const PaymentMethodsList = () => {
                             (payment_methods_list_method, key) => {
                                 const payment_methods_list = my_profile_store.advertiser_payment_methods_list.filter(
                                     payment_method =>
-                                        payment_method.method === payment_methods_list_method.method ||
-                                        (payment_methods_list_method.method === 'bank_transfer' &&
-                                            bank_transfer_categories.includes(payment_method.method)) ||
-                                        (payment_methods_list_method.method === 'e_wallet' &&
-                                            !non_ewallet_payment_methods.includes(payment_method.method))
+                                        getFilteredPaymentMethods(payment_method, payment_methods_list_method)
                                 );
 
                                 return (

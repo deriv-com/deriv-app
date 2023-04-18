@@ -9,7 +9,7 @@ type TStep = {
     bullets: string[];
 };
 
-export const steps = (eu_user: boolean): TStep[] => [
+export const steps = (eu_user: boolean, emdash: string): TStep[] => [
     {
         icon: <WalletsImage banner={eu_user ? 'IntroducingWalletsEU' : 'IntroducingWallets'} />,
         title: localize('Introducing Wallets'),
@@ -21,7 +21,7 @@ export const steps = (eu_user: boolean): TStep[] => [
             eu_user
                 ? localize('Keep track of your trading funds in one place')
                 : localize('A Wallet for each currency to focus your funds'),
-            !eu_user && localize('Get one Wallet, get several - your choice'),
+            !eu_user && localize(`Get one Wallet, get several ${emdash} your choice`),
         ],
     },
     {

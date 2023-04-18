@@ -17,6 +17,8 @@ const RealWalletsUpgrade = () => {
 
     const [currentStep, setCurrentStep] = React.useState(1);
 
+    const emdash = '\u2014';
+
     const handleNext = () => {
         setCurrentStep(currentStep + 1);
     };
@@ -34,7 +36,7 @@ const RealWalletsUpgrade = () => {
         }
     }, [is_real_wallets_upgrade_on]);
 
-    const step_config = steps(eu_user);
+    const step_config = steps(eu_user, emdash);
 
     const StepComponent = () => {
         return (

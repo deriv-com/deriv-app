@@ -193,6 +193,10 @@ const mock = (): TStores => {
             dxtrade_accounts_list: [],
             default_currency: 'USD',
             resetVirtualBalance: jest.fn(),
+            has_enabled_two_fa: false,
+            setTwoFAStatus: jest.fn(),
+            has_changed_two_fa: false,
+            setTwoFAChangedStatus: jest.fn(),
         },
         common: {
             error: {

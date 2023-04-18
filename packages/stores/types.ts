@@ -183,6 +183,10 @@ type TClientStore = {
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
+    has_enabled_two_fa: boolean;
+    setTwoFAStatus: (status: boolean) => void;
+    has_changed_two_fa: boolean;
+    setTwoFAChangedStatus: (status: boolean) => void;
 };
 
 type TCommonStoreError = {

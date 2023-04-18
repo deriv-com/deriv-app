@@ -40,7 +40,7 @@ export default class WithdrawStore {
     }
 
     blockchain_address = '';
-    container = Constants.containers.withdraw;
+    container: string = Constants.containers.withdraw;
     error = new ErrorStore();
     is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;
@@ -51,7 +51,7 @@ export default class WithdrawStore {
     };
 
     setIsWithdrawConfirmed(is_withdraw_confirmed: boolean) {
-        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
+        const converter_from_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_from_amount;
         this.is_withdraw_confirmed = is_withdraw_confirmed;
 
         if (is_withdraw_confirmed) this.setWithdrawAmount(converter_from_amount);
@@ -59,8 +59,8 @@ export default class WithdrawStore {
         if (!is_withdraw_confirmed) {
             const { client, modules } = this.root_store;
             // TODO: remove this unused container
-            const { active_container } = modules.cashier.general_store;
-            const container = Constants.map_action[active_container];
+            const active_container = modules.cashier?.general_store.active_container;
+            const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
             client.setVerificationCode('', container);
         }
@@ -99,7 +99,7 @@ export default class WithdrawStore {
     }
 
     async saveWithdraw(verification_code: string) {
-        const { converter_from_amount } = this.root_store.modules.cashier.crypto_fiat_converter;
+        const converter_from_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_from_amount;
 
         this.error.setErrorMessage({ code: '', message: '' });
         await this.WS.cryptoWithdraw({
@@ -112,8 +112,8 @@ export default class WithdrawStore {
                 if (verification_code) {
                     const { client, modules } = this.root_store;
                     // TODO: remove this unused container
-                    const { active_container } = modules.cashier.general_store;
-                    const container = Constants.map_action[active_container];
+                    const active_container = modules.cashier?.general_store.active_container;
+                    const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
                     client.setVerificationCode('', container);
                 }
@@ -125,11 +125,12 @@ export default class WithdrawStore {
     }
 
     resetWithdrawForm() {
-        const { setConverterFromAmount, setConverterToAmount } = this.root_store.modules.cashier.crypto_fiat_converter;
+        const setConverterFromAmount = this.root_store.modules.cashier?.crypto_fiat_converter.setConverterFromAmount;
+        const setConverterToAmount = this.root_store.modules.cashier?.crypto_fiat_converter.setConverterToAmount;
         const { client, modules } = this.root_store;
         // TODO: remove this unused container
         const { active_container } = modules.cashier.general_store;
-        const container = Constants.map_action[active_container];
+        const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
         this.setBlockchainAddress('');
         setConverterFromAmount('');
@@ -145,8 +146,8 @@ export default class WithdrawStore {
         if (this && this.root_store && verification_code) {
             const { client, modules } = this.root_store;
             // TODO: remove this unused container
-            const { active_container } = modules.cashier.general_store;
-            const container = Constants.map_action[active_container];
+            const active_container = modules.cashier?.general_store.active_container;
+            const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
             client.setVerificationCode('', container);
         }
@@ -154,7 +155,11 @@ export default class WithdrawStore {
 
     async onMountWithdraw(verification_code?: string) {
         const { client, modules } = this.root_store;
-        const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
+        const active_container = modules.cashier?.general_store.active_container;
+        const is_crypto = modules.cashier?.general_store.is_crypto;
+        const onMountCommon = modules.cashier?.general_store.onMountCommon;
+        const setLoading = modules.cashier?.general_store.setLoading;
+        const setOnRemount = modules.cashier?.general_store.setOnRemount;
         const {
             checkIframeLoaded,
             clearTimeoutCashierUrl,
@@ -206,7 +211,7 @@ export default class WithdrawStore {
             clearTimeoutCashierUrl();
             if (verification_code) {
                 // TODO: remove this unused container
-                const container = Constants.map_action[active_container];
+                const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
                 client.setVerificationCode('', container);
             }
@@ -247,8 +252,8 @@ export default class WithdrawStore {
             if (verification_code) {
                 const { client, modules } = this.root_store;
                 // TODO: remove this unused container
-                const { active_container } = modules.cashier.general_store;
-                const container = Constants.map_action[active_container];
+                const active_container = modules.cashier?.general_store.active_container;
+                const container = Constants.map_action[active_container as keyof typeof Constants.map_action];
 
                 client.setVerificationCode('', container);
             }
@@ -280,12 +285,12 @@ export default class WithdrawStore {
         this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
-    setWithdrawPercentageSelectorResult(amount: number) {
+    setWithdrawPercentageSelectorResult(amount: string) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;
 
-        if (amount > 0) {
+        if (Number(amount) > 0) {
             crypto_fiat_converter.setConverterFromAmount(amount);
             this.validateWithdrawFromAmount();
             crypto_fiat_converter.onChangeConverterFromAmount(
@@ -353,7 +358,8 @@ export default class WithdrawStore {
         let error_message = '';
         const { client, modules } = this.root_store;
         const { current_fiat_currency } = client;
-        const { converter_to_amount, setConverterToError } = modules.cashier.crypto_fiat_converter;
+        const converter_to_amount = modules.cashier?.crypto_fiat_converter.converter_to_amount;
+        const setConverterToError = modules.cashier?.crypto_fiat_converter.setConverterToError;
 
         if (converter_to_amount) {
             const { is_ok, message } = validNumber(converter_to_amount, {

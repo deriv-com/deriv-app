@@ -3,13 +3,13 @@ import Routes from 'Containers/routes';
 import { MobxContentProvider } from 'Stores/connect';
 import { StoreProvider } from '@deriv/stores';
 import 'Sass/app.scss';
-import initStore from './init-store'; // eslint-disable-line import/extensions
-import type { TStores } from '@deriv/stores';
+import initStore from './init-store';
+import { TCoreStores } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {
-        root_store: TStores;
-        WS: Record<string, any>;
+        root_store: TCoreStores;
+        WS: unknown;
     };
 };
 
@@ -18,7 +18,7 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <StoreProvider store={root_store}>
+            <StoreProvider store={passthrough.root_store}>
                 <Routes />
             </StoreProvider>
         </MobxContentProvider>

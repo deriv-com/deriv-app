@@ -1,9 +1,9 @@
 import ModulesStore from './Modules';
 import ProfitTableStore from './Modules/Profit/profit-store';
 import StatementStore from './Modules/Statement/statement-store';
-import type { TStores } from '@deriv/stores';
+import type { TCoreStores } from '@deriv/stores/types';
 
-export type TRootStore = TStores & {
+export type TRootStore = TCoreStores & {
     modules: {
         profit_table: ProfitTableStore;
         statement: StatementStore;
@@ -11,7 +11,7 @@ export type TRootStore = TStores & {
 };
 
 export default class RootStore {
-    constructor(core_store: TStores) {
+    constructor(core_store: TCoreStores) {
         this.client = core_store.client;
         this.common = core_store.common;
         this.modules = new ModulesStore(this);

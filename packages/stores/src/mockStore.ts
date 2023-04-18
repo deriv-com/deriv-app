@@ -1,5 +1,4 @@
 import merge from 'lodash.merge';
-import moment from 'moment';
 import type { TStores } from './useStore';
 
 const mock = (): TStores => {

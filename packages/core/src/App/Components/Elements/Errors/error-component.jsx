@@ -23,6 +23,7 @@ const ErrorComponent = ({
     type,
     redirect_to = routes.trade,
     should_show_refresh = true,
+    should_redirect = true,
 }) => {
     const history = useHistory();
 
@@ -81,6 +82,7 @@ const ErrorComponent = ({
             should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}
             has_malta_account={has_malta_account}
+            should_redirect={should_redirect}
         />
     );
 };

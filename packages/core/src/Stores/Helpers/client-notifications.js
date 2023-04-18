@@ -1,4 +1,4 @@
-import { isEmptyObject, isMobile, State } from '@deriv/shared';
+import { isEmptyObject, State } from '@deriv/shared';
 
 export const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
     if (!account_settings || isEmptyObject(account_settings)) return false;
@@ -61,22 +61,7 @@ export const getCashierValidations = cashier_arr => {
     }, {});
 };
 
-export const excluded_notifications = isMobile()
-    ? ['contract_sold', 'switched_to_real', 'has_changed_two_fa']
-    : [
-          'you_are_offline',
-          'password_changed',
-          'switch_to_tick_chart',
-          'contract_sold',
-          'maintenance',
-          'bot_switch_account',
-          'new_version_available',
-          'svg_needs_poi_poa',
-          'svg_needs_poa',
-          'svg_needs_poi',
-          'svg_poi_expired',
-          'switched_to_real',
-          'has_changed_two_fa',
-      ];
+// Notifications keys will not be added to localStorage and will appear again after user logout/login
+export const excluded_notifications = ['contract_sold', 'switched_to_real', 'has_changed_two_fa'];
 
-export const priority_toast_messages = ['svg', 'need_fa', 'p2p_daily_limit_increase'];
+export const priority_toast_messages = ['svg', 'need_fa', 'p2p_daily_limit_increase', 'authenticate'];

@@ -11,21 +11,38 @@ import {
     RoutePromptDialog,
 } from 'Components';
 import BlocklyLoading from '../components/blockly-loading';
-import { MobxContentProvider } from 'Stores/connect';
+import { StoreProvider, useStore } from '@deriv/stores';
+import { DbotStoreProvider, useDbotStore } from 'Stores/dbotStore';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
 
-const App = ({ passthrough }) => {
+const AppWrapper = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
-    const [is_loading, setIsLoading] = React.useState(true);
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
-    const { app, common, core } = root_store_instance.current;
-    const { showDigitalOptionsMaltainvestError } = app;
+
+    return (
+        <StoreProvider store={root_store}>
+            {/* TODO: only pass the root_store_instance as prop once all the connect method is removed */}
+            <DbotStoreProvider store={{ ...root_store_instance.current, ...root_store }}>
+                <App root_store_instance={root_store_instance} />
+            </DbotStoreProvider>
+        </StoreProvider>
+    );
+};
+
+const App = ({ root_store_instance }) => {
+    const [is_loading, setIsLoading] = React.useState(true);
     const {
+        common,
+        client,
         ui: { is_dark_mode_on },
-    } = root_store_instance.current;
+    } = useStore();
+    const {
+        app,
+        app: { showDigitalOptionsMaltainvestError },
+    } = useDbotStore();
 
     React.useEffect(() => {
         setColors(is_dark_mode_on);
@@ -53,9 +70,9 @@ const App = ({ passthrough }) => {
     }, []);
 
     React.useEffect(() => {
-        showDigitalOptionsMaltainvestError(core.client, common);
+        showDigitalOptionsMaltainvestError(client, common);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [core.client.is_options_blocked, core.client.account_settings.country_code]);
+    }, [client.is_options_blocked, client.account_settings.country_code]);
 
     React.useEffect(() => {
         GTM.init(root_store_instance.current);
@@ -84,7 +101,7 @@ const App = ({ passthrough }) => {
     return is_loading ? (
         <Loading />
     ) : (
-        <MobxContentProvider store={root_store_instance.current}>
+        <>
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
@@ -95,8 +112,8 @@ const App = ({ passthrough }) => {
                 <BotBuilder />
                 <RoutePromptDialog />
             </div>
-        </MobxContentProvider>
+        </>
     );
 };
 
-export default App;
+export default AppWrapper;

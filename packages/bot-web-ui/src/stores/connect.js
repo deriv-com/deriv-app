@@ -1,14 +1,13 @@
-import { useObserver } from 'mobx-react';
 import React from 'react';
+import { observer } from '@deriv/stores';
+import { useDbotStore } from 'Stores/dbotStore';
 
 const isClassComponent = Component =>
     !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
 
-export const MobxContent = React.createContext(null);
-
 function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
     const Component = own_props => {
-        const store = React.useContext(MobxContent);
+        const store = useDbotStore();
 
         let ObservedComponent = BaseComponent;
 
@@ -17,15 +16,11 @@ function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
             ObservedComponent = FunctionalWrapperComponent;
         }
 
-        return useObserver(() => ObservedComponent({ ...own_props, ...propsToSelectFn(store, own_props) }));
+        return ObservedComponent({ ...own_props, ...propsToSelectFn(store, own_props) });
     };
 
     Component.displayName = BaseComponent.name;
-    return Component;
+    return observer(Component);
 }
-
-export const MobxContentProvider = ({ store, children }) => {
-    return <MobxContent.Provider value={{ ...store, ...store.core }}>{children}</MobxContent.Provider>;
-};
 
 export const connect = propsToSelectFn => Component => injectStorePropsToComponent(propsToSelectFn, Component);

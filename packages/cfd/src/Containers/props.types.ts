@@ -179,20 +179,17 @@ export type TJurisdictionCardProps = {
     disabled: boolean;
 };
 
-export type TJurisdictionCardFrontProps = {
-    card_classname: string;
-    toggleCardFlip: (event: SyntheticEvent) => void;
-    card_values: TJurisdictionCardItems;
-    card_data: TJurisdictionCardSection[];
-    is_card_selected: boolean;
-    disabled: boolean;
-};
-
 export type TJurisdictionCardBackProps = {
     card_classname: string;
+    is_card_selected: boolean;
     toggleCardFlip: (event: SyntheticEvent) => void;
     verification_docs: TJurisdictionCardItemVerification | undefined;
-    is_card_selected: boolean;
+};
+
+export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
+    card_data: TJurisdictionCardSection[];
+    card_values: TJurisdictionCardItems;
+    disabled: boolean;
 };
 
 export type TJurisdictionClickableDescriptionProps = {
@@ -202,11 +199,13 @@ export type TJurisdictionClickableDescriptionProps = {
 
 export type TJurisdictionTitleIndicatorProps = {
     title_indicators: TJurisdictionCardSectionTitleIndicators;
+    verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
 export type TJurisdictionCardSectionProps = {
     card_section_item: TJurisdictionCardSection;
     toggleCardFlip: (event: SyntheticEvent) => void;
+    verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
 export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';

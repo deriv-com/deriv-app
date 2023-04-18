@@ -12,6 +12,7 @@ const JurisdictionCardFront = ({
     disabled,
     is_card_selected,
     toggleCardFlip,
+    verification_docs,
 }: TJurisdictionCardFrontProps) => (
     <div
         className={classNames(card_classname, 'cfd-card-front', {
@@ -47,7 +48,11 @@ const JurisdictionCardFront = ({
             <div className={`${card_classname}__card-section-container`}>
                 {card_data.map((item, index) => (
                     <React.Fragment key={item.key}>
-                        <JurisdictionCardSection card_section_item={item} toggleCardFlip={toggleCardFlip} />
+                        <JurisdictionCardSection
+                            card_section_item={item}
+                            toggleCardFlip={toggleCardFlip}
+                            verification_docs={verification_docs}
+                        />
                         {index < card_data.length - 1 && <div className='cfd-card-section-divider' />}
                     </React.Fragment>
                 ))}

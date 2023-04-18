@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 
-const JurisdictionTitleIndicator = ({ title_indicators }: TJurisdictionTitleIndicatorProps) => {
+const JurisdictionTitleIndicator = ({ title_indicators, verification_docs }: TJurisdictionTitleIndicatorProps) => {
     return title_indicators.type === 'displayText' ? (
         <Text
             as='span'
@@ -19,7 +19,7 @@ const JurisdictionTitleIndicator = ({ title_indicators }: TJurisdictionTitleIndi
             {title_indicators.display_text}
         </Text>
     ) : (
-        <div />
+        <div>{verification_docs?.map(verification_item => verification_item)}</div>
     );
 };
 export default JurisdictionTitleIndicator;

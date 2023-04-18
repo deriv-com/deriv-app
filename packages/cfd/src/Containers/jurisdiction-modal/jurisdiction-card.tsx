@@ -42,17 +42,17 @@ const JurisdictionCard = ({
             >
                 <JurisdictionCardFront
                     card_classname={card_classname}
-                    toggleCardFlip={toggleCardFlip}
-                    card_values={card_values}
                     card_data={card_data}
-                    is_card_selected={is_card_selected}
+                    card_values={card_values}
                     disabled={disabled}
+                    is_card_selected={is_card_selected}
+                    toggleCardFlip={toggleCardFlip}
                 />
                 <JurisdictionCardBack
                     card_classname={card_classname}
+                    is_card_selected={is_card_selected}
                     toggleCardFlip={toggleCardFlip}
                     verification_docs={verification_docs}
-                    is_card_selected={is_card_selected}
                 />
             </div>
         </div>

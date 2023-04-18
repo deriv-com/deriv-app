@@ -190,7 +190,7 @@ describe('OnRampStore', () => {
         onramp_store.WS.authorized.cashier = jest.fn().mockResolvedValueOnce({ error: 'API error' });
         onramp_store.pollApiForDepositAddress(false);
 
-        expect(await spySetApiError).toHaveBeenLastCalledWith('API error');
+        expect(await spySetApiError).toHaveBeenLastCalledWith({ code: 'API Error', message: 'API Error' });
         expect(clearInterval).toHaveBeenCalledTimes(1);
 
         jest.useRealTimers();
@@ -263,7 +263,7 @@ describe('OnRampStore', () => {
     it('should set api error', () => {
         onramp_store.setApiError({ code: 'API Error', message: 'API Error' });
 
-        expect(onramp_store.api_error).toBe('API error');
+        expect(onramp_store.api_error).toBe({ code: 'API Error', message: 'API Error' });
     });
 
     it('should set deposit address', () => {

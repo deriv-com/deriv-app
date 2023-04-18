@@ -169,12 +169,6 @@ export const isNavigationFromPlatform = (
     return false;
 };
 
-export const isNavigationFromWebP2P = (routing_history: TRoutingHistory, platform_route: string) => {
-    const routing_history_index = routing_history.length > 1 ? 1 : 0;
-    const history_item = routing_history[routing_history_index];
-    return history_item?.pathname === platform_route;
-};
-
 export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistory, platform_route: string) => {
     /*
      *  Check if the client is navigating from external platform(SmartTrader or BinaryBot)

@@ -40,7 +40,7 @@ describe('<CryptoTransactionsRenderer />', () => {
             status_message:
                 "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
             submit_date: 1640603927,
-            transaction_hash: '0x2dbf00eb6dbbcb1a962d7f1c82b8cff889a579f23af417a8b62442dd49bd8a51',
+            transaction_hash: '',
             transaction_type: 'withdrawal' as TTransactionType,
             transaction_url:
                 'https://etherscan.io/tx/0x2aede798a325c96784c62073a5bd5e104a983fb47291a2d45992b40da636051e',

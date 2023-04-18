@@ -128,7 +128,7 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
             expect(mockRootStore.modules.cashier.payment_agent.requestTryPaymentAgentWithdraw).toHaveBeenCalledWith({
                 loginid: 'CR90000100',
                 currency: 'USD',
-                amount: '100',
+                amount: 100,
                 verification_code: 'ABCdef',
             });
         });

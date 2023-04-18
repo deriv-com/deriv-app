@@ -24,7 +24,10 @@ const JurisdictionTitleIndicator = ({ title_indicators, verification_docs }: TJu
             {verification_docs?.map(verification_doc => (
                 <div key={verification_doc}>
                     <Icon
-                        icon={jurisdictionVerificationContents().required_verification_docs[verification_doc]?.icon}
+                        size={24}
+                        icon={jurisdictionVerificationContents().required_verification_docs[
+                            verification_doc
+                        ]?.icon.concat('Default')}
                     />
                 </div>
             ))}

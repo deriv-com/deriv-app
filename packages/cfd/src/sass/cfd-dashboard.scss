@@ -690,7 +690,7 @@
             border-radius: $BORDER_RADIUS;
             &-icon-container {
                 display: flex;
-                gap: 1rem;
+                gap: 0.5rem;
             }
             &__red-darker {
                 background: $color-red-8;

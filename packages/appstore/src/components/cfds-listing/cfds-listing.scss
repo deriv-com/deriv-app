@@ -198,6 +198,10 @@
         &-title-indicator {
             padding: 0.6rem 1.2rem;
             border-radius: $BORDER_RADIUS;
+            &-icon-container {
+                display: flex;
+                gap: 1rem;
+            }
             &__red-darker {
                 background: $color-red-8;
             }
@@ -223,11 +227,11 @@
         &-description-height {
             @include desktop {
                 &-assets {
-                    min-height: 3.2rem;
+                    min-height: 3.4rem;
                 }
                 &-verifications,
                 &-regulator {
-                    min-height: 4.8rem;
+                    min-height: 5rem;
                 }
             }
         }

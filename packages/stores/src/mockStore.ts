@@ -12,7 +12,6 @@ const mock = (): TStores => {
                     currency: 'USD',
                     is_disabled: 0,
                     is_virtual: 0,
-                    trading: {},
                     excluded_until: 0,
                     landing_company_name: 'svg',
                 },

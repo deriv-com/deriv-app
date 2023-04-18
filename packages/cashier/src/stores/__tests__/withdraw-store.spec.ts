@@ -282,7 +282,7 @@ describe('WithdrawStore', () => {
         const spyValidateWithdrawFromAmount = jest.spyOn(withdraw_store, 'validateWithdrawFromAmount');
 
         withdraw_store.setWithdrawPercentageSelectorResult('100');
-        expect(setConverterFromAmount).toHaveBeenCalledWith(100);
+        expect(setConverterFromAmount).toHaveBeenCalledWith('100');
         expect(spyValidateWithdrawFromAmount).toHaveBeenCalled();
 
         withdraw_store.setWithdrawPercentageSelectorResult('0');

@@ -187,7 +187,9 @@ describe('OnRampStore', () => {
     it('should set api error and clear deposit address interval if there is an error in response when pollApiForDepositAddress method was called', async () => {
         jest.useFakeTimers();
         const spySetApiError = jest.spyOn(onramp_store, 'setApiError');
-        onramp_store.WS.authorized.cashier = jest.fn().mockResolvedValueOnce({ error: 'API error' });
+        onramp_store.WS.authorized.cashier = jest
+            .fn()
+            .mockResolvedValueOnce({ error: { code: 'API Error', message: 'API Error' } });
         onramp_store.pollApiForDepositAddress(false);
 
         expect(await spySetApiError).toHaveBeenLastCalledWith({ code: 'API Error', message: 'API Error' });
@@ -263,7 +265,7 @@ describe('OnRampStore', () => {
     it('should set api error', () => {
         onramp_store.setApiError({ code: 'API Error', message: 'API Error' });
 
-        expect(onramp_store.api_error).toBe({ code: 'API Error', message: 'API Error' });
+        expect(onramp_store.api_error).toEqual({ code: 'API Error', message: 'API Error' });
     });
 
     it('should set deposit address', () => {

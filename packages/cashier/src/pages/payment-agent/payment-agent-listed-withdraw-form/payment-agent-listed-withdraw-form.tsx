@@ -93,7 +93,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
             loginid: payment_agent.paymentagent_loginid,
             currency,
-            amount: values.amount,
+            amount: Number(values.amount),
             verification_code,
         });
         if (payment_agent_withdraw?.error) {

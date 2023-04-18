@@ -22,7 +22,7 @@ const validateTransfer = (
 ) => {
     const errors = { loginid: '', amount: '', description: '' };
 
-    if (!values.loginid || !/^[A-Za-z]+[0-9]+$/.test(values.loginid)) {
+    if (!values.loginid || !/^[A-Za-z]+\d+$/.test(values.loginid)) {
         errors.loginid = localize('Please enter a valid client login ID.');
     }
 

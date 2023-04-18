@@ -103,7 +103,7 @@ export type TWebSocket = {
     authorized: TWebSocketCall;
     balanceAll: () => Promise<Balance>;
     cancelCryptoTransaction?: (transaction_id: string) => Promise<{ error: TServerError }>;
-    cryptoConfig: () => { crypto_config: CryptoConfig };
+    cryptoConfig: () => Promise<{ crypto_config: CryptoConfig }>;
     cryptoWithdraw: (
         args: Omit<CashierInformationRequest, 'cashier' | 'provider' | 'type'>
     ) => Promise<CashierInformationResponse & { error: TServerError }>;

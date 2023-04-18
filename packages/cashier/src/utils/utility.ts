@@ -31,7 +31,7 @@ const getNormalizedPaymentMethod = (
     constants: typeof Constants.icon_payment_methods | typeof Constants.payment_methods,
     is_for_icon = false
 ) => {
-    const method = is_for_icon ? payment_method.replace(/[' ',-]/g, '').toLowerCase() : payment_method;
+    const method = is_for_icon ? payment_method.replace(/[' ,-]/g, '').toLowerCase() : payment_method;
 
     const normalized_payment_method = Object.entries(constants).reduce(
         (pay_method, [key, value]) => (value.some((el: string) => el === method) ? key : pay_method),

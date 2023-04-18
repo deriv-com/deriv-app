@@ -192,7 +192,7 @@ describe('<CryptoDeposit />', () => {
         const refresh_btn = screen.getByRole('button', { name: 'Refresh' });
         fireEvent.click(refresh_btn);
 
-        expect(mock_root_store.modules!.cashier!.onramp!.pollApiForDepositAddress).toHaveBeenCalledTimes(2);
+        expect(mock_root_store.modules.cashier.onramp.pollApiForDepositAddress).toHaveBeenCalledTimes(2);
     });
 
     it('should show proper messages for BTC cryptocurrency', () => {
@@ -270,7 +270,7 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show proper messages for selected options for ETH, USDC, eUSDT cryptocurrency', () => {
-        const checkMessagesForOptions = (currency, token) => {
+        const checkMessagesForOptions = (currency: string, token: string) => {
             const mock_root_store = mockStore({
                 client: {
                     currency,

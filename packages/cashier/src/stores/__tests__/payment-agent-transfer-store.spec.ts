@@ -15,7 +15,7 @@ let payment_agent_transfer_store: PaymentAgentTransferStore,
         amount: string;
         description: string;
         currency: string;
-        dry_run?: number | undefined;
+        dry_run?: number;
     },
     WS: TWebSocket;
 

@@ -1,5 +1,5 @@
 import { action, computed, observable, makeObservable, IObservableArray } from 'mobx';
-import { PaymentAgentListResponse, PaymentAgentDetailsResponse } from '@deriv/api-types';
+import { PaymentAgentDetailsResponse } from '@deriv/api-types';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';
@@ -119,7 +119,7 @@ export default class PaymentAgentStore {
         // TODO: set residence in client-store from authorize so it's faster
         await this.WS.wait('get_settings');
         const { residence, currency } = this.root_store.client;
-        return this.WS.authorized.paymentAgentList(residence, currency) as Promise<TPaymentAgentListResponse>;
+        return this.WS.authorized.paymentAgentList(residence, currency);
     }
 
     async getPaymentAgentDetails(): Promise<PaymentAgentDetailsResponse['paymentagent_details']> {

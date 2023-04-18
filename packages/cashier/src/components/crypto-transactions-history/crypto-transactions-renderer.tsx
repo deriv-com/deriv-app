@@ -39,7 +39,12 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
         ? epochToMoment(submit_date).format('DD MMM YYYY')
         : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
     const formatted_submit_time = epochToMoment(submit_date).format('HH:mm:ss [GMT]');
-    const status = getStatus(transaction_hash, transaction_type, status_code);
+    const status = getStatus(transaction_hash, transaction_type, status_code) as {
+        renderer: string;
+        name: string;
+        description: string;
+        transaction_hash: string;
+    };
 
     const [is_transaction_clicked, setTransactionClicked] = React.useState(false);
     const onClickCancel = () => {

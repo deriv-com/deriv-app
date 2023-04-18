@@ -44,6 +44,7 @@ describe('<CashierOnboardingSideNote />', () => {
 
     it('should trigger onClick callback when the client clicks the "live chat" link', () => {
         window.LC_API = {
+            on_chat_ended: jest.fn(),
             open_chat_window: jest.fn(),
         };
         renderCashierOnboardingSideNote();

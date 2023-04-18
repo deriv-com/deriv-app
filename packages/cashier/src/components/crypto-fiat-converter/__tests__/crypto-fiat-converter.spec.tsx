@@ -4,12 +4,13 @@ import CryptoFiatConverter from '../crypto-fiat-converter';
 import { Formik } from 'formik';
 import * as formik from 'formik';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore, TStores } from '@deriv/stores';
 
 describe('<CryptoFiatConverter />', () => {
-    let mockRootStore, mockProps;
+    let mockRootStore: TStores, mockProps;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             modules: {
                 cashier: {
                     crypto_fiat_converter: {
@@ -19,7 +20,7 @@ describe('<CryptoFiatConverter />', () => {
                     },
                 },
             },
-        };
+        });
 
         mockProps = {
             from_currency: 'BTC',

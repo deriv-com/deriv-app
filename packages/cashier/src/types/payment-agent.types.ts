@@ -22,7 +22,7 @@ export type TSupportedBank = {
 };
 
 export type TPaymentAgentWithdrawConfirm = {
-    amount?: string;
+    amount?: number;
     currency?: string;
     loginid?: string;
     payment_agent_name?: string;

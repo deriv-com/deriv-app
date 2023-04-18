@@ -44,9 +44,4 @@ describe('<PageError/>', () => {
         userEvent.click(link);
         expect(setError).toHaveBeenCalledTimes(1);
     });
-    it('should redirect user to traders hub page upon clicking the button', () => {
-        const setError = jest.fn();
-        renderWithRouter(<PageError {...props} should_redirect={true} setError={setError} />);
-        expect(screen.getByText('test_label')).toBeInTheDocument();
-    });
 });

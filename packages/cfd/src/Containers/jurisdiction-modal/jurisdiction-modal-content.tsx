@@ -37,7 +37,7 @@ const JurisdictionModalContent = ({
     ];
     return (
         <React.Fragment>
-            <div className={`${card_classname}__wrapper`}>
+            <div data-testid='dt-jurisdiction-modal-content' className={`${card_classname}__wrapper`}>
                 {jurisdiction_cards_array.map(
                     card =>
                         cardsToBeShown(card) && (

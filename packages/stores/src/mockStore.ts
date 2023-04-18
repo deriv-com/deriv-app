@@ -190,6 +190,10 @@ const mock = (): TStores => {
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
             is_crypto: false,
+            has_enabled_two_fa: false,
+            setTwoFAStatus: jest.fn(),
+            has_changed_two_fa: false,
+            setTwoFAChangedStatus: jest.fn(),
         },
         common: {
             error: {

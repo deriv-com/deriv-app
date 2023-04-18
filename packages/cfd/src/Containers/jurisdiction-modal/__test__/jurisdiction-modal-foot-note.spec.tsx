@@ -28,7 +28,7 @@ describe('JurisdictionModalFootNote', () => {
         account_type: '',
         context: mock_context,
         card_classname: '',
-        jurisdiction_selected_shortcode: '',
+        jurisdiction_selected_shortcode: Jurisdiction.SVG,
         should_restrict_bvi_account_creation: false,
         should_restrict_vanuatu_account_creation: false,
     };
@@ -204,5 +204,10 @@ describe('JurisdictionModalFootNote', () => {
                 'Add your Deriv MT5 CFDs account under Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156).'
             )
         ).toBeInTheDocument();
+    });
+
+    it('should not render JurisdictionModalFootNote when jurisdiction_shortcode is empty', () => {
+        render(<JurisdictionModalFootNote {...mock_props} jurisdiction_selected_shortcode='' />);
+        expect(screen.queryByTestId('dt-jurisdiction-footnote')).not.toBeInTheDocument();
     });
 });

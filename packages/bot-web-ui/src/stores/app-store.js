@@ -15,33 +15,26 @@ export default class AppStore {
         this.api_helpers_store = null;
     }
 
-    getErrorForNonEuClients = () => {
-        return {
-            text: localize(
-                'Unfortunately, this trading platform is not available for EU Deriv account. Please switch to a non-EU account to continue trading.'
-            ),
-            title: localize('Deriv Bot is unavailable for this account'),
-            link: localize('Switch to another account'),
-        };
-    };
+    getErrorForNonEuClients = () => ({
+        text: localize(
+            'Unfortunately, this trading platform is not available for EU Deriv account. Please switch to a non-EU account to continue trading.'
+        ),
+        title: localize('Deriv Bot is unavailable for this account'),
+        link: localize('Switch to another account'),
+    });
 
-    getErrorForEuClients = is_logged_in => {
-        return {
-            text: ' ',
-            title: is_logged_in
-                ? localize('Deriv Bot is not available for EU clients')
-                : localize('Deriv Bot is unavailable in the EU'),
-            link: is_logged_in ? localize("Back to Trader's Hub") : localize('Login'),
-            route: routes.traders_hub,
-        };
-    };
+    getErrorForEuClients = is_logged_in => ({
+        text: ' ',
+        title: is_logged_in
+            ? localize('Deriv Bot is not available for EU clients')
+            : localize('Deriv Bot is unavailable in the EU'),
+        link: is_logged_in ? localize("Back to Trader's Hub") : localize('Login'),
+        route: routes.traders_hub,
+    });
 
     handleErrorForEu = (show_default_error = false) => {
         const { client, common, ui } = this.root_store.core;
-        if (
-            (client.is_eu_country && window.location.pathname === routes.bot) ||
-            (client.is_eu && !client.is_low_risk && window.location.pathname === routes.bot)
-        ) {
+        if (window.location.pathname === routes.bot && client.should_show_eu_content) {
             showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         } else if (
             (client.is_eu && !client.is_bot_allowed && window.location.pathname === routes.bot) ||

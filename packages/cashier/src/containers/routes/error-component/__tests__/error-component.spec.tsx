@@ -28,7 +28,7 @@ describe('<ErrorComponent/>', () => {
         should_clear_error_on_click: true,
         should_show_refresh: true,
         app_routing_history: ['/test'],
-        redirectOnClick: jest.fn() || null,
+        redirectOnClick: jest.fn(),
         setError: jest.fn(),
     };
 
@@ -67,15 +67,15 @@ describe('<ErrorComponent/>', () => {
         expect(screen.getByText(header)).toBeInTheDocument();
     });
 
-    it('should refresh the page when redirectOnClick is not passed or empty', () => {
-        const redirectOnClick = null;
+    it('should refresh the page when redirectOnClick is not passed', () => {
+        const redirectOnClick = undefined;
         renderWithRouter(<ErrorComponent {...props} redirectOnClick={redirectOnClick} />);
-        reloadFn(); // as defined above..
+        reloadFn();
         expect(window.location.reload).toHaveBeenCalled();
     });
 
     it('should show the redirect button label as refresh when there is no redirect_label', () => {
-        const redirectOnClick = null;
+        const redirectOnClick = undefined;
         const redirect_to = '/testurl';
         renderWithRouter(
             <ErrorComponent
@@ -85,7 +85,24 @@ describe('<ErrorComponent/>', () => {
                 redirectOnClick={redirectOnClick}
             />
         );
+        reloadFn();
         expect(screen.getByText('Refresh')).toBeInTheDocument();
+    });
+
+    it('should trigger the history.listen and call the setError function when redirect button get clicked', () => {
+        const redirectOnClick = jest.fn();
+        const setError = jest.fn();
+        renderWithRouter(
+            <ErrorComponent
+                {...props}
+                should_show_refresh={false}
+                redirectOnClick={redirectOnClick}
+                setError={setError}
+            />
+        );
+
+        fireEvent.click(screen.getByText('test_label'));
+        expect(setError).toHaveBeenCalled();
     });
 
     it('should trigger the history.listen and call the setError function when redirect button get clicked', () => {

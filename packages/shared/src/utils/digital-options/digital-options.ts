@@ -10,7 +10,7 @@ type TShowError = {
     message: string;
     header: string;
     redirect_label: string;
-    redirectOnClick: () => void | null;
+    redirectOnClick?: () => void;
     should_show_refresh: boolean;
     redirect_to: string;
     should_clear_error_on_click: boolean;
@@ -25,7 +25,7 @@ type TAccounts = {
 export const showDigitalOptionsUnavailableError = (
     showError: (t: TShowError) => void,
     message: TMessage,
-    redirectOnClick: () => void | null,
+    redirectOnClick: () => void,
     should_redirect: boolean,
     should_clear_error_on_click = true
 ) => {

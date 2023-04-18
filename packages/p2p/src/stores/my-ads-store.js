@@ -31,6 +31,7 @@ export default class MyAdsStore extends BaseStore {
     is_table_loading = false;
     is_loading = false;
     item_offset = 0;
+    maximum_order_amount = 0;
     p2p_advert_information = {};
     show_ad_form = false;
     selected_ad_id = '';
@@ -117,6 +118,7 @@ export default class MyAdsStore extends BaseStore {
             setIsLoading: action.bound,
             setIsTableLoading: action.bound,
             setItemOffset: action.bound,
+            setMaximumOrderAmount: action.bound,
             setP2pAdvertInformation: action.bound,
             setSelectedAdId: action.bound,
             setSelectedAdvert: action.bound,
@@ -574,6 +576,10 @@ export default class MyAdsStore extends BaseStore {
 
     setItemOffset(item_offset) {
         this.item_offset = item_offset;
+    }
+
+    setMaximumOrderAmount(maximum_order_amount) {
+        this.maximum_order_amount = maximum_order_amount;
     }
 
     setP2pAdvertInformation(p2p_advert_information) {

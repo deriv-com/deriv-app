@@ -268,6 +268,10 @@ type TClientStore = {
     is_fully_authenticated: boolean;
     states_list: StatesList;
     fetchStatesList: () => void;
+    has_enabled_two_fa: boolean;
+    setTwoFAStatus: (status: boolean) => void;
+    has_changed_two_fa: boolean;
+    setTwoFAChangedStatus: (status: boolean) => void;
 };
 
 type TCommonStoreError = {
@@ -386,7 +390,7 @@ type TTradersHubStore = {
     is_real: boolean;
     selectRegion: (region: string) => void;
     no_CR_account: boolean;
-    financial_restricted_countries: string[];
+    CFDs_restricted_countries: string[];
     no_MF_account: boolean;
 };
 

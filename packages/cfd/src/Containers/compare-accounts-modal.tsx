@@ -25,6 +25,12 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
+    is_eu_user: string;
+    is_cr_demo_account: boolean;
+    upgradeable_landing_companies: unknown[];
+    landing_company_shortcode: string;
+    content_flag: string;
+    CFDs_restricted_countries: string[];
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {
@@ -97,11 +103,10 @@ const CompareAccountsModal = observer(
                 landing_companies,
                 residence,
             },
-            traders_hub: { content_flag, show_eu_related_content, financial_restricted_countries },
+            traders_hub: { content_flag, show_eu_related_content, CFDs_restricted_countries },
         } = useStore();
 
-        const { is_compare_accounts_visible, toggleCompareAccounts: toggleCompareAccountsModal } = useCfdStore();
-
+        const { is_compare_accounts_visible, toggleCompareAccounts } = useCfdStore();
         const location = window.location.pathname;
         const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
 
@@ -128,7 +133,7 @@ const CompareAccountsModal = observer(
         const is_preappstore_cr_demo_account = is_pre_appstore_setting && content_flag === ContentFlag.CR_DEMO;
 
         const is_preappstore_restricted_cr_demo_account =
-            is_pre_appstore_setting && financial_restricted_countries && content_flag === ContentFlag.CR_DEMO;
+            is_pre_appstore_setting && CFDs_restricted_countries && content_flag === ContentFlag.CR_DEMO;
 
         const is_dxtrade = platform && platform === CFD_PLATFORMS.DXTRADE;
         const mt5_accounts = [
@@ -220,7 +225,7 @@ const CompareAccountsModal = observer(
                     setShouldShowCooldownModal={setShouldShowCooldownModal}
                     should_show_derivx={should_show_derivx}
                     show_eu_related_content={show_eu_related_content}
-                    toggleCompareAccounts={toggleCompareAccountsModal}
+                    toggleCompareAccounts={toggleCompareAccounts}
                 />
             );
         };
@@ -236,7 +241,7 @@ const CompareAccountsModal = observer(
                             className='cfd-dashboard__welcome-message--button'
                             has_effect
                             text={cfd_account_button_label}
-                            onClick={toggleCompareAccountsModal}
+                            onClick={toggleCompareAccounts}
                             secondary
                             disabled={is_loading}
                         />
@@ -251,7 +256,7 @@ const CompareAccountsModal = observer(
                                 enableApp={enableApp}
                                 is_open={is_compare_accounts_visible}
                                 title={getCFDModalTitle()}
-                                toggleModal={toggleCompareAccountsModal}
+                                toggleModal={toggleCompareAccounts}
                                 type='button'
                                 height={getModalStyle().height}
                                 width={getModalStyle().width}
@@ -266,7 +271,7 @@ const CompareAccountsModal = observer(
                                 title={getCFDModalTitle()}
                                 wrapper_classname='cfd-dashboard__compare-accounts'
                                 visible={is_compare_accounts_visible}
-                                onClose={toggleCompareAccountsModal}
+                                onClose={toggleCompareAccounts}
                                 header_classname={is_dxtrade ? '' : 'cfd-accounts-compare-modal-mobile-header'}
                                 has_full_height
                             >

@@ -206,7 +206,7 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     is_pre_appstore_setting: boolean;
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
-    financial_restricted_countries: string[];
+    CFDs_restricted_countries: string[];
     is_preappstore_restricted_cr_demo_account: boolean;
 };
 
@@ -233,4 +233,21 @@ export type TDMT5CompareModalContentProps = {
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
     toggleCompareAccounts: () => void;
+};
+
+export type TCFDDbviOnboardingProps = {
+    account_status: GetAccountStatus;
+    context: RootStore;
+    disableApp: () => void;
+    enableApp: () => void;
+    fetchAccountSettings: () => void;
+    has_created_account_for_selected_jurisdiction: boolean;
+    has_submitted_cfd_personal_details: boolean;
+    is_cfd_verification_modal_visible: boolean;
+    is_virtual: boolean;
+    jurisdiction_selected_shortcode: string;
+    openPasswordModal: () => void;
+    toggleCFDVerificationModal: () => void;
+    updateAccountStatus: () => void;
+    updateMT5Status: () => void;
 };

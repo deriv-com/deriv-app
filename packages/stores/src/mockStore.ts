@@ -243,6 +243,10 @@ const mock = (): TStores => {
             is_fully_authenticated: false,
             states_list: [],
             fetchStatesList: jest.fn(),
+            has_enabled_two_fa: false,
+            setTwoFAStatus: jest.fn(),
+            has_changed_two_fa: false,
+            setTwoFAChangedStatus: jest.fn(),
         },
         common: {
             error: {
@@ -332,7 +336,7 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
-            financial_restricted_countries: [],
+            CFDs_restricted_countries: [],
             show_eu_related_content: false,
             no_CR_account: false,
             no_MF_account: false,

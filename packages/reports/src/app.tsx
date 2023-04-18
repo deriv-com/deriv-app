@@ -14,7 +14,7 @@ type TAppProps = {
 };
 
 const App = ({ passthrough }: TAppProps) => {
-    const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
+    const [root_store] = initStore(passthrough.root_store, passthrough.WS);
 
     return (
         <MobxContentProvider store={root_store}>

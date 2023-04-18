@@ -300,17 +300,17 @@ const getModules = () => {
                             getTitle: () => localize('Deriv P2P'),
                         },
                         {
+                            path: routes.p2p_orders,
+                            component: P2P,
+                            getTitle: () => localize('Deriv P2P'),
+                        },
+                        {
                             path: routes.p2p_my_ads,
                             component: P2P,
                             getTitle: () => localize('Deriv P2P'),
                         },
                         {
                             path: routes.p2p_my_profile,
-                            component: P2P,
-                            getTitle: () => localize('Deriv P2P'),
-                        },
-                        {
-                            path: routes.p2p_orders,
                             component: P2P,
                             getTitle: () => localize('Deriv P2P'),
                         },

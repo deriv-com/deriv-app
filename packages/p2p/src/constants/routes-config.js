@@ -18,6 +18,11 @@ const initRoutesConfig = () => {
             getTitle: () => localize('Deriv P2P'),
         },
         {
+            path: routes.p2p_orders,
+            component: Orders,
+            getTitle: () => localize('Deriv P2P'),
+        },
+        {
             path: routes.p2p_my_ads,
             component: MyAds,
             getTitle: () => localize('Deriv P2P'),
@@ -25,11 +30,6 @@ const initRoutesConfig = () => {
         {
             path: routes.p2p_my_profile,
             component: MyProfile,
-            getTitle: () => localize('Deriv P2P'),
-        },
-        {
-            path: routes.p2p_orders,
-            component: Orders,
             getTitle: () => localize('Deriv P2P'),
         },
     ];

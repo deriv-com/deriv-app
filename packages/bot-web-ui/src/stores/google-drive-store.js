@@ -25,10 +25,10 @@ export default class GoogleDriveStore {
     is_authorised = !!localStorage.getItem('google_access_token');
 
     setKey = () => {
-        const { aid, cid, api, scope, discovery_docs } = config.gd;
-        this.client_id = cid;
-        this.app_id = aid;
-        this.api_key = api;
+        const { scope, discovery_docs } = config.gd;
+        this.client_id = process.env.GD_CLIENT_ID;
+        this.app_id = process.env.GD_APP_ID;
+        this.api_key = process.env.GD_API_KEY;
         this.scope = scope;
         this.discovery_docs = discovery_docs;
     };

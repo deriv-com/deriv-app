@@ -58,6 +58,7 @@ export const jurisdictionLabuanContents = (): TJurisdictionCardItems => ({
         {
             key: 'verifications',
             title: `${localize('Verifications')}`,
+            title_indicators: { type: 'displayIcons' },
             clickable_description: [
                 { type: 'link', text: `${localize('Learn more')}` },
                 { type: 'text', text: `${localize('about verifications needed.')}` },

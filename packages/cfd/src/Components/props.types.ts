@@ -85,7 +85,6 @@ export type TJurisdictionCardSectionTitleIndicators = {
     type: 'displayText' | 'displayIcons';
     display_text?: string;
     display_text_skin_color?: string;
-    display_icons?: Array<string>;
 };
 
 export type TJurisdictionCardSection = {

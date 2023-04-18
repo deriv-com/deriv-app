@@ -19,7 +19,7 @@ const JurisdictionTitleIndicator = ({ title_indicators }: TJurisdictionTitleIndi
             {title_indicators.display_text}
         </Text>
     ) : (
-        <div>{title_indicators.display_icons?.map(display_icon => display_icon)}</div>
+        <div />
     );
 };
 export default JurisdictionTitleIndicator;

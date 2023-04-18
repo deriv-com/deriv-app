@@ -1638,8 +1638,9 @@ export default class ClientStore extends BaseStore {
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-
-            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            if (this.residence) {
+                await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            }
             if (!this.is_virtual) await this.getLimits();
 
             await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
@@ -1958,7 +1959,9 @@ export default class ClientStore extends BaseStore {
     }
 
     setResidence(residence) {
-        this.accounts[this.loginid].residence = residence;
+        if (this.loginid) {
+            this.accounts[this.loginid].residence = residence;
+        }
     }
 
     setCitizen(citizen) {
@@ -1966,8 +1969,10 @@ export default class ClientStore extends BaseStore {
     }
 
     setEmail(email) {
-        this.accounts[this.loginid].email = email;
-        this.email = email;
+        if (this.loginid) {
+            this.accounts[this.loginid].email = email;
+            this.email = email;
+        }
     }
 
     setAccountSettings(settings) {

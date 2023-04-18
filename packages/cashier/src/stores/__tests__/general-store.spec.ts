@@ -92,7 +92,7 @@ describe('GeneralStore', () => {
     it('should set function on remount', () => {
         general_store.setOnRemount(() => 'function');
 
-        expect(general_store.onRemount).toBe(() => 'function');
+        expect(general_store.onRemount).toBe(jest.fn(() => 'function'));
     });
 
     it('should return false if the client currency is equal to USD when is_crypto property was called', () => {

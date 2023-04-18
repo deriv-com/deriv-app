@@ -756,7 +756,7 @@ describe('AccountTransferStore', () => {
 
         expect(setConverterFromAmount).toHaveBeenCalledWith('10');
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 10 } }, 'USD', 'BTC');
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: '10' } }, 'USD', 'BTC');
     });
 
     it('should set transfer percentage selector result if selected_from.balance = 0', () => {
@@ -769,7 +769,7 @@ describe('AccountTransferStore', () => {
 
         expect(setConverterFromAmount).toHaveBeenCalledWith('0');
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 0 } }, 'USD', 'BTC');
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: '0' } }, 'USD', 'BTC');
     });
 
     it('should reset crypto fiat converter if amount = 0 and selected_from.balance > 0', () => {

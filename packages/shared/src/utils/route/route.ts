@@ -19,7 +19,6 @@ type TGetSelectedRoute = {
     pathname: string;
 };
 
-// TODO: Add test cases for this for p2p subroutes as hyphens are allowed in p2p subroutes
 export const matchRoute = (route: TRoute, pathname: string) =>
     new RegExp(`${route.path}(/$)?([-_]|(?![-_]).)*$`).test(pathname);
 

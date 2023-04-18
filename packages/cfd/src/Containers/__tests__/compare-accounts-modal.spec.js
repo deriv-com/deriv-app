@@ -82,21 +82,22 @@ describe('CompareAccountsModal', () => {
         expect(screen.getByText(/MockedMt5CompareTableContent/i)).toBeInTheDocument();
     });
     it('should call toggleCompareAccountsModal if the compare accounts button is clicked', async () => {
-        render(
-            <CompareAccountsModal
-                {...mock_props}
-                is_compare_accounts_visible={false}
-                is_demo_tab={false}
-                platform='dxtrade'
-            />,
-            {
-                wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-            }
-        );
+        render(<CompareAccountsModal {...mock_props} is_demo_tab={false} platform='dxtrade' />, {
+            wrapper: ({ children }) => (
+                <CFDProviders
+                    store={mockStore({
+                        ...mock_props,
+                        modules: { cfd: { ...mock_props.modules.cfd, is_compare_accounts_visible: false } },
+                    })}
+                >
+                    {children}
+                </CFDProviders>
+            ),
+        });
         await waitFor(() => {
             expect(screen.getAllByText(/account information/i)[0]).toBeInTheDocument();
         });
         fireEvent.click(screen.getByText(/account information/i));
-        expect(mock_props.toggleCompareAccounts).toHaveBeenCalled();
+        expect(mock_props.modules.cfd.toggleCompareAccounts).toHaveBeenCalled();
     });
 });

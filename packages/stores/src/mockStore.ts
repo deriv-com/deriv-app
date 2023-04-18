@@ -66,7 +66,7 @@ const mock = (): TStores => {
                                 submissions_left: 3,
                             },
                             manual: {
-                                status: 'verified',
+                                status: 'none',
                             },
                             onfido: {
                                 country_code: 'IDN',

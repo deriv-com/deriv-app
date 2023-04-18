@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import CFDTopUpDemoModal from '../cfd-top-up-demo-modal.tsx';
-import CFDProviders from '../../cfd-providers.js';
+import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
 
 jest.mock('../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
@@ -97,40 +97,31 @@ describe('CFDTopUpDemoModal', () => {
     });
 
     it('should disable the top up button if the balance is higher than 1000 USD', () => {
-        render(
-            <CFDTopUpDemoModal
-                platform={mock_props.platform}
-                current_account={{ category: 'demo', type: 'financial', balance: 2000 }}
-            />
-        );
+        mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 2000 };
+
+        render(<CFDTopUpDemoModal platform={mock_props.platform} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
         const top_up_btn = screen.getByRole('button', { name: /Top up/i });
         expect(top_up_btn).toBeDisabled();
     });
 
     it('should enable the top up button if the balance is lower than 1000 USD', () => {
-        render(
-            <CFDTopUpDemoModal
-                platform={mock_props.platform}
-                current_account={{ category: 'demo', type: 'financial', balance: 500 }}
-            />,
-            {
-                wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-            }
-        );
+        mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 500 };
+
+        render(<CFDTopUpDemoModal platform={mock_props.platform} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
         const top_up_btn = screen.getByRole('button', { name: /Top up/i });
         expect(top_up_btn).toBeEnabled();
     });
 
     it('should render the success dialog component if the user has less than 1000 USD and clicks on top up', () => {
-        render(
-            <CFDTopUpDemoModal
-                platform={mock_props.platform}
-                current_account={{ category: 'demo', type: 'financial', balance: 500 }}
-            />,
-            {
-                wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-            }
-        );
+        mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 500 };
+
+        render(<CFDTopUpDemoModal platform={mock_props.platform} />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        });
         const top_up_btn = screen.getByRole('button', { name: /Top up/i });
         fireEvent.click(top_up_btn);
         expect(screen.getByText('Success Dialog')).toBeInTheDocument();
@@ -138,8 +129,8 @@ describe('CFDTopUpDemoModal', () => {
 
     it('should render the success component if the is_top_up_virtual_success is true', () => {
         mock_props.current_account = { category: 'demo', type: 'financial', balance: 500 };
-        mock_props.is_top_up_virtual_success = true;
-        mock_props.is_top_up_virtual_open = false;
+        mock_props.ui.is_top_up_virtual_success = true;
+        mock_props.ui.is_top_up_virtual_open = false;
 
         render(<CFDTopUpDemoModal platform={mock_props.platform} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
@@ -149,9 +140,9 @@ describe('CFDTopUpDemoModal', () => {
     });
 
     it('should not render the component if conditions are false', () => {
-        mock_props.current_account = { category: 'demo', type: 'financial', balance: 500 };
-        mock_props.is_top_up_virtual_success = false;
-        mock_props.is_top_up_virtual_open = false;
+        mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 500 };
+        mock_props.ui.is_top_up_virtual_success = false;
+        mock_props.ui.is_top_up_virtual_open = false;
 
         render(<CFDTopUpDemoModal platform={mock_props.platform} />, {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,

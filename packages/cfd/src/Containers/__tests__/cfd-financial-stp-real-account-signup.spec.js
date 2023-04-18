@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
@@ -9,8 +9,14 @@ jest.mock('@deriv/account', () => ({
     FormSubHeader: () => <div>FormSubHeader</div>,
 }));
 
-jest.mock('../../Components/cfd-poa', () => jest.fn(() => <div>CFDPOA</div>));
-jest.mock('../../Components/cfd-poi', () => jest.fn(() => <div>CFDPOI</div>));
+jest.mock('../../Components/cfd-poa', () => jest.fn(() => <div> CFDPOA</div>));
+jest.mock('../../Components/cfd-poi', () =>
+    jest.fn(({ onSubmit }) => (
+        <div data-testid='poa-form' onClick={() => onSubmit(0, {})}>
+            CFDPOI
+        </div>
+    ))
+);
 
 const getByTextFn = (text, should_be) => {
     if (should_be) {
@@ -183,10 +189,13 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the second step content', () => {
-        jest.spyOn(React, 'useState').mockReturnValueOnce([1, () => {}]);
-        render(<CFDFinancialStpRealAccountSignup />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
+        const { getByTestId } = render(<CFDFinancialStpRealAccountSignup />, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
+
+        const div = getByTestId('poa-form');
+
+        fireEvent.click(div);
 
         testAllStepsFn(steps, 1);
     });

@@ -71,6 +71,11 @@ describe('<CFDPasswordManagerModal />', () => {
         client: {
             email: 'test@domain.com',
         },
+        modules: {
+            cfd: {
+                sendVerifyEmail: jest.fn(),
+            },
+        },
     };
     const renderwithRouter = component => {
         render(<BrowserRouter>{component}</BrowserRouter>, {
@@ -100,7 +105,6 @@ describe('<CFDPasswordManagerModal />', () => {
         selected_account_type: 'financial',
         selected_account_group: 'demo',
         selected_server: 'p01_ts03',
-        sendVerifyEmail: jest.fn(),
     };
 
     it('should render the deriv mt5 password modal', () => {

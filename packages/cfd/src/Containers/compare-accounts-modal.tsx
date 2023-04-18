@@ -25,12 +25,6 @@ type TCompareAccountsModalProps = TCompareAccountsReusedProps & {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
-    is_eu_user: string;
-    is_cr_demo_account: boolean;
-    upgradeable_landing_companies: unknown[];
-    landing_company_shortcode: string;
-    content_flag: string;
-    CFDs_restricted_countries: string[];
 };
 
 type TDxtradeCompareAccountContent = TCompareAccountsReusedProps & {

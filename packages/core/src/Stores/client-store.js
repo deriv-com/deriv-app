@@ -77,6 +77,7 @@ export default class ClientStore extends BaseStore {
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
     has_enabled_two_fa = false;
+    has_changed_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -186,6 +187,7 @@ export default class ClientStore extends BaseStore {
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
             has_enabled_two_fa: observable,
+            has_changed_two_fa: observable,
             landing_companies: observable,
             standpoint: observable,
             upgradeable_landing_companies: observable,
@@ -383,6 +385,7 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
+            setTwoFAChangedStatus: action.bound,
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
             updateMT5Status: action.bound,
@@ -1223,13 +1226,12 @@ export default class ClientStore extends BaseStore {
     }
 
     responseAuthorize(response) {
-        const new_accounts = Object.create(this.accounts);
-        new_accounts[this.loginid].email = response.authorize.email;
-        new_accounts[this.loginid].currency = response.authorize.currency;
-        new_accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        new_accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
-        new_accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
-        new_accounts[this.loginid].country = response.country;
+        this.accounts[this.loginid].email = response.authorize.email;
+        this.accounts[this.loginid].currency = response.authorize.currency;
+        this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
+        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
+        this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
+        this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
@@ -1617,7 +1619,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
@@ -1639,8 +1641,9 @@ export default class ClientStore extends BaseStore {
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-
-            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            if (this.residence) {
+                await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            }
             if (!this.is_virtual) await this.getLimits();
 
             await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
@@ -1959,8 +1962,9 @@ export default class ClientStore extends BaseStore {
     }
 
     setResidence(residence) {
-        const new_accounts = Object.create(this.accounts);
-        new_accounts[this.loginid].residence = residence;
+        if (this.loginid) {
+            this.accounts[this.loginid].residence = residence;
+        }
     }
 
     setCitizen(citizen) {
@@ -1968,9 +1972,10 @@ export default class ClientStore extends BaseStore {
     }
 
     setEmail(email) {
-        const new_accounts = Object.create(this.accounts);
-        new_accounts[this.loginid].email = email;
-        this.email = email;
+        if (this.loginid) {
+            this.accounts[this.loginid].email = email;
+            this.email = email;
+        }
     }
 
     setAccountSettings(settings) {
@@ -2081,8 +2086,7 @@ export default class ClientStore extends BaseStore {
             const loginid = obj_params[`acct${i}`];
             const token = obj_params[`token${i}`];
             if (loginid && token) {
-                const new_client_object = Object.create(client_object);
-                new_client_object[loginid].token = token;
+                client_object[loginid].token = token;
             }
             i++;
         }
@@ -2609,6 +2613,10 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    setTwoFAChangedStatus(status) {
+        this.has_changed_two_fa = status;
     }
 
     async updateMT5Status() {

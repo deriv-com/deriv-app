@@ -24,7 +24,7 @@ const RecentTransaction = observer(() => {
     let { address_hash, submit_date, transaction_type } = crypto_transactions[0];
     const { status_code, transaction_hash } = crypto_transactions[0];
     const status = getStatus(transaction_hash, transaction_type, status_code);
-    submit_date = epochToMoment(submit_date).format('MMM D, YYYY');
+    submit_date = epochToMoment(Number(submit_date)).format('MMM D, YYYY');
     transaction_type = transaction_type[0].toUpperCase() + transaction_type.slice(1);
     address_hash = `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`;
 

@@ -21,7 +21,7 @@ describe('<Routes />', () => {
                 error: {
                     header: '',
                     message: '',
-                    redirect_label: ['test label'],
+                    redirect_label: 'test label',
                     redirectOnClick: jest.fn(),
                     should_clear_error_on_click: true,
                     setError: jest.fn(),
@@ -43,7 +43,7 @@ describe('<Routes />', () => {
         );
 
         expect(screen.getByText('Something’s not right')).toBeInTheDocument();
-        expect(screen.getByText('Sorry, an error occured while processing your request.')).toBeInTheDocument();
+        expect(screen.getByText('Sorry, an error occurred while processing your request.')).toBeInTheDocument();
         expect(screen.getByText('Please refresh this page to continue.')).toBeInTheDocument();
     });
 

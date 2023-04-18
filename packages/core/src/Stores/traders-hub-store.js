@@ -248,45 +248,52 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get is_demo_low_risk() {
-        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
-        return (
-            this.content_flag === ContentFlag.CR_DEMO &&
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg'
-        );
+        const { is_landing_company_loaded } = this.root_store.client;
+        if (is_landing_company_loaded) {
+            const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+            return (
+                this.content_flag === ContentFlag.CR_DEMO &&
+                financial_company?.shortcode === 'maltainvest' &&
+                gaming_company?.shortcode === 'svg'
+            );
+        }
+        return false;
     }
 
     get content_flag() {
-        const { is_logged_in, landing_companies, residence } = this.root_store.client;
-        const { financial_company, gaming_company } = landing_companies;
+        const { is_logged_in, landing_companies, residence, is_landing_company_loaded } = this.root_store.client;
+        if (is_landing_company_loaded) {
+            const { financial_company, gaming_company } = landing_companies;
 
-        //this is a conditional check for countries like Australia/Norway which fulfills one of these following conditions
-        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
+            //this is a conditional check for countries like Australia/Norway which fulfills one of these following conditions
+            const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
 
-        if (!is_logged_in) return '';
-        if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
-            if (this.is_demo) return ContentFlag.EU_DEMO;
-            return ContentFlag.EU_REAL;
-        } else if (
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg' &&
-            this.is_real
-        ) {
-            if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
-            return ContentFlag.LOW_RISK_CR_NON_EU;
-        } else if (
-            ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') || restricted_countries) &&
-            this.is_real
-        ) {
-            return ContentFlag.HIGH_RISK_CR;
+            if (!is_logged_in) return '';
+            if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
+                if (this.is_demo) return ContentFlag.EU_DEMO;
+                return ContentFlag.EU_REAL;
+            } else if (
+                financial_company?.shortcode === 'maltainvest' &&
+                gaming_company?.shortcode === 'svg' &&
+                this.is_real
+            ) {
+                if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
+                return ContentFlag.LOW_RISK_CR_NON_EU;
+            } else if (
+                ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') ||
+                    restricted_countries) &&
+                this.is_real
+            ) {
+                return ContentFlag.HIGH_RISK_CR;
+            }
+
+            // Default Check
+            if (isEuCountry(residence)) {
+                if (this.is_demo) return ContentFlag.EU_DEMO;
+                return ContentFlag.EU_REAL;
+            }
+            if (this.is_demo) return ContentFlag.CR_DEMO;
         }
-
-        // Default Check
-        if (isEuCountry(residence)) {
-            if (this.is_demo) return ContentFlag.EU_DEMO;
-            return ContentFlag.EU_REAL;
-        }
-        if (this.is_demo) return ContentFlag.CR_DEMO;
         return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
@@ -484,12 +491,9 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get multipliers_account_status() {
-        const {
-            has_maltainvest_account,
-            account_status: { authentication },
-        } = this.root_store.client;
+        const { has_maltainvest_account, account_status } = this.root_store.client;
 
-        const multipliers_account_status = getMultipliersAccountStatus(authentication);
+        const multipliers_account_status = getMultipliersAccountStatus(account_status?.authentication);
         const should_show_status_for_multipliers_account =
             [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(this.content_flag) &&
             has_maltainvest_account &&

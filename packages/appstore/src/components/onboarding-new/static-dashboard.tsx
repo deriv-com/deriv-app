@@ -472,7 +472,7 @@ const StaticDashboard = ({
                                 />
                             )}
 
-                            {!is_eu_user  && !CFDs_restricted_countries && (
+                            {!is_eu_user && !CFDs_restricted_countries && (
                                 <React.Fragment>
                                     <StaticCFDAccountManager
                                         type='financial'

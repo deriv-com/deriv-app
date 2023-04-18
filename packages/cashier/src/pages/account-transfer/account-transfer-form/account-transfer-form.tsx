@@ -390,7 +390,7 @@ const AccountTransferForm = observer(
                     }}
                     onSubmit={() => {
                         requestTransferBetweenAccounts({
-                            amount: account_transfer_amount ? +account_transfer_amount : 0,
+                            amount: account_transfer_amount ? Number(account_transfer_amount) : 0,
                         });
                     }}
                     validateOnBlur={false}

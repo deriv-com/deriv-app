@@ -72,7 +72,7 @@ const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TP
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
             loginid: values.account_number,
             currency,
-            amount: values.amount,
+            amount: Number(values.amount),
             verification_code,
         });
         if ((payment_agent_withdraw as unknown as { error: unknown })?.error) {

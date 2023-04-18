@@ -350,7 +350,7 @@ describe('PaymentAgentStore', () => {
 
     it('should set confirm value', () => {
         const confirmation = {
-            amount: '100',
+            amount: 100,
             currency: 'USD',
             loginid: 'CR90000000',
             payment_agent_name: 'Payment Agent of CR90000000',

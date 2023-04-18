@@ -4,7 +4,6 @@ import CashierLocked from '../cashier-locked';
 import { useDepositLocked } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
-import { beforeEach } from '@jest/globals';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),

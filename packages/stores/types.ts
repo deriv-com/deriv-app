@@ -165,7 +165,7 @@ type TClientStore = {
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
-    switchAccount: (value?: string) => void;
+    switchAccount: (value?: string) => Promise<void>;
     switched: boolean;
     switch_broadcast: boolean;
     switchEndSignal: () => void;

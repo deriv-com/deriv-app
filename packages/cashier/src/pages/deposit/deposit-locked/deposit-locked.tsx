@@ -7,6 +7,14 @@ import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../../components/cashier-locked';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
+type TItems = {
+    button_text?: string;
+    onClick: () => void;
+    status: string;
+    is_disabled?: boolean;
+    content: string | JSX.Element;
+};
+
 const DepositLocked = observer(() => {
     const { client } = useStore();
     const {
@@ -43,7 +51,7 @@ const DepositLocked = observer(() => {
     };
 
     // handle all deposits lock status
-    const items = [
+    const items: TItems[] = [
         ...(is_poi_needed && has_poi_submitted
             ? [
                   {
@@ -68,7 +76,14 @@ const DepositLocked = observer(() => {
                       content: (
                           <Localize
                               i18n_default_text='Accept our updated <0>terms and conditions</0>'
-                              components={[<StaticUrl key={0} className='link' href='terms-and-conditions' />]}
+                              components={[
+                                  <StaticUrl
+                                      key={0}
+                                      className='link'
+                                      href='terms-and-conditions'
+                                      is_document={false}
+                                  />,
+                              ]}
                           />
                       ),
                       status: 'button-action',

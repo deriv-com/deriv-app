@@ -28,24 +28,21 @@ type TAccountTransferFormProps = {
     error?: TError;
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
+    onClose?: () => void;
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
-const AccountOption = ({ account, idx, is_pre_appstore }: TAccountsList) => {
+const AccountOption = ({ account, idx }: TAccountsList) => {
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.platform_icon) && (
                 <div className='account-transfer-form__icon'>
-                    <AccountPlatformIcon account={account} is_pre_appstore={is_pre_appstore} size={16} />
+                    <AccountPlatformIcon account={account} size={16} />
                 </div>
             )}
 
             <div className='account-transfer-form__currency-wrapper'>
-                <Text
-                    size='xxs'
-                    line_height='xs'
-                    styles={{ color: is_pre_appstore ? 'prominent' : 'inherit', fontWeight: 'inherit' }}
-                >
+                <Text size='xxs' line_height='xs' styles={{ color: 'prominent', fontWeight: 'inherit' }}>
                     {account.is_dxtrade || account.is_mt || account.is_derivez
                         ? account.text
                         : getCurrencyName(account.currency)}
@@ -86,13 +83,7 @@ const AccountTransferForm = observer(
             common: { is_from_derivgo },
         } = useStore();
 
-        const {
-            account_limits,
-            authentication_status,
-            is_dxtrade_allowed,
-            is_pre_appstore,
-            getLimits: onMount,
-        } = client;
+        const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
 
         const {
@@ -128,7 +119,8 @@ const AccountTransferForm = observer(
         const [to_accounts, setToAccounts] = React.useState({});
         const [transfer_to_hint, setTransferToHint] = React.useState<string>();
 
-        const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
+
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5;
         const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
@@ -152,9 +144,9 @@ const AccountTransferForm = observer(
 
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(selected_from.currency),
-                min: transfer_limit.min,
-                max: transfer_limit.max,
+                decimals: getDecimalPlaces(selected_from.currency || ''),
+                min: Number(transfer_limit.min),
+                max: Number(transfer_limit.max),
             });
             if (!is_ok) return message;
 
@@ -199,7 +191,7 @@ const AccountTransferForm = observer(
             derivez_accounts_to = [];
 
             accounts_list.forEach((account, idx) => {
-                const text = <AccountOption idx={idx} account={account} is_pre_appstore={is_pre_appstore} />;
+                const text = <AccountOption idx={idx} account={account} />;
                 const value = account.value;
 
                 const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;
@@ -275,7 +267,7 @@ const AccountTransferForm = observer(
                             derivez: derivez_remaining_transfers?.allowed,
                         }}
                         transfer_fee={transfer_fee}
-                        currency={selected_from.currency}
+                        currency={selected_from.currency || ''}
                         minimum_fee={minimum_fee}
                         key={0}
                         is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
@@ -300,7 +292,17 @@ const AccountTransferForm = observer(
             from_accounts,
             is_dxtrade_allowed,
             crypto_transactions,
-        ]); // eslint-disable-line react-hooks/exhaustive-deps
+            setSideNotes,
+            is_crypto,
+            internal_remaining_transfers?.allowed,
+            mt5_remaining_transfers?.allowed,
+            dxtrade_remaining_transfers?.allowed,
+            derivez_remaining_transfers?.allowed,
+            is_dxtrade_transfer,
+            is_mt_transfer,
+            is_from_derivgo,
+            is_derivez_transfer,
+        ]);
 
         React.useEffect(() => {
             const getRemainingTransfers = () => {
@@ -369,7 +371,7 @@ const AccountTransferForm = observer(
                 className='cashier__wrapper account-transfer-form__wrapper'
                 data-testid='dt_account_transfer_form_wrapper'
             >
-                {!is_from_pre_appstore && (
+                {!is_from_outside_cashier && (
                     <Text
                         as='h2'
                         color='prominent'
@@ -387,7 +389,9 @@ const AccountTransferForm = observer(
                         converter_to_amount: converter_to_amount || '',
                     }}
                     onSubmit={() => {
-                        requestTransferBetweenAccounts({ amount: +account_transfer_amount });
+                        requestTransferBetweenAccounts({
+                            amount: account_transfer_amount ? +account_transfer_amount : 0,
+                        });
                     }}
                     validateOnBlur={false}
                     enableReinitialize
@@ -455,14 +459,14 @@ const AccountTransferForm = observer(
                                             {({ field }: FieldProps<string>) => (
                                                 <Input
                                                     {...field}
-                                                    onChange={e => {
-                                                        setErrorMessage('');
+                                                    onChange={(e: TReactChangeEvent) => {
+                                                        setErrorMessage({ code: '', message: '' });
                                                         handleChange(e);
                                                         setAccountTransferAmount(e.target.value);
                                                     }}
                                                     className={classNames(
                                                         'cashier__input dc-input--no-placeholder account-transfer-form__input',
-                                                        !is_from_pre_appstore &&
+                                                        !is_from_outside_cashier &&
                                                             'account-transfer-form__input-fit-content'
                                                     )}
                                                     classNameHint={classNames('account-transfer-form__hint', {
@@ -523,8 +527,8 @@ const AccountTransferForm = observer(
                                         >
                                             <div className='account-transfer-form__crypto--percentage-selector'>
                                                 <PercentageSelector
-                                                    amount={+selected_from.balance}
-                                                    currency={selected_from.currency}
+                                                    amount={selected_from.balance ? +selected_from.balance : 0}
+                                                    currency={selected_from.currency || ''}
                                                     from_account={selected_from.value}
                                                     getCalculatedAmount={setTransferPercentageSelectorResult}
                                                     percentage={percentage}
@@ -533,8 +537,8 @@ const AccountTransferForm = observer(
                                                 />
                                             </div>
                                             <CryptoFiatConverter
-                                                from_currency={selected_from.currency}
-                                                to_currency={selected_to.currency}
+                                                from_currency={selected_from.currency || ''}
+                                                to_currency={selected_to.currency || ''}
                                                 hint={
                                                     transfer_limit.max ? (
                                                         <Localize
@@ -573,17 +577,16 @@ const AccountTransferForm = observer(
                                         )}
                                         data-testid='dt_account_transfer_form_submit'
                                     >
-                                        {is_from_pre_appstore && <NotesLink />}
-                                        {is_pre_appstore && (
-                                            <Button
-                                                className='account-transfer-form__deposit-button'
-                                                secondary
-                                                large
-                                                onClick={depositClick}
-                                            >
-                                                <Localize i18n_default_text='Deposit' />
-                                            </Button>
-                                        )}
+                                        {is_from_outside_cashier && <NotesLink />}
+                                        <Button
+                                            className='account-transfer-form__deposit-button'
+                                            secondary
+                                            large
+                                            onClick={depositClick}
+                                        >
+                                            <Localize i18n_default_text='Deposit' />
+                                        </Button>
+
                                         <Button
                                             className='account-transfer-form__submit-button'
                                             type='submit'
@@ -592,7 +595,7 @@ const AccountTransferForm = observer(
                                                 (remaining_transfers && !+remaining_transfers) ||
                                                 !!selected_from.error ||
                                                 !!selected_to.error ||
-                                                !+selected_from.balance ||
+                                                (selected_from.balance && !+selected_from.balance) ||
                                                 !!converter_from_error ||
                                                 !!converter_to_error ||
                                                 !!errors.amount ||
@@ -605,7 +608,7 @@ const AccountTransferForm = observer(
                                             <Localize i18n_default_text='Transfer' />
                                         </Button>
                                     </div>
-                                    {!is_from_pre_appstore && (
+                                    {!is_from_outside_cashier && (
                                         <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
                                             {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
                                             <AccountTransferNote
@@ -616,7 +619,7 @@ const AccountTransferForm = observer(
                                                     derivez: derivez_remaining_transfers?.allowed,
                                                 }}
                                                 transfer_fee={transfer_fee}
-                                                currency={selected_from.currency}
+                                                currency={selected_from.currency || ''}
                                                 minimum_fee={minimum_fee}
                                                 is_crypto_to_crypto_transfer={
                                                     selected_from.is_crypto && selected_to.is_crypto

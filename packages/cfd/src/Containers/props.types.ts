@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -79,13 +78,12 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = RouteComponentProps & {
+export type TCFDResetPasswordModal = {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     context?: RootStore;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
-    is_pre_appstore: boolean;
     is_logged_in: boolean;
     platform: CFD_Platform;
     setCFDPasswordResetModal: (value: boolean) => void;
@@ -173,6 +171,8 @@ export type TJurisdictionCardProps = {
     type_of_card: string;
     disabled: boolean;
 };
+
+export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;

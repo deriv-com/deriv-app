@@ -2,11 +2,11 @@ import React from 'react';
 import Routes from './Containers/routes.jsx';
 import initStore from './init-store'; // eslint-disable-line import/extensions
 import CFDProviders from './cfd-providers';
-import { TCoreStore } from '../../account/src/Stores/index.js';
+import type { TCoreStores } from '@deriv/stores/types.js';
 
 type TAppProps = {
     passthrough: {
-        root_store: TCoreStore;
+        root_store: TCoreStores;
         WS: unknown;
     };
 };

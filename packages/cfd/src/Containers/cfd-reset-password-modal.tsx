@@ -42,7 +42,6 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
     });
 };
 
-// eslint-disable-next-line react/prop-types
 const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) => {
     const {
         client: { email, is_eu, is_logged_in },

@@ -207,7 +207,7 @@ export const getOpenPositionsColumnsTemplate = currency => [
         renderHeader: ({ title, is_vanilla }) => <span>{is_vanilla ? localize('Strike') : title}</span>,
         renderCellContent: ({ cell_value, row_obj, is_vanilla }) => {
             const non_vanilla_payout = cell_value ? <Money amount={cell_value} currency={currency} /> : <span>-</span>;
-            return is_vanilla ? row_obj.barrier?.toFixed(2) : non_vanilla_payout;
+            return is_vanilla ? row_obj.barrier : non_vanilla_payout;
         },
     },
     {

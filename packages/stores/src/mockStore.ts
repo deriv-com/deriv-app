@@ -214,6 +214,10 @@ const mock = (): TStores => {
             current_language: 'EN',
             is_network_online: false,
             is_language_changing: false,
+            network_status: {
+                class: 'offline',
+                tooltip: 'online',
+            },
         },
         ui: {
             app_contents_scroll_ref: {

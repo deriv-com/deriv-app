@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { BinaryLink } from '../index';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 type TMockBinaryLink = {
     active_class?: string;
@@ -19,12 +20,15 @@ jest.mock('Stores/connect', () => ({
         <T,>(Component: T) =>
             Component,
 }));
+const store = mockStore();
 
-const MockBinaryLink = ({ active_class, to, has_error, setError }: TMockBinaryLink) => (
+const MockBinaryLink = ({ active_class, to }: TMockBinaryLink) => (
     <BrowserRouter>
-        <BinaryLink has_error={has_error} setError={setError} active_class={active_class} to={to}>
-            <div data-testid='dt_child' />
-        </BinaryLink>
+        <StoreProvider store={store}>
+            <BinaryLink active_class={active_class} to={to}>
+                <div data-testid='dt_child' />
+            </BinaryLink>
+        </StoreProvider>
     </BrowserRouter>
 );
 
@@ -50,9 +54,10 @@ describe('BinaryLink component', () => {
     });
 
     it('should call "setError" property when "has_error" property is "true"', () => {
-        const setError = jest.fn();
-        render(<MockBinaryLink has_error setError={setError} to='/' />);
+        store.common.error.setError = jest.fn();
+        store.common.has_error = true;
+        render(<MockBinaryLink to='/' />);
         userEvent.click(screen.getByTestId('dt_span'));
-        expect(setError).toHaveBeenCalledTimes(1);
+        expect(store.common.error.setError).toHaveBeenCalledTimes(1);
     });
 });

@@ -2,20 +2,12 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import RouteWithSubRoutes from '../route-with-sub-routes';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 type TMockFunction = {
     path: string;
     exact?: boolean;
 };
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -32,13 +24,17 @@ afterEach(() => jest.clearAllMocks());
 const route = {
     getTitle: jest.fn(),
     component: Redirect,
-    is_logging_in: true,
-    is_logged_in: true,
     exact: true,
     path: '/test-path',
 };
-
-const MockRouteWithSubRoutesRender = () => <RouteWithSubRoutes {...route} />;
+const store = mockStore();
+store.client.is_logging_in = true;
+store.client.is_logged_in = true;
+const MockRouteWithSubRoutesRender = () => (
+    <StoreProvider store={store}>
+        <RouteWithSubRoutes {...route} />
+    </StoreProvider>
+);
 
 describe('RouteWithSubRoutes component', () => {
     it('should render the "RouteWithSubRoutes" component', () => {

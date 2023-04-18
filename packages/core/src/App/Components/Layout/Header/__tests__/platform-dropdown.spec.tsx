@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { PlatformDropdown, PlatformBox } from '../platform-dropdown';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 type TMockPlatformDropdown = {
     platform_config: {
@@ -22,15 +23,18 @@ jest.mock('Stores/connect.js', () => ({
         <T,>(Component: T) =>
             Component,
 }));
+const store = mockStore();
 
 const MockPlatformDropdown = ({ platform_config }: TMockPlatformDropdown) => {
     return (
         <BrowserRouter>
-            <PlatformDropdown
-                platform_config={platform_config}
-                app_routing_history={[{ pathname: '' }]}
-                closeDrawer={jest.fn()}
-            />
+            <StoreProvider store={store}>
+                <PlatformDropdown
+                    platform_config={platform_config}
+                    app_routing_history={[{ pathname: '' }]}
+                    closeDrawer={jest.fn()}
+                />
+            </StoreProvider>
         </BrowserRouter>
     );
 };

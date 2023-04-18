@@ -13,7 +13,8 @@ import { observer, useStore } from '@deriv/stores';
 const BinaryLink = observer(({ active_class, to, children, href, ...props }) => {
     const platform_context = React.useContext(PlatformContext);
     const { common } = useStore();
-    const { has_error, setError } = common;
+    const { has_error, error } = common;
+    const setError = error.setError;
     const is_appstore = platform_context?.is_appstore;
     const path = normalizePath(to);
     const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));

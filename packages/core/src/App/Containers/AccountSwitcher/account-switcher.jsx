@@ -37,6 +37,7 @@ const AccountSwitcher = ({
     history,
     is_dark_mode_on,
     is_eu,
+    is_landing_company_loaded,
     is_low_risk,
     is_high_risk,
     is_logged_in,
@@ -131,13 +132,16 @@ const AccountSwitcher = ({
     const isDemoAccountTab = active_tab_index === 1;
 
     const getRealMT5 = () => {
-        const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
-        if (low_risk_non_eu) {
-            return getSortedCFDList(mt5_login_list).filter(
-                account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
-            );
+        if (is_landing_company_loaded) {
+            const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+            if (low_risk_non_eu) {
+                return getSortedCFDList(mt5_login_list).filter(
+                    account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
+                );
+            }
+            return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
         }
-        return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
+        return [];
     };
 
     const canOpenMulti = () => {
@@ -540,6 +544,7 @@ AccountSwitcher.propTypes = {
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_landing_company_loaded: PropTypes.bool,
     is_low_risk: PropTypes.bool,
     is_high_risk: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -580,6 +585,7 @@ const account_switcher = withRouter(
         country_standpoint: client.country_standpoint,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
+        is_landing_company_loaded: client.is_landing_company_loaded,
         is_low_risk: client.is_low_risk,
         is_high_risk: client.is_high_risk,
         is_logged_in: client.is_logged_in,

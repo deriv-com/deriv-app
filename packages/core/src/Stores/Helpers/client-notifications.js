@@ -62,7 +62,7 @@ export const getCashierValidations = cashier_arr => {
 };
 
 export const excluded_notifications = isMobile()
-    ? ['contract_sold', 'switched_to_real']
+    ? ['contract_sold', 'switched_to_real', 'has_changed_two_fa']
     : [
           'you_are_offline',
           'password_changed',
@@ -76,6 +76,7 @@ export const excluded_notifications = isMobile()
           'svg_needs_poi',
           'svg_poi_expired',
           'switched_to_real',
+          'has_changed_two_fa',
       ];
 
 export const priority_toast_messages = ['svg', 'need_fa', 'p2p_daily_limit_increase'];

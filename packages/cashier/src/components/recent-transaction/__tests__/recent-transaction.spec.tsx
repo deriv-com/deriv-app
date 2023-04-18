@@ -37,7 +37,7 @@ describe('<RecentTransaction />', () => {
                     },
                 },
             },
-        }) as TStores;
+        });
     });
 
     const renderRecentTransaction = () => {

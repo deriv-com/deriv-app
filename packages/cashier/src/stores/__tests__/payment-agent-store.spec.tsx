@@ -429,7 +429,7 @@ describe('PaymentAgentStore', () => {
         await payment_agent_store.requestTryPaymentAgentWithdraw(mocked_withdrawal_request);
         expect(spySetErrorMessage).toHaveBeenCalledWith({ code: '', message: '' });
         expect(payment_agent_store.confirm).toEqual({
-            amount: '200',
+            amount: 200,
             currency: 'USD',
             loginid: 'CR90000000',
             payment_agent_name: 'Payment Agent of CR90000000',

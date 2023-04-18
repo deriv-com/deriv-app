@@ -87,7 +87,7 @@ describe('OnRampStore', () => {
 
     it('should return empty string to render header + close icon if should_show_widget = false and there is selected provider with should_show_dialog = false', () => {
         onramp_store.setSelectedProvider(banxa_provider);
-        onramp_store.setApiError({ code: '', message: '' });
+        onramp_store.setApiError(null);
 
         expect(onramp_store.onramp_popup_modal_title).toBe(' ');
     });

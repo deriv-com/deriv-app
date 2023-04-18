@@ -754,7 +754,7 @@ describe('AccountTransferStore', () => {
         const { onChangeConverterFromAmount, setConverterFromAmount } =
             account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        expect(setConverterFromAmount).toHaveBeenCalledWith(10);
+        expect(setConverterFromAmount).toHaveBeenCalledWith('10');
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
         expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 10 } }, 'USD', 'BTC');
     });
@@ -767,7 +767,7 @@ describe('AccountTransferStore', () => {
         const { onChangeConverterFromAmount, setConverterFromAmount } =
             account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
+        expect(setConverterFromAmount).toHaveBeenCalledWith('0');
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
         expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 0 } }, 'USD', 'BTC');
     });

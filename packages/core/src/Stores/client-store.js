@@ -77,6 +77,7 @@ export default class ClientStore extends BaseStore {
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
     has_enabled_two_fa = false;
+    has_changed_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -186,6 +187,7 @@ export default class ClientStore extends BaseStore {
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
             has_enabled_two_fa: observable,
+            has_changed_two_fa: observable,
             landing_companies: observable,
             standpoint: observable,
             upgradeable_landing_companies: observable,
@@ -383,6 +385,7 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
+            setTwoFAChangedStatus: action.bound,
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
             updateMT5Status: action.bound,
@@ -2610,6 +2613,10 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
+    }
+
+    setTwoFAChangedStatus(status) {
+        this.has_changed_two_fa = status;
     }
 
     async updateMT5Status() {

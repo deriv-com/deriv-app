@@ -100,6 +100,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
+                root_store.client.has_changed_two_fa,
                 this.p2p_order_props.order_id,
                 root_store.client.p2p_advertiser_info,
             ],
@@ -289,6 +290,7 @@ export default class NotificationStore extends BaseStore {
             obj_total_balance,
             website_status,
             has_enabled_two_fa,
+            has_changed_two_fa,
             is_poi_dob_mismatch,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
@@ -372,6 +374,10 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.acuity);
             if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
                 this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            }
+
+            if (has_changed_two_fa) {
+                this.addNotificationMessage(this.client_notifications.has_changed_two_fa);
             }
 
             const client = accounts[loginid];
@@ -708,6 +714,8 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
+        const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
@@ -1287,6 +1295,22 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            has_changed_two_fa: {
+                key: 'has_changed_two_fa',
+                header: localize('Logging out on other devices'),
+                message: (
+                    <Localize
+                        i18n_default_text="You've {{two_fa_status}} 2FA on this device. You'll be logged out of your account on other devices (if any). Use your password and a 2FA code to log back in."
+                        values={{ two_fa_status }}
+                    />
+                ),
+                type: 'info',
+                delay: 4000,
+                is_auto_close: true,
+                closeOnClick: () => {
+                    setTwoFAChangedStatus(false);
+                },
             },
             two_f_a: {
                 key: 'two_f_a',

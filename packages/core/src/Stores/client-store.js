@@ -1297,6 +1297,7 @@ export default class ClientStore extends BaseStore {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
+                    this.syncWithLegacyPlatforms(client_id, client_accounts);
                 })
                 .catch(error => {
                     // eslint-disable-next-line no-console

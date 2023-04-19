@@ -68,14 +68,14 @@ describe('<ErrorComponent/>', () => {
     });
 
     it('should refresh the page when redirectOnClick is not passed', () => {
-        const redirectOnClick = undefined;
+        const redirectOnClick = null;
         renderWithRouter(<ErrorComponent {...props} redirectOnClick={redirectOnClick} />);
         reloadFn();
         expect(window.location.reload).toHaveBeenCalled();
     });
 
     it('should show the redirect button label as refresh when there is no redirect_label', () => {
-        const redirectOnClick = undefined;
+        const redirectOnClick = null;
         const redirect_to = '/testurl';
         renderWithRouter(
             <ErrorComponent

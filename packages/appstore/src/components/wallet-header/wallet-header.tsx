@@ -1,12 +1,21 @@
 // import { localize } from '@deriv/translations';
 import React from 'react';
 
-type TWalletHeader = {
-    currency: string;
-    // landing_company_shortcode: 'svg' | 'malta' | 'virtual';
-    jurisdiction: 'svg' | 'malta' | 'virtual';
+type TWalletHeaderCommon = {
     balance?: number;
 };
+
+type TWalletHeaderDemo = TWalletHeaderCommon & {
+    jurisdiction: 'virtual';
+    currency?: never;
+};
+
+type TWalletHeaderNotDemo = TWalletHeaderCommon & {
+    jurisdiction: 'svg' | 'malta';
+    currency: 'USD' | 'EUR' | 'AUD';
+};
+
+type TWalletHeader = TWalletHeaderDemo | TWalletHeaderNotDemo;
 
 const WalletHeader = React.memo(({ balance = 0, currency = 'USD', jurisdiction = 'svg' }: TWalletHeader) => {
     return (

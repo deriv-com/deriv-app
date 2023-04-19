@@ -102,7 +102,9 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Build from scratch')}
                 content={[
-                    localize('Build your bot using drag-and-drop blocks according to your ideal trading strategy.'),
+                    localize(
+                        'Create your bot easily using our drag-and-drop blocks to match your desired trading strategy, or choose from our pre-made Quick Strategies.'
+                    ),
                     localize(
                         'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
                     ),

@@ -465,13 +465,13 @@
                     width: unset;
                     gap: 1rem;
                 }
-                > svg {
+                .dc-popover__target {
+                    display: flex;
+                }
+                &__icon {
                     @include mobile {
                         margin-bottom: 0.8rem;
                     }
-                }
-                .dc-popover__target {
-                    display: flex;
                 }
             }
         }

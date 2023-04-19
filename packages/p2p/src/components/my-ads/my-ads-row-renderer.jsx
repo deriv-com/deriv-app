@@ -169,7 +169,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     <Icon
                                         icon='IcAlertWarning'
                                         onClick={onClickTooltipIcon}
-                                        className='p2p-my-ads__table-status-warning__icon'
+                                        className={!!is_advert_active && 'p2p-my-ads__table-status-warning__icon'}
                                     />
                                 </div>
                             ) : (

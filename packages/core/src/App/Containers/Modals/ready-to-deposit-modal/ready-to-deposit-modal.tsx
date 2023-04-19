@@ -26,7 +26,7 @@ const ReadyToDepositModal = observer(() => {
             title={localize('Ready to deposit and trade for real?')}
             confirm_button_text={localize('Add real account')}
             onConfirm={createAccount}
-            cancel_button_text={localize('Stay in demo')}
+            cancel_button_text={localize('Maybe later')}
             onCancel={onClose}
             is_closed_on_cancel
             disableApp={disableApp}

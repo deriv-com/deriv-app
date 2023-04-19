@@ -101,15 +101,15 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
                     <Icon
                         className='cfd-trade-modal__dxtrade-button-icon'
                         icon={`IcBrandCtraderWordmark`}
-                        width={64}
-                        height={14}
+                        width={57}
+                        height={11}
                     />
                 ) : (
                     <Icon
                         className='cfd-trade-modal__dxtrade-button-icon'
                         icon={`IcBrand${platforms_icons()}Wordmark`}
-                        width={32}
-                        height={7}
+                        width={42}
+                        height={11}
                     />
                 )}
                 <div className='cfd-trade-modal__dxtrade-button-text'>

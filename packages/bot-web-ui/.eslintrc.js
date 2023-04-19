@@ -31,9 +31,8 @@ module.exports = {
                     {
                         groups: [
                             [
-                                // `react` first, `next` second, then packages starting with a character
+                                // `react` first, then packages starting with a character
                                 '^react$',
-                                '^next',
                                 '^[a-z]',
                                 // Packages starting with `@`
                                 '^@',

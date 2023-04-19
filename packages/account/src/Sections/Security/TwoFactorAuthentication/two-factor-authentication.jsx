@@ -19,18 +19,10 @@ import TwoFactorAuthenticationArticle from './two-factor-authentication-article.
 import { observer, useStore } from '@deriv/stores';
 
 const TwoFactorAuthentication = observer(() => {
-    const {client,ui} =useStore()
-    const {
-        email_address,
-        getTwoFAStatus,
-        has_enabled_two_fa,
-        is_switching,
-        setTwoFAStatus,
-        setTwoFAChangedStatus,
-    } =client
-    const {
-       notification_messages_ui: Notifications
-    } =ui
+    const { client, ui } = useStore();
+    const { email_address, getTwoFAStatus, has_enabled_two_fa, is_switching, setTwoFAStatus, setTwoFAChangedStatus } =
+        client;
+    const { notification_messages_ui: Notifications } = ui;
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
     const [error_message, setErrorMessage] = React.useState('');
@@ -210,5 +202,4 @@ const TwoFactorAuthentication = observer(() => {
     );
 });
 
-
-export default (TwoFactorAuthentication);
+export default TwoFactorAuthentication;

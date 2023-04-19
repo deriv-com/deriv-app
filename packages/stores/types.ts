@@ -215,7 +215,7 @@ type TClientStore = {
     is_crypto: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
     isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
-    fetchResidenceList?: () => void;
+    fetchResidenceList?: () => Promise<void>;
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
@@ -240,8 +240,8 @@ type TClientStore = {
         shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
         sub_account_type: string;
     }[];
-    updateMT5Status: () => void;
-    fetchAccountSettings: () => void;
+    updateMT5Status: () => Promise<void>;
+    fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
     upgradeable_landing_companies: unknown[];
     is_populating_mt5_account_list: boolean;
@@ -267,7 +267,7 @@ type TClientStore = {
     real_account_creation_unlock_date: string;
     is_fully_authenticated: boolean;
     states_list: StatesList;
-    fetchStatesList: () => void;
+    fetchStatesList: () => Promise<void>;
     has_enabled_two_fa: boolean;
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;

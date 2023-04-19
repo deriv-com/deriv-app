@@ -1,8 +1,8 @@
 import React from 'react';
 import Routes from './Containers/routes.jsx';
-import initStore from './init-store'; // eslint-disable-line import/extensions
+import initStore from './init-store';
 import CFDProviders from './cfd-providers';
-import type { TCoreStores } from '@deriv/stores/types.js';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {
@@ -12,13 +12,11 @@ type TAppProps = {
 };
 
 const App = ({ passthrough }: TAppProps) => {
-    const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
+    initStore(passthrough.root_store, passthrough.WS);
 
     return (
-        <CFDProviders store={root_store}>
-            <React.Fragment>
-                <Routes />
-            </React.Fragment>
+        <CFDProviders store={passthrough.root_store}>
+            <Routes />
         </CFDProviders>
     );
 };

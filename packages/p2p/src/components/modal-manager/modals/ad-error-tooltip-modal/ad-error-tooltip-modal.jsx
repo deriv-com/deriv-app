@@ -83,16 +83,19 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
                         }}
                     />
                 );
-            case 'advertiser_daily_limit':
+            case 'advertiser_daily_limit': {
+                const remaining_limit =
+                    advert_type === buy_sell.BUY ? localize(daily_buy_limit) : localize(daily_sell_limit);
                 return (
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than your remaining daily limit ({{remaining_limit}} {{currency}}).'
                         values={{
-                            remaining_limit: advert_type === buy_sell.BUY ? daily_buy_limit : daily_sell_limit,
+                            remaining_limit,
                             currency: account_currency,
                         }}
                     />
                 );
+            }
             case 'advertiser_temp_ban':
                 return (
                     <Localize i18n_default_text='You’re not allowed to use Deriv P2P to advertise. Please contact us via live chat for more information.' />

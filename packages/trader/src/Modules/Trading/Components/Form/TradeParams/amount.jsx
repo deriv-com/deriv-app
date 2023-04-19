@@ -4,13 +4,13 @@ import { Localize, localize } from '@deriv/translations';
 
 import AllowEquals from './allow-equals.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import Multiplier from './Multiplier/multiplier.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { connect } from 'Stores/connect';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer, useStore } from '@deriv/stores';
 
 export const Input = ({
     amount,
@@ -48,31 +48,29 @@ export const Input = ({
     />
 );
 
-const Amount = ({
-    amount,
-    basis,
-    basis_list,
-    contract_start_type,
-    contract_type,
-    contract_types_list,
-    currencies_list,
-    currency,
-    current_focus,
-    duration_unit,
-    expiry_type,
-    is_accumulator,
-    is_equal,
-    is_minimized,
-    is_multiplier,
-    is_nativepicker,
-    is_single_currency,
-    has_equals_only,
-    onChange,
-    setCurrentFocus,
-    validation_errors,
-    stake_boundary,
-    vanilla_trade_type,
-}) => {
+const Amount = observer(({ is_minimized, is_nativepicker }) => {
+    const { ui, client } = useStore();
+    const { currencies_list, is_single_currency } = client;
+    const { setCurrentFocus, vanilla_trade_type, current_focus } = ui;
+    const {
+        amount,
+        basis,
+        basis_list,
+        contract_start_type,
+        contract_type,
+        contract_types_list,
+        currency,
+        duration_unit,
+        expiry_type,
+        is_accumulator,
+        is_equal,
+        is_multiplier,
+        has_equals_only,
+        onChange,
+        validation_errors,
+        stake_boundary,
+    } = useTraderStore();
+
     if (is_minimized) {
         return (
             <div className='fieldset-minimized fieldset-minimized__amount'>
@@ -205,55 +203,11 @@ const Amount = ({
             )}
         </Fieldset>
     );
-};
+});
 
 Amount.propTypes = {
-    amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    basis: PropTypes.string,
-    basis_list: MobxPropTypes.arrayOrObservableArray,
-    contract_start_type: PropTypes.string,
-    contract_type: PropTypes.string,
-    contract_types_list: MobxPropTypes.observableObject,
-    currencies_list: MobxPropTypes.observableObject,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    duration_unit: PropTypes.string,
-    expiry_type: PropTypes.string,
-    is_accumulator: PropTypes.bool,
-    is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_minimized: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
-    is_single_currency: PropTypes.bool,
-    has_equals_only: PropTypes.bool,
-    setCurrentFocus: PropTypes.func,
-    onChange: PropTypes.func,
-    validation_errors: PropTypes.object,
-    stake_boundary: PropTypes.object,
-    vanilla_trade_type: PropTypes.object,
 };
 
-export default connect(({ modules, client, ui }) => ({
-    amount: modules.trade.amount,
-    basis: modules.trade.basis,
-    basis_list: modules.trade.basis_list,
-    contract_start_type: modules.trade.contract_start_type,
-    contract_type: modules.trade.contract_type,
-    contract_types_list: modules.trade.contract_types_list,
-    currencies_list: client.currencies_list,
-    currency: modules.trade.currency,
-    current_focus: ui.current_focus,
-    duration_unit: modules.trade.duration_unit,
-    expiry_type: modules.trade.expiry_type,
-    is_accumulator: modules.trade.is_accumulator,
-    is_equal: modules.trade.is_equal,
-    is_single_currency: client.is_single_currency,
-    is_multiplier: modules.trade.is_multiplier,
-    has_equals_only: modules.trade.has_equals_only,
-    stop_out: modules.trade.stop_out,
-    onChange: modules.trade.onChange,
-    setCurrentFocus: ui.setCurrentFocus,
-    vanilla_trade_type: ui.vanilla_trade_type,
-    validation_errors: modules.trade.validation_errors,
-    stake_boundary: modules.trade.stake_boundary,
-}))(Amount);
+export default Amount;

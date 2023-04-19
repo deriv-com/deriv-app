@@ -1,4 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
@@ -14,10 +13,12 @@ import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/e
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display.jsx';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
-import { connect } from 'Stores/connect';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 
-const TradeParams = ({ form_components, is_minimized }) => {
+const TradeParams = observer(({ is_minimized }) => {
+    const { form_components } = useTraderStore();
     const isVisible = component_key => {
         return form_components.includes(component_key);
     };
@@ -39,12 +40,9 @@ const TradeParams = ({ form_components, is_minimized }) => {
             {isVisible('accu_info_display') && <AccumulatorsInfoDisplay key={'accu_info_display'} />}
         </React.Fragment>
     );
-};
+});
 TradeParams.propTypes = {
-    form_components: MobxPropTypes.arrayOrObservableArray,
     is_minimized: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
-    form_components: modules.trade.form_components,
-}))(TradeParams);
+export default TradeParams;

@@ -1,25 +1,25 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
 import { isDesktop } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const StopLoss = ({
-    addToast,
-    removeToast,
-    amount,
-    currency,
-    current_focus,
-    has_stop_loss,
-    is_single_currency,
-    onChange,
-    onChangeMultiple,
-    setCurrentFocus,
-    stop_loss,
-    validation_errors,
-}) => {
+const StopLoss = observer(props => {
+    const { ui, client } = useStore();
+    const trade = useTraderStore();
+
+    const { addToast, removeToast, current_focus, setCurrentFocus } = ui;
+    const { is_single_currency } = client;
+    const { amount, currency } = trade;
+
+    const validation_errors = props.validation_errors ?? trade.validation_errors;
+    const stop_loss = props.stop_loss ?? trade.stop_loss;
+    const has_stop_loss = props.has_stop_loss ?? trade.has_stop_loss;
+    const onChangeMultiple = props.onChangeMultiple ?? trade.onChangeMultiple;
+    const onChange = props.onChange ?? trade.onChange;
+
     const changeValue = e => {
         if (e.target.name === 'has_stop_loss') {
             const new_val = e.target.value;
@@ -61,35 +61,6 @@ const StopLoss = ({
             />
         </Fieldset>
     );
-};
+});
 
-StopLoss.propTypes = {
-    addToast: PropTypes.func,
-    amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    has_stop_loss: PropTypes.bool,
-    is_single_currency: PropTypes.bool,
-    onChange: PropTypes.func,
-    onChangeMultiple: PropTypes.func,
-    removeToast: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    stop_loss: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    validation_errors: PropTypes.object,
-};
-
-export default connect(({ modules, client, ui }, props) => ({
-    addToast: ui.addToast,
-    amount: modules.trade.amount,
-    currency: modules.trade.currency,
-    current_focus: ui.current_focus,
-    has_cancellation: props.has_cancellation ?? modules.trade.has_cancellation,
-    has_stop_loss: props.has_stop_loss ?? modules.trade.has_stop_loss,
-    is_single_currency: client.is_single_currency,
-    onChange: props.onChange ?? modules.trade.onChange,
-    onChangeMultiple: props.onChangeMultiple ?? modules.trade.onChangeMultiple,
-    setCurrentFocus: ui.setCurrentFocus,
-    removeToast: ui.removeToast,
-    stop_loss: props.stop_loss ?? modules.trade.stop_loss,
-    validation_errors: props.validation_errors ?? modules.trade.validation_errors,
-}))(StopLoss);
+export default StopLoss;

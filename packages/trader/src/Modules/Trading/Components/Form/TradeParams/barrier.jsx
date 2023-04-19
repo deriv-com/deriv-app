@@ -3,23 +3,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';
 
-const Barrier = ({
-    barrier_1,
-    barrier_2,
-    barrier_count,
-    barrier_pipsize,
-    current_focus,
-    duration_unit,
-    is_minimized,
-    is_absolute_only,
-    onChange,
-    setCurrentFocus,
-    validation_errors,
-}) => {
+const Barrier = observer(({ is_minimized, is_absolute_only }) => {
+    const { ui } = useStore();
+    const { current_focus, setCurrentFocus } = ui;
+    const { barrier_1, barrier_2, barrier_count, barrier_pipsize, duration_unit, onChange, validation_errors } =
+        useTraderStore();
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
 
     if (is_minimized) {
@@ -156,30 +149,11 @@ const Barrier = ({
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
 Barrier.propTypes = {
-    barrier_1: PropTypes.string,
-    barrier_2: PropTypes.string,
-    barrier_count: PropTypes.number,
-    barrier_pipsize: PropTypes.number,
-    current_focus: PropTypes.string,
-    duration_unit: PropTypes.string,
     is_absolute_only: PropTypes.bool,
     is_minimized: PropTypes.bool,
-    onChange: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
-    barrier_1: modules.trade.barrier_1,
-    barrier_2: modules.trade.barrier_2,
-    barrier_pipsize: modules.trade.barrier_pipsize,
-    barrier_count: modules.trade.barrier_count,
-    current_focus: ui.current_focus,
-    duration_unit: modules.trade.duration_unit,
-    onChange: modules.trade.onChange,
-    setCurrentFocus: ui.setCurrentFocus,
-    validation_errors: modules.trade.validation_errors,
-}))(Barrier);
+export default Barrier;

@@ -4,7 +4,7 @@ import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-li
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { PersonalDetailsForm } from '../personal-details.jsx';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 afterAll(cleanup);
 
@@ -19,6 +19,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 }));
 
 describe('<PersonalDetailsForm />', () => {
+    const store = mockStore();
     const history = createBrowserHistory();
 
     it('should_render_successfully', async () => {
@@ -33,17 +34,16 @@ describe('<PersonalDetailsForm />', () => {
                 value: 'value',
             },
         ];
-        let store = mockStore();
+        store.client.fetchResidenceList = fetchResidenceList;
+        store.client.fetchStatesList = fetchStatesList;
+        store.client.residence_list = residence_list;
         store.client.account_settings = {
             email_consent: 1,
         };
-        store.client.fetchResidenceList = fetchResidenceList;
-        store.client.residence_list = fetchStatesList;
-        store.client.residence_list = residence_list;
-        store.client.has_residence = true;
-        store.client.getChangeableFields = () => [];
         store.client.is_virtual = false;
         store.client.states_list = residence_list;
+        store.client.getChangeableFields = () => [];
+        store.client.has_residence = true;
         const screen = render(
             <Router history={history}>
                 <StoreProvider store={store}>

@@ -5,6 +5,35 @@ import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { isMobile } from '@deriv/shared';
+import { ad_type } from 'Constants/floating-rate';
+import { useStore } from '@deriv/stores';
+
+const AdRateError = () => {
+    const { floating_rate_store } = useStores();
+    const {
+        client: { local_currency_config },
+    } = useStore();
+
+    if (floating_rate_store.rate_type === ad_type.FLOAT) {
+        return floating_rate_store.reached_target_date ? (
+            <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
+        ) : (
+            <Localize
+                i18n_default_text={
+                    'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}.'
+                }
+                values={{
+                    local_currency: local_currency_config.currency || '',
+                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
+                }}
+            />
+        );
+    }
+
+    return (
+        <Localize i18n_default_text='Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.' />
+    );
+};
 
 const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', remaining_amount }) => {
     const { my_ads_store, general_store } = useStores();
@@ -13,9 +42,7 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
     const getAdErrorMessage = error_code => {
         switch (error_code) {
             case 'advert_inactive':
-                return (
-                    <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
-                );
+                return <AdRateError />;
             case 'advert_max_limit':
                 return (
                     <Localize

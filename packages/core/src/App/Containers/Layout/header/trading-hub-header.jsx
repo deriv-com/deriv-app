@@ -140,7 +140,7 @@ const TradingHubHeader = ({
                 <AccountInfo
                     acc_switcher_disabled_message={acc_switcher_disabled_message}
                     account_type={account_type}
-                    balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
+                    balance={balance}
                     is_disabled={is_acc_switcher_disabled}
                     is_eu={is_eu}
                     is_virtual={is_virtual}
@@ -349,7 +349,7 @@ TradingHubHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
-    balance: PropTypes.number,
+    balance: PropTypes.string,
     currency: PropTypes.string,
     is_acc_switcher_disabled: PropTypes.bool,
     country_standpoint: PropTypes.object,

@@ -82,5 +82,9 @@
                 flex-direction: column;
             }
         }
+
+        &--none {
+            display: none;
+        }
     }
 }

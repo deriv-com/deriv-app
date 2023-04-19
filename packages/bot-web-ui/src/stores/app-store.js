@@ -23,14 +23,16 @@ export default class AppStore {
         link: localize('Switch to another account'),
     });
 
-    getErrorForEuClients = is_logged_in => ({
-        text: ' ',
-        title: is_logged_in
-            ? localize('Deriv Bot is not available for EU clients')
-            : localize('Deriv Bot is unavailable in the EU'),
-        link: is_logged_in ? localize("Back to Trader's Hub") : localize('Login'),
-        route: routes.traders_hub,
-    });
+    getErrorForEuClients = is_logged_in => {
+        return {
+            text: ' ',
+            title: is_logged_in
+                ? localize('Deriv Bot is not available for EU clients')
+                : localize('Deriv Bot is unavailable in the EU'),
+            link: is_logged_in && localize("Back to Trader's Hub"),
+            route: routes.traders_hub,
+        };
+    };
 
     handleErrorForEu = (show_default_error = false) => {
         const { client, common, ui } = this.root_store.core;

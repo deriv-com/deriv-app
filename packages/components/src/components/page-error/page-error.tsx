@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import DesktopWrapper from '../desktop-wrapper';
 import MobileWrapper from '../mobile-wrapper';
 import ButtonLink from '../button-link/button-link';
@@ -22,6 +22,7 @@ type TPageErrorProps = {
     should_clear_error_on_click?: boolean;
     has_malta_account?: boolean;
     should_redirect?: boolean;
+    is_logged_in?: boolean;
 };
 
 const PageError = ({
@@ -31,6 +32,7 @@ const PageError = ({
     has_malta_account,
     header,
     image_url,
+    is_logged_in,
     messages,
     redirect_labels,
     redirect_urls,
@@ -123,7 +125,10 @@ const PageError = ({
                     {should_redirect &&
                         redirect_urls?.map?.((url, index) => (
                             <ButtonLink
-                                className='dc-page-error__btn'
+                                className={classNames('dc-page-error__btn', {
+                                    'dc-page-error__btn--none':
+                                        !is_logged_in && window.location.pathname === routes.bot,
+                                })}
                                 to={url}
                                 onClick={onClickHandler}
                                 size={buttonSize}

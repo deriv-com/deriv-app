@@ -12,6 +12,7 @@ const ErrorComponent = ({
     country_standpoint,
     has_malta_account,
     header,
+    is_logged_in,
     message,
     redirect_label,
     redirectOnClick = null,
@@ -83,6 +84,7 @@ const ErrorComponent = ({
             setError={setError}
             has_malta_account={has_malta_account}
             should_redirect={should_redirect}
+            is_logged_in={is_logged_in}
         />
     );
 };
@@ -92,11 +94,13 @@ ErrorComponent.propTypes = {
     country_standpoint: PropTypes.object,
     has_malta_account: PropTypes.bool,
     header: PropTypes.string,
+    is_logged_in: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
     redirectOnClick: PropTypes.func || PropTypes.object,
     redirect_label: PropTypes.string,
     setError: PropTypes.func,
     should_clear_error_on_click: PropTypes.bool,
+    should_redirect: PropTypes.bool,
     showNotificationMessageByKey: PropTypes.func,
     showCloseMxMltAccountPopup: PropTypes.func,
     removeNotificationMessageByKey: PropTypes.func,
@@ -111,4 +115,5 @@ export default connect(({ client, notifications, ui }) => ({
     has_malta_account: client.has_malta_account,
     can_have_mlt_account: client.can_have_mlt_account,
     country_standpoint: client.country_standpoint,
+    is_logged_in: client.is_logged_in,
 }))(ErrorComponent);

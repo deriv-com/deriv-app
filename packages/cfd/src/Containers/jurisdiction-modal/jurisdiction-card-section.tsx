@@ -5,6 +5,7 @@ import JurisdictionClickableDescription from './jurisdiction-clickable-descripti
 import JurisdictionTitleIndicator from './jurisdiction-title-indicator';
 
 const JurisdictionCardSection = ({
+    account_status,
     card_section_item,
     toggleCardFlip,
     verification_docs,
@@ -16,6 +17,7 @@ const JurisdictionCardSection = ({
             </Text>
             {card_section_item.title_indicators && (
                 <JurisdictionTitleIndicator
+                    account_status={account_status}
                     title_indicators={card_section_item.title_indicators}
                     verification_docs={verification_docs}
                 />

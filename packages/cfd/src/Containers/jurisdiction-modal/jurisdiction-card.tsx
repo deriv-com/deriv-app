@@ -6,6 +6,7 @@ import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
 
 const JurisdictionCard = ({
+    account_status,
     account_type,
     disabled,
     jurisdiction_selected_shortcode,
@@ -41,6 +42,7 @@ const JurisdictionCard = ({
                 onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
             >
                 <JurisdictionCardFront
+                    account_status={account_status}
                     card_classname={card_classname}
                     card_data={card_data}
                     card_values={card_values}

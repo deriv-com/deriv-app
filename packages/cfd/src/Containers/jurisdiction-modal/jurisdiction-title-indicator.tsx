@@ -1,10 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { jurisdictionVerificationContents } from 'Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 
-const JurisdictionTitleIndicator = ({ title_indicators, verification_docs }: TJurisdictionTitleIndicatorProps) => {
+const JurisdictionTitleIndicator = ({
+    account_status,
+    title_indicators,
+    verification_docs,
+}: TJurisdictionTitleIndicatorProps) => {
+    const verification_icon_variant = 'Default';
+    const {
+        poi_resubmit_for_bvi_labuan,
+        poi_resubmit_for_vanuatu_maltainvest,
+        poi_pending_for_bvi_labuan,
+        poi_pending_for_vanuatu_maltainvest,
+        poi_verified_for_bvi_labuan,
+        poi_verified_for_vanuatu_maltainvest,
+        poi_poa_verified_for_bvi_labuan,
+        poi_poa_verified_for_vanuatu_maltainvest,
+    } = getAuthenticationStatusInfo(account_status);
+
     return title_indicators.type === 'displayText' ? (
         <Text
             as='span'
@@ -27,7 +44,7 @@ const JurisdictionTitleIndicator = ({ title_indicators, verification_docs }: TJu
                         size={24}
                         icon={jurisdictionVerificationContents().required_verification_docs[
                             verification_doc
-                        ]?.icon.concat('Default')}
+                        ]?.icon.concat(verification_icon_variant)}
                     />
                 </div>
             ))}

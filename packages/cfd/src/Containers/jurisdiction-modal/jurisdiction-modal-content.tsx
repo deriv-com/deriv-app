@@ -4,6 +4,7 @@ import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCard from './jurisdiction-card';
 
 const JurisdictionModalContent = ({
+    account_status,
     account_type,
     is_virtual,
     jurisdiction_selected_shortcode,
@@ -36,23 +37,22 @@ const JurisdictionModalContent = ({
         Jurisdiction.MALTA_INVEST,
     ];
     return (
-        <React.Fragment>
-            <div data-testid='dt-jurisdiction-modal-content' className={`${card_classname}__wrapper`}>
-                {jurisdiction_cards_array.map(
-                    card =>
-                        cardsToBeShown(card) && (
-                            <JurisdictionCard
-                                key={card}
-                                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                                account_type={account_type}
-                                type_of_card={card}
-                                disabled={disableCard(card)}
-                            />
-                        )
-                )}
-            </div>
-        </React.Fragment>
+        <div data-testid='dt-jurisdiction-modal-content' className={`${card_classname}__wrapper`}>
+            {jurisdiction_cards_array.map(
+                card =>
+                    cardsToBeShown(card) && (
+                        <JurisdictionCard
+                            account_status={account_status}
+                            account_type={account_type}
+                            disabled={disableCard(card)}
+                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            key={card}
+                            setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                            type_of_card={card}
+                        />
+                    )
+            )}
+        </div>
     );
 };
 

@@ -172,11 +172,12 @@ export type TCFDPasswordManagerModal = {
 };
 
 export type TJurisdictionCardProps = {
+    account_status: GetAccountStatus;
+    account_type: string;
+    disabled: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
-    account_type: string;
     type_of_card: TJurisdictionCardType;
-    disabled: boolean;
 };
 
 export type TJurisdictionCardBackProps = {
@@ -187,6 +188,7 @@ export type TJurisdictionCardBackProps = {
 };
 
 export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
+    account_status: GetAccountStatus;
     card_data: TJurisdictionCardSection[];
     card_values: TJurisdictionCardItems;
     disabled: boolean;
@@ -198,11 +200,13 @@ export type TJurisdictionClickableDescriptionProps = {
 };
 
 export type TJurisdictionTitleIndicatorProps = {
+    account_status: GetAccountStatus;
     title_indicators: TJurisdictionCardSectionTitleIndicators;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
 export type TJurisdictionCardSectionProps = {
+    account_status: GetAccountStatus;
     card_section_item: TJurisdictionCardSection;
     toggleCardFlip: (event: SyntheticEvent) => void;
     verification_docs: TJurisdictionCardItemVerification | undefined;
@@ -272,6 +276,7 @@ export type TJurisdictionModalProps = JurisdictionModalCommonProps & {
 };
 
 export type TJurisdictionModalContentProps = {
+    account_status: GetAccountStatus;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;

@@ -155,6 +155,7 @@ const JurisdictionModalContentWrapper = ({
     return (
         <React.Fragment>
             <JurisdictionModalContent
+                account_status={account_status}
                 account_type={account_type.type}
                 financial_available_accounts={financial_available_accounts}
                 is_virtual={is_virtual}

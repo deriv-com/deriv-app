@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag } from '@deriv/shared';
+import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag, isMobile } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
 import {
@@ -128,7 +128,7 @@ const Row = ({
                                 </Text>
                                 {(values[rowKey] as TCompareAccountRowItem)?.tooltip_msg && (
                                     <Popover
-                                        alignment='left'
+                                        alignment={isMobile() ? 'bottom' : 'left'}
                                         className='cfd-compare-accounts-tooltip'
                                         classNameBubble='cfd-compare-accounts-tooltip--msg'
                                         icon='info'

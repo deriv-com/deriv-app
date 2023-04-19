@@ -3,11 +3,6 @@ import { fireEvent, screen, render } from '@testing-library/react';
 import IconWithMessage from '../icon-with-message';
 import { mockStore, StoreProvider } from '@deriv/stores';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-}));
-
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {

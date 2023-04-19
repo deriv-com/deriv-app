@@ -3,12 +3,6 @@ import { act, render, screen, waitFor, fireEvent, userEvent } from '@testing-lib
 import ClosingAccountReason from '../closing-account-reason';
 import { mockStore, StoreProvider } from '@deriv/stores';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 describe('<ClosingAccountReason />', () => {
     let store = mockStore();
     beforeAll(() => {

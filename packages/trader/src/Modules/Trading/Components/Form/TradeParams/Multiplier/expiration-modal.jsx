@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Div100vhContainer, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import Expiration from './expiration.jsx';
+import { observer, useStore } from '@deriv/stores';
 
-const MultipliersExpirationModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
+const MultipliersExpirationModal = observer(({ is_open, toggleModal }) => {
+    const { ui } = useStore();
+    const { enableApp, disableApp } = ui;
     return (
         <React.Fragment>
             <Modal
@@ -41,9 +44,11 @@ const MultipliersExpirationModal = ({ is_open, enableApp, disableApp, toggleModa
             </Modal>
         </React.Fragment>
     );
+});
+
+MultipliersExpirationModal.propTypes = {
+    is_open: PropTypes.bool,
+    toggleModal: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-}))(MultipliersExpirationModal);
+export default MultipliersExpirationModal;

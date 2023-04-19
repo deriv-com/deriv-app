@@ -1,19 +1,15 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { setTime, toMoment } from '@deriv/shared';
 import TimePicker from 'App/Components/Form/TimePicker';
 import { getSelectedTime, getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const TradingTimePicker = ({
-    expiry_date,
-    expiry_time,
-    market_close_times,
-    market_open_times,
-    onChange,
-    server_time,
-    is_market_closed,
-}) => {
+const TradingTimePicker = observer(() => {
+    const { common } = useStore();
+    const { server_time } = common;
+    const { expiry_date, expiry_time, market_open_times, market_close_times, onChange, is_market_closed } =
+        useTraderStore();
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
     const market_close_datetimes = market_close_times.map(close_time =>
@@ -48,26 +44,6 @@ const TradingTimePicker = ({
             selected_time={selected_time}
         />
     );
-};
+});
 
-TradingTimePicker.propTypes = {
-    expiry_date: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    expiry_time: PropTypes.string,
-    is_market_closed: PropTypes.bool,
-    market_close_times: PropTypes.array,
-    market_open_times: PropTypes.array,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    server_time: PropTypes.object,
-};
-
-export default connect(({ modules, common }) => ({
-    duration_units_list: modules.trade.duration_units_list,
-    expiry_time: modules.trade.expiry_time,
-    expiry_date: modules.trade.expiry_date,
-    market_close_times: modules.trade.market_close_times,
-    market_open_times: modules.trade.market_open_times,
-    onChange: modules.trade.onChange,
-    server_time: common.server_time,
-    is_market_closed: modules.trade.is_market_closed,
-}))(TradingTimePicker);
+export default TradingTimePicker;

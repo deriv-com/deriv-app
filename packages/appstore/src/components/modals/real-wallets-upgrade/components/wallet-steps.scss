@@ -38,11 +38,19 @@
         text-align: center;
         justify-content: center;
 
+        @include mobile {
+            justify-content: left;
+        }
+
         &-points {
             display: grid;
             grid-template-columns: 1.6rem 1fr;
             align-items: center;
             gap: 0.8rem;
+
+            @include mobile {
+                align-items: baseline;
+            }
         }
 
         @include mobile {

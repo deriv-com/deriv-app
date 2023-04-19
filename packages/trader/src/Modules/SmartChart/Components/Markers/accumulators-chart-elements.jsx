@@ -15,11 +15,13 @@ const AccumulatorsChartElements = ({
         ({ contract_info }) =>
             contract_info && symbol === contract_info.underlying && filterByContractType(contract_info, 'accumulator')
     );
-    const last_contract_info = accumulators_positions.slice().pop()?.contract_info;
+    const last_contract_info = accumulators_positions[0]?.contract_info;
     const should_highlight_tick_without_contract = !!current_symbol_spot_time && should_highlight_current_spot;
     const should_highlight_contract_tick =
         last_contract_info?.status === 'lost' && current_symbol_spot_time === last_contract_info?.exit_tick_time;
-    const should_highlight_tick = should_highlight_tick_without_contract || should_highlight_contract_tick;
+    const should_highlight_tick =
+        last_contract_info?.status !== 'open' &&
+        (should_highlight_tick_without_contract || should_highlight_contract_tick);
     const current_spot = should_highlight_contract_tick ? last_contract_info?.exit_tick : current_symbol_spot;
     const current_spot_time = should_highlight_contract_tick
         ? last_contract_info?.exit_tick_time

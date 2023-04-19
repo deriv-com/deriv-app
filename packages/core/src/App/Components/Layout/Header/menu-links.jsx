@@ -46,12 +46,14 @@ const CashierTab = observer(() => {
     const history = useHistory();
 
     const toggle_modal_routes =
-        window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
+        window.location.pathname === routes.root ||
+        window.location.pathname === routes.traders_hub ||
+        window.location.pathname === routes.bot;
 
     const toggleModal = () => {
         if (toggle_modal_routes && !has_any_real_account) {
             toggleReadyToDepositModal();
-        } else if (window.location.pathname === routes.traders_hub || routes.bot) {
+        } else if (window.location.pathname === routes.traders_hub) {
             toggleNeedRealAccountForCashierModal();
         }
     };

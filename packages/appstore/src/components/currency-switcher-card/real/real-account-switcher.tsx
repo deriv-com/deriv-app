@@ -7,10 +7,12 @@ import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-load
 import { useStore } from '@deriv/stores';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
+import { IconCurrency } from 'Assets/svgs/currency';
 
 type AccountNeedsVerificationProps = {
     multipliers_account_status: string;
 };
+
 const AccountNeedsVerification = observer(({ multipliers_account_status }: AccountNeedsVerificationProps) => {
     const { client, traders_hub } = useStore();
     const { account_list, loginid } = client;
@@ -34,7 +36,7 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: Accou
                     {title}
                 </Text>
             }
-            icon={icon}
+            icon={IconCurrency(icon) ? icon : 'USD'}
             onClick={() => {
                 return openModal('currency_selection');
             }}

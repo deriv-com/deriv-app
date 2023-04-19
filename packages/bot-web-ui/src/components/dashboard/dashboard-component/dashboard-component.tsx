@@ -39,7 +39,7 @@ const DashboardTitle = ({ is_mobile, has_dashboard_strategies }: TDashboardMobil
     </div>
 );
 
-const MobileIconGuide = ({ has_dashboard_strategies, handleTabChange }: TMobileIconGuide) => (
+const MobileIconGuide = ({ handleTabChange }: TMobileIconGuide) => (
     <MobileWrapper>
         <div>
             <Local handleTabChange={handleTabChange} />

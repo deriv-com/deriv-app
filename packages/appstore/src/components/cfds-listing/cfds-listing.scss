@@ -240,7 +240,7 @@
         &-items-container {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.2rem;
         }
         &-items-sub-container {
             display: flex;
@@ -252,6 +252,9 @@
             &:hover {
                 transform: translateX(-4px);
             }
+        }
+        &-text-icon-aligned {
+            margin-top: -3px;
         }
     }
     &-clickable-description-link {

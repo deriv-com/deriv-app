@@ -43,7 +43,7 @@ const JurisdictionCardBack = ({
                                 }
                             />
                         </div>
-                        <Text as='span' size='xxs'>
+                        <Text as='span' size='xxs' className='cfd-card-back-section-text-icon-aligned'>
                             {jurisdictionVerificationContents().required_verification_docs[verification_item]?.text}
                         </Text>
                     </div>
@@ -56,7 +56,7 @@ const JurisdictionCardBack = ({
                         <div>
                             <Icon icon={status_item.icon} />
                         </div>
-                        <Text as='span' size='xxs'>
+                        <Text as='span' size='xxs' className='cfd-card-back-section-text-icon-aligned'>
                             {status_item.text}
                         </Text>
                     </div>

@@ -11,6 +11,20 @@ export type TRootStore = TCoreStores & {
 };
 
 export default class RootStore {
+    client: TCoreStores['client'];
+    common: TCoreStores['common'];
+    modules: ModulesStore;
+    ui: TCoreStores['ui'];
+    gtm: unknown;
+    rudderstack: unknown;
+    pushwoosh: unknown;
+    notifications: TCoreStores['notifications'];
+    contract_replay: unknown;
+    contract_trade: TCoreStores['contract_trade'];
+    portfolio: TCoreStores['portfolio'];
+    chart_barrier_store: unknown;
+    active_symbols: unknown;
+
     constructor(core_store: TCoreStores) {
         this.client = core_store.client;
         this.common = core_store.common;

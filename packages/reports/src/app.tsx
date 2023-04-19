@@ -4,7 +4,7 @@ import { MobxContentProvider } from 'Stores/connect';
 import { StoreProvider } from '@deriv/stores';
 import 'Sass/app.scss';
 import initStore from './init-store';
-import { TCoreStores } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {
@@ -14,7 +14,7 @@ type TAppProps = {
 };
 
 const App = ({ passthrough }: TAppProps) => {
-    const [root_store] = initStore(passthrough.root_store, passthrough.WS);
+    const root_store = initStore(passthrough.root_store, passthrough.WS);
 
     return (
         <MobxContentProvider store={root_store}>

@@ -262,6 +262,11 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            no_CR_account: false,
+            no_MF_account: false,
+            multipliers_account_status: '',
+            selected_account_type: '',
+            openFailedVerificationModal: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

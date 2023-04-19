@@ -279,6 +279,11 @@ type TTradersHubStore = {
     is_eu_user: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    openFailedVerificationModal: (selected_account_type: string) => void;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
+    multipliers_account_status: string;
+    selected_account_type: string;
 };
 
 /**

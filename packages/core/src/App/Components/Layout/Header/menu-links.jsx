@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Text, Icon, Counter } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
-import { routes } from '@deriv/shared';
+import { routes, ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import './menu-links.scss';
@@ -37,11 +37,15 @@ const ReportTab = () => (
 );
 
 const CashierTab = observer(() => {
-    const { client, ui } = useStore();
+    const { client, ui, traders_hub } = useStore();
     const { has_any_real_account, is_virtual } = client;
     const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+
+    const { content_flag } = traders_hub;
+
+    const low_risk_diel = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     const history = useHistory();
 
@@ -51,7 +55,12 @@ const CashierTab = observer(() => {
     const toggleModal = () => {
         if (toggle_modal_routes && !has_any_real_account) {
             toggleReadyToDepositModal();
-        } else if (window.location.pathname === routes.traders_hub) {
+        } else if (
+            window.location.pathname === routes.traders_hub &&
+            has_any_real_account &&
+            !is_virtual &&
+            low_risk_diel
+        ) {
             toggleNeedRealAccountForCashierModal();
         }
     };

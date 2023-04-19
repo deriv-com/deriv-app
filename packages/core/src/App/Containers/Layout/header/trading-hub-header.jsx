@@ -148,7 +148,7 @@ const TradingHubHeader = observer(() => {
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
-                <MenuLinks />
+                <MenuLinks is_traders_hub_routes />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>

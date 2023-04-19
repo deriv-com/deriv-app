@@ -61,6 +61,7 @@ const AccountSwitcher = observer(({ is_visible }) => {
         should_show_real_accounts_list,
         setShouldShowCooldownModal,
         is_mobile,
+        is_landing_company_loaded
     } = ui;
     const { show_eu_related_content, content_flag, setTogglePlatformType } = traders_hub;
     const { routeBackInApp } = common;
@@ -131,13 +132,16 @@ const AccountSwitcher = observer(({ is_visible }) => {
     const isDemoAccountTab = active_tab_index === 1;
 
     const getRealMT5 = () => {
-        const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
-        if (low_risk_non_eu) {
-            return getSortedCFDList(mt5_login_list).filter(
-                account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
-            );
+        if (is_landing_company_loaded) {
+            const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+            if (low_risk_non_eu) {
+                return getSortedCFDList(mt5_login_list).filter(
+                    account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
+                );
+            }
+            return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
         }
-        return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
+        return [];
     };
 
     const canOpenMulti = () => {

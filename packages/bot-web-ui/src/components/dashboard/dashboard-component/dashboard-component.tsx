@@ -111,7 +111,7 @@ const DashboardComponent = ({
                                         has_dashboard_strategies={has_dashboard_strategies}
                                     />
                                 )}
-                               <MobileIconGuide
+                                <MobileIconGuide
                                     handleTabChange={handleTabChange}
                                     has_dashboard_strategies={has_dashboard_strategies}
                                 />

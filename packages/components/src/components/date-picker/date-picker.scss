@@ -139,7 +139,7 @@
             margin-right: 1rem;
         }
         &__placeholder {
-            color: var(--text-less-prominent);
+            color: var(--text-general);
             transform: none;
             transition: transform 0.25s linear;
             position: absolute;
@@ -156,9 +156,6 @@
             }
             &--is-focused {
                 color: var(--brand-secondary);
-            }
-            .dc-input--disabled & {
-                color: var(--text-disabled);
             }
         }
         &__error {

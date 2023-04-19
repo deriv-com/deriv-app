@@ -2,7 +2,7 @@ import React, { createContext, PropsWithChildren, useContext, useMemo } from 're
 import { useStore } from '@deriv/stores';
 import { DBot } from '@deriv/bot-skeleton';
 import RootStore from './root-store';
-import { TWebSocket } from 'Types';
+import type { TWebSocket } from 'Types';
 
 const DBotStoreContext = createContext<RootStore | null>(null);
 
@@ -13,7 +13,7 @@ const DBotStoreProvider = ({ children, ws }: PropsWithChildren<{ ws: TWebSocket 
     return <DBotStoreContext.Provider value={memoizedValue}>{children}</DBotStoreContext.Provider>;
 };
 
-const useDBotStore = (): Omit<RootStore, 'core' | 'ws' | 'ui' | 'common'> => {
+const useDBotStore = (): Omit<RootStore, 'core' | 'ws' | 'ui' | 'common' | 'notifications' | 'server_time'> => {
     const store = useContext(DBotStoreContext);
 
     if (!store) {

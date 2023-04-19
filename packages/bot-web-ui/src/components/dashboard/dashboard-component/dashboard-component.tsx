@@ -7,7 +7,7 @@ import Cards from './cards';
 import InfoPanel from './info-panel';
 import Local from './load-bot-preview/local';
 import UserGuide from './user-guide';
-import { useDBotStore } from 'Stores/dbotStore';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { observer } from '@deriv/stores';
 
 type TDashboardMobileCommonProps = {

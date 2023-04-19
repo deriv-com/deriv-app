@@ -1,4 +1,3 @@
-import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
 import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
@@ -12,25 +11,13 @@ import {
 } from 'Components';
 import BlocklyLoading from '../components/blockly-loading';
 import { MobxContentProvider } from 'Stores/connect';
-import { StoreProvider, useStore } from '@deriv/stores';
-import { DBotStoreProvider, useDBotStore } from 'Stores/dbotStore';
+import { observer, useStore } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
 
-const AppWrapper = ({ passthrough }) => {
-    const { root_store, WS } = passthrough;
-
-    return (
-        <StoreProvider store={root_store}>
-            <DBotStoreProvider ws={WS}>
-                <App />
-            </DBotStoreProvider>
-        </StoreProvider>
-    );
-};
-
-const App = () => {
+const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
     const {
         common,
@@ -112,6 +99,6 @@ const App = () => {
             </div>
         </MobxContentProvider>
     );
-};
+});
 
-export default AppWrapper;
+export default AppContent;

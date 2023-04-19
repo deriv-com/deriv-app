@@ -80,9 +80,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
     min-height: calc(100vh - 84px);
     overflow: hidden;
 
-    &--turbos {
-        justify-content: space-between;
-    }
     &__replay {
         width: 100%;
         display: flex;
@@ -407,7 +404,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
     position: relative;
     z-index: 2;
 
-    .trade-container--accumulators & {
+    .trade-container--accumulators &,
+    .trade-container--turbos & {
         height: 24.8rem;
     }
     &__content-loader {

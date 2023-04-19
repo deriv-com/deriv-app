@@ -1,27 +1,26 @@
 import React, { createContext, PropsWithChildren, useContext, useMemo } from 'react';
+import { useStore } from '@deriv/stores';
+import { DBot } from '@deriv/bot-skeleton';
 import RootStore from './root-store';
+import { TWebSocket } from 'Types';
 
-const DbotStoreContext = createContext<RootStore | null>(null);
+const DBotStoreContext = createContext<RootStore | null>(null);
 
-const DbotStoreProvider = ({ children, store }: PropsWithChildren<{ store: RootStore }>) => {
-    const memoizedValue = useMemo(
-        () => ({
-            ...store,
-        }),
-        [store]
-    );
+const DBotStoreProvider = ({ children, ws }: PropsWithChildren<{ ws: TWebSocket }>) => {
+    const stores = useStore();
+    const memoizedValue = useMemo(() => new RootStore(stores, ws, DBot), []);
 
-    return <DbotStoreContext.Provider value={memoizedValue}>{children}</DbotStoreContext.Provider>;
+    return <DBotStoreContext.Provider value={memoizedValue}>{children}</DBotStoreContext.Provider>;
 };
 
-const useDbotStore = () => {
-    const store = useContext(DbotStoreContext);
+const useDBotStore = (): Omit<RootStore, 'core' | 'ws' | 'ui' | 'common'> => {
+    const store = useContext(DBotStoreContext);
 
     if (!store) {
-        throw new Error('useDbotStore must be used within DbotStoreContext');
+        throw new Error('useDBotStore must be used within DBotStoreProvider');
     }
 
     return store;
 };
 
-export { DbotStoreProvider, useDbotStore };
+export { DBotStoreProvider, useDBotStore };

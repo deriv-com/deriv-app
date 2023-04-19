@@ -7,7 +7,7 @@ import Cards from './cards';
 import InfoPanel from './info-panel';
 import Local from './load-bot-preview/local';
 import UserGuide from './user-guide';
-import { useDbotStore } from 'Stores/dbotStore';
+import { useDBotStore } from 'Stores/dbotStore';
 import { observer } from '@deriv/stores';
 
 type TDashboardMobileCommonProps = {
@@ -51,11 +51,10 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
     </div>
 );
 
-const DashboardComponent = () => {
-    const {
-        load_modal: { dashboard_strategies },
-        dashboard: { setActiveTab, has_started_onboarding_tour },
-    } = useDbotStore();
+const DashboardComponent = observer(() => {
+    const { load_modal, dashboard } = useDBotStore();
+    const { dashboard_strategies } = load_modal;
+    const { setActiveTab, has_started_onboarding_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
 
@@ -121,6 +120,6 @@ const DashboardComponent = () => {
             <InfoPanel />
         </React.Fragment>
     );
-};
+});
 
-export default observer(DashboardComponent);
+export default DashboardComponent;

@@ -101,17 +101,16 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
         };
     });
 
-    const renderPaymentAgentListedWithdrawForm = (is_rerender = false) => {
-        const ui = (
+    const mockPaymentAgentListedWithdrawForm = () => {
+        return (
             <CashierProviders store={mockRootStore}>
                 <PaymentAgentListedWithdrawForm payment_agent={payment_agent} />
             </CashierProviders>
         );
-        return is_rerender ? ui : render(ui);
     };
 
     it('should render the component', () => {
-        renderPaymentAgentListedWithdrawForm();
+        render(mockPaymentAgentListedWithdrawForm());
 
         expect(screen.getByText('Withdrawal amount')).toBeInTheDocument();
         expect(screen.getByText('USD')).toBeInTheDocument();
@@ -124,20 +123,20 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
 
     it('should show loader when is_loading equal to true or there is no payment agents', () => {
         mockRootStore.modules.cashier.general_store.is_loading = true;
-        const { rerender } = renderPaymentAgentListedWithdrawForm();
+        const { rerender } = render(mockPaymentAgentListedWithdrawForm());
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
         mockRootStore.modules.cashier.payment_agent.agents = [];
 
-        rerender(renderPaymentAgentListedWithdrawForm(true));
+        rerender(mockPaymentAgentListedWithdrawForm());
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should show error message, if amount is not valid', async () => {
         (validNumber as jest.Mock).mockReturnValue({ is_ok: false, message: 'error_message' });
-        renderPaymentAgentListedWithdrawForm();
+        render(mockPaymentAgentListedWithdrawForm());
 
         const el_input_amount = screen.getByLabelText('Enter amount');
         const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
@@ -151,7 +150,7 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     });
 
     it('should show Insufficient balance error', async () => {
-        renderPaymentAgentListedWithdrawForm();
+        render(mockPaymentAgentListedWithdrawForm());
 
         const el_input_amount = screen.getByLabelText('Enter amount');
         const el_continue_btn = screen.getByRole('button', { name: 'Continue' });
@@ -164,7 +163,7 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
     });
 
     it('should trigger requestTryPaymentAgentWithdraw, when all data are valid', async () => {
-        renderPaymentAgentListedWithdrawForm();
+        render(mockPaymentAgentListedWithdrawForm());
 
         const el_input_amount = screen.getByLabelText('Enter amount');
         const el_continue_btn = screen.getByRole('button', { name: 'Continue' });

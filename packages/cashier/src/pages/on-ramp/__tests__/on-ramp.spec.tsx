@@ -14,27 +14,32 @@ jest.mock('@deriv/hooks', () => ({
 
 jest.mock('@deriv/components', () => {
     return {
-        ...(jest.requireActual('@deriv/components') as any),
+        ...jest.requireActual('@deriv/components'),
         Loading: () => <div>Loading</div>,
         ReadMore: () => <div>ReadMore</div>,
     };
 });
+
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...(jest.requireActual('@deriv/shared/src/utils/screen/responsive') as any),
+    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
+
 jest.mock('Components/cashier-locked', () => {
     const cashierLocked = () => <div>CashierLocked</div>;
     return cashierLocked;
 });
+
 jest.mock('Pages/on-ramp/on-ramp-provider-card', () => {
     const onRampProviderCard = () => <div>OnRampProviderCard</div>;
     return onRampProviderCard;
 });
+
 jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
     const onRampProviderPopup = () => <div>OnRampProviderPopup</div>;
     return onRampProviderPopup;
 });
+
 describe('<OnRamp />', () => {
     let mockRootStore: TStores, props: TOnRampProps;
 
@@ -99,58 +104,54 @@ describe('<OnRamp />', () => {
         };
         (useDepositLocked as jest.Mock).mockReturnValue(false);
     });
-    const renderOnRamp = (is_rerender = false) => {
-        const ui = (
+
+    const mockOnRamp = () => {
+        return (
             <CashierProviders store={mockRootStore}>
                 <OnRamp {...props} />
             </CashierProviders>
         );
-        return is_rerender ? ui : render(ui);
     };
+
     it('should render <Loading /> component', () => {
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_loading = true;
-        }
-        const { rerender } = renderOnRamp() as ReturnType<typeof render>;
+        mockRootStore.modules.cashier.general_store.is_loading = true;
+        const { rerender } = render(mockOnRamp());
+
         expect(screen.getByText('Loading')).toBeInTheDocument();
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_loading = false;
-        }
-        if (mockRootStore.client) {
-            mockRootStore.client.is_switching = true;
-        }
-        rerender(renderOnRamp(true) as JSX.Element);
+        mockRootStore.modules.cashier.general_store.is_loading = false;
+        mockRootStore.client.is_switching = true;
+        rerender(mockOnRamp());
+
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
+
     it('should render <CashierLocked /> component', () => {
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
-        }
-        const { rerender } = renderOnRamp() as ReturnType<typeof render>;
+        mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
+        const { rerender } = render(mockOnRamp());
+
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_cashier_locked = false;
-        }
-        if (mockRootStore.modules?.cashier?.deposit) {
-            (useDepositLocked as jest.Mock).mockReturnValue(true);
-        }
-        rerender(renderOnRamp(true) as JSX.Element);
+        mockRootStore.modules.cashier.general_store.is_cashier_locked = false;
+        (useDepositLocked as jest.Mock).mockReturnValue(true);
+        rerender(mockOnRamp());
+
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
+
     it('should render <OnRampProviderCard /> component and "Select payment channel" message', () => {
-        renderOnRamp();
+        render(mockOnRamp());
+
         expect(screen.getByText('Select payment channel')).toBeInTheDocument();
         expect(screen.getByText('OnRampProviderCard')).toBeInTheDocument();
     });
+
     it('should render <Modal /> component with proper title and <OnRampProviderPopup /> component', () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
-        if (mockRootStore.modules?.cashier?.onramp) {
-            mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
-        }
-        renderOnRamp();
+        mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
+        render(mockOnRamp());
+
         expect(screen.getByText('Title of the onramp popup modal')).toBeInTheDocument();
         expect(screen.getByText('OnRampProviderPopup')).toBeInTheDocument();
         document.body.removeChild(modal_root_el);
@@ -160,33 +161,38 @@ describe('<OnRamp />', () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
-        if (mockRootStore.modules?.cashier?.onramp) {
-            mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
-        }
-        renderOnRamp();
+        mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
+        render(mockOnRamp());
         const close_cross_btn = screen.getByRole('button', { name: '' });
         fireEvent.click(close_cross_btn);
-        expect(mockRootStore.modules?.cashier?.onramp?.setIsOnRampModalOpen).toHaveBeenCalledWith(false);
+
+        expect(mockRootStore.modules.cashier.onramp.setIsOnRampModalOpen).toHaveBeenCalledWith(false);
         document.body.removeChild(modal_root_el);
     });
+
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
-        renderOnRamp();
+        render(mockOnRamp());
         expect(props.setSideNotes).toHaveBeenCalledTimes(1);
     });
+
     it('should show "What is Fiat onramp?" message and render <ReadMore /> component in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        renderOnRamp();
+        render(mockOnRamp());
+
         expect(screen.getByText('What is Fiat onramp?')).toBeInTheDocument();
         expect(screen.getByText('ReadMore')).toBeInTheDocument();
     });
+
     it('should have proper menu options in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        renderOnRamp();
+        render(mockOnRamp());
         const select = screen.getByTestId('dt_on_ramp_select_native');
         const labels = Array.from(select as any).map((option: any) => option.label);
+
         expect(labels).toContain('Deposit');
         expect(labels).toContain('Transfer');
     });
+
     it('should trigger "routeTo" callback when the user chooses a different from "Fiat onramp" option in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         props.menu_options = [
@@ -203,9 +209,10 @@ describe('<OnRamp />', () => {
                 path: routes.cashier_onramp,
             },
         ];
-        renderOnRamp();
+        render(mockOnRamp());
         const select = screen.getByTestId('dt_on_ramp_select_native');
         fireEvent.change(select, { target: { value: routes.cashier_deposit } });
-        expect(mockRootStore.common?.routeTo).toHaveBeenCalledTimes(1);
+
+        expect(mockRootStore.common.routeTo).toHaveBeenCalledTimes(1);
     });
 });

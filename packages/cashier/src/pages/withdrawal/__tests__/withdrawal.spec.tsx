@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
-import { mockStore } from '@deriv/stores';
+import { mockStore, TStores } from '@deriv/stores';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 
@@ -28,7 +28,7 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<Withdrawal />', () => {
-    let history, mockRootStore, setSideNotes;
+    let history: BrowserHistory, mockRootStore: TStores, setSideNotes: jest.Mock;
     beforeEach(() => {
         history = createBrowserHistory();
         mockRootStore = mockStore({
@@ -70,62 +70,61 @@ describe('<Withdrawal />', () => {
         setSideNotes = jest.fn();
     });
 
-    const renderWithdrawal = (is_rerender = false) => {
-        const ui = (
+    const mockWithdrawal = () => {
+        return (
             <CashierProviders store={mockRootStore}>
                 <Router history={history}>
                     <Withdrawal setSideNotes={setSideNotes} />
                 </Router>
             </CashierProviders>
         );
-        return is_rerender ? ui : render(ui);
     };
 
     it('should render <CashierLocked /> component', () => {
         mockRootStore.client.current_currency_type = 'crypto';
         mockRootStore.modules.cashier.general_store.is_system_maintenance = true;
         mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
     it('should render <Loading /> component', () => {
         mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = undefined;
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should render <Virtual /> component', () => {
         mockRootStore.client.is_virtual = true;
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('Virtual')).toBeInTheDocument();
     });
 
     it('should render <CashierLocked /> component when "is_cashier_locked = true"', () => {
         mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalLocked /> component', () => {
         mockRootStore.modules.cashier.withdraw.is_withdrawal_locked = true;
-        renderWithdrawal();
+        const { rerender } = render(mockWithdrawal());
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
         mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
-        renderWithdrawal(true);
+        rerender(mockWithdrawal());
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });
 
     it('should render <NoBalance /> component', () => {
         mockRootStore.client.balance = '0';
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('NoBalance')).toBeInTheDocument();
     });
@@ -136,12 +135,12 @@ describe('<Withdrawal />', () => {
             message: 'Error message',
             setErrorMessage: jest.fn(),
         };
-        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
+        const { rerender } = render(mockWithdrawal());
 
         expect(screen.getByText('Error')).toBeInTheDocument();
 
         mockRootStore.modules.cashier.withdraw.verification.error = { message: 'Error message' };
-        rerender(renderWithdrawal(true) as JSX.Element);
+        rerender(mockWithdrawal());
 
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
@@ -149,11 +148,11 @@ describe('<Withdrawal />', () => {
     it('should render <Withdraw /> component', () => {
         mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
 
-        const { rerender } = renderWithdrawal() as ReturnType<typeof render>;
+        const { rerender } = render(mockWithdrawal());
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
 
         mockRootStore.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
-        rerender(renderWithdrawal(true) as JSX.Element);
+        rerender(mockWithdrawal());
 
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
@@ -161,35 +160,35 @@ describe('<Withdrawal />', () => {
     it('should render <CryptoWithdrawForm /> component', () => {
         mockRootStore.client.verification_code.payment_withdraw = 'verification_code';
         mockRootStore.modules.cashier.general_store.is_crypto = true;
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
         mockRootStore.modules.cashier.withdraw.is_withdraw_confirmed = true;
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
         mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
 
     it('should render <WithdrawalVerificationEmail /> component', () => {
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
-        isDesktop.mockReturnValueOnce(false);
+        (isDesktop as jest.Mock).mockReturnValueOnce(false);
 
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(setSideNotes).not.toHaveBeenCalled();
     });
@@ -197,7 +196,7 @@ describe('<Withdrawal />', () => {
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
         mockRootStore.client.currency = 'BTC';
         mockRootStore.modules.cashier.transaction_history.crypto_transactions = [{}];
-        renderWithdrawal();
+        render(mockWithdrawal());
 
         expect(setSideNotes).toHaveBeenCalledTimes(1);
     });

@@ -1,12 +1,16 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { getUrlBase } from '@deriv/shared';
 import { CallBackProps } from 'react-joyride';
 import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
 import { getImageLocation } from '../../public-path';
 
-type TJoyrideConfig = Record<'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay', boolean>;
+type TJoyrideConfig = Record<
+    'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',
+    boolean
+>;
 
 type TStep = {
     label?: string;
@@ -85,9 +89,10 @@ export const handleJoyrideCallback = (data: CallBackProps) => {
 
 const joyride_props: TJoyrideConfig = {
     showProgress: false,
-    spotlightClicks: true,
+    spotlightClicks: false,
     disableBeacon: true,
-    disableOverlay: false,
+    disableOverlay: true,
+    disableCloseOnEsc: true,
 };
 
 export const DBOT_ONBOARDING = [
@@ -334,6 +339,9 @@ const Step4 = ({ show_label = false }) => (
                 </div>
             </div>
         </div>
+        <div>
+            <img src={getUrlBase('/public/images/common/bot-tour-step-4.gif')} alt='step4' />
+        </div>
     </div>
 );
 
@@ -361,7 +369,7 @@ const Step5 = ({ show_label = false }) => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='Then, drag the <0>Result is win</0> next to the <0>repeat until</0> block.'
+                        i18n_default_text='Then, drag the <0>Result is win</0> into the empty slot next to the <0>repeat until</0> block.'
                         components={[<strong key={0} />]}
                     />
                 </li>
@@ -378,6 +386,9 @@ const Step5 = ({ show_label = false }) => (
                     />
                 </li>
             </ul>
+        </div>
+        <div>
+            <img src={getUrlBase('/public/images/common/bot-tour-step-5.gif')} alt='step5' />
         </div>
     </div>
 );
@@ -401,43 +412,43 @@ const Step6 = ({ show_label = false }) => (
 
 export const BOT_BUILDER_TOUR = [
     {
-        target: '[data-category="trade_parameters"]',
+        target: '.animation__wrapper',
         content: <Step1 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
-        target: '[data-category="trade_parameters"]',
+        target: '.animation__wrapper',
         content: <Step1A />,
         placement: 'bottom',
         ...joyride_props,
     },
     {
-        target: '[data-category="purchase_conditions"]',
+        target: '.animation__wrapper',
         content: <Step2 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
-        target: '[data-category="sell_conditions"]',
+        target: '.animation__wrapper',
         content: <Step3 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
-        target: '.db-toolbox__row:nth-child(6)',
+        target: '.animation__wrapper',
         content: <Step4 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
-        target: '.db-toolbox__row:nth-child(5)',
+        target: '.animation__wrapper',
         content: <Step5 show_label />,
         placement: 'right',
         ...joyride_props,
     },
     {
-        target: '[data-category="trade_results"]',
+        target: '.animation__wrapper',
         content: <Step6 show_label />,
         locale: { last: localize('Next') },
         ...joyride_props,

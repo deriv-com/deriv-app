@@ -6,10 +6,10 @@ import ErrorComponent from '../Components/Errors/error-component.jsx';
 import { observer, useStore } from '@deriv/stores';
 
 const Routes = observer(({ passthrough }) => {
-    const {
-        client: { is_logged_in, is_logging_in },
-        common: { error, has_error },
-    } = useStore();
+    const { client, common } = useStore();
+
+    const { is_logged_in, is_logging_in } = client;
+    const { error, has_error } = common;
 
     if (has_error) {
         return <ErrorComponent {...error} />;

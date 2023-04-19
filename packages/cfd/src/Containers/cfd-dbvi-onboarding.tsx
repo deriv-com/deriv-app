@@ -37,10 +37,10 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 );
 
 const CFDDbviOnboarding = observer(() => {
-    const {
-        client: { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status },
-        ui: { disableApp, enableApp },
-    } = useStore();
+    const { client, ui } = useStore();
+
+    const { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
+    const { disableApp, enableApp } = ui;
 
     const {
         has_created_account_for_selected_jurisdiction,

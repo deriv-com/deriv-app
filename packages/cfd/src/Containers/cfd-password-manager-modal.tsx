@@ -299,10 +299,10 @@ const CFDPasswordManagerModal = observer(
         selected_account_group,
         selected_server,
     }: TCFDPasswordManagerModal) => {
-        const {
-            client: { email },
-            ui: { enableApp, disableApp },
-        } = useStore();
+        const { client, ui } = useStore();
+
+        const { email } = client;
+        const { enableApp, disableApp } = ui;
 
         const { sendVerifyEmail } = useCfdStore();
 

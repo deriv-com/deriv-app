@@ -164,23 +164,23 @@ const DMT5CompareModalContent = observer(
         show_eu_related_content,
         toggleCompareAccounts,
     }: TDMT5CompareModalContentProps) => {
+        const { client, ui, common, traders_hub } = useStore();
+
         const {
-            client: {
-                account_settings,
-                account_status,
-                has_active_real_account: has_real_account,
-                is_virtual,
-                should_restrict_bvi_account_creation,
-                setAccountSettings,
-                should_restrict_vanuatu_account_creation,
-                trading_platform_available_accounts,
-                updateMT5Status,
-                upgradeable_landing_companies,
-            },
-            ui: { openSwitchToRealAccountModal },
-            common: { setAppstorePlatform },
-            traders_hub: { no_CR_account, is_eu_user, no_MF_account, CFDs_restricted_countries },
-        } = useStore();
+            account_settings,
+            account_status,
+            has_active_real_account: has_real_account,
+            is_virtual,
+            should_restrict_bvi_account_creation,
+            setAccountSettings,
+            should_restrict_vanuatu_account_creation,
+            trading_platform_available_accounts,
+            updateMT5Status,
+            upgradeable_landing_companies,
+        } = client;
+        const { openSwitchToRealAccountModal } = ui;
+        const { setAppstorePlatform } = common;
+        const { no_CR_account, is_eu_user, no_MF_account, CFDs_restricted_countries } = traders_hub;
 
         const {
             clearCFDError,

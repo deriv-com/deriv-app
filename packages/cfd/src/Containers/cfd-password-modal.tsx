@@ -564,18 +564,18 @@ const CFDPasswordForm = ({
 };
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
+    const { client, traders_hub } = useStore();
+
     const {
-        client: {
-            email,
-            account_status,
-            landing_companies,
-            is_logged_in,
-            is_dxtrade_allowed,
-            mt5_login_list,
-            updateAccountStatus,
-        },
-        traders_hub: { show_eu_related_content },
-    } = useStore();
+        email,
+        account_status,
+        landing_companies,
+        is_logged_in,
+        is_dxtrade_allowed,
+        mt5_login_list,
+        updateAccountStatus,
+    } = client;
+    const { show_eu_related_content } = traders_hub;
 
     const {
         account_title,

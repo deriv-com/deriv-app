@@ -190,17 +190,17 @@ const CFDAccountCardComponent = observer(
         toggleShouldShowRealAccountsList,
         type,
     }: TCFDAccountCard) => {
+        const { ui, common, traders_hub, client } = useStore();
+
+        const { setIsAcuityModalOpen, setShouldShowCooldownModal } = ui;
+        const { setAppstorePlatform } = common;
+        const { show_eu_related_content } = traders_hub;
         const {
-            ui: { setIsAcuityModalOpen, setShouldShowCooldownModal },
-            common: { setAppstorePlatform },
-            traders_hub: { show_eu_related_content },
-            client: {
-                updateAccountStatus,
-                isEligibleForMoreRealMt5,
-                isEligibleForMoreDemoMt5Svg,
-                real_account_creation_unlock_date,
-            },
-        } = useStore();
+            updateAccountStatus,
+            isEligibleForMoreRealMt5,
+            isEligibleForMoreDemoMt5Svg,
+            real_account_creation_unlock_date,
+        } = client;
 
         const {
             dxtrade_tokens,

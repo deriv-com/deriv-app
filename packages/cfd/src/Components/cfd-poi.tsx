@@ -31,21 +31,21 @@ export type TCFDPOIProps = {
 };
 
 const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
+    const { client, common, notifications } = useStore();
+
     const {
-        client: {
-            account_status,
-            fetchResidenceList,
-            is_switching,
-            is_virtual,
-            is_high_risk,
-            is_withdrawal_lock,
-            should_allow_authentication,
-            account_settings,
-            residence_list,
-        },
-        common: { routeBackInApp, app_routing_history },
-        notifications: { refreshNotifications },
-    } = useStore();
+        account_status,
+        fetchResidenceList,
+        is_switching,
+        is_virtual,
+        is_high_risk,
+        is_withdrawal_lock,
+        should_allow_authentication,
+        account_settings,
+        residence_list,
+    } = client;
+    const { routeBackInApp, app_routing_history } = common;
+    const { refreshNotifications } = notifications;
 
     const poi_props = {
         account_status,

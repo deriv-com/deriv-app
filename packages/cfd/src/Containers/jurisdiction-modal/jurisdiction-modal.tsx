@@ -10,19 +10,19 @@ import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalProps) => {
+    const { client, traders_hub, ui } = useStore();
+
     const {
-        client: {
-            account_status,
-            is_virtual,
-            should_restrict_bvi_account_creation,
-            should_restrict_vanuatu_account_creation,
-            trading_platform_available_accounts,
-            updateMT5Status,
-            fetchAccountSettings,
-        },
-        traders_hub: { show_eu_related_content },
-        ui: { disableApp, enableApp },
-    } = useStore();
+        account_status,
+        is_virtual,
+        should_restrict_bvi_account_creation,
+        should_restrict_vanuatu_account_creation,
+        trading_platform_available_accounts,
+        updateMT5Status,
+        fetchAccountSettings,
+    } = client;
+    const { show_eu_related_content } = traders_hub;
+    const { disableApp, enableApp } = ui;
 
     const {
         account_type,

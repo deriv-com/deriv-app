@@ -99,57 +99,62 @@ type TPasswordManager = {
 };
 
 const CFDDashboard = observer((props: TCFDDashboardProps) => {
+    const { client, ui, traders_hub, notifications } = useStore();
+
     const {
-        client: {
-            landing_companies,
-            isAccountOfTypeDisabled,
-            is_logged_in,
-            is_logging_in,
-            is_eu,
-            is_eu_country,
-            is_virtual,
-            is_mt5_allowed,
-            is_dxtrade_allowed,
-            mt5_disabled_signup_types,
-            dxtrade_disabled_signup_types,
-            has_maltainvest_account,
-            dxtrade_accounts_list_error,
-            residence,
-            is_populating_mt5_account_list: is_loading,
-            has_account_error_in_mt5_real_list: has_mt5_real_account_error,
-            has_account_error_in_mt5_demo_list: has_mt5_demo_account_error,
-            has_account_error_in_dxtrade_real_list: has_dxtrade_real_account_error,
-            has_account_error_in_dxtrade_demo_list: has_dxtrade_demo_account_error,
-            has_active_real_account: has_real_account,
-            standpoint,
-            verification_code: {
-                trading_platform_mt5_password_reset: mt5_verification_code,
-                trading_platform_dxtrade_password_reset: dxtrade_verification_code,
-            },
-            website_status: { mt5_status: mt5_status_server, dx_trade_status: dxtrade_status_server },
-            upgradeable_landing_companies,
-            real_account_creation_unlock_date,
-            account_settings: { dxtrade_user_exception: is_user_exception, residence: country },
-        },
-        ui: {
-            setCFDPasswordResetModal,
-            openAccountNeededModal,
-            is_accounts_switcher_on,
-            openTopUpModal,
-            notification_messages_ui: NotificationMessages,
-            toggleAccountsDialog,
-            toggleShouldShowRealAccountsList,
-            is_dark_mode_on,
-            disableApp,
-            enableApp,
-            is_reset_trading_password_modal_visible,
-            setResetTradingPasswordModalOpen: toggleResetTradingPasswordModal,
-            openDerivRealAccountNeededModal,
-            setShouldShowCooldownModal,
-        },
-        traders_hub: { show_eu_related_content },
-        notifications: { refreshNotifications },
-    } = useStore();
+        landing_companies,
+        isAccountOfTypeDisabled,
+        is_logged_in,
+        is_logging_in,
+        is_eu,
+        is_eu_country,
+        is_virtual,
+        is_mt5_allowed,
+        is_dxtrade_allowed,
+        mt5_disabled_signup_types,
+        dxtrade_disabled_signup_types,
+        has_maltainvest_account,
+        dxtrade_accounts_list_error,
+        residence,
+        is_populating_mt5_account_list: is_loading,
+        has_account_error_in_mt5_real_list: has_mt5_real_account_error,
+        has_account_error_in_mt5_demo_list: has_mt5_demo_account_error,
+        has_account_error_in_dxtrade_real_list: has_dxtrade_real_account_error,
+        has_account_error_in_dxtrade_demo_list: has_dxtrade_demo_account_error,
+        has_active_real_account: has_real_account,
+        standpoint,
+        verification_code: platform_verification_code,
+        website_status,
+        upgradeable_landing_companies,
+        real_account_creation_unlock_date,
+        account_settings,
+    } = client;
+
+    const {
+        trading_platform_mt5_password_reset: mt5_verification_code,
+        trading_platform_dxtrade_password_reset: dxtrade_verification_code,
+    } = platform_verification_code;
+    const { mt5_status: mt5_status_server, dx_trade_status: dxtrade_status_server } = website_status;
+    const { dxtrade_user_exception: is_user_exception, residence: country } = account_settings;
+
+    const {
+        setCFDPasswordResetModal,
+        openAccountNeededModal,
+        is_accounts_switcher_on,
+        openTopUpModal,
+        notification_messages_ui: NotificationMessages,
+        toggleAccountsDialog,
+        toggleShouldShowRealAccountsList,
+        is_dark_mode_on,
+        disableApp,
+        enableApp,
+        is_reset_trading_password_modal_visible,
+        setResetTradingPasswordModalOpen: toggleResetTradingPasswordModal,
+        openDerivRealAccountNeededModal,
+        setShouldShowCooldownModal,
+    } = ui;
+    const { show_eu_related_content } = traders_hub;
+    const { refreshNotifications } = notifications;
 
     const {
         onMount,

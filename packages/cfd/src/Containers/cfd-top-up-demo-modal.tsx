@@ -13,15 +13,15 @@ type TCFDTopUpDemoModalProps = {
 };
 
 const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
+    const { ui } = useStore();
+
     const {
-        ui: {
-            is_top_up_virtual_open,
-            is_top_up_virtual_in_progress,
-            is_top_up_virtual_success,
-            closeTopUpModal,
-            closeSuccessTopUpModal,
-        },
-    } = useStore();
+        is_top_up_virtual_open,
+        is_top_up_virtual_in_progress,
+        is_top_up_virtual_success,
+        closeTopUpModal,
+        closeSuccessTopUpModal,
+    } = ui;
 
     const { current_account, dxtrade_companies, mt5_companies, topUpVirtual } = useCfdStore();
 

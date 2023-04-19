@@ -5,14 +5,14 @@ import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const SwitchToRealAccountModal = observer(() => {
+    const { ui } = useStore();
+
     const {
-        ui: {
-            is_switch_to_deriv_account_modal_visible: is_open,
-            openSwitchToRealAccountModal: onClose,
-            disableApp,
-            enableApp,
-        },
-    } = useStore();
+        is_switch_to_deriv_account_modal_visible: is_open,
+        openSwitchToRealAccountModal: onClose,
+        disableApp,
+        enableApp,
+    } = ui;
 
     return (
         <Dialog

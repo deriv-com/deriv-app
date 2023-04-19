@@ -8,14 +8,14 @@ import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 const VerificationStatusBanner = observer(
     ({ account_type, card_classname, disabled, type_of_card }: TVerificationStatusBannerProps) => {
+        const { client } = useStore();
+
         const {
-            client: {
-                account_status,
-                is_virtual,
-                should_restrict_bvi_account_creation,
-                should_restrict_vanuatu_account_creation,
-            },
-        } = useStore();
+            account_status,
+            is_virtual,
+            should_restrict_bvi_account_creation,
+            should_restrict_vanuatu_account_creation,
+        } = client;
 
         const { real_financial_accounts_existing_data, real_synthetic_accounts_existing_data } = useCfdStore();
 

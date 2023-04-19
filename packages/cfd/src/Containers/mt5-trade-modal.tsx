@@ -23,10 +23,10 @@ type TMT5TradeModalProps = {
 
 const MT5TradeModal = observer(
     ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TMT5TradeModalProps) => {
-        const {
-            traders_hub: { show_eu_related_content },
-            common: { platform },
-        } = useStore();
+        const { traders_hub, common } = useStore();
+
+        const { show_eu_related_content } = traders_hub;
+        const { platform } = common;
 
         const { dxtrade_tokens, mt5_trade_account } = useCfdStore();
 

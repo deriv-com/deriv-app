@@ -87,18 +87,18 @@ const CompareAccountsModal = observer(
         real_account_creation_unlock_date,
         setShouldShowCooldownModal,
     }: TCompareAccountsModalProps) => {
+        const { ui, client, traders_hub } = useStore();
+
+        const { disableApp, enableApp, openDerivRealAccountNeededModal } = ui;
         const {
-            ui: { disableApp, enableApp, openDerivRealAccountNeededModal },
-            client: {
-                is_populating_mt5_account_list: is_loading,
-                is_eu,
-                is_uk,
-                is_logged_in,
-                landing_companies,
-                residence,
-            },
-            traders_hub: { content_flag, show_eu_related_content, CFDs_restricted_countries },
-        } = useStore();
+            is_populating_mt5_account_list: is_loading,
+            is_eu,
+            is_uk,
+            is_logged_in,
+            landing_companies,
+            residence,
+        } = client;
+        const { content_flag, show_eu_related_content, CFDs_restricted_countries } = traders_hub;
 
         const { is_compare_accounts_visible, toggleCompareAccounts } = useCfdStore();
         const location = window.location.pathname;

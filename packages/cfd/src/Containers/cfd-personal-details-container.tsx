@@ -11,9 +11,9 @@ type TFormValues = { [key: string]: string };
 type TSetSubmitting = (isSubmitting: boolean) => void;
 
 const CFDPersonalDetailsContainer = observer(({ onSubmit }: TCFDPersonalDetailsContainerProps) => {
-    const {
-        client: { account_settings, getChangeableFields, landing_company, residence_list, setAccountSettings },
-    } = useStore();
+    const { client } = useStore();
+
+    const { account_settings, getChangeableFields, landing_company, residence_list, setAccountSettings } = client;
 
     const [form_error, setFormError] = React.useState('');
     const [is_loading, setIsLoading] = React.useState(false);

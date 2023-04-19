@@ -20,25 +20,22 @@ type TItemsState<T> = {
 };
 
 const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialStpRealAccountSignupProps) => {
+    const { notifications, client } = useStore();
+
+    const { refreshNotifications, removeNotificationMessage, removeNotificationByKey, addNotificationMessageByKey } =
+        notifications;
+
     const {
-        notifications: {
-            refreshNotifications,
-            removeNotificationMessage,
-            removeNotificationByKey,
-            addNotificationMessageByKey,
-        },
-        client: {
-            authentication_status,
-            account_settings,
-            email,
-            is_fully_authenticated,
-            landing_company,
-            residence_list,
-            states_list,
-            fetchStatesList,
-            account_status,
-        },
-    } = useStore();
+        authentication_status,
+        account_settings,
+        email,
+        is_fully_authenticated,
+        landing_company,
+        residence_list,
+        states_list,
+        fetchStatesList,
+        account_status,
+    } = client;
 
     const { storeProofOfAddress, jurisdiction_selected_shortcode, has_submitted_cfd_personal_details } = useCfdStore();
 

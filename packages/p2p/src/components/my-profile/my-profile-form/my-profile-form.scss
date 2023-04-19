@@ -26,11 +26,11 @@
         }
 
         @include mobile {
-            margin: 0 2vw;
+            margin: 0 1vw;
             width: 96vw;
 
-            &:first-child {
-                margin-top: 2.5rem;
+            .dc-input__label {
+                padding: 0 8px !important;
             }
         }
     }

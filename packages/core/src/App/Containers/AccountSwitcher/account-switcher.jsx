@@ -61,7 +61,7 @@ const AccountSwitcher = observer(({ is_visible }) => {
         should_show_real_accounts_list,
         setShouldShowCooldownModal,
         is_mobile,
-        is_landing_company_loaded
+        is_landing_company_loaded,
     } = ui;
     const { show_eu_related_content, content_flag, setTogglePlatformType } = traders_hub;
     const { routeBackInApp } = common;

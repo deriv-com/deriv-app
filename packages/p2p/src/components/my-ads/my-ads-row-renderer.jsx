@@ -85,8 +85,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         enable_action_point && floating_rate_store.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
 
     const should_show_tooltip_icon =
-        (visibility_status?.length === 1 && visibility_status?.[0] !== 'advert_inactive') ||
-        visibility_status?.length > 1;
+        (visibility_status?.length === 1 && visibility_status[0] !== 'advert_inactive') || visibility_status.length > 1;
 
     const show_warning_icon = enable_action_point || should_show_tooltip_icon || !general_store.is_listed;
 

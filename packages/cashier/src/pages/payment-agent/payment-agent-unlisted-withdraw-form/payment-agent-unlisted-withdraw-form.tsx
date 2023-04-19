@@ -39,7 +39,7 @@ const validateWithdrawal = (values: TValidateWithdrawalValueProps, { balance, cu
         errors.amount = localize('This field is required.');
     } else if (!is_ok && message) {
         errors.amount = message;
-    } else if (balance !== undefined && +balance < +values.amount) {
+    } else if (balance !== undefined && Number(balance) < Number(values.amount)) {
         errors.amount = localize('Insufficient balance.');
     } else if (!values.account_number) {
         errors.account_number = localize('This field is required.');
@@ -75,7 +75,7 @@ const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TP
             amount: Number(values.amount),
             verification_code,
         });
-        if ((payment_agent_withdraw as unknown as { error: unknown })?.error) {
+        if (payment_agent_withdraw?.error) {
             actions.setSubmitting(false);
         }
     };

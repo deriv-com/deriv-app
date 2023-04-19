@@ -43,7 +43,7 @@ const validateWithdrawal = (
         errors.amount = localize('This field is required.');
     } else if (!is_ok && message) {
         errors.amount = message;
-    } else if (+balance < +values.amount) {
+    } else if (Number(balance) < Number(values.amount)) {
         errors.amount = localize('Insufficient balance.');
     }
 

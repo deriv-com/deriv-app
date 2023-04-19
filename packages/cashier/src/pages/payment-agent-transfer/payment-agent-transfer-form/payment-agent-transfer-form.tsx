@@ -32,9 +32,9 @@ const validateTransfer = (
         ...(transfer_limit.min_withdrawal && {
             min: Number(transfer_limit.min_withdrawal),
             max:
-                +balance >= Number(transfer_limit.min_withdrawal) &&
+                Number(balance) >= Number(transfer_limit.min_withdrawal) &&
                 transfer_limit.max_withdrawal &&
-                +balance < Number(transfer_limit.max_withdrawal)
+                Number(balance) < Number(transfer_limit.max_withdrawal)
                     ? Number(balance)
                     : Number(transfer_limit.max_withdrawal),
         }),
@@ -42,7 +42,7 @@ const validateTransfer = (
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (+balance < +values.amount) {
+    } else if (Number(balance) < Number(values.amount)) {
         errors.amount = localize('Insufficient balance.');
     } else if (!is_ok && message) {
         errors.amount = message;

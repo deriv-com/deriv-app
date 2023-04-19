@@ -4,10 +4,9 @@ import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
-import { LandingCompany } from '@deriv/api-types';
+import { LandingCompany, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
-import { TNewDetailsOfEachMT5Loginid } from '../../types';
 
 type TStandPoint = {
     financial_company: string;
@@ -37,11 +36,11 @@ type TCFDDemoAccountDisplayProps = {
     isSwapFreeCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     openAccountTransfer: (
-        data: TNewDetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
         meta: TOpenAccountTransferMeta
     ) => void;
     platform: TCFDPlatform;
-    current_list: Record<string, TNewDetailsOfEachMT5Loginid>;
+    current_list: Record<string, DetailsOfEachMT5Loginid>;
     openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
     residence: string;
     landing_companies?: LandingCompany;
@@ -72,7 +71,7 @@ const CFDMT5DemoAccountDisplay = ({
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
-    const openAccountTransferList = (type: TNewDetailsOfEachMT5Loginid['market_type']) => {
+    const openAccountTransferList = (type: DetailsOfEachMT5Loginid['market_type']) => {
         return Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.${type}`)) || '';
     };
 
@@ -95,7 +94,7 @@ const CFDMT5DemoAccountDisplay = ({
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
-                  }, [] as TNewDetailsOfEachMT5Loginid[])
+                  }, [] as DetailsOfEachMT5Loginid[])
             : undefined;
         return acc;
     };

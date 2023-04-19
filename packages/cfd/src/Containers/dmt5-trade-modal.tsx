@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
 import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
-import { TNewDetailsOfEachMT5Loginid } from '../../types';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import {
     CFD_PLATFORMS,
     isMobile,
@@ -17,7 +17,7 @@ import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/co
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: TNewDetailsOfEachMT5Loginid;
+    mt5_trade_account: DetailsOfEachMT5Loginid;
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -154,10 +154,7 @@ const DMT5TradeModal = ({
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
-                    <SpecBox
-                        is_bold
-                        value={(mt5_trade_account as TNewDetailsOfEachMT5Loginid)?.server_info?.environment}
-                    />
+                    <SpecBox is_bold value={(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment} />
                 </div>
                 <div className='cfd-trade-modal__login-specs-item'>
                     <Text className='cfd-trade-modal--paragraph'>{localize('Login ID')}</Text>
@@ -177,10 +174,10 @@ const DMT5TradeModal = ({
                                 });
                                 onPasswordManager(
                                     mt5_trade_account?.login,
-                                    getTitle(mt5_trade_account.market_type, show_eu_related_content),
-                                    mt5_trade_account.account_type,
+                                    getTitle(mt5_trade_account.market_type || '', show_eu_related_content),
+                                    mt5_trade_account.account_type || '',
                                     account_type,
-                                    (mt5_trade_account as TNewDetailsOfEachMT5Loginid)?.server
+                                    (mt5_trade_account as DetailsOfEachMT5Loginid)?.server
                                 );
                                 toggleModal();
                             }}
@@ -210,7 +207,7 @@ const DMT5TradeModal = ({
                         href={getMT5WebTerminalLink({
                             category: mt5_trade_account.account_type,
                             loginid: (mt5_trade_account as TTradingPlatformAccounts).display_login,
-                            server_name: (mt5_trade_account as TNewDetailsOfEachMT5Loginid)?.server_info?.environment,
+                            server_name: (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment,
                         })}
                         target='_blank'
                         rel='noopener noreferrer'

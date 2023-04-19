@@ -130,6 +130,7 @@ const mock = (): TRootStore => {
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
+            is_eu_country: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_identity_verification_needed: false,

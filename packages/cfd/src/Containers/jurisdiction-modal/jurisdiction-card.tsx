@@ -49,6 +49,7 @@ const JurisdictionCard = ({
                     disabled={disabled}
                     is_card_selected={is_card_selected}
                     toggleCardFlip={toggleCardFlip}
+                    type_of_card={type_of_card}
                     verification_docs={verification_docs}
                 />
                 <JurisdictionCardBack

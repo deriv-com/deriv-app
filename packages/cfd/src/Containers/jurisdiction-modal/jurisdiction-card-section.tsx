@@ -8,6 +8,7 @@ const JurisdictionCardSection = ({
     account_status,
     card_section_item,
     toggleCardFlip,
+    type_of_card,
     verification_docs,
 }: TJurisdictionCardSectionProps) => (
     <div className='cfd-card-section'>
@@ -19,6 +20,7 @@ const JurisdictionCardSection = ({
                 <JurisdictionTitleIndicator
                     account_status={account_status}
                     title_indicators={card_section_item.title_indicators}
+                    type_of_card={type_of_card}
                     verification_docs={verification_docs}
                 />
             )}

@@ -13,6 +13,7 @@ const JurisdictionCardFront = ({
     disabled,
     is_card_selected,
     toggleCardFlip,
+    type_of_card,
     verification_docs,
 }: TJurisdictionCardFrontProps) => (
     <div
@@ -53,6 +54,7 @@ const JurisdictionCardFront = ({
                             account_status={account_status}
                             card_section_item={item}
                             toggleCardFlip={toggleCardFlip}
+                            type_of_card={type_of_card}
                             verification_docs={verification_docs}
                         />
                         {index < card_data.length - 1 && <div className='cfd-card-section-divider' />}

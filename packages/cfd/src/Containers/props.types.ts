@@ -192,6 +192,7 @@ export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
     card_data: TJurisdictionCardSection[];
     card_values: TJurisdictionCardItems;
     disabled: boolean;
+    type_of_card: TJurisdictionCardType;
 };
 
 export type TJurisdictionClickableDescriptionProps = {
@@ -202,6 +203,7 @@ export type TJurisdictionClickableDescriptionProps = {
 export type TJurisdictionTitleIndicatorProps = {
     account_status: GetAccountStatus;
     title_indicators: TJurisdictionCardSectionTitleIndicators;
+    type_of_card: TJurisdictionCardType;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
@@ -209,6 +211,7 @@ export type TJurisdictionCardSectionProps = {
     account_status: GetAccountStatus;
     card_section_item: TJurisdictionCardSection;
     toggleCardFlip: (event: SyntheticEvent) => void;
+    type_of_card: TJurisdictionCardType;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 

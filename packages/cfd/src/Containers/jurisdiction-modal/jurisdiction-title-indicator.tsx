@@ -8,6 +8,7 @@ import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 const JurisdictionTitleIndicator = ({
     account_status,
     title_indicators,
+    type_of_card,
     verification_docs,
 }: TJurisdictionTitleIndicatorProps) => {
     const verification_icon_variant = 'Default';

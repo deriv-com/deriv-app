@@ -16,15 +16,16 @@ const log = (measures = [], req_type = '') => {
     if (!measures || !measures.length) return null;
     //eslint-disable-next-line no-console
     console.table(measures);
-    if (measures.length > 1) {
-        const max = Math.max(...measures.map(i => i.duration));
-        const min = Math.min(...measures.map(i => i.duration));
+    const max = Math.max(...measures.map(i => i.duration));
+    const min = Math.min(...measures.map(i => i.duration));
 
+    if (measures.length > 1) {
         //eslint-disable-next-line no-console
         console.log(`%c ${req_type} --- min: ${min}`, 'color: #00AB41');
         //eslint-disable-next-line no-console
         console.log(`%c ${req_type} --- max: ${max}`, 'color: #FF0000');
     }
+    return { max, min };
 };
 
 const getRequestType = request => {
@@ -61,13 +62,28 @@ class APIMiddleware {
         return response_promise;
     };
 
-    printStats = () => {
+    printStats = (should_clear = true) => {
+        let stats = [];
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
-            if (measure && measure.length) log(measure, req_type);
+
+            if (measure && measure.length) {
+                const { min, max } = log(measure, req_type);
+                stats.push({
+                    'request type': req_type,
+                    'min(milliseconds)': min,
+                    'max(milliseconds)': max,
+                    runs: measure.length,
+                });
+            }
         });
-        performance.clearMeasures();
-        performance.clearMarks();
+        //eslint-disable-next-line no-console
+        console.table(stats);
+        if (should_clear) {
+            stats = [];
+            performance.clearMeasures();
+            performance.clearMarks();
+        }
     };
 
     addGlobalMethod() {

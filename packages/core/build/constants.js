@@ -13,7 +13,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
-const DefinePlugin = require('webpack').DefinePlugin;
 const webpack = require('webpack');
 
 const {
@@ -123,17 +122,8 @@ const MINIMIZERS = !IS_RELEASE
           new CssMinimizerPlugin(),
       ];
 
-const plugins = ({ base, is_test_env, env }) => {
-    let is_qawolf = false;
-
-    if (env.IS_QAWOLF) {
-        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
-    }
-
+const plugins = ({ base, is_test_env }) => {
     return [
-        new DefinePlugin({
-            'process.env.IS_QAWOLF': is_qawolf,
-        }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),
         new HtmlWebPackPlugin(htmlOutputConfig(IS_RELEASE)),

@@ -88,6 +88,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         (visibility_status?.length === 1 && visibility_status?.[0] !== 'advert_inactive') ||
         visibility_status?.length > 1;
 
+    const show_warning_icon = enable_action_point || should_show_tooltip_icon || !general_store.is_listed;
+
     const getErrorCodes = () => {
         let updated_visibility_status = [...visibility_status];
         if (!is_ads_listed && !updated_visibility_status.includes('advertiser_ads_paused'))
@@ -161,7 +163,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     values={{ account_currency, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
                                 />
                             </Text>
-                            {enable_action_point || should_show_tooltip_icon || !general_store.is_listed ? (
+                            {show_warning_icon ? (
                                 <div className='p2p-my-ads__table-status-warning'>
                                     <div style={{ marginRight: '0.8rem' }}>
                                         <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
@@ -312,7 +314,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                     </div>
                 </Table.Cell>
                 <Table.Cell>
-                    {enable_action_point || should_show_tooltip_icon || !general_store.is_listed ? (
+                    {show_warning_icon ? (
                         <div className='p2p-my-ads__table-status-warning'>
                             <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                             <Popover alignment='top' message={localize('Ad not listed')}>

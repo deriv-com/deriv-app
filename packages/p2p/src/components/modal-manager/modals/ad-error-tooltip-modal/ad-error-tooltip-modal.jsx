@@ -48,20 +48,14 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than {{maximum_order_amount}} {{currency}}.'
                         values={{
-                            balance: my_ads_store.maximum_order_amount,
+                            maximum_order_amount: my_ads_store.maximum_order_amount,
                             currency: account_currency,
                         }}
                     />
                 );
             case 'advert_min_limit':
                 return (
-                    <Localize
-                        i18n_default_text='This ad is not listed on Buy/Sell because its maximum order is lower than the minimum amount you can specify for orders in your ads.'
-                        values={{
-                            balance: general_store.advertiser_info.balance_available,
-                            currency: account_currency,
-                        }}
-                    />
+                    <Localize i18n_default_text='This ad is not listed on Buy/Sell because its maximum order is lower than the minimum amount you can specify for orders in your ads.' />
                 );
             case 'advert_remaining':
                 return (
@@ -128,7 +122,7 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button has_effect text={localize('OK')} onClick={() => hideModal()} primary large />
+                <Button has_effect text={localize('OK')} onClick={hideModal} primary large />
             </Modal.Footer>
         </Modal>
     );

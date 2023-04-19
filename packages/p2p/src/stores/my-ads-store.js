@@ -70,6 +70,7 @@ export default class MyAdsStore extends BaseStore {
             is_table_loading: observable,
             is_loading: observable,
             item_offset: observable,
+            maximum_order_amount: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
             selected_advert: observable,

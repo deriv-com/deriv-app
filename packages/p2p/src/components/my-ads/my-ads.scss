@@ -664,24 +664,6 @@
         padding: 0 2rem 1.6rem;
     }
 
-    &__warning {
-        margin-top: 1.6rem;
-        width: fit-content;
-
-        @include mobile {
-            margin: 1rem 2rem;
-
-            .dc-hint-box {
-                align-items: normal;
-
-                &__icon {
-                    width: 3.5rem;
-                    align-items: flex-start;
-                }
-            }
-        }
-    }
-
     .toggle-ads {
         display: flex;
         align-items: center;

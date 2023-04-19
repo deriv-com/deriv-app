@@ -1519,7 +1519,7 @@ export default class ClientStore extends BaseStore {
 
         const authorize_response = await this.setUserLogin(login_new_user);
         const getLanguageFromDerivCom = () => {
-            const lang_from_deriv_com = Cookies.getJSON('user_language', { current_domain })?.toUpperCase();
+            const lang_from_deriv_com = Cookies.getJSON('language', { current_domain })?.toUpperCase();
             const is_valid_language = lang_from_deriv_com && isLanguageAvailable(lang_from_deriv_com);
             return is_valid_language ? lang_from_deriv_com : '';
         };

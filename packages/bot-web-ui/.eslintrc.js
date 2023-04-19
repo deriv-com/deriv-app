@@ -31,6 +31,7 @@ module.exports = {
                     {
                         groups: [
                             [
+                                'public-path',
                                 // `react` first, then packages starting with a character
                                 '^react$',
                                 '^[a-z]',

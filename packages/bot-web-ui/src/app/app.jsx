@@ -1,5 +1,6 @@
-import React from 'react'; // eslint-disable-line import/first
-import { ApiHelpers, DBot, ServerTime, setColors } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import '../public-path'; // Leave this here (at the top)
+import React from 'react';
+import { ApiHelpers, DBot, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import {
     Audio,
@@ -15,7 +16,6 @@ import RootStore from 'Stores';
 import { MobxContentProvider } from 'Stores/connect';
 import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
-import '../public-path'; // Leave this here (at the top)
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;

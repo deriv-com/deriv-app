@@ -183,6 +183,10 @@ type TClientStore = {
     should_allow_authentication: boolean;
     is_crypto: boolean;
     getToken: (loginid?: string) => string;
+    has_enabled_two_fa: boolean;
+    setTwoFAStatus: (status: boolean) => void;
+    has_changed_two_fa: boolean;
+    setTwoFAChangedStatus: (status: boolean) => void;
 };
 
 type TCommonStoreError = {

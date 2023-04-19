@@ -126,6 +126,7 @@ const OrderDetails = observer(() => {
             });
             buy_sell_store.setIsCreateOrderSubscribed(false);
             buy_sell_store.unsubscribeCreateOrder();
+            sendbird_store.setHasChatError(false);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

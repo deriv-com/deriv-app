@@ -22,7 +22,7 @@ describe('<PaymentAgentListedWithdrawForm />', () => {
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
-            return component;
+            return component as React.ReactPortal;
         });
     });
 

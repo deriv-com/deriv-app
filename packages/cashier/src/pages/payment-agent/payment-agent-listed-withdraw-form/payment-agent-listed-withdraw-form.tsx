@@ -71,7 +71,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
         onMount();
     }, [onMount]);
 
-    const input_ref = React.useRef<HTMLInputElement>();
+    const input_ref = React.useRef<HTMLInputElement & HTMLTextAreaElement>(null);
 
     React.useEffect(() => {
         if (input_ref.current) {

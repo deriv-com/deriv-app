@@ -10,12 +10,12 @@ describe('<PaymentAgentTransferConfirm />', () => {
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {
-            return component;
+            return component as React.ReactPortal;
         });
     });
 
     afterAll(() => {
-        ReactDOM.createPortal.mockClear();
+        (ReactDOM.createPortal as jest.Mock).mockClear();
     });
 
     beforeEach(() => {

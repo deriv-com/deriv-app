@@ -1,6 +1,11 @@
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
 import type { RouteComponentProps } from 'react-router';
+
+export type TPopulateSettingsExtensionsMenuItem = {
+    icon: string;
+    label: string;
+    value: <T extends object>(props: T) => JSX.Element;
+};
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -131,6 +136,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -241,6 +247,8 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    populateHeaderExtensions: (header_items: JSX.Element | null) => void;
+    populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
 };
 
 type TMenuStore = {
@@ -280,6 +288,9 @@ type TTradersHubStore = {
     is_real: boolean;
     selectRegion: (region: string) => void;
 };
+type TPortfolioStore = {
+    onMount: () => void;
+};
 
 /**
  * This is the type that contains all the `core` package stores
@@ -294,4 +305,5 @@ export type TCoreStores = {
     modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
+    portfolio: TPortfolioStore;
 };

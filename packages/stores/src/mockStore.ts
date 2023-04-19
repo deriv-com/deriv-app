@@ -141,6 +141,7 @@ const mock = (): TStores => {
             is_trading_experience_incomplete: false,
             is_virtual: false,
             is_withdrawal_lock: false,
+            is_populating_account_list: false,
             landing_company_shortcode: '',
             local_currency_config: {
                 currency: '',
@@ -248,6 +249,8 @@ const mock = (): TStores => {
             is_ready_to_deposit_modal_visible: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            populateHeaderExtensions: jest.fn(),
+            populateSettingsExtensions: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
@@ -284,6 +287,9 @@ const mock = (): TStores => {
             increment: jest.fn(),
             decrement: jest.fn(),
             unmount: jest.fn(),
+        },
+        portfolio: {
+            onMount: jest.fn(),
         },
     };
 };

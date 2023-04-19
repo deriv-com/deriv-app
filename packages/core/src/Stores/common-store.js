@@ -108,7 +108,7 @@ export default class CommonStore extends BaseStore {
             this.is_language_changing = true;
             this.changing_language_timer_id = setTimeout(() => {
                 this.is_language_changing = false;
-            }, 10000);
+            }, 2500);
         }
     }
 
@@ -117,7 +117,7 @@ export default class CommonStore extends BaseStore {
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-
+        await WS.wait('authorize');
         return new Promise((resolve, reject) => {
             WS.setSettings({
                 set_settings: 1,

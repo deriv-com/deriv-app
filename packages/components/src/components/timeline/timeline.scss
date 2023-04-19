@@ -6,10 +6,15 @@
         margin-left: 1.2rem;
         transition: filter 0.2s linear;
         &--disabled {
-            opacity: 0.32;
-            cursor: not-allowed;
             * {
                 pointer-events: none;
+            }
+            .dc-timeline__container {
+                opacity: 0.32;
+                cursor: not-allowed;
+            }
+            .dc-timeline__oval {
+                background-color: $COLOR_DARK_GRAY_4;
             }
         }
         &--no-border {

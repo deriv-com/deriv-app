@@ -59,7 +59,7 @@ describe('JurisdictionCardFront', () => {
         ],
     };
 
-    it('should render JurisdictionCardFront', () => {
+    it('should render JurisdictionCardFront without over header', () => {
         render(<JurisdictionCardFront {...mock_props} />);
         expect(screen.getByText('Test Header')).toBeInTheDocument();
         expect(screen.getByText('Test Title 1')).toBeInTheDocument();
@@ -68,6 +68,7 @@ describe('JurisdictionCardFront', () => {
         expect(screen.getByText('Test Title 2')).toBeInTheDocument();
         expect(screen.getByText('Test 2')).toBeInTheDocument();
         expect(screen.getByText('Test Description 2')).toBeInTheDocument();
+        expect(screen.queryByText('Test Over Header')).not.toBeInTheDocument();
     });
 
     it('should render JurisdictionCardFront with over header', () => {

@@ -80,7 +80,7 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
             case 'advertiser_balance':
                 return (
                     <Localize
-                        i18n_default_text='Your ad is not listed on Buy/Sell because its minimum order is higher than your Deriv P2P available balance ({{balance}} {{currency}}).'
+                        i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than your Deriv P2P available balance ({{balance}} {{currency}}).'
                         values={{
                             balance: general_store.advertiser_info.balance_available,
                             currency: account_currency,

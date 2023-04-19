@@ -26,7 +26,7 @@ type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
 type TGetAccount = {
     market_type: TMarketType;
-    sub_account_type?: 'financial' | 'financial_stp' | 'swap_free';
+    sub_account_type?: TAccount['sub_account_type'];
     platform: TPlatform;
 };
 type TGetCFDAccountKey = TGetAccount & {

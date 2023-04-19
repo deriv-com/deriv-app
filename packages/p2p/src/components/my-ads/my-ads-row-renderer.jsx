@@ -109,7 +109,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
             props: {
                 visibility_status: getErrorCodes(),
                 account_currency,
-                is_rate_changed: enable_action_point,
+                advert_type: type,
                 remaining_amount,
             },
         });

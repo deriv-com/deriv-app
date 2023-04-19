@@ -7,6 +7,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { isMobile } from '@deriv/shared';
 import { ad_type } from 'Constants/floating-rate';
 import { useStore } from '@deriv/stores';
+import { buy_sell } from 'Constants/buy-sell';
 
 const AdRateError = () => {
     const { floating_rate_store } = useStores();
@@ -35,9 +36,10 @@ const AdRateError = () => {
     );
 };
 
-const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', remaining_amount }) => {
+const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', remaining_amount, advert_type }) => {
     const { my_ads_store, general_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
+    const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
 
     const getAdErrorMessage = error_code => {
         switch (error_code) {
@@ -86,7 +88,7 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than your remaining daily limit ({{remaining_limit}} {{currency}}).'
                         values={{
-                            remaining_limit: my_ads_store.advert_details?.max_order_amount_limit_display,
+                            remaining_limit: advert_type === buy_sell.BUY ? daily_buy_limit : daily_sell_limit,
                             currency: account_currency,
                         }}
                     />

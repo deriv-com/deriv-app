@@ -10,9 +10,10 @@ import { useCashierStore } from '../../stores/useCashierStores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
+    onTooltipClick: VoidFunction;
 };
 
-const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransactionsRendererProps) => {
+const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TCryptoTransactionsRendererProps) => {
     const { client } = useStore();
     const { transaction_history } = useCashierStore();
     const { cancelCryptoTransaction, showCryptoTransactionsCancelModal, showCryptoTransactionsStatusModal } =
@@ -130,6 +131,14 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                         <Text as='p' color='prominent' size='xxs' weight='bold'>
                             {localize('Transaction hash')}
                         </Text>
+                        {transaction_url.includes('CP:') && (
+                            <Icon
+                                className='crypto-transactions-history__table-tooltip'
+                                onClick={onTooltipClick}
+                                icon='IcHelpCentre'
+                                custom_color='#999999'
+                            />
+                        )}
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-hash'>
                         <a
@@ -244,7 +253,8 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                                 <Popover
                                     alignment='right'
                                     className='crypto-transactions-history__table-tooltip'
-                                    message={localize('The details of this transaction is available on CoinsPaid')}
+                                    data_testid='dt_crypto_transactions_history_table_tooltip'
+                                    message={localize('The details of this transaction is available on CoinsPaid.')}
                                 >
                                     <Icon icon='IcHelpCentre' custom_color='#999999' />
                                 </Popover>

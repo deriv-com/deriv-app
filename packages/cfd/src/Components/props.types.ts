@@ -95,9 +95,15 @@ export type TJurisdictionCardSection = {
     clickable_description?: Array<TClickableDescription>;
 };
 
-export type TJurisdictionCardItemVerification = Array<
-    'document_number' | 'selfie' | 'identity_document' | 'name_and_address' | 'not_applicable'
->;
+export type TJurisdictionCardVerificationStatus = 'Pending' | 'Verified' | 'Failed' | 'Default';
+
+export type TJurisdictionCardItemVerificationItem =
+    | 'document_number'
+    | 'selfie'
+    | 'identity_document'
+    | 'name_and_address'
+    | 'not_applicable';
+export type TJurisdictionCardItemVerification = Array<TJurisdictionCardItemVerificationItem>;
 
 export type TJurisdictionCardItems = {
     header: string;

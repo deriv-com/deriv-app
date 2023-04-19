@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { jurisdictionVerificationContents } from 'Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
+import { TJurisdictionCardItemVerificationItem, TJurisdictionCardVerificationStatus } from 'Components/props.types';
 
 const JurisdictionTitleIndicator = ({
     account_status,
@@ -11,17 +12,52 @@ const JurisdictionTitleIndicator = ({
     type_of_card,
     verification_docs,
 }: TJurisdictionTitleIndicatorProps) => {
-    const verification_icon_variant = 'Default';
     const {
-        poi_resubmit_for_bvi_labuan,
-        poi_resubmit_for_vanuatu_maltainvest,
         poi_pending_for_bvi_labuan,
-        poi_pending_for_vanuatu_maltainvest,
+        poi_resubmit_for_bvi_labuan,
         poi_verified_for_bvi_labuan,
+        poi_pending_for_vanuatu_maltainvest,
+        poi_resubmit_for_vanuatu_maltainvest,
         poi_verified_for_vanuatu_maltainvest,
-        poi_poa_verified_for_bvi_labuan,
-        poi_poa_verified_for_vanuatu_maltainvest,
+        poa_pending,
+        need_poa_resubmission,
+        poa_verified,
     } = getAuthenticationStatusInfo(account_status);
+
+    const getVerificationIconVariant = (verification_document: TJurisdictionCardItemVerificationItem): string => {
+        let icon_variant: TJurisdictionCardVerificationStatus = 'Default';
+        if (type_of_card === Jurisdiction.BVI || type_of_card === Jurisdiction.LABUAN) {
+            if (verification_document === 'document_number') {
+                if (poi_pending_for_bvi_labuan) {
+                    icon_variant = 'Pending';
+                } else if (poi_resubmit_for_bvi_labuan) {
+                    icon_variant = 'Failed';
+                } else if (poi_verified_for_bvi_labuan) {
+                    icon_variant = 'Verified';
+                }
+            }
+        } else if (type_of_card === Jurisdiction.VANUATU || type_of_card === Jurisdiction.MALTA_INVEST) {
+            if (verification_document === 'selfie' || verification_document === 'identity_document') {
+                if (poi_pending_for_vanuatu_maltainvest) {
+                    icon_variant = 'Pending';
+                } else if (poi_resubmit_for_vanuatu_maltainvest) {
+                    icon_variant = 'Failed';
+                } else if (poi_verified_for_vanuatu_maltainvest) {
+                    icon_variant = 'Verified';
+                }
+            }
+        }
+        if (verification_document === 'name_and_address') {
+            if (poa_pending) {
+                icon_variant = 'Pending';
+            } else if (need_poa_resubmission) {
+                icon_variant = 'Failed';
+            } else if (poa_verified) {
+                icon_variant = 'Verified';
+            }
+        }
+        return icon_variant;
+    };
 
     return title_indicators.type === 'displayText' ? (
         <Text
@@ -39,13 +75,13 @@ const JurisdictionTitleIndicator = ({
         </Text>
     ) : (
         <div className='cfd-card-section-title-indicator-icon-container'>
-            {verification_docs?.map(verification_doc => (
-                <div key={verification_doc}>
+            {verification_docs?.map(verification_document => (
+                <div key={verification_document}>
                     <Icon
                         size={24}
                         icon={jurisdictionVerificationContents().required_verification_docs[
-                            verification_doc
-                        ]?.icon.concat(verification_icon_variant)}
+                            verification_document
+                        ]?.icon.concat(getVerificationIconVariant(verification_document))}
                     />
                 </div>
             ))}

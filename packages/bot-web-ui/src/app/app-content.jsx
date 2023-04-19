@@ -1,6 +1,6 @@
-import React from 'react'; // eslint-disable-line import/first
+import React from 'react';
 import { Loading } from '@deriv/components';
-import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
 import {
     Audio,
     BotFooterExtensions,

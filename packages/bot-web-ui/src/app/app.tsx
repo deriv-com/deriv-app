@@ -1,9 +1,9 @@
 import '../public-path'; // Leave this here (at the top)! OK boss!
-import React from 'react'; // eslint-disable-line import/first
+import React from 'react';
 import AppContent from './app-content';
 import { TWebSocket } from 'Types';
-import { TCoreStores } from '@deriv/stores/types';
 import DBotProviders from './dbot-providers';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {

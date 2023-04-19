@@ -8,17 +8,13 @@ import ErrorComponent from 'Components/error-component';
 
 const Routes = observer(props => {
     const { client, common } = useStore();
+    const { is_logged_in, is_logging_in } = client;
+    const { error } = common;
     if (props.has_error) {
-        return <ErrorComponent {...common.error} />;
+        return <ErrorComponent {...error} />;
     }
 
-    return (
-        <BinaryRoutes
-            is_logged_in={client.is_logged_in}
-            is_logging_in={client.is_logging_in}
-            passthrough={props.passthrough}
-        />
-    );
+    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={props.passthrough} />;
 });
 
 Routes.propTypes = {

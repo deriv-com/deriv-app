@@ -6,11 +6,6 @@ import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Componen
 import { Loading } from '@deriv/components';
 import { POO_STATUSES } from './constants/constants';
 import paymentMethodConfig from './payment-method-config.js';
-// account_status: client.account_status,
-//     client_email: client.email,
-//     is_dark_mode: ui.is_dark_mode_on,
-//     refreshNotifications: notifications.refreshNotifications,
-//     updateAccountStatus: client.updateAccountStatus,
 
 export const ProofOfOwnership = observer(() => {
     const { client, notifications, ui } = useStore();
@@ -49,7 +44,7 @@ export const ProofOfOwnership = observer(() => {
     const onTryAgain = () => {
         setStatus(POO_STATUSES.none);
     };
-    // console.log("status value",account_status)
+
     if (needs_verification && status !== POO_STATUSES.rejected) {
         return (
             <ProofOfOwnershipForm

@@ -2,24 +2,24 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, DesktopWrapper } from '@deriv/components';
 import { localize, getAllowedLanguages } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
 import FormSubHeader from 'Components/form-sub-header';
 import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
+import { observer, useStore } from '@deriv/stores';
 
 const LanguageSettings = observer(() => {
-    const { i18n } = useTranslation();
     const { common } = useStore();
-    const { changeLanguage, changeCurrentLanguage, current_language, isCurrentLanguage } = common;
+    const { changeSelectedLanguage, current_language, isCurrentLanguage } = common;
+    const { i18n } = useTranslation();
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     const initial_values = { language_code: current_language };
     return (
         <Formik
             initialValues={initial_values}
-            onSubmit={async (values: { language_code: any }) => {
+            onSubmit={async values => {
                 const { language_code } = values;
-                await changeLanguage(language_code, changeCurrentLanguage);
+                changeSelectedLanguage(language_code);
                 await i18n.changeLanguage?.(language_code);
             }}
         >

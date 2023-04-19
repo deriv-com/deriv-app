@@ -4,8 +4,8 @@ import type { TRootStore } from '../types';
 const mock = (): TRootStore => {
     return {
         client: {
-            fetchResidenceList: jest.fn(() => Promise.resolve()),
-            fetchStatesList: jest.fn(() => Promise.resolve()),
+            fetchResidenceList: jest.fn(),
+            fetchStatesList: jest.fn(),
             getChangeableFields: jest.fn(),
             residence_list: [
                 {
@@ -20,14 +20,13 @@ const mock = (): TRootStore => {
                     currency: 'USD',
                     is_disabled: 0,
                     is_virtual: 0,
-                    trading: {},
                     excluded_until: 0,
                     landing_company_name: 'svg',
                 },
             },
             is_loading_mt5: false,
             is_loading_dxtrade: false,
-            is_social_signup: {},
+            is_social_signup: false,
             active_account_landing_company: '',
             account_settings: {},
             account_limits: {
@@ -287,6 +286,7 @@ const mock = (): TRootStore => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
+            addNotificationMessageByKey: jest.fn(),
         },
         modules: {},
     };

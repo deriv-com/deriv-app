@@ -1,4 +1,13 @@
-import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+import type {
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetLimits,
+    GetSettings,
+    LogOutResponse,
+    ResidenceList,
+    StatesList,
+} from '@deriv/api-types';
 
 import type { RouteComponentProps } from 'react-router';
 
@@ -83,12 +92,12 @@ type TNotification =
     | ((excluded_until: number) => TNotificationMessage);
 
 type TClientStore = {
-    fetchResidenceList: () => any;
-    fetchStatesList: () => any;
-    getChangeableFields: () => any;
+    fetchResidenceList: () => ResidenceList;
+    fetchStatesList: () => StatesList;
+    getChangeableFields: () => string[];
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
-    account_settings: object;
+    account_settings: GetSettings;
     active_account_landing_company: string;
     account_limits: {
         daily_transfers?: {
@@ -106,12 +115,10 @@ type TClientStore = {
     cfd_score: number;
     setCFDScore: (score: number) => void;
     currency: string;
-    residence_list: [
-        {
-            text: string;
-            value: string;
-        }
-    ];
+    residence_list: {
+        text: string;
+        value: string;
+    }[];
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => { get_limits?: GetLimits };
@@ -126,7 +133,7 @@ type TClientStore = {
     is_uk: boolean;
     is_loading_mt5: boolean;
     is_loading_dxtrade: boolean;
-    is_social_signup: object;
+    is_social_signup: boolean;
     has_residence: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
@@ -205,8 +212,8 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
-    isCurrentLanguage(language_code: any): boolean | undefined;
-    changeLanguage(language_code: any, changeCurrentLanguage: (new_language: string) => void): unknown;
+    isCurrentLanguage(language_code: string): boolean | undefined;
+    changeLanguage(language_code: string, changeCurrentLanguage: (new_language: string) => void): unknown;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
@@ -257,6 +264,7 @@ type TMenuStore = {
 };
 
 type TNotificationStore = {
+    addNotificationMessageByKey: (obj: { key: string }) => void;
     addNotificationMessage: (message: TNotification) => void;
     client_notifications: object;
     filterNotificationMessages: () => void;

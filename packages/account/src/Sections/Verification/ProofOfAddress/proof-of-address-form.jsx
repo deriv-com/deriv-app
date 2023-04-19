@@ -24,7 +24,6 @@ import {
     getLocation,
     WS,
 } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
@@ -32,6 +31,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import LeaveConfirm from 'Components/leave-confirm';
 import FileUploaderContainer from 'Components/file-uploader-container';
+import { observer, useStore } from '@deriv/stores';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -45,7 +45,7 @@ let file_uploader_ref = null;
 const UploaderSideNote = () => (
     <div className='account-poa__upload-box account-poa__upload-box-dashboard'>
         <Text size='xs' line_height='s'>
-            <Localize i18n_default_text='A recent utility bill (e.g. electricity, water or gas)' />
+            <Localize i18n_default_text='A recent utility bill (e.g. electricity, water, gas, phone or internet)' />
         </Text>
         <Text size='xs' line_height='s'>
             <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address.' />
@@ -55,8 +55,12 @@ const UploaderSideNote = () => (
 
 const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
     const { client, notifications } = useStore();
-    const { fetchResidenceList, fetchStatesList, account_settings, is_eu, states_list } = client;
-    const { removeNotificationMessage, removeNotificationByKey, addNotificationMessage } = notifications;
+    const { account_settings, fetchResidenceList, fetchStatesList, is_eu, states_list } = client;
+    const {
+        addNotificationMessageByKey: addNotificationByKey,
+        removeNotificationMessage,
+        removeNotificationByKey,
+    } = notifications;
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [is_loading, setIsLoading] = React.useState(true);
     const [form_values, setFormValues] = useStateCallback({});
@@ -215,7 +219,7 @@ const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
                                                 removeNotificationMessage({ key: 'poa_expired' });
                                                 removeNotificationByKey({ key: 'poa_expired' });
                                                 if (needs_poi) {
-                                                    addNotificationMessage('needs_poi');
+                                                    addNotificationByKey('needs_poi');
                                                 }
                                             }
                                         );

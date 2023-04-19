@@ -43,6 +43,9 @@
 
             &--trader {
                 grid-template-columns: 1.2fr 1fr;
+                &--accumulator-sold {
+                    padding-top: 1rem;
+                }
             }
             &--mobile {
                 grid-template-columns: 1fr 1fr 25%;
@@ -462,7 +465,8 @@
         align-items: center;
         justify-content: center;
 
-        .result-icon {
+        .result-icon,
+        &--accumulator-mobile-positions .dc-result__icon {
             margin-left: 0.4rem;
         }
     }
@@ -475,6 +479,9 @@
         & .dc-contract-card__stop-loss {
             padding-bottom: 0.4rem;
         }
+    }
+    &__take-profit {
+        position: relative;
     }
     &__buy-price {
         grid-area: buy-price;
@@ -558,7 +565,7 @@
         line-height: 1.5;
         text-align: left;
 
-        &-multiplier {
+        &-trade-param {
             font-size: 1rem;
             line-height: 1rem;
             color: var(--text-less-prominent);
@@ -576,4 +583,48 @@
 /** @define dc-remaining-time; weak */
 .dc-remaining-time {
     display: inline;
+}
+
+/** @define dc-tick-counter-bar; */
+.dc-tick-counter-bar {
+    &__container {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        position: relative;
+        width: 100%;
+        padding: unset;
+        box-sizing: border-box;
+        margin: 0.8rem 0;
+        border-bottom: 1px solid var(--general-section-1);
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: unset;
+            margin: unset;
+        }
+    }
+    &__track {
+        height: 1.8rem;
+        background: var(--general-section-1);
+        border-radius: #{$BORDER_RADIUS};
+        position: relative;
+        margin-bottom: 0.8rem;
+        width: 100%;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: unset;
+            margin: 0.2rem 0 0.4rem;
+        }
+    }
+    &__text {
+        position: absolute;
+        color: var(--status-success);
+        width: 100%;
+        text-align: center;
+    }
 }

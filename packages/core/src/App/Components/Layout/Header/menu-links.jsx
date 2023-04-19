@@ -45,7 +45,8 @@ const CashierTab = observer(() => {
 
     const { content_flag } = traders_hub;
 
-    const low_risk_diel = content_flag === ContentFlag.LOW_RISK_CR_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
+    const low_risk_diel =
+        content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     const history = useHistory();
 

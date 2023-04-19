@@ -34,7 +34,7 @@ const LanguageSettings = ({ changeSelectedLanguage, current_language }: TLanguag
                             is_current_language={current_language === language_key}
                             name='language-radio-group'
                             onChange={async () => {
-                                changeSelectedLanguage(language_key);
+                                await changeSelectedLanguage(language_key);
                                 await i18n.changeLanguage?.(language_key);
                             }}
                         />

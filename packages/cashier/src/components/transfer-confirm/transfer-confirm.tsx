@@ -4,6 +4,7 @@ import { Button, Checkbox, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';
+import { TError } from '../../types';
 import './transfer-confirm.scss';
 
 type TRowProps = {
@@ -19,7 +20,7 @@ type WarningBulletProps = {
 
 type TTransferConfirmProps = {
     data: Array<TRowProps>;
-    error?: object;
+    error?: TError | Record<string, never>;
     header?: string;
     is_payment_agent_withdraw?: boolean;
     onClickBack?: VoidFunction;

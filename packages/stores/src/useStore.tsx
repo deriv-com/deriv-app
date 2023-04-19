@@ -1,14 +1,14 @@
 import React, { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react';
-import { TRootStore } from '../types';
 import { CounterStore } from './stores';
+import type { TCoreStores } from '../types';
 
-export type TStores = TRootStore & {
+export type TStores = TCoreStores & {
     counter: CounterStore;
 };
 
 const StoreContext = createContext<TStores | null>(null);
 
-const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TRootStore }>) => {
+const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TCoreStores }>) => {
     const memoizedValue = useMemo(
         () => ({
             ...store,

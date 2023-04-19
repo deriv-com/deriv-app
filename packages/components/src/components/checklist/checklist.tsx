@@ -11,7 +11,7 @@ type TItemStatusProps = {
 
 type TChecklistItem = TItemStatusProps & {
     is_disabled?: boolean;
-    content: string;
+    content: string | JSX.Element;
 };
 
 type TChecklistProps = {

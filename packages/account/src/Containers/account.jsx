@@ -111,13 +111,14 @@ const PageOverlayWrapper = ({
 const Account = observer(({ history, location, routes }) => {
     const { client, common, ui } = useStore();
     const {
-        is_virtual,
-        landing_company_shortcode,
-        is_risky_client,
-        should_allow_authentication,
         currency,
+        is_virtual,
         is_logged_in,
         is_logging_in,
+        is_risky_client,
+        is_pending_proof_of_ownership,
+        landing_company_shortcode,
+        should_allow_authentication,
         logout,
     } = client;
     const { is_from_derivgo, routeBackInApp, platform } = common;
@@ -152,7 +153,7 @@ const Account = observer(({ history, location, routes }) => {
             }
 
             if (route.path === shared_routes.proof_of_ownership) {
-                route.is_disabled = is_virtual;
+                route.is_disabled = is_virtual || !is_pending_proof_of_ownership;
             }
         });
     });

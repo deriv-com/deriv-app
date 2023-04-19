@@ -1,7 +1,7 @@
 import merge from 'lodash.merge';
-import type { TRootStore } from '../types';
+import type { TStores } from './useStore';
 
-const mock = (): TRootStore => {
+const mock = (): TStores => {
     return {
         client: {
             fetchResidenceList: jest.fn(),
@@ -151,6 +151,7 @@ const mock = (): TRootStore => {
             is_landing_company_loaded: false,
             is_logged_in: false,
             is_logging_in: false,
+            is_pending_proof_of_ownership: false,
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
@@ -204,6 +205,10 @@ const mock = (): TRootStore => {
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
             is_crypto: false,
+            has_enabled_two_fa: false,
+            setTwoFAStatus: jest.fn(),
+            has_changed_two_fa: false,
+            setTwoFAChangedStatus: jest.fn(),
         },
         common: {
             error: {
@@ -265,8 +270,13 @@ const mock = (): TRootStore => {
         },
         traders_hub: {
             closeModal: jest.fn(),
-            openModal: jest.fn(),
+            combined_cfd_mt5_accounts: [],
             content_flag: '',
+            openModal: jest.fn(),
+            selected_account: {
+                login: '',
+                account_id: '',
+            },
             is_eu_user: false,
             is_real: false,
             selectRegion: jest.fn(),
@@ -289,9 +299,15 @@ const mock = (): TRootStore => {
             addNotificationMessageByKey: jest.fn(),
         },
         modules: {},
+        counter: {
+            count: 0,
+            increment: jest.fn(),
+            decrement: jest.fn(),
+            unmount: jest.fn(),
+        },
     };
 };
 
-const mockStore = (override: DeepPartial<TRootStore>): TRootStore => merge(mock(), override);
+const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
 export { mockStore };

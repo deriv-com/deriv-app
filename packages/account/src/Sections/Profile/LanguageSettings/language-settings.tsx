@@ -19,7 +19,7 @@ const LanguageSettings = observer(() => {
             initialValues={initial_values}
             onSubmit={async values => {
                 const { language_code } = values;
-                changeSelectedLanguage(language_code);
+                await changeSelectedLanguage(language_code);
                 await i18n.changeLanguage?.(language_code);
             }}
         >

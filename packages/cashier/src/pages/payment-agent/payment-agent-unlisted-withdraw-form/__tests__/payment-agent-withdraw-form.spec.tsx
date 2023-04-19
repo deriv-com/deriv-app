@@ -60,7 +60,7 @@ describe('<PaymentAgentUnlistedWithdrawForm />', () => {
     };
 
     it('should render the component', () => {
-        mockPaymentAgentUnlistedWithdrawForm();
+        render(mockPaymentAgentUnlistedWithdrawForm());
 
         expect(screen.getByTestId('dt-back-arrow-icon')).toBeInTheDocument();
         expect(screen.getByText('Back to list')).toBeInTheDocument();

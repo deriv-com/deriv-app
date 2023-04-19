@@ -6,6 +6,19 @@ import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
+const escapeHtml = unsafe => {
+    return unsafe.replace(/[&<>"']/g, (match) => {
+        switch (match) {
+            case '<':
+                return '&lt;';
+            case '>':
+                return '&gt;';
+            default:
+                return match;
+        }
+    });
+};
+
 const Redirect = ({
     history,
     currency,
@@ -157,7 +170,7 @@ const Redirect = ({
             const new_href = loginUrl({
                 language: getLanguage(),
             });
-            window.location.href = new_href;
+            window.location.href = escapeHtml(new_href);
             break;
         }
         case 'trading_platform_investor_password_reset': {

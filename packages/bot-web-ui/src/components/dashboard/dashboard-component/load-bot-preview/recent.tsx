@@ -45,7 +45,7 @@ const RecentComponent = ({
                 <div className='load-strategy__recent__files'>
                     <div className='load-strategy__title'>
                         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
-                            <Localize i18n_default_text='Your Bots' />
+                            <Localize i18n_default_text='Your bots' />
                         </Text>
                     </div>
                     <div className='load-strategy__recent__files__list'>

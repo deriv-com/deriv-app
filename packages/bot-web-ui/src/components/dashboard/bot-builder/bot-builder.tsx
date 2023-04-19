@@ -4,7 +4,7 @@ import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { setColors, blocksCoordinate } from '@deriv/bot-skeleton';
 import LoadModal from 'Components/load-modal';
 import SaveModal from 'Components/save-modal';
-import ReactJoyride from 'react-joyride';
+import ReactJoyrideWrapper from '../react-joyride-wrapper';
 import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
@@ -44,7 +44,12 @@ const BotBuilder = ({
     //removed used effect here because dark mode is an observable and the component will rerender
     setColors(is_dark_mode_on);
     previewRecentStrategy(selected_strategy_id);
-    if (active_tab === 1) loadFileFromRecent();
+
+    React.useEffect(() => {
+        if (active_tab === 1) {
+            loadFileFromRecent();
+        }
+    }, [is_dark_mode_on]);
 
     React.useEffect(() => {
         onMount();
@@ -83,33 +88,7 @@ const BotBuilder = ({
                         <TourSlider />
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <ReactJoyride
-                            steps={BOT_BUILDER_TOUR}
-                            run={is_tour_running}
-                            continuous
-                            showProgress
-                            callback={handleJoyrideCallback}
-                            locale={{ back: 'Previous' }}
-                            styles={{
-                                options: {
-                                    arrowColor: 'var(--general-main-2)',
-                                    backgroundColor: 'var(--general-main-2)',
-                                    primaryColor: 'var(--brand-red-coral)',
-                                    textColor: 'var(--text-general)',
-                                    spotlightShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
-                                },
-                                buttonBack: {
-                                    border: '0.1rem solid var(--text-less-prominent)',
-                                    marginRight: '1rem',
-                                    borderRadius: '0.4rem',
-                                    color: 'var(--text-general)',
-                                    padding: '0.6rem',
-                                },
-                                tooltipContent: {
-                                    padding: '0 1rem',
-                                },
-                            }}
-                        />
+                        <ReactJoyrideWrapper steps={BOT_BUILDER_TOUR} run={is_tour_running} showProgress />
                     </DesktopWrapper>
                 </>
             )}

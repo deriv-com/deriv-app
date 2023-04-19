@@ -85,7 +85,7 @@ const RecentComponent = ({
     );
 };
 
-const Recent = connect(({ load_modal, dashboard }: RootStore) => ({
+const Recent = connect(({ load_modal }: RootStore) => ({
     is_explanation_expand: load_modal.is_explanation_expand,
     recent_strategies: load_modal.recent_strategies,
     toggleExplanationExpand: load_modal.toggleExplanationExpand,

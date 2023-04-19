@@ -262,7 +262,7 @@
             }
 
             @include desktop {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(3, 1fr) 1.5fr;
             }
 
             grid-template-areas: ('text location');
@@ -276,7 +276,9 @@
             }
 
             & .dc-text {
-                width: 10rem;
+                &:hover {
+                    cursor: pointer;
+                }
 
                 @include mobile {
                     width: unset;
@@ -328,10 +330,6 @@
 
             &.load-dialog {
                 padding: 1.6rem;
-            }
-
-            &:hover {
-                cursor: pointer;
             }
 
             &__loaded {
@@ -431,6 +429,12 @@
 
                 align-items: center;
                 justify-content: flex-end;
+
+                .dc-icon {
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
             }
         }
     }

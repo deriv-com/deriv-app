@@ -40,7 +40,7 @@ const QuickStrategy = (props: TQuickStrategyProps) => {
     );
 };
 
-export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore) => ({
+export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     active_index: quick_strategy.active_index,
     description: quick_strategy.description,
     createStrategy: quick_strategy.createStrategy,
@@ -63,7 +63,6 @@ export default connect(({ run_panel, quick_strategy, ui, dashboard }: RootStore)
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
     setCurrentFocus: ui.setCurrentFocus,
-    setActiveTab: dashboard.setActiveTab,
     is_dialog_open: quick_strategy.is_dialog_open,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
     is_running: run_panel.is_running,

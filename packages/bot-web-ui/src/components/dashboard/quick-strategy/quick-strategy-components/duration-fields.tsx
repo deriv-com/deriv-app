@@ -8,7 +8,6 @@ import { isMobile } from '@deriv/shared';
 const DurationFields = ({
     id,
     field_name,
-    idx,
     dropdown_list,
     selected_value,
     label,
@@ -18,14 +17,10 @@ const DurationFields = ({
     values,
     selected_trade_type,
     selected_symbol,
-    errors,
     setFieldValue,
     onChangeDropdownItem,
     onHideDropdownList,
     onScrollStopDropdownList,
-    handleChange,
-    onChangeInputValue,
-    setCurrentFocus,
 }: TDurationFields) => {
     const is_mobile = isMobile();
     return id === 'duration-unit' ? (

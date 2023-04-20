@@ -10,6 +10,7 @@ const ErrorComponent = ({
     message,
     redirect_label,
     redirectOnClick,
+    redirect_to = routes.trade,
     setError,
     should_clear_error_on_click,
     should_show_refresh = true,

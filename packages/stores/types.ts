@@ -184,6 +184,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    has_any_real_account: boolean;
 };
 
 type TCommonStoreError = {
@@ -279,6 +280,8 @@ type TTradersHubStore = {
     is_eu_user: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    is_demo: boolean;
+    selected_account_type: string;
 };
 
 /**

@@ -193,6 +193,7 @@ const mock = (): TStores => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            has_any_real_account: false,
         },
         common: {
             error: {
@@ -262,6 +263,8 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            is_demo: false,
+            selected_account_type: '',
         },
         menu: {
             attach: jest.fn(),

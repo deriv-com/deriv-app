@@ -152,7 +152,7 @@ const StaticDashboard = ({
                                         color={
                                             is_blurry.options_text || is_blurry.options_description
                                                 ? 'less-prominent'
-                                                : 'prominent'
+                                                : 'general'
                                         }
                                     >
                                         {eu_user ? (
@@ -387,7 +387,7 @@ const StaticDashboard = ({
                             <Text
                                 as='p'
                                 size='xxs'
-                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
+                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'general'}
                             >
                                 <Localize
                                     i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'

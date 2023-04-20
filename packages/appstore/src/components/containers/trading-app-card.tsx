@@ -69,7 +69,7 @@ const TradingAppCard = ({
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>
                     <div>
-                        <Text className='title' size='xs' line_height='s'>
+                        <Text className='title' size='xs' line_height='s' color='prominent'>
                             {sub_title}
                         </Text>
                         {short_code_and_region && (
@@ -83,12 +83,18 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text className='title' size='xs' line_height='s' weight='bold'>
+                    <Text
+                        className='title'
+                        size='xs'
+                        line_height='s'
+                        weight='bold'
+                        color={action_type === 'trade' ? 'prominent' : 'general'}
+                    >
                         {name}
                     </Text>
                     <Text
                         className='description'
-                        color={is_deriv_platform ? 'less-prominent' : 'general'}
+                        color={is_deriv_platform ? 'primary' : 'general'}
                         size='xxs'
                         line_height='m'
                     >

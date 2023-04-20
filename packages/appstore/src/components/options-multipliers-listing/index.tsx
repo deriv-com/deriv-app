@@ -35,7 +35,7 @@ const OptionsAndMultipliersListing = () => {
             );
         } else if ((low_risk_cr_eu || is_eu) && !isMobile()) {
             return (
-                <Text size='sm' line_height='m' weight='bold'>
+                <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
                 </Text>
             );

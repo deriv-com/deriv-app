@@ -61,6 +61,7 @@ const CurrentSwitcherContainer = ({
                         `currency-switcher-container--${document_status || 'failed' || 'pending' || 'default'}`
                     )}
                 >
+                    {children}
                     <div
                         className={classNames(
                             'currency-switcher-container__content--text',
@@ -71,7 +72,6 @@ const CurrentSwitcherContainer = ({
                     >
                         {title}
                     </div>
-                    {children}
                 </div>
             </div>
             <div className='currency-switcher-container--right'>

@@ -56,7 +56,7 @@ const StaticTradingAppCard = ({
                 >
                     {name}
                 </Text>
-                <Text className='description' color={'less-prominent'} size='xxs' line_height='m'>
+                <Text className='description' color='primary' size='xxs' line_height='m'>
                     {app_desc}
                 </Text>
             </div>

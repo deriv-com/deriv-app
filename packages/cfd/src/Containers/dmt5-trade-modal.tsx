@@ -211,7 +211,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Open')}
                         </Text>
                     </a>
@@ -228,7 +228,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Download')}
                         </Text>
                     </a>
@@ -245,7 +245,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Download')}
                         </Text>
                     </a>
@@ -262,7 +262,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Learn more')}
                         </Text>
                     </a>

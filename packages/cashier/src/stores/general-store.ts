@@ -3,11 +3,10 @@ import { isCryptocurrency, routes, ContentFlag, CookieStorage } from '@deriv/sha
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
-import type { TWebSocket } from '../types';
-import { TStores } from '@deriv/stores';
+import type { TRootStore, TWebSocket } from '../types';
 
 export default class GeneralStore extends BaseStore {
-    constructor(public WS: TWebSocket, public root_store: TStores) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         super({ root_store });
 
         makeObservable(this, {

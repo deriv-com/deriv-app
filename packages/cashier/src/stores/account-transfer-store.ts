@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
 import Constants from '../constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount } from '../types';
+import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
@@ -70,7 +70,7 @@ export default class AccountTransferStore {
         });
     }
 
-    accounts_list: Array<TAccount> = [];
+    accounts_list: TAccount[] = [];
     container: string = Constants.containers.account_transfer;
     error = new ErrorStore();
     has_no_account = false;
@@ -446,7 +446,7 @@ export default class AccountTransferStore {
                     platform_icon:
                         account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                             ? combined_cfd_mt5_account.icon
-                            : cfd_icon_display,
+                            : (cfd_icon_display as TPlatformIcon),
                     status: account?.status,
                     market_type: getCFDAccount({
                         market_type: account.market_type,
@@ -697,7 +697,7 @@ export default class AccountTransferStore {
             });
             if (!is_ok) {
                 setConverterFromError(message || '');
-            } else if (Number(this.selected_from.balance) < +converter_from_amount) {
+            } else if (Number(this.selected_from.balance) < Number(converter_from_amount)) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {
                 setConverterFromError('');

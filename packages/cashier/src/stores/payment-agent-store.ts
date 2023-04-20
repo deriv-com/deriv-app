@@ -78,11 +78,11 @@ export default class PaymentAgentStore {
         this.WS = WS;
     }
 
-    list: Array<TPartialPaymentAgentList> = [];
-    agents: Array<TAgent> = [];
+    list: TPartialPaymentAgentList[] = [];
+    agents: TAgent[] = [];
     container = Constants.containers.payment_agent;
     error = new ErrorStore();
-    filtered_list: Array<TPartialPaymentAgentList> = [];
+    filtered_list: TPartialPaymentAgentList[] = [];
     is_name_selected = true;
     is_search_loading = false;
     is_withdraw = false;
@@ -91,7 +91,7 @@ export default class PaymentAgentStore {
     confirm: TPaymentAgentWithdrawConfirm = {};
     receipt: TPaymentAgentWithdrawReceipt = {};
     selected_bank: number | string = 0;
-    supported_banks: Array<TSupportedBank> = [];
+    supported_banks: TSupportedBank[] = [];
     active_tab_index = 0;
     all_payment_agent_list: TPaymentAgentListResponse | null = null;
     search_term = '';
@@ -163,7 +163,7 @@ export default class PaymentAgentStore {
         this.list = [];
     }
 
-    async setPaymentAgentList(pa_list?: Array<TPaymentAgent>) {
+    async setPaymentAgentList(pa_list?: TPaymentAgent[]) {
         const { setLoading } = this.root_store.modules.cashier.general_store;
         this.clearList();
         this.clearSupportedBanks();

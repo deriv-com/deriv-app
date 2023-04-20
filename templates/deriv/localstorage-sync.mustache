@@ -53,6 +53,9 @@
                             break;
                         }
                         case 'client.accounts': {
+                            if (localStorage.getItem(message.data.key) !== message.data.value) {
+                                localStorage.setItem(message.data.key, message.data.value);
+                            }
                             autoLogin(message);
                             break;
                         }

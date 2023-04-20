@@ -4,27 +4,13 @@ import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storag
 import { getAppId, domain_app_ids } from '../config/config';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 
-const escapeHtml = (unsafe: string): string => {
-    return unsafe.replace(/[<>]/g, match => {
-        switch (match) {
-            case '<':
-                return '&lt;';
-            case '>':
-                return '&gt;';
-            default:
-                return match;
-        }
-    });
-};
-
 export const redirectToLogin = (is_logged_in: boolean, language: string, has_params = true, redirect_delay = 0) => {
     if (!is_logged_in && isStorageSupported(sessionStorage)) {
         const l = window.location;
         const redirect_url = has_params ? window.location.href : `${l.protocol}//${l.host}${l.pathname}`;
         sessionStorage.setItem('redirect_url', redirect_url);
         setTimeout(() => {
-            const new_href = loginUrl({ language });
-            window.location.href = escapeHtml(new_href);
+            window.location.href = loginUrl({ language });
         }, redirect_delay);
     }
 };
@@ -58,13 +44,11 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     };
 
     if (server_url && /qa/.test(server_url)) {
-        return escapeHtml(
-            `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`
-        );
+        return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
     if (getAppId() === domain_app_ids[window.location.hostname as keyof typeof domain_app_ids]) {
-        return escapeHtml(getOAuthUrl());
+        return getOAuthUrl();
     }
-    return escapeHtml(urlForCurrentDomain(getOAuthUrl()));
+    return urlForCurrentDomain(getOAuthUrl());
 };

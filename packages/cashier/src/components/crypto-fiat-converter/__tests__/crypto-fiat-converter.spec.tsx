@@ -7,7 +7,7 @@ import CashierProviders from '../../../cashier-providers';
 import { mockStore, TStores } from '@deriv/stores';
 
 describe('<CryptoFiatConverter />', () => {
-    let mockRootStore: TStores, mockProps;
+    let mockRootStore: TStores, mockProps: React.ComponentProps<typeof CryptoFiatConverter>;
 
     beforeEach(() => {
         mockRootStore = mockStore({
@@ -25,18 +25,19 @@ describe('<CryptoFiatConverter />', () => {
         mockProps = {
             from_currency: 'BTC',
             hint: 'Transfer limits',
-            is_timer_visible: true,
             resetConverter: jest.fn(),
             to_currency: 'USD',
             onChangeConverterFromAmount: jest.fn(),
             onChangeConverterToAmount: jest.fn(),
+            validateFromAmount: jest.fn(),
+            validateToAmount: jest.fn(),
         };
     });
 
     const renderCryptoFiatConverter = () => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <Formik>
+                <Formik initialValues={{}} onSubmit={() => Promise.resolve()}>
                     <CryptoFiatConverter {...mockProps} />
                 </Formik>
             </CashierProviders>

@@ -3,7 +3,7 @@ import { Icon } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';
 import { IconProps } from '../icon-types';
 
-export const IconCurrency = (icon?: string): icon is Currency =>
+export const IsIconCurrency = (icon?: string): icon is Currency =>
     Currencies.find(currency => currency === icon) !== undefined;
 
 const Currencies = [

@@ -1,13 +1,12 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { StatusBadge, Text } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
-import { IconCurrency } from 'Assets/svgs/currency';
+import { IsIconCurrency } from 'Assets/svgs/currency';
 
 type AccountNeedsVerificationProps = {
     multipliers_account_status: string;
@@ -36,7 +35,7 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: Accou
                     {title}
                 </Text>
             }
-            icon={IconCurrency(icon) ? icon : 'USD'}
+            icon={IsIconCurrency(icon) ? icon : 'USD'}
             onClick={() => {
                 return openModal('currency_selection');
             }}

@@ -2,9 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import './balance-text.scss';
-import { observer } from 'mobx-react-lite';
 
 // Todo: this definitely needs to be somewhere else
 type Size = 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 's' | 'xsm' | 'sm' | 'm' | 'l' | 'xl' | 'xxl';

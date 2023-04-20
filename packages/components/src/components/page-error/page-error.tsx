@@ -22,7 +22,6 @@ type TPageErrorProps = {
     should_clear_error_on_click?: boolean;
     has_malta_account?: boolean;
     should_redirect?: boolean;
-    is_logged_in?: boolean;
 };
 
 const PageError = ({
@@ -32,7 +31,6 @@ const PageError = ({
     has_malta_account,
     header,
     image_url,
-    is_logged_in,
     messages,
     redirect_labels,
     redirect_urls,
@@ -123,6 +121,7 @@ const PageError = ({
                 </div>
                 <div className='dc-page-error__btn-wrapper'>
                     {should_redirect &&
+                        redirect_labels.length !== 0 &&
                         redirect_urls?.map?.((url, index) => (
                             <ButtonLink
                                 className='dc-page-error__btn'
@@ -136,7 +135,7 @@ const PageError = ({
                                 </Text>
                             </ButtonLink>
                         ))}
-                    {window.location.pathname !== routes.bot && !should_redirect && (
+                    {!should_redirect && (
                         <Button
                             type='button'
                             className='dc-page-error__btn--no-redirect'

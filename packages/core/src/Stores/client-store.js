@@ -279,6 +279,7 @@ export default class ClientStore extends BaseStore {
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
             should_show_eu_content: computed,
+            should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -815,6 +816,10 @@ export default class ClientStore extends BaseStore {
     get should_show_eu_content() {
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
         return (!this.is_logged_in && this.is_eu_country) || this.is_eu || is_current_mf;
+    }
+
+    get should_show_eu_error() {
+        return this.is_eu_country || (this.is_eu && !this.is_low_risk);
     }
 
     get is_virtual() {

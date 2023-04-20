@@ -12,7 +12,6 @@ const ErrorComponent = ({
     country_standpoint,
     has_malta_account,
     header,
-    is_logged_in,
     message,
     redirect_label,
     redirectOnClick = null,
@@ -39,6 +38,7 @@ const ErrorComponent = ({
 
     const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
     const hide_notification = localStorage.getItem('hide_close_mx_mlt_account_notification');
+    const bot_error_button = window.location.pathname === routes.bot && !redirect_label && [];
 
     if (type === 'mx_mlt_removal' && !hide_notification) {
         return (
@@ -78,12 +78,12 @@ const ErrorComponent = ({
                     : [localize('Sorry, an error occured while processing your request.'), refresh_message]
             }
             redirect_urls={[redirect_to]}
-            redirect_labels={[redirect_label || localize('Refresh')]}
+            redirect_labels={bot_error_button || [redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => location.reload())}
             should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}
             has_malta_account={has_malta_account}
-            should_redirect={window.location.pathname === routes.bot ? is_logged_in : should_redirect}
+            should_redirect={should_redirect}
         />
     );
 };
@@ -93,7 +93,6 @@ ErrorComponent.propTypes = {
     country_standpoint: PropTypes.object,
     has_malta_account: PropTypes.bool,
     header: PropTypes.string,
-    is_logged_in: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
     redirectOnClick: PropTypes.func || PropTypes.object,
     redirect_label: PropTypes.string,
@@ -114,5 +113,4 @@ export default connect(({ client, notifications, ui }) => ({
     has_malta_account: client.has_malta_account,
     can_have_mlt_account: client.can_have_mlt_account,
     country_standpoint: client.country_standpoint,
-    is_logged_in: client.is_logged_in,
 }))(ErrorComponent);

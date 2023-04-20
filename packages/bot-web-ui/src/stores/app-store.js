@@ -36,7 +36,7 @@ export default class AppStore {
 
     handleErrorForEu = (show_default_error = false) => {
         const { client, common, ui } = this.root_store.core;
-        if (window.location.pathname === routes.bot && client.should_show_eu_content) {
+        if (window.location.pathname === routes.bot && client.should_show_eu_error) {
             showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         } else if (
             (client.is_eu && !client.is_bot_allowed && window.location.pathname === routes.bot) ||

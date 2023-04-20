@@ -9,7 +9,9 @@ const useExchangeRate = () => {
     const { exchange_rates } = useStore();
     const data = exchange_rates.data;
     const rates = data?.rates;
+
     const getRate = useCallback((currency: string) => rates?.[currency] || 1, [rates]);
+
     return {
         getRate,
         last_update: data?.date,

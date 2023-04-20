@@ -1,5 +1,5 @@
 class Errors {
-    errors: { [key: string]: Array<string> };
+    errors: { [key: string]: string[] };
 
     constructor() {
         this.errors = {};

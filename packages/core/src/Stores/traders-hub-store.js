@@ -102,6 +102,7 @@ export default class TradersHubStore extends BaseStore {
             toggleRegulatorsCompareModal: action.bound,
             updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
+            restricted_countries_filter_content: computed,
         });
 
         reaction(
@@ -115,6 +116,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.modules?.cfd?.current_list,
                 this.root_store.client.landing_companies,
                 this.root_store.common.current_language,
+                this.restricted_countries_filter_content,
             ],
             () => {
                 this.getAvailablePlatforms();
@@ -395,6 +397,12 @@ export default class TradersHubStore extends BaseStore {
         this.setCombinedCFDMT5Accounts();
     }
 
+    get restricted_countries_filter_content() {
+        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+
+        return financial_company?.shortcode === 'svg' && !gaming_company;
+    }
+
     get CFDs_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
@@ -405,6 +413,13 @@ export default class TradersHubStore extends BaseStore {
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
+
+        if (this.restricted_countries_filter_content) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account => account.market_type === 'financial'
             );
             return;
         }
@@ -422,7 +437,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableDxtradeAccounts() {
-        if (this.CFDs_restricted_countries) {
+        if (this.CFDs_restricted_countries || this.restricted_countries_filter_content) {
             this.available_dxtrade_accounts = [];
             return;
         }

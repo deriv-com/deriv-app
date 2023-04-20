@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Form, Formik } from 'formik';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionConfirmPage from './self-exclusion-confirm-page';

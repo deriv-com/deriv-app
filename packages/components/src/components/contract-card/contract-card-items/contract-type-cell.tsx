@@ -1,6 +1,7 @@
 import React from 'react';
 import { TGetContractTypeDisplay } from '../../types';
 import IconTradeTypes from '../../icon-trade-types';
+import { isVanillaContract } from '@deriv/shared';
 
 export type TContractTypeCellProps = {
     getContractTypeDisplay: TGetContractTypeDisplay;
@@ -19,7 +20,7 @@ const ContractTypeCell = ({
     <div className='dc-contract-type'>
         <div className='dc-contract-type__type-wrapper'>
             <IconTradeTypes
-                type={is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase()}
+                type={is_high_low && !isVanillaContract(type) ? `${type.toLowerCase()}_barrier` : type.toLowerCase()}
                 className='category-type'
                 size={24}
             />

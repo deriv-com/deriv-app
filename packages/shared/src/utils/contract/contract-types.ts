@@ -1,7 +1,5 @@
 import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
-import { useStore } from '@deriv/stores';
 
-export type TRootStore = ReturnType<typeof useStore>;
 export type TContractStore = {
     contract_info: ProposalOpenContract;
     contract_update_take_profit: number | string;

@@ -1,5 +1,5 @@
+import React from 'react';
 import { FormikHelpers, FormikValues } from 'formik';
-import * as React from 'react';
 
 export type TSelfExclusionContext = {
     backFromConfirmLimits?: () => void;

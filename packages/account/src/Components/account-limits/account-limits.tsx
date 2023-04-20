@@ -45,7 +45,7 @@ type TAccountLimits = {
     is_switching: boolean;
     is_virtual: boolean;
     overlay_ref: HTMLDivElement;
-    setIsOverlayShown?: (is_overlay_shown: boolean | undefined) => void;
+    setIsOverlayShown?: (is_overlay_shown?: boolean) => void;
     setIsPopupOverlayShown?: (is_popup_overlay_shown: boolean) => void;
     should_bypass_scrollbars?: boolean;
     should_show_article?: boolean;
@@ -289,13 +289,11 @@ const AccountLimits = ({
                                                 <React.Fragment>
                                                     <tr>
                                                         <AccountLimitsTableCell>
-                                                            <Localize
-                                                                i18n_default_text={
-                                                                    is_appstore
-                                                                        ? 'Total withdrawal limit'
-                                                                        : 'Total withdrawal allowed'
-                                                                }
-                                                            />
+                                                            {is_appstore ? (
+                                                                <Localize i18n_default_text='Total withdrawal limit' />
+                                                            ) : (
+                                                                <Localize i18n_default_text='Total withdrawal allowed' />
+                                                            )}
                                                             {is_appstore && !is_fully_authenticated && (
                                                                 <React.Fragment>
                                                                     <Text

@@ -29,20 +29,40 @@ const WalletHeader = React.memo(({ balance = 0, currency = 'USD', jurisdiction =
 
     return (
         <div className='wallet-header'>
-            <WalletsImage image={image_bg} />
-            <WalletsImage image={image_bg} width={2} />
-            <WalletsImage image={image_bg} width={3} />
-            {/* <WalletsImage image={image_bg} width={3} /> */}
-            <WalletsImage image={image_currency} />
+            {/* <WalletsImage image={image_bg} /> */}
+            {/* <WalletsImage image={image_currency} /> */}
+            <div className='wallet-header__container'>
+                <div className='wallet-header__currency'>
+                    <Icon icon='IcAppstoreWalletEurLight' width={120} height={80} />
+                </div>
+                <div className='wallet-header__description'>
+                    <Icon icon='IcAppstoreWalletDeposit' size={16} />
+                    <Icon icon='IcAppstoreWalletWithdraw' size={16} />
+                    <Icon icon='IcAppstoreWalletTransfer' size={16} />
+                    <Icon icon='IcAppstoreWalletTransactions' size={16} />
+                </div>
+                <div className='wallet-header__balance'>description</div>
+            </div>
+
+            {/* <Icon icon='IcAppstoreAudBg' />
+            <Icon icon='IcAppstoreCircle' />
+            <Icon icon='IcAppstoreAdd' size={32} />
+            <Icon icon='IcAppstoreAudBg' size={128} />
+            <Icon icon='IcAppstoreCircle' size={128} />
+            <Icon icon='IcAppstoreAdd' size={128} /> */}
+
             {/* <h1>I am a wallet header. Balance = {balance}</h1>
             <p>
                 Currency: {currency}, jurisdiction: {jurisdiction}
             </p> */}
+
             {/* <TradingPlatformIcon icon='Demo' />
+            <TradingPlatformIcon icon='Demo' size={24} />
             <TradingPlatformIcon icon='Demo' size={32} />
             <TradingPlatformIcon icon='Demo' size={64} />
             <TradingPlatformIcon icon='Demo' size={128} /> */}
-            <Icon icon='IcMt5CfdPlatform' size={32} />
+
+            {/* <Icon icon='IcMt5CfdPlatform' size={32} /> */}
             {/* <Icon icon='IcMt5CfdPlatform' size={64} />; */}
             {/* <Icon icon='IcMt5CfdPlatform' size={128} />; */}
             {/* <Icon icon='IcMt5CfdPlatform' size={256} />; */}

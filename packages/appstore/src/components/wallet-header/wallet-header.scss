@@ -1,9 +1,18 @@
 .wallet-header {
-    // width: 100%;
     margin: 2.4rem 0;
-    // height: 12.8rem;
     padding: 2.4rem;
-    // display: flex;
     background-color: #fff;
     border-radius: $BORDER_RADIUS * 4;
+    height: 12.8rem;
+    // border: 1px solid black; // test
+
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        height: 8rem;
+    }
+
+    &__currency {
+        width: 12.8rem;
+    }
 }

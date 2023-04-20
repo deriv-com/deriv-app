@@ -45,7 +45,6 @@ const App = () => {
         }
 
         if (/\/profile$/.test(history?.location.pathname)) {
-            history.push(routes.cashier_p2p);
             setShouldShowProfile(true);
         }
 

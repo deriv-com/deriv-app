@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import type { TStores } from './useStore';
+import { TStores } from '../types';
 
 const mock = (): TStores => {
     return {
@@ -243,6 +243,9 @@ const mock = (): TStores => {
             is_fully_authenticated: false,
             states_list: [],
             fetchStatesList: jest.fn(),
+            dxtrade_accounts_list: [],
+            default_currency: 'USD',
+            resetVirtualBalance: jest.fn(),
             has_enabled_two_fa: false,
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
@@ -338,8 +341,10 @@ const mock = (): TStores => {
             is_low_risk_cr_eu_real: false,
             CFDs_restricted_countries: [],
             show_eu_related_content: false,
+            selected_account_type: 'real',
             no_CR_account: false,
             no_MF_account: false,
+            setTogglePlatformType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),
@@ -358,10 +363,9 @@ const mock = (): TStores => {
             setP2PRedirectTo: jest.fn(),
         },
         modules: {},
-        counter: {
-            count: 0,
-            increment: jest.fn(),
-            decrement: jest.fn(),
+        exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
             unmount: jest.fn(),
         },
     };

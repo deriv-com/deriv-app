@@ -24,7 +24,15 @@ import {
 import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
-const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot, is_vanilla, is_eu }) => {
+const ContractDetails = ({
+    contract_end_time,
+    contract_info,
+    duration,
+    duration_unit,
+    exit_spot,
+    is_vanilla,
+    is_eu,
+}) => {
     const {
         commission,
         contract_type,

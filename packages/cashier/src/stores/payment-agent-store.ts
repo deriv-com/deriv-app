@@ -324,7 +324,7 @@ export default class PaymentAgentStore {
 
         setLoading(true);
         this.setOnRemount(this.onMountPaymentAgentWithdraw);
-        onMountCommon();
+        await onMountCommon();
 
         this.setIsWithdraw(true);
         this.setIsWithdrawSuccessful(false);

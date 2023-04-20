@@ -16,7 +16,7 @@ import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>

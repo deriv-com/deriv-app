@@ -7,7 +7,7 @@ import DMT5CompareModalContent from './mt5-compare-table-content';
 import CfdDxtradeCompareContent from '../Components/cfd-dxtrade-compare-content';
 import { observer, useStore } from '@deriv/stores';
 import { LandingCompany } from '@deriv/api-types';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCompareAccountsReusedProps = {
     platform: string;

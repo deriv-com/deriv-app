@@ -6,7 +6,7 @@ import { localize, Localize, getLanguage } from '@deriv/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TResetPasswordIntent) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');

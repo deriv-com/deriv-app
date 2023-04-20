@@ -5,7 +5,7 @@ import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;

@@ -35,7 +35,7 @@ import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordReset } from './props.types';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {

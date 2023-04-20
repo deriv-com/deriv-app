@@ -7,7 +7,7 @@ import Loading from '../templates/_common/components/loading';
 import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
-import { TCFDPasswordReset } from 'Containers/props.types';
+import { TCFDPasswordReset } from '../Containers/props.types';
 
 type TStandPoint = {
     financial_company: string;

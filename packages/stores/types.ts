@@ -245,8 +245,7 @@ type TClientStore = {
     setAccountSettings: (get_settings_response: GetSettings) => void;
     upgradeable_landing_companies: unknown[];
     is_populating_mt5_account_list: boolean;
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    landing_companies: Record<string, any>;
+    landing_companies: LandingCompany;
     getChangeableFields: () => string[];
     landing_company: LandingCompany;
     isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;

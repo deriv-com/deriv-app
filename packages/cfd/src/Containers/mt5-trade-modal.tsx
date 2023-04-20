@@ -5,7 +5,7 @@ import DMT5TradeModal from './dmt5-trade-modal';
 import DerivXTradeModal from './derivx-trade-modal';
 import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordReset } from './props.types';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TMT5TradeModalProps = {
     is_eu_user: boolean;

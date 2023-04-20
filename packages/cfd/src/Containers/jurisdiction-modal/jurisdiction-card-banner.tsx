@@ -4,7 +4,7 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TVerificationStatusBannerProps } from '../props.types';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const VerificationStatusBanner = observer(
     ({ account_type, card_classname, disabled, type_of_card }: TVerificationStatusBannerProps) => {

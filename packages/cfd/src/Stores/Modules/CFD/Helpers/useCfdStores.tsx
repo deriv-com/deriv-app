@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { useStore } from '@deriv/stores';
-import type { TCFDStore } from 'src/types/cfd-store.types';
+import type { TCFDStore } from '../../../../types/cfd-store.types';
 
 const CFDStoreContext = createContext<TCFDStore | null>(null);
 

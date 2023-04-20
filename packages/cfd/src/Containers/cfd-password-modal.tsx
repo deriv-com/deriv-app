@@ -27,12 +27,12 @@ import {
     WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SuccessDialog from '../Components/success-dialog';
-import 'Sass/cfd.scss';
+import SuccessDialog from '../Components/success-dialog.jsx';
+import '../sass/cfd.scss';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 export type TCFDPasswordFormValues = { password: string };
 

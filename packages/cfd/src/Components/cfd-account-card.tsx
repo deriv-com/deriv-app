@@ -16,7 +16,7 @@ import {
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore, observer } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {

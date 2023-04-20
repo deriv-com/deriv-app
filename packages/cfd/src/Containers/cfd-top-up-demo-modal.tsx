@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 type TCFDTopUpDemoModalProps = {
     platform: string;

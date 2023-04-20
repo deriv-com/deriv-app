@@ -9,7 +9,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
-import { TCFDPasswordReset } from 'Containers/props.types';
+import { TCFDPasswordReset } from '../Containers/props.types';
 
 type TStandPoint = {
     financial_company: string;

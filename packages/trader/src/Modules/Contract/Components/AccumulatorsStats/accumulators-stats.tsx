@@ -3,19 +3,18 @@ import classNames from 'classnames';
 import { DesktopWrapper, Icon, MobileDialog, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from '../../../../Stores/connect';
+import { connect } from 'Stores/connect';
 import ExpandedTicksHistory from './expanded-ticks-history';
 import TicksHistoryCounter from './ticks-history-counter';
 import { AccumulatorsStatsManualModal } from './accumulators-stats-manual-modal';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
-import { useStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 
 type TAccumulatorStats = {
-    is_dark_theme?: ReturnType<typeof useStore>['ui']['is_dark_mode_on'];
+    is_dark_theme?: boolean;
     is_expandable?: boolean;
     ticks_history_stats: {
-        ticks_stayed_in?: ReturnType<typeof useStore>['trade']['tick_history_stats']['ticks_stayed_in'];
+        ticks_stayed_in?: number[];
     };
 };
 export const ROW_SIZES = {
@@ -63,7 +62,14 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
                     {!is_collapsed ? (
                         <div className='accumulators-stats__history-heading'>{localize('Number of ticks')}</div>
                     ) : (
-                        rows[0]?.map((el, i) => <TicksHistoryCounter key={i} value={el} has_progress_dots={i === 0} />)
+                        rows[0]?.map((el, i) => (
+                            <TicksHistoryCounter
+                                data_testid_ticks_history_counter='dt_accu_stats_history_counter'
+                                key={i}
+                                value={el}
+                                has_progress_dots={i === 0}
+                            />
+                        ))
                     )}
                 </Text>
             </div>

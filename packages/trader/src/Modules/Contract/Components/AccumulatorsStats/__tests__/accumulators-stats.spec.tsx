@@ -78,7 +78,7 @@ describe('AccumulatorsStats', () => {
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
 
         fireEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
-        const mobile_dialog = screen.getByTestId('dt_mobile_dialog_stats');
+        const mobile_dialog = screen.getByTestId('dt_mobile_dialog');
         const row = within(mobile_dialog).getAllByTestId('dt_accu_stats_history_row')[0];
         expect(within(row).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_EXPANDED);
         expect(within(mobile_dialog).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(20);

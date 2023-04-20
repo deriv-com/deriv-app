@@ -3,11 +3,10 @@ import { Icon, Loading, Modal, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import 'Sass/app/modules/contract/accumulators-stats.scss';
-import { useStore } from '@deriv/stores';
 
 type TAccumulatorsStatsManualModal = {
     icon_classname: string;
-    is_dark_theme?: ReturnType<typeof useStore>['ui']['is_dark_mode_on'];
+    is_dark_theme?: boolean;
     is_manual_open: boolean;
     title: string;
     toggleManual: () => void;

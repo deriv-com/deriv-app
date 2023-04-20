@@ -2,12 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import TicksHistoryCounter from '../ticks-history-counter';
 
-type TTicksHistoryCounter = React.ComponentProps<typeof TicksHistoryCounter>;
-
 describe('TicksHistoryCounter', () => {
-    let mock_props: TTicksHistoryCounter;
+    let mock_props: React.ComponentProps<typeof TicksHistoryCounter>;
     beforeEach(() => {
         mock_props = {
+            data_testid_progress_dots: 'dt_accumulators-stats__progress-dots',
+            data_testid_ticks_history_counter: 'dt_accu_stats_history_counter',
             has_progress_dots: false,
             value: 1234,
         };

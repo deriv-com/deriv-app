@@ -2,20 +2,19 @@ import React from 'react';
 import classNames from 'classnames';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv/shared';
 import { MobileWrapper } from '@deriv/components';
-import { connect } from '../../../../../../Stores/connect';
+import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
-import { useStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 
 type TAccumulatorsAmountMobile = {
-    amount: ReturnType<typeof useStore>['trade']['amount'];
-    currency: ReturnType<typeof useStore>['trade']['currency'];
-    current_focus: ReturnType<typeof useStore>['ui']['current_focus'];
+    amount: number;
+    currency: string;
+    current_focus: string | null;
     is_nativepicker: boolean;
-    is_single_currency: ReturnType<typeof useStore>['client']['is_single_currency'];
-    onChange: ReturnType<typeof useStore>['trade']['onChange'];
-    setCurrentFocus: ReturnType<typeof useStore>['ui']['setCurrentFocus'];
+    is_single_currency: boolean;
+    onChange: React.ChangeEventHandler<Element>;
+    setCurrentFocus: (value: string) => void;
 };
 
 const AccumulatorsAmountMobile = ({

@@ -1,18 +1,17 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import NumberSelector from '../../../../../../App/Components/Form/number-selector.jsx';
-import Fieldset from '../../../../../../App/Components/Form/fieldset.jsx';
-import { connect } from '../../../../../../Stores/connect';
+import NumberSelector from 'App/Components/Form/number-selector.jsx';
+import Fieldset from 'App/Components/Form/fieldset.jsx';
+import { connect } from 'Stores/connect';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 import classNames from 'classnames';
-import { useStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types.js';
 
 type TAccumulator = {
-    accumulator_range_list: ReturnType<typeof useStore>['trade']['accumulator_range_list'];
-    growth_rate: ReturnType<typeof useStore>['trade']['growth_rate'];
-    onChange: ReturnType<typeof useStore>['trade']['onChange'];
-    tick_size_barrier: ReturnType<typeof useStore>['trade']['tick_size_barrier'];
+    accumulator_range_list: number[];
+    growth_rate: number;
+    onChange: React.ChangeEventHandler<Element>;
+    tick_size_barrier: number;
 };
 
 const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_barrier }: TAccumulator) => {

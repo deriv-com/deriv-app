@@ -1,15 +1,14 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import BalanceText from 'Components/elements/text/balance-text';
-import { useStores } from 'Stores';
+import { useStore, observer } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 
-const AssetSummary = () => {
-    const { traders_hub, client, common } = useStores();
+const AssetSummary = observer(() => {
+    const { traders_hub, client, common } = useStore();
     const {
         selected_account_type,
         platform_real_balance,
@@ -107,6 +106,6 @@ const AssetSummary = () => {
             ) : null}
         </div>
     );
-};
+});
 
-export default observer(AssetSummary);
+export default AssetSummary;

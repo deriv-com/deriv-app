@@ -125,10 +125,7 @@ const PageError = ({
                     {should_redirect &&
                         redirect_urls?.map?.((url, index) => (
                             <ButtonLink
-                                className={classNames('dc-page-error__btn', {
-                                    'dc-page-error__btn--none':
-                                        !is_logged_in && window.location.pathname === routes.bot,
-                                })}
+                                className='dc-page-error__btn'
                                 to={url}
                                 onClick={onClickHandler}
                                 size={buttonSize}
@@ -139,7 +136,7 @@ const PageError = ({
                                 </Text>
                             </ButtonLink>
                         ))}
-                    {!should_redirect && (
+                    {window.location.pathname !== routes.bot && !should_redirect && (
                         <Button
                             type='button'
                             className='dc-page-error__btn--no-redirect'

@@ -83,8 +83,7 @@ const ErrorComponent = ({
             should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}
             has_malta_account={has_malta_account}
-            should_redirect={should_redirect}
-            is_logged_in={is_logged_in}
+            should_redirect={window.location.pathname === routes.bot ? is_logged_in : should_redirect}
         />
     );
 };

@@ -33,7 +33,7 @@ export const getUrlSmartTrader = () => {
 export const getUrlBinaryBot = () => {
     const { is_deriv_app } = getPlatformFromUrl();
 
-    return 'https://deriv-binary-bot-git-fork-rupato-deriv-rupato-93084fix-g-e5a8aa.binary.sx/';
+    return 'https://deriv-binary-bot-git-fork-rupato-deriv-rupato-93084fix-g-e5a8aa.binary.sx';
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {

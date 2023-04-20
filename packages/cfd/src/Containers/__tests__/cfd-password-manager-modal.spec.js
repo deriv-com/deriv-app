@@ -19,6 +19,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     WS: {
         verifyEmail: jest.fn(() => Promise.resolve()),
     },
+    useWS: () => undefined,
 }));
 
 jest.mock('@contentpass/zxcvbn', () => ({

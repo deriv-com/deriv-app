@@ -85,18 +85,17 @@ const CashierTab = observer(() => {
     );
 });
 
-const MenuLinks = observer(() => {
+const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
     const { i18n } = useTranslation();
     const { client, ui } = useStore();
     const { is_logged_in } = client;
     const { is_mobile } = ui;
-    const is_traders_hub = window.location.pathname === routes.traders_hub;
 
     if (!is_logged_in) return <></>;
 
     return (
         <div key={`menu-links__${i18n.language}`} className='header__menu-links'>
-            {!is_traders_hub && <ReportTab />}
+            {!is_traders_hub_routes && <ReportTab />}
             {!is_mobile && <CashierTab />}
         </div>
     );

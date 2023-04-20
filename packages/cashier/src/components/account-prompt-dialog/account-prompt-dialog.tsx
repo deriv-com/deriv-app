@@ -16,7 +16,7 @@ const AccountPromptDialog = observer(() => {
     const non_crypto_account_loginid = React.useMemo(
         () =>
             Object.entries(accounts).reduce((initial_value, [loginid, settings]) => {
-                return !settings.is_virtual && !isCryptocurrency(settings.currency) ? loginid : initial_value;
+                return !settings.is_virtual && !isCryptocurrency(settings.currency || '') ? loginid : initial_value;
             }, ''),
         [accounts]
     );
@@ -32,6 +32,8 @@ const AccountPromptDialog = observer(() => {
             onConfirm={onConfirm}
             onCancel={onCancel}
             is_visible={should_show}
+            dismissable={false}
+            has_close_icon={false}
         >
             <Localize
                 i18n_default_text='To deposit money, please switch to your {{currency_symbol}} account.'

@@ -39,6 +39,24 @@
             transform: translateY(48px);
         }
     }
+
+    &__cta {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 2rem;
+        cursor: pointer;
+
+        &--link {
+            color: var(--text-loss-danger);
+        }
+
+        @include mobile {
+            position: relative;
+        }
+    }
+
     &__list {
         background-color: var(--general-main-1);
         width: 100%;
@@ -48,6 +66,7 @@
         transition: transform 0.25s ease;
         display: flex;
         flex-flow: wrap;
+        padding-bottom: 3rem;
 
         &-platform {
             position: relative;

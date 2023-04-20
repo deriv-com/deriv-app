@@ -588,7 +588,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         is_cfd_success_dialog_enabled,
         is_cfd_password_modal_enabled,
         jurisdiction_selected_shortcode,
-        setMt5Error: setError,
+        setError,
         setCFDSuccessDialog,
         submitMt5Password,
         submitCFDPassword,

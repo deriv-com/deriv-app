@@ -50,7 +50,7 @@ export type TCFDStore = {
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
-    setMt5Error: (state: boolean, obj?: Error) => void;
+    setError: (state: boolean, obj?: Error) => void;
     submitMt5Password: (values: { password: string }, actions: any) => void;
     submitCFDPassword: (values: { password: string } & { platform?: string }, actions: any) => void;
     new_account_response: Mt5NewAccount;

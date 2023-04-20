@@ -60,7 +60,7 @@ describe('<CFDPasswordModal/>', () => {
                 is_cfd_success_dialog_enabled: false,
                 submitMt5Password: mockSubmitMt5Password,
                 submitCFDPassword: mockSubmitCFDPasswordFn,
-                setMt5Error: mockSetMt5Error,
+                setError: mockSetMt5Error,
                 setCFDSuccessDialog: mockSetCFDSuccessDialog,
                 has_cfd_error: false,
                 error_message: '',

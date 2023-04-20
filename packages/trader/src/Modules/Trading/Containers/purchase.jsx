@@ -15,6 +15,7 @@ const Purchase = ({
     currency,
     has_cancellation,
     is_accumulator,
+    is_eu,
     is_market_closed,
     is_mobile,
     is_multiplier,
@@ -56,6 +57,7 @@ const Purchase = ({
                         basis={basis}
                         currency={currency}
                         has_increased={info.has_increased}
+                        is_eu={is_eu}
                         is_loading={isLoading(info)}
                         is_multiplier={is_multiplier}
                         is_vanilla={is_vanilla}
@@ -73,6 +75,7 @@ const Purchase = ({
                     has_cancellation={has_cancellation}
                     is_disabled={is_disabled}
                     is_accumulator={is_accumulator}
+                    is_eu={is_eu}
                     is_high_low={is_high_low}
                     is_loading={isLoading(info)}
                     is_market_closed={is_market_closed}
@@ -146,13 +149,14 @@ Purchase.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, portfolio, ui }) => ({
+export default connect(({ client, modules, portfolio, ui }) => ({
     active_positions: portfolio.active_positions,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     currency: modules.trade.currency,
     has_cancellation: modules.trade.has_cancellation,
     is_accumulator: modules.trade.is_accumulator,
+    is_eu: client.is_eu,
     is_multiplier: modules.trade.is_multiplier,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,

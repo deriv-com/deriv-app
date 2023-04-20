@@ -32,6 +32,7 @@ const PurchaseButton = ({
     info,
     is_accumulator,
     is_disabled,
+    is_eu,
     is_high_low,
     is_loading,
     is_multiplier,
@@ -129,6 +130,7 @@ const PurchaseButton = ({
                             currency={currency}
                             has_increased={has_increased}
                             is_accumulator={is_accumulator}
+                            is_eu={is_eu}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             should_fade={should_fade}

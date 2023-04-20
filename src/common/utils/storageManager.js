@@ -195,13 +195,13 @@ export const convertForDerivStore = tokenList => {
         const accId = account.accountName;
 
         clientAccounts[accId] = {};
-        clientAccounts[accId].account_type = tokenList[0].loginInfo[accountList].find(
+        clientAccounts[accId].account_type = tokenList[0].loginInfo[accountList]?.find(
             acc => acc.loginid === accId
-        ).account_type;
+        ).account_type || account.loginInfo.account_type;
         clientAccounts[accId].currency = account.loginInfo.currency;
-        clientAccounts[accId].is_disabled = tokenList[0].loginInfo[accountList].find(
+        clientAccounts[accId].is_disabled = tokenList[0].loginInfo[accountList]?.find(
             acc => acc.loginid === accId
-        ).is_disabled;
+        ).is_disabled || account.loginInfo.is_disabled;
         clientAccounts[accId].is_virtual = account.loginInfo.is_virtual;
         clientAccounts[accId].landing_company_shortcode = account.loginInfo.landing_company_name; // how shortcode is different from name?
         clientAccounts[accId].trading = account.loginInfo.trading;

@@ -217,6 +217,7 @@ const mock = (): TStores => {
             current_language: 'EN',
             is_network_online: false,
             is_language_changing: false,
+            getExchangeRate: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {
@@ -262,6 +263,25 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            selected_account_type: '',
+            platform_real_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            platform_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_real_balance: {
+                currency: '',
+                balance: 0,
+            },
+            no_CR_account: false,
+            no_MF_account: false,
         },
         menu: {
             attach: jest.fn(),

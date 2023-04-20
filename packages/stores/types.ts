@@ -211,6 +211,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
 };
 
 type TUiStore = {
@@ -279,6 +280,25 @@ type TTradersHubStore = {
     is_eu_user: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    selected_account_type: string;
+    platform_real_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    platform_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_real_balance: {
+        currency: string;
+        balance: number;
+    };
+    no_CR_account: boolean;
+    no_MF_account: boolean;
 };
 
 /**

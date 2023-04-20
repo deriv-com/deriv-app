@@ -15,7 +15,7 @@ type BalanceTextProps = {
     underline_style?: 'dotted' | 'solid' | 'none';
 };
 
-const BalanceText = ({ balance, currency, size = 'm', underline_style = 'none' }: BalanceTextProps) => {
+const BalanceText = observer(({ balance, currency, size = 'm', underline_style = 'none' }: BalanceTextProps) => {
     const { client, traders_hub } = useStore();
     const { selected_account_type } = traders_hub;
     const { has_active_real_account } = client;
@@ -42,6 +42,6 @@ const BalanceText = ({ balance, currency, size = 'm', underline_style = 'none' }
             </Text>
         </div>
     );
-};
+});
 
-export default observer(BalanceText);
+export default BalanceText;

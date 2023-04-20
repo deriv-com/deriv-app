@@ -183,7 +183,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_p2p_enabled } = general_store;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
-    const { show_eu_related_content } = traders_hub;
+    const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
 
@@ -499,6 +499,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_logging_in={is_logging_in}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
+                                        setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>
                             )}

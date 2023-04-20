@@ -1,14 +1,15 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import countries from 'i18n-iso-countries';
 import * as Cookies from 'js-cookie';
 import { init } from 'onfido-sdk-ui';
-import { Loading, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile, WS, routes } from '@deriv/shared';
+import { HintBox, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
-import { Link } from 'react-router-dom';
+import PoiConfirmWithExample from 'Components/poi/poi-confirm-with-example';
 
 const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, height, is_from_external }) => {
     const [api_error, setAPIError] = React.useState();
@@ -196,18 +197,34 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
             <div className='onfido-container'>
                 {component_to_load ||
                     (!is_from_external && (
-                        <React.Fragment>
-                            <div className='onfido-container__message'>
-                                <Text size='xs'>
-                                    <Localize
-                                        i18n_default_text='Before uploading your document, please ensure that your <0>personal details</0> are updated to match your proof of identity. This will help to avoid delays during the verification process.'
-                                        components={[<Link to={routes.personal_details} key={0} className='link' />]}
-                                    />
-                                </Text>
-                            </div>
-                        </React.Fragment>
+                        <div style={{ marginBottom: '24px' }}>
+                            <PoiConfirmWithExample
+                                name_dob_message=<Localize
+                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                    components={[<strong key={0} />]}
+                                />
+                            />
+                        </div>
                     ))}
-                <div id='onfido' className={component_to_load ? 'onfido-container__hidden' : ''} />
+                <HintBox
+                    className='onfido-container__message'
+                    icon='IcInfoBlue'
+                    icon_height={16}
+                    icon_width={16}
+                    message={
+                        <Text as='p' size='xxxs'>
+                            <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
+                        </Text>
+                    }
+                    is_info
+                />
+                <div
+                    id='onfido'
+                    className={classNames({
+                        'onfido-container__disabled': true,
+                        'onfido-container__hidden': component_to_load,
+                    })}
+                />
             </div>
         </ThemedScrollbars>
     );

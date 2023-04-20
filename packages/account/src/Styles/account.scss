@@ -2049,22 +2049,26 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define onfido-container; weak */
 .onfido-container {
-    margin-top: 24px;
+    position: relative;
+    padding-left: 1.6rem;
 
     &__hidden {
         display: none;
     }
 
+    &__disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
     &__message {
-        padding: 1rem;
-        margin: 0 auto 1.4rem;
-        width: 94vw; // same as onfido
-        max-width: 53rem;
+        position: absolute;
+        top: 34.9rem;
+        left: 20.2rem;
+        z-index: 1;
     }
 
     @include mobile {
-        margin-top: 0;
-
         .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 0 1.5em 0.4em;
@@ -3019,5 +3023,17 @@ $MIN_HEIGHT_FLOATING: calc(
         align-items: flex-start;
         justify-content: center;
         gap: 0.8rem;
+    }
+}
+
+.poi-confirm-example {
+    display: flex;
+    flex-direction: column;
+    padding: 1.6rem;
+    gap: 1.6rem;
+    border: 1px solid #d6dadb;
+    border-radius: 0.8rem;
+
+    &__container {
     }
 }

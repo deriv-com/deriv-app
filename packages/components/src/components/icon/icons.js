@@ -358,6 +358,7 @@ import './common/ic-email-firewall.svg';
 import './common/ic-email-outline-new.svg';
 import './common/ic-email-outline.svg';
 import './common/ic-email-sent-dashboard.svg';
+import './common/ic-email-sent-expired.svg';
 import './common/ic-email-sent-p2p.svg';
 import './common/ic-email-sent.svg';
 import './common/ic-email-spam.svg';

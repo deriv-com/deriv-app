@@ -36,10 +36,22 @@ const WalletHeader = React.memo(({ balance = 0, currency = 'USD', jurisdiction =
                     <Icon icon='IcAppstoreWalletEurLight' width={120} height={80} />
                 </div>
                 <div className='wallet-header__description'>
-                    <Icon icon='IcAppstoreWalletDeposit' size={16} />
-                    <Icon icon='IcAppstoreWalletWithdraw' size={16} />
-                    <Icon icon='IcAppstoreWalletTransfer' size={16} />
-                    <Icon icon='IcAppstoreWalletTransactions' size={16} />
+                    <div>Title</div>
+
+                    <div className={'wallet-header__description-buttons'}>
+                        <div className={'wallet-header__description-buttons-item'}>
+                            <Icon icon='IcAppstoreWalletDeposit' />
+                        </div>
+                        <div className={'wallet-header__description-buttons-item'}>
+                            <Icon icon='IcAppstoreWalletWithdraw' />
+                        </div>
+                        <div className={'wallet-header__description-buttons-item'}>
+                            <Icon icon='IcAppstoreWalletTransfer' />
+                        </div>
+                        <div className={'wallet-header__description-buttons-item'}>
+                            <Icon icon='IcAppstoreWalletTransactions' />
+                        </div>
+                    </div>
                 </div>
                 <div className='wallet-header__balance'>description</div>
             </div>

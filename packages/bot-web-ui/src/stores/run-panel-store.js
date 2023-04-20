@@ -137,6 +137,9 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        performance.clearMeasures();
+        performance.clearMarks();
+
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
         const is_ios = mobileOSDetect() === 'iOS';
@@ -220,6 +223,8 @@ export default class RunPanelStore {
         if (this.error_type) {
             this.error_type = undefined;
         }
+
+        window.printStats();
     }
 
     onClearStatClick() {

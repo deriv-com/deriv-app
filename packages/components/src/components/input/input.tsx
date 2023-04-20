@@ -26,13 +26,15 @@ type TInputProps = {
     max_characters?: number;
     maxLength?: number;
     name?: string;
-    onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onInput?: (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onClick?: (e: React.MouseEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onPaste?: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onInput?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onClick?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseEnter?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseLeave?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement;
@@ -40,6 +42,8 @@ type TInputProps = {
     value?: string | number;
     warn?: string;
     readOnly?: boolean;
+    is_autocomplete_disabled?: string;
+    is_hj_whitelisted?: string;
 };
 
 type TInputWrapper = {
@@ -85,7 +89,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
             }
         }, [initial_character_count]);
 
-        const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        const changeHandler: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = e => {
             let input_value = e.target.value;
             if (max_characters && input_value.length >= max_characters) {
                 input_value = input_value.slice(0, max_characters);

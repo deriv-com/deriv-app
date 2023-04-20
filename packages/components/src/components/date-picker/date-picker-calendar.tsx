@@ -1,13 +1,27 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Calendar from '../calendar';
 import { useBlockScroll } from '../../hooks';
 
-const DatePickerCalendar = React.forwardRef(
-    ({ alignment, calendar_el_ref, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }, ref) => {
+type TDatePickerCalendarProps = {
+    value: string | null;
+    alignment?: string;
+    is_datepicker_visible: boolean;
+    calendar_el_ref: React.RefObject<HTMLElement>;
+    parent_ref: React.RefObject<HTMLElement>;
+    portal_id: string;
+    style: React.CSSProperties;
+    placement: string;
+    onHover?: (hovered_date: string) => void;
+    onSelect: (formatted_date: string, keep_open: boolean) => void;
+    calendar_view?: 'date' | 'month' | 'year' | 'decade';
+    keep_open: boolean;
+};
+
+const DatePickerCalendar = React.forwardRef<HTMLDivElement, TDatePickerCalendarProps>(
+    ({ alignment, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }, ref) => {
         const css_transition_classnames = {
             enter: classNames('dc-datepicker__picker--enter', {
                 [`dc-datepicker__picker--${alignment}-enter`]: alignment,
@@ -43,15 +57,19 @@ const DatePickerCalendar = React.forwardRef(
                               }
                     }
                 >
-                    <Calendar ref={ref} calendar_el_ref={calendar_el_ref} {...props} />
+                    <Calendar ref={ref} {...props} />
                 </div>
             </CSSTransition>
         );
 
-        useBlockScroll(portal_id && is_datepicker_visible ? parent_ref : false);
+        useBlockScroll(portal_id && is_datepicker_visible ? parent_ref : null);
 
         if (portal_id) {
-            return ReactDOM.createPortal(el_calendar, document.getElementById(portal_id));
+            const portal = document.getElementById(portal_id);
+
+            if (portal) {
+                return ReactDOM.createPortal(el_calendar, portal);
+            }
         }
 
         return el_calendar;
@@ -59,15 +77,5 @@ const DatePickerCalendar = React.forwardRef(
 );
 
 DatePickerCalendar.displayName = 'DatePickerCalendar';
-
-DatePickerCalendar.propTypes = {
-    alignment: PropTypes.string,
-    is_datepicker_visible: PropTypes.bool,
-    calendar_el_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
-    parent_ref: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]),
-    portal_id: PropTypes.string,
-    style: PropTypes.object,
-    placement: PropTypes.string,
-};
 
 export default DatePickerCalendar;

@@ -131,7 +131,10 @@ export default class OrderStore {
             if (response) {
                 if (response.error) {
                     if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
-                        this.root_store.general_store.showModal({ key: 'EmailVerificationModal', props: {} });
+                        setTimeout(
+                            () => this.root_store.general_store.showModal({ key: 'EmailVerificationModal', props: {} }),
+                            230
+                        );
                     } else if (
                         response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
@@ -356,8 +359,8 @@ export default class OrderStore {
         const { general_store } = this.root_store;
         const order_information = createExtendedOrderDetails(
             input_order,
-            general_store.client.loginid,
-            general_store.props.server_time
+            general_store.external_stores.client.loginid,
+            general_store.server_time
         );
         this.setOrderId(order_information.id); // Sets the id in URL
         if (order_information.is_active_order) {
@@ -417,8 +420,8 @@ export default class OrderStore {
 
         const get_order_status = createExtendedOrderDetails(
             p2p_order_info,
-            general_store.client.loginid,
-            general_store.props.server_time
+            general_store.external_stores.client.loginid,
+            general_store.server_time
         );
 
         const order_idx = this.orders.findIndex(order => order.id === p2p_order_info.id);
@@ -448,8 +451,8 @@ export default class OrderStore {
         if (get_order_status.is_completed_order && !get_order_status.is_reviewable) {
             // Remove notification once order review period is finished
             const notification_key = `order-${p2p_order_info.id}`;
-            general_store.props.removeNotificationMessage({ key: notification_key });
-            general_store.props.removeNotificationByKey({ key: notification_key });
+            general_store.external_stores?.notifications.removeNotificationMessage({ key: notification_key });
+            general_store.external_stores?.notifications.removeNotificationByKey({ key: notification_key });
         }
     }
 
@@ -560,12 +563,6 @@ export default class OrderStore {
 
     setOrderId(order_id) {
         this.order_id = order_id;
-
-        const { general_store } = this.root_store;
-
-        if (typeof general_store.props.setOrderId === 'function') {
-            general_store.props.setOrderId(order_id);
-        }
     }
 
     setOrderPaymentMethodDetails(order_payment_method_details) {

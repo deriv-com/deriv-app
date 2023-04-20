@@ -74,11 +74,12 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             is_eu_selected: computed,
             is_real: computed,
+            is_low_risk_cr_eu_real: computed,
             is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
             multipliers_account_status: computed,
-            financial_restricted_countries: computed,
+            CFDs_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -249,45 +250,52 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get is_demo_low_risk() {
-        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
-        return (
-            this.content_flag === ContentFlag.CR_DEMO &&
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg'
-        );
+        const { is_landing_company_loaded } = this.root_store.client;
+        if (is_landing_company_loaded) {
+            const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+            return (
+                this.content_flag === ContentFlag.CR_DEMO &&
+                financial_company?.shortcode === 'maltainvest' &&
+                gaming_company?.shortcode === 'svg'
+            );
+        }
+        return false;
     }
 
     get content_flag() {
-        const { is_logged_in, landing_companies, residence } = this.root_store.client;
-        const { financial_company, gaming_company } = landing_companies;
+        const { is_logged_in, landing_companies, residence, is_landing_company_loaded } = this.root_store.client;
+        if (is_landing_company_loaded) {
+            const { financial_company, gaming_company } = landing_companies;
 
-        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
-        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
+            //this is a conditional check for countries like Australia/Norway which fulfills one of these following conditions
+            const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
 
-        if (!is_logged_in) return '';
-        if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
-            if (this.is_demo) return ContentFlag.EU_DEMO;
-            return ContentFlag.EU_REAL;
-        } else if (
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg' &&
-            this.is_real
-        ) {
-            if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
-            return ContentFlag.LOW_RISK_CR_NON_EU;
-        } else if (
-            ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') || restricted_countries) &&
-            this.is_real
-        ) {
-            return ContentFlag.HIGH_RISK_CR;
+            if (!is_logged_in) return '';
+            if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
+                if (this.is_demo) return ContentFlag.EU_DEMO;
+                return ContentFlag.EU_REAL;
+            } else if (
+                financial_company?.shortcode === 'maltainvest' &&
+                gaming_company?.shortcode === 'svg' &&
+                this.is_real
+            ) {
+                if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
+                return ContentFlag.LOW_RISK_CR_NON_EU;
+            } else if (
+                ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') ||
+                    restricted_countries) &&
+                this.is_real
+            ) {
+                return ContentFlag.HIGH_RISK_CR;
+            }
+
+            // Default Check
+            if (isEuCountry(residence)) {
+                if (this.is_demo) return ContentFlag.EU_DEMO;
+                return ContentFlag.EU_REAL;
+            }
+            if (this.is_demo) return ContentFlag.CR_DEMO;
         }
-
-        // Default Check
-        if (isEuCountry(residence)) {
-            if (this.is_demo) return ContentFlag.EU_DEMO;
-            return ContentFlag.EU_REAL;
-        }
-        if (this.is_demo) return ContentFlag.CR_DEMO;
         return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
@@ -305,6 +313,10 @@ export default class TradersHubStore extends BaseStore {
             gaming_company?.shortcode !== 'svg';
 
         return restricted_countries;
+    }
+
+    get is_low_risk_cr_eu_real() {
+        return [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(this.content_flag);
     }
 
     getAvailablePlatforms() {
@@ -396,7 +408,7 @@ export default class TradersHubStore extends BaseStore {
         this.setCombinedCFDMT5Accounts();
     }
 
-    get financial_restricted_countries() {
+    get CFDs_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
         return gaming_company?.shortcode === 'svg' && !financial_company;
@@ -417,7 +429,7 @@ export default class TradersHubStore extends BaseStore {
             return;
         }
 
-        if (this.financial_restricted_countries) {
+        if (this.CFDs_restricted_countries) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(
                 account => account.market_type !== 'financial' && account.platform === CFD_PLATFORMS.MT5
             );
@@ -430,17 +442,17 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableDxtradeAccounts() {
+        if (this.CFDs_restricted_countries || this.restricted_countries_filter_content) {
+            this.available_dxtrade_accounts = [];
+            return;
+        }
+
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
                 account =>
                     ['EU', 'All'].some(region => region === account.availability) &&
                     account.platform === CFD_PLATFORMS.DXTRADE
             );
-            return;
-        }
-
-        if (this.restricted_countries_filter_content) {
-            this.available_dxtrade_accounts = [];
             return;
         }
 
@@ -504,12 +516,9 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get multipliers_account_status() {
-        const {
-            has_maltainvest_account,
-            account_status: { authentication },
-        } = this.root_store.client;
+        const { has_maltainvest_account, account_status } = this.root_store.client;
 
-        const multipliers_account_status = getMultipliersAccountStatus(authentication);
+        const multipliers_account_status = getMultipliersAccountStatus(account_status?.authentication);
         const should_show_status_for_multipliers_account =
             [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(this.content_flag) &&
             has_maltainvest_account &&

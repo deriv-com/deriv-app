@@ -1,5 +1,5 @@
-import type { GetAccountStatus, Authorize, DetailsOfEachMT5Loginid, LogOutResponse, GetLimits } from '@deriv/api-types';
-import type { TEmailVerificationType } from '@deriv/hooks';
+import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
@@ -15,7 +15,12 @@ type TAccountsList = {
         is_mt?: boolean;
         market_type?: string;
         nativepicker_text?: string;
-        platform_icon?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
         text?: JSX.Element | string;
         value?: string;
     };
@@ -100,9 +105,7 @@ type TClientStore = {
     balance?: string | number;
     can_change_fiat_currency: boolean;
     cfd_score: number;
-    is_cfd_score_available: boolean;
     setCFDScore: (score: number) => void;
-    setIsCFDScoreAvailable: (is_set: boolean) => void;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -121,7 +124,7 @@ type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
-    is_pre_appstore: boolean;
+    is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -168,41 +171,32 @@ type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
-    sent_verify_emails_data: TSentVerifyEmailsData;
     email: string;
-    setSentVerifyEmailsData: (sent_verify_emails_data: TSentVerifyEmailsData) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
-    is_risky_client: boolean;
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    has_enabled_two_fa: boolean;
+    setTwoFAStatus: (status: boolean) => void;
+    has_changed_two_fa: boolean;
+    setTwoFAChangedStatus: (status: boolean) => void;
 };
 
-type TSentVerifyEmailsData = Partial<
-    Record<
-        TEmailVerificationType,
-        {
-            last_time_sent_seconds: number;
-            sent_count: number;
-        }
-    >
->;
-
 type TCommonStoreError = {
+    app_routing_history: unknown[];
     header: string | JSX.Element;
     message: string | JSX.Element;
-    type?: string;
     redirect_label: string;
     redirect_to: string;
+    redirectOnClick: () => void;
+    setError: (has_error: boolean, error: React.ReactNode | null) => void;
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;
-    redirectOnClick: () => void;
-    setError: (has_error: boolean, error: TCommonStoreError | null) => void;
-    app_routing_history: unknown[];
+    type?: string;
 };
 
 type TCommonStore = {
@@ -211,36 +205,42 @@ type TCommonStore = {
     is_from_derivgo: boolean;
     is_network_online: boolean;
     platform: string;
-    current_language: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
+    current_language: string;
+    is_language_changing: boolean;
 };
 
 type TUiStore = {
+    app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
-    is_dark_mode_on: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_dark_mode_on: boolean;
+    is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    sub_section_index: number;
-    notification_messages_ui: React.FC | null;
-    openRealAccountSignup: (value?: string) => void;
+    notification_messages_ui: JSX.Element | null;
+    openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    sub_section_index: number;
+    setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
-    toggleSetCurrencyModal: () => void;
-    setSubSectionIndex: (index: number) => void;
+    toggleLanguageSettingsModal: () => void;
     toggleReadyToDepositModal: () => void;
+    toggleSetCurrencyModal: () => void;
     is_ready_to_deposit_modal_visible: boolean;
+    is_need_real_account_for_cashier_modal_visible: boolean;
+    toggleNeedRealAccountForCashierModal: () => void;
 };
 
 type TMenuStore = {
@@ -262,18 +262,37 @@ type TNotificationStore = {
 
 type TTradersHubStore = {
     closeModal: () => void;
-    content_flag: any;
-    openModal: (modal_id: string, props?: any) => void;
-    restricted_countries_filter_content: boolean;
+    content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
+    combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
+        {
+            short_code_and_region: string;
+            login: string;
+            sub_title: string;
+            icon: 'Derived' | 'Financial' | 'Options' | 'CFDs';
+        }[];
+    openModal: (modal_id: string, props?: unknown) => void;
+    selected_account: {
+        login: string;
+        account_id: string;
+    };
+      restricted_countries_filter_content: boolean;
+    is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    is_real: boolean;
+    selectRegion: (region: string) => void;
 };
 
-export type TRootStore = {
+/**
+ * This is the type that contains all the `core` package stores
+ */
+export type TCoreStores = {
     client: TClientStore;
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
-    modules: Record<string, any>;
+    // This should be `any` as this property will be handled in each package.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
 };

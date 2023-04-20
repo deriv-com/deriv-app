@@ -4,15 +4,7 @@ import RootStore from '../Stores/index';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import {
-    routes,
-    validLength,
-    validPassword,
-    getErrorMessages,
-    CFD_PLATFORMS,
-    WS,
-    redirectToLogin,
-} from '@deriv/shared';
+import { validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
@@ -57,12 +49,10 @@ const CFDResetPasswordModal = ({
     email,
     is_cfd_reset_password_modal_enabled,
     is_eu,
-    is_pre_appstore,
     context,
     is_logged_in,
     platform,
     setCFDPasswordResetModal,
-    history,
 }: TCFDResetPasswordModal) => {
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;
@@ -90,9 +80,6 @@ const CFDResetPasswordModal = ({
         localStorage.removeItem('cfd_reset_password_intent');
         localStorage.removeItem('cfd_reset_password_type');
         localStorage.removeItem('cfd_reset_password_code');
-        if (history.location.pathname !== routes.mt5 && !is_pre_appstore) {
-            history.push(`${routes.mt5}`);
-        }
     };
     const validatePassword = (values: { new_password: string }) => {
         const errors: { new_password?: string } = {};
@@ -288,7 +275,6 @@ CFDResetPasswordModal.propTypes = {
     email: PropTypes.string,
     is_cfd_reset_password_modal_enabled: PropTypes.bool,
     is_eu: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     platform: PropTypes.string,
     setCFDPasswordResetModal: PropTypes.func,
@@ -305,7 +291,6 @@ export default React.memo(
             setCFDPasswordResetModal: ui.setCFDPasswordResetModal,
             current_list: cfd.current_list,
             is_logged_in: client.is_logged_in,
-            is_pre_appstore: client.is_pre_appstore,
         }))(CFDResetPasswordModal)
     )
 );

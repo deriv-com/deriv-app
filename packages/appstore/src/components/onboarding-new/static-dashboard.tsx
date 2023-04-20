@@ -64,7 +64,7 @@ const StaticDashboard = ({
     loginid,
 }: TStaticDashboard) => {
     const { client, traders_hub } = useStores();
-    const { content_flag, restricted_countries_filter_content } = traders_hub;
+    const { content_flag, CFDs_restricted_countries, restricted_countries_filter_content } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 
     const [index, setIndex] = React.useState<number>(0);
@@ -472,7 +472,7 @@ const StaticDashboard = ({
                                     is_eu_user={is_eu_user}
                                 />
                             )}
-                            {!is_eu_user && (
+                            {!is_eu_user && !CFDs_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
@@ -502,7 +502,7 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
-                        {!is_eu_user && !restricted_countries_filter_content && (
+                        {!is_eu_user && !restricted_countries_filter_content && && !CFDs_restricted_countries(
                             <React.Fragment>
                                 <Divider />
                                 <div className='static-dashboard-wrapper__body--header'>
@@ -521,7 +521,7 @@ const StaticDashboard = ({
                                 </div>
                             </React.Fragment>
                         )}
-                        {!is_eu_user && !restricted_countries_filter_content && (
+                        {!is_eu_user && !restricted_countries_filter_content && !CFDs_restricted_countries  && (
                             <StaticCFDAccountManager
                                 type='all'
                                 platform='dxtrade'

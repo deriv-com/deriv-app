@@ -5,6 +5,7 @@ import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 import {
+    TRootStore,
     TWebSocket,
     TAgent,
     TPaymentAgent,
@@ -18,10 +19,9 @@ import {
     TTarget,
     TServerError,
 } from '../types';
-import { TStores } from '@deriv/stores';
 
 export default class PaymentAgentStore {
-    constructor(public WS: TWebSocket, public root_store: TStores) {
+    constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             list: observable,
             agents: observable,

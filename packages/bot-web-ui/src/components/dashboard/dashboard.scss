@@ -380,10 +380,12 @@
 
     img {
         width: 100%;
+        margin-top: 1rem;
     }
 
     &__with-icon {
         display: flex;
+        margin-bottom: 1rem;
 
         &__right {
             margin-left: 0.8rem;
@@ -665,4 +667,8 @@
         background: var(--text-general);
         color: var(--general-main-1);
     }
+}
+
+.__floater__arrow {
+    display: none;
 }

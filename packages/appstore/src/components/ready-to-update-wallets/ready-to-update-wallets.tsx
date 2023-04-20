@@ -12,13 +12,16 @@ import {
 import { localize } from '@deriv/translations';
 import ReadyToUpgradeForm from './ready-to-upgrade-form';
 import { useStore, observer } from '@deriv/stores';
+import { ContentFlag } from '@deriv/shared';
 
 const ReadyToUpdateWallets = () => {
     const [is_disabled, setIsDisabled] = React.useState(false);
 
     const { client, traders_hub } = useStore();
     const { is_eu } = client;
-    const { is_eu_user, show_wallet_consent_popup, setShouldShowWalletConsentPopup } = traders_hub;
+    const { is_eu_user, show_wallet_consent_popup, setShouldShowWalletConsentPopup, content_flag } = traders_hub;
+
+    const low_risk = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
     React.useEffect(() => {
         return () => {
@@ -47,7 +50,7 @@ const ReadyToUpdateWallets = () => {
                 >
                     <Modal.Body className='wallet-wrapper'>
                         <div className='wallet-wrapper--body'>
-                            <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} />
+                            <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} is_low_risk={low_risk} />
                             <Checkbox
                                 onChange={toggleCheckbox}
                                 className='wallet-wrapper--checkbox'
@@ -82,7 +85,7 @@ const ReadyToUpdateWallets = () => {
                     onClose={() => setShouldShowWalletConsentPopup(false)}
                 >
                     <Div100vhContainer className='wallet-wrapper--body' height_offset='15rem'>
-                        <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} />
+                        <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} is_low_risk={low_risk} />
                         <Checkbox
                             onChange={toggleCheckbox}
                             className='wallet-wrapper--checkbox'

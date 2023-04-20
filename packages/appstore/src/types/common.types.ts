@@ -166,3 +166,9 @@ export interface AccountListDetail {
     loginid: string;
     title: string;
 }
+
+// TODO: Remove or update this once stitching is done
+export type TReadyToUpgradeForm = {
+    is_eu: boolean;
+    is_low_risk: boolean;
+};

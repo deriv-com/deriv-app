@@ -5,7 +5,7 @@ import { getAppId, domain_app_ids } from '../config/config';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 
 const escapeHtml = (unsafe: string): string => {
-    return unsafe.replace(/[&<>"']/g, match => {
+    return unsafe.replace(/[<>]/g, match => {
         switch (match) {
             case '<':
                 return '&lt;';
@@ -58,11 +58,13 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     };
 
     if (server_url && /qa/.test(server_url)) {
-        return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        return escapeHtml(
+            `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`
+        );
     }
 
     if (getAppId() === domain_app_ids[window.location.hostname as keyof typeof domain_app_ids]) {
-        return getOAuthUrl();
+        return escapeHtml(getOAuthUrl());
     }
     return escapeHtml(urlForCurrentDomain(getOAuthUrl()));
 };

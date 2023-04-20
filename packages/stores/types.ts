@@ -125,7 +125,6 @@ type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_pending_proof_of_ownership: boolean;
-    is_single_currency: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -281,20 +280,6 @@ type TTradersHubStore = {
     is_real: boolean;
     selectRegion: (region: string) => void;
 };
-
-type TTradeStore = {
-    accumulator_range_list: number[];
-    amount: number;
-    currency: string;
-    growth_rate: number;
-    onChange: React.ChangeEventHandler<Element>;
-    tick_history_stats: {
-        ticks_stayed_in: number[];
-        last_tick_epoch: number;
-    };
-    tick_size_barrier: number;
-};
-
 /**
  * This is the type that contains all the `core` package stores
  */
@@ -308,5 +293,4 @@ export type TCoreStores = {
     modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
-    trade: TTradeStore;
 };

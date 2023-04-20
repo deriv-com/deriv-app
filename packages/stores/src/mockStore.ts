@@ -136,7 +136,6 @@ const mock = (): TStores => {
             is_logged_in: false,
             is_logging_in: false,
             is_pending_proof_of_ownership: false,
-            is_single_currency: false,
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
@@ -263,18 +262,6 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
-        },
-        trade: {
-            accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
-            amount: 123,
-            currency: 'USD',
-            growth_rate: 0.03,
-            onChange: jest.fn(),
-            tick_history_stats: {
-                ticks_stayed_in: [123, 234, 456, 678, 789],
-                last_tick_epoch: 123456789,
-            },
-            tick_size_barrier: 0.021,
         },
         menu: {
             attach: jest.fn(),

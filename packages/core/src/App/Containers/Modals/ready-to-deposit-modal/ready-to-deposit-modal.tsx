@@ -33,8 +33,9 @@ const ReadyToDepositModal = observer(() => {
             enableApp={enableApp}
             is_closed_on_confirm
             is_visible={is_open}
-            dismissable={false}
+            dismissable={true}
             has_close_icon={false}
+            onEscapeButtonCancel={onClose}
         >
             {localize('You need a real Deriv account to access the cashier.')}
         </Dialog>

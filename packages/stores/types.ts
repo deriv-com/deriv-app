@@ -125,6 +125,7 @@ type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_single_currency: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;

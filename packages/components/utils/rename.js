@@ -10,6 +10,18 @@ const [dir, search, replace] = process.argv.slice(2);
 const match = RegExp(search, 'g');
 const files = readdirSync(dir);
 
+// Validate and sanitize the user-supplied input
+const validateInput = input => {
+    // Use a regex pattern to allow only valid characters in the input
+    const validPattern = /^[a-zA-Z0-9\s]*$/;
+    if (!validPattern.test(input)) {
+        throw new Error('Invalid input');
+    }
+};
+
+validateInput(search);
+validateInput(replace);
+
 files
     .filter(file => file.match(match))
     .forEach(file => {

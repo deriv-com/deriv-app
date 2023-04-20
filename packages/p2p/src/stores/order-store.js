@@ -135,10 +135,7 @@ export default class OrderStore {
                     this.setErrorCode(code);
 
                     if (code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
-                       setTimeout(
-                            () => general_store.showModal({ key: 'EmailVerificationModal', props: {} }),
-                            230
-                        );
+                        setTimeout(() => general_store.showModal({ key: 'EmailVerificationModal', props: {} }), 230);
                     } else if (
                         code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS

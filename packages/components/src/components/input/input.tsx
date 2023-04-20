@@ -28,8 +28,8 @@ type TInputProps = {
     name?: string;
     onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onKeyUp?: (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onKeyDown?: (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onKeyUp?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onKeyDown?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     placeholder?: string;

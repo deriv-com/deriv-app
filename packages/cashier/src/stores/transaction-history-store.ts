@@ -40,7 +40,7 @@ export default class TransactionHistoryStore {
     is_loading = false;
     selected_crypto_transaction_id = '';
     selected_crypto_status = '';
-    selected_crypto_status_description = '';
+    selected_crypto_status_description: JSX.Element | string = '';
 
     async onMount() {
         const { currency, switched } = this.root_store.client;
@@ -126,7 +126,7 @@ export default class TransactionHistoryStore {
         this.selected_crypto_status = status;
     }
 
-    setSelectedCryptoStatusDescription(description: string): void {
+    setSelectedCryptoStatusDescription(description: JSX.Element | string): void {
         this.selected_crypto_status_description = description;
     }
 
@@ -134,7 +134,7 @@ export default class TransactionHistoryStore {
         this.is_crypto_transactions_status_modal_visible = is_visible;
     }
 
-    showCryptoTransactionsStatusModal(description: string, name: string): void {
+    showCryptoTransactionsStatusModal(description: JSX.Element | string, name: string): void {
         this.setSelectedCryptoStatusDescription(description);
         this.setSelectedCryptoStatus(name);
         this.setIsCryptoTransactionsStatusModalVisible(true);

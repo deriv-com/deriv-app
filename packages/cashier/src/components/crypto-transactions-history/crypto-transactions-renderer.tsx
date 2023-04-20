@@ -39,12 +39,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
         ? epochToMoment(submit_date).format('DD MMM YYYY')
         : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
     const formatted_submit_time = epochToMoment(submit_date).format('HH:mm:ss [GMT]');
-    const status = getStatus(transaction_hash, transaction_type, status_code) as {
-        renderer: string;
-        name: string;
-        description: string;
-        transaction_hash: string;
-    };
+    const status = getStatus(transaction_hash, transaction_type, status_code);
 
     const [is_transaction_clicked, setTransactionClicked] = React.useState(false);
     const onClickCancel = () => {
@@ -61,12 +56,10 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
         showCryptoTransactionsCancelModal(id);
     };
     const onClickStatus = () => {
-        const description = status.description;
-        const name = status.name;
-        showCryptoTransactionsStatusModal(description, name);
+        if (status) showCryptoTransactionsStatusModal(status.description, status.name);
     };
 
-    if (isMobile()) {
+    if (status && isMobile()) {
         return (
             <div>
                 <Table.Row className='crypto-transactions-history__table-row'>
@@ -194,19 +187,21 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                     </Text>
                 </Table.Cell>
                 <Table.Cell className='crypto-transactions-history__table-amount'>
-                    <Text
-                        as='p'
-                        size='xs'
-                        weight='bold'
-                        color={status.renderer === 'successful' ? 'profit-success' : 'red'}
-                    >
-                        <Money
-                            currency={currency}
-                            amount={formatMoney(currency, formatted_amount, true)}
-                            should_format={false}
-                            show_currency
-                        />
-                    </Text>
+                    {status && (
+                        <Text
+                            as='p'
+                            size='xs'
+                            weight='bold'
+                            color={status.renderer === 'successful' ? 'profit-success' : 'red'}
+                        >
+                            <Money
+                                currency={currency}
+                                amount={formatMoney(currency, formatted_amount, true)}
+                                should_format={false}
+                                show_currency
+                            />
+                        </Text>
+                    )}
                 </Table.Cell>
                 <Table.Cell className='crypto-transactions-history__table-hash'>
                     <Popover
@@ -227,28 +222,29 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                     </Popover>
                 </Table.Cell>
                 <Table.Cell className='crypto-transactions-history__table-hash'>
-                    {transaction_url ? (
-                        <Popover
-                            alignment='right'
-                            className='crypto-transactions-history__table-popover'
-                            message={localize('View transaction on Blockchain')}
-                        >
-                            <a
-                                className='crypto-transactions-history__table-link'
-                                href={transaction_url}
-                                rel='noopener noreferrer'
-                                target='_blank'
+                    {status &&
+                        (transaction_url ? (
+                            <Popover
+                                alignment='right'
+                                className='crypto-transactions-history__table-popover'
+                                message={localize('View transaction on Blockchain')}
                             >
-                                <Text as='p' size='xs' color='red'>
-                                    {status.transaction_hash}
-                                </Text>
-                            </a>
-                        </Popover>
-                    ) : (
-                        <Text as='p' size='xs' color='red'>
-                            {status.transaction_hash}
-                        </Text>
-                    )}
+                                <a
+                                    className='crypto-transactions-history__table-link'
+                                    href={transaction_url}
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                >
+                                    <Text as='p' size='xs' color='red'>
+                                        {status.transaction_hash}
+                                    </Text>
+                                </a>
+                            </Popover>
+                        ) : (
+                            <Text as='p' size='xs' color='red'>
+                                {status.transaction_hash}
+                            </Text>
+                        ))}
                 </Table.Cell>
                 {!is_transaction_clicked && (
                     <Table.Cell>
@@ -259,21 +255,23 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                 )}
                 {!is_transaction_clicked && (
                     <Table.Cell className='crypto-transactions-history__table-status'>
-                        <Popover
-                            alignment='left'
-                            className='crypto-transactions-history__table-popover'
-                            message={status.description}
-                        >
-                            <div
-                                className={classNames(
-                                    'crypto-transactions-history__table-status-code',
-                                    `crypto-transactions-history__table-status-code-${status.renderer}`
-                                )}
-                            />
-                            <Text as='p' size='xs'>
-                                {status.name}
-                            </Text>
-                        </Popover>
+                        {status && (
+                            <Popover
+                                alignment='left'
+                                className='crypto-transactions-history__table-popover'
+                                message={status.description}
+                            >
+                                <div
+                                    className={classNames(
+                                        'crypto-transactions-history__table-status-code',
+                                        `crypto-transactions-history__table-status-code-${status.renderer}`
+                                    )}
+                                />
+                                <Text as='p' size='xs'>
+                                    {status.name}
+                                </Text>
+                            </Popover>
+                        )}
                     </Table.Cell>
                 )}
                 {is_transaction_clicked ? (

@@ -14,8 +14,8 @@ export default class BaseStore<T> {
         makePersistable(this, { name, properties: ['data'], storage: window.localStorage });
     }
 
-    update(data: T) {
-        this.data = data;
+    update(data: NonNullable<T> | ((previous?: T) => NonNullable<T>)) {
+        this.data = data instanceof Function ? data(this.data) : data;
     }
 
     unmount() {

@@ -4,7 +4,6 @@ import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore, TStores } from '@deriv/stores';
-import { TStatusCode, TTransactionType } from 'Types';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),

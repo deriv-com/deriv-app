@@ -21,6 +21,11 @@ jest.mock('@deriv/account', () => ({
     }),
 }));
 
+jest.mock('Components/pre-loader/currency-switcher-loader', () => ({
+    __esModule: true,
+    default: () => <div>Loader</div>,
+}));
+
 describe('RealAccountSwitcher', () => {
     it('should render the component', () => {
         const mock = mockStore({});
@@ -78,5 +83,40 @@ describe('RealAccountSwitcher', () => {
         const { container } = render(<RealAccountSwitcher />, { wrapper });
         expect(container).toBeInTheDocument();
         expect(screen.getByText('RealAccountCard')).toBeInTheDocument();
+    });
+
+    it('should render Currency Switcher Loader if is_switching is true', () => {
+        const mock = mockStore({
+            client: {
+                is_switching: true,
+            },
+        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { container } = render(<RealAccountSwitcher />, { wrapper });
+        expect(container).toBeInTheDocument();
+        expect(screen.getByText('Loader')).toBeInTheDocument();
+    });
+
+    it('should render empty div', () => {
+        const mock = mockStore({
+            client: {
+                is_switching: false,
+                has_maltainvest_account: false,
+            },
+            traders_hub: {
+                is_eu_user: false,
+                no_CR_account: true,
+            },
+        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { container } = render(<RealAccountSwitcher />, { wrapper });
+        expect(container).toBeInTheDocument();
+        expect(screen.queryByText('RealAccountCard')).not.toBeInTheDocument();
     });
 });

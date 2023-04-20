@@ -46,11 +46,11 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
 
     const getHeaderTitle = () => {
         if (is_low_risk && !is_crypto) {
-            const eu_text = is_eu ? 'EU' : 'non-EU';
+            const regulation_text = is_eu ? 'EU' : 'non-EU';
             return (
                 <Localize
-                    i18n_default_text='This is your {{eu_text}} {{currency_code}} account {{loginid}}'
-                    values={{ eu_text, currency_code, loginid }}
+                    i18n_default_text='This is your {{regulation_text}} {{currency_code}} account {{loginid}}'
+                    values={{ regulation_text, currency_code, loginid }}
                 />
             );
         }

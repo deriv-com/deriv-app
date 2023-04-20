@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
-import { routes, platforms, formatMoney } from '@deriv/shared';
+import { routes, platforms } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -265,9 +265,7 @@ const TradingHubHeader = ({
                                 <AccountInfo
                                     acc_switcher_disabled_message={acc_switcher_disabled_message}
                                     account_type={account_type}
-                                    balance={
-                                        typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)
-                                    }
+                                    balance={balance}
                                     is_disabled={is_acc_switcher_disabled}
                                     is_eu={is_eu}
                                     is_virtual={is_virtual}

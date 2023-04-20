@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSubscription } from '@deriv/api';
 import useStore from '../useStore';
+import merge from 'lodash.merge';
 
 const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { data, subscribe } = useSubscription('exchange_rates');
@@ -13,7 +14,7 @@ const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) =
     }, [subscribe]);
 
     useEffect(() => {
-        if (data) update(data);
+        if (data) update(prev => merge(prev, data));
     }, [update, data]);
 
     return <React.Fragment>{children}</React.Fragment>;

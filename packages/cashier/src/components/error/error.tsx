@@ -50,7 +50,8 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
 const Error = ({
     error,
 }: {
-    error: Pick<ErrorStore, 'code' | 'fields' | 'message' | 'onClickButton' | 'setErrorMessage'>;
+    error: Pick<ErrorStore, 'code' | 'message'> &
+        Partial<Pick<ErrorStore, 'fields' | 'onClickButton' | 'setErrorMessage'>>;
 }) => {
     const error_fields: TErrorFields = {
         address_city: localize('Town/City'),

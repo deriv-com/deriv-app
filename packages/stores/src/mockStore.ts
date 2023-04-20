@@ -262,6 +262,8 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            toggleRegulatorsCompareModal: jest.fn(),
+            selected_region: '',
         },
         menu: {
             attach: jest.fn(),

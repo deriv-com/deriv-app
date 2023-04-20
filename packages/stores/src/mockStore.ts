@@ -263,6 +263,7 @@ const mock = (): TStores => {
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
             financial_restricted_countries: false,
+            setTogglePlatformType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

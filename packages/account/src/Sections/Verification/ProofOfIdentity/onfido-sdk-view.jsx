@@ -199,32 +199,34 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                     (!is_from_external && (
                         <div style={{ marginBottom: '24px' }}>
                             <PoiConfirmWithExample
-                                name_dob_message=<Localize
+                                name_dob_clarification_message=<Localize
                                     i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
                                     components={[<strong key={0} />]}
                                 />
                             />
                         </div>
                     ))}
-                <HintBox
-                    className='onfido-container__message'
-                    icon='IcInfoBlue'
-                    icon_height={16}
-                    icon_width={16}
-                    message={
-                        <Text as='p' size='xxxs'>
-                            <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
-                        </Text>
-                    }
-                    is_info
-                />
-                <div
-                    id='onfido'
-                    className={classNames({
-                        'onfido-container__disabled': true,
-                        'onfido-container__hidden': component_to_load,
-                    })}
-                />
+                <div style={{ position: 'relative' }}>
+                    <HintBox
+                        className='onfido-container__message'
+                        icon='IcInfoBlue'
+                        icon_height={16}
+                        icon_width={16}
+                        message={
+                            <Text as='p' size='xxxs'>
+                                <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
+                            </Text>
+                        }
+                        is_info
+                    />
+                    <div
+                        id='onfido'
+                        className={classNames({
+                            'onfido-container__disabled': true,
+                            'onfido-container__hidden': component_to_load,
+                        })}
+                    />
+                </div>
             </div>
         </ThemedScrollbars>
     );

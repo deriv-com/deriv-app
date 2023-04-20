@@ -2049,7 +2049,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define onfido-container; weak */
 .onfido-container {
-    position: relative;
     padding-left: 1.6rem;
 
     &__hidden {
@@ -2063,8 +2062,8 @@ $MIN_HEIGHT_FLOATING: calc(
 
     &__message {
         position: absolute;
-        top: 34.9rem;
-        left: 20.2rem;
+        top: 2.4rem;
+        left: 19.2rem;
         z-index: 1;
     }
 
@@ -3035,5 +3034,6 @@ $MIN_HEIGHT_FLOATING: calc(
     border-radius: 0.8rem;
 
     &__container {
+        display: flex;
     }
 }

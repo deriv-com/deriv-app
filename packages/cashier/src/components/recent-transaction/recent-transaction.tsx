@@ -59,17 +59,19 @@ const RecentTransaction = observer(() => {
                                     }}
                                 />
                             </Text>
-                            <div className='cashier-recent-transaction__status'>
-                                <span
-                                    className={classNames(
-                                        'cashier-recent-transaction__status-indicator',
-                                        `cashier-recent-transaction__status-indicator-${status.renderer}`
-                                    )}
-                                />
-                                <Text as='p' size='xxxs'>
-                                    {status.name}
-                                </Text>
-                            </div>
+                            {status && (
+                                <div className='cashier-recent-transaction__status'>
+                                    <span
+                                        className={classNames(
+                                            'cashier-recent-transaction__status-indicator',
+                                            `cashier-recent-transaction__status-indicator-${status.renderer}`
+                                        )}
+                                    />
+                                    <Text as='p' size='xxxs'>
+                                        {status.name}
+                                    </Text>
+                                </div>
+                            )}
                         </div>
                         <Text as='p' size='xxxs' color='less-prominent' line_height='s'>
                             <Localize
@@ -97,9 +99,11 @@ const RecentTransaction = observer(() => {
                                     <Localize i18n_default_text='Transaction hash:' />
                                     &nbsp;
                                 </Text>
-                                <Text as='p' size='xxxs' color='red' line_height='s'>
-                                    {status.transaction_hash}
-                                </Text>
+                                {status && (
+                                    <Text as='p' size='xxxs' color='red' line_height='s'>
+                                        {status.transaction_hash}
+                                    </Text>
+                                )}
                             </div>
                         </div>
                     </div>

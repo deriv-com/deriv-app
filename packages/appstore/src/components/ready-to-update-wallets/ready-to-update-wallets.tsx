@@ -20,6 +20,12 @@ const ReadyToUpdateWallets = () => {
     const { is_eu } = client;
     const { is_eu_user, show_wallet_consent_popup, setShouldShowWalletConsentPopup } = traders_hub;
 
+    React.useEffect(() => {
+        return () => {
+            setIsDisabled(false);
+        };
+    }, [show_wallet_consent_popup]);
+
     const toggleModal = () => {
         setShouldShowWalletConsentPopup(!show_wallet_consent_popup);
     };
@@ -37,6 +43,7 @@ const ReadyToUpdateWallets = () => {
                     width='1200px'
                     height='734px'
                     toggleModal={toggleModal}
+                    should_header_stick_body={false}
                 >
                     <Modal.Body className='wallet-wrapper'>
                         <div className='wallet-wrapper--body'>

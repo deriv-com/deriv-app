@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import './balance-text.scss';
 
 // Todo: this definitely needs to be somewhere else
@@ -44,4 +44,4 @@ const BalanceText = ({ balance, currency, size = 'm', underline_style = 'none' }
     );
 };
 
-export default BalanceText;
+export default observer(BalanceText);

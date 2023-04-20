@@ -252,6 +252,7 @@ const mock = (): TRootStore => {
             content_flag: '',
             is_eu_user: false,
             is_real: false,
+            selected_account_type: '',
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
         },

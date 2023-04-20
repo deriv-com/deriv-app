@@ -448,26 +448,27 @@ const StaticDashboard = ({
                             </Text>
                         </div>
 
-                        <div className='static-dashboard-wrapper__body'>
+                        <div
+                            className='static-dashboard-wrapper__body'
+                            data-testid='dt_static_dashboard_wrapper_mt5synthetic'
+                        >
                             {!is_eu_user && (
-                                <div data-testid='dt_static_dashboard_wrapper_mt5synhetic'>
-                                    <StaticCFDAccountManager
-                                        type='synthetic'
-                                        platform='mt5'
-                                        appname={localize('Derived')}
-                                        description={localize(
-                                            'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
-                                        )}
-                                        loginid={loginid}
-                                        currency={currency}
-                                        has_account={has_account}
-                                        derived_amount={derived_amount}
-                                        financial_amount={financial_amount}
-                                        is_blurry={is_blurry}
-                                        is_onboarding_animated={is_onboarding_animated}
-                                        is_eu_user={is_eu_user}
-                                    />
-                                </div>
+                                <StaticCFDAccountManager
+                                    type='synthetic'
+                                    platform='mt5'
+                                    appname={localize('Derived')}
+                                    description={localize(
+                                        'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
+                                    )}
+                                    loginid={loginid}
+                                    currency={currency}
+                                    has_account={has_account}
+                                    derived_amount={derived_amount}
+                                    financial_amount={financial_amount}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
+                                    is_eu_user={is_eu_user}
+                                />
                             )}
                             {isMobile() && !has_account && <Divider />}
                             {is_eu_user && (

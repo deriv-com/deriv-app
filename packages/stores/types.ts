@@ -258,6 +258,7 @@ type TTradersHubStore = {
     openModal: (modal_id: string, props?: any) => void;
     is_eu_user: boolean;
     is_real: boolean;
+    selected_account_type: string;
     selectRegion: (region: string) => void;
 };
 

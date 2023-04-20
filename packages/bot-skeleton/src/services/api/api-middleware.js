@@ -27,7 +27,7 @@ const log = (measures = [], req_type = '') => {
     measures.forEach(measure => {
         datadogLogs.logger.info(measure.name, {
             name: measure.name,
-            startTime: measure.startTime,
+            startTime: Date(measure.startTime),
             duration: measure.duration,
             detail: measure.detail,
         });

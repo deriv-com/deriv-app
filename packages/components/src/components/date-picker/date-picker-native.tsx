@@ -4,6 +4,23 @@ import { toMoment } from '@deriv/shared';
 import Icon from '../icon';
 import Text from '../text';
 
+type TDatePickerNativeProps = Omit<React.HTMLAttributes<HTMLInputElement>, 'onSelect'> & {
+    value: string | null;
+    label: string;
+    placeholder: string;
+    max_date: moment.Moment;
+    min_date: moment.Moment;
+    display_format: string;
+    data_testid: string;
+    name: string;
+    error?: string;
+    disabled: boolean;
+    hint?: string;
+    onSelect: (selected_date: string) => void;
+    onBlur: React.FocusEventHandler<HTMLInputElement>;
+    onFocus: React.FocusEventHandler<HTMLInputElement>;
+};
+
 const Native = ({
     id,
     disabled,
@@ -20,22 +37,22 @@ const Native = ({
     onSelect,
     value,
     data_testid,
-}) => {
-    const [is_focused, setIsFocused] = React.useState(0);
-    const input_ref = React.useRef();
+}: TDatePickerNativeProps) => {
+    const [is_focused, setIsFocused] = React.useState(false);
+    const input_ref = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
-        if (input_ref.current) input_ref.current.value = value;
+        if (input_ref.current) input_ref.current.value = value || '';
     }, [value]);
 
-    const handleFocus = e => {
+    const handleFocus: React.FocusEventHandler<HTMLInputElement> = e => {
         setIsFocused(true);
         if (typeof onFocus === 'function') {
             onFocus(e);
         }
     };
 
-    const handleBlur = e => {
+    const handleBlur: React.FocusEventHandler<HTMLInputElement> = e => {
         setIsFocused(false);
         if (typeof onBlur === 'function') {
             onBlur(e);
@@ -74,7 +91,11 @@ const Native = ({
                 {label || (!value && placeholder)}
             </label>
 
-            <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
+            <Icon
+                icon='IcCalendar'
+                className='dc-datepicker__calendar-icon'
+                color={disabled ? 'disabled' : undefined}
+            />
 
             <input
                 ref={input_ref}

@@ -1,6 +1,5 @@
-import { useStore } from '@deriv/stores';
 import React from 'react';
-import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { useHistory } from 'react-router-dom';
 
 const useSwitchToRealAccount = () => {
@@ -27,7 +26,7 @@ const useSwitchToRealAccount = () => {
                 }
             }
         } else if (is_virtual && !has_active_real_account) {
-            history.push(routes.traders_hub);
+            history.push('/appstore/traders-hub');
             toggleReadyToDepositModal();
         }
     }, [

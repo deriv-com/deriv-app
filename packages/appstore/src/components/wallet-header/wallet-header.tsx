@@ -1,7 +1,7 @@
-// import { localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { TWalletsImagesListKeys } from 'Assets/svgs/image-types';
+import WalletsImage from 'Assets/svgs/wallets';
 import classNames from 'classnames';
 // import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 // import WalletsImage from 'Assets/svgs/wallets';
@@ -41,19 +41,89 @@ const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdict
     const badge_lh_size = 'xxxs';
     const balance_title_size = 'xxs';
     const balance_amount_size = 'm';
-    // const tick_size = isMobile() ? 16 : 24;
+    const button_text_size = 'xs';
+
     const title_text = `<0>${currency} Wallet</0>`;
     const badge_text = `<0>${jurisdiction.toUpperCase()}</0>`;
-    const balance_title_text = 'Wallet balance';
+    const balance_title_text = '<0>Wallet balance</0>';
     const balance_amount_text = `<0>${balance} ${currency}</0>`;
+
+    const wallet_buttons = (
+        <div className='wallet-header__description-buttons'>
+            <div className='wallet-header__description-buttons-item'>
+                <Icon icon='IcAppstoreWalletDeposit' />
+                <Localize
+                    i18n_default_text={'<0>Deposit</0>'}
+                    components={[
+                        <Text
+                            key={0}
+                            weight='bold'
+                            size={button_text_size}
+                            className={classNames('wallet-header__description-buttons-item-text', {
+                                'wallet-header__description-buttons-item-active': isOpen,
+                            })}
+                        />,
+                    ]}
+                />
+            </div>
+            <div className='wallet-header__description-buttons-item'>
+                <Icon icon='IcAppstoreWalletWithdraw' />
+                <Localize
+                    i18n_default_text={'<0>Withdraw</0>'}
+                    components={[
+                        <Text
+                            key={0}
+                            weight='bold'
+                            size={button_text_size}
+                            className={classNames('wallet-header__description-buttons-item-text', {
+                                'wallet-header__description-buttons-item-active': isOpen,
+                            })}
+                        />,
+                    ]}
+                />
+            </div>
+            <div className='wallet-header__description-buttons-item'>
+                <Icon icon='IcAppstoreWalletTransfer' />
+                <Localize
+                    i18n_default_text={'<0>Transfer</0>'}
+                    components={[
+                        <Text
+                            key={0}
+                            weight='bold'
+                            size={button_text_size}
+                            className={classNames('wallet-header__description-buttons-item-text', {
+                                'wallet-header__description-buttons-item-active': isOpen,
+                            })}
+                        />,
+                    ]}
+                />
+            </div>
+            <div className='wallet-header__description-buttons-item'>
+                <Icon icon='IcAppstoreWalletTransactions' />
+                <Localize
+                    i18n_default_text={'<0>Transactions</0>'}
+                    components={[
+                        <Text
+                            key={0}
+                            weight='bold'
+                            size={button_text_size}
+                            className={classNames('wallet-header__description-buttons-item-text', {
+                                'wallet-header__description-buttons-item-active': isOpen,
+                            })}
+                        />,
+                    ]}
+                />
+            </div>
+        </div>
+    );
 
     return (
         <div className='wallet-header'>
-            {/* <WalletsImage image={image_bg} /> */}
-            {/* <WalletsImage image={image_currency} /> */}
             <div className='wallet-header__container'>
                 <div className='wallet-header__currency'>
-                    <Icon icon='IcAppstoreWalletEurLight' width={120} height={80} />
+                    <Icon icon='IcAppstoreWalletAudBg' width={128} height={80} />
+                    {/* <WalletsImage image={image_bg} /> */}
+                    <Icon icon='IcAppstoreWalletAudCurrency' size={48} />
                 </div>
                 <div className='wallet-header__description'>
                     <div className='wallet-header__description-title'>
@@ -69,32 +139,18 @@ const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdict
                                     weight='bold'
                                     size={badge_size}
                                     line_height={badge_lh_size}
-                                    className={'wallet-header__description-badge'}
+                                    className='wallet-header__description-badge'
                                 />,
                             ]}
                         />
                     </div>
-
-                    <div className={'wallet-header__description-buttons'}>
-                        <div className={'wallet-header__description-buttons-item'}>
-                            <Icon icon='IcAppstoreWalletDeposit' />
-                        </div>
-                        <div className={'wallet-header__description-buttons-item'}>
-                            <Icon icon='IcAppstoreWalletWithdraw' />
-                        </div>
-                        <div className={'wallet-header__description-buttons-item'}>
-                            <Icon icon='IcAppstoreWalletTransfer' />
-                        </div>
-                        <div className={'wallet-header__description-buttons-item'}>
-                            <Icon icon='IcAppstoreWalletTransactions' />
-                        </div>
-                    </div>
+                    {wallet_buttons}
                 </div>
                 <div className='wallet-header__balance'>
                     <div className='wallet-header__balance-title-amount'>
                         <Localize
                             i18n_default_text={balance_title_text}
-                            components={[<Text key={0} size={balance_title_size} />]}
+                            components={[<Text key={0} color='less-prominent' size={balance_title_size} />]}
                         />
                         <Localize
                             i18n_default_text={balance_amount_text}
@@ -110,29 +166,6 @@ const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdict
                     />
                 </div>
             </div>
-
-            {/* <Icon icon='IcAppstoreAudBg' />
-            <Icon icon='IcAppstoreCircle' />
-            <Icon icon='IcAppstoreAdd' size={32} />
-            <Icon icon='IcAppstoreAudBg' size={128} />
-            <Icon icon='IcAppstoreCircle' size={128} />
-            <Icon icon='IcAppstoreAdd' size={128} /> */}
-
-            {/* <h1>I am a wallet header. Balance = {balance}</h1>
-            <p>
-                Currency: {currency}, jurisdiction: {jurisdiction}
-            </p> */}
-
-            {/* <TradingPlatformIcon icon='Demo' />
-            <TradingPlatformIcon icon='Demo' size={24} />
-            <TradingPlatformIcon icon='Demo' size={32} />
-            <TradingPlatformIcon icon='Demo' size={64} />
-            <TradingPlatformIcon icon='Demo' size={128} /> */}
-
-            {/* <Icon icon='IcMt5CfdPlatform' size={32} /> */}
-            {/* <Icon icon='IcMt5CfdPlatform' size={64} />; */}
-            {/* <Icon icon='IcMt5CfdPlatform' size={128} />; */}
-            {/* <Icon icon='IcMt5CfdPlatform' size={256} />; */}
         </div>
     );
 });

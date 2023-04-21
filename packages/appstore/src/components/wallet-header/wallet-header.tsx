@@ -1,10 +1,6 @@
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TWalletsImagesListKeys } from 'Assets/svgs/image-types';
-import WalletsImage from 'Assets/svgs/wallets';
 import classNames from 'classnames';
-// import TradingPlatformIcon from 'Assets/svgs/trading-platform';
-// import WalletsImage from 'Assets/svgs/wallets';
 import React from 'react';
 
 type TWalletHeaderCommon = {
@@ -31,11 +27,7 @@ type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdiction = 'svg' }: TWalletHeader) => {
     const [isOpen, setIsOpen] = React.useState(false);
 
-    // const currency_lowercase: Lowercase<TWalletHeaderNotDemo['currency']> = currency.toLowerCase();
-    const currency_lowercase = currency.toLowerCase() as Lowercase<TWalletHeaderSvg['currency']>;
-    const image_currency: TWalletsImagesListKeys = `${currency_lowercase}_currency`;
-    const image_bg: TWalletsImagesListKeys = 'aud_bg';
-
+    const is_dark = false;
     const title_size = 'sm';
     const badge_size = 'xxxs';
     const badge_lh_size = 'xxxs';
@@ -48,82 +40,35 @@ const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdict
     const balance_title_text = '<0>Wallet balance</0>';
     const balance_amount_text = `<0>${balance} ${currency}</0>`;
 
+    const btns_names = ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
     const wallet_buttons = (
         <div className='wallet-header__description-buttons'>
-            <div className='wallet-header__description-buttons-item'>
-                <Icon icon='IcAppstoreWalletDeposit' />
-                <Localize
-                    i18n_default_text={'<0>Deposit</0>'}
-                    components={[
-                        <Text
-                            key={0}
-                            weight='bold'
-                            size={button_text_size}
-                            className={classNames('wallet-header__description-buttons-item-text', {
-                                'wallet-header__description-buttons-item-active': isOpen,
-                            })}
-                        />,
-                    ]}
-                />
-            </div>
-            <div className='wallet-header__description-buttons-item'>
-                <Icon icon='IcAppstoreWalletWithdraw' />
-                <Localize
-                    i18n_default_text={'<0>Withdraw</0>'}
-                    components={[
-                        <Text
-                            key={0}
-                            weight='bold'
-                            size={button_text_size}
-                            className={classNames('wallet-header__description-buttons-item-text', {
-                                'wallet-header__description-buttons-item-active': isOpen,
-                            })}
-                        />,
-                    ]}
-                />
-            </div>
-            <div className='wallet-header__description-buttons-item'>
-                <Icon icon='IcAppstoreWalletTransfer' />
-                <Localize
-                    i18n_default_text={'<0>Transfer</0>'}
-                    components={[
-                        <Text
-                            key={0}
-                            weight='bold'
-                            size={button_text_size}
-                            className={classNames('wallet-header__description-buttons-item-text', {
-                                'wallet-header__description-buttons-item-active': isOpen,
-                            })}
-                        />,
-                    ]}
-                />
-            </div>
-            <div className='wallet-header__description-buttons-item'>
-                <Icon icon='IcAppstoreWalletTransactions' />
-                <Localize
-                    i18n_default_text={'<0>Transactions</0>'}
-                    components={[
-                        <Text
-                            key={0}
-                            weight='bold'
-                            size={button_text_size}
-                            className={classNames('wallet-header__description-buttons-item-text', {
-                                'wallet-header__description-buttons-item-active': isOpen,
-                            })}
-                        />,
-                    ]}
-                />
-            </div>
+            {btns_names.map(name => (
+                <div key={name} className='wallet-header__description-buttons-item'>
+                    <Icon icon={`IcAppstoreWallet${name}`} />
+                    <Localize
+                        i18n_default_text={`<0>${name}</0>`}
+                        components={[
+                            <Text
+                                key={0}
+                                weight='bold'
+                                size={button_text_size}
+                                className={classNames('wallet-header__description-buttons-item-text', {
+                                    'wallet-header__description-buttons-item-active': isOpen,
+                                })}
+                            />,
+                        ]}
+                    />
+                </div>
+            ))}
         </div>
     );
 
     return (
         <div className='wallet-header'>
             <div className='wallet-header__container'>
-                <div className='wallet-header__currency'>
-                    <Icon icon='IcAppstoreWalletAudBg' width={128} height={80} />
-                    {/* <WalletsImage image={image_bg} /> */}
-                    <Icon icon='IcAppstoreWalletAudCurrency' size={48} />
+                <div className={`wallet-header__currency wallet-header__currency-${currency}${is_dark ? '-dark' : ''}`}>
+                    <Icon icon={`IcAppstoreWallet${currency[0] + currency.slice(1).toLowerCase()}Currency`} size={48} />
                 </div>
                 <div className='wallet-header__description'>
                     <div className='wallet-header__description-title'>

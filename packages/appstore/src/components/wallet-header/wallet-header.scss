@@ -1,45 +1,75 @@
 .wallet-header {
     margin: 2.4rem 0;
     padding: 2.4rem;
-    background-color: #fff;
+    background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS * 4;
     height: 12.8rem;
-    // border: 1px solid black; // test
 
     &__container {
         display: flex;
-        justify-content: space-between;
         height: 8rem;
     }
 
     &__currency {
         width: 12.8rem;
+        margin-right: 2.4rem;
     }
 
     &__description {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        // align-items: center;
         padding-block: 0.5rem;
 
-        // &-title {
-        // }
+        &-title {
+            display: flex;
+            align-items: center;
+        }
+
+        &-badge {
+            border: 1px solid var(--text-general);
+            padding-inline: 0.4rem;
+            margin-left: 0.8rem;
+        }
 
         &-buttons {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            // width: 21.6rem;
+            width: 21.6rem;
 
             &-item {
+                cursor: pointer;
                 width: 4.8rem;
                 height: 3.2rem;
                 border-radius: $BORDER_RADIUS * 4;
                 padding: 0.6rem 1.6rem;
                 margin-right: 0.8rem;
-                border: 1px solid #000;
+                border: 1px solid var(--text-general);
             }
+        }
+    }
+
+    &__balance {
+        display: flex;
+        align-self: center;
+        padding-block: 1.3rem;
+        margin-left: auto;
+
+        &-title-amount {
+            display: flex;
+            flex-direction: column;
+            padding-inline: 2.4rem;
+        }
+
+        &-arrow-icon {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            transform: rotate(0deg);
+            align-self: center;
+        }
+        &-arrow-icon-active {
+            transform: rotate(180deg);
         }
     }
 }

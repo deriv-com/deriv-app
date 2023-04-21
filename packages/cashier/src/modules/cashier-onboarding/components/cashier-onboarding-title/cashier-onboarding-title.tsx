@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import { getStaticUrl } from '@deriv/shared';
 import './cashier-onboarding-title.scss';
 
-const CashierOnboardingTitle = observer(() => {
+const CashierOnboardingTitle: React.FC = observer(() => {
     const { ui, common } = useStore();
     const { is_mobile } = ui;
     const { is_from_derivgo } = common;

@@ -39,19 +39,24 @@ const WalletHeader = observer(({ balance = '0.00', currency = 'USD', jurisdictio
     const balance_amount_size = 'm';
     const button_text_size = 'xs';
 
-    const title_text = `<0>${currency} Wallet</0>`;
+    const title_text = `<0>${jurisdiction === 'virtual' ? `Demo ${currency}` : currency} Wallet</0>`;
     const badge_text = `<0>${jurisdiction.toUpperCase()}</0>`;
     const balance_title_text = '<0>Wallet balance</0>';
     const balance_amount_text = `<0>${balance} ${currency}</0>`;
 
-    const btns_names = ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
+    const btns_names =
+        jurisdiction === 'virtual'
+            ? ['Transfer', 'Transactions', 'Deposit']
+            : ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
     const wallet_buttons = (
         <div className='wallet-header__description-buttons'>
             {btns_names.map(name => (
                 <div key={name} className='wallet-header__description-buttons-item'>
                     <Icon icon={`IcAppstoreWallet${name}`} custom_color={'var(--text-general)'} />
                     <Localize
-                        i18n_default_text={`<0>${name}</0>`}
+                        i18n_default_text={`<0>${
+                            jurisdiction === 'virtual' && name === 'Deposit' ? 'Reset balance' : name
+                        }</0>`}
                         components={[
                             <Text
                                 key={0}
@@ -84,18 +89,20 @@ const WalletHeader = observer(({ balance = '0.00', currency = 'USD', jurisdictio
                             i18n_default_text={title_text}
                             components={[<Text key={0} weight='bold' size={title_size} />]}
                         />
-                        <Localize
-                            i18n_default_text={badge_text}
-                            components={[
-                                <Text
-                                    key={0}
-                                    weight='bold'
-                                    size={badge_size}
-                                    line_height={badge_lh_size}
-                                    className='wallet-header__description-badge'
-                                />,
-                            ]}
-                        />
+                        {jurisdiction !== 'virtual' && (
+                            <Localize
+                                i18n_default_text={badge_text}
+                                components={[
+                                    <Text
+                                        key={0}
+                                        weight='bold'
+                                        size={badge_size}
+                                        line_height={badge_lh_size}
+                                        className='wallet-header__description-badge'
+                                    />,
+                                ]}
+                            />
+                        )}
                     </div>
                     {wallet_buttons}
                 </div>

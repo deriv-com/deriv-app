@@ -85,10 +85,10 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    <WalletHeader jurisdiction={'virtual'} />
                     <WalletHeader currency={'AUD'} jurisdiction={'svg'} />
                     <WalletHeader currency={'EUR'} jurisdiction={'svg'} />
                     <WalletHeader currency={'USD'} jurisdiction={'malta'} />
-                    {/* <WalletHeader jurisdiction={'virtual'} /> */}
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

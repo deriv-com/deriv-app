@@ -10,7 +10,7 @@ import { TCoreStores } from '@deriv/stores/types.js';
 type TAccumulator = {
     accumulator_range_list: number[];
     growth_rate: number;
-    onChange: React.ChangeEventHandler<Element>;
+    onChange: React.ChangeEventHandler<HTMLElement>;
     tick_size_barrier: number;
 };
 

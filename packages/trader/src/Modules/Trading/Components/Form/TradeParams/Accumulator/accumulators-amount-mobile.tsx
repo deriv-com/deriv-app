@@ -13,7 +13,7 @@ type TAccumulatorsAmountMobile = {
     current_focus: string | null;
     is_nativepicker: boolean;
     is_single_currency: boolean;
-    onChange: React.ChangeEventHandler<Element>;
+    onChange: React.ChangeEventHandler<HTMLElement>;
     setCurrentFocus: (value: string) => void;
 };
 

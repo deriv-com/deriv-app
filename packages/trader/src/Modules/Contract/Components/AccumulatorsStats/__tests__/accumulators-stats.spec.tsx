@@ -3,8 +3,6 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import AccumulatorsStats, { ROW_SIZES } from '../accumulators-stats';
 
-type TAccumulatorsStatsProps = React.ComponentProps<typeof AccumulatorsStats>;
-
 const mock_connect_props = {
     ticks_history_stats: {
         ticks_stayed_in: [1, 65, 1234, 675, 234, 10, 658, 134, 5, 2394, 100, 6, 90, 9, 344, 81, 695, 14, 345, 2222],

@@ -36,7 +36,6 @@
             background-image: linear-gradient(to right, #a9e5ba, #b9e8ad, #cdea9f, #e5ea93, #ffe88a);
             &-dark {
                 background-image: linear-gradient(to right, #214f3e, #2e5937, #44622a, #60681b, #816b0d);
-                // background-image: linear-gradient(to right, green, red);
             }
         }
     }
@@ -60,20 +59,20 @@
 
         &-buttons {
             display: flex;
-            // justify-content: space-between;
-            // align-items: center;
-            // width: 21.6rem;
 
             &-item {
                 display: flex;
                 align-items: center;
                 cursor: pointer;
-                // width: 4.8rem;
                 height: 3.2rem;
                 border-radius: $BORDER_RADIUS * 4;
                 padding: 0.6rem 1.6rem;
                 margin-right: 0.8rem;
                 border: 1px solid var(--text-general);
+
+                &:hover {
+                    background-color: var(--shadow-drop);
+                }
 
                 &-text {
                     display: none;

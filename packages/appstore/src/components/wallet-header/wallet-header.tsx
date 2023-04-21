@@ -49,7 +49,7 @@ const WalletHeader = observer(({ balance = '0.00', currency = 'USD', jurisdictio
         <div className='wallet-header__description-buttons'>
             {btns_names.map(name => (
                 <div key={name} className='wallet-header__description-buttons-item'>
-                    <Icon icon={`IcAppstoreWallet${name}`} />
+                    <Icon icon={`IcAppstoreWallet${name}`} custom_color={'var(--text-general)'} />
                     <Localize
                         i18n_default_text={`<0>${name}</0>`}
                         components={[

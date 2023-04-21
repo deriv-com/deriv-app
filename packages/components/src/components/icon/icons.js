@@ -31,8 +31,6 @@ import './appstore/ic-appstore-traders-hub-home.svg';
 import './appstore/ic-appstore-trading-hub-beta.svg';
 import './appstore/ic-appstore-trading-hub-onboarding-dark.svg';
 import './appstore/ic-appstore-trading-hub-onboarding.svg';
-import './appstore/ic-appstore-wallet-aud-bg-dark.svg';
-import './appstore/ic-appstore-wallet-aud-bg.svg';
 import './appstore/ic-appstore-wallet-aud-currency.svg';
 import './appstore/ic-appstore-wallet-aud-light.svg';
 import './appstore/ic-appstore-wallet-bitcoin-light.svg';

@@ -34,8 +34,6 @@ export const icons =
         'IcAppstoreTradingHubBeta',
         'IcAppstoreTradingHubOnboardingDark',
         'IcAppstoreTradingHubOnboarding',
-        'IcAppstoreWalletAudBgDark',
-        'IcAppstoreWalletAudBg',
         'IcAppstoreWalletAudCurrency',
         'IcAppstoreWalletAudLight',
         'IcAppstoreWalletBitcoinLight',

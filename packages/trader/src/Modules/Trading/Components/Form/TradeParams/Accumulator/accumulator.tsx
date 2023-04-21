@@ -15,7 +15,6 @@ type TAccumulator = {
 };
 
 const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_barrier }: TAccumulator) => {
-    if (!accumulator_range_list.length) return null;
     // splitting accumulator_range_list into rows containing 5 values each:
     const arr_arr_numbers: number[][] = accumulator_range_list.reduce((acc: number[][], _el, index) => {
         if (index % 5 === 0) {
@@ -24,6 +23,7 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
         return acc;
     }, []);
 
+    if (!accumulator_range_list.length) return null;
     return (
         <Fieldset
             className={classNames('trade-container__fieldset', 'accumulator')}

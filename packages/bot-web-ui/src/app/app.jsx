@@ -13,6 +13,7 @@ import {
     RoutePromptDialog,
     Toolbar,
     NetworkToastPopup,
+    BotBuilder,
 } from 'Components';
 import { LocalStore } from '@deriv/shared';
 import { MobxContentProvider } from 'Stores/connect';
@@ -104,15 +105,16 @@ const App = ({ passthrough }) => {
                     <Dashboard />
                 ) : (
                     <>
-                        <BotNotificationMessages />
-                        <NetworkToastPopup />
-                        <Toolbar />
+                        {/* <BotNotificationMessages /> */}
+                        {/* <NetworkToastPopup /> */}
+                        {/* <Toolbar /> */}
                         <MainContent />
-                        <RunPanel />
-                        <QuickStrategy />
-                        <BotFooterExtensions />
+                        <BotBuilder/>
+                        {/* <RunPanel /> */}
+                        {/* <QuickStrategy /> */}
+                        {/* <BotFooterExtensions /> */}
                         <Audio />
-                        <RoutePromptDialog />
+                        {/* <RoutePromptDialog /> */}
                         <BlocklyLoading />
                     </>
                 )}

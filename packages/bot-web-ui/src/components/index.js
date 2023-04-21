@@ -10,6 +10,7 @@ export { default as Flyout } from './flyout';
 export { default as Journal } from './journal';
 export { default as LoadModal } from './load-modal';
 export { default as MainContent } from './main-content';
+export { default as BotBuilder } from './bot-builder';
 export { messageWithButton, messageWithImage, arrayAsMessage } from './notify-item';
 export { default as QuickStrategy } from './quick-strategy';
 export { default as RoutePromptDialog } from './route-prompt-dialog';

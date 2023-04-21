@@ -107,20 +107,20 @@ export type TWebSocket = {
     cryptoWithdraw: (
         args: Omit<CashierInformationRequest, 'cashier' | 'provider' | 'type'>
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
-    mt5LoginList: () => {
+    mt5LoginList: () => Promise<{
         mt5_login_list: DetailsOfEachMT5Loginid[];
-    };
+    }>;
     send: (obj: unknown) => Promise<{ error: TServerError; exchange_rates: { rates: { [k: string]: string } } }>;
     serviceToken: (req: TServiceTokenRequest) => Promise<TServiceTokenResponse>;
-    subscribeCashierPayments?: (callback: (response: TSubscribeCashierPayments) => void) => void;
+    subscribeCashierPayments?: (callback: (response: TSubscribeCashierPayments) => void) => Promise<void>;
     verifyEmail?: (email: string, withdrawal_type: string) => Promise<unknown>;
     storage: {
-        mt5LoginList: () => {
+        mt5LoginList: () => Promise<{
             mt5_login_list: DetailsOfEachMT5Loginid[];
-        };
+        }>;
     };
-    tradingPlatformAccountsList: (platform: string) => {
+    tradingPlatformAccountsList: (platform: string) => Promise<{
         trading_platform_accounts: (DetailsOfEachMT5Loginid & { account_id: string })[];
-    };
+    }>;
     wait: <T extends TSocketEndpointNames>(value: T) => Promise<TSocketResponse<T>>;
 };

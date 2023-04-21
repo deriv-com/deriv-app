@@ -1,4 +1,5 @@
 import { Icon, Text } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import React from 'react';
@@ -24,10 +25,13 @@ type TWalletHeaderMalta = TWalletHeaderCommon & {
 
 type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 
-const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdiction = 'svg' }: TWalletHeader) => {
+const WalletHeader = observer(({ balance = '0.00', currency = 'USD', jurisdiction = 'svg' }: TWalletHeader) => {
     const [isOpen, setIsOpen] = React.useState(false);
 
-    const is_dark = false;
+    const {
+        ui: { is_dark_mode_on },
+    } = useStore();
+
     const title_size = 'sm';
     const badge_size = 'xxxs';
     const badge_lh_size = 'xxxs';
@@ -67,7 +71,11 @@ const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdict
     return (
         <div className='wallet-header'>
             <div className='wallet-header__container'>
-                <div className={`wallet-header__currency wallet-header__currency-${currency}${is_dark ? '-dark' : ''}`}>
+                <div
+                    className={`wallet-header__currency wallet-header__currency-${currency}${
+                        is_dark_mode_on ? '-dark' : ''
+                    }`}
+                >
                     <Icon icon={`IcAppstoreWallet${currency[0] + currency.slice(1).toLowerCase()}Currency`} size={48} />
                 </div>
                 <div className='wallet-header__description'>
@@ -114,6 +122,5 @@ const WalletHeader = React.memo(({ balance = '0.00', currency = 'USD', jurisdict
         </div>
     );
 });
-
 WalletHeader.displayName = 'WalletHeader';
 export default WalletHeader;

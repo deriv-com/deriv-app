@@ -1,33 +1,27 @@
 .cashier-onboarding-card {
-    margin: 2.4rem;
-    width: 62.4rem;
-
-    @media (max-width: 926px) {
-        width: unset;
-    }
+    margin-top: 2.4rem;
 
     &__container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
         padding: 1.6rem;
-        position: static;
         border: 2px solid var(--border-normal-1);
         border-radius: $BORDER_RADIUS * 2;
-        margin: 0.8rem 0rem;
+        margin-top: 0.8rem;
         cursor: pointer;
+        transition: all 0.25s ease;
+
+        &:hover {
+            transform: scale(0.98);
+        }
     }
 
     &__content {
         display: flex;
-        flex-direction: row;
         align-items: center;
-        width: 100%;
     }
 
     &__description {
-        position: static;
         width: 100%;
     }
 }

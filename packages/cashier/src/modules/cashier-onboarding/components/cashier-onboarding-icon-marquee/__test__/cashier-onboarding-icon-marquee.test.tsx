@@ -15,7 +15,7 @@ describe('CashierOnboardingIconMarquee', () => {
         );
         render(<CashierOnboardingIconMarquee {...props} />, { wrapper });
 
-        const container = screen.getByTestId('dt_cashier_onboarding_icon-marquee_container');
+        const container = screen.getByTestId('dt_cashier_onboarding_icon-marquee');
 
         expect(container).toBeInTheDocument();
     });

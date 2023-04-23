@@ -13,14 +13,11 @@ export default class OrderStore {
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
             cancellation_limit: observable,
+            error_code: observable,
             error_message: observable,
             has_more_items_to_load: observable,
-            is_email_link_blocked_modal_open: observable,
-            is_email_link_verified_modal_open: observable,
-            is_email_verification_modal_open: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
-            is_loading_modal_open: observable,
             is_rating_modal_open: observable,
             is_recommended: observable,
             orders: observable,
@@ -52,14 +49,10 @@ export default class OrderStore {
             setCancellationBlockDuration: action.bound,
             setCancellationCountPeriod: action.bound,
             setCancellationLimit: action.bound,
+            setErrorCode: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
-            setIsEmailLinkBlockedModalOpen: action.bound,
-            setIsEmailLinkVerifiedModalOpen: action.bound,
-            setIsEmailVerificationModalOpen: action.bound,
-            setIsInvalidVerificationLinkModalOpen: action.bound,
             setIsLoading: action.bound,
-            setIsLoadingModalOpen: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
             setOrderPaymentMethodDetails: action.bound,
@@ -95,14 +88,11 @@ export default class OrderStore {
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
     cancellation_limit = 0;
+    error_code = '';
     error_message = '';
     has_more_items_to_load = false;
-    is_email_link_blocked_modal_open = false;
-    is_email_link_verified_modal_open = false;
-    is_email_verification_modal_open = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
-    is_loading_modal_open = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
     orders = [];
@@ -131,41 +121,48 @@ export default class OrderStore {
     }
 
     confirmOrderRequest(id, is_buy_order_for_user) {
-        const { order_details_store } = this.root_store;
+        const { general_store, order_details_store, order_store } = this.root_store;
         requestWS({
             p2p_order_confirm: 1,
             id,
         }).then(response => {
+            general_store.hideModal();
+
             if (response) {
                 if (response.error) {
-                    if (response.error.code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
-                        clearTimeout(wait);
-                        const wait = setTimeout(() => this.setIsEmailVerificationModalOpen(true), 250);
+                    const { code, message } = response.error;
+
+                    this.setErrorCode(code);
+
+                    if (code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
+                        setTimeout(() => general_store.showModal({ key: 'EmailVerificationModal', props: {} }), 230);
                     } else if (
-                        response?.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
-                        response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+                        code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
+                        code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
                     ) {
-                        clearTimeout(wait);
-                        if (this.is_email_verification_modal_open) {
-                            this.setIsEmailVerificationModalOpen(false);
-                        }
-                        if (this.is_email_link_verified_modal_open) {
-                            this.setIsEmailLinkVerifiedModalOpen(false);
-                        }
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 230);
-                    } else if (response?.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.is_invalid_verification_link_modal_open) {
-                            this.setIsInvalidVerificationLinkModalOpen(false);
-                        }
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 230);
+                        this.setVerificationLinkErrorMessage(message);
+                        general_store.showModal({
+                            key: 'InvalidVerificationLinkModal',
+                            props: { error_message: message, order_id: id },
+                        });
+                    } else if (
+                        code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
+                        !order_store?.order_information.is_buy_order_for_user
+                    ) {
+                        this.setVerificationLinkErrorMessage(message);
+                        general_store.showModal({
+                            key: 'EmailLinkBlockedModal',
+                            props: {
+                                email_link_blocked_modal_error_message: order_store.verification_link_error_message,
+                            },
+                        });
                     } else {
-                        order_details_store.setErrorMessage(response.error.message);
+                        order_details_store.setErrorMessage(message);
                     }
                 } else if (!is_buy_order_for_user) {
-                    this.setIsRatingModalOpen(true);
+                    general_store.showModal({
+                        key: 'RatingModal',
+                    });
                 }
 
                 localStorage.removeItem('verification_code.p2p_order_confirm');
@@ -174,6 +171,7 @@ export default class OrderStore {
     }
 
     confirmOrder(is_buy_order_for_user) {
+        const { general_store } = this.root_store;
         requestWS({
             p2p_order_confirm: 1,
             id: this.order_id,
@@ -183,7 +181,9 @@ export default class OrderStore {
                 if (!is_buy_order_for_user) {
                     clearTimeout(wait);
                     const wait = setTimeout(() => {
-                        this.setIsRatingModalOpen(true);
+                        general_store.showModal({
+                            key: 'RatingModal',
+                        });
                     }, 230);
                 }
             }
@@ -214,7 +214,7 @@ export default class OrderStore {
         });
     }
 
-    getWebsiteStatus(setShouldShowCancelModal) {
+    getWebsiteStatus(should_show_cancel_modal) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
                 this.setErrorMessage(response.error.message);
@@ -224,9 +224,9 @@ export default class OrderStore {
                 this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
-            if (typeof setShouldShowCancelModal === 'function') {
-                setShouldShowCancelModal(true);
-            }
+
+            if (should_show_cancel_modal)
+                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 
@@ -288,10 +288,13 @@ export default class OrderStore {
     }
 
     onOrderIdUpdate() {
+        const { buy_sell_store } = this.root_store;
         this.unsubscribeFromCurrentOrder();
 
         if (this.order_id) {
-            this.subscribeToCurrentOrder();
+            if (!buy_sell_store.is_create_order_subscribed) {
+                this.subscribeToCurrentOrder();
+            }
         }
     }
 
@@ -336,6 +339,7 @@ export default class OrderStore {
     }
 
     setOrderRating(id) {
+        const { general_store } = this.root_store;
         const rating = this.rating_value / 20;
 
         requestWS({
@@ -349,7 +353,7 @@ export default class OrderStore {
                     this.setErrorMessage(response.error.message);
                 }
                 this.getP2POrderList();
-                this.setIsRatingModalOpen(false);
+                general_store.hideModal();
                 this.setRatingValue(0);
             }
         });
@@ -363,8 +367,8 @@ export default class OrderStore {
         const { general_store } = this.root_store;
         const order_information = createExtendedOrderDetails(
             input_order,
-            general_store.client.loginid,
-            general_store.props.server_time
+            general_store.external_stores.client.loginid,
+            general_store.server_time
         );
         this.setOrderId(order_information.id); // Sets the id in URL
         if (order_information.is_active_order) {
@@ -424,8 +428,8 @@ export default class OrderStore {
 
         const get_order_status = createExtendedOrderDetails(
             p2p_order_info,
-            general_store.client.loginid,
-            general_store.props.server_time
+            general_store.external_stores.client.loginid,
+            general_store.server_time
         );
 
         const order_idx = this.orders.findIndex(order => order.id === p2p_order_info.id);
@@ -455,8 +459,8 @@ export default class OrderStore {
         if (get_order_status.is_completed_order && !get_order_status.is_reviewable) {
             // Remove notification once order review period is finished
             const notification_key = `order-${p2p_order_info.id}`;
-            general_store.props.removeNotificationMessage({ key: notification_key });
-            general_store.props.removeNotificationByKey({ key: notification_key });
+            general_store.external_stores?.notifications.removeNotificationMessage({ key: notification_key });
+            general_store.external_stores?.notifications.removeNotificationByKey({ key: notification_key });
         }
     }
 
@@ -469,32 +473,54 @@ export default class OrderStore {
     }
 
     verifyEmailVerificationCode(verification_action, verification_code) {
+        const { general_store, order_store } = this.root_store;
+        const order_id = this.order_id;
+
         if (verification_action === 'p2p_order_confirm' && verification_code) {
             requestWS({
                 p2p_order_confirm: 1,
-                id: this.order_id,
+                id: order_id,
                 verification_code,
                 dry_run: 1,
             }).then(response => {
-                this.setIsLoadingModalOpen(false);
+                general_store.hideModal();
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
-                        const wait = setTimeout(() => this.setIsEmailLinkVerifiedModalOpen(true), 650);
-                    } else if (
-                        response.error.code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
-                        response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
-                    ) {
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsInvalidVerificationLinkModalOpen(true), 750);
-                    } else if (response.error.code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES) {
-                        if (this.is_invalid_verification_link_modal_open) {
-                            this.setIsInvalidVerificationLinkModalOpen(false);
+                        const wait = setTimeout(
+                            () => general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
+                            650
+                        );
+                    } else if (response.error) {
+                        const { code, message } = response?.error;
+
+                        if (
+                            code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
+                            code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+                        ) {
+                            clearTimeout(wait);
+                            this.setVerificationLinkErrorMessage(message);
+                            const wait = setTimeout(() => {
+                                general_store.showModal({
+                                    key: 'InvalidVerificationLinkModal',
+                                    props: { error_message: message, order_id },
+                                });
+                            }, 750);
+                        } else if (
+                            code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
+                            !order_store?.order_information.is_buy_order_for_user
+                        ) {
+                            if (general_store.isCurrentModal('InvalidVerificationLinkModal')) {
+                                general_store.hideModal();
+                            }
+                            this.setVerificationLinkErrorMessage(message);
+                            general_store.showModal({
+                                key: 'EmailLinkBlockedModal',
+                                props: {
+                                    email_link_blocked_modal_error_message: order_store.verification_link_error_message,
+                                },
+                            });
                         }
-                        clearTimeout(wait);
-                        this.setVerificationLinkErrorMessage(response.error.message);
-                        const wait = setTimeout(() => this.setIsEmailLinkBlockedModalOpen(true), 600);
                     }
                     localStorage.removeItem('verification_code.p2p_order_confirm');
                 }
@@ -522,6 +548,10 @@ export default class OrderStore {
         this.data = data;
     }
 
+    setErrorCode(error_code) {
+        this.error_code = error_code;
+    }
+
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -534,28 +564,8 @@ export default class OrderStore {
         this.has_more_items_to_load = has_more_items_to_load;
     }
 
-    setIsEmailLinkBlockedModalOpen(is_email_link_blocked_modal_open) {
-        this.is_email_link_blocked_modal_open = is_email_link_blocked_modal_open;
-    }
-
-    setIsEmailLinkVerifiedModalOpen(is_email_link_verified_modal_open) {
-        this.is_email_link_verified_modal_open = is_email_link_verified_modal_open;
-    }
-
-    setIsEmailVerificationModalOpen(is_email_verification_modal_open) {
-        this.is_email_verification_modal_open = is_email_verification_modal_open;
-    }
-
-    setIsInvalidVerificationLinkModalOpen(is_invalid_verification_link_modal_open) {
-        this.is_invalid_verification_link_modal_open = is_invalid_verification_link_modal_open;
-    }
-
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
-    }
-
-    setIsLoadingModalOpen(is_loading_modal_open) {
-        this.is_loading_modal_open = is_loading_modal_open;
     }
 
     setIsRatingModalOpen(is_rating_modal_open) {
@@ -573,12 +583,6 @@ export default class OrderStore {
 
     setOrderId(order_id) {
         this.order_id = order_id;
-
-        const { general_store } = this.root_store;
-
-        if (typeof general_store.props.setOrderId === 'function') {
-            general_store.props.setOrderId(order_id);
-        }
     }
 
     setOrderPaymentMethodDetails(order_payment_method_details) {

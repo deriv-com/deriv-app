@@ -7,22 +7,24 @@ import SampleCreditCardModal from 'Components/sample-credit-card-modal';
 import classNames from 'classnames';
 import { IDENTIFIER_TYPES, VALIDATIONS } from './constants/constants.js';
 
-const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors, validateField, values }) => {
+const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors, values }) => {
     const [is_sample_modal_open, setIsSampleModalOpen] = useState(false);
-    const handleUploadedFile = (name, file) => {
-        setFieldValue(name, file);
+    const handleUploadedFile = async (name, file) => {
+        await setFieldValue(name, file);
     };
-    const handleBlur = (name, payment_method_identifier, item_id, item_index) => {
+    const handleBlur = (name, payment_method_identifier, identifier_type, item_id, item_index, documents_required) => {
         handleIdentifierChange(
             name,
-            formatIdentifier(payment_method_identifier, card_details?.identifier_type),
+            formatIdentifier(payment_method_identifier, identifier_type),
             item_id,
-            item_index
+            item_index,
+            documents_required
         );
     };
-    const handleIdentifierChange = (name, payment_method_identifier, item_id, item_index) => {
+    const handleIdentifierChange = (name, payment_method_identifier, item_id, item_index, documents_required) => {
         setFieldValue(`${name}`, {
             ...values.data?.[index]?.[item_index],
+            documents_required,
             id: item_id,
             payment_method_identifier,
             is_generic_pm: card_details.is_generic_pm,
@@ -92,16 +94,19 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                     `data[${index}].[${item_index}]`,
                                                     e.currentTarget.value.trim(),
                                                     item.id,
-                                                    item_index
+                                                    item_index,
+                                                    card_details.documents_required
                                                 );
                                             }}
-                                            value={values?.data?.[index]?.[item_index]?.payment_method_identifier ?? ''}
+                                            value={values?.data?.[index]?.[item_index]?.payment_method_identifier || ''}
                                             onBlur={e => {
                                                 handleBlur(
                                                     `data[${index}].[${item_index}]`,
                                                     e.currentTarget.value.trim(),
+                                                    card_details?.identifier_type,
                                                     item.id,
-                                                    item_index
+                                                    item_index,
+                                                    card_details.documents_required
                                                 );
                                             }}
                                             data-testid='dt_payment_method_identifier'
@@ -129,9 +134,10 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                     onChange={e => {
                                                         handleIdentifierChange(
                                                             `data[${index}].[${item_index}]`,
-                                                            e.currentTarget.value,
+                                                            e.currentTarget.value.trim(),
                                                             item.id,
-                                                            item_index
+                                                            item_index,
+                                                            card_details.documents_required
                                                         );
                                                     }}
                                                     value={
@@ -141,9 +147,11 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                     onBlur={e => {
                                                         handleBlur(
                                                             `data[${index}].[${item_index}]`,
-                                                            e.currentTarget.value,
+                                                            e.currentTarget.value.trim(),
+                                                            card_details?.identifier_type,
                                                             item.id,
-                                                            item_index
+                                                            item_index,
+                                                            card_details.documents_required
                                                         );
                                                     }}
                                                     data-testid='dt_payment_method_identifier'
@@ -163,7 +171,6 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
                                                 class_name='proof-of-ownership__card-open-inputs-photo'
                                                 name={`data[${index}].[${item_index}].files[${i}]`}
                                                 error={error?.[item_index]?.files?.[i]}
-                                                validateField={validateField}
                                                 index={index}
                                                 item_index={item_index}
                                                 sub_index={i}
@@ -189,11 +196,10 @@ const ExpandedCard = ({ card_details, error, index, setFieldValue, updateErrors,
 
 ExpandedCard.propTypes = {
     card_details: PropTypes.object,
-    error: PropTypes.array,
+    error: PropTypes.object,
     index: PropTypes.number,
     setFieldValue: PropTypes.func,
     updateErrors: PropTypes.func,
-    validateField: PropTypes.func,
     values: PropTypes.object,
 };
 

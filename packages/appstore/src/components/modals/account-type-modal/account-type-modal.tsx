@@ -9,17 +9,17 @@ import { TModalContent, TAccountType, TAccountCard, TTradingPlatformAvailableAcc
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
 
-const derived_account: TAccountType = {
-    title_and_type: 'Derived',
+const getDerivedAccount = (): TAccountType => ({
+    title_and_type: localize('Derived'),
     icon: 'Derived',
-    description: 'Trade CFDs on MT5 with Derived indices that simulate real-world market movements.',
-};
+    description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
+});
 
-const financial_account: TAccountType = {
-    title_and_type: 'Financial',
+const getFinancialAccount = (): TAccountType => ({
+    title_and_type: localize('Financial'),
     icon: 'Financial',
-    description: 'Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.',
-};
+    description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
+});
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
@@ -37,12 +37,12 @@ const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type,
             </div>
             <div className='account-type-card__header'>
                 <Text as='h2' weight='bold'>
-                    {localize(`${title_and_type}`)}
+                    {title_and_type}
                 </Text>
             </div>
             <div className='account-type-card__description'>
                 <Text as='p' size='xxs' align='center'>
-                    {localize(`${description}`)}
+                    {description}
                 </Text>
             </div>
         </div>
@@ -60,19 +60,19 @@ const ModalContent = ({
             {is_synthetic_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${derived_account.title_and_type}`)}
-                    description={derived_account.description}
-                    title_and_type={derived_account.title_and_type}
-                    icon={derived_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getDerivedAccount().title_and_type}`)}
+                    description={getDerivedAccount().description}
+                    title_and_type={getDerivedAccount().title_and_type}
+                    icon={getDerivedAccount().icon}
                 />
             )}
             {is_financial_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${financial_account.title_and_type}`)}
-                    description={financial_account.description}
-                    title_and_type={financial_account.title_and_type}
-                    icon={financial_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getFinancialAccount().title_and_type}`)}
+                    description={getFinancialAccount().description}
+                    title_and_type={getFinancialAccount().title_and_type}
+                    icon={getFinancialAccount().icon}
                 />
             )}
         </div>
@@ -101,7 +101,7 @@ const MT5AccountTypeModal = () => {
     );
 
     const set_account_type = () =>
-        account_type_card === 'Derived'
+        account_type_card === localize('Derived')
             ? setAccountType({ category: 'real', type: 'synthetic' })
             : setAccountType({ category: 'real', type: 'financial' });
 
@@ -115,7 +115,7 @@ const MT5AccountTypeModal = () => {
                         enableApp={enableApp}
                         exit_classname='account-type--custom-exit'
                         is_open={is_account_type_modal_visible}
-                        title={localize(`Select Deriv MT5's account type`)}
+                        title={localize("Select Deriv MT5's account type")}
                         toggleModal={toggleAccountTypeModalVisibility}
                         type='button'
                         height='664px'
@@ -138,7 +138,7 @@ const MT5AccountTypeModal = () => {
                                     getAccount();
                                 }}
                             >
-                                {localize(`Next`)}
+                                {localize('Next')}
                             </Button>
                         </Modal.Footer>
                     </Modal>
@@ -146,7 +146,7 @@ const MT5AccountTypeModal = () => {
                 <MobileWrapper>
                     <MobileDialog
                         portal_element_id='deriv_app'
-                        title={localize(`Select Deriv MT5's account type`)}
+                        title={localize("Select Deriv MT5's account type")}
                         visible={is_account_type_modal_visible}
                         onClose={toggleAccountTypeModalVisibility}
                     >
@@ -168,7 +168,7 @@ const MT5AccountTypeModal = () => {
                                     getAccount();
                                 }}
                             >
-                                {localize(`Next`)}
+                                {localize('Next')}
                             </Button>
                         </Modal.Footer>
                     </MobileDialog>

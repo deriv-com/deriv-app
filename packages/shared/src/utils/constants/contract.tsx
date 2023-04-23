@@ -3,6 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import { shouldShowCancellation, shouldShowExpiration } from '../contract';
 
 export const getLocalizedBasis = () => ({
+    accumulator: localize('Accumulator'),
     payout: localize('Payout'),
     stake: localize('Stake'),
     multiplier: localize('Multiplier'),
@@ -18,10 +19,18 @@ type TContractTypesConfig = {
     basis: string[];
     components: string[];
     barrier_count?: number;
-    config?: { hide_duration: boolean };
+    config?: { hide_duration?: boolean; should_override?: boolean };
 };
 
 type TGetContractTypesConfig = (symbol: string) => Record<string, TContractTypesConfig>;
+
+type TContractConfig = {
+    button_name?: React.ReactNode;
+    name: React.ReactNode;
+    position: string;
+};
+
+type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
@@ -115,6 +124,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         basis: [],
         components: [],
     },
+    accumulator: {
+        title: localize('Accumulator'),
+        trade_types: ['ACCU'],
+        basis: ['stake'],
+        components: ['take_profit', 'accumulator', 'accu_info_display'],
+        barrier_count: 2,
+        config: { hide_duration: true },
+    },
     multiplier: {
         title: localize('Multipliers'),
         trade_types: ['MULTUP', 'MULTDOWN'],
@@ -127,8 +144,17 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
+    vanilla: {
+        title: localize('Call/Put'),
+        trade_types: ['VANILLALONGCALL', 'VANILLALONGPUT'],
+        basis: ['stake'],
+        components: ['duration', 'strike', 'amount', 'vanilla_trade_type'],
+        barrier_count: 1,
+        config: { should_override: true },
+    },
 });
 
+// Config for rendering trade options
 export const getContractCategoriesConfig = () => ({
     Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
     'Ups & Downs': {
@@ -139,6 +165,8 @@ export const getContractCategoriesConfig = () => ({
     'Ins & Outs': { name: localize('Ins & Outs'), categories: ['end', 'stay'] },
     'Look Backs': { name: localize('Look Backs'), categories: ['lb_high_low', 'lb_put', 'lb_call'] },
     Digits: { name: localize('Digits'), categories: ['match_diff', 'even_odd', 'over_under'] },
+    Vanillas: { name: localize('Vanillas'), categories: ['vanilla'] },
+    Accumulators: { name: localize('Accumulators'), categories: ['accumulator'] },
 });
 
 export const unsupported_contract_types_list = [
@@ -157,35 +185,39 @@ export const unsupported_contract_types_list = [
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),
-    STAKE: localize('Stake:'),
-    CLOSE: localize('Close'),
-    CANCEL: localize('Cancel'),
-    CURRENT_STAKE: localize('Current stake:'),
-    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
-    TAKE_PROFIT: localize('Take profit:'),
     BUY_PRICE: localize('Buy price:'),
+    CANCEL: localize('Cancel'),
+    CLOSE: localize('Close'),
+    CONTRACT_VALUE: localize('Contract value:'),
+    CURRENT_STAKE: localize('Current stake:'),
+    DAY: localize('day'),
+    DAYS: localize('days'),
+    DEAL_CANCEL_FEE: localize('Deal cancel. fee:'),
+    DECREMENT_VALUE: localize('Decrement value'),
+    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
+    ENTRY_SPOT: localize('Entry spot:'),
+    INCREMENT_VALUE: localize('Increment value'),
+    NOT_AVAILABLE: localize('N/A'),
+    RESALE_NOT_OFFERED: localize('Resale not offered'),
+    SELL: localize('Sell'),
+    STAKE: localize('Stake:'),
     STOP_LOSS: localize('Stop loss:'),
+    STRIKE: localize('Strike:'),
+    TICK: localize('Tick '),
+    TICKS: localize('Ticks'),
     TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
     PROFIT_LOSS: localize('Profit/Loss:'),
     POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
     INDICATIVE_PRICE: localize('Indicative price:'),
+    LOST: localize('Lost'),
     PAYOUT: localize('Sell price:'),
     PURCHASE_PRICE: localize('Buy price:'),
     POTENTIAL_PAYOUT: localize('Payout limit:'),
-    TICK: localize('Tick '),
-    WON: localize('Won'),
-    LOST: localize('Lost'),
-    DAYS: localize('days'),
-    DAY: localize('day'),
-    SELL: localize('Sell'),
-    INCREMENT_VALUE: localize('Increment value'),
-    DECREMENT_VALUE: localize('Decrement value'),
+    TAKE_PROFIT: localize('Take profit:'),
     TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
         'Take profit and/or stop loss are not available while deal cancellation is active.'
     ),
-    DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
-    RESALE_NOT_OFFERED: localize('Resale not offered'),
-    NOT_AVAILABLE: localize('N/A'),
+    WON: localize('Won'),
 });
 
 export const getMarketNamesMap = () => ({
@@ -221,19 +253,19 @@ export const getMarketNamesMap = () => ({
     FRXXAUUSD: localize('Gold/USD'),
     FRXXPDUSD: localize('Palladium/USD'),
     FRXXPTUSD: localize('Platinum/USD'),
-    OTC_AEX: localize('Dutch Index'),
-    OTC_AS51: localize('Australian Index'),
-    OTC_DJI: localize('Wall Street Index'),
-    OTC_FCHI: localize('French Index'),
-    OTC_FTSE: localize('UK Index'),
-    OTC_GDAXI: localize('German Index'),
-    OTC_HSI: localize('Hong Kong Index'),
+    OTC_AEX: localize('Netherlands 25'),
+    OTC_AS51: localize('Australia 200'),
+    OTC_DJI: localize('Wall Street 30'),
+    OTC_FCHI: localize('France 40'),
+    OTC_FTSE: localize('UK 100'),
+    OTC_GDAXI: localize('Germany 40'),
+    OTC_HSI: localize('Hong Kong 50'),
     OTC_IBEX35: localize('Spanish Index'),
-    OTC_N225: localize('Japanese Index'),
-    OTC_NDX: localize('US Tech Index'),
-    OTC_SPC: localize('US Index'),
-    OTC_SSMI: localize('Swiss Index'),
-    OTC_SX5E: localize('Euro 50 Index'),
+    OTC_N225: localize('Japan 225'),
+    OTC_NDX: localize('US Tech 100'),
+    OTC_SPC: localize('US 500'),
+    OTC_SSMI: localize('Swiss 20'),
+    OTC_SX5E: localize('Euro 50'),
     R_10: localize('Volatility 10 Index'),
     R_25: localize('Volatility 25 Index'),
     R_50: localize('Volatility 50 Index'),
@@ -255,7 +287,9 @@ export const getMarketNamesMap = () => ({
     WLDUSD: localize('USD Basket'),
     '1HZ10V': localize('Volatility 10 (1s) Index'),
     '1HZ100V': localize('Volatility 100 (1s) Index'),
+    '1HZ150V': localize('Volatility 150 (1s) Index'),
     '1HZ200V': localize('Volatility 200 (1s) Index'),
+    '1HZ250V': localize('Volatility 250 (1s) Index'),
     '1HZ300V': localize('Volatility 300 (1s) Index'),
     JD10: localize('Jump 10 Index'),
     JD25: localize('Jump 25 Index'),
@@ -285,77 +319,81 @@ export const getMarketNamesMap = () => ({
 
 export const getUnsupportedContracts = () => ({
     EXPIRYMISS: {
-        name: <Localize i18n_default_text='Ends Outside' />,
+        name: localize('Ends Outside'),
         position: 'top',
     },
     EXPIRYRANGE: {
-        name: <Localize i18n_default_text='Ends Between' />,
+        name: localize('Ends Between'),
         position: 'bottom',
     },
     RANGE: {
-        name: <Localize i18n_default_text='Stays Between' />,
+        name: localize('Stays Between'),
         position: 'top',
     },
     UPORDOWN: {
-        name: <Localize i18n_default_text='Goes Outside' />,
+        name: localize('Goes Outside'),
         position: 'bottom',
     },
     RESETCALL: {
-        name: <Localize i18n_default_text='Reset Call' />,
+        name: localize('Reset Call'),
         position: 'top',
     },
     RESETPUT: {
-        name: <Localize i18n_default_text='Reset Put' />,
+        name: localize('Reset Put'),
         position: 'bottom',
     },
     TICKHIGH: {
-        name: <Localize i18n_default_text='High Tick' />,
+        name: localize('High Tick'),
         position: 'top',
     },
     TICKLOW: {
-        name: <Localize i18n_default_text='Low Tick' />,
+        name: localize('Low Tick'),
         position: 'bottom',
     },
     ASIANU: {
-        name: <Localize i18n_default_text='Asian Up' />,
+        name: localize('Asian Up'),
         position: 'top',
     },
     ASIAND: {
-        name: <Localize i18n_default_text='Asian Down' />,
+        name: localize('Asian Down'),
         position: 'bottom',
     },
     LBFLOATCALL: {
-        name: <Localize i18n_default_text='Close-to-Low' />,
+        name: localize('Close-to-Low'),
         position: 'top',
     },
     LBFLOATPUT: {
-        name: <Localize i18n_default_text='High-to-Close' />,
+        name: localize('High-to-Close'),
         position: 'top',
     },
     LBHIGHLOW: {
-        name: <Localize i18n_default_text='High-to-Low' />,
+        name: localize('High-to-Low'),
         position: 'top',
     },
     CALLSPREAD: {
-        name: <Localize i18n_default_text='Spread Up' />,
+        name: localize('Spread Up'),
         position: 'top',
     },
     PUTSPREAD: {
-        name: <Localize i18n_default_text='Spread Down' />,
+        name: localize('Spread Down'),
         position: 'bottom',
     },
     RUNHIGH: {
-        name: <Localize i18n_default_text='Only Ups' />,
+        name: localize('Only Ups'),
         position: 'top',
     },
     RUNLOW: {
-        name: <Localize i18n_default_text='Only Downs' />,
+        name: localize('Only Downs'),
         position: 'bottom',
     },
 });
 
-type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 export const getSupportedContracts = (is_high_low?: boolean) => ({
+    ACCU: {
+        button_name: <Localize i18n_default_text='Buy' />,
+        name: <Localize i18n_default_text='Accumulator' />,
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -412,6 +450,14 @@ export const getSupportedContracts = (is_high_low?: boolean) => ({
         name: <Localize i18n_default_text='Down' />,
         position: 'bottom',
     },
+    VANILLALONGCALL: {
+        name: <Localize i18n_default_text='Call' />,
+        position: 'top',
+    },
+    VANILLALONGPUT: {
+        name: <Localize i18n_default_text='Put' />,
+        position: 'bottom',
+    },
 });
 
 export const getContractConfig = (is_high_low?: boolean) => ({
@@ -423,8 +469,10 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false) =>
-    getContractConfig(is_high_low)[type].name;
+export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type] as TContractConfig;
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
+};
 
 export const getContractTypePosition = (type: TGetSupportedContracts, is_high_low = false) =>
     getContractConfig(is_high_low)[type].position || 'top';

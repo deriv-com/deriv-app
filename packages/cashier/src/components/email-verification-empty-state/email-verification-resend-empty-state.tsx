@@ -5,7 +5,7 @@ import EmptyState from 'Components/empty-state';
 type TEmailVerificationResendEmptyStateProps = {
     is_counter_running: boolean;
     counter: number;
-    resend: () => void;
+    resend: VoidFunction;
 };
 
 const EmailVerificationResendEmptyState = ({

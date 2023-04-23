@@ -20,7 +20,7 @@ import {
 } from '@deriv/components';
 import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext } from '@deriv/shared';
+import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext, validPhone } from '@deriv/shared';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
@@ -89,6 +89,7 @@ const PersonalDetails = ({
     onSubmitEnabledChange,
     selected_step_ref,
     closeRealAccountSignup,
+    has_real_account,
     ...props
 }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -153,6 +154,14 @@ const PersonalDetails = ({
             />
         );
     };
+
+    /*
+    In most modern browsers, setting autocomplete to "off" will not prevent a password manager from asking the user if they would like to save username and password information, or from automatically filling in those values in a site's login form.
+    check this link https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
+    */
+    // for dropdowns use 'none'
+    const autocomplete_value = 'none';
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -265,7 +274,10 @@ const PersonalDetails = ({
                                                         : localize('First name')
                                                 }
                                                 hint={getFieldHint(localize('first name'))}
-                                                disabled={disabled_items.includes('first_name')}
+                                                disabled={
+                                                    disabled_items.includes('first_name') ||
+                                                    (props.value?.first_name && has_real_account)
+                                                }
                                                 placeholder={localize('John')}
                                                 data-testid='first_name'
                                             />
@@ -276,7 +288,10 @@ const PersonalDetails = ({
                                                 required={is_svg || is_appstore}
                                                 label={getLastNameLabel()}
                                                 hint={getFieldHint(localize('last name'))}
-                                                disabled={disabled_items.includes('last_name')}
+                                                disabled={
+                                                    disabled_items.includes('last_name') ||
+                                                    (props.value?.last_name && has_real_account)
+                                                }
                                                 placeholder={localize('Doe')}
                                                 data-testid='last_name'
                                             />
@@ -292,7 +307,10 @@ const PersonalDetails = ({
                                                         : localize('Date of birth')
                                                 }
                                                 hint={getFieldHint(localize('date of birth'))}
-                                                disabled={disabled_items.includes('date_of_birth')}
+                                                disabled={
+                                                    disabled_items.includes('date_of_birth') ||
+                                                    (props.value?.date_of_birth && has_real_account)
+                                                }
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_appstore ? '' : 'modal_root'}
                                                 data_testid='date_of_birth'
@@ -306,11 +324,11 @@ const PersonalDetails = ({
                                                             <Autocomplete
                                                                 {...field}
                                                                 disabled={
-                                                                    !!props.value.place_of_birth &&
-                                                                    disabled_items.includes('place_of_birth')
+                                                                    disabled_items.includes('place_of_birth') ||
+                                                                    (props.value?.place_of_birth && has_real_account)
                                                                 }
                                                                 data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={
                                                                     is_mf
@@ -335,8 +353,8 @@ const PersonalDetails = ({
                                                                 placeholder={localize('Place of birth')}
                                                                 name={field.name}
                                                                 disabled={
-                                                                    !!props.value.place_of_birth &&
-                                                                    disabled_items.includes('place_of_birth')
+                                                                    disabled_items.includes('place_of_birth') ||
+                                                                    (props.value?.place_of_birth && has_real_account)
                                                                 }
                                                                 label={
                                                                     is_mf
@@ -374,7 +392,7 @@ const PersonalDetails = ({
                                                             <Autocomplete
                                                                 {...field}
                                                                 data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
+                                                                autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={
                                                                     is_mf
@@ -383,9 +401,9 @@ const PersonalDetails = ({
                                                                 }
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={
-                                                                    (props.value.citizen && is_fully_authenticated) ||
-                                                                    (!!props.value.citizen &&
-                                                                        disabled_items.includes('citizen'))
+                                                                    (props.value?.citizen && is_fully_authenticated) ||
+                                                                    disabled_items.includes('citizen') ||
+                                                                    (props.value?.citizen && has_real_account)
                                                                 }
                                                                 list_items={residence_list}
                                                                 onItemSelection={({ value, text }) =>
@@ -401,9 +419,9 @@ const PersonalDetails = ({
                                                                 placeholder={localize('Citizenship')}
                                                                 name={field.name}
                                                                 disabled={
-                                                                    (props.value.citizen && is_fully_authenticated) ||
-                                                                    (!!props.value.citizen &&
-                                                                        disabled_items.includes('citizen'))
+                                                                    (props.value?.citizen && is_fully_authenticated) ||
+                                                                    disabled_items.includes('citizen') ||
+                                                                    (props.value?.citizen && has_real_account)
                                                                 }
                                                                 label={
                                                                     is_mf
@@ -441,6 +459,14 @@ const PersonalDetails = ({
                                                         ? localize('Phone number*')
                                                         : localize('Phone number')
                                                 }
+                                                disabled={
+                                                    disabled_items.includes('phone') ||
+                                                    (props.value?.phone &&
+                                                        has_real_account &&
+                                                        validPhone(props.value?.phone) &&
+                                                        props.value?.phone?.length >= 9 &&
+                                                        props.value?.phone?.length <= 35)
+                                                }
                                                 maxLength={50}
                                                 data-testid='phone'
                                             />
@@ -457,7 +483,7 @@ const PersonalDetails = ({
                                                                     <Autocomplete
                                                                         {...field}
                                                                         data-lpignore='true'
-                                                                        autoComplete='off' // prevent chrome autocomplete
+                                                                        autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                                         type='text'
                                                                         label={
                                                                             is_mf
@@ -478,6 +504,9 @@ const PersonalDetails = ({
                                                                         }
                                                                         list_portal_id='modal_root'
                                                                         data-testid='tax_residence'
+                                                                        disabled={disabled_items.includes(
+                                                                            'tax_residence'
+                                                                        )}
                                                                     />
                                                                 </DesktopWrapper>
                                                                 <MobileWrapper>
@@ -507,6 +536,9 @@ const PersonalDetails = ({
                                                                         {...field}
                                                                         required
                                                                         data_testid='tax_residence_mobile'
+                                                                        disabled={disabled_items.includes(
+                                                                            'tax_residence'
+                                                                        )}
                                                                     />
                                                                 </MobileWrapper>
                                                                 <div
@@ -544,6 +576,11 @@ const PersonalDetails = ({
                                                             placeholder={localize('Tax Identification Number')}
                                                             warn={warning_items?.tax_identification_number}
                                                             data-testid='tax_identification_number'
+                                                            disabled={
+                                                                disabled_items.includes('tax_identification_number') ||
+                                                                (props.value?.tax_identification_number &&
+                                                                    has_real_account)
+                                                            }
                                                         />
                                                         <div
                                                             data-testid='tax_identification_number_pop_over'
@@ -603,6 +640,7 @@ const PersonalDetails = ({
                                                                     touched.employment_status &&
                                                                     errors.employment_status
                                                                 }
+                                                                disabled={disabled_items.includes('employment_status')}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>
@@ -624,6 +662,7 @@ const PersonalDetails = ({
                                                                     setFieldTouched('employment_status', true);
                                                                     handleChange(e);
                                                                 }}
+                                                                disabled={disabled_items.includes('employment_status')}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -715,6 +754,9 @@ const PersonalDetails = ({
                                                                     {...field}
                                                                     required
                                                                     data_testid='account_opening_reason_mobile'
+                                                                    disabled={disabled_items.includes(
+                                                                        'account_opening_reason'
+                                                                    )}
                                                                 />
                                                             </MobileWrapper>
                                                         </React.Fragment>

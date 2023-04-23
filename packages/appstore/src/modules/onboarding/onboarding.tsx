@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { trading_hub_contents } from 'Constants/trading-hub-content';
+import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -24,19 +24,12 @@ type TOnboardingProps = {
     >;
 };
 
-const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
+const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();
     const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
-    const {
-        is_eu_country,
-        is_logged_in,
-        setIsPreAppStore,
-        is_landing_company_loaded,
-        prev_account_type,
-        setPrevAccountType,
-    } = client;
+    const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -46,7 +39,6 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
     const nextStep = () => {
         if (step < number_of_steps.length) setStep(step + 1);
         if (step === number_of_steps.length) {
-            setIsPreAppStore(true);
             toggleIsTourOpen(true);
             history.push(routes.traders_hub);
             if (is_demo_low_risk) {
@@ -60,7 +52,6 @@ const Onboarding = ({ contents = trading_hub_contents }: TOnboardingProps) => {
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
         await selectAccountType(prev_account_type);
-        setIsPreAppStore(true);
     };
 
     const eu_user =

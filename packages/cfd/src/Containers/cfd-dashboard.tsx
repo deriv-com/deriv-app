@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Icon, Tabs, PageError, Loading, Text } from '@deriv/components';
 import {
     isEmptyObject,
@@ -86,6 +86,8 @@ type TMt5StatusServerType = {
     withdrawals?: number;
 };
 
+type TDXTraderStatusServerType = Record<'all' | 'demo' | 'real', number>;
+
 type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
 export type TObjectCFDAccount = { category: string; type: string; set_password?: number; platform?: string };
@@ -166,6 +168,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     setCurrentAccount: (data: DetailsOfEachMT5Loginid, meta: TOpenAccountTransferMeta) => void;
     setAccountType: (account_type: TOpenAccountTransferMeta) => void;
     mt5_status_server: TMt5StatusServer;
+    dxtrade_status_server: TDXTraderStatusServerType;
     getRealSyntheticAccountsExistingData: (
         getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
     ) => void;
@@ -178,7 +181,7 @@ export type TCFDDashboardProps = RouteComponentProps & {
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
     show_eu_related_content: boolean;
-    is_pre_appstore: boolean;
+    is_user_exception: boolean;
 };
 
 const CFDDashboard = (props: TCFDDashboardProps) => {
@@ -202,6 +205,14 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         selected_account_group: '',
         selected_server: '',
     });
+
+    const history = useHistory();
+
+    React.useEffect(() => {
+        if (window.location.href.includes(routes.mt5) || window.location.href.includes(routes.dxtrade)) {
+            history.push(routes.traders_hub);
+        }
+    }, [history]);
 
     React.useEffect(() => {
         updateActiveIndex(getIndexToSet());
@@ -427,6 +438,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         mt5_verification_code,
         dxtrade_verification_code,
         mt5_status_server,
+        dxtrade_status_server,
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
         openDerivRealAccountNeededModal,
@@ -434,7 +446,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         real_account_creation_unlock_date,
         setShouldShowCooldownModal,
         show_eu_related_content,
-        is_pre_appstore,
+        is_user_exception,
     } = props;
 
     const should_show_missing_real_account =
@@ -447,25 +459,35 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     const getIsSuspendedMt5Server = (type_server: TMt5StatusServer['demo' | 'real']) =>
         type_server?.map((item: TMt5StatusServerType) => item.all).some((item: number) => item === 1);
 
-    const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(mt5_status_server.demo);
-    const is_suspended_mt5_real_server = getIsSuspendedMt5Server(mt5_status_server.real);
+    const is_suspended_mt5_demo_server = getIsSuspendedMt5Server(mt5_status_server?.demo);
+    const is_suspended_mt5_real_server = getIsSuspendedMt5Server(mt5_status_server?.real);
+    const is_suspended_dxtrade_demo_server = !!dxtrade_status_server?.demo;
+    const is_suspended_dxtrade_real_server = !!dxtrade_status_server?.real;
 
     const has_mt5_account_error = is_demo_tab
         ? is_suspended_mt5_demo_server || has_mt5_demo_account_error || mt5_disabled_signup_types.demo
         : is_suspended_mt5_real_server || has_mt5_real_account_error || mt5_disabled_signup_types.real;
 
     const has_dxtrade_account_error = is_demo_tab
-        ? has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
-        : has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
+        ? is_suspended_dxtrade_demo_server || has_dxtrade_demo_account_error || dxtrade_disabled_signup_types.demo
+        : is_suspended_dxtrade_real_server || has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
 
-    const has_cfd_account_error =
-        platform === CFD_PLATFORMS.MT5
-            ? has_mt5_account_error
-            : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
+    const has_cfd_account_error = is_user_exception
+        ? !is_user_exception
+        : platform === CFD_PLATFORMS.MT5
+        ? has_mt5_account_error
+        : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
+
+    const has_cfd_real_account_dxtrade_error =
+        is_suspended_dxtrade_real_server || dxtrade_disabled_signup_types.real || !!dxtrade_accounts_list_error;
+    const has_cfd_demo_account_dxtrade_error =
+        is_suspended_dxtrade_demo_server || dxtrade_disabled_signup_types.demo || !!dxtrade_accounts_list_error;
+    const has_cfd_real_account_mt5_error = is_suspended_mt5_real_server || mt5_disabled_signup_types.real;
+    const has_cfd_demo_account_mt5_error = is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo;
 
     const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
-    if ((platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE) && is_pre_appstore)
+    if (platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE)
         return <Redirect to={routes.traders_hub} />;
     if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
 
@@ -528,8 +550,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
-                                    // eslint-disable-next-line react/no-unknown-property
-                                    <div label={localize('Real account')} hash='real'>
+                                    <div label={localize('Real account')} data-hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount
@@ -550,10 +571,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_logged_in={is_logged_in}
                                                 has_cfd_account_error={
                                                     platform === CFD_PLATFORMS.MT5
-                                                        ? is_suspended_mt5_real_server || mt5_disabled_signup_types.real
-                                                        : is_suspended_mt5_real_server ||
-                                                          dxtrade_disabled_signup_types.real ||
-                                                          !!dxtrade_accounts_list_error
+                                                        ? has_cfd_real_account_mt5_error
+                                                        : is_user_exception
+                                                        ? !is_user_exception
+                                                        : has_cfd_real_account_dxtrade_error
                                                 }
                                                 current_list={current_list}
                                                 account_status={account_status}
@@ -585,15 +606,14 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     </div>
                                 )}
                                 {is_demo_enabled && (
-                                    // eslint-disable-next-line react/no-unknown-property
-                                    <div label={localize('Demo account')} hash='demo'>
+                                    <div label={localize('Demo account')} data-hash='demo'>
                                         {platform === CFD_PLATFORMS.DXTRADE && (
                                             <CFDDxtradeDemoAccountDisplay
                                                 is_logged_in={is_logged_in}
                                                 has_cfd_account_error={
-                                                    is_suspended_mt5_demo_server ||
-                                                    dxtrade_disabled_signup_types.demo ||
-                                                    !!dxtrade_accounts_list_error
+                                                    is_user_exception
+                                                        ? !is_user_exception
+                                                        : has_cfd_demo_account_dxtrade_error
                                                 }
                                                 standpoint={standpoint}
                                                 is_loading={is_loading}
@@ -611,9 +631,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_eu_country={is_eu_country}
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
-                                                has_cfd_account_error={
-                                                    is_suspended_mt5_demo_server || mt5_disabled_signup_types.demo
-                                                }
+                                                has_cfd_account_error={has_cfd_demo_account_mt5_error}
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 standpoint={standpoint}
                                                 is_loading={is_loading}
@@ -789,11 +807,12 @@ export default withRouter(
         mt5_verification_code: client.verification_code.trading_platform_mt5_password_reset,
         dxtrade_verification_code: client.verification_code.trading_platform_dxtrade_password_reset,
         mt5_status_server: client.website_status.mt5_status,
+        dxtrade_status_server: client.website_status.dxtrade_status,
         openDerivRealAccountNeededModal: ui.openDerivRealAccountNeededModal,
         setIsAcuityModalOpen: ui.setIsAcuityModalOpen,
         setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
         real_account_creation_unlock_date: client.real_account_creation_unlock_date,
         show_eu_related_content: traders_hub.show_eu_related_content,
-        is_pre_appstore: client.is_pre_appstore,
+        is_user_exception: client.account_settings.dxtrade_user_exception,
     }))(CFDDashboard)
 );

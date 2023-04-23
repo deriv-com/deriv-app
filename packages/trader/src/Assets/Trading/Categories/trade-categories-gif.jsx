@@ -14,9 +14,10 @@ import ImageReset from 'Assets/SvgComponents/trade_explanations/img-reset.svg';
 import ImageRiseFall from 'Assets/SvgComponents/trade_explanations/img-rise-fall.svg';
 import ImageRunHighLow from 'Assets/SvgComponents/trade_explanations/img-run-high-low.svg';
 import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg';
-import ImageStaysInGoesOut from 'Assets/SvgComponents/trade_explanations/img-stays-in-goes-out.svg';
+import ImageAccumulator from 'Assets/SvgComponents/trade_explanations/img-accumulator.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
+import ImageVanilla from 'Assets/SvgComponents/trade_explanations/img-vanilla.svg';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
 const TradeCategoriesGIF = ({ category }) => {
@@ -51,12 +52,14 @@ const TradeCategoriesGIF = ({ category }) => {
             return <ImageReset />;
         case 'run_high_low':
             return <ImageRunHighLow />;
-        case 'stay':
-            return <ImageStaysInGoesOut />;
+        case 'accumulator':
+            return <ImageAccumulator />;
         case 'tick_high_low':
             return <ImageTickHighLow />;
         case 'touch':
             return <ImageTouch />;
+        case 'vanilla':
+            return <ImageVanilla />;
         default:
             return null;
     }

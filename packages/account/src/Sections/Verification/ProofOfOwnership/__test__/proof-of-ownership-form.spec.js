@@ -8,21 +8,19 @@ describe('proof-of-ownership-form.jsx', () => {
         render(
             <ProofOfOwnershipForm
                 grouped_payment_method_data={{ beyonic: grouped_payment_method_data.beyonic }}
-                total_documents_required={1}
                 updateAccountStatus={jest.fn()}
                 refreshNotifications={jest.fn()}
                 is_dark_mode={false}
                 client_email={'test@testing.com'}
             />
         );
-        const cardItems = screen.getAllByRole('card-item');
-        expect(cardItems.length).toEqual(1);
+        const cardItems = screen.getByRole('card-item');
+        expect(cardItems).toBeInTheDocument();
     });
     it('should render multiple card items inside the form', () => {
         render(
             <ProofOfOwnershipForm
                 grouped_payment_method_data={grouped_payment_method_data}
-                total_documents_required={7}
                 updateAccountStatus={jest.fn()}
                 refreshNotifications={jest.fn()}
                 is_dark_mode={false}
@@ -30,7 +28,7 @@ describe('proof-of-ownership-form.jsx', () => {
             />
         );
         const cardItems = screen.getAllByRole('card-item');
-        expect(cardItems.length).toEqual(Object.keys(grouped_payment_method_data).length);
+        expect(cardItems).toHaveLength(Object.keys(grouped_payment_method_data).length);
     });
     it('should format identifier', async () => {
         render(

@@ -10,12 +10,9 @@ export default class DepositStore {
             error: observable,
             onMountDeposit: action.bound,
         });
-
-        this.root_store = root_store;
-        this.WS = WS;
     }
 
-    container = Constants.containers.deposit;
+    container: string = Constants.containers.deposit;
     error = new ErrorStore();
 
     async onMountDeposit(): Promise<void> {
@@ -38,6 +35,7 @@ export default class DepositStore {
 
         this.error.setErrorMessage({ code: '', message: '' }, null, false);
         setContainerHeight(0);
+        setLoading(true);
 
         if (!is_session_timeout) {
             checkIframeLoaded();

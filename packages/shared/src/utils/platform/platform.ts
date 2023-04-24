@@ -57,7 +57,7 @@ export const isDXtrade = () =>
 
 export const isNavigationFromDerivGO = () => localStorage.getItem('config.platform') === 'derivgo';
 
-export const isNavigationFromP2P = () => localStorage.getItem('config.platform') === 'p2p';
+export const isNavigationFromP2P = () => localStorage.getItem('config.platform') === 'dp2p';
 
 export const getPathname = () => {
     const { is_pathname_bot } = isBot();

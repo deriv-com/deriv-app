@@ -18,7 +18,7 @@
     }
 
     &__wrapper {
-        margin: 4rem 6rem 0;
+        margin: 4rem 6rem 2rem;
         display: flex;
         justify-content: center;
         gap: 2rem;
@@ -97,7 +97,6 @@
     }
 
     &__footer-wrapper {
-        min-height: 19.6rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -113,18 +112,22 @@
         }
     }
 
-    &__footnote {
+    &__footnotes-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        margin: 3rem 1.6rem 2.4rem;
+        min-height: 6rem;
+        gap: 2rem;
+        margin: 2rem;
+    }
 
+    &__footnote {
+        display: flex;
+        justify-content: center;
         @include mobile {
             margin: unset;
             padding: 1.6rem 0.8rem;
             box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.08);
         }
-
         &--pending {
             color: $color-yellow;
         }
@@ -133,7 +136,6 @@
     &__jurisdiction-checkbox {
         display: flex;
         justify-content: center;
-        margin-bottom: 2rem;
         @include mobile {
             padding: 0.8rem;
         }

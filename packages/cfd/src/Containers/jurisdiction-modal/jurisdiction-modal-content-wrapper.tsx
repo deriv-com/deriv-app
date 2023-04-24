@@ -166,24 +166,26 @@ const JurisdictionModalContentWrapper = ({
                 synthetic_available_accounts={synthetic_available_accounts}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
-                <JurisdictionModalFootNote
-                    account_status={account_status}
-                    account_type={account_type.type}
-                    card_classname={`cfd-jurisdiction-card--${account_type.type}`}
-                    context={context}
-                    jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                    should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                    should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                />
-                <JurisdictionCheckBox
-                    is_checked={checked}
-                    context={context}
-                    onCheck={() => setChecked(!checked)}
-                    class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
-                    jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                    should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                    should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                />
+                <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
+                    <JurisdictionModalFootNote
+                        account_status={account_status}
+                        account_type={account_type.type}
+                        card_classname={`cfd-jurisdiction-card--${account_type.type}`}
+                        context={context}
+                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                    />
+                    <JurisdictionCheckBox
+                        is_checked={checked}
+                        context={context}
+                        onCheck={() => setChecked(!checked)}
+                        class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
+                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                    />
+                </div>
                 <Modal.Footer has_separator>
                     <Button
                         disabled={isNextButtonDisabled()}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -114,18 +114,25 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
 
     return (
         <Modal className='p2p-my-ads__modal-error' is_open={is_modal_open} small has_close_icon={false}>
-            <Modal.Body>
-                <Text as='div' color='prominent' size={isMobile() ? 'xxs' : 'xs'} line_height={isMobile() ? 'l' : 'xl'}>
-                    {visibility_status.length === 1 ? (
-                        getAdErrorMessage(visibility_status[0])
-                    ) : (
-                        <div>
-                            <Localize i18n_default_text='Your ad isn’t listed on Buy/Sell due to the following reason(s):' />
-                            {getMultipleErrorMessages(visibility_status)}
-                        </div>
-                    )}
-                </Text>
-            </Modal.Body>
+            <ThemedScrollbars height={'calc(100vh - 8.4rem)'}>
+                <Modal.Body>
+                    <Text
+                        as='div'
+                        color='prominent'
+                        size={isMobile() ? 'xxs' : 'xs'}
+                        line_height={isMobile() ? 'l' : 'xl'}
+                    >
+                        {visibility_status.length === 1 ? (
+                            getAdErrorMessage(visibility_status[0])
+                        ) : (
+                            <div>
+                                <Localize i18n_default_text='Your ad isn’t listed on Buy/Sell due to the following reason(s):' />
+                                {getMultipleErrorMessages(visibility_status)}
+                            </div>
+                        )}
+                    </Text>
+                </Modal.Body>
+            </ThemedScrollbars>
             <Modal.Footer>
                 <Button has_effect text={localize('OK')} onClick={hideModal} primary large />
             </Modal.Footer>

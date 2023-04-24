@@ -16,6 +16,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
             return Promise.resolve([...payload]);
         },
     },
+    useWS: () => undefined,
 }));
 
 describe('<PersonalDetailsForm />', () => {

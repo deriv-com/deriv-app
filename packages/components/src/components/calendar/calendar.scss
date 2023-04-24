@@ -65,7 +65,8 @@
                 width: 5.6rem;
                 height: 3.2rem;
 
-                &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(.dc-calendar__cell--disabled) {
+                &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(
+                        .dc-calendar__cell--disabled) {
                     color: var(--text-general);
                 }
             }

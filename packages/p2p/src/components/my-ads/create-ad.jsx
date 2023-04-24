@@ -9,9 +9,13 @@ import CreateAdForm from './create-ad-form.jsx';
 const CreateAd = () => {
     const { my_ads_store } = useStores();
 
+    const onClickBack = () => {
+        my_ads_store.setApiErrorMessage('');
+        my_ads_store.setShowAdForm(false);
+    };
     return (
         <React.Fragment>
-            <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />
+            <PageReturn onClick={onClickBack} page_title={localize('Create new ad')} />
             {my_ads_store.is_form_loading ? <Loading is_fullscreen={false} /> : <CreateAdForm />}
         </React.Fragment>
     );

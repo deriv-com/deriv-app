@@ -36,7 +36,7 @@ const JurisdictionModal = ({
                         toggleModal={toggleJurisdictionModal}
                         type='button'
                         context={context}
-                        width={account_type.type === 'synthetic' ? '1040px' : '1200px'}
+                        width={account_type.type === 'synthetic' ? '1160px' : '1240px'}
                     >
                         <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} context={context} />
                     </Modal>

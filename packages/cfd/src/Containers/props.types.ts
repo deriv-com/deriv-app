@@ -245,7 +245,7 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
-type JurisdictionModalCommonProps = {
+type TJurisdictionModalCommonProps = {
     account_type: {
         type: string;
         category: string;
@@ -257,7 +257,7 @@ type JurisdictionModalCommonProps = {
     toggleJurisdictionModal: () => void;
 };
 
-export type TJurisdictionModalContentWrapperProps = JurisdictionModalCommonProps & {
+export type TJurisdictionModalContentWrapperProps = TJurisdictionModalCommonProps & {
     account_status: GetAccountStatus;
     fetchAccountSettings: () => void;
     has_submitted_cfd_personal_details: boolean;
@@ -273,7 +273,7 @@ export type TJurisdictionModalContentWrapperProps = JurisdictionModalCommonProps
     updateMT5Status: () => void;
 };
 
-export type TJurisdictionModalProps = JurisdictionModalCommonProps & {
+export type TJurisdictionModalProps = TJurisdictionModalCommonProps & {
     disableApp: () => void;
     enableApp: () => void;
 };

@@ -15,20 +15,12 @@ const DataListRow = ({
     ...other_props
 }) => {
     const [show_desc, setShowDesc] = React.useState(false);
-    const interval_ref = React.useRef(null);
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
-        const measure_timeout = setTimeout(() => {
-            if (isMounted() && is_dynamic_height) {
-                measure?.();
-            }
-        });
-        interval_ref.current = measure_timeout;
-
-        return () => {
-            clearTimeout(interval_ref.current);
-        };
+        if (isMounted() && is_dynamic_height) {
+            measure?.();
+        }
     }, [show_desc, is_dynamic_height, measure]);
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>

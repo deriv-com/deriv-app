@@ -35,7 +35,7 @@ const JurisdictionCard = ({
     return (
         <div className='cfd-card-perspective'>
             <div
-                className={classNames('cfd-card-container', {
+                className={classNames('cfd-card-container', `${account_type}`, {
                     'cfd-card-flipped': is_card_flipped,
                     'cfd-card-disabled': disabled,
                 })}

@@ -8,6 +8,7 @@
     height: 100%;
     width: 100%;
     cursor: pointer;
+    transition: all 0.1s ease-in;
 
     &:not(.selected-card):hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
@@ -168,9 +169,14 @@
     }
     &-container {
         transform-style: preserve-3d;
-        transition: transform 0.25s ease-in;
-        min-height: 54rem;
+        transition: all 0.25s ease-in;
         width: 28rem;
+        &.synthetic {
+            min-height: 46rem;
+        }
+        &.financial {
+            min-height: 50rem;
+        }
         @include mobile {
             height: 48rem;
             width: 100%;
@@ -233,7 +239,7 @@
                 }
                 &-verifications,
                 &-regulator {
-                    min-height: 5rem;
+                    min-height: 4rem;
                 }
             }
         }

@@ -1,15 +1,19 @@
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './rate-change-modal.scss';
 
 const RateChangeModal = ({ currency }) => {
-    const { floating_rate_store, general_store } = useStores();
-    const local_currency = currency ?? general_store.client?.local_currency_config?.currency;
+    const {
+        client: { local_currency_config },
+    } = useStore();
+
+    const { floating_rate_store } = useStores();
+    const local_currency = currency ?? local_currency_config?.currency;
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     const closeModal = () => {

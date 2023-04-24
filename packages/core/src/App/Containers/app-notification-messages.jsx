@@ -135,6 +135,7 @@ const AppNotificationMessages = ({
                   'poa_address_mismatch_failure',
                   'svg_needs_poi_poa',
                   'svg_needs_poa',
+                  'has_changed_two_fa',
                   'svg_needs_poi',
                   'svg_poi_expired',
                   'switched_to_real',
@@ -155,22 +156,18 @@ const AppNotificationMessages = ({
             : excluded_notifications.includes(message.key)
     );
 
-    const getNotificationSublist = () => {
-        if (window.location.pathname === routes.cashier_deposit) {
-            return filtered_excluded_notifications.filter(message =>
-                message.key.includes('switched_to_real') ? message : null
-            );
-        }
-        return filtered_excluded_notifications.slice(0, notifications_limit);
-    };
+    const notifications_sublist =
+        window.location.pathname === routes.cashier_deposit
+            ? filtered_excluded_notifications.filter(message => message.key.includes('switched_to_real'))
+            : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 
-    return getNotificationSublist().length ? (
+    return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={getNotificationSublist()}
+                    notifications={notifications_sublist}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}

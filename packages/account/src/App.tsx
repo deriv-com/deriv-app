@@ -7,7 +7,7 @@ import { StoreProvider } from '@deriv/stores';
 // TODO: add correct types for stores and WS after implementing them
 type TAppProps = {
     passthrough: {
-        root_store: TCoreStores | any;
+        root_store: TCoreStores;
         WS: Record<string, any>;
     };
 };

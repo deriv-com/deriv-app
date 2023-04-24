@@ -8,8 +8,8 @@ import type {
     ResidenceList,
     StatesList,
 } from '@deriv/api-types';
-
 import type { RouteComponentProps } from 'react-router';
+import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -202,6 +202,9 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    default_currency: string;
+    resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
@@ -303,8 +306,12 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    selected_account_type: string;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
 };
 
 /**
@@ -320,4 +327,8 @@ export type TCoreStores = {
     modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
+};
+
+export type TStores = TCoreStores & {
+    exchange_rates: ExchangeRatesStore;
 };

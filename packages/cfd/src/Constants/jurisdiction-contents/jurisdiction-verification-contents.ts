@@ -30,7 +30,7 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         },
         not_applicable: {
             icon: 'IcNotApplicableVerification',
-            text: 'Not Applicable',
+            text: '',
         },
     },
     status_references: [

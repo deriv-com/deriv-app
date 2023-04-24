@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, useEffect, useMemo } from 'react';
+import React from 'react';
 import StoreContext from './storeContext';
 import { ExchangeRatesStore } from './stores';
 import { ExchangeRatesProvider } from './providers';
 import type { TCoreStores, TStores } from '../types';
 
-const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TCoreStores }>) => {
-    const memoizedValue: TStores = useMemo(
+const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
+    const memoizedValue: TStores = React.useMemo(
         () => ({
             ...store,
             exchange_rates: new ExchangeRatesStore(),
@@ -13,7 +13,7 @@ const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TCoreStor
         [store]
     );
 
-    useEffect(() => {
+    React.useEffect(() => {
         return () => {
             Object.values(memoizedValue).forEach(value => {
                 if ('unmount' in value) value.unmount();

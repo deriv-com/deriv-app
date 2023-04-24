@@ -28,6 +28,7 @@ jest.mock('@deriv/shared', () => ({
                 }),
         },
     },
+    useWS: () => undefined,
 }));
 
 jest.mock('../self-exclusion-modal', () => () => <div>SelfExclusionModal</div>);
@@ -57,17 +58,17 @@ describe('<SelfExclusion />', () => {
         };
     });
 
-    // it('should render SelfExclusion component for virtual account', () => {
-    //     store.client.is_virtual = true;
+    it('should render SelfExclusion component for virtual account', () => {
+        store.client.is_virtual = true;
 
-    //     render(
-    //         <StoreProvider store={store}>
-    //             <SelfExclusion {...mock_props} />
-    //         </StoreProvider>
-    //     );
+        render(
+            <StoreProvider store={store}>
+                <SelfExclusion {...mock_props} />
+            </StoreProvider>
+        );
 
-    //     expect(screen.getByText('This feature is not available for demo accounts.')).toBeInTheDocument();
-    // });
+        expect(screen.getByText('This feature is not available for demo accounts.')).toBeInTheDocument();
+    });
 
     it('should render SelfExclusion component with SelfExclusionModal', async () => {
         await act(async () => {
@@ -103,63 +104,63 @@ describe('<SelfExclusion />', () => {
     //     expect(screen.queryByText('Test getSelfExclusion response error')).toBeInTheDocument();
     // });
 
-    // it('Should trigger session_duration_limit input and show error if the value is greater than 60480 or does not show if less than 60480', async () => {
-    //     store.client.is_eu = true;
+    it('Should trigger session_duration_limit input and show error if the value is greater than 60480 or does not show if less than 60480', async () => {
+        store.client.is_eu = true;
 
-    //     render(
-    //         <StoreProvider store={store}>
-    //             <SelfExclusion {...mock_props} />
-    //         </StoreProvider>
-    //     );
+        render(
+            <StoreProvider store={store}>
+                <SelfExclusion {...mock_props} />
+            </StoreProvider>
+        );
 
-    //     const inputs = await screen.findAllByRole('textbox');
-    //     const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
+        const inputs = await screen.findAllByRole('textbox');
+        const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
 
-    //     await act(async () => {
-    //         fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
-    //     });
+        await act(async () => {
+            fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
+        });
 
-    //     expect(
-    //         screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
-    //     ).toBeInTheDocument();
+        expect(
+            screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+        ).toBeInTheDocument();
 
-    //     await act(async () => {
-    //         fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
-    //     });
+        await act(async () => {
+            fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
+        });
 
-    //     expect(
-    //         screen.queryByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
-    //     ).not.toBeInTheDocument();
-    // });
+        expect(
+            screen.queryByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+        ).not.toBeInTheDocument();
+    });
 
-    // it('Should trigger exclude_until input and show error depends on input value', async () => {
-    //     Date.now = jest.fn(() => new Date('2022-02-03'));
+    it('Should trigger exclude_until input and show error depends on input value', async () => {
+        Date.now = jest.fn(() => new Date('2022-02-03'));
 
-    //     render(
-    //         <StoreProvider store={store}>
-    //             <SelfExclusion {...mock_props} />
-    //         </StoreProvider>
-    //     );
+        render(
+            <StoreProvider store={store}>
+                <SelfExclusion {...mock_props} />
+            </StoreProvider>
+        );
 
-    //     const inputs = await screen.findAllByRole('textbox');
-    //     const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
+        const inputs = await screen.findAllByRole('textbox');
+        const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
 
-    //     await act(async () => {
-    //         fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
-    //     });
+        await act(async () => {
+            fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
+        });
 
-    //     expect(screen.getByText('Exclude time must be after today.')).toBeInTheDocument();
+        expect(screen.getByText('Exclude time must be after today.')).toBeInTheDocument();
 
-    //     await act(async () => {
-    //         fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
-    //     });
-    //     expect(screen.getByText('Exclude time cannot be less than 6 months.')).toBeInTheDocument();
+        await act(async () => {
+            fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
+        });
+        expect(screen.getByText('Exclude time cannot be less than 6 months.')).toBeInTheDocument();
 
-    //     await act(async () => {
-    //         fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
-    //     });
-    //     expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
-    // });
+        await act(async () => {
+            fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
+        });
+        expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
+    });
 
     // it('should trigger inputs with data, add new data, and show error wih invalid input data', async () => {
     //     WS.authorized.setSelfExclusion = () =>

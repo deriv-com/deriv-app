@@ -126,30 +126,26 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     {/* is low risk with accounts  */}
                     {is_country_low_risk ? (
                         <>
-                            {non_eu_accounts && non_eu_accounts.length ? (
-                                <TabContent
-                                    title={translate('Non Eu Deriv accounts')}
-                                    isActive={activeTab === 'real'}
-                                    setIsAccDropdownOpen={setIsAccDropdownOpen}
-                                    accounts={non_eu_accounts}
-                                />
-                            ) : null}
-                            {eu_accounts && eu_accounts.length ? (
-                                <TabContent
-                                    title={translate('Eu Deriv account')}
-                                    isActive={activeTab === 'real'}
-                                    setIsAccDropdownOpen={setIsAccDropdownOpen}
-                                    accounts={eu_accounts}
-                                />
-                            ) : null}
-                        </>
-                    ) : (
                             <TabContent
-                                title={translate('Deriv account')}
+                                title={translate('Non Eu Deriv accounts')}
                                 isActive={activeTab === 'real'}
                                 setIsAccDropdownOpen={setIsAccDropdownOpen}
-                                accounts={real_account}
+                                accounts={non_eu_accounts}
                             />
+                            <TabContent
+                                title={translate('Eu Deriv account')}
+                                isActive={activeTab === 'real'}
+                                setIsAccDropdownOpen={setIsAccDropdownOpen}
+                                accounts={eu_accounts}
+                            />
+                        </>
+                    ) : (
+                        <TabContent
+                            title={translate('Deriv account')}
+                            isActive={activeTab === 'real'}
+                            setIsAccDropdownOpen={setIsAccDropdownOpen}
+                            accounts={real_account}
+                        />
                     )}
                     <TabContent
                         tab='demo'
@@ -181,7 +177,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
 
                     {eu_accounts || non_eu_accounts || activeTab === 'demo' ? (
                         <a href={config.tradershub.url} className={'account__switcher-total--link'}>
-                            <span>{translate('Looking for CFD accounts? Go to Trader\'s hub')}</span>
+                            <span>{translate("Looking for CFD accounts? Go to Trader's hub")}</span>
                         </a>
                     ) : null}
                     <Separator />

@@ -6,7 +6,7 @@ import Duration from './duration.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const DurationWrapper = observer(props => {
+const DurationWrapper = observer(() => {
     const { ui } = useStore();
     const {
         advanced_expiry_type,
@@ -26,6 +26,23 @@ const DurationWrapper = observer(props => {
         onChange,
         onChangeMultiple,
     } = useTraderStore();
+
+    const duration_props = {
+        advanced_expiry_type,
+        advanced_duration_unit,
+        getDurationFromUnit,
+        is_advanced_duration,
+        onChangeUiStore,
+        simple_duration_unit,
+        contract_expiry_type,
+        duration,
+        duration_unit,
+        duration_units_list,
+        duration_min_max,
+        expiry_type,
+        onChange,
+        onChangeMultiple,
+    };
 
     const hasDurationUnit = (duration_type, is_advanced) => {
         let duration_list = [...duration_units_list];
@@ -159,7 +176,9 @@ const DurationWrapper = observer(props => {
         setDurationUnit();
     }
 
-    return <Duration hasDurationUnit={hasDurationUnit} max_value={max_value} min_value={min_value} {...props} />;
+    return (
+        <Duration hasDurationUnit={hasDurationUnit} max_value={max_value} min_value={min_value} {...duration_props} />
+    );
 });
 
 DurationWrapper.propTypes = {

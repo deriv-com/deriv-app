@@ -13,6 +13,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
+import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 
 const Divider = () => {
@@ -155,7 +156,7 @@ const TradingHubHeader = ({
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
-                <MenuLinks />
+                <MenuLinks is_traders_hub_routes />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
@@ -229,6 +230,7 @@ const TradingHubHeader = ({
                 </div>
                 <RealAccountSignup />
             </MobileWrapper>
+            <SetAccountCurrencyModal />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );

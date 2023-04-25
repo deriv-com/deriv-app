@@ -193,10 +193,9 @@ export const convertForDerivStore = tokenList => {
     const accountList = tokenList[0]?.loginInfo.accountList ? 'accountList' : 'account_list';
     tokenList.forEach((account, index) => {
         const accId = account.accountName;
-
         clientAccounts[accId] = {};
         clientAccounts[accId].account_type =
-            tokenList[0].loginInfo[accountList]?.find(acc => acc.loginid === accId).account_type ||
+            tokenList[0].loginInfo[accountList]?.find(acc => acc?.loginid === accId)?.account_type ||
             account.loginInfo.account_type;
         clientAccounts[accId].currency = account.loginInfo.currency;
         clientAccounts[accId].is_disabled =

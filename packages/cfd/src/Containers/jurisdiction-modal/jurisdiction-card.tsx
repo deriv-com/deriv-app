@@ -36,6 +36,7 @@ const JurisdictionCard = ({
 
     return (
         <div
+            data-testid={'dt_jurisdiction_card'}
             className={classNames(card_classname, {
                 [`${card_classname}--selected selected-card`]: jurisdiction_selected_shortcode === type_of_card,
             })}

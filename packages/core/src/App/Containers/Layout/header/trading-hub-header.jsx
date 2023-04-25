@@ -39,7 +39,7 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
                 />
             </div>
             <Text className='trading-hub-header__tradershub--text'>
-                <Localize i18n_default_text="Trader's hub" />
+                <Localize i18n_default_text="Trader's Hub" />
             </Text>
         </div>
     );

@@ -152,7 +152,7 @@ export default class CommonStore extends BaseStore {
         if (search) {
             const url_params = new URLSearchParams(search);
             this.platform = url_params.get('platform') || '';
-            localStorage.setItem('config.platform', this.platform);
+            window.sessionStorage.setItem('config.platform', this.platform);
         }
     }
 

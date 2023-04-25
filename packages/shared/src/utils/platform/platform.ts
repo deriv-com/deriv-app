@@ -55,7 +55,7 @@ export const isDXtrade = () =>
     /^\/derivx/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'derivx');
 
-export const isNavigationFromDerivGO = () => localStorage.getItem('config.platform') === 'derivgo';
+export const isNavigationFromDerivGO = () => window.sessionStorage.getItem('config.platform') === 'derivgo';
 
 export const getPathname = () => {
     const { is_pathname_bot } = isBot();

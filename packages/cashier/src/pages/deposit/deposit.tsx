@@ -3,7 +3,7 @@ import { Loading } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
-import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
+import { CashierOnboardingSideNote } from '../../components/cashier-onboarding';
 import CashierLocked from '../../components/cashier-locked';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import Error from '../../components/error';
@@ -14,6 +14,7 @@ import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { CashierOnboardingModule } from '../../modules';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
@@ -142,7 +143,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             </>
         );
     }
-    return <CashierOnboarding setSideNotes={setSideNotes} />;
+    return <CashierOnboardingModule setSideNotes={setSideNotes} />;
 });
 
 export default Deposit;

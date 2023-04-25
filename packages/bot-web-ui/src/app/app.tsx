@@ -1,14 +1,13 @@
 import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react';
 import AppContent from './app-content';
-import { TWebSocket } from 'Types';
+import type { TWebSocket, TRootStore } from 'Types';
 import DBotProviders from './dbot-providers';
-import type { TCoreStores } from '@deriv/stores/types';
 
 type TAppProps = {
     passthrough: {
         WS: TWebSocket;
-        root_store: TCoreStores;
+        root_store: TRootStore;
     };
 };
 

@@ -13,6 +13,7 @@ const DBotStoreProvider = ({ children, ws }: PropsWithChildren<{ ws: TWebSocket 
     return <DBotStoreContext.Provider value={memoizedValue}>{children}</DBotStoreContext.Provider>;
 };
 
+// TODO: remove Omit<RootStore, ...> when RootStore is completely refactored [Task#93859]
 const useDBotStore = (): Omit<RootStore, 'core' | 'ws' | 'ui' | 'common' | 'notifications' | 'server_time'> => {
     const store = useContext(DBotStoreContext);
 

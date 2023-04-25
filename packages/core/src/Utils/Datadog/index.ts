@@ -1,7 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 
-const DATADOG_APP_ID = process.env.DATADOG_APPLICATION_ID ? process.env.DATADOG_APPLICATION_ID : '';
-const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ? process.env.DATADOG_CLIENT_TOKEN : '';
+const DATADOG_APP_ID = process.env.DATADOG_APPLICATION_ID ?? '';
+const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
 const DATADOG_SESSION_SAMPLE_RATE = process.env.DATADOG_SESSION_SAMPLE_RATE
     ? process.env.DATADOG_SESSION_SAMPLE_RATE
     : 10;

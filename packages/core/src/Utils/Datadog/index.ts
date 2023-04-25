@@ -21,4 +21,7 @@ datadogRum.init({
     trackResources: true,
     trackLongTasks: true,
     defaultPrivacyLevel: 'mask-user-input',
+    version: '1.0.0',
+    trackFrustrations: true,
+    enableExperimentalFeatures: ['clickmap'],
 });

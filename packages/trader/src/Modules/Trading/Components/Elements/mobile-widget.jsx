@@ -10,7 +10,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
     const { ui } = useStore();
     const { onChangeUiStore } = ui;
-    const { trade: trade_store } = useTraderStore();
+    const trade_store = useTraderStore();
     const {
         amount,
         basis,

@@ -22,6 +22,7 @@ import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
+import { useHasSetCurrency } from '@deriv/hooks';
 
 const AccountSwitcher = ({
     available_crypto_currencies,
@@ -168,9 +169,7 @@ const AccountSwitcher = ({
         return [];
     };
 
-    const hasSetCurrency = () => {
-        return account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real');
-    };
+    const hasSetCurrency = useHasSetCurrency();
 
     const getTotalDemoAssets = () => {
         const vrtc_balance = accounts[vrtc_loginid] ? accounts[vrtc_loginid].balance : 0;
@@ -511,7 +510,7 @@ const AccountSwitcher = ({
                         className='acc-switcher__btn--traders_hub'
                         secondary
                         onClick={
-                            has_any_real_account && !hasSetCurrency()
+                            has_any_real_account && !hasSetCurrency
                                 ? setAccountCurrency
                                 : () => openRealAccountSignup('manage')
                         }

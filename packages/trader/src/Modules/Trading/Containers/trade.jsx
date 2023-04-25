@@ -254,7 +254,7 @@ import { SmartChart } from 'Modules/SmartChart';
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
 // ChartMarkers --------------------------
-const ChartMarkers = observer(() => {
+const ChartMarkers = observer(config => {
     const { ui, client, contract_trade } = useStore();
     const { markers_array, granularity } = contract_trade;
     const { is_dark_mode_on: is_dark_theme } = ui;

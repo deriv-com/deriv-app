@@ -6,26 +6,26 @@ import { getCurrencyName } from '@deriv/shared';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
+import { useHasSetCurrency } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 
 type CurrencySelectionModalProps = {
-    //TODO: Replace the type with a proper one when ts migration cards merged
-    //TODO: Replace the type with a proper one when ts migration cards merged
-    //TODO: Replace the type with a proper one when ts migration cards merged
     is_visible: boolean;
 };
 
 const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalProps) => {
     const { client, traders_hub, ui } = useStore();
-    const { account_list, accounts, loginid: current_loginid, switchAccount } = client;
+    const { account_list, accounts, loginid: current_loginid, switchAccount, has_any_real_account } = client;
     const { closeModal, selected_region, openFailedVerificationModal, multipliers_account_status } = traders_hub;
-    const { openRealAccountSignup } = ui;
-
+    const { openRealAccountSignup, toggleSetCurrencyModal } = ui;
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
         openFailedVerificationModal,
         'multipliers'
     );
+
+    const hasSetCurrency = useHasSetCurrency();
+    let timeout: ReturnType<typeof setTimeout>;
 
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
@@ -87,7 +87,12 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
                 <Button
                     className='block-button'
                     onClick={() => {
-                        setTimeout(() => openRealAccountSignup('manage'), 500);
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            if (has_any_real_account && !hasSetCurrency) {
+                                toggleSetCurrencyModal();
+                            } else openRealAccountSignup('manage');
+                        }, 500);
                         closeModal();
                     }}
                     secondary

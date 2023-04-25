@@ -1,6 +1,6 @@
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
 import type { RouteComponentProps } from 'react-router';
+import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -110,6 +110,7 @@ type TClientStore = {
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => { get_limits?: GetLimits };
+    has_any_real_account: boolean;
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
@@ -180,6 +181,9 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    default_currency: string;
+    resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
@@ -278,8 +282,15 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    selected_account_type: string;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
+    selected_region: string;
+    openFailedVerificationModal: (from_account: string) => void;
+    multipliers_account_status: string | null;
 };
 
 type TGtmStore = {
@@ -306,4 +317,8 @@ export type TCoreStores = {
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
     gtm: TGtmStore;
+};
+
+export type TStores = TCoreStores & {
+    exchange_rates: ExchangeRatesStore;
 };

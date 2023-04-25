@@ -17,7 +17,7 @@ import { observer, useStore } from '@deriv/stores';
 const Divider = () => <div className='header__menu--dtrader--separator' />;
 
 const DTraderHeader = observer(({ history }) => {
-    const { client, common, ui, notifications } = useStore();
+    const { client, common, ui, notifications, traders_hub } = useStore();
     const {
         has_any_real_account,
         is_switching,
@@ -41,6 +41,7 @@ const DTraderHeader = observer(({ history }) => {
         removeNotificationMessage,
         toggleNotificationsModal: toggleNotifications,
     } = notifications;
+    const { setTogglePlatformType } = traders_hub;
     const notifications_count = notifications.notifications.length;
     const {
         account_switcher_disabled_message: acc_switcher_disabled_message,
@@ -105,6 +106,7 @@ const DTraderHeader = observer(({ history }) => {
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            setTogglePlatformType={setTogglePlatformType}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>

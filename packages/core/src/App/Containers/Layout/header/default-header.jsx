@@ -14,8 +14,12 @@ import { withRouter } from 'react-router-dom';
 import { observer, useStore } from '@deriv/stores';
 
 const DefaultHeader = observer(({ history }) => {
-    const { client, common, ui, notifications } = useStore();
+    const { client, common, ui, notifications, traders_hub } = useStore();
     const {
+        account_type,
+        balance,
+        currency,
+        country_standpoint,
         is_landing_company_loaded,
         is_switching,
         is_virtual,
@@ -25,24 +29,20 @@ const DefaultHeader = observer(({ history }) => {
         is_logging_in,
         is_mt5_allowed,
         is_dxtrade_allowed,
-        currency,
-        country_standpoint,
-        account_type,
-        balance,
     } = client;
-
+    const { setTogglePlatformType } = traders_hub;
     const {
+        account_switcher_disabled_message: acc_switcher_disabled_message,
         disableApp,
         enableApp,
         header_extension,
         is_account_switcher_disabled: is_acc_switcher_disabled,
         is_accounts_switcher_on: is_acc_switcher_on,
+        is_trading_assessment_for_existing_user_enabled,
         is_app_disabled,
-        account_switcher_disabled_message: acc_switcher_disabled_message,
         is_route_modal_on,
         openRealAccountSignup,
         toggleAccountsDialog,
-        is_trading_assessment_for_existing_user_enabled,
     } = ui;
 
     const {
@@ -102,6 +102,7 @@ const DefaultHeader = observer(({ history }) => {
                             is_logged_in={is_logged_in}
                             is_logging_in={is_logging_in}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            setTogglePlatformType={setTogglePlatformType}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>

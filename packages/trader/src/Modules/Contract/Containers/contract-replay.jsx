@@ -35,17 +35,24 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const ContractReplay = observer(({ contract_id }) => {
+    const { common, contract_replay, ui } = useStore();
+    const { contract_store } = contract_replay;
     const {
-        contract_replay: {
-            onMount,
-            onUnmount,
-            is_chart_loading,
-            is_forward_starting,
-            contract_store: { contract_info, contract_update, contract_update_history, is_digit_contract },
-        },
-        common: { routeBackInApp },
-        ui: { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab },
-    } = useStore();
+        is_market_closed,
+        is_sell_requested,
+        is_valid_to_cancel,
+        onClickCancel,
+        onClickSell,
+        onMount,
+        onUnmount,
+        indicative_status,
+        is_chart_loading,
+        is_forward_starting,
+    } = contract_replay;
+    const { contract_info, contract_update, contract_update_history, is_digit_contract } = contract_store;
+    const { routeBackInApp } = common;
+    const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
+
     const [is_visible, setIsVisible] = React.useState(false);
     const history = useHistory();
 
@@ -79,8 +86,16 @@ const ContractReplay = observer(({ contract_id }) => {
             contract_update={contract_update}
             contract_update_history={contract_update_history}
             is_accumulator={is_accumulator}
+            is_chart_loading={is_chart_loading}
+            is_dark_theme={is_dark_theme}
+            is_market_closed={is_market_closed}
             is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            is_valid_to_cancel={is_valid_to_cancel}
             is_vanilla={is_vanilla}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+            status={indicative_status}
             toggleHistoryTab={toggleHistoryTab}
         />
     );

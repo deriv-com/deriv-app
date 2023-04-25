@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 
 const FooterNote = ({

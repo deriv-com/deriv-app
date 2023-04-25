@@ -250,11 +250,6 @@ jobs:
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
-      - build
-      - run:
-          name: "Run tests"
-          no_output_timeout: 30m
-          command: npm test
       - run:
           name: "Check TypeScript @deriv/api"
           command: npx tsc --project packages/api/tsconfig.json -noEmit
@@ -267,6 +262,11 @@ jobs:
       # - run:
       #     name: "Check TypeScript @deriv/cashier"
       #     command: npx tsc --project packages/cashier/tsconfig.json -noEmit
+      - run:
+          name: "Run tests"
+          no_output_timeout: 30m
+          command: npm test
+      - build
 
 workflows:
   release_staging:

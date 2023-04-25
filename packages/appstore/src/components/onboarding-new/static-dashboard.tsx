@@ -64,8 +64,10 @@ const StaticDashboard = ({
     loginid,
 }: TStaticDashboard) => {
     const { client, traders_hub } = useStores();
-    const { content_flag, CFDs_restricted_countries } = traders_hub;
+    const { content_flag } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
+
+    //starting ctrader project
 
     const [index, setIndex] = React.useState<number>(0);
 
@@ -219,7 +221,7 @@ const StaticDashboard = ({
                                     actions={
                                         <Button
                                             secondary
-                                            className={classNames('static-dashboard--deposit-button', {
+                                            className={classNames('', {
                                                 'static-dashboard--deposit-button-animated':
                                                     is_onboarding_animated.topup,
                                                 'static-dashboard--deposit-button-blurry': is_blurry.topup,
@@ -471,7 +473,7 @@ const StaticDashboard = ({
                                     is_eu_user={is_eu_user}
                                 />
                             )}
-                            {!is_eu_user && !CFDs_restricted_countries && (
+                            {!is_eu_user && (
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
@@ -501,7 +503,8 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
-                        {!is_eu_user && !CFDs_restricted_countries && (
+
+                        {!is_eu_user && (
                             <React.Fragment>
                                 <Divider />
                                 <div className='static-dashboard-wrapper__body--header'>
@@ -520,24 +523,42 @@ const StaticDashboard = ({
                                 </div>
                             </React.Fragment>
                         )}
-                        {!is_eu_user && !CFDs_restricted_countries && (
-                            <StaticCFDAccountManager
-                                type='all'
-                                platform='dxtrade'
-                                appname={localize('Deriv X')}
-                                description={localize(
-                                    'Trade CFDs on Deriv X with financial markets and our Derived indices.'
-                                )}
-                                loginid={loginid}
-                                currency={currency}
-                                has_account={has_account}
-                                is_last_step={is_last_step}
-                                is_blurry={is_blurry}
-                                is_onboarding_animated={is_onboarding_animated}
-                                is_derivx_last_step={is_derivx_last_step}
-                                is_financial_last_step={is_financial_last_step}
-                                is_eu_user={is_eu_user}
-                            />
+                        {!is_eu_user && (
+                            <div className='static-dashboard-wrapper__body'>
+                                <StaticCFDAccountManager
+                                    type='all'
+                                    platform='dxtrade'
+                                    appname={localize('Deriv X')}
+                                    description={localize(
+                                        'Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                    )}
+                                    loginid={loginid}
+                                    currency={currency}
+                                    has_account={has_account}
+                                    is_last_step={is_last_step}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
+                                    is_derivx_last_step={is_derivx_last_step}
+                                    is_financial_last_step={is_financial_last_step}
+                                    is_eu_user={is_eu_user}
+                                />
+                                <StaticCFDAccountManager
+                                    type='Financial'
+                                    platform='derivez'
+                                    appname={localize('Deriv EZ')}
+                                    description={localize(
+                                        'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.'
+                                    )}
+                                    loginid={loginid}
+                                    currency={currency}
+                                    has_account={has_account}
+                                    derived_amount={derived_amount}
+                                    financial_amount={financial_amount}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
+                                    is_eu_user={is_eu_user}
+                                />
+                            </div>
                         )}
                     </div>
                 )}

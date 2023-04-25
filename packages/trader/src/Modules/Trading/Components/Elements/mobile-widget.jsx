@@ -7,9 +7,10 @@ import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const MobileWidget = observer(({ is_collapsed, toggleDigitsWidget }) => {
-    const trade_store = useTraderStore();
+const MobileWidget = observer(({ toggleDigitsWidget, is_collapsed }) => {
     const { ui } = useStore();
+    const { onChangeUiStore } = ui;
+    const trade_store = useTraderStore();
     const {
         amount,
         basis,
@@ -22,7 +23,6 @@ const MobileWidget = observer(({ is_collapsed, toggleDigitsWidget }) => {
         last_digit,
         onChange,
     } = trade_store;
-    const { onChangeUiStore } = ui;
 
     const [is_open, setIsOpen] = React.useState(false);
 

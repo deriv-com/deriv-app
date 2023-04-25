@@ -1,29 +1,28 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { DatePicker, Tooltip } from '@deriv/components';
 import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const TradingDatePicker = ({
-    duration: current_duration,
-    duration_min_max,
-    duration_units_list,
-    expiry_type,
-    id,
-    is_24_hours_contract,
-    mode,
-    name,
-    onChange,
-    server_time,
-    start_date,
-    start_time,
-    symbol,
-    validation_errors,
-}) => {
+const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }) => {
+    const { common } = useStore();
+    const { server_time } = common;
+    const {
+        duration: current_duration,
+        duration_min_max,
+        duration_units_list,
+        expiry_type,
+        onChange,
+        start_date,
+        start_time,
+        symbol,
+        validation_errors,
+    } = useTraderStore();
+
     const isMounted = useIsMounted();
 
     const [disabled_days, setDisabledDays] = React.useState([]);
@@ -173,34 +172,13 @@ const TradingDatePicker = ({
             </Tooltip>
         </div>
     );
-};
+});
 
 TradingDatePicker.propTypes = {
-    duration: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    duration_min_max: PropTypes.object,
-    duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    expiry_type: PropTypes.string,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     is_24_hours_contract: PropTypes.bool,
     mode: PropTypes.string,
     name: PropTypes.string,
-    onChange: PropTypes.func,
-    server_time: PropTypes.object,
-    start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    start_time: PropTypes.string,
-    symbol: PropTypes.string,
-    validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, common }) => ({
-    duration: modules.trade.duration,
-    duration_min_max: modules.trade.duration_min_max,
-    duration_units_list: modules.trade.duration_units_list,
-    expiry_type: modules.trade.expiry_type,
-    onChange: modules.trade.onChange,
-    server_time: common.server_time,
-    start_date: modules.trade.start_date,
-    start_time: modules.trade.start_time,
-    symbol: modules.trade.symbol,
-    validation_errors: modules.trade.validation_errors,
-}))(TradingDatePicker);
+export default TradingDatePicker;

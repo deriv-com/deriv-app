@@ -3,8 +3,8 @@ import { Checkbox, RadioGroup, Dialog, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const DealCancellationWarningDialog = observer(({ is_visible, onConfirm, onCancel }) => {
     const { ui } = useStore();
@@ -39,9 +39,8 @@ const DealCancellationWarningDialog = observer(({ is_visible, onConfirm, onCance
 const CancelDeal = observer(
     ({ has_cancellation, has_take_profit, has_stop_loss, onChangeMultiple, cancellation_duration }) => {
         const { ui } = useStore();
-        const { cancellation_range_list } = useTraderStore();
         const { should_show_cancellation_warning } = ui;
-
+        const { cancellation_range_list } = useTraderStore();
         const [is_deal_cancel_warning_visible, setDealCancelWarningVisibility] = React.useState(false);
 
         const canToggleDealCancel = () => {

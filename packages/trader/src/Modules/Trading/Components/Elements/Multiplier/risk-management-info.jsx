@@ -2,16 +2,16 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import RiskManagementDialog from 'Modules/Trading/Containers/Multiplier/risk-management-dialog.jsx';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const RiskManagementInfo = observer(() => {
     const {
         currency,
         stop_loss,
-        has_stop_loss,
         take_profit,
         has_take_profit,
+        has_stop_loss,
         cancellation_duration,
         cancellation_range_list,
         has_cancellation,

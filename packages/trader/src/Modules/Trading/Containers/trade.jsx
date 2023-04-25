@@ -256,7 +256,7 @@ const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef=
 // ChartMarkers --------------------------
 const ChartMarkers = observer(() => {
     const { ui, client, contract_trade } = useStore();
-    const { markers_array, is_digit_contract, granularity } = contract_trade;
+    const { markers_array, granularity } = contract_trade;
     const { is_dark_mode_on: is_dark_theme } = ui;
     const { currency } = client;
     return markers_array.map(marker => {
@@ -283,12 +283,11 @@ const ChartTrade = observer(props => {
         chart_type,
         updateGranularity,
         updateChartType,
-        last_contract,
         should_highlight_current_spot,
     } = contract_trade;
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
-    const { is_socket_opened, current_language, is_virtual } = common;
+    const { is_socket_opened, current_language } = common;
     const { should_show_eu_content } = client;
     const {
         chartStateChange,
@@ -296,7 +295,6 @@ const ChartTrade = observer(props => {
         main_barrier_flattened: main_barrier,
         barriers_flattened: extra_barriers,
         show_digits_stats,
-        contract_type,
         symbol,
         exportLayout,
         setChartStatus,

@@ -13,7 +13,7 @@ const useRealTotalAssetCurrency = () => {
     const non_crypto_accounts = platform_real_accounts.find(account => !isCryptocurrency(account.currency || 'USD'));
 
     if (non_crypto_accounts) {
-        return non_crypto_accounts?.currency || default_currency;
+        return non_crypto_accounts?.currency || '';
     }
 
     const currency_if_is_crypto = is_eu_user ? current_fiat_currency || default_currency : default_currency;

@@ -38,9 +38,10 @@ AllowEquals.propTypes = {
 
 export default observer(() => {
     const { is_equal, has_equals_only, onChange } = useTraderStore();
-    return {
+    const allow_equals_props = {
         is_allow_equal: !!is_equal,
         has_equals_only,
         onChange,
     };
-})(AllowEquals);
+    return <AllowEquals {...allow_equals_props} />;
+});

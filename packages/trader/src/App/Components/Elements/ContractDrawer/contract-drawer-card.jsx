@@ -13,38 +13,36 @@ import { observer, useStore } from '@deriv/stores';
 
 const ContractDrawerCard = observer(
     ({
+        contract_info,
+        contract_update,
         currency,
         is_accumulator,
+        is_market_closed,
+        is_mobile,
         is_multiplier,
         is_vanilla,
+        is_sell_requested,
         is_collapsed,
+        onClickCancel,
+        onClickSell,
         onSwipedUp,
         onSwipedDown,
         result,
+        server_time,
         status,
         toggleContractAuditDrawer,
     }) => {
+        const { ui, contract_trade } = useStore();
         const { active_symbols } = useTraderStore();
         const {
-            ui: {
-                addToast,
-                current_focus,
-                removeToast,
-                should_show_cancellation_warning,
-                setCurrentFocus,
-                toggleCancellationWarning,
-                is_mobile,
-            },
-            contract_trade: { getContractById },
-            common: { server_time },
-            contract_replay: {
-                is_market_closed,
-                is_sell_requested,
-                onClickCancel,
-                onClickSell,
-                contract_store: { contract_info, contract_update },
-            },
-        } = useStore();
+            addToast,
+            current_focus,
+            removeToast,
+            should_show_cancellation_warning,
+            setCurrentFocus,
+            toggleCancellationWarning,
+        } = ui;
+        const { getContractById } = contract_trade;
         const [hover_ref, should_hide_closed_overlay] = useHover();
 
         const { profit, underlying: symbol } = contract_info;

@@ -57,14 +57,15 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) =>
 
 export const MultiplierAmountWidget = observer(() => {
     const { amount, expiration, currency, is_crypto_multiplier, multiplier } = useTraderStore();
-    return {
+    const amount_widget_props = {
         amount,
         expiration,
         currency,
         is_crypto_multiplier,
         multiplier,
     };
-})(AmountWidget);
+    return <AmountWidget {...amount_widget_props} />;
+});
 
 const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -87,16 +88,14 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
 
 export const MultiplierOptionsWidget = observer(() => {
     const { multiplier } = useTraderStore();
-    return {
-        displayed_trade_param: `x${multiplier}`,
-        modal_title: localize('Multiplier'),
-    };
-})(RadioGroupOptionsWidget);
+    const displayed_trade_param = `x${multiplier}`;
+    const modal_title = localize('Multiplier');
+    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
+});
 
 export const AccumulatorOptionsWidget = observer(() => {
     const { growth_rate } = useTraderStore();
-    return {
-        displayed_trade_param: `${getGrowthRatePercentage(growth_rate)}%`,
-        modal_title: localize('Accumulate'),
-    };
-})(RadioGroupOptionsWidget);
+    const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
+    const modal_title = localize('Accumulate');
+    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
+});

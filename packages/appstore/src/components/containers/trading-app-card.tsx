@@ -90,7 +90,7 @@ const TradingAppCard = ({
                         weight='bold'
                         color={action_type === 'trade' ? 'prominent' : 'general'}
                     >
-                        {!is_real && !sub_title ? `${name} Demo` : name}
+                        {!is_real && !sub_title && !is_deriv_platform ? `${name} Demo` : name}
                     </Text>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}

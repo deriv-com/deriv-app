@@ -70,7 +70,7 @@ const TradingAppCard = ({
                 <div className='trading-app-card__details'>
                     <div>
                         <Text className='title' size='xs' line_height='s' color='prominent'>
-                            {sub_title}
+                            {!is_real && sub_title ? `${sub_title} Demo` : sub_title}
                         </Text>
                         {short_code_and_region && (
                             <Text
@@ -90,7 +90,7 @@ const TradingAppCard = ({
                         weight='bold'
                         color={action_type === 'trade' ? 'prominent' : 'general'}
                     >
-                        {name}
+                        {!is_real && !sub_title ? `${name} Demo` : name}
                     </Text>
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}

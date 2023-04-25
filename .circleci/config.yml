@@ -255,6 +255,18 @@ jobs:
           name: "Run tests"
           no_output_timeout: 30m
           command: npm test
+      - run:
+          name: "Check TypeScript @deriv/api"
+          command: npx tsc --project packages/api/tsconfig.json -noEmit
+      # - run:
+      #     name: "Check TypeScript @deriv/hooks"
+      #     command: npx tsc --project packages/hooks/tsconfig.json -noEmit
+      - run:
+          name: "Check TypeScript @deriv/stores"
+          command: npx tsc --project packages/stores/tsconfig.json -noEmit
+      # - run:
+      #     name: "Check TypeScript @deriv/cashier"
+      #     command: npx tsc --project packages/cashier/tsconfig.json -noEmit
 
 workflows:
   release_staging:

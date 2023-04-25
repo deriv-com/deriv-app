@@ -1238,6 +1238,14 @@ export default class ClientStore extends BaseStore {
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
+        // delete all notifications key when set new account except notifications for this account
+        // need this because when the user switchs accounts we don't use logout
+        const notification_messages = LocalStore.getObject('notification_messages');
+        const messages = notification_messages[this.loginid] ?? [];
+        LocalStore.setObject('notification_messages', {
+            [this.loginid]: messages,
+        });
+
         // For residences without local currency (e.g. ax)
         const default_fractional_digits = 2;
         this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
@@ -1255,6 +1263,7 @@ export default class ClientStore extends BaseStore {
         return new Promise(resolve => {
             let client_accounts;
             const has_client_accounts = !!LocalStore.get(storage_key);
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
 
             runInAction(() => {
                 this.is_populating_account_list = true;
@@ -1263,6 +1272,7 @@ export default class ClientStore extends BaseStore {
             if (this.is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.set(storage_key, JSON.stringify(this.accounts));
+                this.syncWithLegacyPlatforms(client_id, this.accounts);
             }
 
             try {
@@ -1272,7 +1282,6 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};
@@ -1288,6 +1297,7 @@ export default class ClientStore extends BaseStore {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
+                    this.syncWithLegacyPlatforms(client_id, client_accounts);
                 })
                 .catch(error => {
                     // eslint-disable-next-line no-console
@@ -2002,6 +2012,15 @@ export default class ClientStore extends BaseStore {
     }
 
     cleanUp() {
+        // delete all notifications keys for this account when logout
+        const notification_messages = LocalStore.getObject('notification_messages');
+        if (notification_messages && this.loginid) {
+            delete notification_messages[this.loginid];
+            LocalStore.setObject('notification_messages', {
+                ...notification_messages,
+            });
+        }
+
         this.root_store.gtm.pushDataLayer({
             event: 'log_out',
         });

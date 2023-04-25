@@ -27,6 +27,7 @@ export const jurisdictionSvgContents = (): TJurisdictionCardItems => ({
         {
             key: 'verifications',
             title: `${localize('Verifications')}`,
+            title_indicators: { type: 'displayIcons' },
             description: `${localize(
                 'You will need to submit proof of identity and address once you reach certain thresholds.'
             )}`,
@@ -69,6 +70,7 @@ export const jurisdictionSvgContents = (): TJurisdictionCardItems => ({
         {
             key: 'verifications',
             title: `${localize('Verifications')}`,
+            title_indicators: { type: 'displayIcons' },
             description: `${localize(
                 'You will need to submit proof of identity and address once you reach certain thresholds.'
             )}`,
@@ -79,4 +81,6 @@ export const jurisdictionSvgContents = (): TJurisdictionCardItems => ({
             description: `${localize('Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
         },
     ],
+    synthetic_verification_docs: ['not_applicable'],
+    financial_verification_docs: ['not_applicable'],
 });

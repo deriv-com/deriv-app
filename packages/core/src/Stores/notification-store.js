@@ -1593,6 +1593,7 @@ export default class NotificationStore extends BaseStore {
     };
 
     async getP2pCompletedOrders() {
+        await WS.wait('authorize');
         const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
 
         if (!response?.error) {

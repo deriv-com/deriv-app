@@ -681,6 +681,9 @@
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
     }
+    &-front {
+        transform: rotateX(0deg);
+    }
     &-back {
         transform: rotateY(180deg);
     }

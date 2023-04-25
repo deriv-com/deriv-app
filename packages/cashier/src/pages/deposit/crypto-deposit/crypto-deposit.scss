@@ -25,22 +25,22 @@
             flex-direction: column;
             align-items: center;
 
-            &__text {
-                display: flex;
-                justify-content: space-between;
-                width: auto;
-                padding: 0.8rem;
-                margin: 2.4rem 0;
-                border-radius: $BORDER_RADIUS;
-                background-color: $alpha-color-yellow-1;
-
-                svg {
-                    margin-right: 0.3rem;
-                }
-            }
             .dc-btn {
                 max-width: 6rem;
                 padding: 0.3rem 0.8rem;
+            }
+        }
+
+        .crypto-third-party-alert {
+            background-color: #ffad3a;
+
+            .dc-text {
+                background-color: #ffad3a;
+                color: #333333;
+            }
+
+            .dc-icon {
+                --fill-color1: #333333;
             }
         }
     }
@@ -88,5 +88,18 @@
     }
     &__fiat-onramp-button {
         margin-bottom: 2.4rem;
+    }
+
+    &__alert-message-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 1.6rem;
+        background-color: $color-yellow;
+
+        &__text {
+            margin-left: 0.8rem;
+            color: $color-black-1;
+        }
     }
 }

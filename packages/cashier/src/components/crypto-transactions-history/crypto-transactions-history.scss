@@ -159,6 +159,10 @@
 
         &-tooltip {
             margin-left: 0.4rem;
+            svg {
+                display: flex;
+                align-items: center;
+            }
         }
     }
     &__data-list {

@@ -40,9 +40,9 @@ const AccountActions = () => {
     }, []);
 
     useEffect(() => {
-        renderAccountMenu();
+        if (account_type) renderAccountMenu();
     }, [account_type, is_logged_in])
-
+    
     const onAccept = () => {
         dispatch(setAccountSwitcherToken(''));
         globalObserver.emit('ui.switch_account', account_switcher_token);

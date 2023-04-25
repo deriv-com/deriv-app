@@ -85,7 +85,6 @@ export type TJurisdictionCardSectionTitleIndicators = {
     type: 'displayText' | 'displayIcons';
     display_text?: string;
     display_text_skin_color?: string;
-    display_icons?: Array<string>;
 };
 
 export type TJurisdictionCardSection = {
@@ -96,9 +95,15 @@ export type TJurisdictionCardSection = {
     clickable_description?: Array<TClickableDescription>;
 };
 
-export type TJurisdictionCardItemVerification = Array<
-    'document_number' | 'selfie' | 'identity_document' | 'name_and_address'
->;
+export type TJurisdictionCardVerificationStatus = 'Pending' | 'Verified' | 'Failed' | 'Default';
+
+export type TJurisdictionCardItemVerificationItem =
+    | 'document_number'
+    | 'selfie'
+    | 'identity_document'
+    | 'name_and_address'
+    | 'not_applicable';
+export type TJurisdictionCardItemVerification = Array<TJurisdictionCardItemVerificationItem>;
 
 export type TJurisdictionCardItems = {
     header: string;
@@ -120,6 +125,7 @@ export type TJurisdictionVerificationItems = {
     selfie?: TJurisdictionVerificationSection;
     identity_document?: TJurisdictionVerificationSection;
     name_and_address?: TJurisdictionVerificationSection;
+    not_applicable?: TJurisdictionVerificationSection;
 };
 
 type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';

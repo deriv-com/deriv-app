@@ -9,7 +9,6 @@ import initStore from './init-store';
 import 'Sass/app.scss';
 import { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../trader-providers';
-import { MobxContentProvider } from 'Stores/connect';
 
 type Apptypes = {
     passthrough: {
@@ -30,16 +29,14 @@ const App = ({ passthrough }: Apptypes) => {
     }, [root_store]);
 
     return (
-        <MobxContentProvider store={root_store}>
-            <TraderProviders store={root_store}>
-                <Routes />
-                <TradeModals />
-                <NetworkStatusToastErrorPopup />
-                <TradeHeaderExtensions store={root_store} />
-                <TradeFooterExtensions />
-                <TradeSettingsExtensions store={root_store} />
-            </TraderProviders>
-        </MobxContentProvider>
+        <TraderProviders store={root_store}>
+            <Routes />
+            <TradeModals />
+            <NetworkStatusToastErrorPopup />
+            <TradeHeaderExtensions store={root_store} />
+            <TradeFooterExtensions />
+            <TradeSettingsExtensions store={root_store} />
+        </TraderProviders>
     );
 };
 

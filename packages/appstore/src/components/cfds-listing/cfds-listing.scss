@@ -162,7 +162,7 @@
 
 .cfd-card {
     &-perspective {
-        perspective: 1000px;
+        perspective: 100rem;
         @include mobile {
             width: 100%;
         }
@@ -262,7 +262,7 @@
             }
         }
         &-text-icon-aligned {
-            margin-top: -3px;
+            margin-top: -0.3rem;
         }
     }
     &-clickable-description-link {

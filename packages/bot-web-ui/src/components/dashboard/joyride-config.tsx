@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getUrlBase } from '@deriv/shared';
 import { CallBackProps } from 'react-joyride';
 import { storeSetting, getSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
@@ -348,7 +347,7 @@ const Step4 = ({ show_label = false }) => (
             </div>
         </div>
         <div>
-            <img src={getUrlBase('/public/images/common/bot-tour-step-4.gif')} alt='step4' />
+            <img src={getImageLocation('bot-tour-step-4.gif')} alt='step4' />
         </div>
     </div>
 );
@@ -396,7 +395,7 @@ const Step5 = ({ show_label = false }) => (
             </ul>
         </div>
         <div>
-            <img src={getUrlBase('/public/images/common/bot-tour-step-5.gif')} alt='step5' />
+            <img src={getImageLocation('bot-tour-step-5.gif')} alt='step5' />
         </div>
     </div>
 );

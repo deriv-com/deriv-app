@@ -115,6 +115,7 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        disableOverlay: false,
     },
     {
         target: '#id-charts',
@@ -128,6 +129,7 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        disableOverlay: false,
     },
     {
         target: '#id-tutorials',
@@ -141,6 +143,7 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
+        disableOverlay: false,
     },
     {
         target: '#tab__dashboard__table__tiles',
@@ -154,6 +157,7 @@ export const DBOT_ONBOARDING = [
         ),
         placement: 'right',
         ...joyride_props,
+        disableOverlay: false,
     },
     {
         target: '[data-testid="drawer"]',
@@ -168,6 +172,7 @@ export const DBOT_ONBOARDING = [
         ),
         placement: 'left',
         ...joyride_props,
+        disableOverlay: false,
     },
     {
         target: '.animation__wrapper',
@@ -182,6 +187,7 @@ export const DBOT_ONBOARDING = [
         ),
         locale: { last: localize('Next') },
         ...joyride_props,
+        disableOverlay: false,
     },
 ];
 

@@ -88,7 +88,12 @@ const BotBuilder = ({
                         <TourSlider />
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <ReactJoyrideWrapper steps={BOT_BUILDER_TOUR} run={is_tour_running} showProgress />
+                        <ReactJoyrideWrapper
+                            steps={BOT_BUILDER_TOUR}
+                            run={is_tour_running}
+                            showProgress
+                            styles={{ options: { arrowColor: 'transparent' } }}
+                        />
                     </DesktopWrapper>
                 </>
             )}

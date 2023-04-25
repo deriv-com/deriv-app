@@ -5,7 +5,6 @@ import { getTokenList } from '../../../../../../common/utils/storageManager';
 import { useDispatch } from 'react-redux';
 import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import classNames from 'classnames';
-import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import config from '../../../../../../app.config';
 
 const TabContent = ({
@@ -29,24 +28,25 @@ const TabContent = ({
             setIsAccDropdownOpen(false);
         }
     };
-
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
             <div className='account__switcher-accordion'>
-                <h3
-                    className='ui-accordion-header ui-state-default'
-                    onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-                >
-                    <div className='account__switcher-accordion-header-text'>
-                        <span>{title}</span>
-                        <img
-                            className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
-                            src='image/deriv/ic-chevron-down.svg'
-                        />
-                    </div>
-                </h3>
+                {(accounts && accounts.length > 0) &&
+                    <h3
+                        className='ui-accordion-header ui-state-default'
+                        onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                    >
+                        <div className='account__switcher-accordion-header-text'>
+                            <span>{title}</span>
+                            <img
+                                className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
+                                src='image/deriv/ic-chevron-down.svg'
+                            />
+                        </div>
+                    </h3>
+               }
                 <div className={`account__switcher-list ${isAccordionOpen ? 'open' : ''}`}>
-                    {accounts && accounts.sort((acc, acc1) => {
+                    {(accounts && accounts.length > 0) && accounts.sort((acc, acc1) => {
                                 return acc === active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
                             })
                         .map((account, index) => {

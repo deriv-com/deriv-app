@@ -92,12 +92,7 @@ const TradingAppCard = ({
                     >
                         {name}
                     </Text>
-                    <Text
-                        className='description'
-                        color={is_deriv_platform ? 'primary' : 'general'}
-                        size='xxs'
-                        line_height='m'
-                    >
+                    <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}
                     </Text>
                     {mt5_acc_auth_status && (

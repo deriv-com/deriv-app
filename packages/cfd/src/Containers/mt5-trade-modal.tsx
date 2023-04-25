@@ -5,8 +5,8 @@ import RootStore from '../Stores/index';
 import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDDashboardContainer } from '../Components/props.types';
+import TradeModal from './trade-modal';
 import DMT5TradeModal from './dmt5-trade-modal';
-import DerivXTradeModal from './derivx-trade-modal';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -20,12 +20,11 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    platform: 'mt5' | 'dxtrade';
+    platform: 'mt5' | 'dxtrade' | 'derivez';
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
     show_eu_related_content: boolean;
 };
-
 const MT5TradeModal = ({
     mt5_trade_account,
     is_eu_user,
@@ -50,13 +49,14 @@ const MT5TradeModal = ({
             );
         }
         return (
-            <DerivXTradeModal
+            <TradeModal
                 mt5_trade_account={mt5_trade_account}
                 is_eu_user={is_eu_user}
                 onPasswordManager={onPasswordManager}
                 toggleModal={toggleModal}
                 dxtrade_tokens={dxtrade_tokens}
                 is_demo={is_demo}
+                platform={platform}
             />
         );
     };
@@ -91,7 +91,6 @@ const MT5TradeModal = ({
         </React.Suspense>
     );
 };
-
 export default connect(({ modules: { cfd }, modules, common, traders_hub }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     platform: common.platform,

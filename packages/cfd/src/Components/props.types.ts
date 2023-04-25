@@ -2,9 +2,16 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
+export type TCFDsPlatformType = 'dxtrade' | 'derivez';
+
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
+};
+
+export type TDxtradeDesktopDownloadProps = {
+    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    is_demo: string;
 };
 
 export type TAccountIconValues = { [key: string]: string };

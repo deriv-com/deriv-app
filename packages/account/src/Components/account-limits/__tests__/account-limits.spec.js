@@ -121,7 +121,7 @@ describe('<AccountLimits/>', () => {
     //         </StoreProvider>
     //     );
     //     expect(screen.getByText('mockedLoading')).toBeInTheDocument();
-    // });
+    //  });
     // it('should render DemoMessage component if is_virtual is true', () => {
     //     store.client.is_virtual=true
     //     const { container } = render(<StoreProvider store={store}>

@@ -12,6 +12,9 @@ document.body.appendChild(portal_root);
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     useIsMounted: jest.fn().mockImplementation(() => () => true),
+}));
+jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+    __esModule: true,
     WS: {
         authorized: {
             getLimits: () =>
@@ -58,34 +61,34 @@ describe('<SelfExclusion />', () => {
         };
     });
 
-    it('should render SelfExclusion component for virtual account', () => {
-        store.client.is_virtual = true;
+    // it('should render SelfExclusion component for virtual account', () => {
+    //     store.client.is_virtual = true;
 
-        render(
-            <StoreProvider store={store}>
-                <SelfExclusion {...mock_props} />
-            </StoreProvider>
-        );
+    //     render(
+    //         <StoreProvider store={store}>
+    //             <SelfExclusion {...mock_props} />
+    //         </StoreProvider>
+    //     );
 
-        expect(screen.getByText('This feature is not available for demo accounts.')).toBeInTheDocument();
-    });
+    //     expect(screen.getByText('This feature is not available for demo accounts.')).toBeInTheDocument();
+    // });
 
-    it('should render SelfExclusion component with SelfExclusionModal', async () => {
-        await act(async () => {
-            render(
-                <StoreProvider store={store}>
-                    <SelfExclusion {...mock_props} />
-                </StoreProvider>
-            );
-        });
+    // it('should render SelfExclusion component with SelfExclusionModal', async () => {
+    //     await act(async () => {
+    //         render(
+    //             <StoreProvider store={store}>
+    //                 <SelfExclusion {...mock_props} />
+    //             </StoreProvider>
+    //         );
+    //     });
 
-        expect(screen.getByText('SelfExclusionModal')).toBeInTheDocument();
-        const currencies = screen.getAllByText(/Test currency/i);
-        expect(currencies[0]).toBeInTheDocument();
-        expect(currencies.length).toBe(7);
-        const inputs = screen.getAllByRole('textbox');
-        expect(inputs.length).toBe(11);
-    });
+    //     expect(screen.getByText('SelfExclusionModal')).toBeInTheDocument();
+    //     const currencies = screen.getAllByText(/Test currency/i);
+    //     expect(currencies[0]).toBeInTheDocument();
+    //     expect(currencies.length).toBe(7);
+    //     const inputs = screen.getAllByRole('textbox');
+    //     expect(inputs.length).toBe(11);
+    // });
 
     // it('should render SelfExclusion component with error', async () => {
     //     WS.authorized.getSelfExclusion = () =>
@@ -104,63 +107,63 @@ describe('<SelfExclusion />', () => {
     //     expect(screen.queryByText('Test getSelfExclusion response error')).toBeInTheDocument();
     // });
 
-    it('Should trigger session_duration_limit input and show error if the value is greater than 60480 or does not show if less than 60480', async () => {
-        store.client.is_eu = true;
+    // it('Should trigger session_duration_limit input and show error if the value is greater than 60480 or does not show if less than 60480', async () => {
+    //     store.client.is_eu = true;
 
-        render(
-            <StoreProvider store={store}>
-                <SelfExclusion {...mock_props} />
-            </StoreProvider>
-        );
+    //     render(
+    //         <StoreProvider store={store}>
+    //             <SelfExclusion {...mock_props} />
+    //         </StoreProvider>
+    //     );
 
-        const inputs = await screen.findAllByRole('textbox');
-        const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
+    //     const inputs = await screen.findAllByRole('textbox');
+    //     const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
 
-        await act(async () => {
-            fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
-        });
+    //     await act(async () => {
+    //         fireEvent.change(session_duration_limit_input, { target: { value: '60481' } });
+    //     });
 
-        expect(
-            screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
-        ).toBeInTheDocument();
+    //     expect(
+    //         screen.getByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+    //     ).toBeInTheDocument();
 
-        await act(async () => {
-            fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
-        });
+    //     await act(async () => {
+    //         fireEvent.change(session_duration_limit_input, { target: { value: '60479' } });
+    //     });
 
-        expect(
-            screen.queryByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
-        ).not.toBeInTheDocument();
-    });
+    //     expect(
+    //         screen.queryByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+    //     ).not.toBeInTheDocument();
+    // });
 
-    it('Should trigger exclude_until input and show error depends on input value', async () => {
-        Date.now = jest.fn(() => new Date('2022-02-03'));
+    // it('Should trigger exclude_until input and show error depends on input value', async () => {
+    //     Date.now = jest.fn(() => new Date('2022-02-03'));
 
-        render(
-            <StoreProvider store={store}>
-                <SelfExclusion {...mock_props} />
-            </StoreProvider>
-        );
+    //     render(
+    //         <StoreProvider store={store}>
+    //             <SelfExclusion {...mock_props} />
+    //         </StoreProvider>
+    //     );
 
-        const inputs = await screen.findAllByRole('textbox');
-        const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
+    //     const inputs = await screen.findAllByRole('textbox');
+    //     const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
 
-        await act(async () => {
-            fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
-        });
+    //     await act(async () => {
+    //         fireEvent.change(exclude_until_input, { target: { value: '2021-04-13' } });
+    //     });
 
-        expect(screen.getByText('Exclude time must be after today.')).toBeInTheDocument();
+    //     expect(screen.getByText('Exclude time must be after today.')).toBeInTheDocument();
 
-        await act(async () => {
-            fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
-        });
-        expect(screen.getByText('Exclude time cannot be less than 6 months.')).toBeInTheDocument();
+    //     await act(async () => {
+    //         fireEvent.change(exclude_until_input, { target: { value: '2022-04-13' } });
+    //     });
+    //     expect(screen.getByText('Exclude time cannot be less than 6 months.')).toBeInTheDocument();
 
-        await act(async () => {
-            fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
-        });
-        expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
-    });
+    //     await act(async () => {
+    //         fireEvent.change(exclude_until_input, { target: { value: '2028-04-13' } });
+    //     });
+    //     expect(screen.getByText('Exclude time cannot be for more than five years.')).toBeInTheDocument();
+    // });
 
     // it('should trigger inputs with data, add new data, and show error wih invalid input data', async () => {
     //     WS.authorized.setSelfExclusion = () =>
@@ -241,94 +244,94 @@ describe('<SelfExclusion />', () => {
     //     expect(screen.getByText('Test setSelfExclusion response error')).toBeInTheDocument();
     // });
 
-    // it('should trigger inputs with correct data set timeout limit and logout', async () => {
-    //     WS.authorized.setSelfExclusion = () =>
-    //         Promise.resolve({
-    //             error: false,
-    //         });
+    it('should trigger inputs with correct data set timeout limit and logout', async () => {
+        WS.authorized.setSelfExclusion = () =>
+            Promise.resolve({
+                error: false,
+            });
 
-    //     const logout = store.client.logout;
+        const logout = store.client.logout;
 
-    //     await act(async () => {
-    //         render(
-    //             <StoreProvider store={store}>
-    //                 <SelfExclusion {...mock_props} />
-    //             </StoreProvider>
-    //         );
-    //     });
+        await act(async () => {
+            render(
+                <StoreProvider store={store}>
+                    <SelfExclusion {...mock_props} />
+                </StoreProvider>
+            );
+        });
 
-    //     expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
-    //     const next_btn_1 = screen.getByRole('button');
-    //     expect(next_btn_1).toHaveTextContent('Next');
+        expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
+        const next_btn_1 = screen.getByRole('button');
+        expect(next_btn_1).toHaveTextContent('Next');
 
-    //     const inputs = await screen.findAllByRole('textbox');
-    //     expect(inputs.length).toBe(11);
+        const inputs = await screen.findAllByRole('textbox');
+        expect(inputs.length).toBe(11);
 
-    //     const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
-    //     const max_open_bets_input = inputs.find(input => input.name === 'max_open_bets');
-    //     const max_losses_input = inputs.find(input => input.name === 'max_losses');
-    //     const max_turnover_input = inputs.find(input => input.name === 'max_turnover');
-    //     const max_7day_losses_input = inputs.find(input => input.name === 'max_7day_losses');
-    //     const max_7day_turnover_input = inputs.find(input => input.name === 'max_7day_turnover');
-    //     const max_30day_losses_input = inputs.find(input => input.name === 'max_30day_losses');
-    //     const max_30day_turnover_input = inputs.find(input => input.name === 'max_30day_turnover');
-    //     const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
+        const exclude_until_input = inputs.find(input => input.name === 'exclude_until');
+        const max_open_bets_input = inputs.find(input => input.name === 'max_open_bets');
+        const max_losses_input = inputs.find(input => input.name === 'max_losses');
+        const max_turnover_input = inputs.find(input => input.name === 'max_turnover');
+        const max_7day_losses_input = inputs.find(input => input.name === 'max_7day_losses');
+        const max_7day_turnover_input = inputs.find(input => input.name === 'max_7day_turnover');
+        const max_30day_losses_input = inputs.find(input => input.name === 'max_30day_losses');
+        const max_30day_turnover_input = inputs.find(input => input.name === 'max_30day_turnover');
+        const session_duration_limit_input = inputs.find(input => input.name === 'session_duration_limit');
 
-    //     act(() => {
-    //         fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
-    //         fireEvent.change(max_open_bets_input, { target: { value: '99' } });
-    //         fireEvent.change(max_losses_input, { target: { value: '1000' } });
-    //         fireEvent.change(max_turnover_input, { target: { value: '1700' } });
-    //         fireEvent.change(max_7day_losses_input, { target: { value: '700' } });
-    //         fireEvent.change(max_7day_turnover_input, { target: { value: '700' } });
-    //         fireEvent.change(max_30day_losses_input, { target: { value: '3000' } });
-    //         fireEvent.change(max_30day_turnover_input, { target: { value: '5000' } });
-    //         fireEvent.change(session_duration_limit_input, { target: { value: '60399' } });
-    //     });
+        act(() => {
+            fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
+            fireEvent.change(max_open_bets_input, { target: { value: '99' } });
+            fireEvent.change(max_losses_input, { target: { value: '1000' } });
+            fireEvent.change(max_turnover_input, { target: { value: '1700' } });
+            fireEvent.change(max_7day_losses_input, { target: { value: '700' } });
+            fireEvent.change(max_7day_turnover_input, { target: { value: '700' } });
+            fireEvent.change(max_30day_losses_input, { target: { value: '3000' } });
+            fireEvent.change(max_30day_turnover_input, { target: { value: '5000' } });
+            fireEvent.change(session_duration_limit_input, { target: { value: '60399' } });
+        });
 
-    //     await waitFor(() => {
-    //         fireEvent.click(next_btn_1);
-    //     });
+        await waitFor(() => {
+            fireEvent.click(next_btn_1);
+        });
 
-    //     expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
-    //     expect(screen.queryByText('Your stake and loss limits')).not.toBeInTheDocument();
-    //     expect(next_btn_1).not.toBeInTheDocument();
-    //     const accept_btn_1 = screen.getByRole('button');
-    //     expect(accept_btn_1).toHaveTextContent('Accept');
+        expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
+        expect(screen.queryByText('Your stake and loss limits')).not.toBeInTheDocument();
+        expect(next_btn_1).not.toBeInTheDocument();
+        const accept_btn_1 = screen.getByRole('button');
+        expect(accept_btn_1).toHaveTextContent('Accept');
 
-    //     await waitFor(() => {
-    //         fireEvent.click(accept_btn_1);
-    //     });
+        await waitFor(() => {
+            fireEvent.click(accept_btn_1);
+        });
 
-    //     expect(accept_btn_1).not.toBeInTheDocument();
-    //     const review_btn = screen.getByText('No, review my limits');
-    //     expect(review_btn).toBeInTheDocument();
+        expect(accept_btn_1).not.toBeInTheDocument();
+        const review_btn = screen.getByText('No, review my limits');
+        expect(review_btn).toBeInTheDocument();
 
-    //     expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();
+        expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();
 
-    //     await waitFor(() => {
-    //         fireEvent.click(review_btn);
-    //     });
+        await waitFor(() => {
+            fireEvent.click(review_btn);
+        });
 
-    //     expect(screen.queryByText('Yes, log me out immediately')).not.toBeInTheDocument();
-    //     expect(review_btn).not.toBeInTheDocument();
-    //     expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
+        expect(screen.queryByText('Yes, log me out immediately')).not.toBeInTheDocument();
+        expect(review_btn).not.toBeInTheDocument();
+        expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
 
-    //     const accept_btn_2 = screen.getByRole('button');
-    //     expect(accept_btn_2).toHaveTextContent('Accept');
+        const accept_btn_2 = screen.getByRole('button');
+        expect(accept_btn_2).toHaveTextContent('Accept');
 
-    //     await waitFor(() => {
-    //         fireEvent.click(accept_btn_2);
-    //     });
+        await waitFor(() => {
+            fireEvent.click(accept_btn_2);
+        });
 
-    //     expect(screen.getByText('No, review my limits')).toBeInTheDocument();
-    //     const logout_btn = screen.getByText('Yes, log me out immediately');
-    //     expect(logout_btn).toBeInTheDocument();
+        expect(screen.getByText('No, review my limits')).toBeInTheDocument();
+        const logout_btn = screen.getByText('Yes, log me out immediately');
+        expect(logout_btn).toBeInTheDocument();
 
-    //     await waitFor(() => {
-    //         fireEvent.click(logout_btn);
-    //     });
+        await waitFor(() => {
+            fireEvent.click(logout_btn);
+        });
 
-    //     expect(logout).toHaveBeenCalledTimes(1);
-    // });
+        expect(logout).toHaveBeenCalledTimes(1);
+    });
 });

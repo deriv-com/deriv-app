@@ -7,6 +7,7 @@ export { default as useCountdown } from './useCountdown';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';
 export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
+export { default as useHasCryptoCurrency } from './useHasCryptoCurrency';
 export { default as useHasFiatCurrency } from './useHasFiatCurrency';
 export { default as useHasMaltaInvestAccount } from './useHasMaltaInvestAccount';
 export { default as useHasSetCurrency } from './useHasSetCurrency';

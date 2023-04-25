@@ -4,4 +4,5 @@ export * from './cashier-onboarding-crypto-card';
 export * from './cashier-onboarding-icon-marquee';
 export * from './cashier-onboarding-onramp-card';
 export * from './cashier-onboarding-p2p-card';
+export * from './cashier-onboarding-payment-agent-card';
 export * from './cashier-onboarding-title';

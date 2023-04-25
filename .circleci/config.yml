@@ -251,22 +251,22 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - run:
-          name: "Check TypeScript for `@deriv/api`"
+          name: "Check TypeScript for @deriv/api"
           command: npx tsc --project packages/api/tsconfig.json -noEmit
       - run:
-          name: "Check TypeScript for `@deriv/stores`"
+          name: "Check TypeScript for @deriv/hooks"
+          command: npx tsc --project packages/hooks/tsconfig.json -noEmit
+      - run:
+          name: "Check TypeScript for @deriv/stores"
           command: npx tsc --project packages/stores/tsconfig.json -noEmit
       # - run:
-      #     name: "Check TypeScript for `@deriv/hooks`"
-      #     command: npx tsc --project packages/hooks/tsconfig.json -noEmit
-      # - run:
-      #     name: "Check TypeScript for `@deriv/cashier`"
+      #     name: "Check TypeScript for @deriv/cashier"
       #     command: npx tsc --project packages/cashier/tsconfig.json -noEmit
+      - build
       - run:
           name: "Run tests"
           no_output_timeout: 30m
           command: npm test
-      - build
 
 workflows:
   release_staging:

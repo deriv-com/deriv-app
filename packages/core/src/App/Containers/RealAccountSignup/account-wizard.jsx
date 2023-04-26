@@ -277,7 +277,7 @@ const AccountWizard = props => {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
                 const { document_type, document_number, document_additional } = { ...form_values() };
-                if (document_type && document_number) {
+                if (document_type && document_type.id !== '#NA' && document_number) {
                     const country_code = props.account_settings.citizen || props.residence;
                     submitIDVData(document_type, document_number, document_additional, country_code);
                 }

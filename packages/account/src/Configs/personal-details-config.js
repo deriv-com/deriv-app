@@ -161,7 +161,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
 };
 
 const personalDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence_list, account_settings },
+    { upgrade_info, real_account_signup_target, residence_list, account_settings, account_status, residence },
     PersonalDetails,
     is_appstore = false
 ) => {
@@ -212,6 +212,9 @@ const personalDetailsConfig = (
                 },
             ],
             disabled_items,
+            account_status,
+            residence,
+            account_settings,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',

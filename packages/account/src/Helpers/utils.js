@@ -1,56 +1,6 @@
-// [TODO]: Remove duplicated functions from this file and use the ones in Helpers/utils.js
-
 import { getUrlBase } from '@deriv/shared';
 
-export const documentAdditionalError = (document_additional, document_additional_format) => {
-    let error_message = null;
-    if (!document_additional) {
-        error_message = 'Please enter your document number. ';
-    } else {
-        const format_regex = getRegex(document_additional_format);
-        if (!format_regex.test(document_additional)) {
-            error_message = 'Please enter the correct format. ';
-        }
-    }
-
-    return error_message;
-};
-
-export const getRegex = target_regex => {
-    const output_regex = regex.find(r => r.regex_string === target_regex);
-    if (output_regex) {
-        return new RegExp(output_regex.value, output_regex.flags);
-    }
-    return new RegExp(target_regex);
-};
-
-export const getDocumentData = (country_code, document_type) => {
-    return (
-        (Object.keys(idv_document_data).includes(country_code) && idv_document_data[country_code][document_type]) || {
-            new_display_name: '',
-            example_format: '',
-            sample_image: '',
-        }
-    );
-};
-
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);
-
-export const preventEmptyClipboardPaste = e => {
-    const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
-    if (clipboardData.length === 0) {
-        e.preventDefault();
-    }
-};
-
-// Unsupported Regex List
-const regex = [
-    {
-        regex_string: '^(?i)G[a-zA-Z0-9]{7,9}$',
-        value: '^G[a-zA-Z0-9]{7,9}$',
-        flags: 'i',
-    },
-];
 
 // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
 const idv_document_data = {
@@ -173,4 +123,35 @@ const idv_document_data = {
             sample_image: getImageLocation('zw_national_identity_card.png'),
         },
     },
+};
+
+export const shouldShowIdentityInformation = ({
+    account_status,
+    account_settings,
+    residence,
+    residence_list,
+    real_account_signup_target,
+}) => {
+    const citizen = account_settings.citizen || residence;
+    const country = residence_list.find(item => item.value === citizen);
+    const maltainvest = real_account_signup_target === 'maltainvest';
+    const should_skip_idv = account_status?.status?.some(status => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
+    return !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported && !should_skip_idv;
+};
+
+export const getDocumentData = (country_code, document_type) => {
+    return (
+        (Object.keys(idv_document_data).includes(country_code) && idv_document_data[country_code][document_type]) || {
+            new_display_name: '',
+            example_format: '',
+            sample_image: '',
+        }
+    );
+};
+
+export const preventEmptyClipboardPaste = e => {
+    const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
+    if (clipboardData.length === 0) {
+        e.preventDefault();
+    }
 };

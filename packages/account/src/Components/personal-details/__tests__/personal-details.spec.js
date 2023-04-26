@@ -229,6 +229,7 @@ describe('<PersonalDetails/>', () => {
         getCurrentStep: jest.fn(() => 1),
         onSave: jest.fn(),
         onCancel: jest.fn(),
+        account_settings: {},
     };
 
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
@@ -253,6 +254,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
     });
+
     it('should not show fake_alert_message when is_appstore is false ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
@@ -298,6 +300,7 @@ describe('<PersonalDetails/>', () => {
             })
         ).toBeInTheDocument();
     });
+
     it('should show Name label when salutation is not passed', () => {
         const newprops = { ...props, value: {} };
         renderwithRouter(<PersonalDetails {...newprops} />);

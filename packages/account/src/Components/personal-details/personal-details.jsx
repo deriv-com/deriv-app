@@ -110,12 +110,14 @@ const PersonalDetails = ({
     const [document_list, setDocumentList] = React.useState([]);
     const is_submit_disabled_ref = React.useRef(true);
 
-    const citizen = account_settings.citizen || residence;
-    const document_data = residence_list.find(residence_data => residence_data.value === citizen).identity.services.idv
-        .documents_supported;
+    const citizen = account_settings?.citizen || residence;
+    const document_data =
+        residence_list.find(residence_data => residence_data.value === citizen)?.identity.services?.idv
+            ?.documents_supported || {};
 
     React.useEffect(() => {
         const document_types = Object.keys(document_data);
+        if (document_types.length === 0) return;
         const filtered_documents = ['gh', 'ng'].includes(citizen)
             ? document_types.filter(d => d !== 'voter_id')
             : document_types;

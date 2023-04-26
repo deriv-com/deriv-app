@@ -11,11 +11,13 @@ const JurisdictionCardBack = ({
     verification_docs,
 }: TJurisdictionCardBackProps) => (
     <div
+        data-testid='dt_jurisdiction_card_back_container'
         className={classNames(card_classname, 'cfd-card-back', {
             [`${card_classname}--selected selected-card`]: is_card_selected,
         })}
     >
         <div
+            data-testid='dt_jurisdiction_card_back'
             className={classNames(
                 `${card_classname}__card-content-container`,
                 `${card_classname}__card-flipped-container`

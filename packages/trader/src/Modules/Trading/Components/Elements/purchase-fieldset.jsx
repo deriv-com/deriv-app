@@ -16,7 +16,6 @@ const PurchaseFieldset = ({
     index,
     is_accumulator,
     is_disabled,
-    is_eu,
     is_high_low,
     is_loading,
     is_market_closed,
@@ -45,7 +44,6 @@ const PurchaseFieldset = ({
                 index={index}
                 has_deal_cancellation={is_multiplier && has_cancellation}
                 is_accumulator={is_accumulator}
-                is_eu={is_eu}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={is_loading}
@@ -85,7 +83,6 @@ const PurchaseFieldset = ({
                             currency={currency}
                             proposal_info={info}
                             has_increased={info.has_increased}
-                            is_eu={is_eu}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_vanilla={is_vanilla}

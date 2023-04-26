@@ -24,15 +24,7 @@ import {
 import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
-const ContractDetails = ({
-    contract_end_time,
-    contract_info,
-    duration,
-    duration_unit,
-    exit_spot,
-    is_vanilla,
-    is_eu,
-}) => {
+const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot, is_vanilla }) => {
     const {
         commission,
         contract_type,
@@ -110,7 +102,7 @@ const ContractDetails = ({
                                 <ContractAuditItem
                                     id='dt_bt_label'
                                     icon={<Icon icon='IcContractPayout' size={24} />}
-                                    label={is_eu ? localize('Payout per pip') : localize('Payout per point')}
+                                    label={localize('Payout per point')}
                                     value={
                                         `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(
                                             currency

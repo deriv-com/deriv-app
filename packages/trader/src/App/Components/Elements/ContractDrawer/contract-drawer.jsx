@@ -23,7 +23,6 @@ const ContractDrawer = ({
     contract_update,
     contract_update_history,
     is_accumulator,
-    is_eu,
     is_mobile,
     is_sell_requested,
     is_dark_theme,
@@ -60,7 +59,6 @@ const ContractDrawer = ({
                 has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
                 toggleHistoryTab={toggleHistoryTab}
                 is_vanilla={is_vanilla}
-                is_eu={is_eu}
             />
         );
 
@@ -198,9 +196,8 @@ ContractDrawer.propTypes = {
 };
 
 export default withRouter(
-    connect(({ common, ui, client }) => ({
+    connect(({ common, ui }) => ({
         server_time: common.server_time,
-        is_eu: client.is_eu,
         is_mobile: ui.is_mobile,
     }))(ContractDrawer)
 );

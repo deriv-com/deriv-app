@@ -34,7 +34,6 @@ const ContractInfo = ({
     basis,
     currency,
     has_increased,
-    is_eu,
     is_loading,
     is_accumulator,
     is_multiplier,
@@ -49,7 +48,7 @@ const ContractInfo = ({
         switch (basis) {
             case 'stake': {
                 if (is_vanilla) {
-                    return is_eu ? localize('Payout per pip') : localize('Payout per point');
+                    return localize('Payout per point');
                 }
                 return localized_basis.payout;
             }
@@ -63,14 +62,14 @@ const ContractInfo = ({
 
     const setBasisText = () => {
         if (is_vanilla) {
-            return is_eu ? localize('Payout per pip') : localize('Payout per point');
+            return 'Payout per point';
         }
         return proposal_info.obj_contract_basis.text;
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
 
-    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : setBasisText();
+    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : localize('{{value}}', { value: setBasisText() });
 
     const { message, obj_contract_basis, stake } = proposal_info;
 
@@ -78,12 +77,11 @@ const ContractInfo = ({
         if (['VANILLALONGCALL', 'VANILLALONGPUT'].includes(type)) {
             return (
                 <Localize
-                    i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every {{unit}} {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
+                    i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
                     components={[<strong key={0} />]}
                     values={{
                         trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                         title: type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-                        unit: is_eu ? localize('pip') : localize('point'),
                     }}
                 />
             );
@@ -155,7 +153,7 @@ const ContractInfo = ({
                                         zIndex={9999}
                                         message={
                                             <Localize
-                                                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every {{unit}} {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
+                                                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every point {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
                                                 components={[<strong key={0} />]}
                                                 values={{
                                                     trade_type:
@@ -164,7 +162,6 @@ const ContractInfo = ({
                                                             : localize('below'),
                                                     title:
                                                         type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-                                                    unit: is_eu ? localize('pip') : localize('point'),
                                                 }}
                                             />
                                         }

@@ -15,6 +15,7 @@ import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dar
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
+import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 
 const Divider = () => {
@@ -39,7 +40,7 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
                 />
             </div>
             <Text className='trading-hub-header__tradershub--text'>
-                <Localize i18n_default_text="Trader's hub" />
+                <Localize i18n_default_text="Trader's Hub" />
             </Text>
         </div>
     );
@@ -321,6 +322,7 @@ const TradingHubHeader = ({
                 </div>
                 <RealAccountSignup />
             </MobileWrapper>
+            <SetAccountCurrencyModal />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );

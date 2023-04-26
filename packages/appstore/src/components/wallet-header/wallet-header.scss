@@ -5,6 +5,11 @@
     border-radius: $BORDER_RADIUS * 4;
     height: 12.8rem;
 
+    &__demo {
+        background-color: #fff8f9;
+        background-image: url('');
+    }
+
     &__container {
         display: flex;
         height: 8rem;
@@ -18,80 +23,80 @@
         margin-right: 2.4rem;
         border-radius: $BORDER_RADIUS * 2;
 
-        // @include wallet-bg-color
+        // &-USD {
+        //     background-image: linear-gradient(to right, #f2bfba, #e8b4c0, #d6acc7, #bca7cc, #9ca3cc);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #652723, #602033, #531f41, #3d234b, #1e274f);
+        //     }
+        //     // @include wallet-bg-color('usd');
+        // }
 
-        &-USD {
-            background-image: linear-gradient(to right, #f2bfba, #e8b4c0, #d6acc7, #bca7cc, #9ca3cc);
-            &-dark {
-                background-image: linear-gradient(to right, #652723, #602033, #531f41, #3d234b, #1e274f);
-            }
-            // @include wallet-bg-color('usd');
-        }
+        // &-EUR {
+        //     background-image: linear-gradient(to right, #b5bbd9, #e0bcde, #ffc0ca, #ffcfad, #fce99f);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #1c2444, #4f284b, #76313f, #864a2a, #7c6c21);
+        //     }
+        //     // @include wallet-bg-color('eur');
+        // }
 
-        &-EUR {
-            background-image: linear-gradient(to right, #b5bbd9, #e0bcde, #ffc0ca, #ffcfad, #fce99f);
-            &-dark {
-                background-image: linear-gradient(to right, #1c2444, #4f284b, #76313f, #864a2a, #7c6c21);
-            }
-            // @include wallet-bg-color('eur');
-        }
+        // &-AUD {
+        //     background-image: linear-gradient(to right, #a9e5ba, #b9e8ad, #cdea9f, #e5ea93, #ffe88a);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #214f3e, #2e5937, #44622a, #60681b, #816b0d);
+        //     }
+        //     // @include wallet-bg-color('aud');
+        // }
 
-        &-AUD {
-            background-image: linear-gradient(to right, #a9e5ba, #b9e8ad, #cdea9f, #e5ea93, #ffe88a);
-            &-dark {
-                background-image: linear-gradient(to right, #214f3e, #2e5937, #44622a, #60681b, #816b0d);
-            }
-            // @include wallet-bg-color('aud');
-        }
+        // &-BTC {
+        //     background-image: linear-gradient(to right, #fbdbb4, #fbdeb3, #fbe2b1, #fae5b1, #f9e9b0);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #664419, #6d4c19, #735519, #785e19, #7d6819);
+        //     }
+        // }
 
-        &-BTC {
-            background-image: linear-gradient(to right, #fbdbb4, #fbdeb3, #fbe2b1, #fae5b1, #f9e9b0);
-            &-dark {
-                background-image: linear-gradient(to right, #664419, #6d4c19, #735519, #785e19, #7d6819);
-            }
-        }
+        // &-Demo {
+        //     background-image: linear-gradient(to right, #693227, #6f3129, #75302b, #7a2e2e, #802c31);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #fcd1c8, #fdc7bf, #febdb7, #ffb3b1, #ffa8ac);
+        //     }
+        // }
 
-        &-Demo {
-            background-image: linear-gradient(to right, #693227, #6f3129, #75302b, #7a2e2e, #802c31);
-            &-dark {
-                background-image: linear-gradient(to right, #fcd1c8, #fdc7bf, #febdb7, #ffb3b1, #ffa8ac);
-            }
-        }
+        // &-P2P {
+        //     background-image: linear-gradient(to right, #fcd1c8, #fdc7bf, #febdb7, #ffb3b1, #ffa8ac);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #693227, #6f3129, #75302b, #7a2e2e, #802c31);
+        //     }
+        // }
 
-        &-P2P {
-            background-image: linear-gradient(to right, #fcd1c8, #fdc7bf, #febdb7, #ffb3b1, #ffa8ac);
-            &-dark {
-                background-image: linear-gradient(to right, #693227, #6f3129, #75302b, #7a2e2e, #802c31);
-            }
-        }
+        // &-ETH {
+        //     background-image: linear-gradient(to right, #c1c2d1, #c2c4d3, #c3c6d5, #c4c8d7, #c5cad9);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #383a48, #3f4251, #474b59, #4f5462, #575d6b);
+        //     }
+        // }
 
-        &-ETH {
-            background-image: linear-gradient(to right, #c1c2d1, #c2c4d3, #c3c6d5, #c4c8d7, #c5cad9);
-            &-dark {
-                background-image: linear-gradient(to right, #383a48, #3f4251, #474b59, #4f5462, #575d6b);
-            }
-        }
+        // &-LTC {
+        //     background-image: linear-gradient(to right, #dfe0e0, #e3e4e4, #e6e8e8, #eaecec, #eef0f0);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #4f5253, #575b5c, #5f6364, #676c6d, #6f7576);
+        //     }
+        // }
 
-        &-LTC {
-            background-image: linear-gradient(to right, #dfe0e0, #e3e4e4, #e6e8e8, #eaecec, #eef0f0);
-            &-dark {
-                background-image: linear-gradient(to right, #4f5253, #575b5c, #5f6364, #676c6d, #6f7576);
-            }
-        }
+        // &-USDT,
+        // &-eUSDT,
+        // &-tUSDT {
+        //     background-image: linear-gradient(to right, #a4d7d8, #9fddde, #99e2e3, #92e8e9, #8bedee);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #0d4342, #0e4e4d, #0e5958, #0d6464, #0c7070);
+        //     }
+        // }
 
-        &-USDT {
-            background-image: linear-gradient(to right, #a4d7d8, #9fddde, #99e2e3, #92e8e9, #8bedee);
-            &-dark {
-                background-image: linear-gradient(to right, #0d4342, #0e4e4d, #0e5958, #0d6464, #0c7070);
-            }
-        }
-
-        &-USDC {
-            background-image: linear-gradient(to right, #bbd4ed, #aecbef, #a4c1f1, #9db7f1, #99acf1);
-            &-dark {
-                background-image: linear-gradient(to right, #1b3956, #12385f, #0c3667, #10336e, #1b2f74);
-            }
-        }
+        // &-USDC {
+        //     background-image: linear-gradient(to right, #bbd4ed, #aecbef, #a4c1f1, #9db7f1, #99acf1);
+        //     &-dark {
+        //         background-image: linear-gradient(to right, #1b3956, #12385f, #0c3667, #10336e, #1b2f74);
+        //     }
+        // }
     }
 
     &__description {

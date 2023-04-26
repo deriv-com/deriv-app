@@ -30,12 +30,34 @@ type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 
 const WalletHeader = observer(
     ({ balance = '0.00', currency = 'USD', jurisdiction = 'svg', account_type = 'real' }: TWalletHeader) => {
-        const [isOpen, setIsOpen] = React.useState(false);
-        const is_demo = account_type === 'demo';
-
         const {
             ui: { is_dark_mode_on },
         } = useStore();
+
+        const [isOpen, setIsOpen] = React.useState(false);
+        const is_demo = account_type === 'demo';
+        const theme = is_dark_mode_on ? '--dark' : '';
+        const demo_icon_path = is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
+
+        const currency_icon_path = React.useMemo(
+            () => ({
+                USD: is_demo ? demo_icon_path : 'IcCurrencyUsd',
+                EUR: 'IcCurrencyEur',
+                AUD: 'IcCurrencyAud',
+                BTC: is_dark_mode_on ? 'IcCashierBitcoinDark' : 'IcCashierBitcoinLight',
+                ETH: is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight',
+                USDT: is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight',
+                eUSDT: is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight',
+                tUSDT: is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight',
+                LTC: is_dark_mode_on ? 'IcWalletLitecoinDark' : 'IcWalletLitecoinLight',
+                USDC: is_dark_mode_on ? 'IcWalletUsdcDark' : 'IcWalletUsdcLight',
+            }),
+            [demo_icon_path, is_dark_mode_on, is_demo]
+        );
+
+        const is_fiat = currency === 'USD' || currency === 'EUR' || currency === 'AUD';
+        const currency_icon_name = currency_icon_path[currency] || 'Unknown';
+        const currency_icon_size = is_fiat && !is_demo ? 48 : 100;
 
         const title_size = 'sm';
         const badge_size = 'xxxs';
@@ -59,7 +81,7 @@ const WalletHeader = observer(
         const wallet_buttons = (
             <div className='wallet-header__description-buttons'>
                 {btn_names.map((name, index) => (
-                    <div key={name} className='wallet-header__description-buttons-item'>
+                    <div key={name} className='wallet-header__description-buttons-item' aria-disabled={true}>
                         <Icon icon={icon_names[index]} custom_color={'var(--text-general)'} />
                         <Localize
                             i18n_default_text={`<0>${is_demo && name === 'Deposit' ? 'Reset balance' : name}</0>`}
@@ -80,24 +102,19 @@ const WalletHeader = observer(
         );
 
         return (
-            <div className='wallet-header'>
+            <div
+                className={classNames('wallet-header', {
+                    'wallet-header__demo': is_demo,
+                })}
+            >
                 <div className='wallet-header__container'>
                     <div
-                        className={`wallet-header__currency wallet-header__currency-${currency}${
-                            is_dark_mode_on ? '-dark' : ''
-                        }`}
+                        className={`wallet-header__currency wallet__${
+                            is_demo ? 'demo' : currency.toLowerCase()
+                        }-bg${theme}`}
                     >
-                        <Icon
-                            icon={`IcCurrency${currency[0] + currency.slice(1).toLowerCase() || 'Unknown'}`}
-                            size={48}
-                        />
-                        {/* <Icon icon={`IcAppstoreWalletDemo`} size={48} /> */}
-                        {/* <Icon icon={`IcDemo`} size={48} /> */}
-                        {/* <Icon icon={`IcCashierBitcoinDark`} size={48} /> */}
-                        {/* <Icon icon={`IcCashierBitcoinLight`} size={48} /> */}
-                        {/* <Icon icon={`IcWalletPaymentAgentLight`} size={48} /> */}
-                        {/* <Icon icon={`IcWalletPaymentAgentDark`} size={48} /> */}
-                        {/* <Icon icon={`IcCurrencyBtc`} size={48} /> */}
+                        <Icon data-testid={`dt_${currency}`} icon={currency_icon_name} size={currency_icon_size} />
+                        {/* <Icon icon={'IcWalletDerivDemoDark'} size={50} /> */}
                     </div>
                     <div className='wallet-header__description'>
                         <div className='wallet-header__description-title'>

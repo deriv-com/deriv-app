@@ -1652,6 +1652,8 @@ export default class ClientStore extends BaseStore {
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
 
+            WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
+
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,

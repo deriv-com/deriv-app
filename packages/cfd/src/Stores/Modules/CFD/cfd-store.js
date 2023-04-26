@@ -258,6 +258,7 @@ export default class CFDStore extends BaseStore {
                 this.setCFDSuccessDialog(true);
                 const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
                 this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+                this.setCFDNewAccount(response.trading_platform_new_account);
             } else {
                 this.setError(true, response.error);
             }

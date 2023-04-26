@@ -527,14 +527,13 @@ export default class TradersHubStore extends BaseStore {
 
         const { openAccountNeededModal } = ui;
         const { is_eu } = client;
+
         if (is_eu && !has_maltainvest_account && standpoint?.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
-            return;
-        }
-        if (platform === CFD_PLATFORMS.DERIVEZ) {
-            createCFDAccount({ ...account_type, platform });
-        } else {
+            
+        } else if (platform !== CFD_PLATFORMS.DERIVEZ) {
             enableCFDPasswordModal();
+        } else {
             createCFDAccount({ ...account_type, platform });
         }
     }
@@ -543,11 +542,13 @@ export default class TradersHubStore extends BaseStore {
         const { client, modules } = this.root_store;
         const { has_active_real_account } = client;
         const { createCFDAccount, enableCFDPasswordModal, toggleJurisdictionModal } = modules.cfd;
+
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
             toggleJurisdictionModal();
+        } else if (platform !== CFD_PLATFORMS.DERIVEZ) {
+            enableCFDPasswordModal();
         } else {
             createCFDAccount({ ...account_type, platform });
-            enableCFDPasswordModal();
         }
     }
 

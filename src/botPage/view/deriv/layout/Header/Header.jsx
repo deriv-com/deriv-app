@@ -110,7 +110,8 @@ const Header = () => {
             api.authorize(logged_in_token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
-
+                    const client_country = account.authorize.country;
+                    setStorage('client.country', client_country);
                     active_loginid.forEach(acc => {
                         if (current_login_id === acc.loginid) {
                             setStorage('active_loginid', current_login_id);

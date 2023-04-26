@@ -428,7 +428,7 @@ const AccountSwitcher = ({
                     <div className='acc-switcher__traders-hub'>
                         <BinaryLink onClick={handleRedirect} className='acc-switcher__traders-hub--link'>
                             <Text size='xs' align='center' className='acc-switcher__traders-hub--text'>
-                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's hub" />
+                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's Hub" />
                             </Text>
                         </BinaryLink>
                     </div>

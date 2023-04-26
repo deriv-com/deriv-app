@@ -71,6 +71,7 @@ const Header = () => {
         const mountSwitcher = async () => {
             const res = await checkSwitcherType()
                 .then(data => {
+                    console.log(data);
                     dispatch(updateAccountType(data));
                 })
                 .catch(error => globalObserver.emit('Error', error));

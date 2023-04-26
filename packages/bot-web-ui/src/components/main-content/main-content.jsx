@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Toolbox from 'Components/toolbox';
 import Flyout from 'Components/flyout';
 import Chart from 'Components/chart';
 import { tabs_title } from 'Constants/bot-contents';
@@ -15,7 +14,7 @@ const MainContentContainer = ({ active_tab, is_loading }) => {
                 <React.Fragment>
                     {active_tab === tabs_title.WORKSPACE && (
                         <React.Fragment>
-                            <Toolbox />
+                            {/* <Toolbox /> */}
                             <Flyout />
                         </React.Fragment>
                     )}

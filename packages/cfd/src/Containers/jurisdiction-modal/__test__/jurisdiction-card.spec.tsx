@@ -1,120 +1,75 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import RootStore from 'Stores/index';
 import JurisdictionCard from '../jurisdiction-card';
 import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionCard', () => {
-    const mock_store = {
-        common: {},
-        client: {},
-        ui: {},
-    };
-    const mock_context = new RootStore(mock_store);
     let mock_props = {
+        account_status: {
+            authentication: {
+                document: {
+                    status: 'none' as const,
+                },
+                identity: {
+                    services: {
+                        idv: {
+                            status: 'none' as const,
+                        },
+                        onfido: {
+                            status: 'none' as const,
+                        },
+                        manual: {
+                            status: 'none' as const,
+                        },
+                    },
+                },
+                needs_verification: [],
+            },
+            currency_config: {},
+            p2p_status: 'none' as const,
+            prompt_client_to_authenticate: 0 as const,
+            risk_classification: '',
+            status: [''],
+        },
         account_type: 'financial',
         disabled: false,
-        context: mock_context,
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),
         type_of_card: Jurisdiction.SVG,
-        financial_available_accounts: [
-            {
-                market_type: 'financial' as const,
-                name: '',
-                requirements: {
-                    after_first_deposit: {
-                        financial_assessment: [''],
-                    },
-                    compliance: {
-                        mt5: [''],
-                        tax_information: [''],
-                    },
-                    signup: [''],
-                },
-                shortcode: Jurisdiction.SVG,
-                sub_account_type: '',
-            },
-        ],
-        synthetic_available_accounts: [
-            {
-                market_type: 'gaming' as const,
-                name: '',
-                requirements: {
-                    after_first_deposit: {
-                        financial_assessment: [''],
-                    },
-                    compliance: {
-                        mt5: [''],
-                        tax_information: [''],
-                    },
-                    signup: [''],
-                },
-                shortcode: Jurisdiction.SVG,
-                sub_account_type: '',
-            },
-        ],
-        card_flip_status: {
-            svg: false,
-            bvi: false,
-            vanuatu: false,
-            labuan: false,
-            maltainvest: false,
-        },
-        flipCard: jest.fn(),
     };
     beforeEach(() => {
         mock_props = {
+            account_status: {
+                authentication: {
+                    document: {
+                        status: 'none' as const,
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                status: 'none' as const,
+                            },
+                            onfido: {
+                                status: 'none' as const,
+                            },
+                            manual: {
+                                status: 'none' as const,
+                            },
+                        },
+                    },
+                    needs_verification: [],
+                },
+                currency_config: {},
+                p2p_status: 'none' as const,
+                prompt_client_to_authenticate: 0 as const,
+                risk_classification: '',
+                status: [''],
+            },
             account_type: 'financial',
             disabled: false,
-            context: mock_context,
             jurisdiction_selected_shortcode: '',
             setJurisdictionSelectedShortcode: jest.fn(),
             type_of_card: Jurisdiction.SVG,
-            financial_available_accounts: [
-                {
-                    market_type: 'financial' as const,
-                    name: '',
-                    requirements: {
-                        after_first_deposit: {
-                            financial_assessment: [''],
-                        },
-                        compliance: {
-                            mt5: [''],
-                            tax_information: [''],
-                        },
-                        signup: [''],
-                    },
-                    shortcode: Jurisdiction.SVG,
-                    sub_account_type: '',
-                },
-            ],
-            synthetic_available_accounts: [
-                {
-                    market_type: 'gaming' as const,
-                    name: '',
-                    requirements: {
-                        after_first_deposit: {
-                            financial_assessment: [''],
-                        },
-                        compliance: {
-                            mt5: [''],
-                            tax_information: [''],
-                        },
-                        signup: [''],
-                    },
-                    shortcode: Jurisdiction.SVG,
-                    sub_account_type: '',
-                },
-            ],
-            card_flip_status: {
-                svg: false,
-                bvi: false,
-                vanuatu: false,
-                labuan: false,
-                maltainvest: false,
-            },
-            flipCard: jest.fn(),
         };
     });
 
@@ -239,7 +194,6 @@ describe('JurisdictionCard', () => {
     });
 
     it('should render JurisdictionCard on the back', () => {
-        mock_props.card_flip_status.svg = true;
         render(<JurisdictionCard {...mock_props} />);
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
         expect(screen.getByText('Your document is pending for verification.')).toBeInTheDocument();
@@ -254,11 +208,11 @@ describe('JurisdictionCard', () => {
         expect(mock_props.setJurisdictionSelectedShortcode).toHaveBeenCalledWith('svg');
     });
 
-    it('should render BVI type JurisdictionCard, click on Learn more and render flipCard function', () => {
+    it('should click on Learn More and include cfd-card-flipped into classnames', () => {
         mock_props.type_of_card = Jurisdiction.BVI;
         render(<JurisdictionCard {...mock_props} />);
-        const learn_more_text = screen.getByText('Learn more');
-        learn_more_text.click();
-        expect(mock_props.flipCard).toHaveBeenCalledWith('bvi');
+        const learn_more = screen.getByText('Learn more');
+        learn_more.click();
+        expect(screen.getByTestId('dt_jurisdiction_card')).toHaveClass('cfd-card-flipped');
     });
 });

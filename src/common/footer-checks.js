@@ -76,7 +76,7 @@ export const checkSwitcherType = async () => {
     const token_list = await getTokenList();
     const is_eu = await isEuCountry();
     const client_accounts = JSON.parse(getStorage('client.accounts'));
-    const client_country_code = client_accounts[0]?.country || client_accounts[0]?.residence;
+    const client_country_code = token_list[0]?.loginInfo?.country || token_list[0]?.loginInfo?.residence;
     if (!client_country_code) return null;
     const { landing_company } = await api.send({
         landing_company: client_country_code,

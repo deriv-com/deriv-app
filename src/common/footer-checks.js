@@ -56,7 +56,7 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
     const restricted_countries =
         financial_company?.shortcode === 'svg' ||
         (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
-        
+
     const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
     return risk_classification === 'high' || high_risk_landing_company || restricted_countries;
 };
@@ -75,9 +75,11 @@ export const checkSwitcherType = async () => {
     if (!is_logged_in) return null;
     const token_list = await getTokenList();
     const is_eu = await isEuCountry();
-    if (!token_list[0]?.loginInfo.country) return null;
+    const client_accounts = JSON.parse(getStorage('client.accounts'));
+    const client_country_code = client_accounts[0]?.country || client_accounts[0]?.residence;
+    if (!client_country_code) return null;
     const { landing_company } = await api.send({
-        landing_company: token_list[0]?.loginInfo.country,
+        landing_company: client_country_code,
     });
 
     const { is_multiplier, country_code } = await isMultiplier(landing_company);
@@ -92,7 +94,6 @@ export const checkSwitcherType = async () => {
     let is_low_risk = await isLowRisk(financial_company, gaming_company, token_list);
     let is_high_risk = await isHighRisk(financial_company, gaming_company, risk_classification);
 
-    const client_accounts = JSON.parse(getStorage('client.accounts'));
     if (isEmptyObject(client_accounts || token_list)) return false;
 
     const low_risk_no_account = is_low_risk && Object.keys(client_accounts).length === 1;
@@ -115,16 +116,6 @@ export const checkSwitcherType = async () => {
         is_low_risk = false;
     }
 
-    console.log({
-        low_risk: is_low_risk,
-        high_risk: !!is_high_risk,
-        low_risk_without_account: low_risk_no_account,
-        high_risk_without_account: high_risk_no_account,
-        high_risk_or_eu: is_high_risk_or_eu,
-        is_multiplier: !!is_multiplier,
-        country_code: country_code || token_list[0]?.loginInfo.country,
-    })
-    
     return {
         low_risk: is_low_risk,
         high_risk: !!is_high_risk,

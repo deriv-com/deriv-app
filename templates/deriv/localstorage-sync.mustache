@@ -52,7 +52,6 @@
                     let login_token = null
 
                     Object.keys(client_accounts).forEach((e, i) => {
-                        console.log(e); 
                         const order = i + 1;
                         const { token, currency, residence, country } = client_accounts[e];
 
@@ -65,8 +64,6 @@
                             login_token = token
                         }
                         client_accounts[e].loginid = e;
-                        client_accounts[e].country = country || residence;
-                        console.log('test client_accounts', client_accounts[e])
                         addToken(token, client_accounts[e], false, false);
                     });
 

@@ -1,16 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isEmptyObject, isMobile } from '@deriv/shared';
+import { isAccumulatorContract, isEmptyObject, isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 const Purchase = ({
+    active_positions,
     basis,
     contract_type,
     currency,
     has_cancellation,
+    is_accumulator,
     is_market_closed,
     is_mobile,
     is_multiplier,
@@ -23,6 +27,7 @@ const Purchase = ({
     purchase_info,
     purchased_states_arr,
     setPurchaseState,
+    symbol,
     trade_types,
     validation_errors,
     vanilla_trade_type,
@@ -33,7 +38,6 @@ const Purchase = ({
         return !has_validation_error && !info.has_error && !info.id;
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
-
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const getSortedIndex = () => {
@@ -43,7 +47,8 @@ const Purchase = ({
         };
         const info = proposal_info[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
-        const is_proposal_error = is_multiplier ? info.has_error && !info.has_error_details : info.has_error;
+        const is_proposal_error =
+            is_multiplier || (is_accumulator && !is_mobile) ? info.has_error && !!info.message : info.has_error;
         const purchase_fieldset = (
             <div className='trade-params--mobile__payout-container'>
                 {is_vanilla && isMobile() && (
@@ -67,6 +72,7 @@ const Purchase = ({
                     index={getSortedIndex(index, type)}
                     has_cancellation={has_cancellation}
                     is_disabled={is_disabled}
+                    is_accumulator={is_accumulator}
                     is_high_low={is_high_low}
                     is_loading={isLoading(info)}
                     is_market_closed={is_market_closed}
@@ -100,13 +106,31 @@ const Purchase = ({
             components.push(purchase_fieldset);
         }
     });
+
+    const should_disable_accu_purchase =
+        is_accumulator &&
+        !!active_positions.find(
+            ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === symbol
+        );
+
+    if (should_disable_accu_purchase) {
+        components.unshift(
+            <PurchaseButtonsOverlay
+                is_to_cover_one_button={components.length === 1}
+                key='overlay'
+                message={localize('You can only purchase one contract at a time')}
+            />
+        );
+    }
     return components;
 };
 
 Purchase.propTypes = {
+    active_positions: PropTypes.array,
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_cancellation: PropTypes.bool,
+    is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_purchase_locked: PropTypes.bool,
@@ -117,15 +141,18 @@ Purchase.propTypes = {
     purchase_info: PropTypes.object,
     purchased_states_arr: PropTypes.array,
     setPurchaseState: PropTypes.func,
+    symbol: PropTypes.string,
     trade_types: PropTypes.object,
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, portfolio, ui }) => ({
+    active_positions: portfolio.active_positions,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     currency: modules.trade.currency,
     has_cancellation: modules.trade.has_cancellation,
+    is_accumulator: modules.trade.is_accumulator,
     is_multiplier: modules.trade.is_multiplier,
     is_purchase_enabled: modules.trade.is_purchase_enabled,
     is_trade_enabled: modules.trade.is_trade_enabled,
@@ -134,6 +161,7 @@ export default connect(({ modules, ui }) => ({
     onHoverPurchase: modules.trade.onHoverPurchase,
     proposal_info: modules.trade.proposal_info,
     purchase_info: modules.trade.purchase_info,
+    symbol: modules.trade.symbol,
     trade_types: modules.trade.trade_types,
     validation_errors: modules.trade.validation_errors,
     vanilla_trade_type: modules.trade.vanilla_trade_type,

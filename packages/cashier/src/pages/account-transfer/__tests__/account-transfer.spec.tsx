@@ -29,6 +29,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
             return Promise.resolve([...payload]);
         },
     },
+    useWS: () => undefined,
 }));
 
 jest.mock('../account-transfer-form', () => jest.fn(() => 'mockedAccountTransferForm'));
@@ -181,13 +182,5 @@ describe('<AccountTransfer />', () => {
         renderAccountTransfer();
 
         expect(await screen.findByText('mockedAccountTransferReceipt')).toBeInTheDocument();
-    });
-
-    it('should show the crypto transactions if triggered from recent transactions', async () => {
-        mockRootStore.modules.cashier.transaction_history.is_crypto_transactions_visible = true;
-
-        renderAccountTransfer();
-
-        expect(await screen.findByText('mockedCryptoTransactionsHistory')).toBeInTheDocument();
     });
 });

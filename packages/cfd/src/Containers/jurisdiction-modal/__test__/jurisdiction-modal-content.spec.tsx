@@ -12,6 +12,7 @@ describe('JurisdictionModalContent', () => {
     };
     const mock_context = new RootStore(mock_store);
     const mock_props = {
+        account_status: mock_context.client,
         account_type: '',
         is_virtual: false,
         jurisdiction_selected_shortcode: '',

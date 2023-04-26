@@ -297,6 +297,7 @@ export default class NotificationStore extends BaseStore {
             has_mt5_account_with_rejected_poa,
             is_pending_proof_of_ownership,
             p2p_advertiser_info,
+            active_accounts,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
@@ -313,6 +314,8 @@ export default class NotificationStore extends BaseStore {
         const has_acuity_mt5_download = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.acuity_mt5_download.key
         );
+
+        const has_gbp_account = active_accounts.some(account => account?.currency === 'GBP');
 
         let has_missing_required_field;
 
@@ -572,6 +575,9 @@ export default class NotificationStore extends BaseStore {
                 } else if (svg_poi_expired) {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
+            }
+            if (has_gbp_account) {
+                this.showGBPAccountClosureNotification();
             }
         }
 
@@ -1599,8 +1605,14 @@ export default class NotificationStore extends BaseStore {
             message: (
                 <Localize i18n_default_text='We no longer support GBP accounts. Please withdraw or transfer your funds to a Deriv CFDs account, then submit a new account and currency change request via live chat.' />
             ),
-            type: 'info',
+            type: 'warning',
             should_show_again: false,
+            action: {
+                onClick: () => {
+                    window.LC_API.open_chat_window();
+                },
+                text: localize('Live chat'),
+            },
         });
     };
 

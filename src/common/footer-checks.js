@@ -56,7 +56,7 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
     const restricted_countries =
         financial_company?.shortcode === 'svg' ||
         (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
-
+        
     const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
     return risk_classification === 'high' || high_risk_landing_company || restricted_countries;
 };
@@ -117,11 +117,11 @@ export const checkSwitcherType = async () => {
 
     return {
         low_risk: is_low_risk,
-        high_risk: is_high_risk,
+        high_risk: !!is_high_risk,
         low_risk_without_account: low_risk_no_account,
         high_risk_without_account: high_risk_no_account,
         high_risk_or_eu: is_high_risk_or_eu,
-        is_multiplier,
-        country_code,
+        is_multiplier: !!is_multiplier,
+        country_code: country_code || token_list[0]?.loginInfo.country,
     };
 };

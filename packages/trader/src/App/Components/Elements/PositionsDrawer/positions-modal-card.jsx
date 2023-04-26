@@ -20,7 +20,6 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import { connectWithContractUpdate } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
@@ -348,7 +347,6 @@ const PositionsModalCard = observer(
         const custom_card_body = (
             <ContractCard.Body
                 addToast={addToast}
-                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}

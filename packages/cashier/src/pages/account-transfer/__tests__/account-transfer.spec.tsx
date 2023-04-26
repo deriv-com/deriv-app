@@ -5,7 +5,7 @@ import { useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -31,7 +31,7 @@ jest.mock('../account-transfer-receipt', () => jest.fn(() => 'mockedAccountTrans
 jest.mock('Components/error', () => jest.fn(() => 'mockedError'));
 
 describe('<AccountTransfer />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {
@@ -76,6 +76,7 @@ describe('<AccountTransfer />', () => {
 
     const props = {
         setSideNotes: jest.fn(),
+        onClose: jest.fn(),
     };
     (useDepositLocked as jest.Mock).mockReturnValue(true);
 

@@ -113,31 +113,43 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <a>{translate('Demo')}</a>
                         </li>
                     </ul>
-                    {should_show_risk_component && is_country_low_risk && (
-                        <RiskComponent
-                            low_risk_without_non_eu={low_risk_without_non_eu}
-                            low_risk_without_eu={low_risk_without_eu}
-                            virtual={virtual}
-                            country_code={country_code}
-                            non_eu_accounts={non_eu_accounts}
-                            eu_accounts={eu_accounts}
-                        />
-                    )}
+
                     {/* is low risk with accounts  */}
                     {is_country_low_risk ? (
                         <>
-                            <TabContent
-                                title={translate('Non Eu Deriv accounts')}
-                                isActive={activeTab === 'real'}
-                                setIsAccDropdownOpen={setIsAccDropdownOpen}
-                                accounts={non_eu_accounts}
-                            />
-                            <TabContent
-                                title={translate('Eu Deriv account')}
-                                isActive={activeTab === 'real'}
-                                setIsAccDropdownOpen={setIsAccDropdownOpen}
-                                accounts={eu_accounts}
-                            />
+                            {should_show_risk_component ? (
+                                <RiskComponent
+                                    low_risk_without_non_eu={low_risk_without_non_eu}
+                                    virtual={virtual}
+                                    country_code={country_code}
+                                    non_eu_accounts={non_eu_accounts}
+                                    eu_accounts={eu_accounts}
+                                />
+                            ) : (
+                                <TabContent
+                                    title={translate('Non Eu Deriv accounts')}
+                                    isActive={activeTab === 'real'}
+                                    setIsAccDropdownOpen={setIsAccDropdownOpen}
+                                    accounts={non_eu_accounts}
+                                />
+                            )}
+
+                            {should_show_risk_component ? (
+                                <RiskComponent
+                                    low_risk_without_eu={low_risk_without_eu}
+                                    virtual={virtual}
+                                    country_code={country_code}
+                                    non_eu_accounts={non_eu_accounts}
+                                    eu_accounts={eu_accounts}
+                                />
+                            ) : (
+                                <TabContent
+                                    title={translate('Eu Deriv account')}
+                                    isActive={activeTab === 'real'}
+                                    setIsAccDropdownOpen={setIsAccDropdownOpen}
+                                    accounts={eu_accounts}
+                                />
+                            )}
                         </>
                     ) : (
                         <TabContent

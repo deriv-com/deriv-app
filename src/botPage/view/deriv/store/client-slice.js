@@ -24,7 +24,6 @@ export const clientSlice = createSlice({
     initialState: initial_state,
     reducers: {
         updateAccountType: (state, action) => {
-            console.log(action)
             state.account_type = {
                 ...state.account_type,
                 high_risk: action.payload.high_risk,

@@ -6,8 +6,13 @@ import { translate } from '../../../../../../common/utils/tools';
 
 const Separator = () => <div className='account__switcher-seperator'></div>;
 
-const RiskComponent = ({ low_risk_without_non_eu, low_risk_without_eu, non_eu_accounts, eu_accounts, type }) => {
-    const { url } = config.add_account;
+const RiskComponent = ({
+    low_risk_without_non_eu = false,
+    low_risk_without_eu = false,
+    non_eu_accounts,
+    eu_accounts,
+    type,
+}) => {
     const { account_type } = useSelector(state => state.client);
     const { low_risk_without_account, high_risk_without_account, high_risk_or_eu } = account_type;
 
@@ -17,36 +22,41 @@ const RiskComponent = ({ low_risk_without_non_eu, low_risk_without_eu, non_eu_ac
             switcher_type: low_risk_without_account && !non_eu_accounts?.length,
             option: translate('Options & Multipliers'),
             label: translate('Add'),
+            url: config.add_account.url,
         },
         {
             title: translate('EU Deriv Account'),
             switcher_type: low_risk_without_account && !non_eu_accounts?.length,
             option: translate('Multipliers'),
             label: translate('Add'),
+            url: config.add_account_multiplier.url,
         },
         {
             title: translate('Deriv Account'),
             switcher_type: (high_risk_without_account || high_risk_or_eu) && !eu_accounts?.length,
             option: type === high_risk_or_eu ? translate('Multipliers') : translate('Options & Multipliers'),
             label: translate('Add'),
+            url: config.add_account.url,
         },
         {
             title: translate('Non-EU Deriv Account'),
             switcher_type: low_risk_without_non_eu && !non_eu_accounts?.length,
             option: translate('Options & Multipliers'),
             label: translate('Add'),
+            url: config.add_account.url,
         },
         {
             title: translate('EU Deriv Account'),
             switcher_type: low_risk_without_eu && !eu_accounts?.length,
             option: translate('Options & Multipliers'),
             label: translate('Add'),
+            url: config.add_account_multiplier.url,
         },
     ];
 
     return (
         <>
-            {risk_array.map(({ title, switcher_type, option, label }, index) => {
+            {risk_array.map(({ title, switcher_type, option, label, url }, index) => {
                 const is_end = risk_array.length === index + 1;
                 if (switcher_type) {
                     return (

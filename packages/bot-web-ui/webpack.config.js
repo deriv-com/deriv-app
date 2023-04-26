@@ -90,7 +90,7 @@ module.exports = function (env) {
                 {
                     test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
-                    loader: '@deriv/shared/src/loaders/react-import-loader.ts',
+                    loader: '@deriv/shared/src/loaders/react-import-loader.js',
                 },
                 {
                     test: /\.(js|jsx|ts|tsx)$/,

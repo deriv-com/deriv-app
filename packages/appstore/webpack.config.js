@@ -77,16 +77,16 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.ts',
+                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.js',
                         },
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-account-loader.ts',
+                            loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
                         },
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-cashier-loader.ts',
+                            loader: '@deriv/shared/src/loaders/deriv-cashier-loader.js',
                         },
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-cfd-loader.ts',
+                            loader: '@deriv/shared/src/loaders/deriv-cfd-loader.js',
                         },
                         {
                             loader: 'babel-loader',

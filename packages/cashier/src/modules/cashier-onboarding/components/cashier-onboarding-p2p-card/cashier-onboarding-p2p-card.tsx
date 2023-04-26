@@ -1,11 +1,11 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHasFiatCurrency, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
-import { useHasFiatCurrency, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
-import { CashierOnboardingCard } from '../cashier-onboarding-card';
+import { useHistory } from 'react-router';
 import { useCashierStore } from '../../../../stores/useCashierStores';
+import { CashierOnboardingCard } from '../cashier-onboarding-card';
 
 const CashierOnboardingP2PCard: React.FC = observer(() => {
     const { client, ui } = useStore();

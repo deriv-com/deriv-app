@@ -1,10 +1,10 @@
 import React from 'react';
+import { usePaymentAgentList } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
-import { usePaymentAgentList } from '@deriv/hooks';
-import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { useCashierStore } from '../../../../stores/useCashierStores';
+import { CashierOnboardingCard } from '../cashier-onboarding-card';
 
 const CashierOnboardingPaymentAgentCard: React.FC = observer(() => {
     const { ui } = useStore();

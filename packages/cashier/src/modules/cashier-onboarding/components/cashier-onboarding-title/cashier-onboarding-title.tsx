@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import { getStaticUrl } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import './cashier-onboarding-title.scss';
 
 const CashierOnboardingTitle: React.FC = observer(() => {

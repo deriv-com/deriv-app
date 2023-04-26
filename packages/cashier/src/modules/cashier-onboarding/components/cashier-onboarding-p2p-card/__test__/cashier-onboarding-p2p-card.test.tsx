@@ -1,8 +1,8 @@
 import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
-import CashierOnboardingP2PCard from '../cashier-onboarding-p2p-card';
 import CashierProviders from '../../../../../cashier-providers';
+import CashierOnboardingP2PCard from '../cashier-onboarding-p2p-card';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),

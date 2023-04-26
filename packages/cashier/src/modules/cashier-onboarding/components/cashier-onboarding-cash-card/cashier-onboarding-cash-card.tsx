@@ -1,13 +1,13 @@
 import React from 'react';
+import { useHasFiatCurrency } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
-import { useHasFiatCurrency } from '@deriv/hooks';
+import { useCashierStore } from '../../../../stores/useCashierStores';
 import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
-import { useCashierStore } from '../../../../stores/useCashierStores';
 
-const icons = [
+const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
     { light: 'IcWalletCreditDebitLight', dark: 'IcWalletCreditDebitDark' },
     { light: 'IcCashierInstantBankTransferLight', dark: 'IcCashierInstantBankTransferDark' },
     { light: 'IcCashierEwalletLight', dark: 'IcCashierEwalletDark' },

@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
 import { Icon, NewsTicker } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import './cashier-onboarding-icon-marquee.scss';
 
 type TIcon = {

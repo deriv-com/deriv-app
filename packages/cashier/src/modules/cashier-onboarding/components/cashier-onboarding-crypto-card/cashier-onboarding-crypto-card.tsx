@@ -1,13 +1,13 @@
 import React from 'react';
+import { useHasCryptoCurrency } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
+import { useCashierStore } from '../../../../stores/useCashierStores';
 import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
-import { useCashierStore } from '../../../../stores/useCashierStores';
-import { useHasCryptoCurrency } from '@deriv/hooks';
 
-const icons = [
+const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
     { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
     { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
     { light: 'IcCashierLiteCoinLight', dark: 'IcCashierLiteCoinDark' },

@@ -2,12 +2,12 @@ import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { CashierOnboarding } from 'Components/cashier-onboarding';
 import {
-    CashierOnboardingTitle,
-    CashierOnboardingP2PCard,
-    CashierOnboardingCryptoCard,
-    CashierOnboardingPaymentAgentCard,
     CashierOnboardingCashCard,
+    CashierOnboardingCryptoCard,
     CashierOnboardingOnrampCard,
+    CashierOnboardingP2PCard,
+    CashierOnboardingPaymentAgentCard,
+    CashierOnboardingTitle,
 } from './components';
 import './onboarding.scss';
 

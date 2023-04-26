@@ -1,8 +1,8 @@
 import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
-import CashierOnboardingCashCard from '../cashier-onboarding-cash-card';
 import CashierProviders from '../../../../../cashier-providers';
+import CashierOnboardingCashCard from '../cashier-onboarding-cash-card';
 
 describe('CashierOnboardingCashCard', () => {
     test('should call the onClick callback when clicked', async () => {

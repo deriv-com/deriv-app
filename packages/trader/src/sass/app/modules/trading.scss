@@ -345,6 +345,11 @@
         flex-direction: column;
         position: relative;
         bottom: 0.1rem;
+
+        .trade-container__fieldset-info--left {
+            transform: translateX(0.7rem);
+        }
+
         &__wrapper {
             display: flex;
             justify-content: center;

@@ -100,7 +100,6 @@ const BarrierSelector = observer(() => {
                 <Fieldset
                     className='trade-container__fieldset trade-container__barriers'
                     header={localize('Barrier')}
-                    is_center
                     header_tooltip={header_tooltip_text}
                 >
                     <div onClick={toggleBarriersTable} className='trade-container__barriers__wrapper'>

@@ -19,14 +19,18 @@ import './app.scss';
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
+    const RootStore = useStore();
     const {
         common,
         client,
         ui: { is_dark_mode_on },
-    } = useStore();
+    } = RootStore;
     const DBotStores = useDBotStore();
     const { app } = DBotStores;
     const { showDigitalOptionsMaltainvestError } = app;
+
+    // TODO: Remove this when connect is removed completely
+    const combinedStore = { ...DBotStores, core: { ...RootStore } };
 
     React.useEffect(() => {
         setColors(is_dark_mode_on);
@@ -59,9 +63,9 @@ const AppContent = observer(() => {
     }, [client.is_options_blocked, client.account_settings.country_code]);
 
     React.useEffect(() => {
-        GTM.init(DBotStores);
+        GTM.init(combinedStore);
         ServerTime.init(common);
-        app.setDBotEngineStores(DBotStores);
+        app.setDBotEngineStores(combinedStore);
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
         setIsLoading(true);
@@ -86,7 +90,7 @@ const AppContent = observer(() => {
         <Loading />
     ) : (
         // TODO: remove MobxContentProvider when all connect method is removed
-        <MobxContentProvider store={DBotStores}>
+        <MobxContentProvider store={combinedStore}>
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />

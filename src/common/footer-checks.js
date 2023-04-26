@@ -115,6 +115,16 @@ export const checkSwitcherType = async () => {
         is_low_risk = false;
     }
 
+    console.log({
+        low_risk: is_low_risk,
+        high_risk: !!is_high_risk,
+        low_risk_without_account: low_risk_no_account,
+        high_risk_without_account: high_risk_no_account,
+        high_risk_or_eu: is_high_risk_or_eu,
+        is_multiplier: !!is_multiplier,
+        country_code: country_code || token_list[0]?.loginInfo.country,
+    })
+    
     return {
         low_risk: is_low_risk,
         high_risk: !!is_high_risk,

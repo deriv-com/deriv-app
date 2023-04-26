@@ -3,10 +3,10 @@ import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import CryptoWithdrawForm from '../crypto-withdraw-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoWithdrawForm />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {

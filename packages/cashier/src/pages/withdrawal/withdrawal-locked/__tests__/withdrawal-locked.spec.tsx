@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import WithdrawalLocked from '../withdrawal-locked';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 type TStatus = 'document' | 'none' | 'pending' | '';
 
@@ -49,7 +49,7 @@ const setAccountStatus = (identity_status: TStatus, document_status: TStatus, ne
 };
 
 describe('WithdrawalLocked', () => {
-    let history: BrowserHistory, mockRootStore: TStores;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         history = createBrowserHistory();
         mockRootStore = mockStore({

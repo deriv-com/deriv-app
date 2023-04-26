@@ -1,11 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboardingSideNote />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {

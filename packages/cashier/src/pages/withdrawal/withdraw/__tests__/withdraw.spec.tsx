@@ -2,12 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Withdraw from '../withdraw';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
 
 describe('<Withdraw />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {

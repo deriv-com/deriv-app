@@ -4,11 +4,11 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboarding from '../cashier-onboarding';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboarding />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {

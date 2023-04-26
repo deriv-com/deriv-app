@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
 import { useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
 
@@ -41,7 +41,7 @@ jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
 });
 
 describe('<OnRamp />', () => {
-    let mockRootStore: TStores, props: TOnRampProps;
+    let mockRootStore: ReturnType<typeof mockStore>, props: TOnRampProps;
 
     beforeEach(() => {
         mockRootStore = mockStore({

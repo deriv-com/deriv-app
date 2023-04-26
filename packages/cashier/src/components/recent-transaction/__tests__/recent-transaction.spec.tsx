@@ -4,10 +4,10 @@ import RecentTransaction from '../recent-transaction';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<RecentTransaction />', () => {
-    let history: BrowserHistory, mockRootStore: TStores;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         history = createBrowserHistory();
         mockRootStore = mockStore({

@@ -2,10 +2,10 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoTransactionsHistory />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
         mockRootStore = mockStore({

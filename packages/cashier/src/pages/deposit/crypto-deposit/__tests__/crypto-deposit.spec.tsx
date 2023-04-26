@@ -4,7 +4,8 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { getCurrencyName, isMobile } from '@deriv/shared';
 import CryptoDeposit from '../crypto-deposit';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
+import { TRootStore } from '../../../../types';
 import CashierProviders from '../../../../cashier-providers';
 
 jest.mock('@deriv/components', () => ({
@@ -29,7 +30,7 @@ jest.mock('Components/recent-transaction', () => {
 
 describe('<CryptoDeposit />', () => {
     let history: ReturnType<typeof createBrowserHistory>;
-    const renderWithRouter = (component: JSX.Element, mock_root_store: TStores) => {
+    const renderWithRouter = (component: JSX.Element, mock_root_store: TRootStore) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,

@@ -6,7 +6,7 @@ import { routes } from '@deriv/shared';
 import { useDepositLocked } from '@deriv/hooks';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -25,7 +25,7 @@ jest.mock('@deriv/hooks', () => ({
 
 describe('<NoBalance />', () => {
     const history = createBrowserHistory();
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
         mockRootStore = mockStore({

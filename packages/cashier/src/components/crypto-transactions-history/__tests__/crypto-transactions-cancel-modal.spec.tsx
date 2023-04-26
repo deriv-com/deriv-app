@@ -2,10 +2,10 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsCancelModal from '../crypto-transactions-cancel-modal';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoTransactionsCancelModal />', () => {
-    let modal_root_el: HTMLDivElement, mockRootStore: TStores;
+    let modal_root_el: HTMLDivElement, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             modules: {

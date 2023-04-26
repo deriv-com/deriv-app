@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 
@@ -28,7 +28,7 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<Withdrawal />', () => {
-    let history: BrowserHistory, mockRootStore: TStores, setSideNotes: jest.Mock;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>, setSideNotes: jest.Mock;
     beforeEach(() => {
         history = createBrowserHistory();
         mockRootStore = mockStore({

@@ -6,10 +6,10 @@ import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import AccountTransferLocked from '../account-transfer-locked';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('AccountTransferLocked', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {

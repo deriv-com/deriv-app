@@ -49,6 +49,13 @@ const Bot = React.lazy(() =>
     })
 );
 
+const NewBot = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "new-bot" */ '@deriv/new-bot-web-ui');
+    })
+);
+
 const AppStore = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -63,6 +70,12 @@ const getModules = () => {
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
+        },
+        {
+            path: routes.new_bot,
+            component: NewBot,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
+            getTitle: () => localize('NewBot'),
         },
         {
             path: routes.reports,

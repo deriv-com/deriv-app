@@ -230,6 +230,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     updateAmountLimits() {
         const { account_limits } = ApiHelpers.instance;
         const { currency, landing_company_shortcode } = DBotStore.instance.client;
+        console.log('currency 000', currency);
         account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
             if (!this.getField('AMOUNT_LIMITS')) {
                 return;

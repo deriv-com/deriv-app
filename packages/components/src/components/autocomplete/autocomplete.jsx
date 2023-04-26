@@ -54,6 +54,26 @@ const Autocomplete = React.memo(props => {
         ...other_props
     } = props;
 
+    // console.log(        autoComplete,
+    //     className,
+    //     dropdown_offset,
+    //     historyValue,
+    //     error,
+    //     has_updating_list,
+    //     hide_list,
+    //     input_id,
+    //     is_alignment_top,
+    //     is_list_visible,
+    //     list_items,
+    //     list_portal_id,
+    //     onHideDropdownList,
+    //     onItemSelection,
+    //     onScrollStop,
+    //     onShowDropdownList,
+    //     should_filter_by_char,
+    //     show_list,
+    //     value,
+    //     other_props);
     const dropdown_ref = React.useRef();
     const list_wrapper_ref = React.useRef();
     const list_item_ref = React.useRef();

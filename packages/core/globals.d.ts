@@ -1,6 +1,7 @@
 declare module '@deriv/account';
 declare module '@deriv/bot-skeleton';
 declare module '@deriv/bot-web-ui';
+declare module '@deriv/new-bot-web-ui';
 declare module '@deriv/cashier';
 declare module '@deriv/cfd';
 declare module '@deriv/components';

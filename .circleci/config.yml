@@ -64,6 +64,7 @@ commands:
             - "packages/appstore/node_modules"
             - "packages/bot-skeleton/node_modules"
             - "packages/bot-web-ui/node_modules"
+            - "packages/new-bot-web-ui/node_modules"
             - "packages/cashier/node_modules"
             - "packages/components/node_modules"
             - "packages/core/node_modules"

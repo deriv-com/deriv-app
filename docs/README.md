@@ -21,6 +21,7 @@ There are 2 types of dependencies:
     - `@deriv/appstore`
     - `@deriv/bot-skeleton`
     - `@deriv/bot-web-ui`
+    - `@deriv/new-bot-web-ui`
     - `@deriv/cashier`
     - `@deriv/cfd`
     - `@deriv/p2p`

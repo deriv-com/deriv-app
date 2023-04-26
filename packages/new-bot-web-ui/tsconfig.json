@@ -1,0 +1,15 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "paths": {
+            "Components/*": ["src/components/*"],
+            "Constants/*": ["src/constants/*"],
+            "Stores/*": ["src/stores/*"],
+            "Utils/*": ["src/utils/*"],
+            "@deriv/*": ["../*/src"]
+        }
+    },
+    "include": ["src", "../../utils.d.ts"]
+}

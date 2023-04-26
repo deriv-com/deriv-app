@@ -81,6 +81,7 @@
 
 /packages/bot-skeleton/**/*                                     @mehrzad-fs
 /packages/bot-web-ui/**/*                                       @mehrzad-fs
+/packages/new-bot-web-ui/**/*                                   
 /packages/indicators/**/*                                       @mehrzad-fs
 
 

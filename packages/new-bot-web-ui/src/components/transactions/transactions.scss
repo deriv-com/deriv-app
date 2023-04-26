@@ -1,0 +1,213 @@
+.transactions {
+    $transaction: &;
+    $grid-template-columns: 0.8fr 1fr 1.1fr;
+
+    &-empty {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &-box {
+            display: grid;
+            flex: 1;
+            height: 100%;
+        }
+
+        &__header {
+            padding: 0.8rem;
+        }
+        &__icon-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.3rem;
+        }
+        &__icon {
+            align-self: center;
+        }
+        &__message {
+            margin: 0 auto;
+            margin-bottom: 2rem;
+        }
+        &__list {
+            list-style-type: circle;
+            margin-left: 2rem;
+            font-size: var(--text-size-xxs);
+            line-height: var(--text-lh-m);
+            color: var(--text-less-prominent);
+        }
+    }
+    &__header {
+        border-bottom: 1px solid var(--general-section-1);
+        width: 100%;
+        display: grid;
+        @include typeface(--small-left-bold-black, none);
+        grid-template-columns: $grid-template-columns;
+        grid-template-areas: 'type spot profit';
+        padding: 1.2rem 1.6rem; // Equal l+r with transaction__item padding.
+        height: 5rem;
+        align-items: center;
+
+        $header-grid-items: (unquote('type'), unquote('spot'), unquote('profit'));
+
+        @each $item in $header-grid-items {
+            &-#{$item} {
+                grid-column: $item;
+
+                @if $item == 'spot' {
+                    text-align: start;
+                }
+                @if $item == 'profit' {
+                    text-align: end;
+                }
+            }
+        }
+    }
+    &__content {
+        height: calc(100% - 9.2rem);
+
+        &--mobile {
+            height: calc(100% - 4.2rem);
+        }
+    }
+    &__scrollbar {
+        height: 100%;
+        & .dc-themed-scrollbars {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    &__item {
+        display: grid;
+        font-size: 12px;
+        grid-row-gap: 3px;
+        grid-template-columns: $grid-template-columns;
+        grid-template-rows: auto auto;
+        grid-template-areas: ('trade-type entry-spot stake' 'trade-type exit-spot  profit');
+        padding: 0.8rem 0;
+
+        &-wrapper {
+            height: 5.2rem;
+            padding: 0 1.6rem;
+            cursor: pointer;
+            position: relative;
+            border-top: 1px solid var(--general-section-1);
+
+            &:hover {
+                background-color: var(--state-hover);
+            }
+        }
+    }
+
+    $grid-items: (
+        unquote('trade-type'),
+        unquote('entry-spot'),
+        unquote('exit-spot'),
+        unquote('stake'),
+        unquote('profit')
+    );
+
+    @each $item in $grid-items {
+        &__#{$item} {
+            grid-column: $item;
+            grid-row: $item;
+
+            @if $item == 'exit-spot' or $item == 'entry-spot' or $item == 'trade-type' {
+                justify-content: flex-start;
+            }
+            @if $item == 'stake' or $item == 'profit' {
+                justify-content: flex-end;
+            }
+        }
+    }
+
+    &__divider {
+        border-top: 1px solid var(--general-section-1);
+        padding: 8px 16px;
+
+        &-line {
+            height: 4px;
+            background-color: var(--general-section-1);
+        }
+    }
+    &__item-wrapper + &__divider {
+        border-top: none;
+    }
+    &__divider + &__item-wrapper {
+        border-top: none;
+    }
+    &__loader {
+        &-text {
+            width: 7.2rem;
+            height: 1rem;
+        }
+        &-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.4rem;
+            height: 2.4rem;
+            margin-right: 0.4rem;
+        }
+        &-icon {
+            width: 2.4rem;
+            height: 2.4rem;
+        }
+    }
+    &__icon {
+        margin-right: 0.8rem;
+        max-height: 1.6rem;
+        max-width: 1.6rem;
+        min-height: 1.6rem;
+        min-width: 1.6rem;
+    }
+    &__cell {
+        display: flex;
+        align-items: center;
+        color: var(--text-general);
+    }
+    &__profit {
+        &--win {
+            color: var(--text-profit-success);
+
+            &:before {
+                content: '+';
+            }
+        }
+        &--loss {
+            color: var(--text-loss-danger);
+
+            &:before {
+                content: '-';
+            }
+        }
+    }
+    &__info {
+        &-header {
+            font-weight: bold;
+        }
+    }
+    // TODO: For Popover--once <Icon> component is shared--mirror <ContractAudit>
+    &__popover {
+        // &-content {
+        //     border-radius: $BORDER_RADIUS;
+        //     background-color: var(--general-main-1);
+        // }
+        &-title {
+            @include typeface(--xsmall-left-normal-black, none);
+        }
+        &-item {
+            @include typeface(--small-left-bold-black, none);
+            // padding: 8px;
+            // margin: 0 4px;
+
+            &:not(:last-of-type) {
+                // border-bottom: 1px solid var(--general-section-2);
+                margin-bottom: 0.8rem;
+            }
+            // &:last-of-type {
+            //     padding: 0 inherit;
+            // }
+        }
+    }
+}

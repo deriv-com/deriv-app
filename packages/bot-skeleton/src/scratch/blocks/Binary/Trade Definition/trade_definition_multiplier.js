@@ -233,6 +233,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                 const max_payout = this.amount_limits?.max_payout;
                 const min_stake = this.amount_limits?.min_stake;
                 if (min_stake && input_number < min_stake) {
+                    console.log('input_number', input_number, 'min_stake', min_stake, 'this.amount_limits', this.amount_limits);
                     this.error_message = localize("Please enter a stake amount that's at least {{min_stake}}.", {
                         min_stake,
                     });

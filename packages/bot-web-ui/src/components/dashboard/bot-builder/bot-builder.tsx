@@ -8,7 +8,7 @@ import ReactJoyrideWrapper from '../react-joyride-wrapper';
 import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { BOT_BUILDER_TOUR, handleJoyrideCallback } from '../joyride-config';
+import { BOT_BUILDER_TOUR } from '../joyride-config';
 import QuickStrategy from '../quick-strategy';
 import TourSlider from '../tour-slider';
 import WorkspaceWrapper from './workspace-wrapper';
@@ -88,7 +88,12 @@ const BotBuilder = ({
                         <TourSlider />
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <ReactJoyrideWrapper steps={BOT_BUILDER_TOUR} run={is_tour_running} showProgress />
+                        <ReactJoyrideWrapper
+                            steps={BOT_BUILDER_TOUR}
+                            run={is_tour_running}
+                            showProgress
+                            styles={{ options: { arrowColor: 'transparent' } }}
+                        />
                     </DesktopWrapper>
                 </>
             )}

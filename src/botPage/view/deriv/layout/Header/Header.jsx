@@ -69,12 +69,14 @@ const Header = () => {
 
     React.useEffect(() => {
         const mountSwitcher = async () => {
-            const res = await checkSwitcherType()
-                .then(data => {
-                    dispatch(updateAccountType(data));
-                })
-                .catch(error => globalObserver.emit('Error', error));
-            return res;
+            try{
+                const res = await checkSwitcherType()
+                dispatch(updateAccountType(res));
+                return res
+            } catch (error){
+                globalObserver.emit('Error', error)
+                return error
+            }
         };
         if (is_logged_in) {
             mountSwitcher();

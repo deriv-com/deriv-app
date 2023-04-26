@@ -1,9 +1,21 @@
 import React from 'react';
 import JurisdictionCardFront from '../jurisdiction-card-front';
 import { render, screen } from '@testing-library/react';
+import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionCardFront', () => {
+    const p2p_status: 'none' | 'active' | 'temp_ban' | 'perm_ban' = 'active';
+    const prompt_client_to_authenticate: 0 | 1 = 1;
     const mock_props = {
+        account_status: {
+            currency_config: { usd: {} },
+            p2p_status,
+            prompt_client_to_authenticate,
+            risk_classification: '',
+            status: [],
+        },
+        disabled: false,
+        type_of_card: Jurisdiction.SVG,
         card_classname: 'jurisdiction_test',
         toggleCardFlip: jest.fn(),
         card_values: {
@@ -57,6 +69,8 @@ describe('JurisdictionCardFront', () => {
                 },
             },
         ],
+        is_card_selected: false,
+        verification_docs: [],
     };
 
     it('should render JurisdictionCardFront without over header', () => {

@@ -199,7 +199,7 @@ export const convertForDerivStore = tokenList => {
             account.loginInfo.account_type;
         clientAccounts[accId].currency = account.loginInfo.currency;
         clientAccounts[accId].is_disabled =
-            tokenList[0].loginInfo[accountList]?.find(acc => acc.loginid === accId).is_disabled ||
+            tokenList[0].loginInfo[accountList]?.find(acc => acc?.loginid === accId)?.is_disabled ||
             account.loginInfo.is_disabled;
         clientAccounts[accId].is_virtual = account.loginInfo.is_virtual;
         clientAccounts[accId].landing_company_shortcode = account.loginInfo.landing_company_name; // how shortcode is different from name?

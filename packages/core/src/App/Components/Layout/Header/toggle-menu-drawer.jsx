@@ -514,7 +514,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         <MenuLink
                                             link_to={routes.traders_hub}
                                             icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
-                                            text={localize("Trader's hub")}
+                                            text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
                                         />
                                     </MobileDrawer.Item>

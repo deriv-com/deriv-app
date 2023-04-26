@@ -27,10 +27,11 @@
                 const findAccount = (accountName = '') => getTokenList().findIndex(tokenInfo => tokenInfo.accountName === accountName);
                 const findToken = (token = '') => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
                 const addToken = (token = '', loginInfo, hasRealityCheck = false, hasTradeLimitation = false) => {
-                    const { loginid: accountName } = loginInfo;
+                    const { loginid: accountName, residence } = loginInfo;
                     const tokenList = getTokenList();
                     const tokenIndex = findToken(token);
                     const accountIndex = findAccount(accountName);
+                    
                     if (tokenIndex < 0 && accountIndex < 0) {
                         tokenList.push({
                             accountName,
@@ -38,6 +39,7 @@
                             loginInfo,
                             hasRealityCheck,
                             hasTradeLimitation,
+                            residence
                         });
                         localStorage.setItem('tokenList', JSON.stringify(tokenList));
                     }
@@ -50,17 +52,21 @@
                     let login_token = null
 
                     Object.keys(client_accounts).forEach((e, i) => {
+                        console.log(e); 
                         const order = i + 1;
-                        const { token, currency } = client_accounts[e];
+                        const { token, currency, residence, country } = client_accounts[e];
 
                         token_data[`accountName${order}`] = e;
                         token_data[`cur${order}`] = currency;
                         token_data[`token${order}`] = token;
+                        token_data[`country${order}`] = residence || country;
 
                         if (!login_token) {
                             login_token = token
                         }
                         client_accounts[e].loginid = e;
+                        client_accounts[e].country = country || residence;
+                        console.log('test client_accounts', client_accounts[e])
                         addToken(token, client_accounts[e], false, false);
                     });
 

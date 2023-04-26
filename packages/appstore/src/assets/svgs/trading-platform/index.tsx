@@ -4,6 +4,7 @@ import BinaryBotBlue from 'Assets/svgs/trading-platform/ic-appstore-binarybot-bl
 import DBot from 'Assets/svgs/trading-platform/ic-brand-dbot.svg';
 import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
 import Derived from 'Assets/svgs/trading-platform/ic-appstore-derived.svg';
+import DerivEz from 'Assets/svgs/trading-platform/ic-brand-derivez.svg';
 import DerivGo from 'Assets/svgs/trading-platform/ic-brand-derivgo.svg';
 import DerivGoBlack from 'Assets/svgs/trading-platform/ic-appstore-derivgo-black.svg';
 import DerivLogo from 'Assets/svgs/trading-platform/ic-appstore-deriv-logo.svg';
@@ -24,6 +25,7 @@ export const PlatformIcons = {
     DBot,
     Demo,
     Derived,
+    DerivEz,
     DerivGo,
     DerivGoBlack,
     DerivLogo,

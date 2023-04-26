@@ -488,7 +488,8 @@
 }
 
 .cfd-jurisdiction-card--synthetic,
-.cfd-jurisdiction-card--financial {
+.cfd-jurisdiction-card--financial,
+.cfd-jurisdiction-card--all {
     border: solid 1px var(--border-normal);
     border-radius: 0.8rem;
     display: flex;
@@ -1357,7 +1358,7 @@
                 display: flex;
                 flex-direction: column;
                 width: 13.6rem;
-                height: 14rem;
+                height: auto;
                 padding: 0.8rem;
                 align-items: center;
                 justify-content: center;

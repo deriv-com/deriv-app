@@ -1,7 +1,21 @@
 import { OSDetect } from '@deriv/shared';
+import { TCFDsPlatformType } from 'Components/props.types';
+
+const platformsText = (platform: TCFDsPlatformType) => {
+    switch (platform) {
+        case 'derivez':
+            return 'EZ';
+        case 'dxtrade':
+            return 'X';
+        default:
+            return '';
+    }
+};
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
+const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -16,7 +30,7 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
         case 'ios':
             return DXTRADE_IOS_APP_URL;
@@ -24,6 +38,19 @@ const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
             return DXTRADE_HUAWEI_APP_URL;
         default:
             return DXTRADE_ANDROID_APP_URL;
+    }
+};
+
+const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+    switch (platform) {
+        case 'ios':
+            return 'a';
+        case 'android':
+            return 'a';
+        case 'huawei':
+            return 'a';
+        default:
+            return '';
     }
 };
 
@@ -75,8 +102,11 @@ const getMT5WebTerminalLink = ({
 export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
+    DERIVEZ_URL,
     getBrokerName,
+    platformsText,
     getPlatformDXTradeDownloadLink,
+    getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
     getDXTradeWebTerminalLink,
     getMT5WebTerminalLink,

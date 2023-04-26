@@ -14,9 +14,8 @@ import {
     PaymentAgentWithdrawResponse,
     PaymentAgentDetailsResponse,
     PaymentAgentListResponse,
-    TSocketEndpointNames,
-    TSocketResponse,
 } from '@deriv/api-types';
+import { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
 import type { TTransactionItem } from './transactions.types';
 
 export type TCashierPayments = {

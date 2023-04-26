@@ -2,7 +2,9 @@ import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, L
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    balance?: number;
+};
 
 type TAccountsList = {
     account?: {
@@ -35,7 +37,6 @@ type TAccountsList = {
 
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
-    balance?: number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
 };
@@ -286,6 +287,7 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    is_demo: boolean;
 };
 
 /**

@@ -67,8 +67,8 @@ export default class RootStore {
 
         this.ws = ws;
         this.dbot = dbot;
-        this.app = new AppStore(this);
-        this.summary_card = new SummaryCardStore(this);
+        this.app = new AppStore(this, core);
+        this.summary_card = new SummaryCardStore(this, core);
         this.download = new DownloadStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);

@@ -56,7 +56,6 @@ const AccountSwitcher = () => {
     return <AuthButtons />;
 };
 
-
 const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
@@ -69,16 +68,14 @@ const Header = () => {
 
     React.useEffect(() => {
         const mountSwitcher = async () => {
-            const res = await checkSwitcherType()
-                .then(data => {
-                    console.log(data);
-                    dispatch(updateAccountType(data));
-                })
-                .catch(error => {
-                    console.log(error);
-                    globalObserver.emit('Error', error)
-                });
-            return res;
+            try {
+                const res = await checkSwitcherType();
+                dispatch(updateAccountType(res));
+                return res;
+            } catch (error) {
+                globalObserver.emit('Error', error);
+                return error;
+            }
         };
         if (is_logged_in) {
             mountSwitcher();
@@ -113,7 +110,7 @@ const Header = () => {
             api.authorize(logged_in_token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
-                    
+
                     active_loginid.forEach(acc => {
                         if (current_login_id === acc.loginid) {
                             setStorage('active_loginid', current_login_id);

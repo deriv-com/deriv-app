@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -8,9 +7,29 @@ import ContractCardItem from './contract-card-item.jsx';
 import Icon from '../../icon';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { TGetDisplayStatus } from '../../../../../shared/src/utils/contract/contract-types';
 
-const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sold, progress_slider, status }) => {
-    const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit } = contract_info;
+type TContractInfo = {
+    buy_price: number;
+    bid_price: number;
+    entry_spot_display_value: string;
+    barrier: string;
+    sell_price: number;
+    profit: number;
+    status: string;
+}
+
+type TVanillaOptionsCardBodyProps = {
+  contract_info: TContractInfo;
+  currency: string;
+  getCardLabels: () => { [key: string]: string };
+  is_sold: boolean;
+  progress_slider: React.ReactNode;
+  status: string;
+}
+
+const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contract_info, currency, getCardLabels, is_sold, progress_slider, status }) => {
+    const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit }: TContractInfo = contract_info;
     const contract_value = is_sold ? sell_price : bid_price;
     const { CONTRACT_VALUE, ENTRY_SPOT, PURCHASE_PRICE, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
 
@@ -77,7 +96,7 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
                     {is_sold ? (
                         <ResultStatusIcon
                             getCardLabels={getCardLabels}
-                            is_contract_won={getDisplayStatus(contract_info) === 'won'}
+                            is_contract_won={getDisplayStatus(contract_info as TGetDisplayStatus) === 'won'}
                         />
                     ) : (
                         progress_slider
@@ -103,15 +122,6 @@ const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sol
             </MobileWrapper>
         </React.Fragment>
     );
-};
-
-VanillaOptionsCardBody.propTypes = {
-    contract_info: PropTypes.object,
-    currency: PropTypes.string,
-    getCardLabels: PropTypes.func,
-    is_sold: PropTypes.bool,
-    progress_slider: PropTypes.node,
-    status: PropTypes.string,
 };
 
 export default React.memo(VanillaOptionsCardBody);

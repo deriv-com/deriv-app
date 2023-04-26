@@ -12,7 +12,7 @@ import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 import AccumulatorCardBody from './accumulator-card-body.jsx';
 import MultiplierCardBody from './multiplier-card-body.jsx';
-import VanillaOptionsCardBody from './vanilla-options-card-body.jsx';
+import VanillaOptionsCardBody from './vanilla-options-card-body';
 
 const ContractCardBody = ({
     addToast,

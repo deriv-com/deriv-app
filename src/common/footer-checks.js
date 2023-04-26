@@ -56,7 +56,7 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
     const restricted_countries =
         financial_company?.shortcode === 'svg' ||
         (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
-        
+
     const high_risk_landing_company = financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg';
     return risk_classification === 'high' || high_risk_landing_company || restricted_countries;
 };
@@ -76,7 +76,7 @@ export const checkSwitcherType = async () => {
     const token_list = await getTokenList();
     const is_eu = await isEuCountry();
     const client_accounts = JSON.parse(getStorage('client.accounts'));
-    const client_country_code = client_accounts[0]?.country || client_accounts[0]?.residence
+    const client_country_code = client_accounts[0]?.country || client_accounts[0]?.residence;
     if (!client_country_code) return null;
     const { landing_company } = await api.send({
         landing_company: client_country_code,
@@ -116,7 +116,6 @@ export const checkSwitcherType = async () => {
         is_low_risk = false;
     }
 
-    
     return {
         low_risk: is_low_risk,
         high_risk: !!is_high_risk,

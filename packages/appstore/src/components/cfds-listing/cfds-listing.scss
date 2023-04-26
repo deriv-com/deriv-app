@@ -108,7 +108,6 @@
             height: 100%;
             position: sticky;
             bottom: 0;
-            max-height: 20rem;
             z-index: 12;
         }
     }
@@ -116,9 +115,15 @@
     &__footnotes-container {
         display: flex;
         flex-direction: column;
-        min-height: 6rem;
         gap: 2rem;
         margin: 2rem;
+        @include desktop {
+            min-height: 6rem;
+        }
+        @include mobile {
+            gap: 0;
+            margin: 0;
+        }
     }
 
     &__footnote {
@@ -162,20 +167,23 @@
 
 .cfd-card {
     &-perspective {
+        -webkit-perspective: 100rem;
         perspective: 100rem;
         @include mobile {
             width: 100%;
         }
     }
     &-container {
+        -webkit-transform-style: preserve-3d;
         transform-style: preserve-3d;
+        -webkit-transition: all 0.25s ease-in;
         transition: all 0.25s ease-in;
         width: 28rem;
         &.synthetic {
             min-height: 46rem;
         }
         &.financial {
-            min-height: 50rem;
+            min-height: 52rem;
         }
         @include mobile {
             height: 48rem;
@@ -183,19 +191,27 @@
         }
     }
     &-flipped {
+        -webkit-transform: rotateY(180deg);
         transform: rotateY(180deg);
     }
     &-front,
     &-back {
-        position: absolute;
-        backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
     &-front {
-        transform: rotateX(0deg);
+        z-index: 2;
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
     }
     &-back {
-        transform: rotateY(180deg);
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
     }
     &-section {
         width: 100%;
@@ -242,7 +258,7 @@
                 }
                 &-verifications,
                 &-regulator {
-                    min-height: 4rem;
+                    min-height: 5rem;
                 }
             }
         }
@@ -259,10 +275,8 @@
             gap: 1rem;
         }
         &-back-button {
+            -webkit-transition: transform 0.25s linear;
             transition: transform 0.25s linear;
-            &:hover {
-                transform: translateX(-4px);
-            }
         }
         &-text-icon-aligned {
             margin-top: -0.3rem;

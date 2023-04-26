@@ -108,7 +108,7 @@ export const DBOT_ONBOARDING = [
                         'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
                     ),
                 ]}
-                img={getImageLocation('ic-new-user-step-two.png')}
+                img={getImageLocation('dbot-onboarding-step-1.gif')}
                 dashboard_tab_index={0}
                 step_index={1}
             />
@@ -122,7 +122,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Monitor the market')}
                 content={[localize('View the market price of your favourite assets.')]}
-                img={getImageLocation('ic-new-user-step-four.png')}
+                img={getImageLocation('dbot-onboarding-step-2.gif')}
                 dashboard_tab_index={0}
                 step_index={2}
             />
@@ -136,7 +136,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Guides and FAQs to help you')}
                 content={[localize('Start with a video guide and the FAQs.')]}
-                img={getImageLocation('ic-new-user-step-five.png')}
+                img={getImageLocation('dbot-onboarding-step-3.gif')}
                 dashboard_tab_index={0}
                 step_index={3}
             />
@@ -164,7 +164,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('How is my bot doing?')}
                 content={[localize("See your bot's performance in real-time.")]}
-                img={getImageLocation('ic-new-user-step-six.png')}
+                img={getImageLocation('dbot-onboarding-step-5.gif')}
                 dashboard_tab_index={0}
                 step_index={5}
             />
@@ -179,7 +179,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Run or stop your bot')}
                 content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
-                img={getImageLocation('ic-new-user-step-seven.png')}
+                img={getImageLocation('dbot-onboarding-step-6.gif')}
                 dashboard_tab_index={0}
                 step_index={6}
             />
@@ -347,7 +347,7 @@ const Step4 = ({ show_label = false }) => (
             </div>
         </div>
         <div>
-            <img src={getImageLocation('bot-tour-step-4.gif')} alt='step4' />
+            <img src={getImageLocation('bot-builder-tour-step-4.gif')} alt='step4' />
         </div>
     </div>
 );
@@ -376,7 +376,7 @@ const Step5 = ({ show_label = false }) => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='Then, drag the <0>Result is win</0> into the empty slot next to the <0>repeat until</0> block.'
+                        i18n_default_text='Then, drag the <0>Result is win</0> into the empty slot next to <0>repeat until</0> block.'
                         components={[<strong key={0} />]}
                     />
                 </li>
@@ -388,14 +388,14 @@ const Step5 = ({ show_label = false }) => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='Drag the <0>Trade again</0> block and add it next to the <0>do</0> part of the <0>Repeat until</0> block.'
+                        i18n_default_text='Drag the <0>Trade again</0> block and add it to the <0>do</0> part of the <0>Repeat until</0> block.'
                         components={[<strong key={0} />]}
                     />
                 </li>
             </ul>
         </div>
         <div>
-            <img src={getImageLocation('bot-tour-step-5.gif')} alt='step5' />
+            <img src={getImageLocation('bot-builder-tour-step-5.gif')} alt='step5' />
         </div>
     </div>
 );

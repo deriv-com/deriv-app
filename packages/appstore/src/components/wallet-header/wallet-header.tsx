@@ -87,10 +87,7 @@ const WalletHeader = observer(
                             is_dark_mode_on ? '-dark' : ''
                         }`}
                     >
-                        <Icon
-                            icon={`IcAppstoreWallet${currency[0] + currency.slice(1).toLowerCase()}Currency`}
-                            size={48}
-                        />
+                        <Icon icon={`IcCurrency${currency[0] + currency.slice(1).toLowerCase()}`} size={48} />
                     </div>
                     <div className='wallet-header__description'>
                         <div className='wallet-header__description-title'>

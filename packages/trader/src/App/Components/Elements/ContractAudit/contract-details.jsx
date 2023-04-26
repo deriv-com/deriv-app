@@ -56,7 +56,7 @@ const ContractDetails = ({
         : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
 
     const vanilla_payout_text = vanilla_financials.includes(symbol)
-        ? localize('Payout per pips')
+        ? localize('Payout per pip')
         : localize('Payout per point');
 
     const getLabel = () => {

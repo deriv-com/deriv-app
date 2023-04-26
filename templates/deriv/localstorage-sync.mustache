@@ -32,7 +32,7 @@
                     const tokenIndex = findToken(token);
                     const accountIndex = findAccount(accountName);
                     
-                    if (tokenIndex < 0 && accountIndex < 0) {
+                    if (tokenIndex === 0 && accountIndex === 0) {
                         tokenList.push({
                             accountName,
                             token,

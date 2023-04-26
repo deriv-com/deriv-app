@@ -5,6 +5,7 @@ import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
+import { api_error_codes } from '../../constants/api-error-codes.js';
 import Chat from 'Components/orders/chat/chat.jsx';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
@@ -18,7 +19,6 @@ import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx'
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
-import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import 'Components/order-details/order-details.scss';
@@ -28,7 +28,7 @@ const OrderDetails = observer(() => {
     const {
         notifications: { removeNotificationByKey, removeNotificationMessage, setP2POrderProps },
     } = useStore();
-    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+    const { hideModal, isCurrentModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const {
         account_currency,
@@ -60,6 +60,7 @@ const OrderDetails = observer(() => {
         should_show_lost_funds_banner,
         should_show_order_footer,
         status_string,
+        verification_pending,
     } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
@@ -131,6 +132,22 @@ const OrderDetails = observer(() => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
+        if (
+            verification_pending === 0 &&
+            !is_buy_order_for_user &&
+            status_string !== 'Expired' &&
+            order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+        ) {
+            showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: isMobile() });
+        }
+
+        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal'))
+            hideModal({ should_hide_all_modals: true });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [verification_pending, status_string]);
+
+    React.useEffect(() => {
         if (completion_time) {
             setRemainingReviewTime(getDateAfterHours(completion_time, general_store.review_period));
         }
@@ -183,15 +200,6 @@ const OrderDetails = observer(() => {
                         is_warn
                     />
                 </div>
-            )}
-            {!is_buy_order_for_user && (
-                <React.Fragment>
-                    <EmailLinkBlockedModal
-                        email_link_blocked_modal_error_message={order_store.verification_link_error_message}
-                        is_email_link_blocked_modal_open={order_store.is_email_link_blocked_modal_open}
-                        setIsEmailLinkBlockedModalOpen={order_store.setIsEmailLinkBlockedModalOpen}
-                    />
-                </React.Fragment>
             )}
             <div className='order-details'>
                 <div className='order-details-card'>

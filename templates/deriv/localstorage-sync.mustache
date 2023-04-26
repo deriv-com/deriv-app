@@ -27,7 +27,7 @@
                 const findAccount = (accountName = '') => getTokenList().findIndex(tokenInfo => tokenInfo.accountName === accountName);
                 const findToken = (token = '') => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
                 const addToken = (token = '', loginInfo, hasRealityCheck = false, hasTradeLimitation = false) => {
-                    const { loginid: accountName, residence } = loginInfo;
+                    const { loginid: accountName, country } = loginInfo;
                     const tokenList = getTokenList();
                     const tokenIndex = findToken(token);
                     const accountIndex = findAccount(accountName);
@@ -39,7 +39,7 @@
                             loginInfo,
                             hasRealityCheck,
                             hasTradeLimitation,
-                            residence
+                            country
                         });
                         localStorage.setItem('tokenList', JSON.stringify(tokenList));
                     }

@@ -7,7 +7,6 @@ import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 import MarketClosedContractOverlay from './market-closed-contract-overlay.jsx';
-import { connectWithContractUpdate } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
@@ -73,7 +72,6 @@ const ContractDrawerCard = observer(
         const card_body = (
             <ContractCard.Body
                 addToast={addToast}
-                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}

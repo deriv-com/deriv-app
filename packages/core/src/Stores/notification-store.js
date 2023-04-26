@@ -1592,6 +1592,18 @@ export default class NotificationStore extends BaseStore {
         });
     };
 
+    showGBPAccountClosureNotification = () => {
+        this.addNotificationMessage({
+            key: 'gbp_account_closure',
+            header: localize('Your GBP account closes soon'),
+            message: (
+                <Localize i18n_default_text='We no longer support GBP accounts. Please withdraw or transfer your funds to a Deriv CFDs account, then submit a new account and currency change request via live chat.' />
+            ),
+            type: 'info',
+            should_show_again: false,
+        });
+    };
+
     async getP2pCompletedOrders() {
         await WS.wait('authorize');
         const response = await WS.send?.({ p2p_order_list: 1, active: 0 });

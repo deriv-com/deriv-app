@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
-import { routes, platforms } from '@deriv/shared';
+import { routes, platforms, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -128,6 +128,24 @@ const TradingHubHeader = ({
         });
     const history = useHistory();
 
+    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+
+    const toggleModal = () => {
+        if (!has_any_real_account) {
+            toggleReadyToDepositModal();
+        } else if (window.location.pathname === routes.traders_hub) {
+            toggleNeedRealAccountForCashierModal();
+        }
+    };
+
+    const handleClickCashier = () => {
+        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
+            toggleModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
+
     const CashierMobileLinks = () => (
         <React.Fragment>
             <div className='trading-hub-header__menu-right--items--notifications__cashier'>
@@ -141,7 +159,7 @@ const TradingHubHeader = ({
                 <AccountInfo
                     acc_switcher_disabled_message={acc_switcher_disabled_message}
                     account_type={account_type}
-                    balance={balance}
+                    balance={formatMoney(currency, balance, true)}
                     is_disabled={is_acc_switcher_disabled}
                     is_eu={is_eu}
                     is_virtual={is_virtual}
@@ -185,29 +203,12 @@ const TradingHubHeader = ({
                 </BinaryLink>
             </Popover>
             <div className='trading-hub-header__cashier-button'>
-                <Button primary small onClick={() => history.push(routes.cashier_deposit)}>
+                <Button primary small onClick={handleClickCashier}>
                     <Localize i18n_default_text='Cashier' />
                 </Button>
             </div>
         </React.Fragment>
     );
-    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
-
-    const toggleModal = () => {
-        if (!has_any_real_account) {
-            toggleReadyToDepositModal();
-        } else if (window.location.pathname === routes.traders_hub) {
-            toggleNeedRealAccountForCashierModal();
-        }
-    };
-
-    const handleClickCashier = () => {
-        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
-            toggleModal();
-        } else {
-            history.push(routes.cashier_deposit);
-        }
-    };
 
     return (
         <header
@@ -266,7 +267,7 @@ const TradingHubHeader = ({
                                 <AccountInfo
                                     acc_switcher_disabled_message={acc_switcher_disabled_message}
                                     account_type={account_type}
-                                    balance={balance}
+                                    balance={formatMoney(currency, balance, true)}
                                     is_disabled={is_acc_switcher_disabled}
                                     is_eu={is_eu}
                                     is_virtual={is_virtual}
@@ -285,39 +286,6 @@ const TradingHubHeader = ({
                 <div className='trading-hub-header__mobile-parent'>
                     <div className='trading-hub-header__menu-middle'>
                         {cashier_routes ? <CashierMobileLinks /> : <DefaultMobileLinks />}
-                        <div className='trading-hub-header__menu-right--items--onboarding'>
-                            <TradingHubOnboarding
-                                is_dark_mode={is_dark_mode}
-                                toggleIsTourOpen={toggleIsTourOpen}
-                                is_mf={is_mf}
-                                is_eu={is_eu}
-                                is_eu_country={is_eu_country}
-                                setIsOnboardingVisited={setIsOnboardingVisited}
-                            />
-                        </div>
-                        <div className='trading-hub-header__menu-right--items--notifications'>
-                            <ShowNotifications
-                                is_notifications_visible={is_notifications_visible}
-                                notifications_count={notifications_count}
-                                toggleNotifications={toggleNotifications}
-                            />
-                        </div>
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={9999}
-                        >
-                            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' size={20} />
-                            </BinaryLink>
-                        </Popover>
-                    </div>
-                    <div className='trading-hub-header__cashier-button'>
-                        <Button primary small onClick={handleClickCashier}>
-                            <Localize i18n_default_text='Cashier' />
-                        </Button>
                     </div>
                 </div>
                 <RealAccountSignup />

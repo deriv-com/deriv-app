@@ -20,16 +20,16 @@ const mock = (): TStores => {
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     internal: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     mt5: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                 },
             },

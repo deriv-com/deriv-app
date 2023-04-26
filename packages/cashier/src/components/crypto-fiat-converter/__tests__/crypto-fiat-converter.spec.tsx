@@ -4,10 +4,11 @@ import CryptoFiatConverter from '../crypto-fiat-converter';
 import { Formik } from 'formik';
 import * as formik from 'formik';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { TRootStore } from '../../../types';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoFiatConverter />', () => {
-    let mockRootStore: TStores, mockProps: React.ComponentProps<typeof CryptoFiatConverter>;
+    let mockRootStore: TRootStore, mockProps: React.ComponentProps<typeof CryptoFiatConverter>;
 
     beforeEach(() => {
         mockRootStore = mockStore({

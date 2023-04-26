@@ -227,17 +227,10 @@ describe('<AccountTransferForm />', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_transfers: {
-                dxtrade: {
-                    allowed: false,
-                    available: false,
-                },
-                internal: {
-                    allowed: false,
-                    available: false,
-                },
+                dxtrade: {},
+                internal: {},
                 mt5: {
-                    allowed: false,
-                    available: true,
+                    available: 1,
                 },
             },
         };
@@ -255,17 +248,10 @@ describe('<AccountTransferForm />', () => {
         mockRootStore.client.account_limits = {
             daily_transfers: {
                 dxtrade: {
-                    allowed: false,
-                    available: true,
+                    available: 1,
                 },
-                internal: {
-                    allowed: false,
-                    available: false,
-                },
-                mt5: {
-                    allowed: false,
-                    available: false,
-                },
+                internal: {},
+                mt5: {},
             },
         };
         mockRootStore.modules.cashier.account_transfer.selected_from.is_dxtrade = true;
@@ -282,18 +268,11 @@ describe('<AccountTransferForm />', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_transfers: {
-                dxtrade: {
-                    allowed: false,
-                    available: false,
-                },
+                dxtrade: {},
                 internal: {
-                    allowed: false,
-                    available: true,
+                    available: 1,
                 },
-                mt5: {
-                    allowed: false,
-                    available: false,
-                },
+                mt5: {},
             },
         };
 

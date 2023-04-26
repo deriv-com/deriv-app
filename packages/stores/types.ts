@@ -101,8 +101,8 @@ type TClientStore = {
     account_limits: {
         daily_transfers?: {
             [k: string]: {
-                allowed: boolean;
-                available: boolean;
+                allowed?: number;
+                available?: number;
             };
         };
     };

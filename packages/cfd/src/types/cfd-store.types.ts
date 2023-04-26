@@ -54,7 +54,7 @@ export type TCFDStore = {
     is_cfd_success_dialog_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
     setError: (state: boolean, obj?: Error) => void;
-    submitMt5Password: (values: { password: string }, actions: any) => void;
+    submitMt5Password: (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
     submitCFDPassword: (
         values: TCFDPasswordFormValues & { platform?: string },
         actions: FormikHelpers<TCFDPasswordFormValues>

@@ -13,6 +13,14 @@ import type { ElementType } from 'react';
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
+type TAppRoutingHistory = {
+    action: string;
+    hash: string;
+    key: string;
+    pathname: string;
+    search: string;
+};
+
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
 type TAccountsList = {
@@ -277,13 +285,7 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
-    app_routing_history: {
-        action: string;
-        hash: string;
-        key: string;
-        pathname: string;
-        search: string;
-    }[];
+    app_routing_history: TAppRoutingHistory[];
     header: string | JSX.Element;
     message: string | JSX.Element;
     redirect_label: string;
@@ -308,13 +310,7 @@ type TCommonStore = {
     current_language: string;
     is_language_changing: boolean;
     setAppstorePlatform: (value: string) => void;
-    app_routing_history: {
-        action: string;
-        hash: string;
-        key: string;
-        pathname: string;
-        search: string;
-    }[];
+    app_routing_history: TAppRoutingHistory[];
 };
 
 type TUiStore = {

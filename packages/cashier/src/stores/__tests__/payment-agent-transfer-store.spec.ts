@@ -1,21 +1,21 @@
 import PaymentAgentTransferStore from '../payment-agent-transfer-store';
 import { routes } from '@deriv/shared';
 import { configure } from 'mobx';
-import { TStores, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { PaymentAgentListResponse } from '@deriv/api-types';
-import { TWebSocket } from '../../types';
+import { TWebSocket, TRootStore } from '../../types';
 
 configure({ safeDescriptors: false });
 
 let payment_agent_transfer_store: PaymentAgentTransferStore,
     response_payment_agent: PaymentAgentListResponse,
-    root_store: TStores,
+    root_store: TRootStore,
     transfer_data: {
         transfer_to: string;
-        amount: string;
+        amount: number;
         description: string;
         currency: string;
-        dry_run?: number;
+        dry_run?: 0 | 1;
     },
     WS: TWebSocket;
 
@@ -63,7 +63,7 @@ beforeEach(() => {
         },
     };
     transfer_data = {
-        amount: '100',
+        amount: 100,
         currency: 'USD',
         description: 'This is description',
         transfer_to: 'CR9000000',
@@ -133,7 +133,7 @@ describe('PaymentAgentTransferStore', () => {
 
     it('shoud set correct confirmation transfer value', () => {
         const confirm = {
-            amount: '100',
+            amount: 100,
             client_id: 'CR9000000',
             client_name: 'George',
             description: 'This is description',
@@ -146,7 +146,7 @@ describe('PaymentAgentTransferStore', () => {
 
     it('shoud set correct receipt value', () => {
         const receipt = {
-            amount_transferred: '100',
+            amount_transferred: 100,
             client_id: 'CR9000000',
             client_name: 'George',
         };

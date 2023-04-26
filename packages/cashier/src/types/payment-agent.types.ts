@@ -61,14 +61,14 @@ type TExtendedPaymentAgentFields = {
 export type TExtendedPaymentAgentList = (PaymentagentList['list'][0] & TExtendedPaymentAgentFields)[];
 
 export type TPaymentAgentTransferConfirm = {
-    amount?: string;
+    amount?: number;
     client_id?: string;
     client_name?: string;
     description?: string;
 };
 
 export type TPaymentAgentTransferReceipt = {
-    amount_transferred?: string;
+    amount_transferred?: number;
     client_id?: string;
     client_name?: string;
 };

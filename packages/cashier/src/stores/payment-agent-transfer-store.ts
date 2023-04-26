@@ -152,7 +152,7 @@ export default class PaymentAgentTransferStore {
             this.setConfirmationPaymentAgentTransfer({
                 client_id: transfer_to,
                 client_name: payment_agent_transfer.client_to_full_name,
-                amount: amount.toString(),
+                amount,
                 description,
             });
             this.setIsTryTransferSuccessful(true);
@@ -178,7 +178,7 @@ export default class PaymentAgentTransferStore {
         });
         if (Number(payment_agent_transfer.paymentagent_transfer) === 1) {
             this.setReceiptPaymentAgentTransfer({
-                amount_transferred: amount.toString(),
+                amount_transferred: amount,
                 client_id: transfer_to,
                 client_name: payment_agent_transfer.client_to_full_name,
             });

@@ -74,7 +74,10 @@ const Header = () => {
                     console.log(data);
                     dispatch(updateAccountType(data));
                 })
-                .catch(error => globalObserver.emit('Error', error));
+                .catch(error => {
+                    console.log(error);
+                    globalObserver.emit('Error', error)
+                });
             return res;
         };
         if (is_logged_in) {

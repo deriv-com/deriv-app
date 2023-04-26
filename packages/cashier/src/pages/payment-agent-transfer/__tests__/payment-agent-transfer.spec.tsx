@@ -4,7 +4,7 @@ import { Router } from 'react-router';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { TStores, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -29,7 +29,7 @@ jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-receipt', () =>
 );
 
 describe('<PaymentAgentTransfer />', () => {
-    let history: BrowserHistory, mockRootStore: TStores, modal_root_el: HTMLDivElement;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>, modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');

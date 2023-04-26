@@ -74,7 +74,7 @@ let dxtrade_accounts_from: TAccount[] = [];
 let dxtrade_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
-let remaining_transfers: boolean | undefined;
+let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes }: TAccountTransferFormProps) => {

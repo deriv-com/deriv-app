@@ -6,7 +6,6 @@ import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
-import { TReactFormEvent } from '../../types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import { useCashierStore } from '../../stores/useCashierStores';

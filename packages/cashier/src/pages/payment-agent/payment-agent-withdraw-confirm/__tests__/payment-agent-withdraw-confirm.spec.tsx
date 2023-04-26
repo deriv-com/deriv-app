@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import CashierProviders from '../../../../cashier-providers';
-import { TStores, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<PaymentAgentWithdrawConfirm />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {

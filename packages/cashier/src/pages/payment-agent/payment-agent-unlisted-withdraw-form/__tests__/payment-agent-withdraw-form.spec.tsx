@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentUnlistedWithdrawForm from '../payment-agent-unlisted-withdraw-form';
 import { isMobile, validNumber } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -15,7 +15,7 @@ jest.mock('@deriv/shared', () => ({
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => 'PaymentAgentDisclaimer'));
 
 describe('<PaymentAgentUnlistedWithdrawForm />', () => {
-    let mockRootStore: TStores, setIsUnlistedWithdraw: (value: boolean) => void;
+    let mockRootStore: ReturnType<typeof mockStore>, setIsUnlistedWithdraw: (value: boolean) => void;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {

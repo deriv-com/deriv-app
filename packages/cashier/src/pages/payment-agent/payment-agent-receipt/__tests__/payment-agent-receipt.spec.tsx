@@ -5,7 +5,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile, routes } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { TStores, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -15,7 +15,7 @@ jest.mock('@deriv/shared', () => ({
 jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => 'PaymentAgentDisclaimer'));
 
 describe('<PaymentAgentReceipt />', () => {
-    let history: BrowserHistory, mockRootStore: TStores;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
         mockRootStore = mockStore({

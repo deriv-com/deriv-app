@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import { validNumber } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { TPaymentAgent } from '../../../../types';
 
 jest.mock('@deriv/components', () => ({
@@ -18,7 +18,7 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () 
 }));
 
 describe('<PaymentAgentListedWithdrawForm />', () => {
-    let mockRootStore: TStores, payment_agent: TPaymentAgent;
+    let mockRootStore: ReturnType<typeof mockStore>, payment_agent: TPaymentAgent;
 
     beforeAll(() => {
         ReactDOM.createPortal = jest.fn(component => {

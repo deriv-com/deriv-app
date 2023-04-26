@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageError } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { TStores } from '@deriv/stores';
+import { TRootStore } from '../../../types';
 import { localize, Localize } from '@deriv/translations';
 
 const ErrorComponent = ({
@@ -14,7 +14,7 @@ const ErrorComponent = ({
     setError,
     should_clear_error_on_click,
     should_show_refresh = true,
-}: TStores['common']['error']) => {
+}: TRootStore['common']['error']) => {
     const history = useHistory();
 
     React.useEffect(() => {

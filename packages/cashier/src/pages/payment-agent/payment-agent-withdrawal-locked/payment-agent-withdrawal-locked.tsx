@@ -7,7 +7,6 @@ import Error from 'Components/error';
 import './payment-agent-withdrawal-locked.scss';
 import { RouteComponentProps } from 'react-router';
 import { TServerError } from '../../../types';
-import ErrorStore from 'Stores/error-store';
 
 type TPaymentAgentWithdrawalLockedItemProps = {
     item: {
@@ -21,6 +20,7 @@ type TPaymentAgentWithdrawalLockedItemProps = {
 type TPaymentAgentWithdrawalLockedProps = RouteComponentProps & {
     error: TServerError & {
         onClickButton?: VoidFunction;
+        setErrorMessage?: (value: string) => void;
     };
 };
 
@@ -82,7 +82,7 @@ const PaymentAgentWithdrawalLocked = ({ error, history }: TPaymentAgentWithdrawa
         error.onClickButton ||
         (error.code !== 'PaymentAgentWithdrawSameMethod' && error.code !== 'PaymentAgentUseOtherMethod')
     ) {
-        return <Error error={error as unknown as ErrorStore} />;
+        return <Error error={error} />;
     }
 
     return (

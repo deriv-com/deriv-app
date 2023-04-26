@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
-import { TStores, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,
@@ -11,7 +11,7 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () 
 }));
 
 describe('<PaymentAgentTransferForm />', () => {
-    let mockRootStore: TStores, modal_root_el: HTMLDivElement;
+    let mockRootStore: ReturnType<typeof mockStore>, modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');

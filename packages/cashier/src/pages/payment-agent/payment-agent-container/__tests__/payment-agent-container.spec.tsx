@@ -3,7 +3,7 @@ import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -26,7 +26,7 @@ jest.mock('Pages/payment-agent/payment-agent-disclaimer', () => jest.fn(() => <d
 jest.mock('Pages/payment-agent/payment-agent-search-box', () => jest.fn(() => <div>PaymentAgentSearchBox</div>));
 
 describe('<PaymentAgentContainer />', () => {
-    let mockRootStore: TStores;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {

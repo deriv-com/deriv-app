@@ -5,10 +5,10 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { TStores, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<PaymentAgentTransferReceipt />', () => {
-    let history: BrowserHistory, mockRootStore: TStores;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
         mockRootStore = mockStore({

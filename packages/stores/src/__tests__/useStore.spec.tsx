@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, useStore, TStores } from '../useStore';
+import useStore from '../useStore';
+import StoreProvider from '../storeProvider';
+import type { TStores } from '../../types';
 
 describe('useStore', () => {
     test('should throw an error if StoreContext has not been provided', async () => {
         const { result } = renderHook(() => useStore());
-        expect(result.error).toEqual(Error('useStore must be used within StoreContext'));
+        expect(result.error).toEqual(Error('useStore must be used within StoreProvider'));
     });
 
     test('should be able to access store data if StoreContext has been provided', async () => {

@@ -6,7 +6,8 @@ import { mockStore } from '@deriv/stores';
 import CFDProviders from '../../cfd-providers';
 
 type TMockPlatformAccounts = {
-    account_type?: 'demo' | 'real';
+    account_type?: TCFDPasswordReset['account_group'];
+
     balance: number;
     platform?: string;
     display_balance: string;

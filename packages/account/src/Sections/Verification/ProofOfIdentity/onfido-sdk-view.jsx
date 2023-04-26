@@ -17,6 +17,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [is_status_loading, setStatusLoading] = React.useState(true);
     const [retry_count, setRetryCount] = React.useState(0);
+    const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(true);
     const token_timeout_ref = React.useRef();
 
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
@@ -199,6 +200,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                     (!is_from_external && (
                         <div style={{ marginBottom: '24px' }}>
                             <PoiConfirmWithExample
+                                onConfirm={() => setIsOnfidoDisabled(false)}
                                 name_dob_clarification_message=<Localize
                                     i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
                                     components={[<strong key={0} />]}
@@ -222,7 +224,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                     <div
                         id='onfido'
                         className={classNames({
-                            'onfido-container__disabled': true,
+                            'onfido-container__disabled': is_onfido_disabled,
                             'onfido-container__hidden': component_to_load,
                         })}
                     />

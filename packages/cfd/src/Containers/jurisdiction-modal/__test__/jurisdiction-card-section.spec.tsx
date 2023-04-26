@@ -1,9 +1,41 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import JurisdictionCardSection from '../jurisdiction-card-section';
+import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionCardSection', () => {
     type TMockProps = {
+        account_status: {
+            authentication: {
+                document: {
+                    status: 'none' | 'pending' | 'verified' | 'expired' | 'rejected' | undefined;
+                };
+                identity: {
+                    services: {
+                        idv: {
+                            status: 'none' | 'pending' | 'verified' | 'expired' | 'rejected' | undefined;
+                        };
+                        onfido: {
+                            status: 'none' | 'pending' | 'verified' | 'expired' | 'rejected' | undefined;
+                        };
+                        manual: {
+                            status: 'none' | 'pending' | 'verified' | 'expired' | 'rejected' | undefined;
+                        };
+                    };
+                };
+                needs_verification: string[];
+            };
+            currency_config: {
+                [k: string]: {
+                    is_deposit_suspended?: 0 | 1;
+                    is_withdrawal_suspended?: 0 | 1;
+                };
+            };
+            p2p_status: 'none';
+            prompt_client_to_authenticate: 0;
+            risk_classification: string;
+            status: string[];
+        };
         card_section_item: {
             key: string;
             title: string;
@@ -15,9 +47,37 @@ describe('JurisdictionCardSection', () => {
             description?: string;
             clickable_description?: [];
         };
+        type_of_card: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
         toggleCardFlip: jest.Mock;
+        verification_docs: ['document_number' | 'selfie' | 'identity_document' | 'name_and_address' | 'not_applicable'];
     };
     const mock_props: TMockProps = {
+        account_status: {
+            authentication: {
+                document: {
+                    status: 'none' as const,
+                },
+                identity: {
+                    services: {
+                        idv: {
+                            status: 'none' as const,
+                        },
+                        onfido: {
+                            status: 'none' as const,
+                        },
+                        manual: {
+                            status: 'none' as const,
+                        },
+                    },
+                },
+                needs_verification: [],
+            },
+            currency_config: {},
+            p2p_status: 'none' as const,
+            prompt_client_to_authenticate: 0 as const,
+            risk_classification: '',
+            status: [''],
+        },
         card_section_item: {
             key: '',
             title: 'Test Title',
@@ -28,7 +88,9 @@ describe('JurisdictionCardSection', () => {
             },
             description: 'Test Description',
         },
+        type_of_card: Jurisdiction.SVG,
         toggleCardFlip: jest.fn(),
+        verification_docs: ['not_applicable'],
     };
 
     it('should render JurisdictionCardSection component', () => {

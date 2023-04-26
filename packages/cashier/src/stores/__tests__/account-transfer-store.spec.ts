@@ -1,14 +1,14 @@
 import AccountTransferStore from '../account-transfer-store';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { configure } from 'mobx';
-import type { TTransferAccount, TWebSocket } from '../../types';
-import { mockStore, TStores } from '@deriv/stores';
+import type { TTransferAccount, TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
 let accounts: TTransferAccount[],
     account_transfer_store: AccountTransferStore,
-    root_store: TStores,
+    root_store: TRootStore,
     WS: DeepPartial<TWebSocket>;
 
 const CR_eUSDT_account: TTransferAccount = {

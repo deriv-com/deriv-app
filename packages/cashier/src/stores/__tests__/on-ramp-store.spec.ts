@@ -2,15 +2,15 @@ import { waitFor } from '@testing-library/react';
 import OnRampStore from '../on-ramp-store';
 import createBanxaProvider from '../../pages/on-ramp/on-ramp-providers';
 import { configure } from 'mobx';
-import { TWebSocket, TOnRampProvider } from '../../types';
-import { mockStore, TStores } from '@deriv/stores';
+import { TWebSocket, TOnRampProvider, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
 let banxa_provider: TOnRampProvider,
     onramp_store: OnRampStore,
     onramp_providers: TOnRampProvider[],
-    root_store: TStores,
+    root_store: TRootStore,
     WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {

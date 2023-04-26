@@ -2,12 +2,12 @@ import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
 import { routes, ContentFlag } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import type { TWebSocket } from '../../types';
-import { mockStore, TStores } from '@deriv/stores';
+import type { TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
-let general_store: GeneralStore, root_store: TStores, WS: DeepPartial<TWebSocket>;
+let general_store: GeneralStore, root_store: TRootStore, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     root_store = mockStore({

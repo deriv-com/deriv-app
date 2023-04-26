@@ -1,8 +1,8 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
-import { TWebSocket } from '../../types';
-import { mockStore, TStores } from '@deriv/stores';
+import { TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -16,7 +16,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('WithdrawStore', () => {
-    let withdraw_store: WithdrawStore, root_store: TStores, WS: DeepPartial<TWebSocket>;
+    let withdraw_store: WithdrawStore, root_store: TRootStore, WS: DeepPartial<TWebSocket>;
 
     beforeEach(() => {
         root_store = mockStore({

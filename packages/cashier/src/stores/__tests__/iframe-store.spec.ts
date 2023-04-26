@@ -1,10 +1,11 @@
 import IframeStore from '../iframe-store';
 import { configure } from 'mobx';
-import { mockStore, TStores } from '@deriv/stores';
+import { TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
-let iframe_store: IframeStore, root_store: TStores;
+let iframe_store: IframeStore, root_store: TRootStore;
 
 beforeEach(() => {
     root_store = mockStore({

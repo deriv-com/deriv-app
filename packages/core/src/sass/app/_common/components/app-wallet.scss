@@ -1,0 +1,29 @@
+$wallet-bg-color: (
+    'usd': (
+        'light': linear-gradient(to right, #f2bfba, #e8b4c0, #d6acc7, #bca7cc, #9ca3cc),
+        'dark': linear-gradient(to right, #652723, #602033, #531f41, #3d234b, #1e274f),
+    ),
+    'eur': (
+        'light': linear-gradient(to right, #b5bbd9, #e0bcde, #ffc0ca, #ffcfad, #fce99f),
+        'dark': linear-gradient(to right, #1c2444, #4f284b, #76313f, #864a2a, #7c6c21),
+    ),
+    'aud': (
+        'light': linear-gradient(to right, #a9e5ba, #b9e8ad, #cdea9f, #e5ea93, #ffe88a),
+        'dark': linear-gradient(to right, #214f3e, #2e5937, #44622a, #60681b, #816b0d),
+    ),
+);
+
+// Mixins
+@mixin wallet-bg-color($currencies-map: $wallet-bg-color) {
+    @each $currency, $themes in $currencies-map {
+        @each $theme, $color in $themes {
+            $t: if($theme == 'dark', '--dark', '');
+            .wallet__#{$currency}-bg#{$t} {
+                background: $color;
+            }
+        }
+    }
+}
+
+// Init mixins
+@include wallet-bg-color();

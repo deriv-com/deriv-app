@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { isCryptocurrency, routes } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
-import CashierOnboardingSideNote from './cashier-onboarding-side-note';
 import SideNote from 'Components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
 
@@ -57,7 +56,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
             is_landing_company_loaded &&
             is_currency_banner_visible
         ) {
-            setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={is_crypto} />]);
+            // setSideNotes([<CashierOnboardingSideNote key={0} is_crypto={is_crypto} />]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching, accounts, is_landing_company_loaded, is_cashier_onboarding]);
@@ -69,7 +68,7 @@ const CashierOnboarding = observer(({ setSideNotes }: TCashierOnboardingProps) =
         <div>
             {is_currency_banner_visible && (
                 <SideNote is_mobile has_title={false} className='outside-wrapper'>
-                    <CashierOnboardingSideNote is_crypto={is_crypto} />
+                    {/* <CashierOnboardingSideNote is_crypto={is_crypto} /> */}
                 </SideNote>
             )}
         </div>

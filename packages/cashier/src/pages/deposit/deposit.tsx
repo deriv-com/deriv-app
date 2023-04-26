@@ -3,7 +3,6 @@ import { Loading } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
-import { CashierOnboardingSideNote } from '../../components/cashier-onboarding';
 import CashierLocked from '../../components/cashier-locked';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import Error from '../../components/error';
@@ -90,11 +89,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                 }
             }
             if (is_fiat_currency_banner_visible_for_MF_clients) {
-                setSideNotes([
-                    <SideNote key={0}>
-                        <CashierOnboardingSideNote is_crypto={false} />
-                    </SideNote>,
-                ]);
+                setSideNotes([<SideNote key={0}>{/* <CashierOnboardingSideNote is_crypto={false} /> */}</SideNote>]);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,9 +130,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         return (
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && (
-                    <SideNote is_mobile>
-                        <CashierOnboardingSideNote is_crypto={false} />
-                    </SideNote>
+                    <SideNote is_mobile>{/* <CashierOnboardingSideNote is_crypto={false} /> */}</SideNote>
                 )}
                 <Real is_deposit />
             </>

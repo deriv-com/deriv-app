@@ -1,18 +1,18 @@
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
-import { CashierOnboarding } from 'Components/cashier-onboarding';
 import {
     CashierOnboardingCashCard,
     CashierOnboardingCryptoCard,
     CashierOnboardingOnrampCard,
     CashierOnboardingP2PCard,
     CashierOnboardingPaymentAgentCard,
+    CashierOnboardingSideNotes,
     CashierOnboardingTitle,
 } from './components';
 import './onboarding.scss';
 
 type TProps = {
-    setSideNotes: (notes: object | null) => void;
+    setSideNotes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
 };
 
 const CashierOnboardingModule: React.FC<TProps> = ({ setSideNotes }) => (
@@ -23,7 +23,7 @@ const CashierOnboardingModule: React.FC<TProps> = ({ setSideNotes }) => (
         <CashierOnboardingOnrampCard />
         <CashierOnboardingPaymentAgentCard />
         <CashierOnboardingP2PCard />
-        <CashierOnboarding setSideNotes={setSideNotes} />
+        <CashierOnboardingSideNotes setSideNotes={setSideNotes} />
     </ThemedScrollbars>
 );
 

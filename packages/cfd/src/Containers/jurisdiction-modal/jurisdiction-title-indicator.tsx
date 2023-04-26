@@ -74,9 +74,17 @@ const JurisdictionTitleIndicator = ({
             {title_indicators.display_text}
         </Text>
     ) : (
-        <div className='cfd-card-section-title-indicator-icon-container'>
+        <div
+            data-testid='dt_jurisdiction_title_indicator_icon'
+            className='cfd-card-section-title-indicator-icon-container'
+        >
             {verification_docs?.map(verification_document => (
-                <div key={verification_document}>
+                <div
+                    data-testid={`dt_jurisdiction_title_indicator_${getVerificationIconVariant(
+                        verification_document
+                    )}_icon`}
+                    key={verification_document}
+                >
                     <Icon
                         size={24}
                         icon={jurisdictionVerificationContents().required_verification_docs[

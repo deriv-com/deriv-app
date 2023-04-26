@@ -8,7 +8,7 @@ import { isCustomJournalMessage } from '../utils/journal-notifications';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 
 export default class JournalStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             is_filter_dialog_visible: observable,
             journal_filters: observable.shallow,
@@ -30,6 +30,7 @@ export default class JournalStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
         this.disposeReactionsFn = this.registerReactions();
 
         // Add a "Welcome back!" message when messages were restored.
@@ -54,10 +55,10 @@ export default class JournalStore {
     ];
 
     journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
-    unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.root_store?.core.client.loginid, []);
+    unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, this.core?.client.loginid, []);
 
     getServerTime() {
-        return this.root_store?.core.common.server_time.get();
+        return this.core?.common.server_time.get();
     }
 
     playAudio = sound => {
@@ -143,7 +144,7 @@ export default class JournalStore {
     }
 
     registerReactions() {
-        const { client } = this.root_store?.core;
+        const { client } = this.core;
 
         // Write journal messages to session storage on each change in unfiltered messages.
         const disposeWriteJournalMessageListener = reaction(

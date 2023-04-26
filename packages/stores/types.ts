@@ -277,7 +277,13 @@ type TClientStore = {
 };
 
 type TCommonStoreError = {
-    app_routing_history: unknown[];
+    app_routing_history: {
+        action: string;
+        hash: string;
+        key: string;
+        pathname: string;
+        search: string;
+    }[];
     header: string | JSX.Element;
     message: string | JSX.Element;
     redirect_label: string;
@@ -302,7 +308,13 @@ type TCommonStore = {
     current_language: string;
     is_language_changing: boolean;
     setAppstorePlatform: (value: string) => void;
-    app_routing_history: unknown[];
+    app_routing_history: {
+        action: string;
+        hash: string;
+        key: string;
+        pathname: string;
+        search: string;
+    }[];
 };
 
 type TUiStore = {

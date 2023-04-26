@@ -6,6 +6,7 @@ import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TCoreStores } from '@deriv/stores/types';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
@@ -13,7 +14,27 @@ type TCFDFinancialStpRealAccountSignupProps = {
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
 
-type TItemsState<T> = {
+type TItem = {
+    refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
+    removeNotificationMessage: TCoreStores['notifications']['removeNotificationMessage'];
+    removeNotificationByKey: TCoreStores['notifications']['removeNotificationByKey'];
+    addNotificationMessageByKey: TCoreStores['notifications']['addNotificationMessageByKey'];
+    authentication_status: TCoreStores['client']['authentication_status'];
+    account_settings: TCoreStores['client']['account_settings'];
+    email: TCoreStores['client']['email'];
+    is_fully_authenticated: TCoreStores['client']['is_fully_authenticated'];
+    landing_company: TCoreStores['client']['landing_company'];
+    residence_list: TCoreStores['client']['residence_list'];
+    states_list: TCoreStores['client']['states_list'];
+    fetchStatesList: TCoreStores['client']['fetchStatesList'];
+    account_status: TCoreStores['client']['account_status'];
+    storeProofOfAddress: TCoreStores['modules']['cfd']['storeProofOfAddress'];
+    jurisdiction_selected_shortcode: TCoreStores['modules']['cfd']['jurisdiction_selected_shortcode'];
+    has_submitted_cfd_personal_details: TCoreStores['modules']['cfd']['has_submitted_cfd_personal_details'];
+    onFinish: TCFDFinancialStpRealAccountSignupProps['onFinish'];
+};
+
+type TItemsState<T extends TItem> = {
     body: typeof CFDPOI | typeof CFDPOA | typeof CFDPersonalDetailsContainer;
     form_value: { [key: string]: string | undefined };
     forwarded_props: Array<Partial<keyof T>>;

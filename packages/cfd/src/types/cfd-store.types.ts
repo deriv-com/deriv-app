@@ -1,4 +1,7 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
+import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
+import { TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { FormikHelpers } from 'formik';
 
 type TStoreProofOfAddressArgs = {
     file_uploader_ref: HTMLDivElement | null;
@@ -8,7 +11,7 @@ type TStoreProofOfAddressArgs = {
 };
 
 export type TCFDStore = {
-    setMT5TradeAccount: (arg: any) => void;
+    setMT5TradeAccount: <T>(arg: T) => void;
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
@@ -31,8 +34,8 @@ export type TCFDStore = {
     current_list: Record<string, DetailsOfEachMT5Loginid & { enabled: number } & DetailsOfEachMT5Loginid[]>;
     is_compare_accounts_visible: boolean;
     toggleCompareAccounts: () => void;
-    dxtrade_companies: Record<string, any>;
-    mt5_companies: Record<string, any>;
+    dxtrade_companies: TDxCompanies;
+    mt5_companies: TMtCompanies;
     platform: string;
     topUpVirtual: (platform: string) => void;
     current_account?: DetailsOfEachMT5Loginid & {
@@ -52,7 +55,10 @@ export type TCFDStore = {
     setCFDSuccessDialog: (value: boolean) => void;
     setError: (state: boolean, obj?: Error) => void;
     submitMt5Password: (values: { password: string }, actions: any) => void;
-    submitCFDPassword: (values: { password: string } & { platform?: string }, actions: any) => void;
+    submitCFDPassword: (
+        values: TCFDPasswordFormValues & { platform?: string },
+        actions: FormikHelpers<TCFDPasswordFormValues>
+    ) => void;
     new_account_response: Mt5NewAccount;
     is_cfd_verification_modal_visible: boolean;
     has_created_account_for_selected_jurisdiction: boolean;
@@ -63,15 +69,11 @@ export type TCFDStore = {
         data: DetailsOfEachMT5Loginid,
         meta: {
             category: string;
-            type?: string | undefined;
+            type?: string;
         }
     ) => void;
-    getRealSyntheticAccountsExistingData: (
-        getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
-    ) => void;
-    getRealFinancialAccountsExistingData: (
-        getRealSyntheticAccountsExistingData: DetailsOfEachMT5Loginid[] | undefined
-    ) => void;
+    getRealSyntheticAccountsExistingData: (getRealSyntheticAccountsExistingData?: DetailsOfEachMT5Loginid[]) => void;
+    getRealFinancialAccountsExistingData: (getRealSyntheticAccountsExistingData?: DetailsOfEachMT5Loginid[]) => void;
     toggleMT5TradeModal: () => void;
     beginRealSignupForMt5: () => void;
     checkShouldOpenAccount: () => void;
@@ -79,8 +81,8 @@ export type TCFDStore = {
     createCFDAccount: (objCFDAccount: {
         category: string;
         type: string;
-        set_password?: number | undefined;
-        platform?: string | undefined;
+        set_password?: number;
+        platform?: string;
     }) => void;
     storeProofOfAddress: TStoreProofOfAddressArgs;
 };

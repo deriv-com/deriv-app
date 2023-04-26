@@ -42,6 +42,7 @@ const PurchaseButton = ({
     should_fade,
     onClickPurchase,
     type,
+    symbol,
 }) => {
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
@@ -134,6 +135,7 @@ const PurchaseButton = ({
                             should_fade={should_fade}
                             proposal_info={info}
                             type={type}
+                            symbol={symbol}
                         />
                     </div>
                 )}

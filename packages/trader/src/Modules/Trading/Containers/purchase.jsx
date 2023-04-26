@@ -86,6 +86,7 @@ const Purchase = ({
                     onClickPurchase={onClickPurchase}
                     setPurchaseState={setPurchaseState}
                     type={type}
+                    symbol={symbol}
                 />
             </div>
         );

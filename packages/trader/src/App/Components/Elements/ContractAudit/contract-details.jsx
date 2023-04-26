@@ -23,8 +23,17 @@ import {
 } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
+import { vanilla_financials } from 'Constants/trade-categories';
 
-const ContractDetails = ({ contract_end_time, contract_info, duration, duration_unit, exit_spot, is_vanilla }) => {
+const ContractDetails = ({
+    contract_end_time,
+    contract_info,
+    duration,
+    duration_unit,
+    exit_spot,
+    is_vanilla,
+    symbol,
+}) => {
     const {
         commission,
         contract_type,
@@ -45,6 +54,10 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
     const ticks_duration_text = isAccumulatorContract(contract_type)
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${tick_count < 2 ? localize('tick') : localize('ticks')}`;
+
+    const vanilla_payout_text = vanilla_financials.includes(symbol)
+        ? localize('Payout per pips')
+        : localize('Payout per point');
 
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
@@ -102,7 +115,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                 <ContractAuditItem
                                     id='dt_bt_label'
                                     icon={<Icon icon='IcContractPayout' size={24} />}
-                                    label={localize('Payout per point')}
+                                    label={vanilla_payout_text}
                                     value={
                                         `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(
                                             currency
@@ -172,6 +185,7 @@ ContractDetails.propTypes = {
     duration_unit: PropTypes.string,
     exit_spot: PropTypes.string,
     is_vanilla: PropTypes.bool,
+    symbol: PropTypes.string,
 };
 
 export default ContractDetails;

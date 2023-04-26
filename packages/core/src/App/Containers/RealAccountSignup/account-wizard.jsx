@@ -168,7 +168,7 @@ const AccountWizard = props => {
                     ...obj,
                     ...values,
                 };
-            });
+            }, {});
     };
 
     const clearError = () => {

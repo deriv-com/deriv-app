@@ -471,7 +471,7 @@ const StaticDashboard = ({
                                     is_eu_user={is_eu_user}
                                 />
                             )}
-                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                            {!is_eu_user && !CFDs_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'

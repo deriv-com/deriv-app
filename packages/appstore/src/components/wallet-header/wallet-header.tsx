@@ -87,7 +87,17 @@ const WalletHeader = observer(
                             is_dark_mode_on ? '-dark' : ''
                         }`}
                     >
-                        <Icon icon={`IcCurrency${currency[0] + currency.slice(1).toLowerCase()}`} size={48} />
+                        <Icon
+                            icon={`IcCurrency${currency[0] + currency.slice(1).toLowerCase() || 'Unknown'}`}
+                            size={48}
+                        />
+                        {/* <Icon icon={`IcAppstoreWalletDemo`} size={48} /> */}
+                        {/* <Icon icon={`IcDemo`} size={48} /> */}
+                        {/* <Icon icon={`IcCashierBitcoinDark`} size={48} /> */}
+                        {/* <Icon icon={`IcCashierBitcoinLight`} size={48} /> */}
+                        {/* <Icon icon={`IcWalletPaymentAgentLight`} size={48} /> */}
+                        {/* <Icon icon={`IcWalletPaymentAgentDark`} size={48} /> */}
+                        {/* <Icon icon={`IcCurrencyBtc`} size={48} /> */}
                     </div>
                     <div className='wallet-header__description'>
                         <div className='wallet-header__description-title'>

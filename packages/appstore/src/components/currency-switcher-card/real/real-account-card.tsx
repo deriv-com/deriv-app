@@ -26,6 +26,8 @@ const RealAccountCard = observer(() => {
         .map(key => current_list[key])
         .some(account => account.landing_company_short === 'maltainvest');
 
+    const get_currency = (IsIconCurrency(currency) && currency) || 'USD';
+
     return (
         <CurrencySwitcherContainer
             className='demo-account-card'
@@ -34,7 +36,7 @@ const RealAccountCard = observer(() => {
                     {getCurrencyName(currency)}
                 </Text>
             }
-            icon={IsIconCurrency(currency) ? currency : 'USD'}
+            icon={get_currency}
             onClick={() => {
                 if (!is_eu_user && !has_mf_mt5_account) {
                     openModal('currency_selection');
@@ -55,11 +57,7 @@ const RealAccountCard = observer(() => {
             }
             has_interaction
         >
-            <BalanceText
-                currency={IsIconCurrency(currency) ? currency : 'USD'}
-                balance={formatMoney(currency, balance, true)}
-                size='xs'
-            />
+            <BalanceText currency={get_currency} balance={formatMoney(currency, balance, true)} size='xs' />
         </CurrencySwitcherContainer>
     );
 });

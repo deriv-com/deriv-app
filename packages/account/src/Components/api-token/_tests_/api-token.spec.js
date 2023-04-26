@@ -72,8 +72,12 @@ describe('<ApiToken/>', () => {
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
-    const store = mockStore();
-    store.client.is_switching = false;
+    let store = mockStore();
+    store = mockStore({
+        client: {
+            is_switching: false,
+        },
+    });
     const mock_props = {
         footer_ref: undefined,
         is_app_settings: false,

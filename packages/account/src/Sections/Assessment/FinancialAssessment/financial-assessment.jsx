@@ -189,6 +189,7 @@ const FinancialAssessment = observer(() => {
     } = client;
     const { platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
+    const is_mf = landing_company_shortcode === 'maltainvest';
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -228,9 +229,7 @@ const FinancialAssessment = observer(() => {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 WS.wait('get_account_status').then(() => {
                     setHasTradingExperience(
-                        (is_financial_account || is_trading_experience_incomplete) &&
-                            !is_svg &&
-                            !(landing_company_shortcode === 'maltainvest')
+                        (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
                     );
                     if (data.error) {
                         setApiInitialLoadError(data.error.message);
@@ -305,7 +304,7 @@ const FinancialAssessment = observer(() => {
     };
 
     const getScrollOffset = () => {
-        if (landing_company_shortcode === 'maltainvest') {
+        if (is_mf) {
             if (isMobile() && is_financial_information_incomplete) return '220px';
             return is_financial_information_incomplete && !is_submit_success ? '165px' : '160px';
         } else if (isMobile()) return is_appstore ? '160px' : '200px';
@@ -315,7 +314,7 @@ const FinancialAssessment = observer(() => {
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
-    if (isMobile() && is_authentication_needed && !(landing_company_shortcode === 'maltainvest') && is_submit_success)
+    if (isMobile() && is_authentication_needed && !is_mf && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
     const setInitialFormData = () => {
@@ -340,7 +339,7 @@ const FinancialAssessment = observer(() => {
                 other_instruments_trading_frequency,
             }),
         };
-        if (!(landing_company_shortcode === 'maltainvest')) {
+        if (!is_mf) {
             return form_data;
         }
         delete form_data.employment_status;
@@ -381,26 +380,24 @@ const FinancialAssessment = observer(() => {
                         <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                         {is_form_visible && (
                             <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
-                                {landing_company_shortcode === 'maltainvest' &&
-                                    is_financial_information_incomplete &&
-                                    !is_submit_success && (
-                                        <div className='financial-banner'>
-                                            <div className='financial-banner__frame'>
-                                                <div className='financial-banner__container'>
-                                                    <Icon icon='IcAlertWarning' />
-                                                    {isMobile() ? (
-                                                        <Text size='xxxs' line_height='s'>
-                                                            <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
-                                                        </Text>
-                                                    ) : (
-                                                        <Text size='xxs' line_height='l'>
-                                                            <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
-                                                        </Text>
-                                                    )}
-                                                </div>
+                                {is_mf && is_financial_information_incomplete && !is_submit_success && (
+                                    <div className='financial-banner'>
+                                        <div className='financial-banner__frame'>
+                                            <div className='financial-banner__container'>
+                                                <Icon icon='IcAlertWarning' />
+                                                {isMobile() ? (
+                                                    <Text size='xxxs' line_height='s'>
+                                                        <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
+                                                    </Text>
+                                                ) : (
+                                                    <Text size='xxs' line_height='l'>
+                                                        <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
+                                                    </Text>
+                                                )}
                                             </div>
                                         </div>
-                                    )}
+                                    </div>
+                                )}
                                 <FormBody scroll_offset={getScrollOffset()}>
                                     <FormSubHeader
                                         title={localize('Financial information')}
@@ -440,7 +437,7 @@ const FinancialAssessment = observer(() => {
                                                 />
                                             </MobileWrapper>
                                         </fieldset>
-                                        {!(landing_company_shortcode === 'maltainvest') && (
+                                        {!is_mf && (
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
                                                     <Dropdown
@@ -976,7 +973,7 @@ const FinancialAssessment = observer(() => {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {isMobile() && !is_appstore && !(landing_company_shortcode === 'maltainvest') && (
+                                    {isMobile() && !is_appstore && !is_mf && (
                                         <Text
                                             align='center'
                                             size='xxs'

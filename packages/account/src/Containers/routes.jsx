@@ -1,4 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -18,7 +17,6 @@ const Routes = observer(props => {
 });
 
 Routes.propTypes = {
-    error: MobxPropTypes.objectOrObservableObject,
     is_virtual: PropTypes.bool,
     passthrough: PropTypes.object,
 };

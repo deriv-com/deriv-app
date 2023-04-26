@@ -9,13 +9,17 @@ describe('proof-of-ownership.jsx', () => {
     beforeAll(() => {
         ownership_temp = test_data;
     });
-    const store = mockStore();
+    let store = mockStore();
     it('should render no poo required status page', () => {
-        store.client.account_status = {
-            authentication: {
-                ownership: { requests: [], status: 'none' },
+        store = mockStore({
+            client: {
+                account_status: {
+                    authentication: {
+                        ownership: { requests: [], status: 'none' },
+                    },
+                },
             },
-        };
+        });
         render(
             <StoreProvider store={store}>
                 <ProofOfOwnership />
@@ -26,11 +30,15 @@ describe('proof-of-ownership.jsx', () => {
         expect(element).toBeInTheDocument();
     });
     it('should render poo verified status page', () => {
-        store.client.account_status = {
-            authentication: {
-                ownership: { requests: [], status: 'verified' },
+        store = mockStore({
+            client: {
+                account_status: {
+                    authentication: {
+                        ownership: { requests: [], status: 'verified' },
+                    },
+                },
             },
-        };
+        });
         render(
             <StoreProvider store={store}>
                 <ProofOfOwnership />
@@ -41,11 +49,15 @@ describe('proof-of-ownership.jsx', () => {
         expect(element).toBeInTheDocument();
     });
     it('should render poo submitted status page', () => {
-        store.client.account_status = {
-            authentication: {
-                ownership: { requests: [], status: 'pending' },
+        store = mockStore({
+            client: {
+                account_status: {
+                    authentication: {
+                        ownership: { requests: [], status: 'pending' },
+                    },
+                },
             },
-        };
+        });
         render(
             <StoreProvider store={store}>
                 <ProofOfOwnership />
@@ -56,11 +68,15 @@ describe('proof-of-ownership.jsx', () => {
         expect(element).toBeInTheDocument();
     });
     it('should render poo rejected status page', () => {
-        store.client.account_status = {
-            authentication: {
-                ownership: { requests: [], status: 'rejected' },
+        store = mockStore({
+            client: {
+                account_status: {
+                    authentication: {
+                        ownership: { requests: [], status: 'rejected' },
+                    },
+                },
             },
-        };
+        });
         render(
             <StoreProvider store={store}>
                 <ProofOfOwnership />
@@ -71,12 +87,16 @@ describe('proof-of-ownership.jsx', () => {
         expect(element).toBeInTheDocument();
     });
     it('should render ProofOfOwnershipForm', () => {
-        store.client.account_status = {
-            authentication: {
-                ownership: { requests: ownership_temp.requests, status: ownership_temp.status },
-                needs_verification: ['ownership'],
+        store = mockStore({
+            client: {
+                account_status: {
+                    authentication: {
+                        ownership: { requests: ownership_temp.requests, status: ownership_temp.status },
+                        needs_verification: ['ownership'],
+                    },
+                },
             },
-        };
+        });
         render(
             <StoreProvider store={store}>
                 <ProofOfOwnership />

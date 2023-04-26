@@ -105,6 +105,7 @@ const AccountLimits = observer(
             );
 
         const context_value = {
+            currency,
             footer_ref,
             overlay_ref,
             toggleOverlay,

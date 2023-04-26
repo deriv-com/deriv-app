@@ -97,8 +97,8 @@ type TNotification =
     | ((excluded_until: number) => TNotificationMessage);
 
 type TClientStore = {
-    fetchResidenceList: () => ResidenceList;
-    fetchStatesList: () => StatesList;
+    fetchResidenceList: () => Promise<ResidenceList>;
+    fetchStatesList: () => Promise<StatesList>;
     getChangeableFields: () => string[];
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
@@ -120,10 +120,7 @@ type TClientStore = {
     cfd_score: number;
     setCFDScore: (score: number) => void;
     currency: string;
-    residence_list: {
-        text: string;
-        value: string;
-    }[];
+    residence_list: ResidenceList;
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => { get_limits?: GetLimits };
@@ -136,8 +133,6 @@ type TClientStore = {
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
     is_uk: boolean;
-    is_loading_mt5: boolean;
-    is_loading_dxtrade: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
     is_financial_account: boolean;
@@ -225,8 +220,7 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
-    isCurrentLanguage(language_code: string): boolean | undefined;
-    changeLanguage(language_code: string, changeCurrentLanguage: (new_language: string) => void): unknown;
+    isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
@@ -253,7 +247,7 @@ type TUiStore = {
     is_mobile: boolean;
     sub_section_index: number;
     notification_messages_ui: JSX.Element | null;
-    toggleShouldShowRealAccountsList: (value: boolean) => boolean;
+    toggleShouldShowRealAccountsList: (value: boolean) => void;
     openRealAccountSignup: (value: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
@@ -277,13 +271,13 @@ type TMenuStore = {
 };
 
 type TNotificationStore = {
-    addNotificationMessageByKey: (obj: { key: string }) => void;
+    addNotificationMessageByKey: (key: string) => void;
     addNotificationMessage: (message: TNotification) => void;
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
-    removeNotificationByKey: (obj: { key: string }) => void;
-    removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
+    removeNotificationByKey: (key: string) => void;
+    removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;

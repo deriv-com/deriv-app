@@ -1,10 +1,11 @@
 import React from 'react';
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
-import { TCoreStores } from '@deriv/stores/types';
+import { setWebsocket } from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
+import { TCoreStores } from '@deriv/stores/types';
 
-// TODO: add correct types for stores and WS after implementing them
+// TODO: add correct types for WS after implementing them
 type TAppProps = {
     passthrough: {
         root_store: TCoreStores;
@@ -13,7 +14,8 @@ type TAppProps = {
 };
 
 const App = ({ passthrough }: TAppProps) => {
-    const { root_store } = passthrough;
+    const { root_store, WS } = passthrough;
+    setWebsocket(WS);
 
     return (
         <StoreProvider store={root_store}>

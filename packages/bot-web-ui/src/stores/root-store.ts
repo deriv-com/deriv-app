@@ -89,6 +89,6 @@ export default class RootStore {
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.blockly_store = new BlocklyStore(this);
-        this.data_collection_store = new DataCollectionStore(this);
+        this.data_collection_store = new DataCollectionStore(this, core);
     }
 }

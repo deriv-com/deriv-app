@@ -223,11 +223,13 @@ const TradingHubHeader = ({
 
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                {is_dark_mode ? (
-                    <DerivBrandLogoDark className='trading-hub-header__logo' />
-                ) : (
-                    <DerivBrandLogo className='trading-hub-header__logo' />
-                )}
+                <div className={cashier_routes && 'trading-hub-header__logo-wrapper'}>
+                    {is_dark_mode ? (
+                        <DerivBrandLogoDark className='trading-hub-header__logo' />
+                    ) : (
+                        <DerivBrandLogo className='trading-hub-header__logo' />
+                    )}
+                </div>
                 <DesktopWrapper>
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, getPlatformSettings, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, getPlatformSettings, routes, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier-onboarding.scss';
@@ -64,7 +64,13 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
 
     return (
         <div>
-            <Text className='cashier-onboarding-side-note__text' color='prominent' weight='bold' size='xs' as='p'>
+            <Text
+                className='cashier-onboarding-side-note__text'
+                color='prominent'
+                weight='bold'
+                size={isMobile() ? 'xxs' : 'xs'}
+                as='p'
+            >
                 {getHeaderTitle()}
             </Text>
             <Text className='cashier-onboarding-side-note__text' size='xxs' as='p' data-testid='dt_side_note_text'>

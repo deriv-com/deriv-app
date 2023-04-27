@@ -14,6 +14,7 @@ import DepositLocked from './deposit-locked';
 import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { CashierOnboardingModule } from '../../modules';
+import { CashierOnboardingSideNotes } from '../../modules/cashier-onboarding/components';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
@@ -88,9 +89,6 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                     ]);
                 }
             }
-            if (is_fiat_currency_banner_visible_for_MF_clients) {
-                setSideNotes([<SideNote key={0}>{/* <CashierOnboardingSideNote is_crypto={false} /> */}</SideNote>]);
-            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions, crypto_transactions?.length, is_cashier_onboarding, iframe_height]);
@@ -130,7 +128,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         return (
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && (
-                    <SideNote is_mobile>{/* <CashierOnboardingSideNote is_crypto={false} /> */}</SideNote>
+                    <CashierOnboardingSideNotes setSideNotes={setSideNotes} />
                 )}
                 <Real is_deposit />
             </>

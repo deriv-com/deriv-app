@@ -45,7 +45,7 @@ describe('JurisdictionCardSection', () => {
                 display_text_skin_color: string;
             };
             description?: string;
-            clickable_description?: [];
+            clickable_description?: [{ type: 'link' | 'text'; text: string }];
         };
         type_of_card: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
         toggleCardFlip: jest.Mock;
@@ -55,26 +55,26 @@ describe('JurisdictionCardSection', () => {
         account_status: {
             authentication: {
                 document: {
-                    status: 'none' as const,
+                    status: 'none',
                 },
                 identity: {
                     services: {
                         idv: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                         onfido: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                         manual: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                     },
                 },
                 needs_verification: [],
             },
             currency_config: {},
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 0 as const,
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
             risk_classification: '',
             status: [''],
         },
@@ -82,7 +82,7 @@ describe('JurisdictionCardSection', () => {
             key: '',
             title: 'Test Title',
             title_indicators: {
-                type: 'displayText' as const,
+                type: 'displayText',
                 display_text: 'Test Title Indicators Text',
                 display_text_skin_color: '',
             },

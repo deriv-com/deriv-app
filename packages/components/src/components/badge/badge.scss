@@ -1,0 +1,76 @@
+.dc-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+
+    &--bold {
+        font-weight: bold;
+    }
+
+    &--regular {
+        font-weight: normal;
+    }
+
+    &--tight {
+        padding: 0 0.4rem;
+    }
+
+    &--loose {
+        padding: 0 0.8rem;
+    }
+
+    &__medium {
+        height: 1.4rem;
+        font-size: var(--text-size-xxxs);
+
+        @include mobile {
+            height: 1.2rem;
+            font-size: var(--text-size-xxxxs);
+        }
+    }
+
+    &__large {
+        height: 2.2rem;
+        font-size: var(--text-size-xxxs);
+
+        @include mobile {
+            height: 1.6rem;
+            font-size: var(--text-size-xxxxs);
+        }
+    }
+
+    &--contained {
+        border: none;
+    }
+
+    &--bordered {
+        border: 1px solid var(--text-prominent);
+        color: var(--text-prominent);
+    }
+
+    &--blue {
+        background-color: #377cfc;
+    }
+
+    &--orange {
+        background-color: var(--brand-orange);
+    }
+
+    &--red {
+        background-color: var(--brand-red-coral);
+    }
+
+    &--gray {
+        background-color: #d6dadb;
+    }
+
+    &--full-rounded {
+        border-radius: $BORDER_RADIUS/2;
+    }
+
+    &--two-rounded {
+        border-bottom-left-radius: $BORDER_RADIUS * 2;
+        border-top-right-radius: $BORDER_RADIUS * 2;
+    }
+}

@@ -19,6 +19,8 @@ describe('JurisdictionClickableDescription', () => {
 
     it('should render JurisdictionClickableDescription', () => {
         render(<JurisdictionClickableDescription {...mock_props} />);
+        const container = screen.getByTestId('dt_jurisdiction_clickable_description');
+        expect(container).toHaveClass('cfd-card-clickable-description-link');
         expect(screen.getByText('Click here')).toBeInTheDocument();
         expect(screen.getByText('to learn more about the documents required for verification.')).toBeInTheDocument();
     });

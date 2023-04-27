@@ -29,13 +29,13 @@ const App = ({ passthrough }: Apptypes) => {
     }, [root_store]);
 
     return (
-        <TraderProviders store={passthrough.root_store}>
+        <TraderProviders store={root_store}>
             <Routes />
             <TradeModals />
             <NetworkStatusToastErrorPopup />
-            <TradeHeaderExtensions store={passthrough.root_store} />
+            <TradeHeaderExtensions store={root_store} />
             <TradeFooterExtensions />
-            <TradeSettingsExtensions store={passthrough.root_store} />
+            <TradeSettingsExtensions store={root_store} />
         </TraderProviders>
     );
 };

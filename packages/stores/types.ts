@@ -1,4 +1,5 @@
 import type {
+    AccountLimitsResponse,
     Authorize,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -98,13 +99,9 @@ type TClientStore = {
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
-    account_limits: {
-        daily_transfers?: {
-            [k: string]: {
-                allowed?: number;
-                available?: number;
-            };
-        };
+    account_limits: Partial<AccountLimitsResponse['get_limits']> & {
+        is_loading?: boolean;
+        api_initial_load_error?: string;
     };
     account_list: TAccountsList;
     account_settings: GetSettings;

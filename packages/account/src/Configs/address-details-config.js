@@ -1,5 +1,11 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
+import {
+    generateValidationFunction,
+    getDefaultFields,
+    getErrorMessages,
+    regex_checks,
+    address_permitted_special_characters_message,
+} from '@deriv/shared';
 
 const address_details_config = ({ account_settings, is_svg }) => {
     const is_gb = account_settings.country_code === 'gb';
@@ -16,7 +22,10 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
+                    localize('Use only the following special characters: {{permitted_characters}}', {
+                        permitted_characters: address_permitted_special_characters_message,
+                        interpolation: { escapeValue: false },
+                    }),
                     {
                         regex: regex_checks.address_details.address_line_1,
                     },
@@ -31,7 +40,10 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
+                    localize('Use only the following special characters: {{permitted_characters}}', {
+                        permitted_characters: address_permitted_special_characters_message,
+                        interpolation: { escapeValue: false },
+                    }),
                     {
                         regex: regex_checks.address_details.address_line_2,
                     },

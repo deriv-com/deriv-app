@@ -1,4 +1,4 @@
-// [TODO]: Remove duplicated functions from this file and use the ones in Helpers/utils.js
+// [TODO]: Remove duplicated functions from this file and use the ones in Helpers/utils
 
 import { getUrlBase } from '@deriv/shared';
 

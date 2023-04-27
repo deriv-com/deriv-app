@@ -34,7 +34,7 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 import classNames from 'classnames';
-import { shouldShowIdentityInformation, documentAdditionalError, getRegex } from 'Helpers/utils.js';
+import { shouldShowIdentityInformation, documentAdditionalError, getRegex } from 'Helpers/utils';
 import IDVForm from '../forms/idv-form';
 
 const DateOfBirthField = props => (

@@ -387,10 +387,7 @@ export default class TradersHubStore extends BaseStore {
     get financial_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
-        return (
-            (financial_company?.shortcode === 'svg' || financial_company?.shortcode === 'maltainvest') &&
-            !gaming_company
-        );
+        return financial_company?.shortcode === 'svg' && !gaming_company;
     }
 
     get CFDs_restricted_countries() {

@@ -13,7 +13,13 @@ $wallet-bg-color: (
     ),
 );
 
-// Mixins
+/// Wallet background color generator
+///
+/// This mixin will generate a helper classes for wallet background color based on the given map
+///
+/// @example
+///     .wallet__usd-bg
+///     .wallet__usd-bg--dark
 @mixin wallet-bg-color($currencies-map: $wallet-bg-color) {
     @each $currency, $themes in $currencies-map {
         @each $theme, $color in $themes {

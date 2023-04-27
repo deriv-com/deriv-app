@@ -117,7 +117,8 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     {/* is low risk with accounts  */}
                     {is_country_low_risk ? (
                         <>
-                            {should_show_risk_component ? (
+                            {!Array.isArray(non_eu_accounts) ||
+                            (!non_eu_accounts.length && should_show_risk_component) ? (
                                 <RiskComponent
                                     low_risk_without_non_eu={low_risk_without_non_eu}
                                     virtual={virtual}
@@ -134,7 +135,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                                 />
                             )}
 
-                            {should_show_risk_component ? (
+                            {!Array.isArray(eu_accounts) || (!eu_accounts.length && should_show_risk_component) ? (
                                 <RiskComponent
                                     low_risk_without_eu={low_risk_without_eu}
                                     virtual={virtual}

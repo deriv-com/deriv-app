@@ -4,7 +4,7 @@ import { UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import TraderProviders from '../../trader-providers';
-import { TCoreStores, TPopulateSettingsExtensionsMenuItem } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TTradeSettingsExtensionsProps = {
     store: TCoreStores;

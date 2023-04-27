@@ -74,7 +74,8 @@ const createTickMarkers = contract_info => {
     const result = [];
 
     if (is_contract_closed && is_accumulator) {
-        tick_stream.length = tick_stream.findIndex(tick => tick.epoch === contract_info.exit_tick_time) + 1;
+        const length = tick_stream.findIndex(tick => tick.epoch === contract_info.exit_tick_time) + 1;
+        tick_stream.length = length > 0 ? length : tick_stream.length;
     }
 
     tick_stream.forEach((tick, idx) => {

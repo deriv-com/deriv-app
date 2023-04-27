@@ -1,6 +1,6 @@
 import { generateValidationFunction, getDefaultFields, getErrorMessages, toMoment, validLength } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
+import { shouldShowIdentityInformation } from 'Helpers/utils.js';
 
 const personal_details_config = ({ residence_list, account_settings, is_appstore, real_account_signup_target }) => {
     if (!residence_list || !account_settings) {
@@ -142,6 +142,16 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             supported_in: ['maltainvest'],
             rules: [['confirm', localize('Please confirm your tax information.')]],
         },
+        document_type: {
+            default_value: account_settings.document_type ?? '',
+            supported_in: ['svg'],
+            rules: [],
+        },
+        document_number: {
+            default_value: account_settings.document_number ?? '',
+            supported_in: ['svg'],
+            rules: [],
+        },
     };
 
     const getConfig = () => {
@@ -182,7 +192,13 @@ const personalDetailsConfig = (
         props: {
             validate: generateValidationFunction(
                 real_account_signup_target,
-                transformConfig(config, { real_account_signup_target })
+                transformConfig(config, {
+                    real_account_signup_target,
+                    residence_list,
+                    account_settings,
+                    account_status,
+                    residence,
+                })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
             is_mf: real_account_signup_target === 'maltainvest',
@@ -221,10 +237,26 @@ const personalDetailsConfig = (
     };
 };
 
-const transformConfig = (config, { real_account_signup_target }) => {
+const transformConfig = (
+    config,
+    { real_account_signup_target, residence_list, account_settings, account_status, residence }
+) => {
     // Remove required rule for malta and iom
     if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
         config.tax_residence.rules.shift();
+    }
+    // Remove IDV for non supporting SVG countries
+    if (
+        !shouldShowIdentityInformation({
+            account_status,
+            account_settings,
+            residence,
+            residence_list,
+            real_account_signup_target,
+        })
+    ) {
+        delete config.document_type;
+        delete config.document_number;
     }
     return config;
 };

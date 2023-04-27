@@ -8,6 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 const MarketUnavailableModal = observer(({ onCancel, onConfirm }) => {
     const { ui } = useStore();
     const { disableApp, enableApp, is_loading, has_only_forward_starting_contracts: is_visible } = ui;
+
     return (
         <Dialog
             className='market-unavailable-modal'

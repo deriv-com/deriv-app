@@ -8,6 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 const UnsupportedContractModal = observer(({ onConfirm, onClose }) => {
     const { ui } = useStore();
     const { disableApp, enableApp, is_loading, is_unsupported_contract_modal_visible: is_visible } = ui;
+
     return (
         <Dialog
             title={localize('We’re working on it')}

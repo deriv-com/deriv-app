@@ -23,19 +23,19 @@ const TradeModals = Loadable({
 });
 
 const App = ({ passthrough }: Apptypes) => {
-    const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
+    const root_store = initStore(passthrough.root_store, passthrough.WS);
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
 
     return (
-        <TraderProviders store={root_store}>
+        <TraderProviders store={passthrough.root_store}>
             <Routes />
             <TradeModals />
             <NetworkStatusToastErrorPopup />
-            <TradeHeaderExtensions store={root_store} />
+            <TradeHeaderExtensions store={passthrough.root_store} />
             <TradeFooterExtensions />
-            <TradeSettingsExtensions store={root_store} />
+            <TradeSettingsExtensions store={passthrough.root_store} />
         </TraderProviders>
     );
 };

@@ -10,6 +10,7 @@ export const DigitsWidget = observer(() => {
     const { contract_replay } = useStore();
     const { contract_store } = contract_replay;
     const { contract_info, digits_info, display_status, is_digit_contract, is_ended } = contract_store;
+
     return (
         <Digits
             is_digit_contract={is_digit_contract}
@@ -26,6 +27,7 @@ export const InfoBoxWidget = observer(() => {
     const { is_vanilla } = useTraderStore();
     const { contract_store, removeErrorMessage: removeError, error_message } = contract_replay;
     const { contract_info } = contract_store;
+
     return (
         <InfoBox
             contract_info={contract_info}

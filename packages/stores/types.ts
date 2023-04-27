@@ -2,7 +2,7 @@ import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, L
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
-export type TPopulateSettingsExtensionsMenuItem = {
+type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
     label: string;
     value: <T extends object>(props: T) => JSX.Element;
@@ -296,6 +296,7 @@ type TTradersHubStore = {
     no_CR_account: boolean;
     no_MF_account: boolean;
 };
+
 type TPortfolioStore = {
     onMount: () => void;
 };

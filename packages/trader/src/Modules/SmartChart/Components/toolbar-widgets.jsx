@@ -7,6 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 
 const ToolbarWidgets = observer(({ position, updateChartType, updateGranularity }) => {
     const { is_accumulator } = useTraderStore();
+
     return (
         <ToolbarWidget position={position || isMobile() ? 'bottom' : null}>
             {!is_accumulator && (
@@ -26,4 +27,4 @@ ToolbarWidgets.propTypes = {
     updateGranularity: PropTypes.func,
 };
 
-export default React.memo(ToolbarWidgets);
+export default ToolbarWidgets;

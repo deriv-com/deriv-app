@@ -7,6 +7,7 @@ const ControlWidgets = observer(() => {
     const {
         contract_trade: { updateChartType, updateGranularity },
     } = useStore();
+
     return (
         <React.Fragment>
             <DesktopWrapper>

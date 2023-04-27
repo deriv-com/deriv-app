@@ -22,6 +22,7 @@ const ChartSettings = observer(() => {
         is_dark_mode_on: is_dark_mode,
         setChartCountdown: setCountdown,
     } = ui;
+
     return (
         <div className='settings-chart'>
             <MediaItem>

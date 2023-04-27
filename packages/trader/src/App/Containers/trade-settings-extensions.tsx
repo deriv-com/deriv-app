@@ -34,7 +34,7 @@ const TradeSettingsExtensions = observer(({ store }: TTradeSettingsExtensionsPro
     const { ui } = useStore();
     const { populateSettingsExtensions } = ui;
     const populateSettings = () => {
-        const menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null = [
+        const menu_items: Parameters<typeof populateSettingsExtensions>[0] = [
             {
                 icon: 'IcChart',
                 label: localize('Charts'),

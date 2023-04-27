@@ -37,7 +37,6 @@ const ContractDrawer = observer(
         const { common, ui } = useStore();
         const { server_time } = common;
         const { is_mobile } = ui;
-
         const { currency, exit_tick_display_value, is_sold } = contract_info;
         const contract_drawer_ref = React.useRef();
         const contract_drawer_card_ref = React.useRef();

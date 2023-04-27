@@ -246,7 +246,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                         icon_width={16}
                         message={
                             <Text as='p' size='xs'>
-                                <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
+                                <Localize i18n_default_text='Your personal details have been saved successfully.' />
                             </Text>
                         }
                         is_info

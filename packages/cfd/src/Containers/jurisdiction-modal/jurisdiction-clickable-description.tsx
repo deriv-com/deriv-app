@@ -10,7 +10,12 @@ const JurisdictionClickableDescription = ({
         {clickable_description.map(description_part => {
             return description_part.type === 'link' ? (
                 <span key={description_part.text} onClick={toggleCardFlip}>
-                    <Text as='span' size='xxs' className='cfd-card-clickable-description-link'>
+                    <Text
+                        data-testid='dt_jurisdiction_clickable_description'
+                        as='span'
+                        size='xxs'
+                        className='cfd-card-clickable-description-link'
+                    >
                         {description_part.text}
                     </Text>
                     &nbsp;

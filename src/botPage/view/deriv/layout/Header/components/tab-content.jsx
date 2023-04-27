@@ -7,7 +7,7 @@ import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import classNames from 'classnames';
 import config from '../../../../../../app.config';
 
-const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = "Deriv Accounts" }) => {
+const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
     const { active_account_name } = useSelector(state => state.client);

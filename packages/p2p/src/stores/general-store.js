@@ -739,7 +739,7 @@ export default class GeneralStore extends BaseStore {
             return;
         }
 
-        const { p2p_order_list, p2p_order_info } = order_response;
+        const { p2p_order_list = [], p2p_order_info = {} } = order_response;
         const { order_store } = this.root_store;
 
         if (p2p_order_list) {

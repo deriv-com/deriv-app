@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import countries from 'i18n-iso-countries';
 import * as Cookies from 'js-cookie';
 import { init } from 'onfido-sdk-ui';
+import { CSSTransition } from 'react-transition-group';
 import { HintBox, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
@@ -19,6 +20,8 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
     const [retry_count, setRetryCount] = React.useState(0);
     const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(true);
     const token_timeout_ref = React.useRef();
+    const [are_details_saved, setAreDetailsSaved] = React.useState(false);
+    const [is_status_message_visible, setIsStatusMessageVisible] = React.useState(false);
 
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
     // Ensures that any form of country code passed here is supported.
@@ -165,6 +168,17 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
         });
     };
 
+    const onConfirm = () => {
+        setTimeout(() => {
+            setIsOnfidoDisabled(false);
+            setAreDetailsSaved(true);
+            setIsStatusMessageVisible(true);
+        }, 800);
+        setTimeout(() => {
+            setIsStatusMessageVisible(false);
+        }, 4650);
+    };
+
     React.useEffect(() => {
         // retry state will re-run the token fetching
         if (retry_count === 0) {
@@ -198,29 +212,61 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
             <div className='onfido-container'>
                 {component_to_load ||
                     (!is_from_external && (
-                        <div style={{ marginBottom: '24px' }}>
-                            <PoiConfirmWithExample
-                                onConfirm={() => setIsOnfidoDisabled(false)}
-                                name_dob_clarification_message=<Localize
-                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                                    components={[<strong key={0} />]}
-                                />
-                            />
-                        </div>
+                        <CSSTransition
+                            appear={!are_details_saved}
+                            in={!are_details_saved}
+                            timeout={{
+                                exit: 350,
+                            }}
+                            classNames={{
+                                exit: 'account-form__poi-confirm-example_container--exit',
+                            }}
+                            unmountOnExit
+                        >
+                            <div className='account-form__poi-confirm-example_container'>
+                                <PoiConfirmWithExample onFormConfirm={onConfirm} />
+                            </div>
+                        </CSSTransition>
                     ))}
-                <div style={{ position: 'relative' }}>
+                <CSSTransition
+                    appear={is_status_message_visible}
+                    in={is_status_message_visible}
+                    timeout={{
+                        exit: 350,
+                    }}
+                    classNames={{
+                        exit: 'onfido-container__status-message--exit',
+                    }}
+                    unmountOnExit
+                >
                     <HintBox
-                        className='onfido-container__message'
-                        icon='IcInfoBlue'
+                        className='onfido-container__status-message'
+                        icon='IcAlertAnnounce'
                         icon_height={16}
                         icon_width={16}
                         message={
-                            <Text as='p' size='xxxs'>
+                            <Text as='p' size='xs'>
                                 <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
                             </Text>
                         }
                         is_info
                     />
+                </CSSTransition>
+                <div style={{ position: 'relative' }}>
+                    {is_onfido_disabled && (
+                        <HintBox
+                            className='onfido-container__info-message'
+                            icon='IcInfoBlue'
+                            icon_height={16}
+                            icon_width={16}
+                            message={
+                                <Text as='p' size='xxxs'>
+                                    <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
+                                </Text>
+                            }
+                            is_info
+                        />
+                    )}
                     <div
                         id='onfido'
                         className={classNames({

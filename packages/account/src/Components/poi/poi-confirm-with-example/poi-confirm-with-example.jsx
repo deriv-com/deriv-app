@@ -1,50 +1,15 @@
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import React from 'react';
-import { localize } from '@deriv/translations';
-import InlineNoteWithIcon from 'Components/inline-note-with-icon';
-import { connect } from 'Stores/connect';
-// import RootStore from 'Stores/index';
 import classNames from 'classnames';
 import { Formik } from 'formik';
-import {
-    Checkbox,
-    DateOfBirthPicker,
-    DesktopWrapper,
-    // FormSubmitErrorMessage,
-    Input,
-    Loading,
-    MobileWrapper,
-    // useStateCallback,
-} from '@deriv/components';
+import { Checkbox, DateOfBirthPicker, DesktopWrapper, Input, Loading, MobileWrapper } from '@deriv/components';
 import { WS, filterObjProperties, toMoment, validLength, validName } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import PoiNameDobExampleIcon from 'Assets/ic-poi-name-dob-example.svg';
+import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
 import LoadErrorMessage from 'Components/load-error-message';
-
-// type TPoiConfirmWithExample = {
-//     account_settings;
-//     getChangeableFields: () => string[];
-//     updateAccountStatus: () => void;
-// } & (
-//     | {
-//           name_dob_clarification_message?: string;
-//           name_clarification_message?: never;
-//           dob_clarification_message?: never;
-//       }
-//     | {
-//           name_dob_clarification_message?: never;
-//           name_clarification_message?: string;
-//           dob_clarification_message?: never;
-//       }
-//     | {
-//           name_dob_clarification_message?: never;
-//           name_clarification_message?: never;
-//           dob_clarification_message?: string;
-//       }
-// );
-
-// const PoiNameDobExampleIcon = PoiNameDobExample as React.ElementType;
-const PoiNameDobExampleIcon = PoiNameDobExample;
+import { connect } from 'Stores/connect';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -53,17 +18,15 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
     });
 };
 
-// type TValues = {};
+const PoiConfirmWithExample = ({ account_settings, getChangeableFields, onFormConfirm, updateAccountStatus }) => {
+    const form_side_note = <PoiNameDobExampleIcon />;
+    const name_dob_clarification_message = (
+        <Localize
+            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+            components={[<strong key={0} />]}
+        />
+    );
 
-const PoiConfirmWithExample = ({
-    account_settings,
-    dob_clarification_message,
-    getChangeableFields,
-    name_clarification_message,
-    name_dob_clarification_message,
-    onConfirm,
-    updateAccountStatus,
-}) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [checked, setChecked] = React.useState(false);
     const [rest_state, setRestState] = React.useState({
@@ -75,6 +38,7 @@ const PoiConfirmWithExample = ({
 
     React.useEffect(() => {
         initializeFormValues();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
     const makeSettingsRequest = settings => {
@@ -112,7 +76,7 @@ const PoiConfirmWithExample = ({
             setRestState({ ...rest_state, ...response.get_settings });
             setChecked(true);
             setIsLoading(false);
-            onConfirm();
+            onFormConfirm();
         }
     };
 
@@ -166,32 +130,17 @@ const PoiConfirmWithExample = ({
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
-    const getFormSideNote = () => {
-        let form_side_note;
-        if (name_dob_clarification_message) {
-            form_side_note = <PoiNameDobExampleIcon />;
-        }
-        //below two form_side_note option will be implemented for showing proper example picture
-        if (name_clarification_message) {
-            form_side_note = 'name example';
-        }
-        if (dob_clarification_message) {
-            form_side_note = 'dob example';
-        }
-        return form_side_note;
-    };
-
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
             {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
                 <form
                     noValidate
-                    className={classNames('account-form__poi-confirm-example', {})}
+                    className={classNames('account-form__poi-confirm-example ', {})}
                     onSubmit={handleSubmit}
                 >
                     <InlineNoteWithIcon message={name_dob_clarification_message} font_size='xs' />
                     <FormBody>
-                        <FormBodySection has_side_note side_note={getFormSideNote()}>
+                        <FormBodySection has_side_note side_note={form_side_note}>
                             <DesktopWrapper>
                                 <fieldset className='account-form__fieldset'>
                                     <Input

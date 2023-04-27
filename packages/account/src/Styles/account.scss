@@ -680,6 +680,18 @@ $MIN_HEIGHT_FLOATING: calc(
             border-radius: 0.8rem;
             padding: 1.6rem;
 
+            &_container {
+                margin-bottom: 2.4rem;
+                transition: transform 0.35s ease, opacity 0.35s linear;
+                transform-origin: top;
+                opacity: 1;
+
+                &--exit {
+                    transform: scale(1, 0);
+                    opacity: 0;
+                }
+            }
+
             .da-inline-note-with-icon {
                 border-radius: 0.8rem;
                 margin-top: 0;
@@ -2103,6 +2115,8 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define onfido-container; weak */
 .onfido-container {
+    text-align: center;
+
     &__hidden {
         display: none;
     }
@@ -2112,11 +2126,26 @@ $MIN_HEIGHT_FLOATING: calc(
         pointer-events: none;
     }
 
-    &__message {
+    &__info-message {
         position: absolute;
         top: 2.4rem;
         left: 19.2rem;
         z-index: 1;
+    }
+
+    &__status-message {
+        background-color: var(--transparent-correct-message);
+        margin-bottom: 2.4rem;
+        width: 51.2rem;
+        justify-content: flex-start;
+        transition: transform 0.35s ease, opacity 0.35s linear;
+        transform-origin: top;
+        opacity: 1;
+
+        &--exit {
+            transform: scale(1, 0);
+            opacity: 0;
+        }
     }
 
     @include mobile {
@@ -2292,7 +2321,7 @@ $MIN_HEIGHT_FLOATING: calc(
     height: 100%;
 
     &__main-container {
-        max-width: 67.2rem;
+        max-width: 68.2rem;
     }
 
     .min-height {

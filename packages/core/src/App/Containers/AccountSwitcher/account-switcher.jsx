@@ -22,6 +22,7 @@ import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
 import { observer, useStore } from '@deriv/stores';
+import { useHasSetCurrency } from '@deriv/hooks';
 
 const AccountSwitcher = observer(({ is_visible }) => {
     const { client, common, ui, traders_hub } = useStore();
@@ -168,9 +169,7 @@ const AccountSwitcher = observer(({ is_visible }) => {
         return [];
     };
 
-    const hasSetCurrency = () => {
-        return account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real');
-    };
+    const hasSetCurrency = useHasSetCurrency();
 
     const getTotalDemoAssets = () => {
         const vrtc_balance = accounts[vrtc_loginid] ? accounts[vrtc_loginid].balance : 0;
@@ -429,7 +428,7 @@ const AccountSwitcher = observer(({ is_visible }) => {
                     <div className='acc-switcher__traders-hub'>
                         <BinaryLink onClick={handleRedirect} className='acc-switcher__traders-hub--link'>
                             <Text size='xs' align='center' className='acc-switcher__traders-hub--text'>
-                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's hub" />
+                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's Hub" />
                             </Text>
                         </BinaryLink>
                     </div>
@@ -511,7 +510,7 @@ const AccountSwitcher = observer(({ is_visible }) => {
                         className='acc-switcher__btn--traders_hub'
                         secondary
                         onClick={
-                            has_any_real_account && !hasSetCurrency()
+                            has_any_real_account && !hasSetCurrency
                                 ? setAccountCurrency
                                 : () => openRealAccountSignup('manage')
                         }

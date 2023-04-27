@@ -12,14 +12,6 @@ type TMockBinaryLink = {
     setError?: () => void;
 };
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
 const store = mockStore();
 
 const MockBinaryLink = ({ active_class, to }: TMockBinaryLink) => (

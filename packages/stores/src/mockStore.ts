@@ -115,6 +115,25 @@ const mock = (): TStores => {
             },
             balance: '',
             can_change_fiat_currency: false,
+            currencies_list: {
+                fractional_digits: 0,
+                is_deposit_suspended: 0,
+                is_suspended: 0,
+                is_withdrawal_suspended: 0,
+                name: '',
+                stake_default: 0,
+                transfer_between_accounts: {
+                    fees: {
+                        '': 0,
+                    },
+                    limits: {
+                        max: 0,
+                        min: 0,
+                    },
+                },
+                type: 'fiat',
+                value: '',
+            },
             currency: '',
             current_currency_type: '',
             current_fiat_currency: '',
@@ -125,6 +144,8 @@ const mock = (): TStores => {
             has_active_real_account: false,
             has_logged_out: false,
             has_maltainvest_account: false,
+            is_mt5_allowed: false,
+            has_fiat: false,
             initialized_broadcast: false,
             is_account_setting_loaded: false,
             is_deposit_lock: false,
@@ -197,6 +218,7 @@ const mock = (): TStores => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            upgradeable_currencies: [],
         },
         common: {
             error: {
@@ -245,6 +267,16 @@ const mock = (): TStores => {
             has_real_account_signup_ended: false,
             notification_messages_ui: null,
             openRealAccountSignup: jest.fn(),
+            real_account_signup_target: '',
+            real_account_signup: {
+                active_modal_index: 0,
+                current_currency: '',
+                error_message: '',
+                previous_currency: '',
+                success_message: '',
+                error_code: 0,
+            },
+            resetRealAccountSignupParams: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
@@ -307,6 +339,12 @@ const mock = (): TStores => {
             data: undefined,
             update: jest.fn(),
             unmount: jest.fn(),
+        },
+        rudderstack: {
+            identifyEvent: jest.fn(),
+            pageView: jest.fn(),
+            reset: jest.fn(),
+            track: jest.fn(),
         },
     };
 };

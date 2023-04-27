@@ -2,15 +2,6 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ToggleSettings } from '../toggle-settings.jsx';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
-
 describe('ToggleSettings Component', () => {
     it('should render toggle settings with "ic-settings" footer class', () => {
         render(<ToggleSettings />);

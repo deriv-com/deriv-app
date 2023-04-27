@@ -3,6 +3,25 @@ import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
+type TCurrencyConfig = {
+    fractional_digits: number;
+    is_deposit_suspended: 0 | 1;
+    is_suspended: 0 | 1;
+    is_withdrawal_suspended: 0 | 1;
+    name: string;
+    stake_default: number;
+    transfer_between_accounts: {
+        fees: {
+            [key: string]: number;
+        };
+        limits: {
+            max: number;
+            min: number;
+        } | null;
+    };
+    type: 'fiat' | 'crypto';
+    value: string;
+};
 
 type TAccountsList = {
     account?: {
@@ -32,7 +51,14 @@ type TAccountsList = {
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
-
+type TRealAccount = {
+    active_modal_index: number;
+    current_currency: string;
+    error_message: string;
+    previous_currency: string;
+    success_message: string;
+    error_code: number;
+};
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: number;
@@ -101,11 +127,12 @@ type TClientStore = {
     };
     account_list: TAccountsList;
     account_status: GetAccountStatus;
-    available_crypto_currencies: string[];
+    available_crypto_currencies: TCurrencyConfig[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
     cfd_score: number;
     setCFDScore: (score: number) => void;
+    currencies_list: TCurrencyConfig;
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -174,8 +201,11 @@ type TClientStore = {
     };
     email: string;
     setVerificationCode: (code: string, action: string) => void;
+    upgradeable_currencies: TCurrencyConfig[];
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
+    is_mt5_allowed: boolean;
+    has_fiat: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
@@ -231,6 +261,9 @@ type TUiStore = {
     is_mobile: boolean;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value: string) => void;
+    real_account_signup_target: string;
+    real_account_signup: TRealAccount;
+    resetRealAccountSignupParams: () => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
@@ -303,6 +336,13 @@ type TGtmStore = {
     setLoginFlag: () => void;
 };
 
+type TRudderstackStore = {
+    identifyEvent: () => Promise<void>;
+    pageView: () => void;
+    reset: () => void;
+    track: (event_name: string, options: string) => void;
+};
+
 /**
  * This is the type that contains all the `core` package stores
  */
@@ -317,6 +357,7 @@ export type TCoreStores = {
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
     gtm: TGtmStore;
+    rudderstack: TRudderstackStore;
 };
 
 export type TStores = TCoreStores & {

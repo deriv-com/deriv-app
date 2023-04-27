@@ -5,40 +5,42 @@ import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { WS } from 'Services';
-import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import AddCurrency from './add-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
+import { observer, useStore } from '@deriv/stores';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
-const AddOrManageAccounts = props => {
+const AddOrManageAccounts = observer(props => {
     const {
-        available_crypto_currencies,
-        can_change_fiat_currency,
-        createCryptoAccount,
-        current_currency_type,
         deposit_target,
-        has_fiat,
         is_add_crypto,
         is_add_currency,
         is_add_fiat,
         is_loading,
-        manage_real_account_tab_index,
         onError,
         onSuccessSetAccountCurrency,
-        resetRealAccountSignupTarget,
-        setCurrency,
         setLoading,
-        setIsDeposit,
-        setShouldShowCancel,
         onClose,
-        show_eu_related_content,
-        is_low_risk,
-        loginid,
     } = props;
 
+    const { client, modules, ui, traders_hub } = useStore();
+    const {
+        available_crypto_currencies,
+        can_change_fiat_currency,
+        current_currency_type,
+        has_fiat,
+        setAccountCurrency: setCurrency,
+        createCryptoAccount,
+        is_low_risk,
+        loginid,
+    } = client;
+    const { cashier } = modules;
+    const { show_eu_related_content } = traders_hub;
+    const { manage_real_account_tab_index, setShouldShowCancel, resetRealAccountSignupTarget } = ui;
+    const setIsDeposit = cashier.general_store.setIsDeposit;
     const initial_active_index =
         manage_real_account_tab_index ?? (has_fiat && available_crypto_currencies?.length === 0) ? 1 : 0;
 
@@ -186,57 +188,18 @@ const AddOrManageAccounts = props => {
             )}
         </ThemedScrollbars>
     );
-};
+});
 
 AddOrManageAccounts.propTypes = {
-    available_crypto_currencies: PropTypes.arrayOf({
-        fractional_digits: PropTypes.number,
-        is_deposit_suspended: PropTypes.number,
-        is_suspended: PropTypes.number,
-        is_withdrawal_suspended: PropTypes.number,
-        name: PropTypes.string,
-        stake_default: PropTypes.number,
-        transfer_between_accounts: PropTypes.object,
-        type: PropTypes.string,
-        value: PropTypes.string,
-    }),
     onClose: PropTypes.func,
     onError: PropTypes.func,
-    onLoading: PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
-    setCurrency: PropTypes.func,
-    createCryptoAccount: PropTypes.func,
-    has_fiat: PropTypes.bool,
-    can_change_fiat_currency: PropTypes.bool,
-    current_currency_type: PropTypes.string,
     is_loading: PropTypes.bool,
     is_add_crypto: PropTypes.bool,
     setLoading: PropTypes.func,
-    setShouldShowCancel: PropTypes.func,
     is_add_fiat: PropTypes.bool,
     is_add_currency: PropTypes.bool,
     deposit_target: PropTypes.string,
-    resetRealAccountSignupTarget: PropTypes.func,
-    setIsDeposit: PropTypes.func,
-    manage_real_account_tab_index: PropTypes.number,
-    show_eu_related_content: PropTypes.bool,
-    is_low_risk: PropTypes.bool,
-    loginid: PropTypes.string,
 };
 
-export default connect(({ client, modules, ui, traders_hub }) => ({
-    available_crypto_currencies: client.available_crypto_currencies,
-    can_change_fiat_currency: client.can_change_fiat_currency,
-    current_currency_type: client.current_currency_type,
-    current_fiat_currency: client.current_fiat_currency,
-    has_fiat: client.has_fiat,
-    manage_real_account_tab_index: ui.manage_real_account_tab_index,
-    setCurrency: client.setAccountCurrency,
-    setShouldShowCancel: ui.setShouldShowCancel,
-    createCryptoAccount: client.createCryptoAccount,
-    resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
-    setIsDeposit: modules.cashier.general_store.setIsDeposit,
-    show_eu_related_content: traders_hub.show_eu_related_content,
-    is_low_risk: client.is_low_risk,
-    loginid: client.loginid,
-}))(AddOrManageAccounts);
+export default AddOrManageAccounts;

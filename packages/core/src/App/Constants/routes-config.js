@@ -66,16 +66,16 @@ const AppStore = React.lazy(() =>
 const getModules = () => {
     const modules = [
         {
-            path: routes.bot,
-            component: Bot,
-            // Don't use `Localize` component since native html tag like `option` cannot render them
-            getTitle: () => localize('Bot'),
-        },
-        {
             path: routes.new_bot,
             component: NewBot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('NewBot'),
+        },
+        {
+            path: routes.bot,
+            component: Bot,
+            // Don't use `Localize` component since native html tag like `option` cannot render them
+            getTitle: () => localize('Bot'),
         },
         {
             path: routes.reports,

@@ -9,8 +9,6 @@ const mock_connect_props = {
         demo: '',
         real: '',
     },
-    setMT5TradeAccount: jest.fn(),
-    isEligibleForMoreDemoMt5Svg: () => true,
 };
 
 jest.mock('Stores/connect.js', () => ({
@@ -44,7 +42,7 @@ describe('CFDDxtradeDemoAccountDisplay', () => {
 
         expect(screen.getByTestId('dt_barspinner')).toBeInTheDocument();
     });
-    it('should render CFDAccountCard', () => {
+    it('should render CFDAccountCard component if is_loading === false', () => {
         render(<CFDDxtradeDemoAccountDisplay {...mock_props} />);
 
         expect(screen.getByText('Deriv X')).toBeInTheDocument();

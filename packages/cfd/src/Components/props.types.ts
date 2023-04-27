@@ -164,3 +164,23 @@ export type TTradingPlatformAccounts = {
      */
     platform?: 'dxtrade';
 };
+
+export type TSuccessDialog = {
+    classNameMessage: string;
+    has_cancel: boolean;
+    has_submit: boolean;
+    icon: string;
+    message: string;
+    onCancel: () => void;
+    onSubmit: () => void;
+    heading: string;
+    icon_size: string;
+    text_submit: string;
+    text_cancel: string;
+    is_open: boolean;
+    toggleModal: () => void;
+    title: string;
+    has_close_icon: string;
+    width: string;
+    is_medium_button: boolean;
+};

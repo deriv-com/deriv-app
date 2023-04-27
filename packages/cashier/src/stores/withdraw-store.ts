@@ -92,7 +92,7 @@ export default class WithdrawStore {
             dry_run: 1,
         }).then(response => {
             if (response.error) {
-                this.error.setErrorMessage({ code: 'CryptoWithdrawalError', message: response.error.message });
+                this.error.setErrorMessage({ code: response.error.code, message: response.error.message });
                 this.setCryptoConfig().then(() => this.validateWithdrawFromAmount());
             } else {
                 this.saveWithdraw(verification_code);

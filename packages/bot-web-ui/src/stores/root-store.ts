@@ -82,8 +82,8 @@ export default class RootStore {
         this.toolbar = new ToolbarStore(this);
         this.toolbox = new ToolboxStore(this, core);
         this.quick_strategy = new QuickStrategyStore(this);
-        this.route_prompt_dialog = new RoutePromptDialogStore(this);
-        this.self_exclusion = new SelfExclusionStore(this);
+        this.route_prompt_dialog = new RoutePromptDialogStore(this, core);
+        this.self_exclusion = new SelfExclusionStore(this, core);
         this.dashboard = new DashboardStore(this);
 
         // need to be at last for dependency

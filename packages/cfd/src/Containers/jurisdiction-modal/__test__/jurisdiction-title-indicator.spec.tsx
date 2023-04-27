@@ -52,26 +52,26 @@ describe('JurisdictionTitleIndicator', () => {
         account_status: {
             authentication: {
                 document: {
-                    status: 'none' as const,
+                    status: 'none',
                 },
                 identity: {
                     services: {
                         idv: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                         onfido: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                         manual: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                     },
                 },
                 needs_verification: [],
             },
             currency_config: {},
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 0 as const,
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
             risk_classification: '',
             status: [''],
         },

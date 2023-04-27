@@ -319,7 +319,6 @@ export default class CFDStore extends BaseStore {
             password: CFD_PLATFORMS.DXTRADE ? values.password : '',
             platform: values.platform,
             account_type: this.account_type.category,
-            // market_type: this.account_type.type === 'dxtrade' ? 'all' : this.account_type.type,
             market_type:
                 this.account_type.type === 'dxtrade' || this.account_type.type === 'derivez'
                     ? 'all'

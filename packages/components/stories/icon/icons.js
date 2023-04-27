@@ -63,7 +63,6 @@ export const icons =
         'IcBrandDerivEzWordmark',
         'IcBrandDerivEz',
         'IcBrandDeriv',
-        'IcBrandDerivez',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',

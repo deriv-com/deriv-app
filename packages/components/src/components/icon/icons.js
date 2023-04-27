@@ -58,7 +58,6 @@ import './brand/ic-brand-deriv-apps.svg';
 import './brand/ic-brand-deriv-ez-wordmark.svg';
 import './brand/ic-brand-deriv-ez.svg';
 import './brand/ic-brand-deriv.svg';
-import './brand/ic-brand-derivez.svg';
 import './brand/ic-brand-derivgo.svg';
 import './brand/ic-brand-dmt5-financial-stp.svg';
 import './brand/ic-brand-dmt5-financial.svg';

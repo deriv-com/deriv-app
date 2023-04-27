@@ -624,15 +624,20 @@ export default class ClientStore extends BaseStore {
 
     hasAccountErrorInCFDList = (platform, account_type) => {
         if (!this.is_logged_in) return false;
-
-        const list =
-            platform === CFD_PLATFORMS.MT5
-                ? this.mt5_login_list
-                : platform === CFD_PLATFORMS.DXTRADE
-                ? this.dxtrade_accounts_list
-                : platform === CFD_PLATFORMS.DERIVEZ
-                ? this.derivez_accounts_list
-                : '';
+        let list;
+        switch (platform) {
+            case 'mt5':
+                list = this.mt5_login_list;
+                break;
+            case 'dxtrade':
+                list = this.dxtrade_accounts_list;
+                break;
+            case 'derivez':
+                list = this.derivez_accounts_list;
+                break;
+            default:
+                return false;
+        }
         return list?.some(account => !!account.has_error && account.account_type === account_type);
     };
 
@@ -1287,6 +1292,7 @@ export default class ClientStore extends BaseStore {
             if (this.is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.set(storage_key, JSON.stringify(this.accounts));
+                this.syncWithLegacyPlatforms(client_id, this.accounts);
             }
 
             try {
@@ -1312,6 +1318,7 @@ export default class ClientStore extends BaseStore {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
+                    this.syncWithLegacyPlatforms(client_id, client_accounts);
                 })
                 .catch(error => {
                     // eslint-disable-next-line no-console
@@ -1651,8 +1658,6 @@ export default class ClientStore extends BaseStore {
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
-
-            WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
 
             this.responseStatement(
                 await BinarySocket.send({

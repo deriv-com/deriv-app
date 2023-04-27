@@ -64,7 +64,7 @@ const StaticDashboard = ({
     loginid,
 }: TStaticDashboard) => {
     const { client, traders_hub } = useStores();
-    const { content_flag } = traders_hub;
+    const { content_flag, CFDs_restricted_countries } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 
     //starting ctrader project
@@ -436,7 +436,7 @@ const StaticDashboard = ({
                         </div>
 
                         <div className='static-dashboard-wrapper__body'>
-                            {!is_eu_user && (
+                            {!is_eu_user && !CFDs_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
@@ -473,7 +473,7 @@ const StaticDashboard = ({
                                     is_eu_user={is_eu_user}
                                 />
                             )}
-                            {!is_eu_user && (
+                            {!is_eu_user && !CFDs_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
@@ -504,7 +504,7 @@ const StaticDashboard = ({
                             )}
                         </div>
 
-                        {!is_eu_user && (
+                        {!is_eu_user && !CFDs_restricted_countries && (
                             <React.Fragment>
                                 <Divider />
                                 <div className='static-dashboard-wrapper__body--header'>
@@ -523,7 +523,7 @@ const StaticDashboard = ({
                                 </div>
                             </React.Fragment>
                         )}
-                        {!is_eu_user && (
+                        {!is_eu_user && !CFDs_restricted_countries && (
                             <div className='static-dashboard-wrapper__body'>
                                 <StaticCFDAccountManager
                                     type='all'

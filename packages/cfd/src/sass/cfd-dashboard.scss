@@ -236,7 +236,7 @@
             }
         }
 
-        &-dxtrade-button {
+        &__dxtrade-button {
             background: $color-black-7;
             border-radius: $BORDER_RADIUS;
             text-decoration: none;
@@ -255,7 +255,7 @@
                 padding: 0.4rem 0rem 0.4rem 0.2rem;
             }
             &-icon {
-                margin-left: 0.6rem;
+                padding-left: 0.6rem;
             }
         }
 
@@ -1253,6 +1253,12 @@
         border-top: 2px solid var(--general-section-1);
         padding-top: 2rem;
         padding-bottom: 5.8rem;
+
+        &-description {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.4rem;
+        }
 
         &-app {
             display: flex;

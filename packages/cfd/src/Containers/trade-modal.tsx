@@ -74,31 +74,23 @@ const TradeModal = ({
             </div>
         );
     };
-    const downloadCenterAppOption = (account_type: TCFDsPlatformType) => {
-        if (account_type === 'dxtrade') {
+    const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
+        if (platform_type === 'dxtrade') {
             return (
                 <div className='cfd-trade-modal__download-center-app--option'>
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv X on your browser')}
                     </Text>
-                    <PlatformsDesktopDownload
-                        platform={account_type}
-                        is_demo={is_demo}
-                        dxtrade_tokens={dxtrade_tokens}
-                    />
+                    <PlatformsDesktopDownload platform={platform} is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
                 </div>
             );
-        } else if (account_type === 'derivez') {
+        } else if (platform_type === 'derivez') {
             return (
                 <div className='cfd-trade-modal__download-center-app--option'>
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv EZ on your browser')}
                     </Text>
-                    <PlatformsDesktopDownload
-                        platform={account_type}
-                        is_demo={is_demo}
-                        dxtrade_tokens={dxtrade_tokens}
-                    />
+                    <PlatformsDesktopDownload platform={platform} is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
                 </div>
             );
         }
@@ -162,7 +154,9 @@ const TradeModal = ({
                         className='cfd-trade-modal__maintenance-icon'
                     />
                     <div className='cfd-trade-modal__maintenance-text'>
-                        <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                        <Text size='xxxs' className='cfd-trade-modal__maintenance-text'>
+                            <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                        </Text>
                     </div>
                 </div>
             </div>

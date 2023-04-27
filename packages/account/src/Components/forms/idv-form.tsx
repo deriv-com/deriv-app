@@ -1,19 +1,44 @@
 import React from 'react';
-import { Form, Field } from 'formik';
+import { Form, Field, FormikValues, FormikProps, FormikHandlers } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { getDocumentData, preventEmptyClipboardPaste } from 'Helpers/utils.js';
+import { getDocumentData, preventEmptyClipboardPaste } from 'Helpers/utils';
 import classNames from 'classnames';
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 
-const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldValue, ...props }) => {
-    const [document_list, setDocumentList] = React.useState([]);
+type TDocumentList = Array<{
+    id: string;
+    text: string;
+    value?: string;
+    sample_image?: string;
+    example_format?: string;
+    additional?: any;
+}>;
+
+type TFormProps = {
+    document_list: TDocumentList;
+    document_number: string;
+    document_additional: string;
+};
+
+type TIDVForm = {
+    account_settings: GetSettings;
+    residence: string;
+    residence_list: ResidenceList;
+    hide_hint?: boolean;
+} & FormikHandlers &
+    FormikProps<TFormProps>;
+
+const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldValue, ...props }: TIDVForm) => {
+    const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_doc_selected, setDocSelected] = React.useState(false);
 
     const { account_settings, residence, residence_list } = props;
     const citizen = account_settings?.citizen || residence;
-    const { documents_supported: document_data, has_visual_sample } =
+
+    const { documents_supported: document_data, has_visual_sample }: any =
         residence_list.find(residence_data => residence_data.value === citizen)?.identity.services?.idv || {};
 
     React.useEffect(() => {
@@ -68,17 +93,18 @@ const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldVa
         );
     };
 
-    const getExampleFormat = example_format => {
+    const getExampleFormat = (example_format: string) => {
         return example_format ? localize('Example: ') + example_format : '';
     };
-    const getDocument = text => {
+    const getDocument = (text: string) => {
         return document_list.find(d => d.text === text);
     };
 
-    const onKeyUp = (e, document_name) => {
+    const onKeyUp = (e: { target: HTMLInputElement }, document_name: string) => {
         const { example_format } =
             document_name === 'document_number' ? values.document_type : values.document_type.additional;
-        const current_input = example_format.includes('-')
+        let current_input: string | null = null;
+        current_input = example_format.includes('-')
             ? formatInput(example_format, current_input || e.target.value, '-')
             : e.target.value;
         setFieldValue(document_name, current_input, true);
@@ -101,7 +127,7 @@ const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldVa
                             <div className='proof-of-identity__fieldset-container'>
                                 <fieldset className={classNames({ 'proof-of-identity__fieldset': !props.hide_hint })}>
                                     <Field name='document'>
-                                        {({ field }) => (
+                                        {({ field }: FormikValues) => (
                                             <React.Fragment>
                                                 <DesktopWrapper>
                                                     <div className='document-dropdown'>
@@ -115,17 +141,17 @@ const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldVa
                                                             label={localize('Choose the document type')}
                                                             list_items={document_list}
                                                             value={values.document_type.text ?? ''}
-                                                            onBlur={e => {
+                                                            onBlur={(e: { target: HTMLInputElement }) => {
                                                                 handleBlur(e);
                                                                 if (!getDocument(e.target.value)) {
-                                                                    resetDocumentItemSelected(setFieldValue);
+                                                                    resetDocumentItemSelected();
                                                                 }
                                                             }}
                                                             onChange={handleChange}
                                                             onItemSelection={item => {
                                                                 if (item.text === 'No results found' || !item.text) {
                                                                     setDocSelected(false);
-                                                                    resetDocumentItemSelected(setFieldValue);
+                                                                    resetDocumentItemSelected();
                                                                 } else {
                                                                     setFieldValue('document_type', item, true);
                                                                     setDocSelected(true);
@@ -172,7 +198,7 @@ const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldVa
                                     className={classNames({ 'proof-of-identity__fieldset-input': !props.hide_hint })}
                                 >
                                     <Field name='document_number'>
-                                        {({ field }) => (
+                                        {({ field }: FormikValues) => (
                                             <React.Fragment>
                                                 <Input
                                                     {...field}
@@ -195,7 +221,9 @@ const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldVa
                                                     onPaste={preventEmptyClipboardPaste}
                                                     onBlur={handleBlur}
                                                     onChange={handleChange}
-                                                    onKeyUp={e => onKeyUp(e, 'document_number')}
+                                                    onKeyUp={(e: { target: HTMLInputElement }) =>
+                                                        onKeyUp(e, 'document_number')
+                                                    }
                                                     required
                                                 />
                                                 {values.document_type.additional?.display_name && (
@@ -223,7 +251,9 @@ const IDVForm = ({ errors, touched, values, handleBlur, handleChange, setFieldVa
                                                         onPaste={preventEmptyClipboardPaste}
                                                         onBlur={handleBlur}
                                                         onChange={handleChange}
-                                                        onKeyUp={e => onKeyUp(e, 'document_additional')}
+                                                        onKeyUp={(e: { target: HTMLInputElement }) =>
+                                                            onKeyUp(e, 'document_additional')
+                                                        }
                                                         required
                                                     />
                                                 )}

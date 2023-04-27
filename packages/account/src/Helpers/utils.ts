@@ -1,8 +1,9 @@
 import { getUrlBase } from '@deriv/shared';
+import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 
-const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);
+const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
-export const documentAdditionalError = (document_additional, document_additional_format) => {
+export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
     let error_message = null;
     if (!document_additional) {
         error_message = 'Please enter your document number. ';
@@ -26,7 +27,7 @@ const regex = [
 ];
 
 // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
-const idv_document_data = {
+const idv_document_data = Object.freeze({
     ke: {
         alien_card: {
             new_display_name: '',
@@ -146,6 +147,14 @@ const idv_document_data = {
             sample_image: getImageLocation('zw_national_identity_card.png'),
         },
     },
+});
+
+type TIDVSupportCheck = {
+    residence_list: ResidenceList;
+    account_settings: GetSettings;
+    account_status: GetAccountStatus;
+    real_account_signup_target: string;
+    residence: string;
 };
 
 export const shouldShowIdentityInformation = ({
@@ -154,19 +163,20 @@ export const shouldShowIdentityInformation = ({
     residence,
     residence_list,
     real_account_signup_target,
-}) => {
+}: TIDVSupportCheck) => {
     const citizen = account_settings.citizen || residence;
     const country = residence_list.find(item => item.value === citizen);
     const maltainvest = real_account_signup_target === 'maltainvest';
-    const should_skip_idv = account_status?.status?.some(status => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
+    const should_skip_idv = account_status?.status?.some((status: string) => status === 'skip_idv'); //status added by BE when idv should be skipped for the user
     return Boolean(
         !maltainvest && citizen && country?.identity?.services?.idv?.is_country_supported && !should_skip_idv
     );
 };
 
-export const getDocumentData = (country_code, document_type) => {
+export const getDocumentData = (country_code: string, document_type: string) => {
     return (
-        (Object.keys(idv_document_data).includes(country_code) && idv_document_data[country_code][document_type]) || {
+        (Object.keys(idv_document_data).includes(country_code) &&
+            (idv_document_data as any)[country_code][document_type]) || {
             new_display_name: '',
             example_format: '',
             sample_image: '',
@@ -174,14 +184,14 @@ export const getDocumentData = (country_code, document_type) => {
     );
 };
 
-export const preventEmptyClipboardPaste = e => {
+export const preventEmptyClipboardPaste = (e: ClipboardEvent) => {
     const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
     if (clipboardData.length === 0) {
         e.preventDefault();
     }
 };
 
-export const getRegex = target_regex => {
+export const getRegex = (target_regex: string) => {
     const output_regex = regex.find(r => r.regex_string === target_regex);
     if (output_regex) {
         return new RegExp(output_regex.value, output_regex.flags);

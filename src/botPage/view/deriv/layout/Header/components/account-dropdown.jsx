@@ -88,13 +88,6 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         dispatch(setShouldReloadWorkspace(true));
     };
 
-    console.log({
-        eu_accounts,
-        non_eu_accounts,
-        real_account,
-        virtual_accounts,
-    });
-
     return (
         <div className='account__switcher-dropdown-wrapper show' ref={dropdownRef}>
             <div id='account__switcher-dropdown' className='account__switcher-dropdown' ref={container_ref}>

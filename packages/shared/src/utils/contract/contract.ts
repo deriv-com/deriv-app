@@ -52,6 +52,8 @@ export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(con
 
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
 
+export const isTouchContract = (contract_type: string) => /TOUCH/i.test(contract_type);
+
 export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);
 
 export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);

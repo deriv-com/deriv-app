@@ -943,7 +943,7 @@ export default class TradeStore extends BaseStore {
             clearAccumulatorBarriersData();
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
-            updateChartType('mountain');
+            updateChartType('line');
         } else if (
             (obj_new_values.contract_type || obj_new_values.symbol) &&
             prev_chart_type &&

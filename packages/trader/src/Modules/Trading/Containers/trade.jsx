@@ -11,7 +11,6 @@ import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-over
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
-import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements.jsx';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 
@@ -276,30 +275,6 @@ import { SmartChart } from 'Modules/SmartChart';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
-// ChartMarkers --------------------------
-const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }) =>
-    markers_array.map(marker => {
-        const Marker = AllMarkers[marker.type];
-        return (
-            <Marker
-                key={marker.key}
-                is_dark_theme={is_dark_theme}
-                granularity={granularity}
-                currency={currency}
-                config={config}
-                {...marker}
-            />
-        );
-    });
-
-const ChartMarkers = connect(({ ui, client, contract_trade }) => ({
-    markers_array: contract_trade.markers_array,
-    is_digit_contract: contract_trade.is_digit_contract,
-    granularity: contract_trade.granularity,
-    is_dark_theme: ui.is_dark_mode_on,
-    currency: client.currency,
-}))(Markers);
-
 const Chart = props => {
     const {
         accumulator_barriers_data,
@@ -316,12 +291,10 @@ const Chart = props => {
         extra_barriers = [],
         end_epoch,
         granularity,
-        has_alternative_source,
         is_accumulator,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
-        refToAddTick,
         setChartStatus,
         settings,
         should_show_eu_content,
@@ -332,6 +305,7 @@ const Chart = props => {
         wsForgetStream,
         wsSendRequest,
         wsSubscribe,
+        markers_array,
     } = props;
 
     const { current_spot, current_spot_time } = accumulator_barriers_data[symbol] || {};
@@ -371,6 +345,7 @@ const Chart = props => {
         <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
+            markers_array={markers_array}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
@@ -404,20 +379,18 @@ const Chart = props => {
             topWidgets={is_trade_enabled ? topWidgets : null}
             isConnectionOpened={is_socket_opened}
             clearChart={false}
-            toolbarWidget={() => (
-                <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
-            )}
+            toolbarWidget={() => <ToolbarWidgets />}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
+            onChartTypeChange={updateChartType}
+            onGranularityChange={updateGranularity}
             shouldFetchTradingTimes={!end_epoch}
-            hasAlternativeSource={has_alternative_source}
-            refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}
+            isLive={true}
         >
-            <ChartMarkers />
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
@@ -467,6 +440,7 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,
     chartStateChange: modules.trade.chartStateChange,
+    markers_array: contract_trade.markers_array,
     updateChartType: contract_trade.updateChartType,
     updateGranularity: contract_trade.updateGranularity,
     settings: {

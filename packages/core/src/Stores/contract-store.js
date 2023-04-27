@@ -1,4 +1,4 @@
-import { action, extendObservable, observable, toJS, makeObservable } from 'mobx';
+import { action, extendObservable, observable, makeObservable } from 'mobx';
 import {
     isEnded,
     isEqualObject,
@@ -19,7 +19,7 @@ import {
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { ChartBarrierStore } from './chart-barrier-store';
-import { createChartMarkers } from './Helpers/chart-markers';
+import { createChartMarkers, calculateMarker, getAccumulatorMarkers } from './Helpers/chart-markers';
 import BaseStore from './base-store';
 
 export default class ContractStore extends BaseStore {
@@ -55,6 +55,7 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
+            getMarkersArray: action.bound,
         });
 
         this.root_store = root_store;
@@ -95,7 +96,7 @@ export default class ContractStore extends BaseStore {
     // ---- Normal properties ---
     is_ongoing_contract = false;
 
-    populateConfig(contract_info) {
+    populateConfig(contract_info, is_last_contract) {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
@@ -103,7 +104,8 @@ export default class ContractStore extends BaseStore {
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
-        this.marker = calculate_marker(this.contract_info);
+        this.marker = calculateMarker(this.contract_info, this.root_store.ui.is_dark_mode_on, is_last_contract);
+
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
@@ -242,109 +244,23 @@ export default class ContractStore extends BaseStore {
             this.root_store.portfolio.populateContractUpdate(response, this.contract_id);
         });
     }
-}
 
-function calculate_marker(contract_info) {
-    if (!contract_info || isMultiplierContract(contract_info.contract_type)) {
-        return null;
-    }
-    const {
-        transaction_ids,
-        tick_stream,
-        contract_id,
-        date_start,
-        date_expiry,
-        entry_tick,
-        exit_tick,
-        entry_tick_time,
-        exit_tick_time,
-        contract_type,
-        tick_count,
-        barrier_count,
-        barrier,
-        high_barrier,
-        low_barrier,
-    } = contract_info;
-    const is_accumulator_contract = isAccumulatorContract(contract_type);
-    const is_digit_contract = isDigitContract(contract_type);
-    const ticks_epochs =
-        (is_accumulator_contract && tick_stream?.length === 10
-            ? [entry_tick_time, ...tick_stream.map(t => t.epoch).slice(1)]
-            : tick_stream?.map(t => t.epoch)) || [];
-    const ticks_epoch_array = tick_stream ? ticks_epochs : [];
+    getMarkersArray() {
+        const { contract_type, high_barrier, low_barrier, tick_stream: ticks } = this.contract_info;
 
-    // window.ci = toJS(contract_info);
+        if (!isAccumulatorContract(contract_type)) return [];
 
-    let price_array = [];
-    if (is_digit_contract) {
-        price_array = [];
-    } else if (+barrier_count === 1 && barrier) {
-        price_array = [+barrier];
-    } else if (+barrier_count === 2 && high_barrier && low_barrier) {
-        price_array = [+high_barrier, +low_barrier];
-    }
+        const exit = ticks[ticks.length - 1];
+        const previous_tick = ticks[ticks.length - 2] || exit;
 
-    if (entry_tick) {
-        price_array.push(entry_tick);
-    }
-    if (exit_tick) {
-        price_array.push(exit_tick);
-    }
+        const marker = getAccumulatorMarkers({
+            high_barrier,
+            low_barrier,
+            epoch: previous_tick.epoch,
+            is_dark_mode_on: this.root_store.ui.is_dark_mode_on,
+            in_contract_details: true,
+        });
 
-    if (!date_start) {
-        return null;
+        return [marker];
     }
-    // if we have not yet received the first POC response
-    if (!transaction_ids) {
-        const type = is_digit_contract ? 'DigitContract' : 'TickContract';
-        return {
-            type,
-            contract_info: toJS(contract_info),
-            key: `${contract_id}-date_start`,
-            epoch_array: [date_start],
-            price_array,
-        };
-    }
-
-    if (tick_count >= 1) {
-        if (!isDigitContract(contract_type)) {
-            // TickContract
-            return {
-                contract_info: toJS(contract_info),
-                type: 'TickContract',
-                key: `${contract_id}-date_start`,
-                epoch_array: [date_start, ...ticks_epoch_array],
-                price_array,
-            };
-        }
-        // DigitContract
-        return {
-            contract_info: toJS(contract_info),
-            type: 'DigitContract',
-            key: `${contract_id}-date_start`,
-            epoch_array: [date_start, ...ticks_epoch_array],
-            price_array,
-        };
-    }
-    // NonTickContract
-    if (!tick_count) {
-        // getEndTime returns undefined when contract is running.
-        const end_time = getEndTime(contract_info) || date_expiry;
-        // the order of items in epoch_array matches the NonTickContract params.
-        const epoch_array = [date_start, end_time];
-        if (entry_tick_time) {
-            epoch_array.push(entry_tick_time);
-        }
-        if (exit_tick_time) {
-            epoch_array.push(exit_tick_time);
-        }
-        return {
-            contract_info: toJS(contract_info),
-            type: 'NonTickContract',
-            key: `${contract_id}-date_start`,
-            epoch_array,
-            price_array,
-        };
-    }
-    return null;
 }

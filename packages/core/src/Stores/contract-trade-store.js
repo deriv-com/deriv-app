@@ -13,6 +13,7 @@ import {
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
+import { getAccumulatorMarkers } from './Helpers/chart-markers';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -23,7 +24,7 @@ export default class ContractTradeStore extends BaseStore {
 
     // Chart specific observables
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
-    chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
+    chart_type = LocalStore.get('contract_trade.chart_style') || 'line';
     prev_chart_type = '';
     prev_granularity = null;
 
@@ -118,14 +119,14 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     updateChartType(type) {
-        LocalStore.set('contract_trade.chart_type', type);
+        LocalStore.set('contract_trade.chart_style', type);
         this.chart_type = type;
     }
 
     updateGranularity(granularity) {
-        const tick_chart_types = ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
+        const tick_chart_types = ['line', 'candles', 'hollow', 'ohlc'];
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
-            this.chart_type = 'mountain';
+            this.chart_type = 'line';
         }
         LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;
@@ -195,21 +196,19 @@ export default class ContractTradeStore extends BaseStore {
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
-        if (markers.length) {
-            markers[markers.length - 1].is_last_contract = true;
-        }
+
         const { accumulators_high_barrier, accumulators_low_barrier, previous_spot_time } =
             this.accumulator_barriers_data[symbol] || {};
         if (trade_type === 'accumulator' && previous_spot_time && accumulators_high_barrier) {
-            markers.push({
-                type: 'TickContract',
-                contract_info: {
+            markers.push(
+                getAccumulatorMarkers({
+                    high_barrier: accumulators_high_barrier,
+                    low_barrier: accumulators_low_barrier,
+                    epoch: previous_spot_time,
+                    is_dark_mode_on: this.root_store.ui.is_dark_mode_on,
                     is_accumulators_trade_without_contract: this.last_contract.contract_info?.status !== 'open',
-                },
-                key: 'accumulators_barriers_without_contract',
-                price_array: [accumulators_high_barrier, accumulators_low_barrier],
-                epoch_array: [previous_spot_time],
-            });
+                })
+            );
         }
         return markers;
     }
@@ -228,16 +227,20 @@ export default class ContractTradeStore extends BaseStore {
         if (contract_exists) {
             return;
         }
+        const is_last_contract = contract_id === this.last_contract.contract_id;
 
         const contract = new ContractStore(this.root_store, { contract_id });
-        contract.populateConfig({
-            date_start: start_time,
-            barrier,
-            contract_type,
-            longcode,
-            underlying,
-            limit_order,
-        });
+        contract.populateConfig(
+            {
+                date_start: start_time,
+                barrier,
+                contract_type,
+                longcode,
+                underlying,
+                limit_order,
+            },
+            is_last_contract
+        );
 
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;
@@ -276,7 +279,8 @@ export default class ContractTradeStore extends BaseStore {
         if (response.proposal_open_contract) {
             const contract_id = +response.proposal_open_contract.contract_id;
             const contract = this.contracts_map[contract_id];
-            contract.populateConfig(response.proposal_open_contract);
+            const is_last_contract = contract_id === this.last_contract.contract_id;
+            contract.populateConfig(response.proposal_open_contract, is_last_contract);
             if (response.proposal_open_contract.is_sold) {
                 this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
                 contract.cacheProposalOpenContractResponse(response);

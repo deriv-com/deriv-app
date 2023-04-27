@@ -240,9 +240,10 @@
     }
     &__icon {
         position: absolute;
-        bottom: -23px;
+        bottom: 0;
         left: -11px;
         white-space: nowrap;
+        background-color: var(--general-main-1);
 
         &--time {
             /* postcss-bem-linter: ignore */

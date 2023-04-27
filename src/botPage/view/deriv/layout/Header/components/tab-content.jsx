@@ -7,7 +7,7 @@ import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import classNames from 'classnames';
 import config from '../../../../../../app.config';
 
-const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts }) => {
+const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
     const { active_account_name } = useSelector(state => state.client);
@@ -22,16 +22,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts }) 
         }
     };
     const low_risk_countries = ['za', 'ec', 'bw'];
-    const is_country_low_risk = low_risk_countries.includes(low_risk_countries);
-
-    console.log(accounts)
-    const getTitle = () => {
-        if (accounts[0]?.account.startsWith('VR') && is_country_low_risk) return (account_title = 'Deriv Accounts');
-        if (accounts[0]?.account.startsWith('CR') && is_country_low_risk) return (account_title = 'Non Eu Deriv account');
-        if (accounts[0]?.account.startsWith('MF') && is_country_low_risk) return (account_title = 'Eu Deriv account');
-        return (account_title = 'Deriv Accounts');
-    };
-    let account_title = getTitle();
+    const is_country_low_risk = low_risk_countries.includes(localStorage.getItem('client.country'));
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
             <div className='account__switcher-accordion'>
@@ -41,7 +32,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts }) 
                         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
                     >
                         <div className='account__switcher-accordion-header-text'>
-                            <span>{account_title}</span>
+                            <span>{is_country_low_risk && isReal ? title : translate('Deriv Accounts')}</span>
                             <img
                                 className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
                                 src='image/deriv/ic-chevron-down.svg'

@@ -1,26 +1,20 @@
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
 import classNames from 'classnames';
 import React from 'react';
 import Cards from './cards';
 import InfoPanel from './info-panel';
 import Local from './load-bot-preview/local';
 import UserGuide from './user-guide';
-
-type TDashboard = {
-    dashboard_strategies: [];
-    has_started_onboarding_tour: boolean;
-    setActiveTab: (param: number) => void;
-    handleTabChange: (active_number: number) => void;
-};
+import { useDBotStore } from 'Stores/useDBotStore';
+import { observer } from '@deriv/stores';
 
 type TMobileIconGuide = {
     has_dashboard_strategies: boolean;
     handleTabChange: (active_number: number) => void;
 };
+
 
 type TDashboardMobileCommonProps = {
     is_mobile: boolean;
@@ -63,14 +57,13 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
     </div>
 );
 
-const DashboardComponent = ({
-    dashboard_strategies,
-    has_started_onboarding_tour,
-    setActiveTab,
-    handleTabChange,
-}: TDashboard) => {
+const DashboardComponent = observer(() => {
+    const { load_modal, dashboard } = useDBotStore();
+    const { dashboard_strategies } = load_modal;
+    const { setActiveTab, has_started_onboarding_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
+
     return (
         <React.Fragment>
             <div
@@ -136,10 +129,6 @@ const DashboardComponent = ({
             <InfoPanel />
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ dashboard, load_modal }: RootStore) => ({
-    dashboard_strategies: load_modal.dashboard_strategies,
-    setActiveTab: dashboard.setActiveTab,
-    has_started_onboarding_tour: dashboard.has_started_onboarding_tour,
-}))(DashboardComponent);
+export default DashboardComponent;

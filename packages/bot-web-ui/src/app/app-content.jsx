@@ -1,7 +1,6 @@
-import '../public-path'; // Leave this here (at the top)! OK boss!
-import React from 'react'; // eslint-disable-line import/first
+import React from 'react';
 import { Loading } from '@deriv/components';
-import { DBot, ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
+import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
 import {
     Audio,
     BotFooterExtensions,
@@ -12,20 +11,26 @@ import {
 } from 'Components';
 import BlocklyLoading from '../components/blockly-loading';
 import { MobxContentProvider } from 'Stores/connect';
-import RootStore from 'Stores';
+import { observer, useStore } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import './app.scss';
 
-const App = ({ passthrough }) => {
-    const { root_store, WS } = passthrough;
+const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
-    const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
-    const { app, common, core } = root_store_instance.current;
-    const { showDigitalOptionsMaltainvestError } = app;
+    const RootStore = useStore();
     const {
+        common,
+        client,
         ui: { is_dark_mode_on },
-    } = root_store_instance.current;
+    } = RootStore;
+    const DBotStores = useDBotStore();
+    const { app } = DBotStores;
+    const { showDigitalOptionsMaltainvestError } = app;
+
+    // TODO: Remove this when connect is removed completely
+    const combinedStore = { ...DBotStores, core: { ...RootStore } };
 
     React.useEffect(() => {
         setColors(is_dark_mode_on);
@@ -53,14 +58,14 @@ const App = ({ passthrough }) => {
     }, []);
 
     React.useEffect(() => {
-        showDigitalOptionsMaltainvestError(core.client, common);
+        showDigitalOptionsMaltainvestError(client, common);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [core.client.is_options_blocked, core.client.account_settings.country_code]);
+    }, [client.is_options_blocked, client.account_settings.country_code]);
 
     React.useEffect(() => {
-        GTM.init(root_store_instance.current);
+        GTM.init(combinedStore);
         ServerTime.init(common);
-        app.setDBotEngineStores(root_store_instance.current);
+        app.setDBotEngineStores(combinedStore);
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
         setIsLoading(true);
@@ -84,7 +89,8 @@ const App = ({ passthrough }) => {
     return is_loading ? (
         <Loading />
     ) : (
-        <MobxContentProvider store={root_store_instance.current}>
+        // TODO: remove MobxContentProvider when all connect method is removed
+        <MobxContentProvider store={combinedStore}>
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
@@ -97,6 +103,6 @@ const App = ({ passthrough }) => {
             </div>
         </MobxContentProvider>
     );
-};
+});
 
-export default App;
+export default AppContent;

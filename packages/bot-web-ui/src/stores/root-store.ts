@@ -19,18 +19,20 @@ import SelfExclusionStore from './self-exclusion-store';
 import ToolboxStore from './toolbox-store';
 import AppStore from './app-store';
 import DashboardStore from './dashboard-store';
-import { TDbot, TWebSocket } from 'Types';
-import { TCoreStores } from '@deriv/stores/types';
+import type { TDbot, TWebSocket, TRootStore } from 'Types';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
-    public core: TCoreStores;
+    // TODO: remove core, notifications, ui, common, server_time
+    // when all the stores are refactored [Task#93859]
+    public core: TRootStore;
+    public notifications: TRootStore['notifications'];
+    public ui: TRootStore['ui'];
+    public common: TRootStore['common'];
+    public server_time: TRootStore['common']['server_time'];
+
     public ws: TWebSocket;
     public dbot: TDbot;
-    public notifications: TCoreStores['notifications'];
-    public ui: TCoreStores['ui'];
-    public common: TCoreStores['common'];
-    public server_time: TCoreStores['common']['server_time'];
     public app: AppStore;
     public summary_card: SummaryCardStore;
     public download: DownloadStore;
@@ -54,14 +56,17 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
-    constructor(core: TCoreStores, ws: TWebSocket, dbot: TDbot) {
+    constructor(core: TRootStore, ws: TWebSocket, dbot: TDbot) {
+        // TODO: remove core, notifications, ui, common, server_time
+        // when all the stores are refactored [Task#93859]
         this.core = core;
         this.ui = core.ui;
         this.common = core.common;
         this.notifications = core.notifications;
+        this.server_time = core.common.server_time;
+
         this.ws = ws;
         this.dbot = dbot;
-        this.server_time = core.common.server_time;
         this.app = new AppStore(this);
         this.summary_card = new SummaryCardStore(this);
         this.download = new DownloadStore(this);

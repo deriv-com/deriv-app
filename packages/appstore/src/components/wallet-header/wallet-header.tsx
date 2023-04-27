@@ -1,8 +1,11 @@
+import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import React from 'react';
+import WalletCurrencyCard from './wallet-currency-card';
+// import SvgTest from './ic-wallet-deriv-demo-dark.svg';
+// import SvgTest from '../../ /appstore/src/assets/svgs/trading-platform/ic-brand-dbot.svg'
 
 type TWalletHeaderCommon = {
     balance?: string;
@@ -28,36 +31,10 @@ type TWalletHeaderMalta = TWalletHeaderCommon & {
 
 type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 
-const WalletHeader = observer(
+const WalletHeader = React.memo(
     ({ balance = '0.00', currency = 'USD', jurisdiction = 'svg', account_type = 'real' }: TWalletHeader) => {
-        const {
-            ui: { is_dark_mode_on },
-        } = useStore();
-
         const [isOpen, setIsOpen] = React.useState(false);
         const is_demo = account_type === 'demo';
-        const theme = is_dark_mode_on ? '--dark' : '';
-        const demo_icon_path = is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
-
-        const currency_icon_path = React.useMemo(
-            () => ({
-                USD: is_demo ? demo_icon_path : 'IcCurrencyUsd',
-                EUR: 'IcCurrencyEur',
-                AUD: 'IcCurrencyAud',
-                BTC: is_dark_mode_on ? 'IcCashierBitcoinDark' : 'IcCashierBitcoinLight',
-                ETH: is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight',
-                USDT: is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight',
-                eUSDT: is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight',
-                tUSDT: is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight',
-                LTC: is_dark_mode_on ? 'IcWalletLitecoinDark' : 'IcWalletLitecoinLight',
-                USDC: is_dark_mode_on ? 'IcWalletUsdcDark' : 'IcWalletUsdcLight',
-            }),
-            [demo_icon_path, is_dark_mode_on, is_demo]
-        );
-
-        const is_fiat = currency === 'USD' || currency === 'EUR' || currency === 'AUD';
-        const currency_icon_name = currency_icon_path[currency] || 'Unknown';
-        const currency_icon_size = is_fiat && !is_demo ? 48 : 100;
 
         const title_size = 'sm';
         const badge_size = 'xxxs';
@@ -106,16 +83,10 @@ const WalletHeader = observer(
                 className={classNames('wallet-header', {
                     'wallet-header__demo': is_demo,
                 })}
+                data-testid={'just-test'}
             >
                 <div className='wallet-header__container'>
-                    <div
-                        className={`wallet-header__currency wallet__${
-                            is_demo ? 'demo' : currency.toLowerCase()
-                        }-bg${theme}`}
-                    >
-                        <Icon data-testid={`dt_${currency}`} icon={currency_icon_name} size={currency_icon_size} />
-                        {/* <Icon icon={'IcWalletDerivDemoDark'} size={50} /> */}
-                    </div>
+                    <WalletCurrencyCard account_type={account_type} currency={currency} />
                     <div className='wallet-header__description'>
                         <div className='wallet-header__description-title'>
                             <Localize

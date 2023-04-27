@@ -1,11 +1,10 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Icon } from '@deriv/components';
 import classNames from 'classnames';
 import WalletCurrencyCard from './wallet-currency-card';
-// import SvgTest from './ic-wallet-deriv-demo-dark.svg';
-// import SvgTest from '../../ /appstore/src/assets/svgs/trading-platform/ic-brand-dbot.svg'
+import WalletHeaderButtons from './wallet-header-buttons';
+import WalletHeaderTitle from './wallet-header-title';
+import WalletHeaderBalance from './wallet-header-balance';
 
 type TWalletHeaderCommon = {
     balance?: string;
@@ -36,93 +35,26 @@ const WalletHeader = React.memo(
         const [isOpen, setIsOpen] = React.useState(false);
         const is_demo = account_type === 'demo';
 
-        const title_size = 'sm';
-        const badge_size = 'xxxs';
-        const badge_lh_size = 'xxxs';
-        const balance_title_size = 'xxs';
-        const balance_amount_size = 'm';
-        const button_text_size = 'xs';
-
-        const title_text = `<0>${is_demo ? `Demo ${currency}` : currency} Wallet</0>`;
-        const badge_text = `<0>${jurisdiction.toUpperCase()}</0>`;
-        const balance_title_text = '<0>Wallet balance</0>';
-        const balance_amount_text = `<0>${balance} ${currency}</0>`;
-
-        const btn_names = is_demo
-            ? ['Transfer', 'Transactions', 'Deposit']
-            : ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
-        const icon_names = is_demo
-            ? ['IcAccountTransfer', 'IcStatement', 'IcCashierAdd']
-            : ['IcCashierAdd', 'IcCashierMinus', 'IcAccountTransfer', 'IcStatement'];
-
-        const wallet_buttons = (
-            <div className='wallet-header__description-buttons'>
-                {btn_names.map((name, index) => (
-                    <div key={name} className='wallet-header__description-buttons-item' aria-disabled={true}>
-                        <Icon icon={icon_names[index]} custom_color={'var(--text-general)'} />
-                        <Localize
-                            i18n_default_text={`<0>${is_demo && name === 'Deposit' ? 'Reset balance' : name}</0>`}
-                            components={[
-                                <Text
-                                    key={0}
-                                    weight='bold'
-                                    size={button_text_size}
-                                    className={classNames('wallet-header__description-buttons-item-text', {
-                                        'wallet-header__description-buttons-item-active': isOpen,
-                                    })}
-                                />,
-                            ]}
-                        />
-                    </div>
-                ))}
-            </div>
-        );
+        const onArrowClickHandler = () => {
+            setIsOpen(!isOpen);
+        };
 
         return (
             <div
                 className={classNames('wallet-header', {
                     'wallet-header__demo': is_demo,
                 })}
-                data-testid={'just-test'}
             >
                 <div className='wallet-header__container'>
                     <WalletCurrencyCard account_type={account_type} currency={currency} />
                     <div className='wallet-header__description'>
-                        <div className='wallet-header__description-title'>
-                            <Localize
-                                i18n_default_text={title_text}
-                                components={[<Text key={0} weight='bold' size={title_size} />]}
-                            />
-                            {!is_demo && (
-                                <Localize
-                                    i18n_default_text={badge_text}
-                                    components={[
-                                        <Text
-                                            key={0}
-                                            weight='bold'
-                                            size={badge_size}
-                                            line_height={badge_lh_size}
-                                            className='wallet-header__description-badge'
-                                        />,
-                                    ]}
-                                />
-                            )}
-                        </div>
-                        {wallet_buttons}
+                        <WalletHeaderTitle is_demo={is_demo} currency={currency} jurisdiction={jurisdiction} />
+                        <WalletHeaderButtons is_open={isOpen} account_type={account_type} />
                     </div>
                     <div className='wallet-header__balance'>
-                        <div className='wallet-header__balance-title-amount'>
-                            <Localize
-                                i18n_default_text={balance_title_text}
-                                components={[<Text key={0} color='less-prominent' size={balance_title_size} />]}
-                            />
-                            <Localize
-                                i18n_default_text={balance_amount_text}
-                                components={[<Text key={0} weight='bold' size={balance_amount_size} />]}
-                            />
-                        </div>
+                        <WalletHeaderBalance balance={balance} currency={currency} />
                         <Icon
-                            onClick={() => setIsOpen(!isOpen)}
+                            onClick={onArrowClickHandler}
                             icon='IcChevronDownBold'
                             className={classNames('wallet-header__balance-arrow-icon', {
                                 'wallet-header__balance-arrow-icon-active': isOpen,

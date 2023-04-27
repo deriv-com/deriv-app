@@ -45,5 +45,5 @@ const WalletCurrencyCard = observer(({ account_type = 'real', currency = 'USD' }
         </div>
     );
 });
-WalletCurrencyCard.displayName = 'WalletHeader';
+WalletCurrencyCard.displayName = 'WalletCurrencyCard';
 export default WalletCurrencyCard;

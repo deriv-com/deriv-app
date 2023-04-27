@@ -103,6 +103,7 @@ export type TJurisdictionCardItemVerificationItem =
     | 'identity_document'
     | 'name_and_address'
     | 'not_applicable';
+
 export type TJurisdictionCardItemVerification = Array<TJurisdictionCardItemVerificationItem>;
 
 export type TJurisdictionCardItems = {

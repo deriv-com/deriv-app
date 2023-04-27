@@ -112,17 +112,12 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const should_show_poi = () => {
-        if (
-            jurisdiction_selected_shortcode === Jurisdiction.VANUATU ||
-            jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST
-        ) {
+        if ([Jurisdiction.VANUATU, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
             return need_poi_for_vanuatu_maltainvest;
         }
         return need_poi_for_bvi_labuan;
     };
-    const should_show_poa = !(
-        authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
-    );
+    const should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
 
     const should_show_personal_details =
         !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;

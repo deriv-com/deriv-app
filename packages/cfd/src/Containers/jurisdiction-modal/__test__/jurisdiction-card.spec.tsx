@@ -4,30 +4,66 @@ import JurisdictionCard from '../jurisdiction-card';
 import { Jurisdiction } from '@deriv/shared';
 
 describe('JurisdictionCard', () => {
-    let mock_props = {
+    type TMockProps = {
         account_status: {
             authentication: {
                 document: {
-                    status: 'none' as const,
+                    status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
+                };
+                identity: {
+                    services: {
+                        idv: {
+                            status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
+                        };
+                        onfido: {
+                            status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
+                        };
+                        manual: {
+                            status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
+                        };
+                    };
+                };
+                needs_verification: string[];
+            };
+            currency_config: {
+                [k: string]: { is_deposit_suspended?: 0 | 1 | undefined; is_withdrawal_suspended?: 0 | 1 | undefined };
+            };
+            p2p_status: 'none' | 'active' | 'temp_ban' | 'perm_ban';
+            prompt_client_to_authenticate: 0 | 1;
+            risk_classification: string;
+            status: string[];
+        };
+        account_type: 'financial' | 'synthetic';
+        disabled: boolean;
+        jurisdiction_selected_shortcode: string;
+        setJurisdictionSelectedShortcode: jest.Mock;
+        type_of_card: 'svg' | 'bvi' | 'labuan' | 'maltainvest' | 'vanuatu';
+    };
+
+    let mock_props: TMockProps = {
+        account_status: {
+            authentication: {
+                document: {
+                    status: 'none',
                 },
                 identity: {
                     services: {
                         idv: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                         onfido: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                         manual: {
-                            status: 'none' as const,
+                            status: 'none',
                         },
                     },
                 },
                 needs_verification: [],
             },
             currency_config: {},
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 0 as const,
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
             risk_classification: '',
             status: [''],
         },
@@ -42,26 +78,26 @@ describe('JurisdictionCard', () => {
             account_status: {
                 authentication: {
                     document: {
-                        status: 'none' as const,
+                        status: 'none',
                     },
                     identity: {
                         services: {
                             idv: {
-                                status: 'none' as const,
+                                status: 'none',
                             },
                             onfido: {
-                                status: 'none' as const,
+                                status: 'none',
                             },
                             manual: {
-                                status: 'none' as const,
+                                status: 'none',
                             },
                         },
                     },
                     needs_verification: [],
                 },
                 currency_config: {},
-                p2p_status: 'none' as const,
-                prompt_client_to_authenticate: 0 as const,
+                p2p_status: 'none',
+                prompt_client_to_authenticate: 0,
                 risk_classification: '',
                 status: [''],
             },

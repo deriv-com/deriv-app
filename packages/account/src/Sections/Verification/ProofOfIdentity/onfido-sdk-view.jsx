@@ -95,6 +95,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                                       }
                                     : false,
                             },
+                            hideCountrySelection: true,
                         },
                     },
                     'face',

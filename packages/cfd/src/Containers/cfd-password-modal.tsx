@@ -662,16 +662,23 @@ const CFDPasswordModal = ({
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
     const getVerificationStatus = () => {
-        if (jurisdiction_selected_shortcode === Jurisdiction.SVG) {
-            setIsSelectedMT5Verified(true);
-        } else if (jurisdiction_selected_shortcode === Jurisdiction.BVI) {
-            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
-        } else if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
-            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
-        } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
-            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
-        } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
-            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
+        switch (jurisdiction_selected_shortcode) {
+            case Jurisdiction.SVG:
+                setIsSelectedMT5Verified(true);
+                break;
+            case Jurisdiction.BVI:
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
+                break;
+            case Jurisdiction.VANUATU:
+                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
+                break;
+            case Jurisdiction.LABUAN:
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
+                break;
+            case Jurisdiction.MALTA_INVEST:
+                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
+                break;
+            default:
         }
     };
 

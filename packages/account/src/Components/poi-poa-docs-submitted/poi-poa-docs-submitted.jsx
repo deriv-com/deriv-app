@@ -33,9 +33,9 @@ const PoiPoaDocsSubmitted = ({
     const getDescription = () => {
         const { manual_status, poi_verified_for_vanuatu_maltainvest, poi_verified_for_bvi_labuan, poa_pending } =
             getAuthenticationStatusInfo(account_status);
-        const is_vanuatu_or_maltainvest_selected =
-            jurisdiction_selected_shortcode === Jurisdiction.VANUATU ||
-            jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
+        const is_vanuatu_or_maltainvest_selected = [Jurisdiction.VANUATU, Jurisdiction.MALTA_INVEST].includes(
+            jurisdiction_selected_shortcode
+        );
         if (
             (is_vanuatu_or_maltainvest_selected && poi_verified_for_vanuatu_maltainvest && poa_pending) ||
             (!is_vanuatu_or_maltainvest_selected && poi_verified_for_bvi_labuan && poa_pending) ||

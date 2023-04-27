@@ -21,3 +21,4 @@ datadogRum.init({
     trackFrustrations: true,
     enableExperimentalFeatures: ['clickmap'],
 });
+datadogRum.startSessionReplayRecording();

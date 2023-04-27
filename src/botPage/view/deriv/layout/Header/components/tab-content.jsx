@@ -21,10 +21,14 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts }) 
             setIsAccDropdownOpen(false);
         }
     };
+    const low_risk_countries = ['za', 'ec', 'bw'];
+    const is_country_low_risk = low_risk_countries.includes(low_risk_countries);
+
+    console.log(accounts)
     const getTitle = () => {
-        if (accounts[0].account.startsWith('VR')) return (account_title = 'Deriv Account');
-        if (accounts[0].account.startsWith('CR')) return (account_title = 'Non Eu Deriv account');
-        if (accounts[0].account.startsWith('MF')) return (account_title = 'Eu Deriv account');
+        if (accounts[0]?.account.startsWith('VR') && is_country_low_risk) return (account_title = 'Deriv Accounts');
+        if (accounts[0]?.account.startsWith('CR') && is_country_low_risk) return (account_title = 'Non Eu Deriv account');
+        if (accounts[0]?.account.startsWith('MF') && is_country_low_risk) return (account_title = 'Eu Deriv account');
         return (account_title = 'Deriv Accounts');
     };
     let account_title = getTitle();

@@ -113,7 +113,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             isActive={activeTab === 'real'}
                             setIsAccDropdownOpen={setIsAccDropdownOpen}
                             accounts={real_account}
-                            title={'Deriv Accounts'}
+                            title={'Deriv accounts'}
                         />
                     ) : null}
                     {is_real && !real_account?.length ? (
@@ -122,7 +122,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             isActive={activeTab === 'real'}
                             setIsAccDropdownOpen={setIsAccDropdownOpen}
                             accounts={real_account}
-                            title={'Deriv Accounts'}
+                            title={'Deriv accounts'}
                         />
                     ) : null}
                     {is_real && (

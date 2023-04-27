@@ -31,7 +31,7 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
             should_show: is_country_low_risk && !has_eu_accounts,
         },
         {
-            title: is_country_low_risk ? translate('Non-EU Deriv account') : translate('Deriv account'),
+            title: is_country_low_risk ? translate('Non-EU Deriv account') : translate('Deriv accounts'),
             option: translate('Options & Multipliers'),
             label: translate('Add'),
             url: config.add_account_multiplier.url,

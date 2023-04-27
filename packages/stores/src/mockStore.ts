@@ -11,7 +11,6 @@ const mock = (): TStores => {
                     currency: 'USD',
                     is_disabled: 0,
                     is_virtual: 0,
-                    trading: {},
                     excluded_until: 0,
                     landing_company_name: 'svg',
                 },
@@ -259,6 +258,8 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            is_real_wallets_upgrade_on: false,
+            toggleWalletsUpgrade: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

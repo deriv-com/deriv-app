@@ -77,7 +77,7 @@ class APIMiddleware {
         return response_promise;
     };
 
-    printStats = () => {
+    sendRequestsStatistic = () => {
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
             if (measure && measure.length) {
@@ -89,7 +89,7 @@ class APIMiddleware {
     };
 
     addGlobalMethod() {
-        if (window) window.printStats = this.printStats;
+        if (window) window.sendRequestsStatistic = this.sendRequestsStatistic;
     }
 }
 

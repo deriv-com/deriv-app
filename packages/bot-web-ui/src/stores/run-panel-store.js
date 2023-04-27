@@ -224,7 +224,7 @@ export default class RunPanelStore {
             this.error_type = undefined;
         }
 
-        window.printStats();
+        window.sendRequestsStatistic();
     }
 
     onClearStatClick() {
@@ -622,6 +622,8 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('client.invalid_token');
+
+        window.sendRequestsStatistic();
     }
 
     async handleInvalidToken() {

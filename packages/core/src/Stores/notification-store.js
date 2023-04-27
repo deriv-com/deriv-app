@@ -182,8 +182,7 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    (notification.key && notification.key.includes('svg')) ||
-                    notification.key === 'p2p_daily_limit_increase' ||
+                    ['svg', 'p2p'].some(key => notification.key?.includes(key)) ||
                     (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
@@ -260,7 +259,7 @@ export default class NotificationStore extends BaseStore {
 
         if (refined_list.length) {
             refined_list.map(refined => {
-                if (refined === 'p2p_daily_limit_increase') {
+                if (refined.includes('p2p')) {
                     if (is_p2p_notifications_visible === false) {
                         this.removeNotificationByKey({ key: refined });
                     }
@@ -583,7 +582,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {
-        const notification_key = `order-${order_id}`;
+        const notification_key = `p2p_order_${order_id}`;
 
         const notification_redirect_action =
             routes.cashier_p2p === window.location.pathname
@@ -1521,7 +1520,7 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            (message.key && message.key.includes('svg')) || message.key === 'p2p_daily_limit_increase'
+            ['svg', 'p2p'].some(key => message.key?.includes(key))
                 ? message
                 : excluded_notifications && !excluded_notifications.includes(message.key)
         );

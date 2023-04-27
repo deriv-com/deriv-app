@@ -73,9 +73,9 @@ export default class RootStore {
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);
         this.google_drive = new GoogleDriveStore(this);
-        this.journal = new JournalStore(this);
+        this.journal = new JournalStore(this, core);
         this.load_modal = new LoadModalStore(this);
-        this.run_panel = new RunPanelStore(this);
+        this.run_panel = new RunPanelStore(this, core);
         this.save_modal = new SaveModalStore(this);
         this.summary = new SummaryStore(this);
         this.transactions = new TransactionsStore(this);

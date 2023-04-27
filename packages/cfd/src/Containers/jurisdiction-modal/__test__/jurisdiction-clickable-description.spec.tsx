@@ -3,15 +3,21 @@ import { render, screen } from '@testing-library/react';
 import JurisdictionClickableDescription from '../jurisdiction-clickable-description';
 
 describe('JurisdictionClickableDescription', () => {
-    const mock_props = {
+    type TClickableDescription = { text: string; type: 'link' | 'text' };
+    type TMockProps = {
+        clickable_description: TClickableDescription[];
+        toggleCardFlip: jest.Mock;
+    };
+
+    const mock_props: TMockProps = {
         clickable_description: [
             {
                 text: 'Click here',
-                type: 'link' as const,
+                type: 'link',
             },
             {
                 text: 'to learn more about the documents required for verification.',
-                type: 'text' as const,
+                type: 'text',
             },
         ],
         toggleCardFlip: jest.fn(),

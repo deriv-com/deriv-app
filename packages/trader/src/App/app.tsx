@@ -7,7 +7,7 @@ import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions';
 import { NetworkStatusToastErrorPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
 import initStore from './init-store';
 import 'Sass/app.scss';
-import { TCoreStores } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../trader-providers';
 
 type Apptypes = {

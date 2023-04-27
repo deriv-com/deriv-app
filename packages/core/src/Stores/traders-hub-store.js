@@ -398,7 +398,10 @@ export default class TradersHubStore extends BaseStore {
 
         if (this.CFDs_restricted_countries) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(
-                account => account.market_type !== 'financial' && account.platform === CFD_PLATFORMS.MT5
+                account =>
+                    account.market_type !== 'financial' &&
+                    account.market_type !== 'all' &&
+                    account.platform === CFD_PLATFORMS.MT5
             );
             return;
         }

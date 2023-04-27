@@ -384,14 +384,14 @@ const Chart = props => {
             id='trade'
             isMobile={isMobile()}
             maxTick={isMobile() ? max_ticks : undefined}
-            granularity={!show_digits_stats ? granularity : 0}
+            granularity={!show_digits_stats || !is_accumulator ? granularity : 0}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
             should_show_eu_content={should_show_eu_content}
-            showTicksOnly={show_digits_stats}
+            showTicksOnly={show_digits_stats || is_accumulator}
             stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}
@@ -474,6 +474,7 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
     },
+    is_accumulator: modules.trade.is_accumulator,
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     extra_barriers: modules.trade.barriers_flattened,

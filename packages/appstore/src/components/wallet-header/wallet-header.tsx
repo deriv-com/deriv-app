@@ -6,7 +6,11 @@ import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
 
+export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
+
 type TWalletHeaderCommon = {
+    // TODO: just for testing till BE is not ready
+    account_status?: TAccountStatus;
     balance?: string;
 };
 
@@ -31,7 +35,13 @@ type TWalletHeaderMalta = TWalletHeaderCommon & {
 type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 
 const WalletHeader = React.memo(
-    ({ balance = '0.00', currency = 'USD', jurisdiction = 'svg', account_type = 'real' }: TWalletHeader) => {
+    ({
+        account_status = '',
+        balance = '0.00',
+        currency = 'USD',
+        jurisdiction = 'svg',
+        account_type = 'real',
+    }: TWalletHeader) => {
         const [isOpen, setIsOpen] = React.useState(false);
         const is_demo = account_type === 'demo';
 
@@ -49,10 +59,14 @@ const WalletHeader = React.memo(
                     <WalletCurrencyCard account_type={account_type} currency={currency} />
                     <div className='wallet-header__description'>
                         <WalletHeaderTitle is_demo={is_demo} currency={currency} jurisdiction={jurisdiction} />
-                        <WalletHeaderButtons is_open={isOpen} account_type={account_type} />
+                        <WalletHeaderButtons
+                            is_disabled={!!account_status}
+                            is_open={isOpen}
+                            account_type={account_type}
+                        />
                     </div>
                     <div className='wallet-header__balance'>
-                        <WalletHeaderBalance balance={balance} currency={currency} />
+                        <WalletHeaderBalance account_status={account_status} balance={balance} currency={currency} />
                         <Icon
                             onClick={onArrowClickHandler}
                             icon='IcChevronDownBold'

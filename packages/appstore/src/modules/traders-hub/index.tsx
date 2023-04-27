@@ -96,6 +96,9 @@ const TradersHub = () => {
                     <WalletHeader currency={'tUSDT'} jurisdiction={'svg'} />
                     <WalletHeader currency={'LTC'} jurisdiction={'svg'} />
                     <WalletHeader currency={'USDC'} jurisdiction={'svg'} />
+                    <WalletHeader account_status='pending' currency={'ETH'} jurisdiction={'svg'} />
+                    <WalletHeader account_status='need_verification' currency={'EUR'} jurisdiction={'malta'} />
+                    <WalletHeader account_status='failed' currency={'USD'} jurisdiction={'svg'} />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

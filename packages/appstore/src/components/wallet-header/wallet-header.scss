@@ -7,8 +7,11 @@
 
     &__demo {
         background-color: #fff8f9;
-        // background-image: url('/public/images/app/cashier/ic-wallet-deriv-demo-dark.svg');
-        background-image: url('./../../../../cashier/src/assets/svgs/trading-platform/ic-wallet-deriv-demo-dark.png');
+        background-image: url('./../../../src/public/ic-wallet-deriv-demo-dark.svg');
+        // background-image: url('./../../../../components/src/components/icon/wallet/ic-wallet-deriv-demo-dark.svg');
+
+        // /Users/sergeibaranovski/Documents/Projects/deriv-app/packages/components/src/components/icon/wallet/ic-wallet-deriv-demo-dark.svg
+
         // background-image: url('./../../../../appstore/src/assets/svgs/trading-platform/ic-appstore-cfds.svg');
         // background-image: url('./../public/sprites/wallet.905c3e8ec16af3c9f44930eae8ad2943.svg#ic-wallet-deriv-demo-dark');
     }
@@ -50,12 +53,13 @@
             &-item {
                 display: flex;
                 align-items: center;
-                cursor: pointer;
+                // cursor: pointer;
                 height: 3.2rem;
                 border-radius: $BORDER_RADIUS * 4;
                 padding: 0.6rem 1.6rem;
                 margin-right: 0.8rem;
                 border: 1px solid var(--text-general);
+                background-color: var(--general-main-1);
 
                 &:hover {
                     background-color: var(--shadow-drop);

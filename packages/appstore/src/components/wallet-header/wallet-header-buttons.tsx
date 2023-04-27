@@ -4,11 +4,12 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 type TWalletHeaderButtons = {
+    is_disabled?: boolean;
     is_open: boolean;
     account_type: 'demo' | 'real';
 };
 
-const WalletHeaderButtons = ({ is_open, account_type = 'real' }: TWalletHeaderButtons) => {
+const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'real' }: TWalletHeaderButtons) => {
     const is_demo = account_type === 'demo';
     const button_text_size = 'xs';
 
@@ -22,7 +23,7 @@ const WalletHeaderButtons = ({ is_open, account_type = 'real' }: TWalletHeaderBu
     return (
         <div className='wallet-header__description-buttons'>
             {btn_names.map((name, index) => (
-                <div key={name} className='wallet-header__description-buttons-item' aria-disabled={true}>
+                <div key={name} className='wallet-header__description-buttons-item'>
                     <Icon icon={icon_names[index]} custom_color={'var(--text-general)'} />
                     <Localize
                         i18n_default_text={`<0>${is_demo && name === 'Deposit' ? 'Reset balance' : name}</0>`}

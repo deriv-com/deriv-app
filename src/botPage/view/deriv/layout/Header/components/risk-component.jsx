@@ -7,17 +7,13 @@ import { observer as globalObserver } from '../../../../../../common/utils/obser
 
 const Separator = () => <div className='account__switcher-seperator'></div>;
 
-const RiskComponent = ({
-    non_eu_accounts = [],
-    eu_accounts = [],
-    is_country_low_risk,
-}) => {
+const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_risk }) => {
     const { account_type } = useSelector(state => state.client);
 
     const { low_risk_without_account, high_risk_without_account, high_risk_or_eu } = account_type;
     const has_non_eu_accounts = non_eu_accounts?.length || 0;
     const has_eu_accounts = eu_accounts?.length || 0;
-    
+
     const is_eu_country = globalObserver.getState('is_eu_country');
     const risk_array = [
         {
@@ -46,7 +42,7 @@ const RiskComponent = ({
             option: translate('Multipliers'),
             label: translate('Add'),
             url: config.add_account_multiplier.url,
-            should_show: !is_country_low_risk && is_eu_country &&  !has_eu_accounts,
+            should_show: !is_country_low_risk && is_eu_country && !has_eu_accounts,
         },
     ];
 
@@ -54,7 +50,7 @@ const RiskComponent = ({
         <>
             {risk_array.map(({ title, should_show = false, option, label, url }, index) => {
                 const is_end = risk_array.length === index + 1;
-                
+
                 if (should_show) {
                     return (
                         <React.Fragment key={title + index}>
@@ -62,8 +58,7 @@ const RiskComponent = ({
                             <div className='account__switcher-container__content'>
                                 <div
                                     className={classNames('account__switcher-container__content', {
-                                        'account__switcher-container__content--low-risk':
-                                            low_risk_without_account,
+                                        'account__switcher-container__content--low-risk': low_risk_without_account,
                                         'account__switcher-container__content--high-risk':
                                             high_risk_without_account || high_risk_or_eu,
                                     })}

@@ -67,7 +67,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         return false;
     };
 
-    const is_real = activeTab === 'real'
+    const is_real = activeTab === 'real';
 
     React.useEffect(() => {
         function handleClickOutside(event) {
@@ -87,15 +87,14 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         }
         dispatch(setShouldReloadWorkspace(true));
     };
-    
+
     console.log({
         eu_accounts,
         non_eu_accounts,
         real_account,
         virtual_accounts,
-    })
+    });
 
-    
     return (
         <div className='account__switcher-dropdown-wrapper show' ref={dropdownRef}>
             <div id='account__switcher-dropdown' className='account__switcher-dropdown' ref={container_ref}>
@@ -114,26 +113,32 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <a>{translate('Demo')}</a>
                         </li>
                     </ul>
-                  
-                    {is_real && real_account?.length ? <TabContent
-                        tab='real'
-                        isActive={activeTab === 'real'}
-                        setIsAccDropdownOpen={setIsAccDropdownOpen}
-                        accounts={real_account}
-                        title={'Deriv Accounts'}
-                    /> : null}
-                    {is_real && !real_account?.length ? <TabContent
+
+                    {is_real && real_account?.length ? (
+                        <TabContent
                             tab='real'
                             isActive={activeTab === 'real'}
                             setIsAccDropdownOpen={setIsAccDropdownOpen}
                             accounts={real_account}
-                        title={'Deriv Accounts'}
-                    /> : null}
-                    {is_real && <RiskComponent
-                        eu_accounts={eu_accounts}
-                        non_eu_accounts={non_eu_accounts}
-                        is_country_low_risk={is_country_low_risk}
-                    />}
+                            title={'Deriv Accounts'}
+                        />
+                    ) : null}
+                    {is_real && !real_account?.length ? (
+                        <TabContent
+                            tab='real'
+                            isActive={activeTab === 'real'}
+                            setIsAccDropdownOpen={setIsAccDropdownOpen}
+                            accounts={real_account}
+                            title={'Deriv Accounts'}
+                        />
+                    ) : null}
+                    {is_real && (
+                        <RiskComponent
+                            eu_accounts={eu_accounts}
+                            non_eu_accounts={non_eu_accounts}
+                            is_country_low_risk={is_country_low_risk}
+                        />
+                    )}
                     {/* is low risk with accounts  */}
                     <TabContent
                         tab='demo'
@@ -150,10 +155,10 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             {activeTab === 'demo'
                                 ? getTotalDemo(accounts)
                                 : low_risk_without_account || high_risk_without_account
-                                    ? 0
-                                    : balance.toLocaleString(undefined, {
-                                        minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
-                                    })}
+                                ? 0
+                                : balance.toLocaleString(undefined, {
+                                      minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
+                                  })}
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>

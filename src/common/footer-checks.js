@@ -40,15 +40,15 @@ const eu_countries = [
 export const isEu = country => eu_countries.includes(country);
 
 /**
- * 
+ *
  * @param {*} token_list list of the tokens from the local storage
- * @returns 
+ * @returns
  */
 export const isEuByAccount = (token_list = []) => {
     const [active_token = {}] = token_list;
     const { loginInfo = {} } = active_token;
     return eu_countries.includes(loginInfo.country);
-}
+};
 /* eslint-disable camelcase */
 export const isEuLandingCompany = landing_company => /^(maltainvest|malta|iom)$/.test(landing_company);
 

@@ -99,7 +99,7 @@ const Header = () => {
 
         globalObserver.setState({
             is_eu_country: isEuByAccount(token_list),
-        })
+        });
 
         if (!active_storage_token) {
             removeAllTokens();

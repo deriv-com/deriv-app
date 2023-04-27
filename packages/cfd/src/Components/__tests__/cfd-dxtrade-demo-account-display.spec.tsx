@@ -14,7 +14,11 @@ const mock_connect_props = {
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
+    connect:
+        () =>
+        <T extends React.FC>(Component: T) =>
+        (props: React.ComponentProps<T>) =>
+            Component({ ...props, ...mock_connect_props }),
 }));
 
 const mock_props = {

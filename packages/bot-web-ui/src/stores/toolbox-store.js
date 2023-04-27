@@ -4,7 +4,7 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export default class ToolboxStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             is_toolbox_open: observable,
             is_search_loading: observable,
@@ -30,6 +30,7 @@ export default class ToolboxStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
     }
 
     is_toolbox_open = true;
@@ -40,7 +41,6 @@ export default class ToolboxStore {
     toolbox_examples = null;
 
     onMount(toolbox_ref) {
-        const { core } = this.root_store;
         this.adjustWorkspace();
 
         this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
@@ -52,7 +52,7 @@ export default class ToolboxStore {
                 if (is_toolbox_open) {
                     this.adjustWorkspace();
                     // Emit event to GTM
-                    const { gtm } = core;
+                    const { gtm } = this.core;
                     gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
                 }
             }

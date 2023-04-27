@@ -84,6 +84,7 @@ export default class DashboardStore implements IDashboardStore {
             strategy_save_type: observable,
             toggleOnConfirm: action.bound,
             toast_message: observable,
+            setStrategySaveType: action.bound,
         });
         this.root_store = root_store;
         reaction(

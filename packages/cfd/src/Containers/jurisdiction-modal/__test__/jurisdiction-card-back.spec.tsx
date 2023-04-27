@@ -7,7 +7,13 @@ describe('<JurisdictionCardBack />', () => {
         card_classname: string;
         toggleCardFlip: jest.Mock;
         is_card_selected: boolean;
-        verification_docs: ('document_number' | 'name_and_address' | 'selfie' | 'identity_document')[];
+        verification_docs: (
+            | 'document_number'
+            | 'name_and_address'
+            | 'selfie'
+            | 'identity_document'
+            | 'not_applicable'
+        )[];
     };
 
     const mock_props: TMockProps = {

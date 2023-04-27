@@ -12,9 +12,7 @@ const TabContent = ({
     isActive,
     setIsAccDropdownOpen,
     accounts,
-    title = translate('Deriv account')
 }) => {
-   
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
     const { active_account_name } = useSelector(state => state.client);
@@ -28,6 +26,13 @@ const TabContent = ({
             setIsAccDropdownOpen(false);
         }
     };
+    const getTitle = () => {
+        if(accounts[0].account.startsWith('VR')) return account_title = 'Deriv Account';
+        if (accounts[0].account.startsWith('CR')) return account_title = 'Non Eu Deriv account';
+        if (accounts[0].account.startsWith('MF')) return account_title = 'Eu Deriv account';
+        return account_title = 'Deriv Accounts';
+    }
+    let account_title = getTitle()
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
             <div className='account__switcher-accordion'>
@@ -37,7 +42,7 @@ const TabContent = ({
                         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
                     >
                         <div className='account__switcher-accordion-header-text'>
-                            <span>{title}</span>
+                            <span>{account_title}</span>
                             <img
                                 className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
                                 src='image/deriv/ic-chevron-down.svg'

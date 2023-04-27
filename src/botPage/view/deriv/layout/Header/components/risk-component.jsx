@@ -3,62 +3,59 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import config from '../../../../../../app.config';
 import { translate } from '../../../../../../common/utils/tools';
+import { observer as globalObserver } from '../../../../../../common/utils/observer';
 
 const Separator = () => <div className='account__switcher-seperator'></div>;
 
 const RiskComponent = ({
-    low_risk_without_non_eu = false,
-    low_risk_without_eu = false,
-    non_eu_accounts,
-    eu_accounts,
-    type,
+    non_eu_accounts = [],
+    eu_accounts = [],
+    is_country_low_risk,
 }) => {
     const { account_type } = useSelector(state => state.client);
-    const { low_risk_without_account, high_risk_without_account, high_risk_or_eu } = account_type;
 
+    const { low_risk_without_account, high_risk_without_account, high_risk_or_eu } = account_type;
+    const has_non_eu_accounts = non_eu_accounts?.length || 0;
+    const has_eu_accounts = eu_accounts?.length || 0;
+    
+    const is_eu_country = globalObserver.getState('is_eu_country');
     const risk_array = [
         {
-            title: translate('Non-EU Deriv Account'),
-            switcher_type: low_risk_without_account && !non_eu_accounts?.length,
+            title: translate('Non EU Deriv account'),
             option: translate('Options & Multipliers'),
             label: translate('Add'),
             url: config.add_account.url,
+            should_show: is_country_low_risk && !has_non_eu_accounts,
         },
         {
-            title: translate('EU Deriv Account'),
-            switcher_type: low_risk_without_account && !non_eu_accounts?.length,
+            title: translate('EU Deriv account'),
             option: translate('Multipliers'),
             label: translate('Add'),
             url: config.add_account_multiplier.url,
+            should_show: is_country_low_risk && !has_eu_accounts,
         },
         {
-            title: translate('Deriv Account'),
-            switcher_type: (high_risk_without_account || high_risk_or_eu) && !eu_accounts?.length,
-            option: type === high_risk_or_eu ? translate('Multipliers') : translate('Options & Multipliers'),
-            label: translate('Add'),
-            url: config.add_account.url,
-        },
-        {
-            title: translate('Non-EU Deriv Account'),
-            switcher_type: low_risk_without_non_eu && !non_eu_accounts?.length,
-            option: translate('Options & Multipliers'),
-            label: translate('Add'),
-            url: config.add_account.url,
-        },
-        {
-            title: translate('EU Deriv Account'),
-            switcher_type: low_risk_without_eu && !eu_accounts?.length,
+            title: is_country_low_risk ? translate('Non-EU Deriv account') : translate('Deriv account'),
             option: translate('Options & Multipliers'),
             label: translate('Add'),
             url: config.add_account_multiplier.url,
+            should_show: !is_country_low_risk && !is_eu_country && !has_non_eu_accounts,
+        },
+        {
+            title: is_eu_country ? translate('EU Deriv account') : translate('Deriv account'),
+            option: translate('Multipliers'),
+            label: translate('Add'),
+            url: config.add_account_multiplier.url,
+            should_show: !is_country_low_risk && is_eu_country &&  !has_eu_accounts,
         },
     ];
 
     return (
         <>
-            {risk_array.map(({ title, switcher_type, option, label, url }, index) => {
+            {risk_array.map(({ title, should_show = false, option, label, url }, index) => {
                 const is_end = risk_array.length === index + 1;
-                if (switcher_type) {
+                
+                if (should_show) {
                     return (
                         <React.Fragment key={title + index}>
                             <div className='account__switcher-container__title'>{title}</div>
@@ -66,9 +63,9 @@ const RiskComponent = ({
                                 <div
                                     className={classNames('account__switcher-container__content', {
                                         'account__switcher-container__content--low-risk':
-                                            switcher_type === low_risk_without_account,
+                                            low_risk_without_account,
                                         'account__switcher-container__content--high-risk':
-                                            switcher_type === high_risk_without_account || high_risk_or_eu,
+                                            high_risk_without_account || high_risk_or_eu,
                                     })}
                                 >
                                     <img src={'image/options-and-multipliers.png'} />

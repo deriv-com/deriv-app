@@ -25,7 +25,7 @@ import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
 import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { checkSwitcherType } from '../../../../../common/footer-checks';
+import { checkSwitcherType, isEuByAccount } from '../../../../../common/footer-checks';
 
 // [Todo] We will update this during the API improvement process
 let is_subscribed = false;
@@ -96,6 +96,10 @@ const Header = () => {
         const active_storage_token = getActiveToken(token_list);
         const landing_company = active_storage_token?.loginInfo.landing_company_name;
         dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
+
+        globalObserver.setState({
+            is_eu_country: isEuByAccount(token_list),
+        })
 
         if (!active_storage_token) {
             removeAllTokens();

@@ -102,7 +102,8 @@ const ProfitTable = ({
     );
 
     const columns = getProfitTableColumnsTemplate(currency, data.length);
-    const columns_map = Object.fromEntries(columns.map(({ col_index, ...props }) => [col_index, { ...props }])) as {
+
+    const columns_map = Object.fromEntries(columns.map(column => [column.col_index, column])) as {
         [key in TColIndex]: TColumnTemplateType;
     };
 

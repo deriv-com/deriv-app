@@ -2,6 +2,53 @@
 import api from '../botPage/view/deriv/api';
 import { get as getStorage, getTokenList } from '../common/utils/storageManager';
 import { isLoggedIn } from '../botPage/view/deriv/utils';
+
+const eu_countries = [
+    'it',
+    'de',
+    'fr',
+    'lu',
+    'gr',
+    'mf',
+    'es',
+    'sk',
+    'lt',
+    'nl',
+    'at',
+    'bg',
+    'si',
+    'cy',
+    'be',
+    'ro',
+    'hr',
+    'pt',
+    'pl',
+    'lv',
+    'ee',
+    'cz',
+    'fi',
+    'hu',
+    'dk',
+    'se',
+    'ie',
+    'im',
+    'gb',
+    'mt',
+];
+// TODO: [duplicate_code] - Move this to shared package
+// check if client is from EU
+export const isEu = country => eu_countries.includes(country);
+
+/**
+ *
+ * @param {*} token_list list of the tokens from the local storage
+ * @returns
+ */
+export const isEuByAccount = (token_list = []) => {
+    const [active_token = {}] = token_list;
+    const { loginInfo = {} } = active_token;
+    return eu_countries.includes(loginInfo.country);
+};
 /* eslint-disable camelcase */
 export const isEuLandingCompany = landing_company => /^(maltainvest|malta|iom)$/.test(landing_company);
 
@@ -36,7 +83,7 @@ const isEmptyObject = obj => {
     return is_empty;
 };
 
-const isLowRisk = async (financial_company, gaming_company, token_list) => {
+const isLowRisk = (financial_company, gaming_company, token_list) => {
     const upgradable_companies = token_list.map(data => {
         const {
             loginInfo: { upgradeable_landing_companies },
@@ -52,7 +99,7 @@ const isLowRisk = async (financial_company, gaming_company, token_list) => {
     );
 };
 
-const isHighRisk = async (financial_company, gaming_company, risk_classification) => {
+const isHighRisk = (financial_company, gaming_company, risk_classification) => {
     const restricted_countries =
         financial_company?.shortcode === 'svg' ||
         (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
@@ -71,10 +118,9 @@ export const isMultiplier = landing_company_list => {
 };
 
 export const checkSwitcherType = async () => {
-    const is_logged_in = isLoggedIn();
-    if (!is_logged_in) return null;
+    if (!isLoggedIn()) return null;
     const token_list = await getTokenList();
-    const is_eu = await isEuCountry();
+    const is_eu = isEuByAccount(token_list);
     const client_accounts = JSON.parse(getStorage('client.accounts'));
     const client_country_code = token_list[0]?.loginInfo?.country || localStorage.getItem('client.country');
     if (!client_country_code) return null;
@@ -91,8 +137,8 @@ export const checkSwitcherType = async () => {
         get_account_status: { risk_classification },
     } = account_status;
 
-    let is_low_risk = await isLowRisk(financial_company, gaming_company, token_list);
-    let is_high_risk = await isHighRisk(financial_company, gaming_company, risk_classification);
+    let is_low_risk = isLowRisk(financial_company, gaming_company, token_list);
+    let is_high_risk = isHighRisk(financial_company, gaming_company, risk_classification);
 
     if (isEmptyObject(client_accounts || token_list)) return false;
 

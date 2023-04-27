@@ -6,6 +6,7 @@ const TraderStoreContext = React.createContext<TradeStore | null>(null);
 
 export const TraderStoreProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { modules } = useStore();
+
     return <TraderStoreContext.Provider value={modules?.trade}>{children}</TraderStoreContext.Provider>;
 };
 

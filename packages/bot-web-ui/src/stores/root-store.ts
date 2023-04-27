@@ -78,9 +78,9 @@ export default class RootStore {
         this.run_panel = new RunPanelStore(this);
         this.save_modal = new SaveModalStore(this);
         this.summary = new SummaryStore(this);
-        this.transactions = new TransactionsStore(this);
+        this.transactions = new TransactionsStore(this, core);
         this.toolbar = new ToolbarStore(this);
-        this.toolbox = new ToolboxStore(this);
+        this.toolbox = new ToolboxStore(this, core);
         this.quick_strategy = new QuickStrategyStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this);
         this.self_exclusion = new SelfExclusionStore(this);

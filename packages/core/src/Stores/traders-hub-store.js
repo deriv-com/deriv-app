@@ -91,6 +91,7 @@ export default class TradersHubStore extends BaseStore {
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
+            financial_restricted_countries: computed,
         });
 
         reaction(
@@ -104,6 +105,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.modules?.cfd?.current_list,
                 this.root_store.client.landing_companies,
                 this.root_store.common.current_language,
+                this.financial_restricted_countries,
             ],
             () => {
                 this.getAvailablePlatforms();
@@ -382,6 +384,15 @@ export default class TradersHubStore extends BaseStore {
         this.setCombinedCFDMT5Accounts();
     }
 
+    get financial_restricted_countries() {
+        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+
+        return (
+            (financial_company?.shortcode === 'svg' || financial_company?.shortcode === 'maltainvest') &&
+            !gaming_company
+        );
+    }
+
     get CFDs_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
@@ -392,6 +403,13 @@ export default class TradersHubStore extends BaseStore {
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
+
+        if (this.financial_restricted_countries) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account => account.market_type === 'financial' && account.platform === CFD_PLATFORMS.MT5
             );
             return;
         }
@@ -412,7 +430,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableDxtradeAccounts() {
-        if (this.CFDs_restricted_countries) {
+        if (this.CFDs_restricted_countries || this.financial_restricted_countries) {
             this.available_dxtrade_accounts = [];
             return;
         }

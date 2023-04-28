@@ -45,7 +45,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                         accounts.length > 0 &&
                         accounts
                             .sort((acc, acc1) => {
-                                return acc === active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
+                                return acc !== active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
                             })
                             .map((account, index) => {
                                 const { demo_account, currency, balance } = account;

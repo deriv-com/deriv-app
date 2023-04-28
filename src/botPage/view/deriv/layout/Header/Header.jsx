@@ -71,7 +71,10 @@ const Header = () => {
             try {
                 const res = await checkSwitcherType();
                 dispatch(updateAccountType(res));
-                dispatch(setShouldReloadWorkspace(true));
+                const current_login_id = localStorage.getItem('active_loginid');
+                if (current_login_id.startsWith('MF')) {
+                    dispatch(updateShowMessagePage(true));
+                }
                 return res;
             } catch (error) {
                 globalObserver.emit('Error', error);

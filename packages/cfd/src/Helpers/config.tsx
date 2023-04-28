@@ -72,4 +72,3 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
         </React.Fragment>
     );
 };
-export { mobileDownloadLink };

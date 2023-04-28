@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
 import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from 'Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter, mobileOSDetect } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
-import { getTitle, platformsText } from '../Helpers/constants';
+import { getPlatformQRCode, PlatformsDesktopDownload } from '../Helpers/config';
+import { getTitle, platformsText, mobileDownloadLink } from '../Helpers/constants';
 import SpecBox from 'Components/specbox';
 import PasswordBox from 'Components/passwordbox';
 

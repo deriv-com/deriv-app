@@ -1,8 +1,9 @@
 import merge from 'lodash.merge';
 import { TStores } from '../types';
 
-const mock = (): TStores => {
+const mock = (): TStores & { is_mock: boolean } => {
     return {
+        is_mock: true,
         client: {
             accounts: {
                 loginid: {

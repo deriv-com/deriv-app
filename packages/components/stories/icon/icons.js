@@ -62,6 +62,7 @@ export const icons =
         'IcBrandDerivApps',
         'IcBrandDerivEzWordmark',
         'IcBrandDerivEz',
+
         'IcBrandDeriv',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
@@ -72,6 +73,7 @@ export const icons =
         'IcBrandDxtradeWordmark',
         'IcBrandDxtrade',
         'IcBrandSmarttrader',
+
     ],
     'cashier': [
         'IcCashierAdd',
@@ -696,6 +698,23 @@ export const icons =
         'IcOptionRaiseFall',
         'IcOptionTouchNotouch',
         'IcOptionUpDownAsian',
+    ],
+    'rebranding': [
+        'IcRebrandingBinaryBot',
+        'IcRebrandingDerivBotDashboard',
+        'IcRebrandingDerivBot',
+        'IcRebrandingDerivGoDashboard',
+        'IcRebrandingDerivTraderDashboard',
+        'IcRebrandingDerivTrader',
+        'IcRebrandingDerivxWordmark',
+        'IcRebrandingDerivx',
+        'IcRebrandingDmt5Dashboard',
+        'IcRebrandingDmt5',
+        'IcRebrandingDxtradeDashboard',
+        'IcRebrandingDxtrade',
+        'IcRebrandingMt5Logo',
+        'IcRebrandingSmarttraderDashboard',
+        'IcRebrandingSmarttrader',
     ],
     'stock': [
         'IcStockAdidasSalomon',

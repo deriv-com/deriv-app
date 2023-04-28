@@ -275,6 +275,8 @@ type TTradersHubStore = {
     is_eu_user: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    is_real_wallets_upgrade_on: boolean;
+    toggleWalletsUpgrade: (value: boolean) => void;
 };
 
 /**

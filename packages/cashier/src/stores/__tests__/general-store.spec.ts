@@ -33,10 +33,6 @@ beforeEach(() => {
         },
         modules: {
             cashier: {
-                account_prompt_dialog: {
-                    last_location: null,
-                    resetIsConfirmed: jest.fn(),
-                },
                 account_transfer: {
                     accounts_list: [],
                     container: 'account_transfer',
@@ -123,12 +119,10 @@ describe('GeneralStore', () => {
         general_store.has_set_currency = false;
         const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
         const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
-        const { account_prompt_dialog } = general_store.root_store.modules.cashier;
         await general_store.onMountCashierOnboarding();
 
         expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
         expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
-        expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
     });
 
     it('should calculate proper percentage for account transfer container', () => {

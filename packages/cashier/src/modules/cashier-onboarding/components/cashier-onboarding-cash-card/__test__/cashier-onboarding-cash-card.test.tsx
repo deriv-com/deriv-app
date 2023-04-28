@@ -16,9 +16,6 @@ describe('CashierOnboardingCashCard', () => {
                         setDepositTarget: jest.fn(),
                         setIsDeposit: jest.fn(),
                     },
-                    account_prompt_dialog: {
-                        shouldNavigateAfterPrompt: jest.fn(),
-                    },
                 },
             },
         });

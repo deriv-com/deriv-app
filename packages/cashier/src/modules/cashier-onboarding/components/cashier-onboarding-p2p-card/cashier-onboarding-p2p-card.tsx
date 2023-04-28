@@ -35,8 +35,8 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
     };
 
     const onSwitchDone = () => {
-        history.push(routes.cashier_p2p);
         setIsDialogVisible(false);
+        history.push(routes.cashier_p2p);
     };
 
     if (!should_show_p2p_card) return null;

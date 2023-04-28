@@ -26,9 +26,6 @@ describe('CashierOnboardingP2PCard', () => {
                     general_store: {
                         setDepositTarget: jest.fn(),
                     },
-                    account_prompt_dialog: {
-                        shouldNavigateAfterPrompt: jest.fn(),
-                    },
                 },
             },
         });

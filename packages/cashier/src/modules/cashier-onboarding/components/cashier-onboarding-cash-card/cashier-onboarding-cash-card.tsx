@@ -38,8 +38,8 @@ const CashierOnboardingCashCard: React.FC = observer(() => {
     };
 
     const onSwitchDone = () => {
-        setIsDeposit(true);
         setIsDialogVisible(false);
+        setIsDeposit(true);
     };
 
     return (

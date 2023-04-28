@@ -1,4 +1,3 @@
-import AccountPromptDialogStore from './account-prompt-dialog-store';
 import AccountTransferStore from './account-transfer-store';
 import CryptoFiatConverterStore from './crypto-fiat-converter-store';
 import DepositStore from './deposit-store';
@@ -14,7 +13,6 @@ import WithdrawStore from './withdraw-store';
 import type { TRootStore, TWebSocket } from '../types';
 
 export default class CashierStore {
-    account_prompt_dialog: AccountPromptDialogStore;
     account_transfer: AccountTransferStore;
     crypto_fiat_converter: CryptoFiatConverterStore;
     deposit: DepositStore;
@@ -29,7 +27,6 @@ export default class CashierStore {
     withdraw: WithdrawStore;
 
     constructor(public root_store: TRootStore, public WS: TWebSocket) {
-        this.account_prompt_dialog = new AccountPromptDialogStore(root_store);
         this.account_transfer = new AccountTransferStore(WS, root_store);
         this.crypto_fiat_converter = new CryptoFiatConverterStore(WS, root_store);
         this.deposit = new DepositStore(WS, root_store);

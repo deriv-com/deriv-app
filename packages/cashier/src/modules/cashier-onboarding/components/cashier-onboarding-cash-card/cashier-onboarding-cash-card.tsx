@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHasFiatCurrency } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
+import { SwitchToFiatAccountDialog } from '../switch-to-fiat-account-dialog';
 
 const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
     { light: 'IcWalletCreditDebitLight', dark: 'IcWalletCreditDebitDark' },
@@ -16,25 +17,29 @@ const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] 
 
 const CashierOnboardingCashCard: React.FC = observer(() => {
     const { client, ui } = useStore();
-    const { general_store, account_prompt_dialog } = useCashierStore();
+    const { general_store } = useCashierStore();
     const { is_crypto } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget, setIsDeposit } = general_store;
-    const { shouldNavigateAfterPrompt } = account_prompt_dialog;
     const has_fiat_currency = useHasFiatCurrency();
+    const can_switch_to_fiat_account = is_crypto() && has_fiat_currency;
+    const [is_dialog_visible, setIsDialogVisible] = useState(false);
 
     const onClick = () => {
         setDepositTarget(routes.cashier_deposit);
 
-        if (is_crypto()) {
-            if (has_fiat_currency) {
-                shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
-            } else {
-                openRealAccountSignup('add_fiat');
-            }
+        if (can_switch_to_fiat_account) {
+            setIsDialogVisible(true);
+        } else if (is_crypto()) {
+            openRealAccountSignup('add_fiat');
         } else {
             setIsDeposit(true);
         }
+    };
+
+    const onSwitchDone = () => {
+        setIsDeposit(true);
+        setIsDialogVisible(false);
     };
 
     return (
@@ -44,6 +49,13 @@ const CashierOnboardingCashCard: React.FC = observer(() => {
             onClick={onClick}
         >
             <CashierOnboardingIconMarquee icons={icons} />
+            {can_switch_to_fiat_account && (
+                <SwitchToFiatAccountDialog
+                    is_visible={is_dialog_visible}
+                    onCancel={() => setIsDialogVisible(false)}
+                    onSwitchDone={onSwitchDone}
+                />
+            )}
         </CashierOnboardingCard>
     );
 });

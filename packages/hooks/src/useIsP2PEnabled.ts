@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useStore } from '@deriv/stores';
 import { useFetch, useInvalidateQuery } from '@deriv/api';
+import { useStore } from '@deriv/stores';
+import useHasFiatCurrency from './useHasFiatCurrency';
 
 const useIsP2PEnabled = () => {
     const { client, traders_hub } = useStore();
@@ -8,6 +9,7 @@ const useIsP2PEnabled = () => {
     const { is_low_risk_cr_eu_real } = traders_hub;
     const invalidate = useInvalidateQuery();
     const { data, ...rest } = useFetch('website_status', { options: { enabled: is_authorize } });
+    const has_fiat_currency = useHasFiatCurrency();
 
     const is_p2p_supported_currency = Boolean(
         data?.p2p_config?.supported_currencies.includes(currency.toLocaleLowerCase())
@@ -23,7 +25,9 @@ const useIsP2PEnabled = () => {
 
     return {
         ...rest,
-        data: is_p2p_enabled,
+        data: is_p2p_enabled || has_fiat_currency,
+        // Todo: should replace with the next line instead once BE is fixed.
+        // data: is_p2p_enabled,
     };
 };
 

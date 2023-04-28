@@ -35,7 +35,7 @@ const MainTitleBar = () => {
             </DesktopWrapper>
             <MobileWrapper>
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
-                    {localize("Trader's hub")}
+                    {localize("Trader's Hub")}
                 </Text>
                 <div className='main-title-bar-mobile'>
                     <div className='main-title-bar-mobile--account-type-dropdown'>

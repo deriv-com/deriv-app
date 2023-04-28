@@ -41,6 +41,8 @@ const mock_props = {
 };
 
 describe('CFDDxtradeDemoAccountDisplay', () => {
+    const top_up_button_title = 'Top up';
+
     it('should render Loading component if is_loading === true', () => {
         render(<CFDDxtradeDemoAccountDisplay {...mock_props} is_loading />);
 
@@ -54,16 +56,16 @@ describe('CFDDxtradeDemoAccountDisplay', () => {
     it('should render CFDAccountCard with Top Up button if existing_accounts_data fucntion does not return undefined', () => {
         render(<CFDDxtradeDemoAccountDisplay {...mock_props} />);
 
-        expect(screen.getByText('Top up')).toBeInTheDocument();
+        expect(screen.getByText(top_up_button_title)).toBeInTheDocument();
     });
     it('should not render Top Up button in CFDAccountCard if existing_accounts_data returns undefined ', () => {
         render(<CFDDxtradeDemoAccountDisplay {...mock_props} current_list={{ wrong_data: { enabled: 1 } }} />);
 
-        expect(screen.queryByText('Top up')).not.toBeInTheDocument();
+        expect(screen.queryByText(top_up_button_title)).not.toBeInTheDocument();
     });
     it('should call function openAccountTransfer with certain arguments when Top Up button was clicked', () => {
         render(<CFDDxtradeDemoAccountDisplay {...mock_props} />);
-        const top_up_button = screen.getByText('Top up');
+        const top_up_button = screen.getByText(top_up_button_title);
         userEvent.click(top_up_button);
 
         expect(mock_props.openAccountTransfer).toHaveBeenCalledWith(mock_props.current_list['dxtrade.demo.dxtrade'], {

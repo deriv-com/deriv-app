@@ -134,6 +134,8 @@
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "4.4.2",
         "react-window": "^1.8.5",
-        "web-push-notifications": "^3.33.0"
+        "web-push-notifications": "^3.33.0",
+        "dotenv-webpack": "^8.0.1",
+        "@datadog/browser-rum": "^4.37.0"
     }
 }

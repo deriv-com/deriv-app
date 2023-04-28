@@ -57,7 +57,6 @@ describe('VanillaOptionsCardBody', () => {
         bid_price: 105,
         entry_spot_display_value: '110',
         barrier: '120',
-        // sell_price: null,
         profit: 5,
         status: 'profit',
       },

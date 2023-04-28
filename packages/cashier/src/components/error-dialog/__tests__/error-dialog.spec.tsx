@@ -6,7 +6,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
-import { TError } from '../../../types';
 
 const mock_root_store = mockStore({
     ui: { disableApp: jest.fn(), enableApp: jest.fn() },
@@ -25,12 +24,9 @@ describe('<ErrorDialog />', () => {
     });
 
     it('should show "Please verify your identity" message, "Cancel" and "Verify identity" buttons', () => {
-        render(
-            <ErrorDialog error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' } as TError} />,
-            {
-                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
-            }
-        );
+        render(<ErrorDialog error={{ code: 'Fiat2CryptoTransferOverLimit', message: 'Error is occured' }} />, {
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+        });
 
         expect(screen.getByText('Please verify your identity')).toBeInTheDocument();
         expect(screen.getByText('Cancel')).toBeInTheDocument();
@@ -59,7 +55,7 @@ describe('<ErrorDialog />', () => {
     });
 
     it('should show "Cashier Error" message and "OK" button', () => {
-        render(<ErrorDialog error={{ code: '', message: 'Error is occured' } as TError} />, {
+        render(<ErrorDialog error={{ code: '', message: 'Error has occurred' }} />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 

@@ -8,7 +8,7 @@ import { TError, TReactElement } from '../../types';
 
 type TErrorDialogProps = {
     className?: string;
-    error?: TError | Record<string, never>;
+    error?: Partial<TError> | Record<string, never>;
 };
 
 type TSetDetails = {

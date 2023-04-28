@@ -17,12 +17,10 @@ export default class GeneralStore extends BaseStore {
             deposit_target: observable,
             has_set_currency: observable,
             init: action.bound,
-            is_cashier_locked: computed,
             is_cashier_onboarding: observable,
             is_crypto: computed,
             is_deposit: observable,
             is_loading: observable,
-            is_system_maintenance: computed,
             onMountCashierOnboarding: action.bound,
             onMountCommon: action.bound,
             onRemount: observable,
@@ -235,20 +233,6 @@ export default class GeneralStore extends BaseStore {
 
     setCashierTabIndex(index: number): void {
         this.cashier_route_tab_index = index;
-    }
-
-    get is_cashier_locked(): boolean {
-        const { account_status } = this.root_store.client;
-
-        if (!account_status?.status) return false;
-        return account_status.status.some(status_name => status_name === 'cashier_locked');
-    }
-
-    get is_system_maintenance(): boolean {
-        const { account_status } = this.root_store.client;
-
-        if (!account_status?.cashier_validation) return false;
-        return account_status.cashier_validation.some(validation => validation === 'system_maintenance');
     }
 
     setLoading(is_loading: boolean): void {

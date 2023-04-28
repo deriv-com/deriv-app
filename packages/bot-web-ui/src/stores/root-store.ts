@@ -23,14 +23,6 @@ import type { TDbot, TWebSocket, TRootStore } from 'Types';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
-    // TODO: remove core, notifications, ui, common, server_time
-    // when all the stores are refactored [Task#93859]
-    public core: TRootStore;
-    public notifications: TRootStore['notifications'];
-    public ui: TRootStore['ui'];
-    public common: TRootStore['common'];
-    public server_time: TRootStore['common']['server_time'];
-
     public ws: TWebSocket;
     public dbot: TDbot;
     public app: AppStore;
@@ -57,14 +49,6 @@ export default class RootStore {
     public data_collection_store: DataCollectionStore;
 
     constructor(core: TRootStore, ws: TWebSocket, dbot: TDbot) {
-        // TODO: remove core, notifications, ui, common, server_time
-        // when all the stores are refactored [Task#93859]
-        this.core = core;
-        this.ui = core.ui;
-        this.common = core.common;
-        this.notifications = core.notifications;
-        this.server_time = core.common.server_time;
-
         this.ws = ws;
         this.dbot = dbot;
         this.app = new AppStore(this, core);

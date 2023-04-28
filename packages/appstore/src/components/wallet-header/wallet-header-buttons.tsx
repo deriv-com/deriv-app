@@ -41,7 +41,6 @@ const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'rea
                                 weight='bold'
                                 color={is_disabled ? 'disabled' : 'general'}
                                 size={button_text_size}
-                                custom_color
                                 className={classNames('wallet-header__description-buttons-item-text', {
                                     'wallet-header__description-buttons-item-active': is_open,
                                 })}

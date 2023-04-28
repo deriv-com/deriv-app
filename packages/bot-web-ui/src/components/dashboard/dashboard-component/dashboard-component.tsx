@@ -15,7 +15,6 @@ type TMobileIconGuide = {
     handleTabChange: (active_number: number) => void;
 };
 
-
 type TDashboardMobileCommonProps = {
     is_mobile: boolean;
     has_dashboard_strategies: boolean;

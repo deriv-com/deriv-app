@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import Icon from '../../icon';
+import { WalletSmall } from '../small';
 import './icon.scss';
 
 type TWalletIconProps = {
@@ -19,28 +19,25 @@ const WalletIcon = ({ wallet_icon, account_icon, wallet_bg, className }: TWallet
     }
 
     return (
-        <div
-            className={classNames('wallet-icon', {
-                className,
-                'wallet-icon--solo': is_solo,
-                'wallet-icon--merged': !is_solo,
-            })}
-        >
+        <div className={classNames('wallet-icon', { className, 'wallet-icon--merged': !is_solo })}>
             {is_solo ? (
-                <div className={classNames('wallet-icon__container', wallet_bg)}>
-                    <Icon data_testid='dt_wallet_icon_solo' className='wallet-icon__icon' icon={icon} />
-                </div>
+                <WalletSmall bg={wallet_bg} icon={icon} />
             ) : (
                 <React.Fragment>
-                    <Icon data_testid='dt_account_icon_merged' className='wallet-icon__account' icon={account_icon} />
+                    <WalletSmall
+                        icon={account_icon}
+                        data_testid='dt_account_icon_merged'
+                        className='wallet-icon__account'
+                        size='16px'
+                    />
 
-                    <div className={classNames('wallet-icon__wallet', wallet_bg)}>
-                        <Icon
-                            data_testid='dt_wallet_icon_merged'
-                            className='wallet-icon__wallet-icon'
-                            icon={wallet_icon}
-                        />
-                    </div>
+                    <WalletSmall
+                        icon={wallet_icon}
+                        data_testid='dt_wallet_icon_merged'
+                        className='wallet-icon__wallet'
+                        bg={wallet_bg}
+                        size='10px'
+                    />
                 </React.Fragment>
             )}
         </div>

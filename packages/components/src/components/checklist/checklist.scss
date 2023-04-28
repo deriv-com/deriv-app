@@ -2,6 +2,7 @@
     max-width: 400px;
 
     &__item {
+        cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -38,6 +39,7 @@
         }
         &--disabled {
             opacity: 0.5;
+            pointer-events: none;
         }
     }
 }

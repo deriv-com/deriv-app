@@ -21,6 +21,11 @@ type TChecklistProps = {
 };
 
 const ItemStatus = ({ status, onClick, button_text }: TItemStatusProps) => {
+    const onItemStatusClick = (e: React.MouseEvent<HTMLElement>) => {
+        e.stopPropagation();
+        onClick();
+    };
+
     switch (status) {
         case 'done':
             return (
@@ -29,14 +34,14 @@ const ItemStatus = ({ status, onClick, button_text }: TItemStatusProps) => {
                 </div>
             );
         case 'button-action':
-            return <Button primary color='active' text={button_text} onClick={onClick} />;
+            return <Button primary color='active' text={button_text} onClick={onItemStatusClick} />;
         case 'action':
         default:
             return (
                 <div
                     className='dc-checklist__item-status--action'
                     data-testid='dt_checklist_item_status_action'
-                    onClick={onClick}
+                    onClick={onItemStatusClick}
                 >
                     <Icon icon='IcArrowRightBold' color='active' />
                 </div>
@@ -52,6 +57,7 @@ const Checklist = ({ items, className, itemClassName }: TChecklistProps) => (
                 className={classNames('dc-checklist__item', itemClassName, {
                     'dc-checklist__item--disabled': item.is_disabled,
                 })}
+                onClick={item.onClick}
             >
                 <div className='dc-checklist__item-text'>{item.content}</div>
                 <div

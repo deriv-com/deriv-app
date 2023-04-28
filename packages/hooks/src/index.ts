@@ -2,7 +2,7 @@ export { default as useAccountTransferVisible } from './useAccountTransferVisibl
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
-export { default as useCfdAccounts } from './useCfdAccounts';
+export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCountdown } from './useCountdown';
 export { default as useCurrencyExchangeRate } from './useCurrencyExchangeRate';
 export { default as useDepositLocked } from './useDepositLocked';
@@ -20,6 +20,5 @@ export { default as usePlatformAccounts } from './usePlatformAccounts';
 export { default as usePlatformDemoAccount } from './usePlatformDemoAccount';
 export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
-export { default as useSwitchToRealAccount } from './useSwitchToRealAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';

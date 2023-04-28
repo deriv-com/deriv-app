@@ -17,8 +17,8 @@ const WalletIcon = ({
     account_icon,
     wallet_bg,
     className,
-    account_size = '16px',
-    wallet_size = '10px',
+    account_size = '1.6rem',
+    wallet_size = '1rem',
 }: TWalletIconProps) => {
     const is_solo = !wallet_icon || !account_icon;
     const icon = wallet_icon || account_icon || '';

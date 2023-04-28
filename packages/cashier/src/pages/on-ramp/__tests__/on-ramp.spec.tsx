@@ -133,6 +133,7 @@ describe('<OnRamp />', () => {
     });
 
     it('should render <CashierLocked /> component', () => {
+        (useCashierLocked as jest.Mock).mockReturnValue(true);
         const mock = mockStore({
             client: {
                 account_status: { status: [] },
@@ -149,9 +150,10 @@ describe('<OnRamp />', () => {
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        mock.modules.cashier.general_store.is_cashier_locked = false;
+        (useCashierLocked as jest.Mock).mockReturnValue(false);
         (useDepositLocked as jest.Mock).mockReturnValue(true);
         rerender(mockOnRamp(mock));
+
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 

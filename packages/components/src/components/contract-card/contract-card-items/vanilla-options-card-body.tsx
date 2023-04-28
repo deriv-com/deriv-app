@@ -9,7 +9,7 @@ import Icon from '../../icon';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
 
-type TContractInfo = {
+export type TContractInfo = {
     buy_price: number;
     bid_price: number;
     entry_spot_display_value: string;
@@ -19,7 +19,7 @@ type TContractInfo = {
     status: string;
 }
 
-type TVanillaOptionsCardBodyProps = {
+export type TVanillaOptionsCardBodyProps = {
   contract_info: TContractInfo;
   currency: string;
   getCardLabels: () => { [key: string]: string };

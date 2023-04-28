@@ -1,27 +1,7 @@
-// vanilla-options-card-body.test.js
-
 import React from 'react';
 import { render, RenderResult } from '@testing-library/react';
 import VanillaOptionsCardBody from '../vanilla-options-card-body';
-
-type TContractInfo = {
-  buy_price: number;
-  bid_price: number;
-  entry_spot_display_value: string;
-  barrier: string;
-  sell_price?: number;
-  profit?: number;
-  status: string;
-}
-
-type TVanillaOptionsCardBodyProps = {
-  contract_info: TContractInfo;
-  currency: string;
-  getCardLabels: () => { [key: string]: string };
-  is_sold: boolean;
-  progress_slider: React.ReactNode;
-  status: string;
-}
+import { TVanillaOptionsCardBodyProps } from '../vanilla-options-card-body';
 
 describe('VanillaOptionsCardBody', () => {
   it('should render the correct content for a sold contract', async () => {

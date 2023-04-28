@@ -222,9 +222,7 @@ const TradingHubHeader = ({
 
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                <div className='platform-switcher'>
-                    <DerivBrandLogo className='trading-hub-header__logo' />
-                </div>
+                <DerivBrandLogo className='trading-hub-header__logo' />
                 <DesktopWrapper>
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />

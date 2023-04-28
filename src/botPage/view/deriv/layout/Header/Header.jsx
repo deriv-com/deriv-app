@@ -19,7 +19,7 @@ import {
     updateActiveToken,
     updateAccountType,
 } from '../../store/client-slice';
-import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
+import { setAccountSwitcherLoader, updateShowMessagePage, setShouldReloadWorkspace } from '../../store/ui-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
 import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
@@ -71,6 +71,7 @@ const Header = () => {
             try {
                 const res = await checkSwitcherType();
                 dispatch(updateAccountType(res));
+                dispatch(setShouldReloadWorkspace(true));
                 return res;
             } catch (error) {
                 globalObserver.emit('Error', error);

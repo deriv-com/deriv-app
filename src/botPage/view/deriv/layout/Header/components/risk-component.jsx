@@ -17,7 +17,7 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
     const is_eu_country = globalObserver.getState('is_eu_country');
     const risk_array = [
         {
-            title: translate('Non EU Deriv account'),
+            title: translate('Non-EU Deriv account'),
             option: translate('Options & Multipliers'),
             label: translate('Add'),
             url: config.add_account.url,
@@ -34,7 +34,7 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
             title: is_country_low_risk ? translate('Non-EU Deriv account') : translate('Deriv accounts'),
             option: translate('Options & Multipliers'),
             label: translate('Add'),
-            url: config.add_account_multiplier.url,
+            url: config.add_account.url,
             should_show: !is_country_low_risk && !is_eu_country && !has_non_eu_accounts,
         },
         {

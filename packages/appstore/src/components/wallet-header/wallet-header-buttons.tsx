@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text, Button } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
@@ -23,22 +23,32 @@ const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'rea
     return (
         <div className='wallet-header__description-buttons'>
             {btn_names.map((name, index) => (
-                <Button key={name} className='wallet-header__description-buttons-item' is_disabled={is_disabled}>
-                    <Icon icon={icon_names[index]} custom_color={'var(--text-general)'} />
+                <div
+                    key={name}
+                    className={classNames('wallet-header__description-buttons-item', {
+                        'wallet-header__description-buttons-item-disabled': is_disabled,
+                    })}
+                >
+                    <Icon
+                        icon={icon_names[index]}
+                        custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-general)'}
+                    />
                     <Localize
                         i18n_default_text={`<0>${is_demo && name === 'Deposit' ? 'Reset balance' : name}</0>`}
                         components={[
                             <Text
                                 key={0}
                                 weight='bold'
+                                color={is_disabled ? 'disabled' : 'general'}
                                 size={button_text_size}
+                                custom_color
                                 className={classNames('wallet-header__description-buttons-item-text', {
                                     'wallet-header__description-buttons-item-active': is_open,
                                 })}
                             />,
                         ]}
                     />
-                </Button>
+                </div>
             ))}
         </div>
     );

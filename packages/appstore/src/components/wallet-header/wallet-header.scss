@@ -8,9 +8,6 @@
     &__demo {
         position: relative;
         background-color: #fff8f9;
-        // background-color: #fff8f9;
-        // background-image: url('./../../public/images/ic-wallet-deriv-demo-dark.svg');
-        // background-image: url('./../../../src/public/images/ic-wallet-deriv-demo-dark.svg');
     }
     &__demo:before {
         content: ' ';
@@ -25,8 +22,6 @@
         background-repeat: repeat;
         background-position: 3% 30%;
         border-radius: $BORDER_RADIUS * 4;
-        // background-position: 50% 0;
-        // background-size: cover;
     }
 
     &__container {
@@ -67,16 +62,21 @@
             &-item {
                 display: flex;
                 align-items: center;
-                // cursor: pointer;
+                cursor: pointer;
                 height: 3.2rem;
                 border-radius: $BORDER_RADIUS * 4;
                 padding: 0.6rem 1.6rem;
                 margin-right: 0.8rem;
                 border: 1px solid var(--text-general);
-                background-color: var(--general-main-1);
+                background-color: var(--prominent);
 
-                &:hover {
+                &:hover:not(&-disabled) {
                     background-color: var(--button-secondary-hover);
+                }
+
+                &-disabled {
+                    cursor: auto;
+                    border: 1px solid var(--general-disabled);
                 }
 
                 &-text {

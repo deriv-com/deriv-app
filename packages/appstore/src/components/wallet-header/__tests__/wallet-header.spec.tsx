@@ -24,9 +24,9 @@ const mocked_root_store = mockStore({
 //     // useStore: () => mocked_root_store,
 // }));
 
-// jest.mock('@deriv/shared', () => ({
-//     ...jest.requireActual('@deriv/shared'),
-// }));
+jest.mock('@deriv/account', () => ({
+    ...jest.requireActual('@deriv/account'),
+}));
 
 // jest.mock('@deriv/components', () => {
 //     const original_module = jest.requireActual('@deriv/components');

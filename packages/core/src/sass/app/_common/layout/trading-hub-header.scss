@@ -110,9 +110,9 @@
     }
 
     &__logo {
-        width: 8.5rem;
-        height: 3rem;
-        margin: 0 0.5rem 0 1.5rem;
+        height: 1.8rem;
+        padding: 0 1rem 0 1.5rem;
+        margin-bottom: 0.2rem !important;
 
         @include mobile {
             margin-left: 0.7rem;

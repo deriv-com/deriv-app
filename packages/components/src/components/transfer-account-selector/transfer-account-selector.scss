@@ -1,0 +1,72 @@
+.transfer-account-selector {
+    $parent: &;
+
+    cursor: pointer;
+    width: 100%;
+
+    &__label {
+        display: block;
+        font-size: var(--text-size-xs);
+        font-weight: var(--text-weight-normal);
+    }
+
+    &__value {
+        padding: 0;
+    }
+
+    &__heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.4rem;
+    }
+
+    &__placeholder {
+        font-size: var(--text-size-xs);
+        font-weight: var(--text-weight-bold);
+    }
+
+    &__chevron-icon {
+        margin-left: 1rem;
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__list {
+        margin-bottom: 0.8rem;
+        border-bottom: 0.2rem solid $color-grey-2;
+
+        &--is-last {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        &-items {
+            padding: 0 0.8rem;
+        }
+
+        &-header {
+            font-weight: var(--text-weight-bold);
+            font-size: var(--text-size-xs);
+            display: block;
+            padding: 1.6rem 2.8rem;
+        }
+
+        &-tile {
+            cursor: pointer;
+
+            &--is-last {
+                margin-bottom: 1.6rem;
+            }
+        }
+    }
+}
+
+// Overwrite modal style
+.dc-modal-header--transfer-account-selector__modal-header {
+    border-bottom: 2px solid $color-grey-2;
+}

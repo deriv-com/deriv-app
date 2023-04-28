@@ -391,7 +391,7 @@ const Chart = props => {
             requestSubscribe={wsSubscribe}
             settings={settings}
             should_show_eu_content={should_show_eu_content}
-            showTicksOnly={show_digits_stats || is_accumulator}
+            allowTickChartTypeOnly={show_digits_stats || is_accumulator}
             stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}

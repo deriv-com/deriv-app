@@ -8,9 +8,8 @@ const Withdraw = observer(() => {
     const {
         verification_code: { payment_withdraw: verification_code },
     } = client;
-    const { iframe, general_store, withdraw } = useCashierStore();
-    const { is_loading, setActiveTab } = general_store;
-    const { iframe_height, iframe_url, clearIframe } = iframe;
+    const { general_store, withdraw } = useCashierStore();
+    const { setActiveTab } = general_store;
     const { container, onMountWithdraw: onMount } = withdraw;
 
     React.useEffect(() => {
@@ -19,9 +18,7 @@ const Withdraw = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
-        <Real iframe_height={iframe_height} iframe_url={iframe_url} clearIframe={clearIframe} is_loading={is_loading} />
-    );
+    return <Real />;
 });
 
 export default Withdraw;

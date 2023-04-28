@@ -11,12 +11,7 @@ import {
     VerticalTab,
     Loading,
 } from '@deriv/components';
-import {
-    useOnrampVisible,
-    useAccountTransferVisible,
-    useSwitchToRealAccount,
-    useP2PNotificationCount,
-} from '@deriv/hooks';
+import { useOnrampVisible, useAccountTransferVisible, useP2PNotificationCount } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
@@ -77,12 +72,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
-    const switchToReal = useSwitchToRealAccount();
     const p2p_notification_count = useP2PNotificationCount();
-
-    React.useEffect(() => {
-        switchToReal();
-    }, [switchToReal]);
 
     React.useEffect(() => {
         toggleCashier();

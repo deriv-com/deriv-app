@@ -145,6 +145,7 @@ const mock = (): TStores => {
             has_residence: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
+            is_low_risk: false,
             is_identity_verification_needed: false,
             is_landing_company_loaded: false,
             is_logged_in: false,

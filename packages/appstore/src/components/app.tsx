@@ -21,7 +21,7 @@ const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
     const { ui }: TRootStore = useStores();
 
     return (
-        <CashierStoreProvider store={root_store as any}>
+        <CashierStoreProvider store={root_store}>
             <StoreProvider store={root_store as any}>
                 <main
                     className={classNames('dashboard', {

@@ -9,13 +9,14 @@ import { documentAdditionalError, getRegex, preventEmptyClipboardPaste } from '.
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
-import { getDocumentData } from 'Helpers/utils';
+import { getDocumentData, generatePlaceholderText } from 'Helpers/utils';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [is_doc_selected, setDocSelected] = React.useState(false);
+    const [selected_doc, setSelectedDoc] = React.useState(null);
+
     const document_data = selected_country.identity.services.idv.documents_supported;
 
     const {
@@ -206,11 +207,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
                                                             if (item.text === 'No results found' || !item.text) {
-                                                                setDocSelected(false);
+                                                                setSelectedDoc(null);
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             } else {
                                                                 setFieldValue('document_type', item, true);
-                                                                setDocSelected(true);
+                                                                setSelectedDoc(item.id);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
                                                                 }
@@ -233,7 +234,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                         handleChange(e);
                                                         const selected_document = getDocument(e.target.value);
                                                         if (selected_document) {
-                                                            setDocSelected(true);
+                                                            setSelectedDoc(selected_document.id);
                                                             setFieldValue('document_type', selected_document, true);
                                                             if (has_visual_sample) {
                                                                 setDocumentImage(selected_document.sample_image);
@@ -265,7 +266,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                     errors.error_message
                                                 }
                                                 autoComplete='off'
-                                                placeholder='Enter your document number'
+                                                placeholder={generatePlaceholderText(selected_doc)}
                                                 value={values.document_number}
                                                 onPaste={preventEmptyClipboardPaste}
                                                 onBlur={handleBlur}
@@ -323,7 +324,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                             </div>
                         )}
                     </div>
-                    {is_doc_selected && (
+                    {selected_doc && (
                         <Text
                             className={classNames('proof-of-identity__text btm-spacer', {
                                 'top-spacer': is_from_external,

@@ -671,6 +671,72 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: 40rem;
             }
         }
+
+        &__poi-confirm-example {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            border: 1px solid #d6dadb;
+            border-radius: 0.8rem;
+            padding: 1.6rem;
+
+            &_container {
+                margin-bottom: 2.4rem;
+                transition: transform 0.35s ease, opacity 0.35s linear;
+                transform-origin: top;
+                opacity: 1;
+
+                &--exit {
+                    transform: scale(1, 0);
+                    opacity: 0;
+                }
+            }
+
+            .da-inline-note-with-icon {
+                border-radius: 0.8rem;
+                margin-top: 0;
+            }
+
+            .account__scrollbars_container--grid-layout {
+                grid-gap: 0;
+            }
+
+            .account-form__section-content {
+                width: 33rem;
+
+                .dc-input__bottom-label > * {
+                    font-size: var(--text-size-xxs);
+                }
+
+                .account-form__fieldset {
+                    margin-bottom: 0;
+
+                    .dc-input--error {
+                        margin-bottom: 3.8rem;
+                    }
+                }
+            }
+
+            .account__scrollbars_container {
+                padding: 0;
+
+                .account-form__section {
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            }
+
+            &--button {
+                padding: 0;
+                margin: 0;
+                background-color: unset;
+                border: unset;
+
+                &__disabled > * {
+                    cursor: not-allowed;
+                }
+            }
+        }
     }
 
     &__initial-loader {
@@ -705,10 +771,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 align-items: center;
                 gap: 1.6rem;
                 margin-top: 1.6rem;
-            }
-
-            &__single-icon {
-                margin-right: 0.4rem;
             }
 
             &__icons {
@@ -2049,7 +2111,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define onfido-container; weak */
 .onfido-container {
-    padding-left: 1.6rem;
+    text-align: center;
 
     &__hidden {
         display: none;
@@ -2060,11 +2122,26 @@ $MIN_HEIGHT_FLOATING: calc(
         pointer-events: none;
     }
 
-    &__message {
+    &__info-message {
         position: absolute;
         top: 2.4rem;
         left: 19.2rem;
         z-index: 1;
+    }
+
+    &__status-message {
+        background-color: var(--transparent-correct-message);
+        margin-bottom: 2.4rem;
+        width: 51.2rem;
+        justify-content: flex-start;
+        transition: transform 0.35s ease, opacity 0.35s linear;
+        transform-origin: top;
+        opacity: 1;
+
+        &--exit {
+            transform: scale(1, 0);
+            opacity: 0;
+        }
     }
 
     @include mobile {
@@ -2240,7 +2317,7 @@ $MIN_HEIGHT_FLOATING: calc(
     height: 100%;
 
     &__main-container {
-        max-width: 67.2rem;
+        max-width: 68.2rem;
     }
 
     .min-height {
@@ -3022,18 +3099,5 @@ $MIN_HEIGHT_FLOATING: calc(
         align-items: flex-start;
         justify-content: center;
         gap: 0.8rem;
-    }
-}
-
-.poi-confirm-example {
-    display: flex;
-    flex-direction: column;
-    padding: 1.6rem;
-    gap: 1.6rem;
-    border: 1px solid #d6dadb;
-    border-radius: 0.8rem;
-
-    &__container {
-        display: flex;
     }
 }

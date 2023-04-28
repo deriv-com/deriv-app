@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
@@ -23,7 +23,7 @@ const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'rea
     return (
         <div className='wallet-header__description-buttons'>
             {btn_names.map((name, index) => (
-                <div key={name} className='wallet-header__description-buttons-item'>
+                <Button key={name} className='wallet-header__description-buttons-item' is_disabled={is_disabled}>
                     <Icon icon={icon_names[index]} custom_color={'var(--text-general)'} />
                     <Localize
                         i18n_default_text={`<0>${is_demo && name === 'Deposit' ? 'Reset balance' : name}</0>`}
@@ -38,7 +38,7 @@ const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'rea
                             />,
                         ]}
                     />
-                </div>
+                </Button>
             ))}
         </div>
     );

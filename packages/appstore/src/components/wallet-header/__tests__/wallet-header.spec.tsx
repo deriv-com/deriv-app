@@ -2,21 +2,27 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 // import { isMobile } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletHeader from '..';
 
-const mocked_root_store: DeepPartial<ReturnType<typeof useStore>> = {
+const mocked_root_store = mockStore({
     ui: {
         is_dark_mode_on: false,
     },
-};
+});
 
-jest.mock('@deriv/stores', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    observer: <T,>(Component: T) => Component,
-    useStore: () => mocked_root_store,
-}));
+// const mocked_root_store: DeepPartial<ReturnType<typeof useStore>> = {
+//     ui: {
+//         is_dark_mode_on: false,
+//     },
+// };
+
+// jest.mock('@deriv/stores', () => ({
+//     __esModule: true,
+//     default: 'mockedDefaultExport',
+//     observer: <T,>(Component: T) => Component,
+//     // useStore: () => mocked_root_store,
+// }));
 
 // jest.mock('@deriv/shared', () => ({
 //     ...jest.requireActual('@deriv/shared'),
@@ -41,7 +47,11 @@ describe('<WalletHeader />', () => {
             const account_type = 'demo';
             const currency = 'USD';
             const dt_currency = account_type === 'demo' ? 'demo' : currency.toLowerCase();
-            render(<WalletHeader account_type={account_type} />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type={account_type} />
+                </StoreProvider>
+            );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
 
             expect(currency_card).toBeInTheDocument();

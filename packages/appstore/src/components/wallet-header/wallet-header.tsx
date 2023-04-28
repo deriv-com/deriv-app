@@ -5,6 +5,7 @@ import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
+import './wallet-header.scss';
 
 export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
 

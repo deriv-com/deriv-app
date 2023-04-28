@@ -3,6 +3,7 @@ import { Text, StatusBadge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { TAccountStatus } from './wallet-header';
+import { observer, useStore } from '@deriv/stores';
 
 type TWalletHeaderBalance = {
     account_status: TAccountStatus;
@@ -10,17 +11,24 @@ type TWalletHeaderBalance = {
     currency: 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'USDT' | 'eUSDT' | 'tUSDT' | 'LTC' | 'USDC';
 };
 
-const WalletHeaderBalance = React.memo(
+const WalletHeaderBalance = observer(
     ({ account_status = '', balance = '0.00', currency = 'USD' }: TWalletHeaderBalance) => {
+        const {
+            traders_hub: { openFailedVerificationModal },
+        } = useStore();
+
         const balance_title_size = 'xxs';
         const balance_amount_size = 'm';
 
         const balance_title_text = '<0>Wallet balance</0>';
         const balance_amount_text = `<0>${balance} ${currency}</0>`;
 
-        // TODO: just for test use blank function and empty object. When BE will be ready change it!!!
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(account_status, () => {}, {});
+        // TODO: just for test use blank function and empty object. When BE will be ready
+        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+            account_status,
+            openFailedVerificationModal,
+            {}
+        );
 
         return (
             <div className='wallet-header__balance-title-amount'>

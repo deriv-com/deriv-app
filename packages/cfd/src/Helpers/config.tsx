@@ -1,13 +1,7 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 import { TCFDsPlatformType } from 'Components/props.types';
-import {
-    getDXTradeWebTerminalLink,
-    platformsText,
-    DERIVEZ_URL,
-    platforms_icons,
-    mobileDownloadLink,
-} from './constants';
+import { getDXTradeWebTerminalLink, platformsText, DERIVEZ_URL, platformsIcons, mobileDownloadLink } from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
@@ -66,7 +60,7 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
             >
                 <Icon
                     className='cfd-trade-modal__dxtrade-button-icon'
-                    icon={`IcBrand${platforms_icons(platform)}Wordmark`}
+                    icon={`IcBrand${platformsIcons(platform)}Wordmark`}
                     size={36}
                 />
                 <div className='cfd-trade-modal__dxtrade-button-text'>

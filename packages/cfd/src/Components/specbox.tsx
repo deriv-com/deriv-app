@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { CFDAccountCopy } from './cfd-account-copy';
 
 export type TSpecBoxProps = {
-    value?: string;
+    value: string | undefined;
     is_bold?: boolean;
 };
 

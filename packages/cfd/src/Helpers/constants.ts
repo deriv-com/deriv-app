@@ -13,7 +13,7 @@ const platformsText = (platform: TCFDsPlatformType) => {
     }
 };
 
-const platformsIcons = (platform: TCFDsPlatformType) => {
+const platforms_icons = (platform: TCFDsPlatformType) => {
     switch (platform) {
         case 'derivez':
             return 'DerivEz';
@@ -133,7 +133,7 @@ export {
     DERIVEZ_URL,
     getBrokerName,
     platformsText,
-    platformsIcons,
+    platforms_icons,
     getTitle,
     mobileDownloadLink,
     getPlatformDXTradeDownloadLink,

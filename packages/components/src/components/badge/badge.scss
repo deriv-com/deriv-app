@@ -2,7 +2,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    color: #ffffff;
+    color: $color-white;
 
     &--bold {
         font-weight: bold;
@@ -50,19 +50,19 @@
     }
 
     &--blue {
-        background-color: #377cfc;
+        background-color: $color-blue;
     }
 
     &--orange {
-        background-color: var(--brand-orange);
+        background-color: $color-orange;
     }
 
     &--red {
-        background-color: var(--brand-red-coral);
+        background-color: $color-red;
     }
 
     &--gray {
-        background-color: #d6dadb;
+        background-color: $color-grey-5;
     }
 
     &--full-rounded {

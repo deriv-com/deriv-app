@@ -5,7 +5,6 @@ import { Router } from 'react-router';
 import { isMobile } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
-import { TRootStore } from '../../../types';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
@@ -39,7 +38,7 @@ jest.mock('Pages/withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
 
 describe('<Cashier />', () => {
     let history: BrowserHistory;
-    const renderWithRouter = (component: JSX.Element, mock_root_store: TRootStore) => {
+    const renderWithRouter = (component: JSX.Element, mock_root_store: ReturnType<typeof mockStore>) => {
         history = createBrowserHistory();
         return {
             ...render(<Router history={history}>{component}</Router>, {

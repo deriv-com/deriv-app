@@ -7,7 +7,7 @@ import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
-let general_store: GeneralStore, root_store: TRootStore, WS: DeepPartial<TWebSocket>;
+let general_store: GeneralStore, root_store: ReturnType<typeof mockStore>, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
     root_store = mockStore({
@@ -85,12 +85,12 @@ beforeEach(() => {
         },
         wait: jest.fn(),
     };
-    general_store = new GeneralStore(WS as TWebSocket, root_store);
+    general_store = new GeneralStore(WS as TWebSocket, root_store as TRootStore);
 });
 
 describe('GeneralStore', () => {
     it('should set function on remount', () => {
-        // TODO: use the actual function
+        // TODO: use the actual function smh
         general_store.setOnRemount('function');
 
         expect(general_store.onRemount).toEqual('function');
@@ -177,7 +177,7 @@ describe('GeneralStore', () => {
     });
 
     it('should calculate proper percentage for account transfer container', () => {
-        general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 500;
+        general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '500';
         general_store.root_store.modules.cashier.account_transfer.selected_from.balance = 10000;
         general_store.setActiveTab('account_transfer');
         general_store.calculatePercentage();
@@ -188,7 +188,7 @@ describe('GeneralStore', () => {
     it('should calculate proper percentage for other containers', () => {
         general_store.root_store.client.balance = '9000';
         general_store.setActiveTab('deposit');
-        general_store.calculatePercentage(1000);
+        general_store.calculatePercentage('1000');
 
         expect(general_store.percentage).toBe(11);
     });
@@ -312,7 +312,9 @@ describe('GeneralStore', () => {
                 pathname: routes.cashier_pa,
             },
         }));
-        general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList.mockResolvedValueOnce([]);
+        (
+            general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList as jest.Mock
+        ).mockResolvedValueOnce([]);
         general_store.root_store.client.is_logged_in = true;
         await general_store.onMountCommon(false);
 

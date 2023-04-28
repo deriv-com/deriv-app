@@ -109,7 +109,7 @@ const PaymentAgentTransferForm = observer(() => {
                 initialValues={{
                     // in case coming back from confirmation screen, populate the recent data to be edited
                     loginid: transfer_to || '',
-                    amount: amount || '',
+                    amount: amount?.toString() || '',
                     description: description || '',
                 }}
                 validate={validateTransferPassthrough}

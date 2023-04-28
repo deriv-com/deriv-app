@@ -65,19 +65,13 @@ const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TP
     const validateWithdrawalPassthrough = (values: TValidateWithdrawalValueProps) =>
         validateWithdrawal(values, { balance, currency });
 
-    const onWithdrawalPassthrough = async (
-        values: TValidateWithdrawalValueProps,
-        actions: { setSubmitting: (value: boolean) => void }
-    ) => {
-        const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
+    const onWithdrawalPassthrough = async (values: TValidateWithdrawalValueProps) => {
+        await requestTryPaymentAgentWithdraw({
             loginid: values.account_number,
             currency,
             amount: Number(values.amount),
             verification_code,
         });
-        if (payment_agent_withdraw?.error) {
-            actions.setSubmitting(false);
-        }
     };
 
     return (

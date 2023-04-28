@@ -86,19 +86,13 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
             payment_agent: payment_agent_list.find(pa => pa.value === payment_agent.paymentagent_loginid),
         } as TValidateWithdrawalProps);
 
-    const onWithdrawalPassthrough = async (
-        values: TValidateWithdrawalValueProps,
-        actions: { setSubmitting: (value: boolean) => void }
-    ) => {
-        const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({
+    const onWithdrawalPassthrough = async (values: TValidateWithdrawalValueProps) => {
+        await requestTryPaymentAgentWithdraw({
             loginid: payment_agent.paymentagent_loginid,
             currency,
             amount: Number(values.amount),
             verification_code,
         });
-        if (payment_agent_withdraw?.error) {
-            actions.setSubmitting(false);
-        }
     };
 
     if (is_loading || !payment_agent_list.length) {

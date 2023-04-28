@@ -4,6 +4,7 @@ import { isMobile } from '@deriv/shared';
 import AccountTransferForm from '../account-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { TError } from '../../../../types';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -112,7 +113,7 @@ describe('<AccountTransferForm />', () => {
         error: {
             code: 'testCode',
             message: 'testMessage',
-        },
+        } as TError,
     };
 
     const renderAccountTransferForm = () => {
@@ -205,7 +206,7 @@ describe('<AccountTransferForm />', () => {
         props.error = {
             code: 'Fiat2CryptoTransferOverLimit',
             message: 'testMessage',
-        };
+        } as TError;
 
         renderAccountTransferForm();
 
@@ -216,7 +217,7 @@ describe('<AccountTransferForm />', () => {
         props.error = {
             code: 'testCode',
             message: 'testMessage',
-        };
+        } as TError;
 
         renderAccountTransferForm();
 

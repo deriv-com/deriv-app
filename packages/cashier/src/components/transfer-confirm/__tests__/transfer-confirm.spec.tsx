@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import TransferConfirm from '../transfer-confirm';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
+import { TError } from 'Types';
 
 const mock_root_store = mockStore({
     ui: {
@@ -63,10 +64,12 @@ describe('<TransferConfirm />', () => {
         render(
             <TransferConfirm
                 {...props}
-                error={{
-                    code: 'code',
-                    message: 'error_message',
-                }}
+                error={
+                    {
+                        code: 'code',
+                        message: 'error_message',
+                    } as TError
+                }
             />,
             {
                 wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,

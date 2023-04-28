@@ -116,9 +116,11 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                         <SelectNative
                             data_testid='dt_on_ramp_select_native'
                             className='on-ramp__selector'
+                            label={''}
                             list_items={getActivePaths()}
                             value={selected_cashier_path}
                             should_show_empty_option={false}
+                            hide_top_placeholder={false}
                             onChange={e => {
                                 if (e.currentTarget.value !== selected_cashier_path) {
                                     setSelectedCashierPath(e.currentTarget.value);

@@ -269,6 +269,10 @@
             transform: rotate(180deg);
             transition: transform 500ms;
         }
+
+        &--close {
+            transform: rotate(0deg) !important;
+        }
     }
 
     &__drawer {
@@ -650,9 +654,11 @@
 
             &-dropdown {
                 min-width: 20rem;
+
                 @include mobile {
                     width: 90%;
                 }
+
                 &-wrapper {
                     @include mobile {
                         position: absolute;
@@ -793,6 +799,13 @@
                         transform: rotate(180deg);
                         transition: transform 500ms;
                     }
+
+                    .header__expand {
+                        &--close {
+                            transform: rotate(0deg);
+                        }
+                    }
+
                 }
 
                 .ui-accordion-header {
@@ -840,6 +853,9 @@
                     font-family: 'IBM Plex Sans', sans-serif;
                     padding: 14px 16px;
                     padding-bottom: 6px;
+                    display: flex;
+                    justify-content: space-between;
+                    cursor: pointer;
                 }
 
                 &__content {
@@ -848,6 +864,10 @@
                     padding: 5px 8px;
                     padding-top: 5px;
                     align-items: center;
+
+                    &--close {
+                        display: none;
+                    }
 
                     &__high-risk {
                         @include position_center;

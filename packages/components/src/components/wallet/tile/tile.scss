@@ -1,0 +1,95 @@
+.wallet-tile {
+    $parent: &;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: $color-white;
+    padding: 1rem 2rem;
+    border-radius: $BORDER_RADIUS;
+    flex-grow: 1;
+
+    &--mobile {
+        flex-direction: column;
+        align-items: flex-start;
+
+        #{$parent} {
+            &__header {
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-end;
+                margin-bottom: 0.4rem;
+            }
+
+            &__jurisdiction {
+                font-size: var(--text-size-xxxxs);
+            }
+
+            &__label {
+                font-size: var(--text-size-xxs);
+            }
+
+            &__balance {
+                font-size: var(--text-size-xxs);
+            }
+
+            &__icon {
+                margin-right: 0.4rem;
+            }
+        }
+    }
+
+    &--hover {
+        &:hover {
+            // TODO: there is no variable for this color
+            background-color: #e6e9e9;
+        }
+    }
+
+    &--active {
+        background-color: $color-grey-5;
+    }
+
+    &__icon {
+        margin-right: 1.6rem;
+        min-width: 4rem;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    &__title {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        line-height: 2rem;
+    }
+
+    &__label {
+        font-weight: var(--text-weight-bold);
+        font-size: var(--text-size-xs);
+        display: block;
+    }
+
+    &__jurisdiction {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-start;
+        gap: 0.4rem;
+        border: 1px solid $color-black-1;
+        border-radius: $BORDER_RADIUS / 2;
+        padding: 0.2rem 0.4rem;
+        font-weight: var(--text-weight-bold);
+        font-size: var(--text-size-xxxs);
+        text-transform: uppercase;
+    }
+
+    &__balance {
+        font-size: var(--text-size-xxs);
+    }
+}

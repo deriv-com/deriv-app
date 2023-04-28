@@ -40,6 +40,10 @@ const Badge = (props: BadgeProps) => {
         weight = 'bold',
         ...rest
     } = props;
+
+    const is_contained = type === 'contained';
+    const is_bordered = type === 'bordered';
+
     const getBadgeStyles = () => {
         return classNames(
             'dc-badge',
@@ -50,12 +54,12 @@ const Badge = (props: BadgeProps) => {
                 'dc-badge--loose': spacing === 'loose',
                 'dc-badge__medium': size === 'medium',
                 'dc-badge__large': size === 'large',
-                'dc-badge--contained': type === 'contained',
-                'dc-badge--bordered': type === 'bordered',
-                'dc-badge--blue': type === 'contained' && props.background_color === 'blue',
-                'dc-badge--orange': type === 'contained' && props.background_color === 'orange',
-                'dc-badge--red': type === 'contained' && props.background_color === 'red',
-                'dc-badge--gray': type === 'contained' && props.background_color === 'gray',
+                'dc-badge--contained': is_contained,
+                'dc-badge--bordered': is_bordered,
+                'dc-badge--blue': is_contained && props.background_color === 'blue',
+                'dc-badge--orange': is_contained && props.background_color === 'orange',
+                'dc-badge--red': is_contained && props.background_color === 'red',
+                'dc-badge--gray': is_contained && props.background_color === 'gray',
                 'dc-badge--full-rounded': rounded_corners === 4,
                 'dc-badge--two-rounded': rounded_corners === 2,
             },

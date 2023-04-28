@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { isMobile } from '@deriv/shared';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import { TImageTestID } from 'Assets/svgs/wallets/image-types';
 import WalletsBannerUpgrading from '../wallets-banner-upgrading';
@@ -111,23 +112,36 @@ describe('<WalletsBanner />', () => {
         const mobile: TImageTestID = 'dt_ready_mobile';
         const desktop_eu: TImageTestID = 'dt_ready_desktop_eu';
         const mobile_eu: TImageTestID = 'dt_ready_mobile_eu';
+        const mocked_root_store = mockStore({});
 
         it('Should render right title', () => {
-            render(<WalletsBannerReady />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady />
+                </StoreProvider>
+            );
             const title = screen.queryByText(/Your Wallets are ready/i);
 
             expect(title).toBeInTheDocument();
         });
 
         it('Should render tick', () => {
-            render(<WalletsBannerReady />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady />
+                </StoreProvider>
+            );
             const tick = screen.queryByTestId('dt_wallets-ready-tick');
 
             expect(tick).toBeInTheDocument();
         });
 
         it('Should render right button', () => {
-            render(<WalletsBannerReady />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady />
+                </StoreProvider>
+            );
             const btn = screen.queryByText('Log out');
 
             expect(btn).toBeInTheDocument();
@@ -135,7 +149,11 @@ describe('<WalletsBanner />', () => {
 
         it('Should render image properly for desktop for Non-EU', () => {
             isMobile.mockReturnValue(false);
-            render(<WalletsBannerReady />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady />
+                </StoreProvider>
+            );
             const desktop_image = screen.queryByTestId(desktop);
             const mobile_image = screen.queryByTestId(mobile);
 
@@ -145,7 +163,11 @@ describe('<WalletsBanner />', () => {
 
         it('Should render image properly for mobile for Non-EU', () => {
             isMobile.mockReturnValue(true);
-            render(<WalletsBannerReady />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady />
+                </StoreProvider>
+            );
             const desktop_image = screen.queryByTestId(desktop);
             const mobile_image = screen.queryByTestId(mobile);
 
@@ -155,7 +177,11 @@ describe('<WalletsBanner />', () => {
 
         it('Should render image properly for desktop for EU', () => {
             isMobile.mockReturnValue(false);
-            render(<WalletsBannerReady is_eu={true} />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady is_eu={true} />
+                </StoreProvider>
+            );
             const desktop_image = screen.queryByTestId(desktop_eu);
             const mobile_image = screen.queryByTestId(mobile_eu);
 
@@ -165,7 +191,11 @@ describe('<WalletsBanner />', () => {
 
         it('Should render image properly for mobile for EU', () => {
             isMobile.mockReturnValue(true);
-            render(<WalletsBannerReady is_eu={true} />);
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady is_eu={true} />
+                </StoreProvider>
+            );
             const desktop_image = screen.queryByTestId(desktop_eu);
             const mobile_image = screen.queryByTestId(mobile_eu);
 

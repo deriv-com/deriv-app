@@ -197,7 +197,7 @@ const DMT5TradeModal = ({
             </div>
             <div className='cfd-trade-modal__download-center-app'>
                 <div className='cfd-trade-modal__download-center-app--option'>
-                    <Icon icon='IcMt5Logo' size={32} />
+                    <Icon icon='IcRebrandingMt5Logo' size={32} />
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('MetaTrader 5 web')}
                     </Text>
@@ -212,7 +212,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Open')}
                         </Text>
                     </a>
@@ -229,7 +229,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Download')}
                         </Text>
                     </a>
@@ -246,7 +246,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Download')}
                         </Text>
                     </a>
@@ -263,7 +263,7 @@ const DMT5TradeModal = ({
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Text size='xxs' weight='bold'>
+                        <Text size='xxs' weight='bold' color='prominent'>
                             {localize('Learn more')}
                         </Text>
                     </a>

@@ -358,11 +358,11 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
     });
 
-    it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
+    it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
         const store = mockStore(mockRootStore);
 
         store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
-        store.modules.cfd.account_type = { category: 'real', type: 'synthetic' };
+        store.modules.cfd.account_type = { category: 'real', type: 'all' };
         store.modules.cfd.error_type = 'PasswordError';
         store.modules.cfd.is_cfd_success_dialog_enabled = true;
 
@@ -375,27 +375,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        expect(await screen.findByText('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
-    });
-
-    it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
-        const store = mockStore(mockRootStore);
-
-        store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
-        store.modules.cfd.account_type = { category: 'real', type: 'financial' };
-        store.modules.cfd.error_type = 'PasswordError';
-        store.modules.cfd.is_cfd_success_dialog_enabled = true;
-
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} platform='dxtrade' />
-            </Router>,
-            {
-                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
-            }
-        );
-
-        expect(await screen.findByText('IcDxtradeFinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcRebrandingDerivx')).toBeInTheDocument();
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {

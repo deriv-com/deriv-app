@@ -179,8 +179,10 @@ export type TJurisdictionModalContentProps = {
     is_virtual: boolean;
 };
 
+type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+
 export type TJurisdictionModalFootNoteProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_type: string;
     card_classname: string;
     jurisdiction_selected_shortcode: string;

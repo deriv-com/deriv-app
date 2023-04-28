@@ -14,7 +14,7 @@ type TContractInfo = {
     bid_price: number;
     entry_spot_display_value: string;
     barrier: string;
-    sell_price: number;
+    sell_price?: number;
     profit: number;
     status: string;
 }
@@ -65,6 +65,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contra
                         className={classNames('dc-contract-card__indicative--movement', {
                             'dc-contract-card__indicative--movement-complete': is_sold,
                         })}
+                        data-testid='dc-contract-card__indicative--movement'
                     >
                         {status === 'profit' && <Icon icon='IcProfit' />}
                         {status === 'loss' && <Icon icon='IcLoss' />}
@@ -113,6 +114,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contra
                             className={classNames('dc-contract-card__indicative--movement', {
                                 'dc-contract-card__indicative--movement-complete': is_sold,
                             })}
+                            data-testid='dc-contract-card__indicative--movement'
                         >
                             {status === 'profit' && <Icon icon='IcProfit' />}
                             {status === 'loss' && <Icon icon='IcLoss' />}

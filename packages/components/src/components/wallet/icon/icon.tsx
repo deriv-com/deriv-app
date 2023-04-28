@@ -8,9 +8,18 @@ type TWalletIconProps = {
     className?: string;
     wallet_bg?: string;
     wallet_icon?: string;
+    account_size?: string;
+    wallet_size?: string;
 };
 
-const WalletIcon = ({ wallet_icon, account_icon, wallet_bg, className }: TWalletIconProps) => {
+const WalletIcon = ({
+    wallet_icon,
+    account_icon,
+    wallet_bg,
+    className,
+    account_size = '16px',
+    wallet_size = '10px',
+}: TWalletIconProps) => {
     const is_solo = !wallet_icon || !account_icon;
     const icon = wallet_icon || account_icon || '';
 
@@ -28,7 +37,7 @@ const WalletIcon = ({ wallet_icon, account_icon, wallet_bg, className }: TWallet
                         icon={account_icon}
                         data_testid='dt_account_icon_merged'
                         className='wallet-icon__account'
-                        size='16px'
+                        size={account_size}
                     />
 
                     <WalletSmall
@@ -36,7 +45,7 @@ const WalletIcon = ({ wallet_icon, account_icon, wallet_bg, className }: TWallet
                         data_testid='dt_wallet_icon_merged'
                         className='wallet-icon__wallet'
                         bg={wallet_bg}
-                        size='10px'
+                        size={wallet_size}
                     />
                 </React.Fragment>
             )}

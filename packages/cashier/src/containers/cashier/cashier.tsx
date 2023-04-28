@@ -14,7 +14,6 @@ import {
 import {
     useOnrampVisible,
     useAccountTransferVisible,
-    useSwitchToRealAccount,
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
     useP2PNotificationCount,
@@ -75,17 +74,12 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
-    const switchToReal = useSwitchToRealAccount();
     const p2p_notification_count = useP2PNotificationCount();
     const {
         data: is_p2p_enabled,
         isSuccess: is_p2p_enabled_success,
         isLoading: is_p2p_enabled_loading,
     } = useIsP2PEnabled();
-
-    React.useEffect(() => {
-        switchToReal();
-    }, [switchToReal]);
 
     React.useEffect(() => {
         toggleCashier();

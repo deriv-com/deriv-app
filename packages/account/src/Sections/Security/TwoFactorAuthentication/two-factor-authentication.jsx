@@ -21,13 +21,13 @@ import TwoFactorAuthenticationArticle from './two-factor-authentication-article.
 
 const TwoFactorAuthentication = ({
     email_address,
-    is_switching,
-    setTwoFAStatus,
     getTwoFAStatus,
     has_enabled_two_fa,
+    is_language_changing,
+    is_switching,
     Notifications,
     setTwoFAChangedStatus,
-    is_language_changing,
+    setTwoFAStatus,
 }) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
@@ -212,22 +212,22 @@ const TwoFactorAuthentication = ({
 
 TwoFactorAuthentication.propTypes = {
     email_address: PropTypes.string,
-    is_switching: PropTypes.bool,
-    setTwoFAStatus: PropTypes.func,
     getTwoFAStatus: PropTypes.func,
     has_enabled_two_fa: PropTypes.bool,
+    is_language_changing: PropTypes.bool,
+    is_switching: PropTypes.bool,
     Notifications: PropTypes.node,
     setTwoFAChangedStatus: PropTypes.func,
-    is_language_changing: PropTypes.bool,
+    setTwoFAStatus: PropTypes.func,
 };
 
 export default connect(({ client, ui, common }) => ({
     email_address: client.email_address,
-    is_switching: client.is_switching,
-    setTwoFAStatus: client.setTwoFAStatus,
     getTwoFAStatus: client.getTwoFAStatus,
     has_enabled_two_fa: client.has_enabled_two_fa,
+    is_language_changing: common.is_language_changing,
+    is_switching: client.is_switching,
     Notifications: ui.notification_messages_ui,
     setTwoFAChangedStatus: client.setTwoFAChangedStatus,
-    is_language_changing: common.is_language_changing,
+    setTwoFAStatus: client.setTwoFAStatus,
 }))(TwoFactorAuthentication);

@@ -149,7 +149,6 @@ export default class GeneralStore extends BaseStore {
         account_prompt_dialog.resetIsConfirmed();
 
         this.setLoading(true);
-        // This TS error will be fixed when the constants.js migrated to the TS
         if (!payment_agent.all_payment_agent_list?.paymentagent_list?.list) {
             const agent_list = await payment_agent.getAllPaymentAgentList();
             payment_agent.setAllPaymentAgentList(agent_list);
@@ -224,7 +223,7 @@ export default class GeneralStore extends BaseStore {
             if (is_logged_in) {
                 if (!switched) {
                     this.checkP2pStatus();
-                    payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
+                    payment_agent.setPaymentAgentList().then(() => payment_agent.filterPaymentAgentList());
                     if (!payment_agent_transfer.is_payment_agent) {
                         payment_agent_transfer.checkIsPaymentAgent();
                     }

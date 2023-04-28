@@ -10,7 +10,7 @@ configure({ safeDescriptors: false });
 let banxa_provider: TOnRampProvider,
     onramp_store: OnRampStore,
     onramp_providers: TOnRampProvider[],
-    root_store: TRootStore,
+    root_store: ReturnType<typeof mockStore>,
     WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
@@ -27,7 +27,7 @@ beforeEach(() => {
             }),
         },
     };
-    onramp_store = new OnRampStore(WS as TWebSocket, root_store);
+    onramp_store = new OnRampStore(WS as TWebSocket, root_store as TRootStore);
     onramp_providers = [createBanxaProvider(onramp_store)];
     banxa_provider = createBanxaProvider(onramp_store);
 });

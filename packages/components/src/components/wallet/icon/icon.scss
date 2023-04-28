@@ -1,6 +1,4 @@
 .wallet-icon {
-    $parent: &;
-
     &--merged {
         position: relative;
         height: 28px;
@@ -10,8 +8,8 @@
     &__account {
         display: block;
         position: absolute;
-        top: 2px;
-        left: 4px;
+        width: 16px;
+        height: 16px;
         z-index: 1;
         padding: 0;
     }
@@ -20,8 +18,8 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        width: 24px;
-        height: 16px;
+        width: 32px;
+        height: 20px;
         display: flex;
         justify-content: center;
         align-items: center;

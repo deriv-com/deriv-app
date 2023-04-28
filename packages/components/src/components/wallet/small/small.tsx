@@ -12,7 +12,7 @@ type TWalletSmallProps = {
     size?: string;
 };
 
-const WalletSmall = ({ bg, icon, className, data_testid, icon_class, size = '24px' }: TWalletSmallProps) => {
+const WalletSmall = ({ bg, icon, className, data_testid, icon_class, size = '16px' }: TWalletSmallProps) => {
     if (!icon) {
         return null;
     }

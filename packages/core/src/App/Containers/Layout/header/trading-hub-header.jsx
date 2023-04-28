@@ -10,8 +10,7 @@ import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
-import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
-import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
+import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
@@ -223,12 +222,8 @@ const TradingHubHeader = ({
 
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                <div className={cashier_routes && 'trading-hub-header__logo-wrapper'}>
-                    {is_dark_mode ? (
-                        <DerivBrandLogoDark className='trading-hub-header__logo' />
-                    ) : (
-                        <DerivBrandLogo className='trading-hub-header__logo' />
-                    )}
+                <div className='platform-switcher'>
+                    <DerivBrandLogo className='trading-hub-header__logo' />
                 </div>
                 <DesktopWrapper>
                     <Divider />

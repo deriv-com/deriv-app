@@ -1,15 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-// import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletHeader from '..';
 
-const mocked_root_store = mockStore({
-    ui: {
-        is_dark_mode_on: false,
-    },
-});
+const mocked_root_store = mockStore({});
 
 // const mocked_root_store: DeepPartial<ReturnType<typeof useStore>> = {
 //     ui: {
@@ -26,6 +21,7 @@ const mocked_root_store = mockStore({
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
+    getStatusBadgeConfig: jest.fn(() => ({ icon: '', text: '' })),
 }));
 
 // jest.mock('@deriv/components', () => {
@@ -36,14 +32,11 @@ jest.mock('@deriv/account', () => ({
 //     };
 // });
 
-// jest.mock('@deriv/shared', () => ({
-//     ...jest.requireActual('@deriv/shared'),
-//     // isMobile: jest.fn(() => false),
-// }));
-
 describe('<WalletHeader />', () => {
     describe('Demo wallet', () => {
         it('Should render right currency card', () => {
+            // getStatusBadgeConfig.mockReturnValue(true);
+
             const account_type = 'demo';
             const currency = 'USD';
             const dt_currency = account_type === 'demo' ? 'demo' : currency.toLowerCase();

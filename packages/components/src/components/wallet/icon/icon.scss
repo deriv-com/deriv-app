@@ -1,0 +1,50 @@
+.wallet-icon {
+    $parent: &;
+
+    &--solo {
+        #{$parent}__container {
+            padding: 0.2rem 0.4rem;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: $BORDER_RADIUS;
+        }
+
+        #{$parent}__icon {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &--merged {
+        position: relative;
+        height: 28px;
+        width: 40px;
+
+        #{$parent}__account {
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            z-index: 1;
+        }
+
+        #{$parent}__wallet {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 24px;
+            height: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: $BORDER_RADIUS;
+
+            &-icon {
+                width: 10px;
+                height: 10px;
+            }
+        }
+    }
+}

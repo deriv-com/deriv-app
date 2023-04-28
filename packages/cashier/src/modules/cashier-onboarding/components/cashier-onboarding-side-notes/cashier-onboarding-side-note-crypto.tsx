@@ -8,7 +8,7 @@ import { useCashierStore } from '../../../../stores/useCashierStores';
 const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
     const { client, ui } = useStore();
     const { general_store } = useCashierStore();
-    const { currency } = client;
+    const { currency, loginid } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
     const currency_code = getCurrencyDisplayCode(currency);
@@ -21,7 +21,10 @@ const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
     return (
         <>
             <Text className='cashier-onboarding-side-notes__text' color='prominent' weight='bold' size='xs' as='p'>
-                <Localize i18n_default_text='This is your {{currency_code}} account.' values={{ currency_code }} />
+                <Localize
+                    i18n_default_text='This is your {{currency_code}} account {{loginid}}'
+                    values={{ currency_code, loginid }}
+                />
             </Text>
             <Text className='cashier-onboarding-side-notes__text' size='xxs' as='p'>
                 <Localize

@@ -2,27 +2,16 @@ import React from 'react';
 import { QRCode } from 'react-qrcode';
 import { TCFDsPlatformType } from 'Components/props.types';
 import {
-    getPlatformDXTradeDownloadLink,
-    getPlatformDerivEZDownloadLink,
     getDXTradeWebTerminalLink,
     platformsText,
     DERIVEZ_URL,
+    platforms_icons,
+    mobileDownloadLink,
 } from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
-
-export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
-    switch (platform) {
-        case 'dxtrade':
-            return getPlatformDXTradeDownloadLink(type);
-        case 'derivez':
-            return getPlatformDerivEZDownloadLink(type);
-        default:
-            return getPlatformDXTradeDownloadLink(type);
-    }
-};
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
     const qr_code_mobile = isMobile() ? '100%' : '80%';
@@ -67,17 +56,6 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
         }
     };
 
-    const platforms_icons = () => {
-        switch (platform) {
-            case 'derivez':
-                return 'DerivEz';
-            case 'dxtrade':
-                return 'Dxtrade';
-            default:
-                return '';
-        }
-    };
-
     return (
         <React.Fragment>
             <a
@@ -88,7 +66,7 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
             >
                 <Icon
                     className='cfd-trade-modal__dxtrade-button-icon'
-                    icon={`IcBrand${platforms_icons()}Wordmark`}
+                    icon={`IcBrand${platforms_icons(platform)}Wordmark`}
                     size={36}
                 />
                 <div className='cfd-trade-modal__dxtrade-button-text'>
@@ -100,3 +78,4 @@ export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: 
         </React.Fragment>
     );
 };
+export { mobileDownloadLink };

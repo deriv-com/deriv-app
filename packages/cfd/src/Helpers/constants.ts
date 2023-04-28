@@ -1,4 +1,5 @@
 import { OSDetect } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { TCFDsPlatformType } from 'Components/props.types';
 
 const platformsText = (platform: TCFDsPlatformType) => {
@@ -10,6 +11,33 @@ const platformsText = (platform: TCFDsPlatformType) => {
         default:
             return '';
     }
+};
+
+const platforms_icons = (platform: TCFDsPlatformType) => {
+    switch (platform) {
+        case 'derivez':
+            return 'DerivEz';
+        case 'dxtrade':
+            return 'Dxtrade';
+        default:
+            return '';
+    }
+};
+
+const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
+    switch (platform) {
+        case 'dxtrade':
+            return getPlatformDXTradeDownloadLink(type);
+        case 'derivez':
+            return getPlatformDerivEZDownloadLink(type);
+        default:
+            return getPlatformDXTradeDownloadLink(type);
+    }
+};
+
+const getTitle = (market_type: string, is_eu_user: boolean) => {
+    if (is_eu_user) localize('MT5 CFDs');
+    return market_type;
 };
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
@@ -105,6 +133,9 @@ export {
     DERIVEZ_URL,
     getBrokerName,
     platformsText,
+    platforms_icons,
+    getTitle,
+    mobileDownloadLink,
     getPlatformDXTradeDownloadLink,
     getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,

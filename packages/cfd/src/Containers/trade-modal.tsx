@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
-import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from '../Components/props.types';
+import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from 'Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
-import { platformsText } from '../Helpers/constants';
+import { getTitle, platformsText } from '../Helpers/constants';
 import SpecBox from 'Components/specbox';
 import PasswordBox from 'Components/passwordbox';
 
@@ -23,11 +23,6 @@ type TTradeModalProps = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
     platform: TCFDsPlatformType;
-};
-
-const getTitle = (market_type: string, is_eu_user: boolean) => {
-    if (is_eu_user) localize('MT5 CFDs');
-    return market_type;
 };
 
 const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: string) => {

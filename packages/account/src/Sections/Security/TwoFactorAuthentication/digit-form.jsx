@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { getPropertyValue, WS } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
-const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus }) => {
+const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_language_changing }) => {
     const [is_success, setSuccess] = useState(false);
     const [is_ready_for_verification, setReadyForVerification] = useState(false);
     const button_text = is_enabled ? localize('Disable') : localize('Enable');
+    const formik_ref = useRef();
     let enable_response;
 
     const initial_form = {
         digit_code: '',
     };
+
+    useEffect(() => {
+        if (is_language_changing) {
+            formik_ref.current.setFieldTouched('digit_code');
+        }
+    }, [is_language_changing]);
 
     const validateFields = async values => {
         const digit_code = values.digit_code;
@@ -24,17 +31,21 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus }) => {
         } else if (!/^[0-9]{6}$/g.test(digit_code)) {
             return { digit_code: localize('Digit code must only contain numbers.') };
         } else if (is_ready_for_verification) {
-            const totp_action = is_enabled ? 'disable' : 'enable';
-            enable_response = await WS.authorized.accountSecurity({
-                account_security: 1,
-                totp_action,
-                otp: values.digit_code,
-            });
-            if (enable_response.error) {
-                const { code, message } = enable_response.error;
-                if (code === 'InvalidOTP')
-                    return { digit_code: localize("That's not the right code. Please try again.") };
-                return { digit_code: message };
+            if (formik_ref.current.isValid) {
+                const totp_action = is_enabled ? 'disable' : 'enable';
+                enable_response = await WS.authorized.accountSecurity({
+                    account_security: 1,
+                    totp_action,
+                    otp: values.digit_code,
+                });
+                if (enable_response.error) {
+                    const { code, message } = enable_response.error;
+                    if (code === 'InvalidOTP')
+                        return { digit_code: localize("That's not the right code. Please try again.") };
+                    return { digit_code: message };
+                }
+            } else {
+                return { digit_code: localize("That's not the right code. Please try again.") };
             }
         }
         return {};
@@ -51,7 +62,7 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus }) => {
     };
 
     return (
-        <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
+        <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields} innerRef={formik_ref}>
             {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty }) => (
                 <Form noValidate>
                     <div className='two-factor__input-group'>

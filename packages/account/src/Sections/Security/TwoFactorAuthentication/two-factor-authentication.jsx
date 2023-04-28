@@ -27,6 +27,7 @@ const TwoFactorAuthentication = ({
     has_enabled_two_fa,
     Notifications,
     setTwoFAChangedStatus,
+    is_language_changing,
 }) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
@@ -93,6 +94,7 @@ const TwoFactorAuthentication = ({
                     is_enabled={has_enabled_two_fa}
                     setTwoFAStatus={setTwoFAStatus}
                     setTwoFAChangedStatus={setTwoFAChangedStatus}
+                    is_language_changing={is_language_changing}
                 />
             </div>
         </ThemedScrollbars>
@@ -182,6 +184,7 @@ const TwoFactorAuthentication = ({
                                 is_enabled={has_enabled_two_fa}
                                 setTwoFAStatus={setTwoFAStatus}
                                 setTwoFAChangedStatus={setTwoFAChangedStatus}
+                                is_language_changing={is_language_changing}
                             />
                         </Timeline.Item>
                     </Timeline>
@@ -215,9 +218,10 @@ TwoFactorAuthentication.propTypes = {
     has_enabled_two_fa: PropTypes.bool,
     Notifications: PropTypes.node,
     setTwoFAChangedStatus: PropTypes.func,
+    is_language_changing: PropTypes.bool,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, ui, common }) => ({
     email_address: client.email_address,
     is_switching: client.is_switching,
     setTwoFAStatus: client.setTwoFAStatus,
@@ -225,4 +229,5 @@ export default connect(({ client, ui }) => ({
     has_enabled_two_fa: client.has_enabled_two_fa,
     Notifications: ui.notification_messages_ui,
     setTwoFAChangedStatus: client.setTwoFAChangedStatus,
+    is_language_changing: common.is_language_changing,
 }))(TwoFactorAuthentication);

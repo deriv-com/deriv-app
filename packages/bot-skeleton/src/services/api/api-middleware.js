@@ -5,6 +5,7 @@ datadogLogs.init({
     site: 'us5.datadoghq.com',
     forwardErrorsToLogs: true,
     sessionSampleRate: 100,
+    service: 'Dbot',
 });
 
 const REQUESTS = [
@@ -85,7 +86,6 @@ class APIMiddleware {
             }
         });
         performance.clearMeasures();
-        performance.clearMarks();
     };
 
     addGlobalMethod() {

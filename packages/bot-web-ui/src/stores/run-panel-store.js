@@ -60,6 +60,7 @@ export default class RunPanelStore {
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
         this.disposeReactionsFn = this.registerReactions();
+        this.timer = null;
     }
 
     active_index = 0;
@@ -138,7 +139,11 @@ export default class RunPanelStore {
 
     async onRunButtonClick() {
         performance.clearMeasures();
-        performance.clearMarks();
+
+        this.timer = setInterval(() => {
+            window.sendRequestsStatistic();
+            performance.clearMeasures();
+        }, 10000);
 
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
@@ -225,6 +230,7 @@ export default class RunPanelStore {
         }
 
         window.sendRequestsStatistic();
+        clearInterval(this.timer);
     }
 
     onClearStatClick() {
@@ -622,6 +628,8 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('client.invalid_token');
+
+        if (this.timer) clearInterval(this.timer);
 
         window.sendRequestsStatistic();
     }

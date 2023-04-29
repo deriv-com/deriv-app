@@ -2,15 +2,15 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Loading from '../loading';
 
+const test_id = 'dt_barspinner';
 const mock_props = {
     className: 'test_className',
+    data_testid: test_id,
     is_invisible: false,
     id: 'barspinner_id',
 };
 
 describe('Loading', () => {
-    const test_id = 'dt_barspinner';
-
     it('should render a Loading component', () => {
         render(<Loading {...mock_props} />);
         const loading_container = screen.getByTestId(test_id);

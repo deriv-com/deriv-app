@@ -1,3 +1,1 @@
-import CashierOnboardingModule from './cashier-onboarding';
-
-export { CashierOnboardingModule };
+export * from './cashier-onboarding';

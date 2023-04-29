@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { ThemedScrollbars } from '@deriv/components';
+import { useHasSetCurrency } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useCashierStore } from 'Stores/useCashierStores';
+import { useHistory } from 'react-router';
 import {
     CashierOnboardingCashCard,
     CashierOnboardingCryptoCard,
@@ -10,21 +14,17 @@ import {
     CashierOnboardingSideNotes,
     CashierOnboardingTitle,
 } from './components';
-import './onboarding.scss';
-import { useHistory } from 'react-router';
-import { useCashierStore } from 'Stores/useCashierStores';
-import { routes } from '@deriv/shared';
-import { useHasSetCurrency } from '@deriv/hooks';
+import './cashier-onboarding.scss';
 
 type TProps = {
     setSideNotes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
 };
 
-const CashierOnboardingModule: React.FC<TProps> = observer(({ setSideNotes }) => {
+const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
     const history = useHistory();
     const { client, ui } = useStore();
     const { general_store } = useCashierStore();
-    const { onMountCashierOnboarding, setIsCashierOnboarding } = general_store;
+    const { setIsCashierOnboarding } = general_store;
     const { toggleSetCurrencyModal } = ui;
     const { can_change_fiat_currency, available_crypto_currencies, is_crypto } = client;
     const is_fiat_user = !is_crypto() && !can_change_fiat_currency;
@@ -33,7 +33,7 @@ const CashierOnboardingModule: React.FC<TProps> = observer(({ setSideNotes }) =>
     const has_set_currency = useHasSetCurrency();
 
     useEffect(() => {
-        onMountCashierOnboarding();
+        setIsCashierOnboarding(true);
 
         return () => {
             setIsCashierOnboarding(false);
@@ -42,7 +42,7 @@ const CashierOnboardingModule: React.FC<TProps> = observer(({ setSideNotes }) =>
                 toggleSetCurrencyModal();
             }
         };
-    }, [has_set_currency, history, onMountCashierOnboarding, setIsCashierOnboarding, toggleSetCurrencyModal]);
+    }, [has_set_currency, history, setIsCashierOnboarding, toggleSetCurrencyModal]);
 
     return (
         <ThemedScrollbars className='cashier-onboarding-page'>
@@ -57,4 +57,4 @@ const CashierOnboardingModule: React.FC<TProps> = observer(({ setSideNotes }) =>
     );
 });
 
-export default CashierOnboardingModule;
+export default CashierOnboarding;

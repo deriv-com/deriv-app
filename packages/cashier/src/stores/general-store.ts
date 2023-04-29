@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, when, makeObservable } from 'mobx';
+import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { isCryptocurrency, routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
@@ -12,16 +12,13 @@ export default class GeneralStore extends BaseStore {
         makeObservable(this, {
             calculatePercentage: action.bound,
             cashier_route_tab_index: observable,
-            changeSetCurrencyModalTitle: action.bound,
             continueRoute: action.bound,
             deposit_target: observable,
-            has_set_currency: observable,
             init: action.bound,
             is_cashier_onboarding: observable,
             is_crypto: computed,
             is_deposit: observable,
             is_loading: observable,
-            onMountCashierOnboarding: action.bound,
             onMountCommon: action.bound,
             onRemount: observable,
             percentage: observable,
@@ -31,27 +28,14 @@ export default class GeneralStore extends BaseStore {
             setActiveTab: action.bound,
             setCashierTabIndex: action.bound,
             setDepositTarget: action.bound,
-            setHasSetCurrency: action.bound,
             setIsCashierOnboarding: action.bound,
             setIsDeposit: action.bound,
             setLoading: action.bound,
             setOnRemount: action.bound,
             setShouldShowAllAvailableCurrencies: action.bound,
             should_percentage_reset: observable,
-            should_set_currency_modal_title_change: observable,
             should_show_all_available_currencies: observable,
         });
-
-        when(
-            () => this.root_store.client.is_logged_in,
-            () => {
-                this.setHasSetCurrency();
-            }
-        );
-
-        if (!this.has_set_currency) {
-            this.changeSetCurrencyModalTitle();
-        }
 
         reaction(
             () => [
@@ -68,7 +52,6 @@ export default class GeneralStore extends BaseStore {
     active_container = Constants.containers.deposit;
     cashier_route_tab_index = 0;
     deposit_target = '';
-    has_set_currency = false;
     is_cashier_onboarding = true;
     is_deposit = false;
     is_loading = false;
@@ -77,7 +60,6 @@ export default class GeneralStore extends BaseStore {
     percentage = 0;
     payment_agent: PaymentAgentStore | null = null;
     should_percentage_reset = false;
-    should_set_currency_modal_title_change = false;
     should_show_all_available_currencies = false;
 
     setOnRemount(func: VoidFunction): void {
@@ -87,25 +69,6 @@ export default class GeneralStore extends BaseStore {
     get is_crypto(): boolean {
         const { currency } = this.root_store.client;
         return !!currency && isCryptocurrency(currency);
-    }
-
-    setHasSetCurrency(): void {
-        const { account_list, has_active_real_account } = this.root_store.client;
-
-        this.has_set_currency =
-            account_list.filter(account => !account.is_virtual).some(account => account.title !== 'Real') ||
-            !has_active_real_account;
-    }
-
-    changeSetCurrencyModalTitle(): void {
-        this.should_set_currency_modal_title_change = true;
-    }
-
-    async onMountCashierOnboarding() {
-        if (!this.has_set_currency) {
-            this.setHasSetCurrency();
-        }
-        this.setIsCashierOnboarding(true);
     }
 
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount): void {

@@ -95,36 +95,6 @@ describe('GeneralStore', () => {
         expect(general_store.is_crypto).toBeTruthy();
     });
 
-    it('should set has_set_currency equal to true if the client has real USD account', () => {
-        general_store.setHasSetCurrency();
-
-        expect(general_store.has_set_currency).toBeTruthy();
-    });
-
-    it('should set has_set_currency equal to false if the client has real account with account.title = "Real"', () => {
-        general_store.root_store.client.account_list = [{ is_virtual: 1, title: 'Real' }];
-        general_store.root_store.client.has_active_real_account = true;
-        general_store.setHasSetCurrency();
-
-        expect(general_store.has_set_currency).toBeFalsy();
-    });
-
-    it('should change the value of the variable should_set_currency_modal_title_change equal to true', () => {
-        general_store.changeSetCurrencyModalTitle();
-
-        expect(general_store.should_set_currency_modal_title_change).toBeTruthy();
-    });
-
-    it('should perform proper cashier onboarding mounting', async () => {
-        general_store.has_set_currency = false;
-        const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
-        const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
-        await general_store.onMountCashierOnboarding();
-
-        expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
-        expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
-    });
-
     it('should calculate proper percentage for account transfer container', () => {
         general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 500;
         general_store.root_store.modules.cashier.account_transfer.selected_from.balance = 10000;
@@ -167,12 +137,6 @@ describe('GeneralStore', () => {
         general_store.setShouldShowAllAvailableCurrencies(true);
 
         expect(general_store.should_show_all_available_currencies).toBeTruthy();
-    });
-
-    it('should change value of the variable is_cashier_onboarding', () => {
-        general_store.setIsCashierOnboarding(true);
-
-        expect(general_store.is_cashier_onboarding).toBeTruthy();
     });
 
     it('should set deposit target', () => {

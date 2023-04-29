@@ -269,6 +269,10 @@
             transform: rotate(180deg);
             transition: transform 500ms;
         }
+
+        &--close {
+            transform: rotate(0deg) !important;
+        }
     }
 
     &__drawer {
@@ -625,9 +629,7 @@
                 padding: 0 16px;
 
                 &__manage {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    @include position_center;
                     color: #333333;
                     border: 1px solid #999999;
                     border-radius: 4px;
@@ -638,7 +640,7 @@
                     height: 2rem;
                     font-family: unset;
                     font-weight: 600;
-
+                    width: 10rem;
                 }
 
                 &--demo {
@@ -652,6 +654,11 @@
 
             &-dropdown {
                 min-width: 20rem;
+
+                @include mobile {
+                    width: 90%;
+                }
+
                 &-wrapper {
                     @include mobile {
                         position: absolute;
@@ -792,6 +799,13 @@
                         transform: rotate(180deg);
                         transition: transform 500ms;
                     }
+
+                    .header__expand {
+                        &--close {
+                            transform: rotate(0deg);
+                        }
+                    }
+
                 }
 
                 .ui-accordion-header {
@@ -839,6 +853,9 @@
                     font-family: 'IBM Plex Sans', sans-serif;
                     padding: 14px 16px;
                     padding-bottom: 6px;
+                    display: flex;
+                    justify-content: space-between;
+                    cursor: pointer;
                 }
 
                 &__content {
@@ -847,6 +864,10 @@
                     padding: 5px 8px;
                     padding-top: 5px;
                     align-items: center;
+
+                    &--close {
+                        display: none;
+                    }
 
                     &__high-risk {
                         @include position_center;
@@ -879,6 +900,7 @@
                         color: #333333;
                         @include position_center;
                         padding: 3px 8px 3px 8px;
+                        font-weight: bold;
                     }
                 }
 
@@ -958,16 +980,15 @@
 
             &-total {
                 &--link {
+                    @include position_center;
                     color: rgb(255, 0, 17);
                     font-size: 0.869565rem;
                     cursor: pointer;
                     font-weight: normal;
-                    margin: 4px 16px;
                     line-height: 2;
                 }
 
                 @include mobile {
-                    width: 278px;
                     background: var(--general-main-1);
                 }
 

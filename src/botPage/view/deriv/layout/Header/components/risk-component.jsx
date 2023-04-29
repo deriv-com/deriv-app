@@ -3,63 +3,92 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import config from '../../../../../../app.config';
 import { translate } from '../../../../../../common/utils/tools';
+import { observer as globalObserver } from '../../../../../../common/utils/observer';
 
 const Separator = () => <div className='account__switcher-seperator'></div>;
 
-const RiskComponent = props => {
-    const { url } = config.add_account;
+const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_risk }) => {
     const { account_type } = useSelector(state => state.client);
+
     const { low_risk_without_account, high_risk_without_account, high_risk_or_eu } = account_type;
-    const { low_risk_without_non_eu, low_risk_without_eu } = props;
+    const has_non_eu_accounts = non_eu_accounts?.length || 0;
+    const has_eu_accounts = eu_accounts?.length || 0;
+
+    const is_eu_country = globalObserver.getState('is_eu_country');
 
     const risk_array = [
         {
-            title: translate('Non-EU Deriv Account'),
-            type: low_risk_without_account,
+            id: 1,
+            title: translate('Non-EU Deriv account'),
             option: translate('Options & Multipliers'),
             label: translate('Add'),
+            url: config.add_account.url,
+            should_show: is_country_low_risk && !has_non_eu_accounts,
+            acc_open: false,
         },
         {
-            title: translate('EU Deriv Account'),
-            type: low_risk_without_account,
+            id: 2,
+            title: translate('EU Deriv account'),
             option: translate('Multipliers'),
             label: translate('Add'),
+            url: config.add_account_multiplier.url,
+            should_show: is_country_low_risk && !has_eu_accounts,
+            acc_open: false,
         },
         {
-            title: translate('Deriv Account'),
-            type: high_risk_without_account || high_risk_or_eu,
-            option: props.type === high_risk_or_eu ? translate('Multipliers') : translate('Options & Multipliers'),
-            label: translate('Add'),
-        },
-        {
-            title: translate('Non-EU Deriv Account'),
-            type: low_risk_without_non_eu,
+            id: 3,
+            title: is_country_low_risk ? translate('Non-EU Deriv account') : translate('Deriv accounts'),
             option: translate('Options & Multipliers'),
             label: translate('Add'),
+            url: config.add_account.url,
+            should_show: !is_country_low_risk && !is_eu_country && !has_non_eu_accounts,
+            acc_open: false,
         },
         {
-            title: translate('EU Deriv Account'),
-            type: low_risk_without_eu,
-            option: translate('Options & Multipliers'),
+            id: 4,
+            title: is_country_low_risk ? translate('EU Deriv account') : translate('Deriv accounts'),
+            option: translate('Multipliers'),
             label: translate('Add'),
+            url: config.add_account_multiplier.url,
+            should_show: !is_country_low_risk && is_eu_country && !has_eu_accounts,
+            acc_open: false,
         },
     ];
 
+    const [accordion_array, setAccordionArray] = React.useState(risk_array);
+    const toggleAccordion = id => {
+        const newTodos = accordion_array.slice();
+        const objIndex = newTodos.findIndex(obj => obj.id === id);
+        newTodos[objIndex].acc_open = !newTodos[objIndex].acc_open;
+        setAccordionArray(newTodos);
+    };
+
     return (
         <>
-            {risk_array.map(({ title, type, option, label }, index) => {
-                const is_end = risk_array.length === index + 1;
-                if (type) {
+            {accordion_array.map(({ title, should_show = false, option, label, url, id, acc_open }, index) => {
+                const is_end = accordion_array.length === index + 1;
+                if (should_show) {
                     return (
                         <React.Fragment key={title + index}>
-                            <div className='account__switcher-container__title'>{title}</div>
-                            <div className='account__switcher-container__content'>
+                            <div onClick={() => toggleAccordion(id)} className='account__switcher-container__title'>
+                                {title}
+                                <img
+                                    className={classNames('header__expand open', {
+                                        'header__expand--close open': acc_open,
+                                    })}
+                                    src='image/deriv/ic-chevron-down.svg'
+                                />
+                            </div>
+                            <div
+                                className={classNames('account__switcher-container__content', {
+                                    'account__switcher-container__content--close': acc_open,
+                                })}
+                            >
                                 <div
                                     className={classNames('account__switcher-container__content', {
-                                        'account__switcher-container__content--low-risk':
-                                            type === low_risk_without_account,
+                                        'account__switcher-container__content--low-risk': low_risk_without_account,
                                         'account__switcher-container__content--high-risk':
-                                            type === high_risk_without_account || high_risk_or_eu,
+                                            high_risk_without_account || high_risk_or_eu,
                                     })}
                                 >
                                     <img src={'image/options-and-multipliers.png'} />

@@ -5,16 +5,9 @@ import { getTokenList } from '../../../../../../common/utils/storageManager';
 import { useDispatch } from 'react-redux';
 import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import classNames from 'classnames';
-import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import config from '../../../../../../app.config';
 
-const TabContent = ({
-    tab = 'real',
-    isActive,
-    setIsAccDropdownOpen,
-    accounts,
-    title = translate('Deriv accounts'),
-}) => {
+const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
     const { active_account_name } = useSelector(state => state.client);
@@ -28,27 +21,31 @@ const TabContent = ({
             setIsAccDropdownOpen(false);
         }
     };
-
+    const low_risk_countries = ['za', 'ec', 'bw'];
+    const is_country_low_risk = low_risk_countries.includes(localStorage.getItem('client.country'));
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
             <div className='account__switcher-accordion'>
-                <h3
-                    className='ui-accordion-header ui-state-default'
-                    onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-                >
-                    <div className='account__switcher-accordion-header-text'>
-                        <span>{title}</span>
-                        <img
-                            className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
-                            src='image/deriv/ic-chevron-down.svg'
-                        />
-                    </div>
-                </h3>
+                {accounts && accounts.length > 0 && (
+                    <h3
+                        className='ui-accordion-header ui-state-default'
+                        onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                    >
+                        <div className='account__switcher-accordion-header-text'>
+                            <span>{is_country_low_risk && isReal ? title : translate('Deriv Accounts')}</span>
+                            <img
+                                className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
+                                src='image/deriv/ic-chevron-down.svg'
+                            />
+                        </div>
+                    </h3>
+                )}
                 <div className={`account__switcher-list ${isAccordionOpen ? 'open' : ''}`}>
                     {accounts &&
+                        accounts.length > 0 &&
                         accounts
                             .sort((acc, acc1) => {
-                                return acc === active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
+                                return acc !== active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
                             })
                             .map((account, index) => {
                                 const { demo_account, currency, balance } = account;

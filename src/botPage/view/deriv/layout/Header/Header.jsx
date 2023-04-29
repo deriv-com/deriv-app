@@ -19,14 +19,16 @@ import {
     updateActiveToken,
     updateAccountType,
 } from '../../store/client-slice';
-import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
+import { setAccountSwitcherLoader, updateShowMessagePage, setShouldReloadWorkspace } from '../../store/ui-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
 import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
 import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { checkSwitcherType } from '../../../../../common/footer-checks';
+import { checkSwitcherType, isEuByAccount } from '../../../../../common/footer-checks';
 
+// [Todo] We will update this during the API improvement process
+let is_subscribed = false;
 const AccountSwitcher = () => {
     const { account_switcher_loader } = useSelector(state => state.ui);
     const { is_logged } = useSelector(state => state.client);
@@ -58,18 +60,31 @@ const Header = () => {
     const [isPlatformSwitcherOpen, setIsPlatformSwitcherOpen] = React.useState(false);
     const [showDrawerMenu, updateShowDrawerMenu] = React.useState(false);
     const platformDropdownRef = React.useRef();
-    const { is_logged, active_token, account_type } = useSelector(state => state.client);
+    const { is_logged, active_token } = useSelector(state => state.client);
     const { is_bot_running } = useSelector(state => state.ui);
+    const is_logged_in = isLoggedIn();
     const dispatch = useDispatch();
     const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
 
     React.useEffect(() => {
-        checkSwitcherType()
-            .then(data => {
-                dispatch(updateAccountType(data));
-            })
-            .catch(error => console.log(error));
-    }, [account_type]);
+        const mountSwitcher = async () => {
+            try {
+                const res = await checkSwitcherType();
+                dispatch(updateAccountType(res));
+                const current_login_id = localStorage.getItem('active_loginid');
+                if (current_login_id.startsWith('MF')) {
+                    dispatch(updateShowMessagePage(true));
+                }
+                return res;
+            } catch (error) {
+                globalObserver.emit('Error', error);
+                return error;
+            }
+        };
+        if (is_logged_in) {
+            mountSwitcher();
+        }
+    }, [is_logged_in]);
 
     React.useEffect(() => {
         api.onMessage().subscribe(({ data }) => {
@@ -86,16 +101,25 @@ const Header = () => {
         const landing_company = active_storage_token?.loginInfo.landing_company_name;
         dispatch(updateShowMessagePage(landing_company === 'maltainvest'));
 
+        globalObserver.setState({
+            is_eu_country: isEuByAccount(token_list),
+        });
+
         if (!active_storage_token) {
             removeAllTokens();
             dispatch(resetClient());
             dispatch(setAccountSwitcherLoader(false));
         }
-        if (active_storage_token) {
-            api.authorize(active_storage_token.token)
+        const client_accounts = JSON.parse(getStorage('client.accounts'));
+        const current_login_id = getStorage('active_loginid') || '';
+        const logged_in_token = client_accounts[current_login_id]?.token || active_storage_token?.token || '';
+
+        if (logged_in_token) {
+            api.authorize(logged_in_token)
                 .then(account => {
                     const active_loginid = account.authorize.account_list;
-                    const current_login_id = getStorage('active_loginid') || '';
+                    const client_country = account.authorize.country;
+                    setStorage('client.country', client_country);
                     active_loginid.forEach(acc => {
                         if (current_login_id === acc.loginid) {
                             setStorage('active_loginid', current_login_id);
@@ -105,10 +129,11 @@ const Header = () => {
                         updateTokenList();
                     });
                     if (account?.error?.code) return;
-                    dispatch(updateActiveToken(active_storage_token.token));
+                    dispatch(updateActiveToken(logged_in_token));
                     dispatch(updateActiveAccount(account.authorize));
                     dispatch(setAccountSwitcherLoader(false));
-                    if (!globalObserver.getState('is_subscribed_to_balance')) {
+                    if (!is_subscribed) {
+                        is_subscribed = true;
                         api.send({
                             balance: 1,
                             account: 'all',
@@ -118,7 +143,6 @@ const Header = () => {
                                 globalObserver.setState({
                                     balance: Number(balance.balance),
                                     currency: balance.currency,
-                                    is_subscribed_to_balance: true,
                                 });
                             })
                             .catch(e => {
@@ -133,7 +157,7 @@ const Header = () => {
                 });
             syncWithDerivApp();
         }
-    }, [active_token, account_type]);
+    }, [active_token]);
 
     React.useEffect(() => {
         dispatch(updateIsLogged(isLoggedIn()));

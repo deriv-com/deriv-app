@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <title>Deriv</title>
         <meta charset="utf-8" />
@@ -15,29 +16,62 @@
                     'https://staging-app.deriv.me'
                 ];
 
+                const getTokenList = () => {
+                    const tokenList = localStorage.getItem('tokenList') || '[]';
+                    try {
+                        return JSON.parse(tokenList);
+                    } catch (e) {
+                        return [];
+                    }
+                };
+                const findAccount = (accountName = '') => getTokenList().findIndex(tokenInfo => tokenInfo.accountName === accountName);
+                const findToken = (token = '') => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
+                const addToken = (token = '', loginInfo, hasRealityCheck = false, hasTradeLimitation = false) => {
+                    const { loginid: accountName, country, residence } = loginInfo;
+                    const tokenList = getTokenList();
+                    const tokenIndex = findToken(token);
+                    const accountIndex = findAccount(accountName);
+                    
+                    if (tokenIndex < 0 && accountIndex < 0) {
+                        tokenList.push({
+                            accountName,
+                            token,
+                            loginInfo,
+                            hasRealityCheck,
+                            hasTradeLimitation,
+                            country,
+                            residence
+                        });
+                        localStorage.setItem('tokenList', JSON.stringify(tokenList));
+                    }
+                };
+
                 const autoLogin = message => {
                     const { value, key } = message.data;
                     const client_accounts = JSON.parse(value);
                     const token_data = {};
-                    let login_token  = null
+                    let login_token = null
 
                     Object.keys(client_accounts).forEach((e, i) => {
                         const order = i + 1;
-                        const { token, currency } = client_accounts[e];
+                        const { token, currency, residence, country } = client_accounts[e];
 
                         token_data[`accountName${order}`] = e;
                         token_data[`cur${order}`] = currency;
                         token_data[`token${order}`] = token;
+                        token_data[`country${order}`] = residence || country;
 
-                        if(!login_token){
+                        if (!login_token) {
                             login_token = token
                         }
+                        client_accounts[e].loginid = e;
+                        addToken(token, client_accounts[e], false, false);
                     });
 
                     const token_params = new URLSearchParams(token_data).toString();
                     const current_token = localStorage.getItem('current_token')
 
-                    if (token_params !== '' && login_token && login_token !== current_token ) {
+                    if (token_params !== '' && login_token && login_token !== current_token) {
                         // store the login url and fire when the user hits binary bot app directly
                         localStorage.setItem('login_url', token_params);
                         localStorage.setItem('current_token', login_token);
@@ -53,6 +87,9 @@
                             break;
                         }
                         case 'client.accounts': {
+                            if (localStorage.getItem(message.data.key) !== message.data.value) {
+                                localStorage.setItem(message.data.key, message.data.value);
+                            }
                             autoLogin(message);
                             break;
                         }
@@ -61,5 +98,7 @@
             });
         </script>
     </head>
+
     <body></body>
+
 </html>

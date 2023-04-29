@@ -1,34 +1,57 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
+import { GetSettings } from '@deriv/api-types';
 import { Checkbox, Loading } from '@deriv/components';
 import { filterObjProperties, toMoment, validLength, validName, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
-import { connect } from 'Stores/connect';
 import PoiConfirmWithExampleForm from 'Components/poi/poi-confirm-with-example-form';
+import RootStore from 'Stores/index';
+import { connect } from 'Stores/connect';
 
-const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach(field => {
-        const value = values[field];
-        if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && err_msg !== true)) errors[field] = err_msg;
-    });
+type TField = 'first_name' | 'last_name' | 'date_of_birth';
+
+type TPoiConfirmWithExampleFormValues = Record<TField, string>;
+
+type TRestState = {
+    api_error: string;
+    show_form: boolean;
+    errors?: boolean;
+    form_initial_values: TPoiConfirmWithExampleFormValues;
+    changeable_fields: string[];
 };
+
+type TPoiConfirmWithExampleFormContainer = {
+    account_settings: GetSettings;
+    getChangeableFields: () => string[];
+    onFormConfirm: () => void;
+    updateAccountStatus: () => void;
+};
+
+const validate =
+    (errors: Record<string, string>, values: Record<string, string>) =>
+    (fn: (value: string) => string, arr: string[], err_msg: string) => {
+        arr.forEach(field => {
+            const value = values[field];
+            if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && !err_msg)) errors[field] = err_msg;
+        });
+    };
 
 const PoiConfirmWithExampleFormContainer = ({
     account_settings,
     getChangeableFields,
     onFormConfirm,
     updateAccountStatus,
-}) => {
+}: TPoiConfirmWithExampleFormContainer) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [checked, setChecked] = React.useState(false);
-    const [rest_state, setRestState] = React.useState({
+    const [rest_state, setRestState] = React.useState<TRestState>({
         show_form: true,
-        errors: false,
-        form_initial_values: {},
+        form_initial_values: { first_name: '', last_name: '', date_of_birth: '' },
         changeable_fields: [],
+        api_error: '',
     });
 
     React.useEffect(() => {
@@ -36,7 +59,7 @@ const PoiConfirmWithExampleFormContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
-    const makeSettingsRequest = settings => {
+    const makeSettingsRequest = (settings: TPoiConfirmWithExampleFormValues) => {
         const request = filterObjProperties(settings, [...rest_state?.changeable_fields]);
 
         if (request.first_name) {
@@ -51,8 +74,10 @@ const PoiConfirmWithExampleFormContainer = ({
 
         return request;
     };
-
-    const onSubmit = async (values, { setStatus, setSubmitting }) => {
+    const onSubmit = async (
+        values: TPoiConfirmWithExampleFormValues,
+        { setStatus, setSubmitting }: FormikHelpers<TPoiConfirmWithExampleFormValues>
+    ) => {
         if (checked) return;
         setStatus({ msg: '' });
         const request = makeSettingsRequest(values);
@@ -75,8 +100,8 @@ const PoiConfirmWithExampleFormContainer = ({
         }
     };
 
-    const validateFields = values => {
-        const errors = {};
+    const validateFields = (values: TPoiConfirmWithExampleFormValues) => {
+        const errors: FormikErrors<TPoiConfirmWithExampleFormValues> = {};
         const validateValues = validate(errors, values);
 
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
@@ -85,7 +110,7 @@ const PoiConfirmWithExampleFormContainer = ({
 
         const min_name = 2;
         const max_name = 50;
-        const validateName = (name, field) => {
+        const validateName = (name: string, field: TField) => {
             if (name) {
                 if (!validLength(name.trim(), { min: min_name, max: max_name })) {
                     errors[field] = localize('You should enter 2-50 characters.');
@@ -104,7 +129,10 @@ const PoiConfirmWithExampleFormContainer = ({
     const initializeFormValues = () => {
         WS.wait('get_settings').then(() => {
             const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-            const form_initial_values = filterObjProperties(account_settings, visible_settings);
+            const form_initial_values = filterObjProperties(
+                account_settings,
+                visible_settings
+            ) as TPoiConfirmWithExampleFormValues;
             if (form_initial_values.date_of_birth) {
                 form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
             }
@@ -162,7 +190,7 @@ const PoiConfirmWithExampleFormContainer = ({
     );
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client }: RootStore) => ({
     account_settings: client.account_settings,
     getChangeableFields: client.getChangeableFields,
     updateAccountStatus: client.updateAccountStatus,

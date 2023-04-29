@@ -280,15 +280,6 @@ type TTradersHubStore = {
     openFailedVerificationModal: (selected_account_type: Record<string, any>) => void;
 };
 
-/*
-{
-                                    platform: existing_account.platform,
-                                    category: selected_account_type,
-                                    type: existing_account.market_type,
-                                    jurisdiction: existing_account.landing_company_short,
-                                }
-*/
-
 /**
  * This is the type that contains all the `core` package stores
  */

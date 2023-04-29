@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletHeader from '..';
@@ -67,6 +68,36 @@ describe('<WalletHeader />', () => {
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
 
             expect(currency_card).toBeInTheDocument();
+        });
+
+        it('Should use right class in light mode', () => {
+            mocked_root_store.ui.is_dark_mode_on = false;
+
+            const account_type = 'demo';
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type={account_type} />
+                </StoreProvider>
+            );
+            const currency_card = screen.queryByTestId(`dt_demo`);
+
+            expect(currency_card).toBeInTheDocument();
+            expect(currency_card).toHaveClass('wallet__demo-bg');
+        });
+
+        it('Should use right class in dark mode', () => {
+            mocked_root_store.ui.is_dark_mode_on = true;
+
+            const account_type = 'demo';
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type={account_type} />
+                </StoreProvider>
+            );
+            const currency_card = screen.queryByTestId(`dt_demo`);
+
+            expect(currency_card).toBeInTheDocument();
+            expect(currency_card).toHaveClass('wallet__demo-bg--dark');
         });
     });
 
@@ -196,6 +227,23 @@ describe('<WalletHeader />', () => {
             );
 
             const btn_text = screen.queryByText(/Transfer/i);
+
+            expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+        });
+
+        it('Arrow button click', async () => {
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type='demo' />
+                </StoreProvider>
+            );
+
+            const btn_text = screen.queryByText(/Transfer/i);
+            const btn_arrow = screen.getByTestId('dt_arrow');
+
+            expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+
+            await userEvent.click(btn_arrow);
 
             expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
         });

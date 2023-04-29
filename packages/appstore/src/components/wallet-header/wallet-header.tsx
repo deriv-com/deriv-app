@@ -71,6 +71,7 @@ const WalletHeader = React.memo(
                     <div className='wallet-header__balance'>
                         <WalletHeaderBalance account_status={account_status} balance={balance} currency={currency} />
                         <Icon
+                            data_testid='dt_arrow'
                             onClick={onArrowClickHandler}
                             icon='IcChevronDownBold'
                             className={classNames('wallet-header__balance-arrow-icon', {

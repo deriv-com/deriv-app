@@ -8,6 +8,7 @@ export { default as Download } from './download';
 export { default as Flyout } from './flyout';
 export { default as Journal } from './journal';
 export { default as LoadModal } from './load-modal';
+export { default as Blocks } from './blocks';
 export { messageWithButton, messageWithImage, arrayAsMessage } from './notify-item';
 export { default as QuickStrategy } from './dashboard/quick-strategy';
 export { default as RoutePromptDialog } from './route-prompt-dialog';

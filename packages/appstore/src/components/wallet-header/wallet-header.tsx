@@ -11,23 +11,25 @@ export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
 
 type TWalletHeaderCommon = {
     // TODO: just for testing till BE is not ready
-    account_status?: TAccountStatus;
     balance?: string;
 };
 
 type TWalletHeaderDemo = TWalletHeaderCommon & {
     account_type: 'demo';
+    account_status?: never;
     jurisdiction?: never;
     currency?: never;
 };
 
 type TWalletHeaderSvg = TWalletHeaderCommon & {
+    account_status?: TAccountStatus;
     account_type?: 'real';
     jurisdiction: 'svg';
     currency: 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'USDT' | 'eUSDT' | 'tUSDT' | 'LTC' | 'USDC';
 };
 
 type TWalletHeaderMalta = TWalletHeaderCommon & {
+    account_status?: TAccountStatus;
     account_type?: 'real';
     jurisdiction: 'malta';
     currency: 'USD' | 'EUR';

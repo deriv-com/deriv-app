@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
 import { Checkbox, Loading } from '@deriv/components';
 import { filterObjProperties, toMoment, validLength, validName, WS } from '@deriv/shared';
@@ -11,15 +11,13 @@ import PoiConfirmWithExampleForm from 'Components/poi/poi-confirm-with-example-f
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 
-type TField = 'first_name' | 'last_name' | 'date_of_birth';
-
-type TPoiConfirmWithExampleFormValues = Record<TField, string>;
+type TValues = { [p: string]: string };
 
 type TRestState = {
     api_error: string;
     show_form: boolean;
     errors?: boolean;
-    form_initial_values: TPoiConfirmWithExampleFormValues;
+    form_initial_values: TValues;
     changeable_fields: string[];
 };
 
@@ -59,7 +57,7 @@ const PoiConfirmWithExampleFormContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
-    const makeSettingsRequest = (settings: TPoiConfirmWithExampleFormValues) => {
+    const makeSettingsRequest = (settings: TValues) => {
         const request = filterObjProperties(settings, [...rest_state?.changeable_fields]);
 
         if (request.first_name) {
@@ -74,10 +72,7 @@ const PoiConfirmWithExampleFormContainer = ({
 
         return request;
     };
-    const onSubmit = async (
-        values: TPoiConfirmWithExampleFormValues,
-        { setStatus, setSubmitting }: FormikHelpers<TPoiConfirmWithExampleFormValues>
-    ) => {
+    const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
         if (checked) return;
         setStatus({ msg: '' });
         const request = makeSettingsRequest(values);
@@ -100,8 +95,8 @@ const PoiConfirmWithExampleFormContainer = ({
         }
     };
 
-    const validateFields = (values: TPoiConfirmWithExampleFormValues) => {
-        const errors: FormikErrors<TPoiConfirmWithExampleFormValues> = {};
+    const validateFields = (values: TValues) => {
+        const errors: TValues = {};
         const validateValues = validate(errors, values);
 
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
@@ -110,7 +105,7 @@ const PoiConfirmWithExampleFormContainer = ({
 
         const min_name = 2;
         const max_name = 50;
-        const validateName = (name: string, field: TField) => {
+        const validateName = (name: string, field: string) => {
             if (name) {
                 if (!validLength(name.trim(), { min: min_name, max: max_name })) {
                     errors[field] = localize('You should enter 2-50 characters.');
@@ -129,10 +124,7 @@ const PoiConfirmWithExampleFormContainer = ({
     const initializeFormValues = () => {
         WS.wait('get_settings').then(() => {
             const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-            const form_initial_values = filterObjProperties(
-                account_settings,
-                visible_settings
-            ) as TPoiConfirmWithExampleFormValues;
+            const form_initial_values = filterObjProperties(account_settings, visible_settings);
             if (form_initial_values.date_of_birth) {
                 form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
             }

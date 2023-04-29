@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
@@ -201,6 +202,21 @@ describe('<WalletsBanner />', () => {
 
             expect(mobile_image).toBeInTheDocument();
             expect(desktop_image).not.toBeInTheDocument();
+        });
+
+        it('Should call logout function when click on button', async () => {
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletsBannerReady />
+                </StoreProvider>
+            );
+
+            const btn = screen.getByText('Log out');
+
+            await userEvent.click(btn);
+
+            expect(btn).toBeInTheDocument();
+            expect(mocked_root_store.client.logout).toBeCalledTimes(1);
         });
     });
 });

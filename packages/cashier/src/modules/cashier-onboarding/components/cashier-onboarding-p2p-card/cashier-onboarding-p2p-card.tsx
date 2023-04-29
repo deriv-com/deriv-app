@@ -18,7 +18,7 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
     const { data: is_p2p_enabled } = useIsP2PEnabled();
     const has_usd_currency = useHasUSDCurrency();
     const has_fiat_currency = useHasFiatCurrency();
-    const should_show_p2p_card = is_p2p_enabled && has_usd_currency;
+    const should_show_p2p_card = is_p2p_enabled || has_usd_currency;
     const can_switch_to_fiat_account = is_crypto() && has_fiat_currency;
     const [is_dialog_visible, setIsDialogVisible] = useState(false);
 

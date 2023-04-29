@@ -29,7 +29,7 @@ const CashierOnboardingTitle: React.FC = observer(() => {
     return (
         <>
             <div className='cashier-onboarding-title' data-testid='dt_cashier_onboarding_title'>
-                <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
+                <Text size={is_mobile ? 's' : 'sm'} line_height='xxl' align='center'>
                     <Localize i18n_default_text='Choose a way to fund your account' />
                 </Text>
                 <Text size={is_mobile ? 'xs' : 's'} line_height={is_mobile ? 'xl' : 'xxl'} align='center'>

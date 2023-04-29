@@ -1,8 +1,8 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import classNames from 'classnames';
 import { TAccountCategory } from 'Types';
+import { Icon, Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import classNames from 'classnames';
 
 type TWalletHeaderButtons = {
     is_disabled?: boolean;
@@ -12,20 +12,28 @@ type TWalletHeaderButtons = {
 
 const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'real' }: TWalletHeaderButtons) => {
     const is_demo = account_type === 'demo';
-    const button_text_size = 'xs';
 
     const btn_names = is_demo
-        ? ['Transfer', 'Transactions', 'Deposit']
-        : ['Deposit', 'Withdraw', 'Transfer', 'Transactions'];
+        ? [
+              { name: 'Transfer', text: localize('Transfer') },
+              { name: 'Transactions', text: localize('Transactions') },
+              { name: 'Deposit', text: localize('Deposit') },
+          ]
+        : [
+              { name: 'Deposit', text: localize('Deposit') },
+              { name: 'Withdraw', text: localize('Withdraw') },
+              { name: 'Transfer', text: localize('Transfer') },
+              { name: 'Transactions', text: localize('Transactions') },
+          ];
     const icon_names = is_demo
         ? ['IcAccountTransfer', 'IcStatement', 'IcCashierAdd']
         : ['IcCashierAdd', 'IcCashierMinus', 'IcAccountTransfer', 'IcStatement'];
 
     return (
         <div className='wallet-header__description-buttons'>
-            {btn_names.map((name, index) => (
+            {btn_names.map((btn, index) => (
                 <div
-                    key={name}
+                    key={btn.name}
                     className={classNames('wallet-header__description-buttons-item', {
                         'wallet-header__description-buttons-item-disabled': is_disabled,
                     })}
@@ -34,20 +42,16 @@ const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'rea
                         icon={icon_names[index]}
                         custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-general)'}
                     />
-                    <Localize
-                        i18n_default_text={`<0>${is_demo && name === 'Deposit' ? 'Reset balance' : name}</0>`}
-                        components={[
-                            <Text
-                                key={0}
-                                weight='bold'
-                                color={is_disabled ? 'disabled' : 'general'}
-                                size={button_text_size}
-                                className={classNames('wallet-header__description-buttons-item-text', {
-                                    'wallet-header__description-buttons-item-active': is_open,
-                                })}
-                            />,
-                        ]}
-                    />
+                    <Text
+                        weight='bold'
+                        color={is_disabled ? 'disabled' : 'general'}
+                        size='xs'
+                        className={classNames('wallet-header__description-buttons-item-text', {
+                            'wallet-header__description-buttons-item-active': is_open,
+                        })}
+                    >
+                        {is_demo && btn.name === 'Deposit' ? localize('Reset balance') : btn.text}
+                    </Text>
                 </div>
             ))}
         </div>

@@ -10,30 +10,41 @@ type TWalletHeaderTitle = {
 };
 
 const WalletHeaderTitle = React.memo(({ is_demo, currency, jurisdiction }: TWalletHeaderTitle) => {
-    const title_size = 'sm';
-    const badge_size = 'xxxs';
-    const badge_lh_size = 'xxxs';
+    const title = is_demo ? (
+        <Text weight='bold' size='sm'>
+            <Localize
+                i18n_default_text='Demo {{currency}} Wallet'
+                values={{
+                    currency,
+                }}
+            />
+        </Text>
+    ) : (
+        <Text weight='bold' size='sm'>
+            <Localize
+                i18n_default_text='{{currency}} Wallet'
+                values={{
+                    currency,
+                }}
+            />
+        </Text>
+    );
 
-    const title_text = `<0>${is_demo ? `Demo ${currency}` : currency} Wallet</0>`;
-    const badge_text = `<0>${jurisdiction.toUpperCase()}</0>`;
+    const badge = (
+        <Text weight='bold' size='xxxs' line_height='xxxs' className='wallet-header__description-badge'>
+            <Localize
+                i18n_default_text='{{jurisdiction}}'
+                values={{
+                    jurisdiction: jurisdiction.toUpperCase(),
+                }}
+            />
+        </Text>
+    );
 
     return (
         <div className='wallet-header__description-title'>
-            <Localize i18n_default_text={title_text} components={[<Text key={0} weight='bold' size={title_size} />]} />
-            {!is_demo && (
-                <Localize
-                    i18n_default_text={badge_text}
-                    components={[
-                        <Text
-                            key={0}
-                            weight='bold'
-                            size={badge_size}
-                            line_height={badge_lh_size}
-                            className='wallet-header__description-badge'
-                        />,
-                    ]}
-                />
-            )}
+            {title}
+            {!is_demo && badge}
         </div>
     );
 });

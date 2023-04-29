@@ -7,7 +7,7 @@
 
     &__demo {
         position: relative;
-        background-color: #fff8f9;
+        background-color: var(--wallets-demo-bg-color);
     }
     &__demo:before {
         content: ' ';
@@ -19,6 +19,7 @@
         height: 100%;
         opacity: 0.2;
         background-image: url('./../../public/images/wallet-demo-bg.svg');
+        // background-image: url('~/public/images/wallet-demo-bg.svg');
         background-repeat: repeat;
         background-position: 3% 30%;
         border-radius: $BORDER_RADIUS * 4;

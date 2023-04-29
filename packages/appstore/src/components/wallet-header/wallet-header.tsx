@@ -35,8 +35,6 @@ type TWalletHeaderMalta = TWalletHeaderCommon & {
 
 type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 
-// TODO: icons for usdc, ltc and tether get from cashier
-
 const WalletHeader = React.memo(
     ({
         account_status = '',
@@ -45,11 +43,11 @@ const WalletHeader = React.memo(
         jurisdiction = 'svg',
         account_type = 'real',
     }: TWalletHeader) => {
-        const [isOpen, setIsOpen] = React.useState(false);
+        const [is_open, setIsOpen] = React.useState(false);
         const is_demo = account_type === 'demo';
 
         const onArrowClickHandler = () => {
-            setIsOpen(!isOpen);
+            setIsOpen(!is_open);
         };
 
         return (
@@ -64,7 +62,7 @@ const WalletHeader = React.memo(
                         <WalletHeaderTitle is_demo={is_demo} currency={currency} jurisdiction={jurisdiction} />
                         <WalletHeaderButtons
                             is_disabled={!!account_status}
-                            is_open={isOpen}
+                            is_open={is_open}
                             account_type={account_type}
                         />
                     </div>
@@ -74,7 +72,7 @@ const WalletHeader = React.memo(
                             onClick={onArrowClickHandler}
                             icon='IcChevronDownBold'
                             className={classNames('wallet-header__balance-arrow-icon', {
-                                'wallet-header__balance-arrow-icon-active': isOpen,
+                                'wallet-header__balance-arrow-icon-active': is_open,
                             })}
                         />
                     </div>

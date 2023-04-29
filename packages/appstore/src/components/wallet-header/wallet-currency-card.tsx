@@ -3,6 +3,7 @@ import { Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import type { TAccountCategory, TWalletSvgCurrency } from 'Types';
 import { getWalletCurrencyIcon } from 'Constants/utils';
+import { isCryptocurrency } from '@deriv/shared';
 
 type TWalletCurrencyCard = {
     account_type: TAccountCategory;
@@ -20,7 +21,8 @@ const WalletCurrencyCard = observer(({ account_type = 'real', currency = 'USD' }
 
     const currency_icon_path = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on);
 
-    const is_fiat = currency === 'USD' || currency === 'EUR' || currency === 'AUD';
+    // add check (currency !== 'USDT') because response from BE doesn't have USDT currency, just UST
+    const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
     const currency_icon_name = currency_icon_path;
     const currency_icon_size = is_fiat && !is_demo ? 48 : 100;
     return (

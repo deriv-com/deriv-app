@@ -42,9 +42,9 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
         case 'tUSDT':
             return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
         case 'LTC':
-            return is_dark_mode_on ? 'IcWalletLitecoinDark' : 'IcWalletLitecoinLight';
+            return is_dark_mode_on ? 'IcCashierLiteCoinDark' : 'IcCashierLiteCoinLight';
         case 'USDC':
-            return is_dark_mode_on ? 'IcWalletUsdcDark' : 'IcWalletUsdcLight';
+            return is_dark_mode_on ? 'IcCashierUsdCoinDark' : 'IcCashierUsdCoinLight';
         default:
             return 'Unknown';
     }

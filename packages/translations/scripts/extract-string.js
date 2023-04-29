@@ -40,6 +40,7 @@ const getTranslatableFiles = () => {
         'appstore',
         'cashier',
         'bot-web-ui',
+        'new-bot-web-ui',
         'core',
         'cfd',
         'trader',

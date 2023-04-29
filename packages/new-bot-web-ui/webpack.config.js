@@ -11,10 +11,10 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bot/js/bot-web-ui.main.js',
+    filename: 'bot/js/new-bot-web-ui.main.js',
     chunkFilename: 'bot/js/bot.[name].[contenthash].js',
     libraryExport: 'default',
-    library: '@deriv/bot-web-ui',
+    library: '@deriv/new-bot-web-ui',
     libraryTarget: 'umd',
 };
 

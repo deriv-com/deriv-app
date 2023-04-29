@@ -19,6 +19,10 @@
             "name": "DBot",
             "icon": "IcBrandDbot"
         },
+        "newdbot": {
+            "name": "Upgraded DBot",
+            "icon": "IcBrandDbot"
+        },
         "mt5": {
             "name": "Deriv MT5",
             "icon": "IcBrandDmt5"

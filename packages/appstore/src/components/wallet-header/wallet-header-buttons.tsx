@@ -2,11 +2,12 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { TAccountCategory } from 'Types';
 
 type TWalletHeaderButtons = {
     is_disabled?: boolean;
     is_open: boolean;
-    account_type: 'demo' | 'real';
+    account_type: TAccountCategory;
 };
 
 const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'real' }: TWalletHeaderButtons) => {

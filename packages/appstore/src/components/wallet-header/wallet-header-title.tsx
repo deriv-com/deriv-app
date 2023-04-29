@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { TWalletSvgCurrency } from 'Types';
 
 type TWalletHeaderTitle = {
     is_demo: boolean;
-    currency: 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'USDT' | 'eUSDT' | 'tUSDT' | 'LTC' | 'USDC';
+    currency: TWalletSvgCurrency;
     jurisdiction: 'svg' | 'malta';
 };
 

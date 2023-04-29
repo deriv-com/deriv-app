@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletHeader from '..';
-import { TAccountStatus } from '../wallet-header';
+import { TAccountStatus } from 'Types';
 import { getStatusBadgeConfig } from '@deriv/account';
 
 const mocked_root_store = mockStore({});

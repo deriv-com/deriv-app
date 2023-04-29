@@ -6,16 +6,14 @@ import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
 import './wallet-header.scss';
-
-export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
+import { TAccountCategory, TAccountStatus, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
 
 type TWalletHeaderCommon = {
-    // TODO: just for testing till BE is not ready
     balance?: string;
 };
 
 type TWalletHeaderDemo = TWalletHeaderCommon & {
-    account_type: 'demo';
+    account_type: Extract<TAccountCategory, 'demo'>;
     account_status?: never;
     jurisdiction?: never;
     currency?: never;
@@ -23,19 +21,21 @@ type TWalletHeaderDemo = TWalletHeaderCommon & {
 
 type TWalletHeaderSvg = TWalletHeaderCommon & {
     account_status?: TAccountStatus;
-    account_type?: 'real';
+    account_type?: Extract<TAccountCategory, 'real'>;
     jurisdiction: 'svg';
-    currency: 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'USDT' | 'eUSDT' | 'tUSDT' | 'LTC' | 'USDC';
+    currency: TWalletSvgCurrency;
 };
 
 type TWalletHeaderMalta = TWalletHeaderCommon & {
     account_status?: TAccountStatus;
-    account_type?: 'real';
+    account_type?: Extract<TAccountCategory, 'real'>;
     jurisdiction: 'malta';
-    currency: 'USD' | 'EUR';
+    currency: TWalletMaltaCurrency;
 };
 
 type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
+
+// TODO: icons for usdc, ltc and tether get from cashier
 
 const WalletHeader = React.memo(
     ({

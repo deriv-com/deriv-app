@@ -3,12 +3,12 @@ import { Text, StatusBadge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { observer, useStore } from '@deriv/stores';
-import { TAccountStatus } from './wallet-header';
+import { TWalletSvgCurrency, TAccountStatus } from 'Types';
 
 type TWalletHeaderBalance = {
     account_status: TAccountStatus;
     balance: string;
-    currency: 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'USDT' | 'eUSDT' | 'tUSDT' | 'LTC' | 'USDC';
+    currency: TWalletSvgCurrency;
 };
 
 const WalletHeaderBalance = observer(

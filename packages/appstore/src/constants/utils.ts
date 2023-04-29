@@ -20,3 +20,32 @@ export const getHasDivider = (current_item_index: number, list_size: number, ava
             (list_size % available_grid_columns === 0 ? available_grid_columns : list_size % available_grid_columns)
     );
 };
+
+export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean) => {
+    switch (currency) {
+        case 'demo':
+            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
+        case 'USD':
+            return 'IcCurrencyUsd';
+        case 'EUR':
+            return 'IcCurrencyEur';
+        case 'AUD':
+            return 'IcCurrencyAud';
+        case 'BTC':
+            return is_dark_mode_on ? 'IcCashierBitcoinDark' : 'IcCashierBitcoinLight';
+        case 'ETH':
+            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
+        case 'USDT':
+            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
+        case 'eUSDT':
+            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
+        case 'tUSDT':
+            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
+        case 'LTC':
+            return is_dark_mode_on ? 'IcWalletLitecoinDark' : 'IcWalletLitecoinLight';
+        case 'USDC':
+            return is_dark_mode_on ? 'IcWalletUsdcDark' : 'IcWalletUsdcLight';
+        default:
+            return 'Unknown';
+    }
+};

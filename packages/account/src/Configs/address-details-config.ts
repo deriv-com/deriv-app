@@ -1,6 +1,13 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields, getErrorMessages, regex_checks } from '@deriv/shared';
-import { TSchema, TUpgradeInfo } from 'Types';
+import {
+    generateValidationFunction,
+    getDefaultFields,
+    getErrorMessages,
+    regex_checks,
+    address_permitted_special_characters_message,
+    TSchema,
+} from '@deriv/shared';
+import { TUpgradeInfo } from 'Types';
 import { GetSettings } from '@deriv/api-types';
 
 type TAddressDetailsConfigProps = {
@@ -31,7 +38,10 @@ const address_details_config: ({
                 ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
+                    localize('Use only the following special characters: {{permitted_characters}}', {
+                        permitted_characters: address_permitted_special_characters_message,
+                        interpolation: { escapeValue: false },
+                    }),
                     {
                         regex: regex_checks.address_details.address_line_1,
                     },
@@ -46,7 +56,10 @@ const address_details_config: ({
                 ['length', localize('Only {{max}} characters, please.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
-                    localize("Use only the following special characters: . , ' : ; ( ) @ # / -"),
+                    localize('Use only the following special characters: {{permitted_characters}}', {
+                        permitted_characters: address_permitted_special_characters_message,
+                        interpolation: { escapeValue: false },
+                    }),
                     {
                         regex: regex_checks.address_details.address_line_2,
                     },

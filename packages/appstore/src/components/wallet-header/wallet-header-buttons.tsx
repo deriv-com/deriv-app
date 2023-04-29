@@ -17,7 +17,7 @@ const WalletHeaderButtons = ({ is_disabled, is_open, account_type }: TWalletHead
         ? [
               { name: 'Transfer', text: localize('Transfer') },
               { name: 'Transactions', text: localize('Transactions') },
-              { name: 'Deposit', text: localize('Deposit') },
+              { name: 'Deposit', text: localize('Reset balance') },
           ]
         : [
               { name: 'Deposit', text: localize('Deposit') },
@@ -50,7 +50,7 @@ const WalletHeaderButtons = ({ is_disabled, is_open, account_type }: TWalletHead
                             'wallet-header__description-buttons-item-active': is_open,
                         })}
                     >
-                        {is_demo && btn.name === 'Deposit' ? localize('Reset balance') : btn.text}
+                        {btn.text}
                     </Text>
                 </div>
             ))}

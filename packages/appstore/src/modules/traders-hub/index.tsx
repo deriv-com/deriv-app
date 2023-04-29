@@ -87,7 +87,7 @@ const TradersHub = () => {
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <WalletHeader account_type='demo' />
                     <WalletHeader currency={'AUD'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'EUR'} jurisdiction={'svg'} />
+                    <WalletHeader currency={'EUR'} jurisdiction={'svg'} is_open_wallet={true} />
                     <WalletHeader currency={'USD'} jurisdiction={'malta'} />
                     <WalletHeader currency={'BTC'} jurisdiction={'svg'} />
                     <WalletHeader currency={'ETH'} jurisdiction={'svg'} />

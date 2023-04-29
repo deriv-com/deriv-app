@@ -174,4 +174,64 @@ describe('<WalletHeader />', () => {
             expect(balance_label).not.toBeInTheDocument();
         });
     });
+
+    describe('Check buttons', () => {
+        it('Buttons collapsed', () => {
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type='demo' />
+                </StoreProvider>
+            );
+
+            const btn_text = screen.queryByText(/Transfer/i);
+
+            expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+        });
+
+        it('Buttons uncollapsed', () => {
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type='demo' is_open_wallet={true} />
+                </StoreProvider>
+            );
+
+            const btn_text = screen.queryByText(/Transfer/i);
+
+            expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+        });
+
+        it('Check buttons for demo', () => {
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type='demo' />
+                </StoreProvider>
+            );
+
+            const btn1 = screen.queryByText(/Transfer/i);
+            const btn2 = screen.queryByText(/Transactions/i);
+            const btn3 = screen.queryByText(/Reset balance/i);
+
+            expect(btn1).toBeInTheDocument();
+            expect(btn2).toBeInTheDocument();
+            expect(btn3).toBeInTheDocument();
+        });
+
+        it('Check buttons for real', () => {
+            render(
+                <StoreProvider store={mocked_root_store}>
+                    <WalletHeader account_type='real' jurisdiction='svg' currency='USD' />
+                </StoreProvider>
+            );
+
+            const btn1 = screen.queryByText(/Deposit/i);
+            const btn2 = screen.queryByText(/Withdraw/i);
+            const btn3 = screen.queryByText(/Transfer/i);
+            const btn4 = screen.queryByText(/Transactions/i);
+
+            expect(btn1).toBeInTheDocument();
+            expect(btn2).toBeInTheDocument();
+            expect(btn3).toBeInTheDocument();
+            expect(btn4).toBeInTheDocument();
+        });
+    });
 });

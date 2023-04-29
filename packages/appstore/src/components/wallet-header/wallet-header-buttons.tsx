@@ -5,12 +5,12 @@ import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 type TWalletHeaderButtons = {
-    is_disabled?: boolean;
+    is_disabled: boolean;
     is_open: boolean;
     account_type: TAccountCategory;
 };
 
-const WalletHeaderButtons = ({ is_disabled = false, is_open, account_type = 'real' }: TWalletHeaderButtons) => {
+const WalletHeaderButtons = ({ is_disabled, is_open, account_type }: TWalletHeaderButtons) => {
     const is_demo = account_type === 'demo';
 
     const btn_names = is_demo

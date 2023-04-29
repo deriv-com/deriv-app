@@ -11,51 +11,45 @@ type TWalletHeaderBalance = {
     currency: TWalletSvgCurrency;
 };
 
-const WalletHeaderBalance = React.memo(
-    ({ account_status = '', balance = '0.00', currency = 'USD' }: TWalletHeaderBalance) => {
-        const {
-            traders_hub: { openFailedVerificationModal },
-        } = useStore();
+const WalletHeaderBalance = React.memo(({ account_status, balance, currency }: TWalletHeaderBalance) => {
+    const {
+        traders_hub: { openFailedVerificationModal },
+    } = useStore();
 
-        const balance_amount = (
-            <Text weight='bold' size='m'>
-                <Localize
-                    i18n_default_text='{{balance}} {{currency}}'
-                    values={{
-                        balance,
-                        currency,
-                    }}
-                />
-            </Text>
-        );
+    const balance_amount = (
+        <Text weight='bold' size='m'>
+            <Localize
+                i18n_default_text='{{balance}} {{currency}}'
+                values={{
+                    balance,
+                    currency,
+                }}
+            />
+        </Text>
+    );
 
-        // TODO: just for test use empty object. When BE will be ready it will be fixed
-        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
-            account_status,
-            openFailedVerificationModal,
-            {
-                platform: '',
-                category: '',
-                type: '',
-                jurisdiction: '',
-            }
-        );
+    // TODO: just for test use empty object. When BE will be ready it will be fixed
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(account_status, openFailedVerificationModal, {
+        platform: '',
+        category: '',
+        type: '',
+        jurisdiction: '',
+    });
 
-        return (
-            <div className='wallet-header__balance-title-amount'>
-                {account_status ? (
-                    <StatusBadge account_status={account_status} icon={badge_icon} text={badge_text} />
-                ) : (
-                    <React.Fragment>
-                        <Text key={0} color='less-prominent' size='xxs'>
-                            {localize('Wallet balance')}
-                        </Text>
-                        {balance_amount}
-                    </React.Fragment>
-                )}
-            </div>
-        );
-    }
-);
+    return (
+        <div className='wallet-header__balance-title-amount'>
+            {account_status ? (
+                <StatusBadge account_status={account_status} icon={badge_icon} text={badge_text} />
+            ) : (
+                <React.Fragment>
+                    <Text key={0} color='less-prominent' size='xxs'>
+                        {localize('Wallet balance')}
+                    </Text>
+                    {balance_amount}
+                </React.Fragment>
+            )}
+        </div>
+    );
+});
 WalletHeaderBalance.displayName = 'WalletHeaderBalance';
 export default WalletHeaderBalance;

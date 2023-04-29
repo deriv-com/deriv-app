@@ -10,7 +10,7 @@ type TWalletCurrencyCard = {
     currency: TWalletSvgCurrency;
 };
 
-const WalletCurrencyCard = observer(({ account_type = 'real', currency = 'USD' }: TWalletCurrencyCard) => {
+const WalletCurrencyCard = observer(({ account_type, currency }: TWalletCurrencyCard) => {
     const {
         ui: { is_dark_mode_on },
     } = useStore();

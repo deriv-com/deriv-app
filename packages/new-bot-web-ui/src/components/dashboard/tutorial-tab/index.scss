@@ -1,0 +1,154 @@
+@import './sidebar.scss';
+@import './dialog.scss';
+
+@mixin position-center {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin align-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tutorials-wrap {
+    padding-bottom: 20rem;
+    &--placeholder {
+        width: 28rem;
+    }
+    &--tour {
+        cursor: pointer;
+    }
+    &__group {
+        display: flex;
+        margin-top: 2.4rem;
+        margin-bottom: 5.2rem;
+        &__nosearch {
+            @include position-center;
+            width: 100%;
+            word-break: break-all;
+        }
+        &__cards {
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+            margin-right: 2.4rem;
+            @include mobile {
+                flex-direction: row;
+                span {
+                    text-align: left;
+                    padding-left: 0.8rem;
+                    width: calc(100% - 14.8rem);
+                }
+            }
+        }
+        @include mobile {
+            flex-direction: column;
+            margin-top: 1.4rem;
+            margin-bottom: 2.2rem;
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__placeholder {
+        @include align-center;
+        background: var(--checkbox-disabled-grey);
+        margin-bottom: 0.8rem;
+        margin-right: 2.4rem;
+        height: 16rem;
+        width: 28rem;
+        background-size: 100% 100%;
+        @include mobile {
+            height: 8.7rem;
+            width: 14.8rem;
+            margin: 0;
+        }
+        &__tours {
+            height: 13.5rem;
+            width: 21.5rem;
+            background-position: center center;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            @include mobile {
+                height: 8.7rem;
+                width: 14.8rem;
+            }
+        }
+
+        &__button-group {
+            @include align-center;
+            width: 20rem;
+            height: 7rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            &--play {
+                filter: invert(1);
+            }
+            @include mobile {
+                height: 6rem;
+                width: 8rem;
+            }
+        }
+        &--disabled {
+            pointer-events: none;
+        }
+    }
+}
+
+.faq {
+    &__wrapper {
+        overflow: auto;
+        height: 100vh;
+        padding-bottom: 20rem;
+
+        @include mobile {
+            height: calc(100vh - 27rem);
+            .dc-accordion__wrapper > div:last-child {
+                //iphone 14 specific
+                @media (min-height: 450px) and (max-height: 750px) {
+                    padding-bottom: 10rem;
+                }
+            }
+        }
+
+        &__nosearch {
+            @include position-center;
+            width: 100%;
+            word-break: break-all;
+        }
+        &__content {
+            width: 85%;
+
+            @include mobile {
+                width: 100%;
+                height: calc(100vh - 16rem);
+            }
+        }
+        .dc-accordion {
+            &__item {
+                border: unset;
+                border-bottom: 0.1rem solid var(--general-section-1);
+                &-header {
+                    @include position-center;
+                    justify-content: space-between;
+                }
+                &-content {
+                    @include mobile {
+                        width: 100%;
+
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+        &__header {
+            margin: 0 0 1rem 0.5rem;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+.bot {
+    --bot-content-height: calc(100vh - 140px);
+    --bot-content-width: calc(100vw - 366px); //run-panel is open by default
+    --drawer-content-height: calc(100vh - 394px);
+    --drawer-content-height-no-stat: calc(100vh - 233px);
+    --drawer-scroll-height: calc(100vh - 365px);
+    --drawer-content-height-mobile: calc(100% - 233px);
+    &-dashboard {
+        background: var(--general-section-1);
+    }
+
+    --tab-content-height: calc(100vh - 16.6rem);
+    --tab-content-height-mobile: calc(100vh - 12.6rem);
+}

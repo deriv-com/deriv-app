@@ -1,0 +1,216 @@
+@keyframes animate-progress {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 51%;
+    }
+}
+
+@keyframes animate-progress-complete {
+    0% {
+        width: 50%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes animate-circle {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes animate-circle-appear {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes animate-circle-pop {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+
+.animation {
+    $static-circle-diameter: 2px;
+    $dynamic-circle-diameter: 10px;
+    $animation: &;
+
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        height: 40px;
+    }
+    &__overlay {
+        border-top-left-radius: 0;
+        border-bottom-right-radius: $BORDER_RADIUS;
+    }
+    &__info {
+        font-size: 10px;
+        margin: 8px;
+        cursor: pointer;
+    }
+    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+    &__button {
+        width: fit-content;
+        height: 100% !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+    &__container {
+        width: 232px;
+        height: 100%;
+        padding: 5px 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        border-top-right-radius: $BORDER_RADIUS;
+        border-bottom-right-radius: $BORDER_RADIUS;
+        border: solid 1px var(--border-normal);
+        position: relative;
+    }
+    &__text {
+        color: var(--text-general);
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+        line-height: 18px;
+    }
+    &__progress {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        height: 6px;
+
+        .circular-wrapper {
+            width: $static-circle-diameter;
+            height: $static-circle-diameter;
+            align-self: center;
+            display: flex;
+
+            .static-circle {
+                width: $static-circle-diameter;
+                height: $static-circle-diameter;
+                background-color: $color-black-7;
+                border-radius: 100%;
+                align-self: center;
+                z-index: 1;
+            }
+            .dynamic-circle {
+                border-radius: 100%;
+                height: $dynamic-circle-diameter;
+                width: $dynamic-circle-diameter;
+                margin-left: -4px;
+                margin-top: -4px;
+                opacity: 0.32;
+                position: absolute;
+            }
+            &:nth-child(2) {
+                margin-left: 3px;
+            }
+            &:last-child {
+                margin-right: 3px;
+            }
+        }
+        &-line {
+            background-color: var(--border-normal);
+            height: 100%;
+            width: 100%;
+            border-radius: $BORDER_RADIUS;
+            position: absolute;
+        }
+        &-bar {
+            background-color: var(--status-success);
+            border-radius: $BORDER_RADIUS;
+            width: 0;
+            height: 100%;
+        }
+        &-3 {
+            animation: animate-progress 0.5s 1;
+            animation-fill-mode: forwards;
+        }
+        &-4 {
+            width: 51%;
+            border-radius: 5px 0 0 5px;
+        }
+        &-5 {
+            animation: animate-progress-complete 0.5s 1;
+            animation-fill-mode: forwards;
+        }
+    }
+    &--running {
+        #{$animation}__progress {
+            .circular-wrapper {
+                &.completed,
+                &.active {
+                    .static-circle {
+                        background-color: $color-green-2;
+                    }
+                }
+                &.active {
+                    .dynamic-circle {
+                        animation: animate-circle 0.8s infinite;
+                        animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+                        background-color: var(--status-success);
+                        // transform: translate(-50%, -50%);
+                        // z-index: 1;
+                    }
+                }
+                .static-circle {
+                    animation: animate-circle-appear 1s;
+                    background-color: $COLOR_CORAL_RED;
+                }
+                .dynamic-circle {
+                    animation: animate-circle 1s;
+                    background-color: $COLOR_CORAL_RED;
+                    transform: scale(0);
+                }
+            }
+        }
+    }
+    &__modal {
+        height: 28.4rem !important;
+        width: 44rem !important;
+        font-size: 1.6rem;
+        padding: 2.4rem;
+
+        &--mobile {
+            font-size: 1.6rem !important;
+        }
+        &-body {
+            height: 438px;
+
+            &--mobile {
+                padding: 1.6rem 0 !important;
+            }
+            &--content {
+                margin-top: 2rem;
+            }
+        }
+    }
+}
+
+.dc-modal__container_animation__modal {
+    @include mobile {
+        width: 31.2rem !important;
+    }
+}

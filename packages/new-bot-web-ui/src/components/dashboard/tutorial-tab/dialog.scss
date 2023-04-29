@@ -1,0 +1,98 @@
+.tutorials-wrap {
+    .dc-dialog {
+        &__dialog {
+            width: 80vw;
+            height: 80vh;
+            max-width: unset;
+            max-height: unset;
+            padding: 0;
+            border-radius: 0;
+            position: relative;
+            z-index: 1;
+            @include mobile {
+                width: 94%;
+                height: auto;
+                max-height: 80%;
+            }
+        }
+
+        &__header-wrapper {
+            &--end {
+                position: absolute;
+                top: 0;
+                right: 1rem;
+                z-index: 90;
+            }
+        }
+
+        &__content {
+            max-width: unset;
+            margin-bottom: 0;
+            height: 100%;
+        }
+
+        &__footer {
+            display: none;
+        }
+    }
+}
+
+.tour-dialog {
+    transition: unset;
+    .dc-dialog__dialog {
+        transform: unset;
+        opacity: unset;
+        transition: unset;
+
+        @include mobile {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+        @include tablet {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+    }
+    &--end {
+        .dc-btn--secondary {
+            display: none;
+        }
+
+        @include mobile {
+            .dc-btn--primary {
+                padding: 1rem;
+            }
+        }
+    }
+
+    .dc-dialog__content {
+        &__header {
+            text-align: left;
+            margin-bottom: 2.4rem;
+        }
+
+        &__description {
+            text-align: left;
+
+            &__text {
+                margin-bottom: 1.6rem;
+            }
+        }
+    }
+
+    .dc-dialog__footer {
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            height: unset;
+            align-content: flex-end;
+
+            button {
+                &:first-child {
+                    margin-bottom: unset;
+                    margin-right: 0.8rem;
+                }
+            }
+        }
+    }
+}

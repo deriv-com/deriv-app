@@ -3,7 +3,7 @@ import AppIdMap from '../../../common/appIdResolver';
 import { supported_languages } from '../../../common/i18n';
 import { setCookieLanguage } from '../../../common/utils/cookieManager';
 
-// [Todo] getLanguage, getStorage, setStorage are duplicated here after update the structure of project we should remove them
+// [Todo] getStorage, setStorage are duplicated here after update the structure of project we should remove them
 
 function getStorage(label) {
     return window.localStorage.getItem(label);
@@ -26,7 +26,7 @@ export const parseQueryString = () => {
 };
 
 export const getLanguage = () => {
-    const queryLang = parseQueryString().l || getStorage('lang');
+    const queryLang = parseQueryString().l ? parseQueryString().l : 'en' || getStorage('lang');
     const lang = queryLang in supported_languages ? queryLang : 'en';
     setStorage('lang', lang);
     setCookieLanguage(lang);

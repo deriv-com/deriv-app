@@ -1,3 +1,3 @@
-import PoiConfirmWithExampleForm from './poi-confirm-with-example-form.jsx';
+import PoiConfirmWithExampleForm from './poi-confirm-with-example-form';
 
 export default PoiConfirmWithExampleForm;

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
 import { Checkbox, Loading } from '@deriv/components';
-import { WS, filterObjProperties, toMoment, validLength, validName } from '@deriv/shared';
+import { filterObjProperties, toMoment, validLength, validName, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -105,6 +105,9 @@ const PoiConfirmWithExampleFormContainer = ({
         WS.wait('get_settings').then(() => {
             const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
             const form_initial_values = filterObjProperties(account_settings, visible_settings);
+            if (form_initial_values.date_of_birth) {
+                form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
+            }
             setRestState({
                 ...rest_state,
                 changeable_fields: getChangeableFields(),

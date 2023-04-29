@@ -16,7 +16,6 @@ const WalletCurrencyCard = observer(({ account_type = 'real', currency = 'USD' }
 
     const is_demo = account_type === 'demo';
     const theme = is_dark_mode_on ? '--dark' : '';
-    // const demo_icon_path = is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
     const class_currency = is_demo ? 'demo' : currency.toLowerCase();
 
     const currency_icon_path = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on);

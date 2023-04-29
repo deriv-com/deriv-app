@@ -40,7 +40,7 @@ describe('ErrorComponent', () => {
         expect(screen.getByText(default_button)).toBeInTheDocument();
         expect(screen.getByText(common_error_message)).toBeInTheDocument();
     });
-    it('should render child component Dialog with passed title, message and redirect label if ErrorComponent recive them and is_dialog === true', () => {
+    it('should render child component Dialog with recieved title, message and redirect label if ErrorComponent passed them and is_dialog === true', () => {
         render(
             <ErrorComponent is_dialog header={test_title} message={test_message} redirect_label={redirect_button} />
         );
@@ -49,7 +49,7 @@ describe('ErrorComponent', () => {
         expect(screen.getByText(redirect_button)).toBeInTheDocument();
         expect(screen.getByText(test_message)).toBeInTheDocument();
     });
-    it('should render PageError component if  ErrorComponent recive is_dialog === false', () => {
+    it('should render PageError component if ErrorComponent recive is_dialog === false', () => {
         render(
             <Router history={browser_history}>
                 <ErrorComponent />
@@ -58,9 +58,9 @@ describe('ErrorComponent', () => {
 
         expect(screen.getByText('Something’s not right')).toBeInTheDocument();
         expect(screen.getByText(common_error_message)).toBeInTheDocument();
-        expect(screen.getByText('Refresh')).toBeInTheDocument();
+        expect(screen.getByText(refresh_button)).toBeInTheDocument();
     });
-    it('should render PageError component with passed header, message and redirect label if ErrorComponent recive them and is_dialog === false', () => {
+    it('should render PageError component with recieved header, message and redirect label if ErrorComponent passed them and is_dialog === false', () => {
         render(
             <Router history={browser_history}>
                 <ErrorComponent header={test_title} message={test_message} redirect_label={redirect_button} />
@@ -71,7 +71,7 @@ describe('ErrorComponent', () => {
         expect(screen.getByText(test_message)).toBeInTheDocument();
         expect(screen.getByText(redirect_button)).toBeInTheDocument();
     });
-    it('should render PageError without additional with refreshing text if ErrorComponent recive should_show_refresh === false and is_dialog === false', () => {
+    it('should render PageError without additional text if ErrorComponent recive should_show_refresh === false and is_dialog === false', () => {
         render(
             <Router history={browser_history}>
                 <ErrorComponent should_show_refresh={false} />
@@ -80,7 +80,7 @@ describe('ErrorComponent', () => {
 
         expect(screen.queryByText('Please refresh this page to continue.')).not.toBeInTheDocument();
     });
-    it('should call a function passed in props when user click on redirect button', () => {
+    it('should call a function which was passed in props when user click on redirect button', () => {
         const redirectOnClick = jest.fn();
 
         render(<ErrorComponent is_dialog redirectOnClick={redirectOnClick} />);
@@ -88,7 +88,7 @@ describe('ErrorComponent', () => {
 
         expect(redirectOnClick).toHaveBeenCalled();
     });
-    it('should call a reload function  when user click on redirect button for Dialog component', () => {
+    it('should call a reload function when user click on redirect button for Dialog component', () => {
         render(<ErrorComponent is_dialog />);
         userEvent.click(screen.getByText(default_button));
         reloadFn();

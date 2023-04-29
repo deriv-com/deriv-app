@@ -676,11 +676,23 @@ $MIN_HEIGHT_FLOATING: calc(
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
-            border: 1px solid #d6dadb;
-            border-radius: 0.8rem;
-            padding: 1.6rem;
 
             &_container {
+                border: 1px solid #d6dadb;
+                border-radius: 0.8rem;
+                padding: 1.6rem;
+
+                .account__scrollbars_container {
+                    padding: 0;
+
+                    .account-form__section {
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+                }
+            }
+
+            &_wrapper {
                 margin-bottom: 2.4rem;
                 transition: transform 0.35s ease, opacity 0.35s linear;
                 transform-origin: top;
@@ -714,15 +726,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     .dc-input--error {
                         margin-bottom: 3.8rem;
                     }
-                }
-            }
-
-            .account__scrollbars_container {
-                padding: 0;
-
-                .account-form__section {
-                    align-items: center;
-                    justify-content: space-between;
                 }
             }
 
@@ -2111,8 +2114,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define onfido-container; weak */
 .onfido-container {
-    text-align: center;
-
     &__hidden {
         display: none;
     }
@@ -2131,7 +2132,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
     &__status-message {
         background-color: var(--transparent-correct-message);
-        margin-bottom: 2.4rem;
         width: 51.2rem;
         justify-content: flex-start;
         transition: transform 0.35s ease, opacity 0.35s linear;
@@ -2141,6 +2141,12 @@ $MIN_HEIGHT_FLOATING: calc(
         &--exit {
             transform: scale(1, 0);
             opacity: 0;
+        }
+
+        &_container {
+            margin-bottom: 2.4rem;
+            min-height: 4rem;
+            text-align: center;
         }
     }
 

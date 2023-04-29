@@ -10,7 +10,7 @@ import { getLanguage, Localize } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
-import PoiConfirmWithExample from 'Components/poi/poi-confirm-with-example';
+import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
 
 const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, height, is_from_external }) => {
     const [api_error, setAPIError] = React.useState();
@@ -220,39 +220,41 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                                 exit: 350,
                             }}
                             classNames={{
-                                exit: 'account-form__poi-confirm-example_container--exit',
+                                exit: 'account-form__poi-confirm-example_wrapper--exit',
                             }}
                             unmountOnExit
                         >
-                            <div className='account-form__poi-confirm-example_container'>
-                                <PoiConfirmWithExample onFormConfirm={onConfirm} />
+                            <div className='account-form__poi-confirm-example_wrapper'>
+                                <PoiConfirmWithExampleFormContainer onFormConfirm={onConfirm} />
                             </div>
                         </CSSTransition>
                     ))}
-                <CSSTransition
-                    appear={is_status_message_visible}
-                    in={is_status_message_visible}
-                    timeout={{
-                        exit: 350,
-                    }}
-                    classNames={{
-                        exit: 'onfido-container__status-message--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <HintBox
-                        className='onfido-container__status-message'
-                        icon='IcAlertAnnounce'
-                        icon_height={16}
-                        icon_width={16}
-                        message={
-                            <Text as='p' size='xs'>
-                                <Localize i18n_default_text='Your personal details have been saved successfully.' />
-                            </Text>
-                        }
-                        is_info
-                    />
-                </CSSTransition>
+                <div className={classNames({ 'onfido-container__status-message_container': are_details_saved })}>
+                    <CSSTransition
+                        appear={is_status_message_visible}
+                        in={is_status_message_visible}
+                        timeout={{
+                            exit: 350,
+                        }}
+                        classNames={{
+                            exit: 'onfido-container__status-message--exit',
+                        }}
+                        unmountOnExit
+                    >
+                        <HintBox
+                            className='onfido-container__status-message'
+                            icon='IcAlertAnnounce'
+                            icon_height={16}
+                            icon_width={16}
+                            message={
+                                <Text as='p' size='xs'>
+                                    <Localize i18n_default_text='Your personal details have been saved successfully.' />
+                                </Text>
+                            }
+                            is_info
+                        />
+                    </CSSTransition>
+                </div>
                 <div style={{ position: 'relative' }}>
                     {is_onfido_disabled && (
                         <HintBox

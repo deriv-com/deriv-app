@@ -198,16 +198,7 @@ const ReviewMessageForMT5 = ({
 const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
-        switch (type) {
-            case 'all':
-                return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
-            case 'synthetic':
-                return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
-            case 'financial':
-                return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
-            default:
-                return <Icon icon='IcDxtradeDerivxPlatform' size={128} />;
-        }
+        return <Icon icon='IcRebrandingDerivx' size={128} />;
     } else if (traders_hub) {
         switch (type) {
             case 'synthetic':

@@ -21,6 +21,7 @@ import {
     preventEmptyClipboardPaste,
 } from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
+import { generatePlaceholderText } from 'Helpers/utils';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -45,7 +46,7 @@ export const IdvDocSubmitOnSignup = ({
     const [document_list, setDocumentList] = React.useState<any[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [is_doc_selected, setDocSelected] = React.useState(false);
+    const [selected_doc, setSelectedDoc] = React.useState(null);
 
     const document_data = citizen_data.identity.services.idv.documents_supported;
     const {
@@ -218,7 +219,7 @@ export const IdvDocSubmitOnSignup = ({
                                             <Text className='proof-of-identity__text btm-spacer' size='xs'>
                                                 {localize('Please select the document type and enter the ID number.')}
                                             </Text>
-                                            {has_idv_error && !is_doc_selected && (
+                                            {has_idv_error && !selected_doc && (
                                                 <>
                                                     <Text
                                                         className='proof-of-identity'
@@ -284,7 +285,7 @@ export const IdvDocSubmitOnSignup = ({
                                                                                             'No results found' ||
                                                                                         !item.text
                                                                                     ) {
-                                                                                        setDocSelected(false);
+                                                                                        setSelectedDoc(null);
                                                                                         resetDocumentItemSelected(
                                                                                             setFieldValue
                                                                                         );
@@ -294,7 +295,7 @@ export const IdvDocSubmitOnSignup = ({
                                                                                             item,
                                                                                             true
                                                                                         );
-                                                                                        setDocSelected(true);
+                                                                                        setSelectedDoc(item.id);
                                                                                         if (has_visual_sample) {
                                                                                             setDocumentImage(
                                                                                                 item.sample_image || ''
@@ -325,7 +326,9 @@ export const IdvDocSubmitOnSignup = ({
                                                                                     e.target.value
                                                                                 );
                                                                                 if (selected_document) {
-                                                                                    setDocSelected(true);
+                                                                                    setSelectedDoc(
+                                                                                        selected_document.id
+                                                                                    );
                                                                                     setFieldValue(
                                                                                         'document_type',
                                                                                         selected_document,
@@ -367,7 +370,9 @@ export const IdvDocSubmitOnSignup = ({
                                                                             errors.error_message
                                                                         }
                                                                         autoComplete='off'
-                                                                        placeholder='Enter your document number'
+                                                                        placeholder={generatePlaceholderText(
+                                                                            selected_doc
+                                                                        )}
                                                                         value={values.document_number}
                                                                         onPaste={preventEmptyClipboardPaste}
                                                                         onBlur={handleBlur}
@@ -439,7 +444,7 @@ export const IdvDocSubmitOnSignup = ({
                                                         </div>
                                                     </div>
                                                 )}
-                                                {is_doc_selected && (
+                                                {selected_doc && (
                                                     <Text
                                                         className='proof-of-identity__text-spacer'
                                                         align='center'

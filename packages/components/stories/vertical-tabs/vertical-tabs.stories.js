@@ -54,7 +54,7 @@ const action_bar_items = [
 const list = [
     {
         default: true,
-        icon: 'IcBrandDtrader',
+        icon: 'IcRebrandingDerivTrader',
         label: 'Option 1',
         value: () => (
             <TextComponent>
@@ -68,7 +68,7 @@ const list = [
     },
     {
         default: false,
-        icon: 'IcBrandDbot',
+        icon: 'IcRebrandingDerivBot',
         label: 'Option 2',
         value: () => (
             <TextComponent>

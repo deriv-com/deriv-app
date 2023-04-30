@@ -10,9 +10,11 @@ import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISubmission = ({
+    account_settings,
     allow_poi_resubmission,
     has_require_submission,
     height,
+    getChangeableFields,
     identity_last_attempt,
     idv,
     is_from_external,
@@ -24,6 +26,7 @@ const POISubmission = ({
     refreshNotifications,
     residence_list,
     setIsCfdPoiCompleted,
+    updateAccountStatus,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -139,13 +142,14 @@ const POISubmission = ({
 
                     return (
                         <OnfidoUpload
+                            account_settings={account_settings}
                             country_code={country_code}
                             documents_supported={documents_supported}
+                            getChangeableFields={getChangeableFields}
                             handleViewComplete={handleViewComplete}
                             height={height}
-                            is_from_external={is_from_external}
                             refreshNotifications={refreshNotifications}
-                            OnfidoUpload
+                            updateAccountStatus={updateAccountStatus}
                         />
                     );
                 }

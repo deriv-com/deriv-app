@@ -6,9 +6,11 @@ import { connect } from 'Stores/connect';
 import { withRouter } from 'react-router-dom';
 
 const ProofOfIdentity = ({
+    account_settings,
     account_status,
     app_routing_history,
     fetchResidenceList,
+    getChangeableFields,
     is_from_external,
     is_switching,
     is_virtual,
@@ -18,6 +20,7 @@ const ProofOfIdentity = ({
     refreshNotifications,
     routeBackInApp,
     should_allow_authentication,
+    updateAccountStatus,
 }) => {
     // next useEffect implements seo requirements
     React.useEffect(() => {
@@ -40,9 +43,11 @@ const ProofOfIdentity = ({
                     <div className='proof-of-identity__main-container'>
                         <ProofOfIdentityContainer
                             height={height}
+                            account_settings={account_settings}
                             account_status={account_status}
                             app_routing_history={app_routing_history}
                             fetchResidenceList={fetchResidenceList}
+                            getChangeableFields={getChangeableFields}
                             is_from_external={is_from_external}
                             is_switching={is_switching}
                             is_virtual={is_virtual}
@@ -53,6 +58,7 @@ const ProofOfIdentity = ({
                             routeBackInApp={routeBackInApp}
                             should_allow_authentication={should_allow_authentication}
                             is_description_enabled
+                            updateAccountStatus={updateAccountStatus}
                         />
                     </div>
                 </div>
@@ -62,9 +68,11 @@ const ProofOfIdentity = ({
 };
 
 export default connect(({ client, common, notifications }) => ({
+    account_settings: client.account_settings,
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
+    getChangeableFields: client.getChangeableFields,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
@@ -72,4 +80,5 @@ export default connect(({ client, common, notifications }) => ({
     refreshNotifications: notifications.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
+    updateAccountStatus: client.updateAccountStatus,
 }))(withRouter(ProofOfIdentity));

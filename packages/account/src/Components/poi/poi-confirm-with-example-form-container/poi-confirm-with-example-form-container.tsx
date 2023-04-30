@@ -8,8 +8,6 @@ import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PoiConfirmWithExampleForm from 'Components/poi/poi-confirm-with-example-form';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
 
 type TValues = { [p: string]: string };
 
@@ -182,8 +180,4 @@ const PoiConfirmWithExampleFormContainer = ({
     );
 };
 
-export default connect(({ client }: RootStore) => ({
-    account_settings: client.account_settings,
-    getChangeableFields: client.getChangeableFields,
-    updateAccountStatus: client.updateAccountStatus,
-}))(PoiConfirmWithExampleFormContainer);
+export default PoiConfirmWithExampleFormContainer;

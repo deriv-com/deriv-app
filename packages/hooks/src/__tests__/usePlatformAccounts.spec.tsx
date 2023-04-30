@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useTotalAssetCurrency from '../useTotalAssetCurrency';
+import usePlatformAccounts from '../usePlatformAccounts';
 
-describe('useTotalAssetCurrency', () => {
+describe('usePlatformAccounts', () => {
     test('should return default currency when user has no account', async () => {
         const mock = mockStore({
             client: {
@@ -14,31 +14,10 @@ describe('useTotalAssetCurrency', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => usePlatformAccounts(), { wrapper });
 
-        expect(result.current).toBe('USD');
+        expect(result.current.demo).toBe(0);
     });
-
-    test('should return proper currency when user has non_crypto account', async () => {
-        const mock = mockStore({
-            client: {
-                accounts: {
-                    loginid: {
-                        currency: 'EUR',
-                    },
-                },
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useTotalAssetCurrency(), { wrapper });
-
-        expect(result.current).toBe('EUR');
-    });
-
-    // test('should return empty string when user has not set currency for non_crypto account', async () => {}
 
     // test('should return true if is_virtual is true', async () => {
     //     const mock = mockStore({

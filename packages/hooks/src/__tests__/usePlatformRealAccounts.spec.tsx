@@ -1,77 +1,28 @@
 import * as React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useRealTotalAssetCurrency from '../useTotalAssetCurrency';
+import usePlatformRealAccounts from '../usePlatformRealAccounts';
 
-describe('useRealTotalAssetCurrency', () => {
-    test('should return default currency when user has no account', async () => {
+describe('usePlatformRealAccounts', () => {
+    test('should return null when user has no platform demo accounts', async () => {
         const mock = mockStore({
-            client: {
-                account_list: [],
+            traders_hub: {
+                is_eu_user: true,
             },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
-
-        expect(result.current).toBe('USD');
-    });
-
-    test('should return proper currency when user has non_crypto account', async () => {
-        const mock = mockStore({
             client: {
-                accounts: {
-                    loginid: {
-                        currency: 'EUR',
+                active_accounts: [
+                    {
+                        landing_company_shortcode: 'svg',
                     },
-                },
+                ],
             },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
+        const { result } = renderHook(() => usePlatformRealAccounts(), { wrapper });
 
-        expect(result.current).toBe('EUR');
+        expect(result.current.length).toBe(1);
     });
-
-    // test('should return empty string when user has not set currency for non_crypto account', async () => {}
-
-    // test('should return true if is_virtual is true', async () => {
-    //     const mock = mockStore({
-    //         client: {
-    //             is_virtual: true,
-    //         },
-    //     });
-
-    //     const wrapper = ({ children }: { children: JSX.Element }) => (
-    //         <StoreProvider store={mock}>{children}</StoreProvider>
-    //     );
-    //     const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
-
-    //     expect(result.current).toBe(true);
-    // });
-
-    // test('should return true account title is not Real ', async () => {
-    //     const mock = mockStore({
-    //         client: {
-    //             account_list: [
-    //                 {
-    //                     title: 'Demo',
-    //                     is_virtual: false,
-    //                 },
-    //             ],
-    //         },
-    //     });
-
-    //     const wrapper = ({ children }: { children: JSX.Element }) => (
-    //         <StoreProvider store={mock}>{children}</StoreProvider>
-    //     );
-    //     const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
-
-    //     expect(result.current).toBe(true);
-    // });
 });

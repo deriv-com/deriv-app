@@ -289,6 +289,7 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    openFailedVerificationModal: (selected_account_type: Record<string, any>) => void;
 };
 
 /**

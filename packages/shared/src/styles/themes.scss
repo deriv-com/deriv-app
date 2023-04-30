@@ -191,6 +191,8 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // wallets
+        --wallet-demo-bg-color: #fff8f9;
     }
     .theme--dark {
         // General
@@ -300,5 +302,7 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // wallets
+        --wallet-demo-bg-color: #fff8f9;
     }
 }

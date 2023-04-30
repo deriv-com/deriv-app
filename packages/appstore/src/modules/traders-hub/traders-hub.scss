@@ -1,7 +1,8 @@
 .traders-hub {
     max-width: 123.2rem;
     margin: auto;
-    padding: 5rem 0;
+    padding: 2.4rem 0;
+    background-color: var(--general-section-1);
 
     @include mobile {
         padding: 2rem;

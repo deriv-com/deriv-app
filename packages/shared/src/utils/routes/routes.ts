@@ -52,7 +52,13 @@ export const routes = {
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
-    cashier_p2p_profile: '/cashier/p2p/profile',
+    // P2P
+    p2p_buy_sell: '/cashier/p2p/buy-sell',
+    p2p_orders: '/cashier/p2p/orders',
+    p2p_my_ads: '/cashier/p2p/my-ads',
+    p2p_my_profile: '/cashier/p2p/my-profile',
+    p2p_advertiser_page: '/cashier/p2p/advertiser',
+    //
     cashier_p2p_verification: '/cashier/p2p/verification',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),

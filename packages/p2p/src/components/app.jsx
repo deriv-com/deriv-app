@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, useHistory, useLocation } from 'react-router-dom';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
@@ -10,6 +10,7 @@ import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ModalManager, ModalManagerContextProvider } from './modal-manager';
+import Routes from './routes/routes.jsx';
 import './app.scss';
 
 // TODO: Add back props to get root_store to pass to StoreProvider component
@@ -18,7 +19,7 @@ const App = () => {
     const { balance, is_logging_in } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
 
-    const { is_mobile } = ui;
+    const { notification_messages_ui: Notifications, is_mobile } = ui;
     const { setP2POrderProps } = notifications;
 
     const history = useHistory();
@@ -39,13 +40,9 @@ const App = () => {
         general_store.getWebsiteStatus();
 
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
-        if (/\/verification$/.test(history?.location.pathname)) {
+        if (/\/verification$/.test(location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);
             history.push(routes.cashier_p2p);
-        }
-
-        if (/\/profile$/.test(history?.location.pathname)) {
-            setShouldShowProfile(true);
         }
 
         ServerTime.init(general_store.server_time);
@@ -64,6 +61,18 @@ const App = () => {
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
         });
+
+        if (/\/orders$/.test(location.pathname)) {
+            history.push(routes.p2p_orders);
+            general_store.setActiveIndex(1);
+        } else if (/\/my-ads$/.test(location.pathname)) {
+            history.push(routes.p2p_my_ads);
+            general_store.setActiveIndex(2);
+        } else if (/\/my-profile$/.test(location.pathname)) {
+            history.push(routes.p2p_my_profile);
+            setShouldShowProfile(true);
+            general_store.setActiveIndex(3);
+        }
 
         return () => general_store.onUnmount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,7 +139,7 @@ const App = () => {
             } else if (order_id !== input_order_id) {
                 // Changing query params
                 history.push({
-                    pathname: routes.cashier_p2p,
+                    pathname: routes.p2p_orders,
                     search: current_query_params.toString(),
                     hash: location.hash,
                 });
@@ -183,18 +192,22 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in) {
+    if (is_logging_in || general_store.is_loading) {
         return <Loading is_fullscreen />;
     }
 
     return (
         // TODO Wrap components with StoreProvider during routing p2p card
-        <main className='p2p-cashier'>
-            <ModalManagerContextProvider>
-                <ModalManager />
-                <AppContent order_id={order_id} />
-            </ModalManagerContextProvider>
-        </main>
+        <Router>
+            <main className='p2p-cashier'>
+                <Notifications />
+                <ModalManagerContextProvider>
+                    <ModalManager />
+                    <AppContent order_id={order_id} />
+                    <Routes />
+                </ModalManagerContextProvider>
+            </main>
+        </Router>
     );
 };
 

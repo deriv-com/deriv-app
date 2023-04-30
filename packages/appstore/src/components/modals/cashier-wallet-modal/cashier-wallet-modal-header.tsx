@@ -85,9 +85,12 @@ const CashierWalletModalHeader = ({
         <div
             className={classNames(header_class_name, `wallet-modal__${getBackgroundName().toLowerCase()}-bg${theme}`, {
                 [`${header_class_name}--hide-title`]: !show_wallet_name,
+                [`${header_class_name}__demo`]: is_demo,
+                [`${header_class_name}__demo--light`]: is_demo && !is_dark,
+                [`${header_class_name}__demo--dark`]: is_demo && is_dark,
             })}
         >
-            <div>
+            <div className={`${header_class_name}__title-wrapper`}>
                 {show_wallet_name && (
                     <div className={classNames(`${header_class_name}__title`)}>
                         <Text

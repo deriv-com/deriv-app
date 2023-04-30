@@ -17,6 +17,7 @@
     .cashier-wallet-modal {
         &__header {
             display: flex;
+            position: relative;
             height: 16rem;
             padding: 2.4rem 4rem 7.2rem;
 
@@ -29,6 +30,34 @@
                 height: 9.8rem;
                 align-items: center;
                 justify-content: space-between;
+            }
+
+            &__demo--light:before {
+                background-color: $color-white;
+            }
+
+            &__demo--dark:before {
+                background-color: $wallet-demo-dark-watermark-color;
+            }
+
+            &__demo:before {
+                content: '';
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.2;
+                background-repeat: repeat;
+                background-position: 3% 30%;
+                border-radius: $BORDER_RADIUS * 4;
+                -webkit-mask-image: url('../../../public/images/wallet-demo-bg.svg');
+                mask-image: url('../../../public/images/wallet-demo-bg.svg');
+            }
+
+            &__title-wrapper {
+                position: relative;
             }
 
             &__title {
@@ -62,6 +91,7 @@
             }
 
             &__currency-icon {
+                z-index: 100;
                 margin-left: auto;
                 margin-right: 1.6rem;
 
@@ -71,6 +101,8 @@
             }
 
             &__close-icon {
+                position: relative;
+
                 .dc-icon {
                     cursor: pointer;
                 }

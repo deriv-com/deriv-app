@@ -7,6 +7,7 @@ import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
 import './wallet-header.scss';
 import { TAccountCategory, TAccountStatus, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
+import { getWalletHeaderButtons } from 'Constants/utils';
 
 type TWalletHeaderCommon = {
     balance?: string;
@@ -48,6 +49,8 @@ const WalletHeader = React.memo(
         const [is_open, setIsOpen] = React.useState(is_open_wallet);
         const is_demo = account_type === 'demo';
 
+        const wallet_btns = getWalletHeaderButtons(is_demo);
+
         const onArrowClickHandler = () => {
             setIsOpen(!is_open);
         };
@@ -62,11 +65,7 @@ const WalletHeader = React.memo(
                     <WalletCurrencyCard account_type={account_type} currency={currency} />
                     <div className='wallet-header__description'>
                         <WalletHeaderTitle is_demo={is_demo} currency={currency} jurisdiction={jurisdiction} />
-                        <WalletHeaderButtons
-                            is_disabled={!!account_status}
-                            is_open={is_open}
-                            account_type={account_type}
-                        />
+                        <WalletHeaderButtons is_disabled={!!account_status} is_open={is_open} btns={wallet_btns} />
                     </div>
                     <div className='wallet-header__balance'>
                         <WalletHeaderBalance account_status={account_status} balance={balance} currency={currency} />

@@ -57,6 +57,8 @@ export const isDXtrade = () =>
 
 export const isNavigationFromDerivGO = () => localStorage.getItem('config.platform') === 'derivgo';
 
+export const isNavigationFromP2P = () => localStorage.getItem('config.platform') === 'dp2p';
+
 export const getPathname = () => {
     const { is_pathname_bot } = isBot();
     if (is_pathname_bot) return platform_name.DBot;
@@ -115,8 +117,7 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
         return { name: platform_name.DXtrade, route: routes.dxtrade };
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader))
         return { name: platform_name.SmartTrader, route: routes.smarttrader };
-    if (isNavigationFromP2P(routing_history, routes.cashier_p2p))
-        return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
+    if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
     if (isNavigationFromExternalPlatform(routing_history, routes.binarybot))
         return { name: platform_name.BinaryBot, route: routes.binarybot };
     if (isNavigationFromDerivGO()) return { name: platform_name.DerivGO, route: '', ref: 'derivgo' };
@@ -163,12 +164,6 @@ export const isNavigationFromPlatform = (
     }
 
     return false;
-};
-
-export const isNavigationFromP2P = (routing_history: TRoutingHistory, platform_route: string) => {
-    const routing_history_index = routing_history.length > 1 ? 1 : 0;
-    const history_item = routing_history[routing_history_index];
-    return history_item?.pathname === platform_route;
 };
 
 export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistory, platform_route: string) => {

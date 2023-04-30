@@ -7,6 +7,7 @@ export default class DownloadStore {
         makeObservable(this, {
             onClickDownloadTransaction: action.bound,
             onClickDownloadJournal: action.bound,
+            getSuccessJournalMessage: action.bound,
         });
 
         this.root_store = root_store;

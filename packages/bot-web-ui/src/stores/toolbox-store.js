@@ -1,10 +1,10 @@
 import { observable, action, reaction, makeObservable } from 'mobx';
-import { isMobile, isTabletDrawer } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
 
 export default class ToolboxStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             is_toolbox_open: observable,
             is_search_loading: observable,
@@ -30,6 +30,7 @@ export default class ToolboxStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
     }
 
     is_toolbox_open = true;
@@ -40,25 +41,22 @@ export default class ToolboxStore {
     toolbox_examples = null;
 
     onMount(toolbox_ref) {
-        const { core } = this.root_store;
         this.adjustWorkspace();
 
-        if (!isTabletDrawer()) {
-            this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
-            this.toolbox_examples = [...this.toolbox_dom.childNodes].find(el => el.tagName === 'examples');
-            this.setWorkspaceOptions();
-            this.disposeToolboxToggleReaction = reaction(
-                () => this.is_toolbox_open,
-                is_toolbox_open => {
-                    if (is_toolbox_open) {
-                        this.adjustWorkspace();
-                        // Emit event to GTM
-                        const { gtm } = core;
-                        gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
-                    }
+        this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
+        this.toolbox_examples = [...this.toolbox_dom.childNodes].find(el => el.tagName === 'examples');
+        this.setWorkspaceOptions();
+        this.disposeToolboxToggleReaction = reaction(
+            () => this.is_toolbox_open,
+            is_toolbox_open => {
+                if (is_toolbox_open) {
+                    this.adjustWorkspace();
+                    // Emit event to GTM
+                    const { gtm } = this.core;
+                    gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
                 }
-            );
-        }
+            }
+        );
     }
 
     onUnmount() {

@@ -1645,7 +1645,8 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = false;
             });
             const language = authorize_response.authorize.preferred_language;
-            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
+            const stored_language = LocalStore.get(LANGUAGE_KEY);
+            if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }
@@ -2551,7 +2552,7 @@ export default class ClientStore extends BaseStore {
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
         smartTrader.origin = getUrlSmartTrader();
-        binaryBot.origin = getUrlBinaryBot();
+        binaryBot.origin = getUrlBinaryBot(false);
 
         [smartTrader, binaryBot].forEach(platform => {
             if (platform.iframe) {

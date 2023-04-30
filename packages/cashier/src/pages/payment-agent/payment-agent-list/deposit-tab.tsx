@@ -12,6 +12,7 @@ const DepositTab = observer(() => {
     }, [payment_agent]);
 
     return (
+        // TODO: Check `is_deposit` TS type-check error after migrating payment-agents to TS
         <div>{general_store.is_loading ? <Loading is_fullscreen={false} /> : <PaymentAgentContainer is_deposit />}</div>
     );
 });

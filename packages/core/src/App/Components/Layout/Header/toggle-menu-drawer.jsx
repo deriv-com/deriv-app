@@ -175,6 +175,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         should_allow_authentication,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
+        is_pending_proof_of_ownership,
         is_eu,
     } = client;
     const { cashier } = modules;
@@ -182,7 +183,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_p2p_enabled } = general_store;
     const { is_payment_agent_transfer_visible } = payment_agent_transfer;
     const { is_payment_agent_visible } = payment_agent;
-    const { show_eu_related_content } = traders_hub;
+    const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
 
@@ -275,7 +276,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                 return !should_allow_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {
-                return is_virtual;
+                return is_virtual || !is_pending_proof_of_ownership;
             }
             return false;
         };
@@ -498,6 +499,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_logging_in={is_logging_in}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
+                                        setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>
                             )}
@@ -512,7 +514,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         <MenuLink
                                             link_to={routes.traders_hub}
                                             icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
-                                            text={localize("Trader's hub")}
+                                            text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
                                         />
                                     </MobileDrawer.Item>

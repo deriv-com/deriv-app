@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
@@ -26,7 +26,10 @@ const BuySellRowRendererComponent = row_props => {
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
-    const { buy_sell_store, general_store, my_profile_store } = useStores();
+    const { buy_sell_store, my_profile_store } = useStores();
+    const {
+        client: { currency },
+    } = useStore();
 
     React.useEffect(
         () => {
@@ -93,10 +96,7 @@ const BuySellTable = ({ onScroll }) => {
                                     <Localize i18n_default_text='Limits' />
                                 </Table.Head>
                                 <Table.Head>
-                                    <Localize
-                                        i18n_default_text='Rate (1 {{currency}})'
-                                        values={{ currency: general_store.client.currency }}
-                                    />
+                                    <Localize i18n_default_text='Rate (1 {{currency}})' values={{ currency }} />
                                 </Table.Head>
                                 <Table.Head>
                                     <Localize i18n_default_text='Payment methods' />

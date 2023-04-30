@@ -11,8 +11,8 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -31,9 +31,12 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
+    const {
+        client: { currency, local_currency_config },
+    } = useStore();
+
     const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
 
-    const { currency, local_currency_config } = general_store.client;
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
@@ -75,6 +78,13 @@ const CreateAdForm = () => {
         },
     });
 
+    const onCleanup = () => {
+        my_ads_store.setApiErrorMessage('');
+        floating_rate_store.setApiErrorMessage('');
+        my_ads_store.setShowAdForm(false);
+        buy_sell_store.setCreateSellAdFromNoAds(false);
+    };
+
     React.useEffect(() => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
         my_profile_store.getPaymentMethodsList();
@@ -90,10 +100,7 @@ const CreateAdForm = () => {
 
         return () => {
             disposeApiErrorReaction();
-            my_ads_store.setApiErrorMessage('');
-            floating_rate_store.setApiErrorMessage('');
-            my_ads_store.setShowAdForm(false);
-            buy_sell_store.setCreateSellAdFromNoAds(false);
+            onCleanup();
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -417,7 +424,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 secondary
                                                 large
-                                                onClick={() => my_ads_store.setShowAdForm(false)}
+                                                onClick={onCleanup}
                                                 type='button'
                                             >
                                                 <Localize i18n_default_text='Cancel' />

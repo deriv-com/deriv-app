@@ -24,6 +24,7 @@
 
     &--mobile {
         overflow: scroll !important;
+        background-color: var(--general-section-1);
 
         &--eu-user {
             @include mobile {

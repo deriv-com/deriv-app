@@ -86,19 +86,9 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <WalletHeader account_type='demo' />
-                    <WalletHeader currency={'AUD'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'EUR'} jurisdiction={'svg'} is_open_wallet={true} />
-                    <WalletHeader currency={'USD'} jurisdiction={'malta'} />
+                    <WalletHeader currency={'EUR'} jurisdiction={'malta'} />
+                    <WalletHeader currency={'USD'} jurisdiction={'svg'} />
                     <WalletHeader currency={'BTC'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'ETH'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'USDT'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'eUSDT'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'tUSDT'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'LTC'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'USDC'} jurisdiction={'svg'} />
-                    <WalletHeader account_status='pending' currency={'ETH'} jurisdiction={'svg'} />
-                    <WalletHeader account_status='need_verification' currency={'EUR'} jurisdiction={'malta'} />
-                    <WalletHeader account_status='failed' currency={'USD'} jurisdiction={'svg'} />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

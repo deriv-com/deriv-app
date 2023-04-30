@@ -286,7 +286,7 @@ export default class GeneralStore extends BaseStore {
     };
 
     getLocalStorageSettingsForLoginId() {
-        const local_storage_settings = this.getLocalStorageSettings()[this.external_stores?.client?.loginid];
+        const local_storage_settings = this.getLocalStorageSettings()[this.external_stores.client.loginid];
 
         if (isEmptyObject(local_storage_settings)) {
             return { is_cached: false, notifications: [] };

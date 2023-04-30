@@ -104,6 +104,8 @@ const TradingHubHeader = ({
     is_virtual,
     toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal,
+    //Remove after QA testing
+    setIsCashierWalletModalVisible,
 }) => {
     const is_mf = loginid?.startsWith('MF');
 
@@ -144,7 +146,8 @@ const TradingHubHeader = ({
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-
+                    {/* Remove after QA testing */}
+                    <button onClick={() => setIsCashierWalletModalVisible(true)}>Modal</button>
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 {is_dark_mode ? (
@@ -154,6 +157,8 @@ const TradingHubHeader = ({
                 )}
                 <DesktopWrapper>
                     <Divider />
+                    {/* Remove after QA testing */}
+                    <button onClick={() => setIsCashierWalletModalVisible(true)}>Open modal</button>
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
                 <MenuLinks />
@@ -286,4 +291,6 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
+    //Remove after QA testing
+    setIsCashierWalletModalVisible: ui.setIsCashierWalletModalVisible,
 }))(withRouter(TradingHubHeader));

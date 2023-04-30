@@ -168,6 +168,7 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
+    is_cashier_wallet_modal_visible = true;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
@@ -256,6 +257,7 @@ export default class UIStore extends BaseStore {
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
+            is_cashier_wallet_modal_visible: observable,
 
             is_history_tab_active: observable,
             is_landscape: observable,
@@ -352,6 +354,7 @@ export default class UIStore extends BaseStore {
             toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
+            setIsCashierWalletModalVisible: action.bound,
             setIsNewAccount: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -858,6 +861,10 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    setIsCashierWalletModalVisible(value) {
+        this.is_cashier_wallet_modal_visible = value;
     }
 
     setShouldShowRiskWarningModal(value) {

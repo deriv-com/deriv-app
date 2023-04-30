@@ -1,0 +1,145 @@
+.dc-modal__container_cashier-wallet-modal {
+    position: fixed;
+    inset: 0;
+    min-height: calc(100vh - 84px) !important;
+    min-width: 100vw !important;
+    margin: 48px 0 36px;
+    border-radius: unset;
+    background-color: var(--general-main-1);
+
+    @include mobile {
+        min-height: 100vh !important;
+        min-width: 100vw !important;
+        margin: 0;
+        z-index: 100;
+    }
+
+    .cashier-wallet-modal {
+        &__header {
+            display: flex;
+            height: 16rem;
+            padding: 2.4rem 4rem 7.2rem;
+
+            @include mobile {
+                height: 12.2rem;
+                padding: 1.6rem 1.6rem 5.6rem;
+            }
+
+            &--hide-title {
+                height: 9.8rem;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            &__title {
+                display: flex;
+                align-items: center;
+
+                &-wallet {
+                    padding-right: 0.8rem;
+                    color: var(--text-general);
+
+                    &-demo-dark {
+                        color: $color-black-1;
+                    }
+
+                    &-demo-light {
+                        color: $color-grey;
+                    }
+                }
+
+                &-balance {
+                    color: var(--text-prominent);
+
+                    &-demo-dark {
+                        color: $color-black-1;
+                    }
+
+                    &-demo-light {
+                        color: $color-white;
+                    }
+                }
+            }
+
+            &__currency-icon {
+                margin-left: auto;
+                margin-right: 1.6rem;
+
+                @include mobile {
+                    margin-right: 0.8rem;
+                }
+            }
+
+            &__close-icon {
+                .dc-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .dc-tabs {
+        margin-top: -4.8rem;
+
+        @include mobile {
+            margin-top: -4rem;
+        }
+
+        &__list {
+            padding: 0 4rem;
+
+            @include mobile {
+                padding: 0 1.6rem;
+
+                &--header--cashier-wallet-modal__tabs {
+                    overflow-x: auto;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                    &::-webkit-scrollbar-thumb {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 3.2rem;
+            height: 4.8rem;
+
+            &__icon {
+                padding: 0;
+                margin-right: 0.8rem;
+            }
+
+            @include mobile {
+                padding: 0 1.6rem;
+                height: 4rem;
+                font-size: var(--text-size-xxs);
+            }
+        }
+
+        &__active {
+            background-color: var(--general-main-1);
+            border-radius: 1.6rem 1.6rem 0px 0px;
+        }
+
+        &__content {
+            padding: 2.4rem 4rem;
+            font-size: var(--text-size-l);
+            color: var(--text-prominent);
+            display: flex;
+            justify-content: center;
+
+            @include mobile {
+                height: calc(100vh - 12.2rem);
+                padding: 1.6rem;
+                font-size: var(--text-size-xs);
+            }
+        }
+    }
+}

@@ -916,6 +916,8 @@ import './wallet/ic-wallet-credit-debit-light.svg';
 import './wallet/ic-wallet-credit.svg';
 import './wallet/ic-wallet-crypto-light.svg';
 import './wallet/ic-wallet-deriv-apps.svg';
+import './wallet/ic-wallet-deriv-demo-dark.svg';
+import './wallet/ic-wallet-deriv-demo-light.svg';
 import './wallet/ic-wallet-deriv.svg';
 import './wallet/ic-wallet-dp2p-light.svg';
 import './wallet/ic-wallet-explore.svg';

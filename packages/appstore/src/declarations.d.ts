@@ -9,3 +9,4 @@ declare module '@deriv/translations';
 declare module '@deriv/trader';
 declare module '@deriv/account';
 declare module '@deriv/cfd';
+declare module '@deriv/cashier';

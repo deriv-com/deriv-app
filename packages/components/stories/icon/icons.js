@@ -947,6 +947,8 @@ export const icons =
         'IcWalletCredit',
         'IcWalletCryptoLight',
         'IcWalletDerivApps',
+        'IcWalletDerivDemoDark',
+        'IcWalletDerivDemoLight',
         'IcWalletDeriv',
         'IcWalletDp2pLight',
         'IcWalletExplore',

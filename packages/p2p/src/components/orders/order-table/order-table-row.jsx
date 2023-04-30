@@ -88,7 +88,7 @@ const OrderRow = ({ row: order }) => {
             current_query_params.append('order', order.id);
 
             history.replace({
-                pathname: routes.cashier_p2p,
+                pathname: routes.p2p_orders,
                 search: current_query_params.toString(),
                 hash: location.hash,
             });

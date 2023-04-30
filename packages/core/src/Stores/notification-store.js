@@ -100,6 +100,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
+                root_store.client.has_changed_two_fa,
                 this.p2p_order_props.order_id,
                 root_store.client.p2p_advertiser_info,
             ],
@@ -181,8 +182,7 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    (notification.key && notification.key.includes('svg')) ||
-                    notification.key === 'p2p_daily_limit_increase' ||
+                    ['svg', 'p2p'].some(key => notification.key?.includes(key)) ||
                     (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
@@ -259,7 +259,7 @@ export default class NotificationStore extends BaseStore {
 
         if (refined_list.length) {
             refined_list.map(refined => {
-                if (refined === 'p2p_daily_limit_increase') {
+                if (refined.includes('p2p')) {
                     if (is_p2p_notifications_visible === false) {
                         this.removeNotificationByKey({ key: refined });
                     }
@@ -289,6 +289,7 @@ export default class NotificationStore extends BaseStore {
             obj_total_balance,
             website_status,
             has_enabled_two_fa,
+            has_changed_two_fa,
             is_poi_dob_mismatch,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
@@ -372,6 +373,10 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.acuity);
             if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
                 this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            }
+
+            if (has_changed_two_fa) {
+                this.addNotificationMessage(this.client_notifications.has_changed_two_fa);
             }
 
             const client = accounts[loginid];
@@ -577,7 +582,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {
-        const notification_key = `order-${order_id}`;
+        const notification_key = `p2p_order_${order_id}`;
 
         const notification_redirect_action =
             routes.cashier_p2p === window.location.pathname
@@ -708,6 +713,8 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
+        const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
@@ -1288,6 +1295,22 @@ export default class NotificationStore extends BaseStore {
                 ),
                 type: 'warning',
             },
+            has_changed_two_fa: {
+                key: 'has_changed_two_fa',
+                header: localize('Logging out on other devices'),
+                message: (
+                    <Localize
+                        i18n_default_text="You've {{two_fa_status}} 2FA on this device. You'll be logged out of your account on other devices (if any). Use your password and a 2FA code to log back in."
+                        values={{ two_fa_status }}
+                    />
+                ),
+                type: 'info',
+                delay: 4000,
+                is_auto_close: true,
+                closeOnClick: () => {
+                    setTwoFAChangedStatus(false);
+                },
+            },
             two_f_a: {
                 key: 'two_f_a',
                 header: localize('Stronger security for your Deriv account'),
@@ -1497,7 +1520,7 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            (message.key && message.key.includes('svg')) || message.key === 'p2p_daily_limit_increase'
+            ['svg', 'p2p'].some(key => message.key?.includes(key))
                 ? message
                 : excluded_notifications && !excluded_notifications.includes(message.key)
         );
@@ -1569,10 +1592,11 @@ export default class NotificationStore extends BaseStore {
     };
 
     async getP2pCompletedOrders() {
+        await WS.wait('authorize');
         const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
 
         if (!response?.error) {
-            this.p2p_completed_orders = response.p2p_order_list?.list || [];
+            this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }
 }

@@ -248,6 +248,7 @@ type TUiStore = {
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
+    is_wallet_modal_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
@@ -257,6 +258,7 @@ type TUiStore = {
     openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setIsWalletModalVisible: (value: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
@@ -333,6 +335,7 @@ type TTradersHubStore = {
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     setTogglePlatformType: (platform_type: string) => void;
+    is_demo: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
     openFailedVerificationModal: (selected_account_type: string) => void;
@@ -343,7 +346,6 @@ type TTradersHubStore = {
     no_MF_account: boolean;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
-    is_demo: boolean;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
 };

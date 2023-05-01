@@ -77,7 +77,7 @@ const CryptoTransactionsHistory = observer(() => {
                                 <Loading is_fullscreen={false} />
                             ) : (
                                 <DataList
-                                    data_list_className='crypto-transactions-history__data-list'
+                                    // TODO: CHECK THIS TYPE ERROR
                                     data_source={crypto_transactions}
                                     rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
                                         <CryptoTransactionsRenderer

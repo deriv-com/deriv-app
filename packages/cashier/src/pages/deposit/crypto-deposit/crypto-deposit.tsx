@@ -215,7 +215,7 @@ const CryptoDeposit = observer(() => {
                             (currency === 'ETH' && option_list_value === option_list[4].value) ||
                             (['USDC', 'eUSDT'].includes(currency) && option_list_value === option_list[3].value)) && (
                             <>
-                                <QRCode className='qrcode' value={deposit_address} size={160} includeMargin />
+                                <QRCode className='qrcode' value={deposit_address || ''} size={160} includeMargin />
                                 <div className='crypto-deposit__clipboard-wrapper'>
                                     <Text
                                         className='crypto-deposit__address-hash'
@@ -228,7 +228,7 @@ const CryptoDeposit = observer(() => {
                                     </Text>
                                     <Clipboard
                                         className='crypto-deposit__clipboard'
-                                        text_copy={deposit_address}
+                                        text_copy={deposit_address || ''}
                                         info_message={isMobile() ? '' : localize('copy')}
                                         icon='IcCashierClipboard'
                                         success_message={localize('copied!')}
@@ -250,7 +250,7 @@ const CryptoDeposit = observer(() => {
                         <Localize i18n_default_text='Use our fiat onramp services to buy and deposit cryptocurrency into your Deriv account.' />
                     </Text>
                 </div>
-                <ButtonLink className='crypto-deposit__fiat-onramp-button' has_effect to='/cashier/on-ramp'>
+                <ButtonLink className='crypto-deposit__fiat-onramp-button' to='/cashier/on-ramp'>
                     <Text as='p' weight='bold' color='colored-background' size='xs'>
                         <Localize i18n_default_text='Try our Fiat onramp' />
                     </Text>

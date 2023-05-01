@@ -143,7 +143,13 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             rules: [['confirm', localize('Please confirm your tax information.')]],
         },
         document_type: {
-            default_value: account_settings.document_type ?? '',
+            default_value: account_settings.document_type ?? {
+                id: '',
+                text: '',
+                value: '',
+                example_format: '',
+                sample_image: '',
+            },
             supported_in: ['svg'],
             rules: [],
         },

@@ -437,4 +437,47 @@ describe('<CryptoDeposit />', () => {
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();
     });
+
+    xit('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
+        jest.mock('@deriv/api', () => {
+            return {
+                ...jest.requireActual('@deriv/api'),
+                useFetch: jest.fn(() => ({
+                    data: {
+                        currencies_config: {
+                            tUSDT: {
+                                minimum_deposit: 2,
+                                minimum_withdrawal: 4.54,
+                            },
+                        },
+                    },
+                    isLoading: false,
+                    isSuccess: true,
+                })),
+            };
+        });
+        const mockRootStore = {
+            client: {
+                currency: 'tUSDT',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+    });
 });

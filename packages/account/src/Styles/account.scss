@@ -306,46 +306,6 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 0.2rem;
         }
 
-        &__section {
-            display: grid;
-            grid-template-areas: 'section-side-note section-content';
-            @include mobile {
-                grid-template-areas: 'section-side-note' 'section-content';
-            }
-
-            &-side-note {
-                grid-area: section-side-note;
-                width: 26rem;
-
-                .dc-text {
-                    color: var(--text-less-prominent);
-                    font-size: 1.4rem;
-                    @include mobile {
-                        font-size: 1.2rem;
-                    }
-                }
-
-                .account-poa__upload-box-dashboard {
-                    @include mobile {
-                        align-items: flex-start;
-                    }
-                }
-
-                @include mobile {
-                    margin-top: unset;
-                    width: 100%;
-                    margin-bottom: 0.8rem;
-                }
-            }
-
-            &-content {
-                grid-area: section-content;
-                width: 40rem;
-                @include mobile {
-                    width: 100%;
-                }
-            }
-        }
         &__question {
             position: relative;
             max-width: 67.2rem;
@@ -669,75 +629,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 overflow: hidden;
                 display: inline-block;
                 max-width: 40rem;
-            }
-        }
-
-        &__poi-confirm-example {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-
-            &_container {
-                border: 1px solid #d6dadb;
-                border-radius: 0.8rem;
-                padding: 1.6rem;
-
-                .account__scrollbars_container {
-                    padding: 0;
-
-                    .account-form__section {
-                        align-items: center;
-                        justify-content: space-between;
-                    }
-                }
-            }
-
-            &_wrapper {
-                margin-bottom: 2.4rem;
-                transition: transform 0.35s ease, opacity 0.35s linear;
-                transform-origin: top;
-                opacity: 1;
-
-                &--exit {
-                    transform: scale(1, 0);
-                    opacity: 0;
-                }
-            }
-
-            .da-inline-note-with-icon {
-                border-radius: 0.8rem;
-                margin-top: 0;
-            }
-
-            .account__scrollbars_container--grid-layout {
-                grid-gap: 0;
-            }
-
-            .account-form__section-content {
-                width: 33rem;
-
-                .dc-input__bottom-label > * {
-                    font-size: var(--text-size-xxs);
-                }
-
-                .account-form__fieldset {
-                    margin-bottom: 0;
-
-                    .dc-input--error {
-                        margin-bottom: 3.8rem;
-                    }
-                }
-            }
-
-            &--button {
-                padding: 0;
-                margin: 0;
-                background-color: unset;
-                border: unset;
-
-                &__disabled > * {
-                    cursor: not-allowed;
-                }
             }
         }
     }
@@ -2116,38 +2007,6 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     &__hidden {
         display: none;
-    }
-
-    &__disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    &__info-message {
-        position: absolute;
-        top: 2.4rem;
-        left: 19.2rem;
-        z-index: 1;
-    }
-
-    &__status-message {
-        background-color: var(--transparent-correct-message);
-        width: 51.2rem;
-        justify-content: flex-start;
-        transition: transform 0.35s ease, opacity 0.35s linear;
-        transform-origin: top;
-        opacity: 1;
-
-        &--exit {
-            transform: scale(1, 0);
-            opacity: 0;
-        }
-
-        &_container {
-            margin-bottom: 2.4rem;
-            min-height: 4rem;
-            text-align: center;
-        }
     }
 
     @include mobile {

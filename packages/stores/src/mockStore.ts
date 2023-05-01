@@ -5,17 +5,7 @@ const mock = (): TStores & { is_mock: boolean } => {
     return {
         is_mock: true,
         client: {
-            accounts: {
-                loginid: {
-                    account_type: 'trading',
-                    created_at: 1674633682,
-                    currency: 'USD',
-                    is_disabled: 0,
-                    is_virtual: 0,
-                    excluded_until: 0,
-                    landing_company_name: 'svg',
-                },
-            },
+            accounts: {},
             active_account_landing_company: '',
             account_limits: {
                 daily_transfers: {

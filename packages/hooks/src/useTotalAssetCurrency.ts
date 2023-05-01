@@ -23,3 +23,17 @@ const useRealTotalAssetCurrency = () => {
 };
 
 export default useRealTotalAssetCurrency;
+
+// list different scenarios for the useRealTotalAssetCurrency hook
+// 1. if the user has a fiat account, return the currency of the fiat account
+// 2. if the user has a crypto account, return the currency of the crypto account
+// 3. if the user has both fiat and crypto accounts, return the currency of the fiat account
+// 4. if the user has no accounts, return the default currency
+// 5. if the user is an EU user, return the currency of the fiat account
+// 6. if the user is not an EU user, return the currency of the first account in the list
+// 7. if the user is not an EU user and has no accounts, return the currency of the first account in the list
+// 8. if the user is not an EU user and has no accounts and is not crypto, return the currency of the first account in the list
+// 9. if the user is not an EU user and has no accounts and is crypto, return the currency of the first account in the list
+// 10. if the user is not an EU user and has no accounts and is crypto and has no currency, return the currency of the first account in the list
+// 11. if the user is not an EU user and has no accounts and is crypto and has no currency and is not crypto, return the currency of the first account in the list
+// 12. if the user is not an EU user and has no accounts and is crypto and has no currency and is crypto, return the currency of the first account in the list

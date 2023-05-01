@@ -67,5 +67,13 @@
                 border-bottom-right-radius: $BORDER_RADIUS;
             }
         }
+
+        &--admin {
+            align-items: center;
+            background: var(--status-warning-transparent);
+            border: 1px solid var(--status-warning);
+            padding: 0.8rem 0;
+            border-radius: 0.8rem;
+        }
     }
 }

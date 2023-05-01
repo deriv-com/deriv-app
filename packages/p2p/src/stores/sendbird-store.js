@@ -407,7 +407,7 @@ export default class SendbirdStore extends BaseStore {
         );
     }
 
-    sendMessage(message) {
+    sendMessage(message, custom_type = '') {
         const modified_message = message.replace(/^[\r\n]+|[\r\n]+$/g, '');
 
         if (modified_message.length === 0 || modified_message.trim().length === 0) {
@@ -419,6 +419,7 @@ export default class SendbirdStore extends BaseStore {
 
         params.message = modified_message;
         params.data = msg_identifier;
+        params.customType = custom_type;
 
         // Add a placeholder message with a pending indicator
         const placeholder_msg_options = {
@@ -429,13 +430,13 @@ export default class SendbirdStore extends BaseStore {
             message_type: ChatMessage.TYPE_USER,
             sender_user_id: this.chat_info.user_id,
             status: ChatMessage.STATUS_PENDING,
+            custom_type,
         };
 
         this.addChannelMessage(new ChatMessage(placeholder_msg_options));
 
         this.active_chat_channel.sendUserMessage(params, (channel_message, error) => {
             const msg_idx = this.chat_messages.findIndex(msg => msg.messageId === msg_identifier);
-
             if (error) {
                 const errored_message = new ChatMessage({
                     ...placeholder_msg_options,

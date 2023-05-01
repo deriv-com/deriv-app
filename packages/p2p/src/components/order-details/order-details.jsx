@@ -22,6 +22,7 @@ import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/fo
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import 'Components/order-details/order-details.scss';
+import ChatMessage, { admin_message } from 'Utils/chat-message.js';
 
 const OrderDetails = observer(() => {
     const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store } = useStores();
@@ -185,6 +186,10 @@ const OrderDetails = observer(() => {
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
     const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
+
+    if (buy_sell_store.is_create_order_subscribed && sendbird_store.chat_messages.length === 0) {
+        sendbird_store.sendMessage(admin_message, ChatMessage.TYPE_ADMIN);
+    }
 
     return (
         <OrderDetailsWrapper page_title={page_title}>

@@ -87,9 +87,6 @@ const ChatFooter = observer(() => {
 
     return (
         <React.Fragment>
-            <Text className='order-chat__footer-disclaimer' color='less-prominent' size='xxs'>
-                <Localize i18n_default_text='In case of a dispute, we will only consider the communication through Deriv P2P chat channel.' />
-            </Text>
             <div
                 className={classNames('order-chat__footer', {
                     'order-chat__footer--empty': sendbird_store.chat_messages.length === 0,

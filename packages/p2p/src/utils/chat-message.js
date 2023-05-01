@@ -1,19 +1,20 @@
 export default class ChatMessage {
     constructor({
-        created_at,
         channel_url,
-        id,
+        created_at,
+        custom_type,
         file_type,
+        id,
         message,
         message_type,
         name,
         sender_user_id,
         status,
         url,
-        custom_type,
     }) {
-        this.created_at = created_at;
         this.channel_url = channel_url;
+        this.created_at = created_at;
+        this.custom_type = custom_type;
         this.file_type = file_type;
         this.id = id;
         this.message = message;
@@ -22,7 +23,6 @@ export default class ChatMessage {
         this.sender_user_id = sender_user_id;
         this.status = status;
         this.url = url;
-        this.custom_type = custom_type;
     }
 
     static STATUS_PENDING = 0;
@@ -34,15 +34,16 @@ export default class ChatMessage {
     // static STATUS_DELIVERED_TO_SERVER = 2;
     // static STATUS_READ_BY_RECEIVER = 3;
 
-    static TYPE_USER = 'user';
-    static TYPE_FILE = 'file';
     static TYPE_ADMIN = 'admin';
+    static TYPE_FILE = 'file';
+    static TYPE_USER = 'user';
 }
 
 export const convertFromChannelMessage = channel_message => {
     return new ChatMessage({
-        created_at: channel_message.createdAt,
         channel_url: channel_message.channelUrl,
+        created_at: channel_message.createdAt,
+        custom_type: channel_message.customType,
         file_type: channel_message.type,
         id: channel_message.messageId,
         message: channel_message.message,
@@ -50,7 +51,6 @@ export const convertFromChannelMessage = channel_message => {
         name: channel_message.name,
         sender_user_id: channel_message.sender.userId,
         url: channel_message.url,
-        custom_type: channel_message.customType,
     });
 };
 

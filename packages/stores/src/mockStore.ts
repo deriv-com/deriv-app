@@ -260,6 +260,7 @@ const mock = (): TStores => {
             is_low_risk_cr_eu_real: false,
             is_real_wallets_upgrade_on: false,
             toggleWalletsUpgrade: jest.fn(),
+            openFailedVerificationModal: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

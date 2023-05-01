@@ -166,3 +166,11 @@ export interface AccountListDetail {
     loginid: string;
     title: string;
 }
+
+export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
+export type TWalletSvgCurrency =
+    | Extract<Currency, 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'LTC' | 'USDC'>
+    | 'USDT'
+    | 'eUSDT'
+    | 'tUSDT';
+export type TWalletMaltaCurrency = 'USD' | 'EUR';

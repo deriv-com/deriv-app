@@ -277,6 +277,7 @@ type TTradersHubStore = {
     selectRegion: (region: string) => void;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
+    openFailedVerificationModal: (selected_account_type: Record<string, any>) => void;
 };
 
 /**

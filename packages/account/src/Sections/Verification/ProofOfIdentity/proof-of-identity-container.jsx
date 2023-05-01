@@ -19,9 +19,11 @@ import { populateVerificationStatus } from '../Helpers/verification';
 import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = ({
+    account_settings,
     account_status,
     app_routing_history,
     fetchResidenceList,
+    getChangeableFields,
     height,
     is_from_external,
     is_switching,
@@ -33,6 +35,7 @@ const ProofOfIdentityContainer = ({
     routeBackInApp,
     should_allow_authentication,
     setIsCfdPoiCompleted,
+    updateAccountStatus,
 }) => {
     const history = useHistory();
     const [api_error, setAPIError] = React.useState();
@@ -124,9 +127,11 @@ const ProofOfIdentityContainer = ({
     ) {
         return (
             <POISubmission
+                account_settings={account_settings}
                 allow_poi_resubmission={allow_poi_resubmission}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
+                getChangeableFields={getChangeableFields}
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
                 is_from_external={!!is_from_external}
@@ -139,6 +144,7 @@ const ProofOfIdentityContainer = ({
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
                 setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                updateAccountStatus={updateAccountStatus}
             />
         );
     } else if (

@@ -8,8 +8,9 @@ import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup
 import { AutoHeightWrapper } from '@deriv/components';
 
 const POISubmissionForMT5 = ({
+    account_settings,
+    getChangeableFields,
     idv,
-    is_from_external,
     is_idv_disallowed,
     onfido,
     onStateChange,
@@ -17,6 +18,7 @@ const POISubmissionForMT5 = ({
     citizen_data,
     has_idv_error,
     jurisdiction_selected_shortcode,
+    updateAccountStatus,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
@@ -90,11 +92,13 @@ const POISubmissionForMT5 = ({
                         {({ setRef, height }) => (
                             <div ref={setRef} style={{ height }}>
                                 <OnfidoUpload
+                                    account_settings={account_settings}
+                                    updateAccountStatus={updateAccountStatus}
+                                    getChangeableFields={getChangeableFields}
                                     country_code={country_code}
                                     documents_supported={documents_supported}
                                     handleViewComplete={handlePOIComplete}
                                     height={height}
-                                    is_from_external={is_from_external}
                                     refreshNotifications={refreshNotifications}
                                 />
                             </div>

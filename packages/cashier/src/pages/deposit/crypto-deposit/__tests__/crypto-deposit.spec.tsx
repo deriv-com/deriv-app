@@ -438,7 +438,7 @@ describe('<CryptoDeposit />', () => {
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();
     });
 
-    xit('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
+    it('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
         jest.mock('@deriv/api', () => {
             return {
                 ...jest.requireActual('@deriv/api'),

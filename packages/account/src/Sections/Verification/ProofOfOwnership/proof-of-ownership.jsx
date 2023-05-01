@@ -5,7 +5,7 @@ import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
 import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
 import { Loading } from '@deriv/components';
 import { POO_STATUSES } from './constants/constants';
-import paymentMethodConfig from './payment-method-config.js';
+import getPaymentMethodsConfig from './payment-method-config.js';
 
 export const ProofOfOwnership = ({
     account_status,
@@ -18,8 +18,10 @@ export const ProofOfOwnership = ({
     const [status, setStatus] = useState(POO_STATUSES.none);
     const grouped_payment_method_data = React.useMemo(() => {
         const groups = {};
+        const payment_methods_config = getPaymentMethodsConfig();
         cards?.forEach(card => {
-            const card_details = paymentMethodConfig[card.payment_method.toLowerCase()] || paymentMethodConfig.other;
+            const card_details =
+                payment_methods_config[card.payment_method.toLowerCase()] || payment_methods_config.other;
             if (groups[card?.payment_method?.toLowerCase()]) {
                 groups[card?.payment_method?.toLowerCase()].items.push(card);
             } else {

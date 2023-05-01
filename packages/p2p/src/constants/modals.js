@@ -1,14 +1,19 @@
 import React from 'react';
 
 export const modals = {
-    AdExceedsDailyLimitModal: React.lazy(() =>
+    AdErrorTooltipModal: React.lazy(() =>
         import(
-            /* webpackChunkName: "ad-exceeds-daily-limit-modal" */ 'Components/modal-manager/modals/ad-exceeds-daily-limit-modal'
+            /* webpackChunkName: "ad-error-tooltip-modal" */ 'Components/modal-manager/modals/ad-error-tooltip-modal'
         )
     ),
     AddPaymentMethodErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "add-payment-method-error-modal" */ 'Components/modal-manager/modals/add-payment-method-error-modal'
+        )
+    ),
+    AdVisibilityErrorModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "ad-visibility-error-modal" */ 'Components/modal-manager/modals/ad-visibility-error-modal'
         )
     ),
     BuySellModal: React.lazy(() =>
@@ -47,6 +52,16 @@ export const modals = {
     ),
     EditAdCancelModal: React.lazy(() =>
         import(/* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/edit-ad-cancel-modal')
+    ),
+    EmailLinkBlockedModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/email-link-blocked-modal'
+        )
+    ),
+    EmailLinkExpiredModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "email-link-expired-modal" */ 'Components/modal-manager/modals/email-link-expired-modal'
+        )
     ),
     EmailLinkVerifiedModal: React.lazy(() =>
         import(

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import {
@@ -19,20 +18,16 @@ import {
     documentAdditionalError,
     getDocumentData,
     getRegex,
-    isRecurringNumberRegex,
-    isSequentialNumber,
     preventEmptyClipboardPaste,
 } from '../../idv-document-submit/utils';
-import { useToggleValidation } from '../../../hooks/useToggleValidation';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
+import { generatePlaceholderText } from 'Helpers/utils';
 
 export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, onNext, value, has_idv_error }) => {
-    const location = useLocation();
-    const validation_is_enabled = useToggleValidation(location?.hash);
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [is_doc_selected, setDocSelected] = React.useState(false);
+    const [selected_doc, setSelectedDoc] = React.useState(null);
 
     const document_data = citizen_data.identity.services.idv.documents_supported;
     const {
@@ -53,7 +48,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         setDocumentList(
             filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+                const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key);
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
@@ -97,9 +92,8 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
-        const is_sequential_number = isSequentialNumber(document_number);
-        const is_recurring_number = isRecurringNumberRegex(document_number);
         const needs_additional_document = !!document_type.additional;
+        const is_document_number_invalid = document_number === document_type.example_format;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -117,10 +111,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
         if (!document_number) {
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (
-            (validation_is_enabled && (is_recurring_number || is_sequential_number)) ||
-            document_number === document_type.example_format
-        ) {
+        } else if (is_document_number_invalid) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {
             const format_regex = getRegex(document_type.value);
@@ -177,7 +168,17 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
             validateOnChange
             validateOnBlur
         >
-            {({ errors, handleBlur, handleChange, handleSubmit, isValid, setFieldValue, touched, values }) => (
+            {({
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                setFieldValue,
+                touched,
+                values,
+            }) => (
                 <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef }) => (
                         <form ref={setRef} className='poi-form-on-signup' onSubmit={handleSubmit} noValidate>
@@ -194,7 +195,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                             <Text className='proof-of-identity__text btm-spacer' size='xs'>
                                                 {localize('Please select the document type and enter the ID number.')}
                                             </Text>
-                                            {has_idv_error && !is_doc_selected && (
+                                            {has_idv_error && !selected_doc && (
                                                 <>
                                                     <Text
                                                         className='proof-of-identity'
@@ -240,7 +241,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                     'Choose the document type'
                                                                                 )}
                                                                                 list_items={document_list}
-                                                                                value={values.document_type.text}
+                                                                                value={values.document_type.text ?? ''}
                                                                                 onBlur={e => {
                                                                                     handleBlur(e);
                                                                                     if (!getDocument(e.target.value)) {
@@ -256,7 +257,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                             'No results found' ||
                                                                                         !item.text
                                                                                     ) {
-                                                                                        setDocSelected(false);
+                                                                                        setSelectedDoc(null);
                                                                                         resetDocumentItemSelected(
                                                                                             setFieldValue
                                                                                         );
@@ -266,7 +267,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                             item,
                                                                                             true
                                                                                         );
-                                                                                        setDocSelected(true);
+                                                                                        setSelectedDoc(item.id);
                                                                                         if (has_visual_sample) {
                                                                                             setDocumentImage(
                                                                                                 item.sample_image || ''
@@ -295,7 +296,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                     e.target.value
                                                                                 );
                                                                                 if (selected_document) {
-                                                                                    setDocSelected(true);
+                                                                                    setSelectedDoc(
+                                                                                        selected_document.id
+                                                                                    );
                                                                                     setFieldValue(
                                                                                         'document_type',
                                                                                         selected_document,
@@ -332,11 +335,14 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                         }
                                                                         disabled={is_input_disable}
                                                                         error={
-                                                                            touched.document_number &&
-                                                                            errors.document_number
+                                                                            (touched.document_number &&
+                                                                                errors.document_number) ||
+                                                                            errors.error_message
                                                                         }
                                                                         autoComplete='off'
-                                                                        placeholder='Enter your document number'
+                                                                        placeholder={generatePlaceholderText(
+                                                                            selected_doc
+                                                                        )}
                                                                         value={values.document_number}
                                                                         onPaste={preventEmptyClipboardPaste}
                                                                         onBlur={handleBlur}
@@ -404,7 +410,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                         </div>
                                                     </div>
                                                 )}
-                                                {is_doc_selected && (
+                                                {selected_doc && (
                                                     <Text
                                                         className='proof-of-identity__text-spacer'
                                                         align='center'
@@ -421,7 +427,9 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
 
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={(!values.document_number && !values.document_type) || !isValid}
+                                    is_disabled={
+                                        (!values.document_number && !values.document_type) || !isValid || isSubmitting
+                                    }
                                     label={localize('Next')}
                                     is_absolute={isMobile()}
                                     has_cancel={has_previous}

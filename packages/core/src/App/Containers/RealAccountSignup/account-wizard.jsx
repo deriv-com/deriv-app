@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, FormProgress, Wizard, Text } from '@deriv/components';
-import { toMoment, getLocation, makeCancellablePromise, WS } from '@deriv/shared';
+
+import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
+import { WS, getLocation, makeCancellablePromise, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import LoadingModal from './real-account-signup-loader.jsx';
 import AcceptRiskForm from './accept-risk-form.jsx';
+import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
 import 'Sass/details-form.scss';
 
@@ -167,7 +168,7 @@ const AccountWizard = props => {
                     ...obj,
                     ...values,
                 };
-            });
+            }, {});
     };
 
     const clearError = () => {
@@ -188,9 +189,24 @@ const AccountWizard = props => {
         clearError();
     };
 
+    const processInputData = data => {
+        if (data?.risk_tolerance === 'No') {
+            return Object.entries(data).reduce((accumulator, [key, val]) => {
+                if (val) {
+                    return { ...accumulator, [key]: val };
+                }
+                return { ...accumulator };
+            }, {});
+        }
+        return data;
+    };
+
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
-        delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
+        delete clone?.tax_identification_confirm;
+        delete clone?.agreed_tnc;
+        delete clone?.agreed_tos;
+        clone = processInputData(clone);
         props.setRealAccountFormData(clone);
         if (payload) {
             clone = {
@@ -357,6 +373,7 @@ const AccountWizard = props => {
 
 AccountWizard.propTypes = {
     account_settings: PropTypes.object,
+    account_status: PropTypes.object,
     closeRealAccountSignup: PropTypes.func,
     content_flag: PropTypes.string,
     fetchFinancialAssessment: PropTypes.func,
@@ -383,6 +400,7 @@ AccountWizard.propTypes = {
 
 export default connect(({ client, notifications, ui, traders_hub }) => ({
     account_settings: client.account_settings,
+    account_status: client.account_status,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     content_flag: traders_hub.content_flag,
     fetchAccountSettings: client.fetchAccountSettings,

@@ -1,13 +1,13 @@
-import { getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
+import { getUrlBinaryBot, getUrlSmartTrader, getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { TAccountCategory, TRegionAvailability } from 'Types';
 
 export type AccountType = { text: 'Real' | 'Demo'; value: TAccountCategory };
 export type RegionAvailability = 'Non-EU' | 'EU' | 'All';
-export const account_types: AccountType[] = [
-    { text: 'Demo', value: 'demo' },
-    { text: 'Real', value: 'real' },
+export const getAccountTypes = (): AccountType[] => [
+    { text: localize('Demo'), value: 'demo' },
+    { text: localize('Real'), value: 'real' },
 ];
 export const region_availability: RegionAvailability[] = ['Non-EU', 'EU'];
 
@@ -31,7 +31,7 @@ export interface MfPlatformConfig extends PlatformConfig {
     app_title: string;
 }
 
-export const platform_config: PlatformConfig[] = [
+export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
         app_desc: localize('Options and multipliers trading platform.'),
@@ -45,13 +45,13 @@ export const platform_config: PlatformConfig[] = [
     {
         name: getPlatformSettingsAppstore('smarttrader').name,
         app_desc: localize('Our legacy options trading platform.'),
-        link_to: routes.smarttrader,
+        link_to: getUrlSmartTrader(),
         is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('bbot').name,
         app_desc: localize('Our legacy automated trading platform.'),
-        link_to: routes.binarybot,
+        link_to: getUrlBinaryBot(),
         is_external: true,
     },
     {
@@ -63,7 +63,7 @@ export const platform_config: PlatformConfig[] = [
     },
 ];
 
-export const mf_platform_config: MfPlatformConfig[] = [
+export const getMFAppstorePlatforms = (): MfPlatformConfig[] => [
     {
         app_icon: getPlatformSettingsAppstore('trader').icon,
         app_title: getPlatformSettingsAppstore('trader').name,

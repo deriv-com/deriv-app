@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, reaction, computed, runInAction } from 'mobx';
+import { action, makeObservable, observable, reaction, computed } from 'mobx';
 import { getCFDAvailableAccount, CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms } from '@deriv/shared';
 import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
@@ -14,7 +14,6 @@ export default class TradersHubStore extends BaseStore {
     selected_account_type;
     selected_region;
     is_onboarding_visited = false;
-    is_balance_calculating = false;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_tour_open = false;
@@ -23,10 +22,6 @@ export default class TradersHubStore extends BaseStore {
     selected_platform_type = 'options';
     active_index = 0;
     open_failed_verification_for = '';
-    platform_demo_balance = { balance: 0, currency: 'USD' };
-    platform_real_balance = { balance: 0, currency: 'USD' };
-    cfd_demo_balance = { balance: 0, currency: 'USD' };
-    cfd_real_balance = { balance: 0, currency: 'USD' };
     modal_data = {
         active_modal: '',
         data: {},
@@ -43,19 +38,14 @@ export default class TradersHubStore extends BaseStore {
             available_dxtrade_accounts: observable,
             available_mt5_accounts: observable,
             available_platforms: observable,
-            cfd_demo_balance: observable,
-            cfd_real_balance: observable,
             combined_cfd_mt5_accounts: observable,
             is_account_transfer_modal_open: observable,
             is_account_type_modal_visible: observable,
             is_regulators_compare_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
-            is_balance_calculating: observable,
             is_tour_open: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
-            platform_demo_balance: observable,
-            platform_real_balance: observable,
             selected_account: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
@@ -74,10 +64,12 @@ export default class TradersHubStore extends BaseStore {
             is_demo: computed,
             is_eu_selected: computed,
             is_real: computed,
+            is_low_risk_cr_eu_real: computed,
             is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
             multipliers_account_status: computed,
+            CFDs_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -98,7 +90,6 @@ export default class TradersHubStore extends BaseStore {
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
-            updatePlatformBalance: action.bound,
             showTopUpModal: action.bound,
         });
 
@@ -111,6 +102,8 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.dxtrade_accounts_list,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
+                this.root_store.client.landing_companies,
+                this.root_store.common.current_language,
             ],
             () => {
                 this.getAvailablePlatforms();
@@ -146,22 +139,6 @@ export default class TradersHubStore extends BaseStore {
                 };
                 this.selected_account_type = !/^VRT/.test(this.root_store.client.loginid) ? 'real' : 'demo';
                 this.selected_region = default_region();
-            }
-        );
-
-        reaction(
-            () => [
-                this.root_store.client.balance,
-                this.root_store.client.loginid,
-                this.root_store.client.obj_total_balance,
-                this.root_store.client.mt5_login_list,
-                this.root_store.client.dxtrade_accounts_list,
-                this.root_store.accounts,
-                this.selected_account_type,
-                this.selected_region,
-            ],
-            async () => {
-                await this.updatePlatformBalance();
             }
         );
     }
@@ -244,51 +221,62 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get is_demo_low_risk() {
-        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
-        return (
-            this.content_flag === ContentFlag.CR_DEMO &&
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg'
-        );
+        const { is_landing_company_loaded } = this.root_store.client;
+        if (is_landing_company_loaded) {
+            const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+            return (
+                this.content_flag === ContentFlag.CR_DEMO &&
+                financial_company?.shortcode === 'maltainvest' &&
+                gaming_company?.shortcode === 'svg'
+            );
+        }
+        return false;
     }
 
     get content_flag() {
-        const { is_logged_in, landing_companies, residence } = this.root_store.client;
-        const { financial_company, gaming_company } = landing_companies;
+        const { is_logged_in, landing_companies, residence, is_landing_company_loaded } = this.root_store.client;
+        if (is_landing_company_loaded) {
+            const { financial_company, gaming_company } = landing_companies;
 
-        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
-        const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
+            //this is a conditional check for countries like Australia/Norway which fulfills one of these following conditions
+            const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
 
-        if (!is_logged_in) return '';
-        if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
-            if (this.is_demo) return ContentFlag.EU_DEMO;
-            return ContentFlag.EU_REAL;
-        } else if (
-            financial_company?.shortcode === 'maltainvest' &&
-            gaming_company?.shortcode === 'svg' &&
-            this.is_real
-        ) {
-            if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
-            return ContentFlag.LOW_RISK_CR_NON_EU;
-        } else if (
-            ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') || restricted_countries) &&
-            this.is_real
-        ) {
-            return ContentFlag.HIGH_RISK_CR;
+            if (!is_logged_in) return '';
+            if (!gaming_company?.shortcode && financial_company?.shortcode === 'maltainvest') {
+                if (this.is_demo) return ContentFlag.EU_DEMO;
+                return ContentFlag.EU_REAL;
+            } else if (
+                financial_company?.shortcode === 'maltainvest' &&
+                gaming_company?.shortcode === 'svg' &&
+                this.is_real
+            ) {
+                if (this.is_eu_user) return ContentFlag.LOW_RISK_CR_EU;
+                return ContentFlag.LOW_RISK_CR_NON_EU;
+            } else if (
+                ((financial_company?.shortcode === 'svg' && gaming_company?.shortcode === 'svg') ||
+                    restricted_countries) &&
+                this.is_real
+            ) {
+                return ContentFlag.HIGH_RISK_CR;
+            }
+
+            // Default Check
+            if (isEuCountry(residence)) {
+                if (this.is_demo) return ContentFlag.EU_DEMO;
+                return ContentFlag.EU_REAL;
+            }
+            if (this.is_demo) return ContentFlag.CR_DEMO;
         }
-
-        // Default Check
-        if (isEuCountry(residence)) {
-            if (this.is_demo) return ContentFlag.EU_DEMO;
-            return ContentFlag.EU_REAL;
-        }
-        if (this.is_demo) return ContentFlag.CR_DEMO;
         return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
     get show_eu_related_content() {
         const eu_related = [ContentFlag.EU_DEMO, ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU];
         return eu_related.includes(this.content_flag);
+    }
+
+    get is_low_risk_cr_eu_real() {
+        return [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL].includes(this.content_flag);
     }
 
     getAvailablePlatforms() {
@@ -380,10 +368,23 @@ export default class TradersHubStore extends BaseStore {
         this.setCombinedCFDMT5Accounts();
     }
 
+    get CFDs_restricted_countries() {
+        const { financial_company, gaming_company } = this.root_store.client.landing_companies;
+
+        return gaming_company?.shortcode === 'svg' && !financial_company;
+    }
+
     getAvailableMt5Accounts() {
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
                 ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
+
+        if (this.CFDs_restricted_countries) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(
+                account => account.market_type !== 'financial' && account.platform === CFD_PLATFORMS.MT5
             );
             return;
         }
@@ -394,6 +395,11 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableDxtradeAccounts() {
+        if (this.CFDs_restricted_countries) {
+            this.available_dxtrade_accounts = [];
+            return;
+        }
+
         if (this.is_eu_user && !this.is_demo_low_risk) {
             this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
                 account =>
@@ -402,6 +408,7 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
+
         this.available_dxtrade_accounts = this.available_cfd_accounts.filter(
             account => account.platform === CFD_PLATFORMS.DXTRADE
         );
@@ -463,12 +470,9 @@ export default class TradersHubStore extends BaseStore {
     }
 
     get multipliers_account_status() {
-        const {
-            has_maltainvest_account,
-            account_status: { authentication },
-        } = this.root_store.client;
+        const { has_maltainvest_account, account_status } = this.root_store.client;
 
-        const multipliers_account_status = getMultipliersAccountStatus(authentication);
+        const multipliers_account_status = getMultipliersAccountStatus(account_status?.authentication);
         const should_show_status_for_multipliers_account =
             [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(this.content_flag) &&
             has_maltainvest_account &&
@@ -655,82 +659,6 @@ export default class TradersHubStore extends BaseStore {
         this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
     }
 
-    async updatePlatformBalance() {
-        runInAction(() => {
-            this.is_balance_calculating = true;
-        });
-        const { accounts, dxtrade_accounts_list, mt5_login_list } = this.root_store.client;
-
-        const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
-        const platform_demo_account = account_list.find(account => account.is_virtual);
-        if (platform_demo_account) {
-            const { balance, currency } = platform_demo_account;
-            this.platform_demo_balance = { balance, currency };
-        }
-
-        const platform_real_accounts = account_list.filter(
-            account =>
-                !account.is_virtual &&
-                (this.is_eu_user
-                    ? account.landing_company_shortcode === 'maltainvest'
-                    : account.landing_company_shortcode !== 'maltainvest')
-        );
-        if (platform_real_accounts?.length) {
-            this.platform_real_balance = await this.getTotalBalance(
-                platform_real_accounts,
-                platform_real_accounts[0].currency
-            );
-        }
-
-        let cfd_accounts = [];
-        if (Array.isArray(mt5_login_list)) {
-            cfd_accounts = [...cfd_accounts, ...mt5_login_list];
-        }
-        if (Array.isArray(dxtrade_accounts_list)) {
-            cfd_accounts = [...cfd_accounts, ...dxtrade_accounts_list];
-        }
-
-        const cfd_real_accounts = cfd_accounts.filter(
-            account =>
-                account.account_type === 'real' &&
-                (this.is_eu_user
-                    ? account.landing_company_short === 'maltainvest'
-                    : account.landing_company_short !== 'maltainvest')
-        );
-        if (cfd_real_accounts?.length) {
-            this.cfd_real_balance = await this.getTotalBalance(cfd_real_accounts, cfd_real_accounts[0]?.currency);
-        } else {
-            this.cfd_real_balance = { balance: 0, currency: 'USD' };
-        }
-
-        const cfd_demo_accounts = cfd_accounts.filter(account => account.account_type === 'demo');
-        if (cfd_demo_accounts?.length) {
-            this.cfd_demo_balance = await this.getTotalBalance(cfd_demo_accounts, cfd_demo_accounts[0]?.currency);
-        }
-
-        runInAction(() => {
-            this.is_balance_calculating = false;
-        });
-    }
-
-    async getTotalBalance(accounts, base_currency) {
-        const { getExchangeRate } = this.root_store.common;
-        const total_balance = await accounts.reduce(
-            async (total, account) => {
-                const { balance, currency } = account;
-
-                let exchange_rate = 1;
-                if (currency !== base_currency) {
-                    exchange_rate = await getExchangeRate(currency, base_currency);
-                }
-
-                (await total).balance += balance * exchange_rate || 0;
-                return total;
-            },
-            { balance: 0 }
-        );
-        return { balance: total_balance.balance, currency: base_currency };
-    }
     toggleFailedVerificationModalVisibility() {
         this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
     }

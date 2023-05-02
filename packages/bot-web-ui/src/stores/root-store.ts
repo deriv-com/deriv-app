@@ -23,14 +23,6 @@ import type { TDbot, TWebSocket, TRootStore } from 'Types';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
-    // TODO: remove core, notifications, ui, common, server_time
-    // when all the stores are refactored [Task#93859]
-    public core: TRootStore;
-    public notifications: TRootStore['notifications'];
-    public ui: TRootStore['ui'];
-    public common: TRootStore['common'];
-    public server_time: TRootStore['common']['server_time'];
-
     public ws: TWebSocket;
     public dbot: TDbot;
     public app: AppStore;
@@ -57,38 +49,30 @@ export default class RootStore {
     public data_collection_store: DataCollectionStore;
 
     constructor(core: TRootStore, ws: TWebSocket, dbot: TDbot) {
-        // TODO: remove core, notifications, ui, common, server_time
-        // when all the stores are refactored [Task#93859]
-        this.core = core;
-        this.ui = core.ui;
-        this.common = core.common;
-        this.notifications = core.notifications;
-        this.server_time = core.common.server_time;
-
         this.ws = ws;
         this.dbot = dbot;
-        this.app = new AppStore(this);
-        this.summary_card = new SummaryCardStore(this);
+        this.app = new AppStore(this, core);
+        this.summary_card = new SummaryCardStore(this, core);
         this.download = new DownloadStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);
         this.google_drive = new GoogleDriveStore(this);
-        this.journal = new JournalStore(this);
+        this.journal = new JournalStore(this, core);
         this.load_modal = new LoadModalStore(this);
-        this.run_panel = new RunPanelStore(this);
+        this.run_panel = new RunPanelStore(this, core);
         this.save_modal = new SaveModalStore(this);
         this.summary = new SummaryStore(this);
-        this.transactions = new TransactionsStore(this);
+        this.transactions = new TransactionsStore(this, core);
         this.toolbar = new ToolbarStore(this);
-        this.toolbox = new ToolboxStore(this);
+        this.toolbox = new ToolboxStore(this, core);
         this.quick_strategy = new QuickStrategyStore(this);
-        this.route_prompt_dialog = new RoutePromptDialogStore(this);
-        this.self_exclusion = new SelfExclusionStore(this);
+        this.route_prompt_dialog = new RoutePromptDialogStore(this, core);
+        this.self_exclusion = new SelfExclusionStore(this, core);
         this.dashboard = new DashboardStore(this);
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.blockly_store = new BlocklyStore(this);
-        this.data_collection_store = new DataCollectionStore(this);
+        this.data_collection_store = new DataCollectionStore(this, core);
     }
 }

@@ -24,7 +24,7 @@ export default class SummaryCardStore {
     profit = 0;
     indicative = 0;
 
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             contract_info: observable,
             indicative_movement: observable,
@@ -57,6 +57,7 @@ export default class SummaryCardStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
         this.disposeReactionsFn = this.registerReactions();
     }
 
@@ -224,7 +225,7 @@ export default class SummaryCardStore {
     }
 
     registerReactions() {
-        const { client } = this.root_store.core;
+        const { client } = this.core;
         this.disposeSwitchAcountListener = reaction(
             () => client.loginid,
             () => this.clear()

@@ -4,7 +4,7 @@ import { isProduction, cloneObject } from '@deriv/shared';
 import { DBot } from '@deriv/bot-skeleton';
 
 export default class DataCollectionStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             IS_PENDING: observable,
             IS_PROCESSED: observable,
@@ -23,6 +23,7 @@ export default class DataCollectionStore {
             getHash: action.bound,
         });
         this.root_store = root_store;
+        this.core = core;
         if (isProduction() || /(.*?)\.binary.sx$/.test(window.location.hostname)) {
             this.root_store = root_store;
 
@@ -60,8 +61,8 @@ export default class DataCollectionStore {
             this.setStrategyContent(xml_string);
         }
 
-        this.setRunId(this.getHash(xml_hash + this.root_store.core.client.loginid + Math.random()));
-        this.setRunStart(this.root_store.common.server_time.unix());
+        this.setRunId(this.getHash(xml_hash + this.core.client.loginid + Math.random()));
+        this.setRunStart(this.core.common.server_time.unix());
     }
 
     async trackTransaction(contracts) {

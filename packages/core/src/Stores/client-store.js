@@ -18,6 +18,7 @@ import {
     isStaging,
     isTestLink,
     redirectToLogin,
+    removeCookies,
     routes,
     setCurrencies,
     toMoment,
@@ -1183,8 +1184,7 @@ export default class ClientStore extends BaseStore {
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('region', { domain });
-            Cookies.remove('client_information', { domain });
+            removeCookies('region', 'client_information', 'is_p2p_disabled');
             this.has_cookie_account = false;
         }
     }

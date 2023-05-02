@@ -15,6 +15,7 @@ import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { getPaymentMethodIcon } from '../../utils/payment-method.js';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -216,26 +217,11 @@ const BuySellForm = props => {
                                         payment_method_names.map((payment_method, key) => {
                                             const method = payment_method.replace(/\s|-/gm, '');
 
-                                            if (method === 'BankTransfer' || method === 'Other') {
-                                                return (
-                                                    <div className='buy-sell__modal-payment-method--row' key={key}>
-                                                        <Icon
-                                                            className='buy-sell__modal-payment-method--icon'
-                                                            icon={`IcCashier${method}`}
-                                                            size={16}
-                                                        />
-                                                        <Text as='p' color='general' line_height='m' size='xs'>
-                                                            {payment_method}
-                                                        </Text>
-                                                    </div>
-                                                );
-                                            }
-
                                             return (
                                                 <div className='buy-sell__modal-payment-method--row' key={key}>
                                                     <Icon
                                                         className='buy-sell__modal-payment-method--icon'
-                                                        icon='IcCashierEwallet'
+                                                        icon={getPaymentMethodIcon(method)}
                                                         size={16}
                                                     />
                                                     <Text as='p' color='general' line_height='m' size='xs'>

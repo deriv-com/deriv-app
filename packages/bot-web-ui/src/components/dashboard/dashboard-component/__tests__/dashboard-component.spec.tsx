@@ -32,6 +32,8 @@ jest.mock('@deriv/components', () => {
     return {
         ...original_module,
         Cards: jest.fn(() => 'Cards'),
+        messageWithButton: jest.fn(() => 'messageWithButton'),
+        arrayAsMessage: jest.fn(() => 'messageWithButton'),
     };
 });
 

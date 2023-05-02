@@ -4,6 +4,16 @@ import UserGuide from '../user-guide';
 import userEvent from '@testing-library/user-event';
 import { mocked_props } from './dashboard-component.spec';
 
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+
+    return {
+        ...original_module,
+        Cards: jest.fn(() => 'Cards'),
+        messageWithButton: jest.fn(() => 'messageWithButton'),
+        arrayAsMessage: jest.fn(() => 'messageWithButton'),
+    };
+});
 describe('<UserGuide />', () => {
     it('renders user guide button', () => {
         render(<UserGuide {...mocked_props} />);

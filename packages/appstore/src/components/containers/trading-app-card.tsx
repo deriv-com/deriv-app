@@ -69,8 +69,8 @@ const TradingAppCard = ({
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>
                     <div>
-                        <Text className='title' size='xs' line_height='s'>
-                            {sub_title}
+                        <Text className='title' size='xs' line_height='s' color='prominent'>
+                            {!is_real && sub_title ? `${sub_title} Demo` : sub_title}
                         </Text>
                         {short_code_and_region && (
                             <Text
@@ -83,15 +83,16 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text className='title' size='xs' line_height='s' weight='bold'>
-                        {name}
-                    </Text>
                     <Text
-                        className='description'
-                        color={is_deriv_platform ? 'less-prominent' : 'general'}
-                        size='xxs'
-                        line_height='m'
+                        className='title'
+                        size='xs'
+                        line_height='s'
+                        weight='bold'
+                        color={action_type === 'trade' ? 'prominent' : 'general'}
                     >
+                        {!is_real && !sub_title && !is_deriv_platform ? `${name} Demo` : name}
+                    </Text>
+                    <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}
                     </Text>
                     {mt5_acc_auth_status && (

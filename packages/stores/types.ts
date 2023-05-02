@@ -1,4 +1,12 @@
-import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+import type {
+    GetAccountStatus,
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    LogOutResponse,
+    GetLimits,
+    SetFinancialAssessmentResponse,
+    SetFinancialAssessmentRequest,
+} from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
@@ -73,7 +81,7 @@ type TNotificationMessage = {
     key: string;
     message_popup?: string;
     message: string | JSX.Element;
-    platform?: string;
+    platform?: 'p2p' | 'derivgo' | '';
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
     should_hide_close_btn?: boolean;
@@ -86,6 +94,8 @@ type TNotification =
     | TNotificationMessage
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
+
+type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
     accounts: { [k: string]: TAccount };
@@ -100,7 +110,7 @@ type TClientStore = {
         };
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -125,8 +135,10 @@ type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
+    is_svg: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -154,6 +166,9 @@ type TClientStore = {
     };
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
+    setFinancialAndTradingAssessment: (
+        payload: Omit<SetFinancialAssessmentRequest, 'set_financial_assessment' | 'passthrough' | 'req_id'>
+    ) => SetFinancialAssessmentResponse;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;
@@ -208,13 +223,13 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
-    platform: string;
+    platform: 'p2p' | 'derivgo' | '';
+    current_language: string;
+    is_language_changing: boolean;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
-    current_language: string;
-    is_language_changing: boolean;
 };
 
 type TUiStore = {
@@ -229,7 +244,7 @@ type TUiStore = {
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
     notification_messages_ui: JSX.Element | null;
-    openRealAccountSignup: (value: string) => void;
+    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;

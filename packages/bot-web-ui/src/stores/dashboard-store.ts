@@ -2,6 +2,7 @@ import { observable, action, reaction, makeObservable } from 'mobx';
 import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 import { clearInjectionDiv } from 'Constants/load-modal';
+import { isMobile } from '@deriv/shared';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -255,7 +256,7 @@ export default class DashboardStore implements IDashboardStore {
     setTourEnd = (param: TTourType): void => {
         const { key } = param;
         this.setHasTourEnded(true);
-        this.setTourDialogVisibility(true);
+        if (!isMobile()) this.setTourDialogVisibility(true);
         this.setTourActive(false);
         setTourSettings(new Date().getTime(), `${key}_token`);
     };

@@ -18,7 +18,7 @@ type TTourSlider = {
     onCloseTour: () => void;
     onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
     setTourActiveStep: (param: number) => void;
-    toggleLoadModal: () => void;
+    toggleTourLoadModal: (toggle: boolean) => void;
 };
 
 type TAccordion = {
@@ -71,7 +71,7 @@ const TourSlider = ({
     has_started_onboarding_tour,
     has_started_bot_builder_tour,
     setTourActiveStep,
-    toggleLoadModal,
+    toggleTourLoadModal,
 }: TTourSlider) => {
     const [step, setStep] = React.useState<number>(1);
     const [slider_content, setContent] = React.useState<string | string[]>('');
@@ -97,8 +97,8 @@ const TourSlider = ({
             el_ref?.classList.remove('dbot-tour-blink');
         }
         if (has_started_bot_builder_tour && step === 2) {
-            toggleLoadModal();
-        }
+            toggleTourLoadModal(true);
+        } else toggleTourLoadModal(false);
     }, [step]);
 
     const onChange = React.useCallback(
@@ -232,5 +232,5 @@ export default connect(({ dashboard, load_modal }: RootStore) => ({
     onTourEnd: dashboard.onTourEnd,
     setActiveTab: dashboard.setActiveTab,
     setTourActiveStep: dashboard.setTourActiveStep,
-    toggleLoadModal: load_modal.toggleLoadModal,
+    toggleTourLoadModal: load_modal.toggleTourLoadModal,
 }))(TourSlider);

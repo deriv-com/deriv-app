@@ -28,7 +28,28 @@
                 height: 100%;
                 width: 100%;
                 padding-top: 10rem;
+
+                &__restricted-country-error {
+                    padding: 3.3rem 2.4rem 2.4rem;
+                    .dc-btn {
+                        margin-top: 1.9rem;
+                    }
+                }
+                &__invalid-input-error {
+                    margin: 2.4rem auto;
+                    padding-top: unset;
+                    .dc-btn {
+                        margin-top: 1.9rem;
+                    }
+                    .invalid_fields_input {
+                        display: list-item;
+                        margin: 0.5rem auto;
+                        list-style: disc;
+                        list-style-position: inside;
+                    }
+                }
             }
+
             & > svg {
                 width: 12.8rem;
                 height: 12.8rem;
@@ -157,6 +178,7 @@
     position: relative;
     width: 100%;
     @include desktop {
+        transform: translateY(0);
         &--deriv-crypto {
             grid-template-rows: 0 !important;
         }
@@ -354,6 +376,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+
+            &__restricted-country-error,
+            &__invalid-input-error {
+                margin: auto 2.4rem;
+                height: calc(100vh - 84px);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.8rem;
+
+                .dc-btn {
+                    margin-top: 1.9rem;
+                    width: 100%;
+                }
+                .invalid_fields_input {
+                    display: list-item;
+                    margin: 0.5rem auto;
+                    list-style: disc;
+                    list-style-position: inside;
+                }
+            }
 
             h1 {
                 font-size: 2.4rem;

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
@@ -8,7 +9,7 @@ import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
-import classNames from 'classnames';
+import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 

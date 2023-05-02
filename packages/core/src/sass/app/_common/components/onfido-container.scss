@@ -75,7 +75,7 @@
         }
 
         .da-inline-note-with-icon {
-            margin-top: 0.8rem;
+            margin-top: 0;
             padding: 0.8rem;
             display: flex;
             background: rgba(255, 173, 58, 0.16);
@@ -89,6 +89,8 @@
         }
 
         .account-form__section-content {
+            margin-top: 0.8rem;
+
             .dc-input__bottom-label > * {
                 font-size: var(--text-size-xxs);
             }
@@ -96,6 +98,7 @@
             .account-form__fieldset {
                 margin-bottom: 0;
 
+                .dc-input,
                 .dc-input--error {
                     margin-bottom: 3.8rem;
                 }

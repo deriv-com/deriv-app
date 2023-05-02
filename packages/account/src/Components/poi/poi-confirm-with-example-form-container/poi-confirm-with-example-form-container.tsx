@@ -7,7 +7,6 @@ import { filterObjProperties, toMoment, validLength, validName, WS } from '@deri
 import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
-// import PoiConfirmWithExampleForm from 'Components/poi/poi-confirm-with-example-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 
 type TValues = { [p: string]: string };
@@ -40,7 +39,6 @@ const PoiConfirmWithExampleFormContainer = ({
     account_settings,
     getChangeableFields,
     onFormConfirm,
-    updateAccountStatus,
 }: TPoiConfirmWithExampleFormContainer) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [checked, setChecked] = React.useState(false);
@@ -161,15 +159,6 @@ const PoiConfirmWithExampleFormContainer = ({
             }) => (
                 <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
-                        {/* <PoiConfirmWithExampleForm
-                            values={values}
-                            handleChange={handleChange}
-                            handleBlur={handleBlur}
-                            errors={errors}
-                            setFieldValue={setFieldValue}
-                            checked={checked}
-                        /> */}
-
                         <PersonalDetailsForm
                             errors={errors}
                             touched={touched}

@@ -108,7 +108,7 @@ const PersonalDetailsForm = ({
         return (
             <Localize
                 i18n_default_text={
-                    is_qualified_for_idv
+                    is_qualified_for_idv || is_rendered_for_onfido
                         ? 'Your {{ field_name }} as in your identity document'
                         : 'Please enter your {{ field_name }} as in your official identity documents.'
                 }

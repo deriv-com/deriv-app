@@ -14,8 +14,8 @@ import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
+import { getPaymentMethodIcon } from 'Utils/payment-method.js';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { getPaymentMethodIcon } from '../../utils/payment-method.js';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();

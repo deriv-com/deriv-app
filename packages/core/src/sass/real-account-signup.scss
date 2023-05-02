@@ -92,6 +92,10 @@
                 .spacer {
                     margin: 1.6rem 0;
                 }
+
+                &--idv {
+                    width: 100%;
+                }
             }
 
             &__inner-container {
@@ -161,4 +165,8 @@
     @include mobile {
         overflow: hidden;
     }
+}
+
+.idv-form {
+    grid-template-rows: unset !important;
 }

@@ -9,6 +9,7 @@ module.exports = {
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
         '^Constants/(.*)$': '<rootDir>/src/Constants/$1',
         '^Configs/(.*)$': '<rootDir>/src/Configs/$1',
+        '^Containers/(.*)$': '<rootDir>/src/Containers/$1',
         '^Duplicated/(.*)$': '<rootDir>/src/Duplicated/$1',
         '^Helpers/(.*)$': '<rootDir>/src/Helpers/$1',
         '^Services/(.*)$': '<rootDir>/src/Services/$1',

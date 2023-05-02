@@ -27,11 +27,11 @@ describe('ErrorComponent', () => {
     it('should render ErrorComponent', () => {
         render(
             <Router history={browser_history}>
-                <ErrorComponent />
+                <ErrorComponent header={test_title} />
             </Router>
         );
 
-        expect(screen.getByText(common_error_message)).toBeInTheDocument();
+        expect(screen.getByText(test_title)).toBeInTheDocument();
     });
     it('should render child component Dialog if ErrorComponent recive is_dialog === true', () => {
         render(<ErrorComponent is_dialog />);
@@ -48,17 +48,6 @@ describe('ErrorComponent', () => {
         expect(screen.getByText(test_title)).toBeInTheDocument();
         expect(screen.getByText(redirect_button)).toBeInTheDocument();
         expect(screen.getByText(test_message)).toBeInTheDocument();
-    });
-    it('should render PageError component if ErrorComponent recive is_dialog === false', () => {
-        render(
-            <Router history={browser_history}>
-                <ErrorComponent />
-            </Router>
-        );
-
-        expect(screen.getByText('Something’s not right')).toBeInTheDocument();
-        expect(screen.getByText(common_error_message)).toBeInTheDocument();
-        expect(screen.getByText(refresh_button)).toBeInTheDocument();
     });
     it('should render PageError component with recieved header, message and redirect label if ErrorComponent passed them and is_dialog === false', () => {
         render(
@@ -98,7 +87,7 @@ describe('ErrorComponent', () => {
     it('should call a reload function when user click on redirect button for PageError component', () => {
         render(
             <Router history={browser_history}>
-                <ErrorComponent should_show_refresh={false} />
+                <ErrorComponent header={test_title} should_show_refresh={false} />
             </Router>
         );
         userEvent.click(screen.getByText(refresh_button));

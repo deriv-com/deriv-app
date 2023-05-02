@@ -1,7 +1,7 @@
 import '../public-path'; // Leave this here (at the top)! OK boss!
 import React from 'react';
+import type { TRootStore, TWebSocket } from 'Types';
 import AppContent from './app-content';
-import type { TWebSocket, TRootStore } from 'Types';
 import DBotProviders from './dbot-providers';
 
 type TAppProps = {

@@ -1,8 +1,8 @@
+import { getImageLocation } from '../../public-path';
 import React from 'react';
 import { CallBackProps } from 'react-joyride';
 import { Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getImageLocation } from '../../public-path';
 import { getSetting, storeSetting } from '../../utils/settings';
 import TourGuide from './tour-guide';
 

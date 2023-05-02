@@ -1,5 +1,5 @@
-import { localize } from '@deriv/translations';
 import { getImageLocation } from '../../../public-path';
+import { localize } from '@deriv/translations';
 
 export type TDescription = Pick<TContent, 'type' | 'content' | 'src'>;
 

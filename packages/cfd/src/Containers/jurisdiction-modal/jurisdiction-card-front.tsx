@@ -68,7 +68,7 @@ const JurisdictionCardFront = ({
                 <Text
                     as='div'
                     weight='bold'
-                    color='white'
+                    color='colored-background'
                     align='center'
                     size='xs'
                     className={`${card_classname}__card-content-footer-text`}

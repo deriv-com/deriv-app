@@ -373,7 +373,7 @@ export default class GeneralStore extends BaseStore {
 
     showCompletedOrderNotification(advertiser_name, order_id) {
         const { order_store } = this.root_store;
-        const notification_key = `order-${order_id}`;
+        const notification_key = `p2p_order_${order_id}`;
 
         // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
         this.external_stores?.notifications.refreshNotifications();
@@ -739,7 +739,7 @@ export default class GeneralStore extends BaseStore {
             return;
         }
 
-        const { p2p_order_list, p2p_order_info } = order_response;
+        const { p2p_order_list = [], p2p_order_info = {} } = order_response;
         const { order_store } = this.root_store;
 
         if (p2p_order_list) {

@@ -31,7 +31,7 @@ const PoiConfirmWithExampleForm = ({
     );
 
     return (
-        <div className='account-form__poi-confirm-example '>
+        <div className='account-form__poi-confirm-example'>
             <InlineNoteWithIcon message={name_dob_clarification_message} font_size='xs' />
             <FormBodySection has_side_note side_note={<PoiNameDobExampleIcon />}>
                 <DesktopWrapper>

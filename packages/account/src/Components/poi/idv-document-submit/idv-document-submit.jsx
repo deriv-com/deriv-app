@@ -5,11 +5,11 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import { generatePlaceholderText } from 'Helpers/utils';
-import { documentAdditionalError, getDocumentData, getRegex, preventEmptyClipboardPaste } from './utils';
+import { documentAdditionalError, getRegex, preventEmptyClipboardPaste } from './utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
+import { getDocumentData, generatePlaceholderText } from 'Helpers/utils';
 
 const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, is_from_external }) => {
     const [document_list, setDocumentList] = React.useState([]);

@@ -85,7 +85,6 @@ const PoiConfirmWithExampleFormContainer = ({
                 setRestState({ ...rest_state, api_error: response.error.message });
                 return;
             }
-            updateAccountStatus();
             setRestState({ ...rest_state, ...response.get_settings });
             setChecked(true);
             setIsLoading(false);

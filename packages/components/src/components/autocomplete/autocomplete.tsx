@@ -33,6 +33,7 @@ type TAutocompleteProps = {
     trailing_icon?: React.ReactElement;
     value: string;
     onSearch?: (value: string, items: TItem[]) => [];
+    data_testid: string;
 };
 
 const KEY_CODE = {
@@ -60,6 +61,7 @@ const getFilteredItems = (val: string, list: TItem[], should_filter_by_char = fa
 const Autocomplete = React.memo((props: TAutocompleteProps) => {
     const {
         autoComplete,
+        data_testid,
         className,
         dropdown_offset,
         historyValue,
@@ -92,7 +94,7 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
     const [active_index, setActiveIndex] = React.useState(-1);
     const [filtered_items, setFilteredItems] = React.useState(list_items);
     const [style, setStyle] = React.useState({});
-    useBlockScroll(list_portal_id && should_show_list ? input_wrapper_ref : null);
+    useBlockScroll(list_portal_id && should_show_list ? input_wrapper_ref : undefined);
 
     let scroll_timeout: ReturnType<typeof setTimeout> | undefined;
     let scroll_top_position = null;
@@ -312,7 +314,7 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
     };
 
     return (
-        <div className={classNames('dc-autocomplete', className)}>
+        <div data-testid={data_testid} className={classNames('dc-autocomplete', className)}>
             <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>
                 <Input
                     {...other_props}

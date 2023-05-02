@@ -8,9 +8,9 @@ describe('EmptyPortfolioMessage', () => {
     const error_text = 'Error text';
 
     it('should render EmptyPortfolioMessage component', () => {
-        const { container } = render(<EmptyPortfolioMessage />);
+        render(<EmptyPortfolioMessage />);
 
-        expect(container).toBeInTheDocument();
+        expect(screen.getByText(empty_portfolio_message)).toBeInTheDocument();
     });
     it('should render error text on the screen if EmptyPortfolioMessage component will recive error in props', () => {
         render(<EmptyPortfolioMessage error={error_text} />);

@@ -98,7 +98,7 @@ const BinarySocketGeneral = (() => {
     const setResidence = residence => {
         if (residence) {
             client_store.setResidence(residence);
-            WS.landingCompany(residence);
+            WS.landingCompany(residence).then(client_store.responseLandingCompany);
         }
     };
 

@@ -4,6 +4,7 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field, FormikProps, FormikValues, FormikHelpers } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
+import { generatePlaceholderText } from 'Helpers/utils';
 import { documentAdditionalError, getDocumentData, getRegex, preventEmptyClipboardPaste } from './utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -52,8 +53,10 @@ const IdvDocumentSubmit = ({
     const [document_list, setDocumentList] = React.useState<object[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [is_doc_selected, setDocSelected] = React.useState(false);
-    const document_data = selected_country?.identity.services.idv.documents_supported;
+    const [selected_doc, setSelectedDoc] = React.useState<string | null>(null);
+
+    const document_data = selected_country.identity.services.idv.documents_supported;
+
     const {
         value: country_code,
         identity: {
@@ -267,13 +270,13 @@ const IdvDocumentSubmit = ({
                                                             example_format: string;
                                                         }) => {
                                                             if (item.text === 'No results found' || !item.text) {
-                                                                setDocSelected(false);
+                                                                setSelectedDoc('');
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             } else {
                                                                 if (typeof setFieldValue === 'function') {
                                                                     setFieldValue('document_type', item, true);
                                                                 }
-                                                                setDocSelected(true);
+                                                                setSelectedDoc(item.id);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
                                                                 }
@@ -300,7 +303,7 @@ const IdvDocumentSubmit = ({
                                                             e.target.value
                                                         );
                                                         if (selected_document) {
-                                                            setDocSelected(true);
+                                                            setSelectedDoc(selected_document.id);
                                                             if (typeof setFieldValue === 'function') {
                                                                 setFieldValue('document_type', selected_document, true);
                                                             }
@@ -334,8 +337,8 @@ const IdvDocumentSubmit = ({
                                                     errors?.error_message
                                                 }
                                                 autoComplete='off'
-                                                placeholder='Enter your document number'
-                                                value={values?.document_number}
+                                                placeholder={generatePlaceholderText(selected_doc || '')}
+                                                value={values.document_number}
                                                 onPaste={preventEmptyClipboardPaste}
                                                 onBlur={handleBlur}
                                                 onChange={handleChange}
@@ -394,7 +397,7 @@ const IdvDocumentSubmit = ({
                             </div>
                         )}
                     </div>
-                    {is_doc_selected && (
+                    {selected_doc && (
                         <Text
                             className={classNames('proof-of-identity__text btm-spacer', {
                                 'top-spacer': is_from_external,

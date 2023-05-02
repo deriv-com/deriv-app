@@ -28,6 +28,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [selected_doc, setSelectedDoc] = React.useState(null);
+    const [input_value, setInputValue] = React.useState('');
 
     const document_data = citizen_data.identity.services.idv.documents_supported;
     const {
@@ -241,7 +242,10 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                     'Choose the document type'
                                                                                 )}
                                                                                 list_items={document_list}
-                                                                                value={values.document_type.text}
+                                                                                value={
+                                                                                    values.document_type.text ??
+                                                                                    input_value
+                                                                                }
                                                                                 onBlur={e => {
                                                                                     handleBlur(e);
                                                                                     if (!getDocument(e.target.value)) {
@@ -250,7 +254,10 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                         );
                                                                                     }
                                                                                 }}
-                                                                                onChange={handleChange}
+                                                                                onChange={e => {
+                                                                                    setInputValue(e.target.value);
+                                                                                    handleChange(e);
+                                                                                }}
                                                                                 onItemSelection={item => {
                                                                                     if (
                                                                                         item.text ===

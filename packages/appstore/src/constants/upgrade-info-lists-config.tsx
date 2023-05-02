@@ -37,7 +37,7 @@ const getUpgradeInformationList = ({
         visiblity: !is_eu,
         content: (
             <Localize
-                i18n_default_text='<0>Deriv P2P</0> is not supported in wallets yet. This option will be unavailable until further notice.'
+                i18n_default_text='<0>Deriv P2P</0> is not supported in wallets yet.'
                 components={<Text weight='bold' size={text_info_size} line_height={form_line_height} key={0} />}
             />
         ),

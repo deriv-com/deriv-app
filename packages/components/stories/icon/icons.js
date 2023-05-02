@@ -30,6 +30,7 @@ export const icons =
         'IcAppstoreOptionTradeType',
         'IcAppstoreSkeletonCardBorder',
         'IcAppstoreSuccess',
+        'IcAppstoreTickWhite',
         'IcAppstoreTick',
         'IcAppstoreTradersHubHome',
         'IcAppstoreTradingHubBeta',

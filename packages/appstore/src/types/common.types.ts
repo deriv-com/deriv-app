@@ -172,3 +172,4 @@ export type TReadyToUpgradeForm = {
     is_eu: boolean;
     is_low_risk: boolean;
 };
+export type TWalletsMigrationStatus = 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';

@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
     .onfido-sdk-ui-Camera-webcamContainer {
         left: auto;
         width: -webkit-fill-available;
@@ -47,8 +48,10 @@
         gap: 0.8rem;
 
         &_container {
-            border: 1px solid #d6dadb;
-            border-radius: 0.8rem;
+            @include desktop() {
+                border: 1px solid var(--general-active);
+                border-radius: 0.8rem;
+            }
             padding: 1.6rem;
 
             .account__scrollbars_container {
@@ -62,7 +65,6 @@
         }
 
         &_wrapper {
-            margin-bottom: 2.4rem;
             transition: transform 0.35s ease, opacity 0.35s linear;
             transform-origin: top;
             opacity: 1;
@@ -103,10 +105,12 @@
             }
 
             .account-form__fieldset {
-                margin-bottom: 0;
+                .dc-input {
+                    margin-bottom: 1rem;
+                }
 
-                .dc-input,
-                .dc-input--error {
+                .dc-input--error,
+                .dc-input.dc-input--hint {
                     margin-bottom: 3.8rem;
                 }
             }
@@ -165,7 +169,6 @@
 
         &-content {
             grid-area: section-content;
-            // width: 40rem;
 
             @include mobile {
                 width: 100%;

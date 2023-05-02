@@ -169,4 +169,10 @@
 
 .idv-form {
     grid-template-rows: unset !important;
+
+    .details-form {
+        @include mobile {
+            overflow: unset;
+        }
+    }
 }

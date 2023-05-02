@@ -163,7 +163,7 @@ const PersonalDetails = ({
                             onClick={handleClickOutside}
                             data-testid='personal_details_form'
                         >
-                            <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
+                            <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
                                         <Localize

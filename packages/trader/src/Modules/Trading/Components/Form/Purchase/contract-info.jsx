@@ -1,11 +1,10 @@
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis, isMobile, getGrowthRatePercentage } from '@deriv/shared';
-
 import CancelDealInfo from './cancel-deal-info.jsx';
-import PropTypes from 'prop-types';
-import React from 'react';
-import classNames from 'classnames';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
     <div className={classNames({ 'strike--value-container': is_vanilla })}>

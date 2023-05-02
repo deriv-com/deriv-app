@@ -11,7 +11,6 @@ import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 
 const TradingAppCard = ({
     availability,

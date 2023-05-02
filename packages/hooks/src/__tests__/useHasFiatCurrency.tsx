@@ -1,64 +1,67 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useNeedAuthentication from '../useNeedAuthentication';
+import useHasFiatCurrency from '../useHasFiatCurrency';
 
-describe('useNeedAuthentication', () => {
-    test('should be false if is_authentication_needed and is_low_risk_cr_eu_real both are false', async () => {
+describe('useHasFiatCurrency', () => {
+    test('should return false if client has no account', async () => {
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
+
+        const { result } = renderHook(() => useHasFiatCurrency(), { wrapper });
 
         expect(result.current).toBe(false);
     });
 
-    test('should be false if is_authentication_needed is false and is_low_risk_cr_eu_real is true', async () => {
-        const mock = mockStore({
-            traders_hub: {
-                is_low_risk_cr_eu_real: true,
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
-
-        expect(result.current).toBe(false);
-    });
-
-    test('should be false if is_authentication_needed is true and is_low_risk_cr_eu_real is false', async () => {
+    test('should return false if client has only BTC account', async () => {
         const mock = mockStore({
             client: {
-                is_authentication_needed: true,
+                account_list: [{ title: 'BTC' }],
+                is_crypto: jest.fn().mockReturnValue(true),
             },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
+
+        const { result } = renderHook(() => useHasFiatCurrency(), { wrapper });
 
         expect(result.current).toBe(false);
     });
 
-    test('should be true if is_authentication_needed and is_low_risk_cr_eu_real both are true', async () => {
+    test('should return false if client has only BTC account', async () => {
         const mock = mockStore({
             client: {
-                is_authentication_needed: true,
-            },
-            traders_hub: {
-                is_low_risk_cr_eu_real: true,
+                account_list: [{ title: 'BTC' }],
+                is_crypto: jest.fn().mockReturnValue(true),
             },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useNeedAuthentication(), { wrapper });
+
+        const { result } = renderHook(() => useHasFiatCurrency(), { wrapper });
+
+        expect(result.current).toBe(false);
+    });
+
+    test('should return true if client has fiat account', async () => {
+        const mock = mockStore({
+            client: {
+                account_list: [{ title: 'USD' }],
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { result } = renderHook(() => useHasFiatCurrency(), { wrapper });
 
         expect(result.current).toBe(true);
     });

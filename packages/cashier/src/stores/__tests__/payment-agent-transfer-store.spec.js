@@ -58,49 +58,6 @@ beforeEach(() => {
 });
 
 describe('PaymentAgentTransferStore', () => {
-    it('should return correct value', () => {
-        expect(payment_agent_transfer_store.is_payment_agent_transfer_visible).toBeFalsy();
-    });
-
-    it('should check and set is_payment_agent as true value', async () => {
-        WS.authorized.storage.getSettings.mockResolvedValue({
-            get_settings: { is_authenticated_payment_agent: true },
-        });
-        await payment_agent_transfer_store.checkIsPaymentAgent();
-
-        expect(payment_agent_transfer_store.is_payment_agent).toBeTruthy();
-    });
-
-    it('should check and set is_payment_agent as false value', async () => {
-        WS.authorized.storage.getSettings.mockResolvedValue({
-            get_settings: { is_authenticated_payment_agent: null },
-        });
-        await payment_agent_transfer_store.checkIsPaymentAgent();
-
-        expect(payment_agent_transfer_store.is_payment_agent).toBeFalsy();
-    });
-
-    it('should set correct is_payment_agent value', () => {
-        payment_agent_transfer_store.setIsPaymentAgent(true);
-
-        expect(payment_agent_transfer_store.is_payment_agent).toBeTruthy();
-    });
-
-    it('should route to /cashier/deposit if there is no payment agent and window.location.pathname ends with /cashier/payment-agent-transfer', () => {
-        const windowSpy = jest.spyOn(window, 'window', 'get');
-        windowSpy.mockImplementation(() => ({
-            location: {
-                pathname: routes.cashier_pa_transfer,
-            },
-        }));
-
-        payment_agent_transfer_store.setIsPaymentAgent(false);
-
-        expect(payment_agent_transfer_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
-
-        windowSpy.mockRestore();
-    });
-
     it('shoud clear an error and set correct is_try_transfer_successful value', () => {
         const spySetErrorMessage = jest.spyOn(payment_agent_transfer_store.error, 'setErrorMessage');
 

@@ -53,14 +53,8 @@ beforeEach(() => {
                     is_onramp_tab_visible: false,
                 },
                 payment_agent: {
-                    getAllPaymentAgentList: jest.fn().mockResolvedValue(['PA1', 'PA2']),
-                    setAllPaymentAgentList: jest.fn(),
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
                     filterPaymentAgentList: jest.fn(),
-                },
-                payment_agent_transfer: {
-                    is_payment_agent: false,
-                    checkIsPaymentAgent: jest.fn(),
                 },
                 transaction_history: {
                     is_crypto_transactions_visible: false,
@@ -105,42 +99,6 @@ describe('GeneralStore', () => {
         expect(general_store.is_crypto).toBeTruthy();
     });
 
-    it('should return false if is_p2p_visible equal to false when is_p2p_enabled property was called', () => {
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
-
-    it('should return true if is_p2p_visible equal to true and the client is not from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        expect(general_store.is_p2p_enabled).toBeTruthy();
-    });
-
-    it('should return false if is_p2p_visible equal to true and the client is from eu country when is_p2p_enabled property was called', () => {
-        general_store.setIsP2pVisible(true);
-        general_store.root_store.traders_hub.content_flag = ContentFlag.EU_REAL;
-        expect(general_store.is_p2p_enabled).toBeFalsy();
-    });
-
-    // TODO: fix this test once website_status is called after authorized card has been released
-    // it('should show p2p in cashier onboarding if the user account is not virtual, and he has USD account', async () => {
-    //     await general_store.showP2pInCashierOnboarding();
-
-    //     expect(general_store.show_p2p_in_cashier_onboarding).toBeTruthy();
-    // });
-
-    it('should not show p2p in cashier onboarding if the user has accounts with fiat currency, but has no account with USD currency', async () => {
-        general_store.root_store.client.account_list = [{ title: 'EUR' }];
-        await general_store.showP2pInCashierOnboarding();
-
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
-    });
-
-    it('should not show p2p in cashier onboarding if the user account is not virtual, and has no fiat currency accounts', async () => {
-        general_store.root_store.client.account_list = [{ title: 'BTC' }];
-        await general_store.showP2pInCashierOnboarding();
-
-        expect(general_store.show_p2p_in_cashier_onboarding).toBeFalsy();
-    });
-
     it('should set has_set_currency equal to true if the client has real USD account', () => {
         general_store.setHasSetCurrency();
 
@@ -159,15 +117,12 @@ describe('GeneralStore', () => {
         general_store.has_set_currency = false;
         const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');
         const spySetIsCashierOnboarding = jest.spyOn(general_store, 'setIsCashierOnboarding');
-        const spySetLoading = jest.spyOn(general_store, 'setLoading');
-        const { account_prompt_dialog, payment_agent } = general_store.root_store.modules.cashier;
+        const { account_prompt_dialog } = general_store.root_store.modules.cashier;
         await general_store.onMountCashierOnboarding();
 
         expect(spySetHasSetCurrency).toHaveBeenCalledTimes(1);
         expect(spySetIsCashierOnboarding).toHaveBeenCalledWith(true);
         expect(account_prompt_dialog.resetIsConfirmed).toHaveBeenCalledTimes(1);
-        expect(spySetLoading.mock.calls).toEqual([[true], [false]]);
-        expect(payment_agent.setAllPaymentAgentList).toHaveBeenCalledWith(['PA1', 'PA2']);
     });
 
     it('should calculate proper percentage for account transfer container', () => {
@@ -234,37 +189,6 @@ describe('GeneralStore', () => {
         expect(spyDisposeSwitchAccount).toHaveBeenCalledTimes(1);
         expect(spyOnSwitchAccount).toHaveBeenCalledTimes(1);
         expect(spyOnSwitchAccount).toHaveBeenCalledWith(general_store.accountSwitcherListener);
-    });
-
-    it('should perform proper init invocation when is_logged_in is equal to true', async () => {
-        const spyCheckP2pStatus = jest.spyOn(general_store, 'checkP2pStatus');
-        general_store.root_store.client.is_logged_in = true;
-        general_store.init();
-
-        await waitFor(() => {
-            expect(spyCheckP2pStatus).toHaveBeenCalledTimes(1);
-        });
-
-        // Don't remove eslint here as WS.wait is expected to be called 3 times from init and checkP2pStatus
-        // eslint-disable-next-line testing-library/await-async-utils
-        expect(general_store.WS.wait).toHaveBeenCalledTimes(3);
-        expect(general_store.root_store.modules.cashier.withdraw.check10kLimit).toHaveBeenCalledTimes(1);
-    });
-
-    it('should set is_p2p_visible equal to false, if there is a virtual account', () => {
-        general_store.root_store.client.is_virtual = true;
-        general_store.checkP2pStatus();
-
-        expect(general_store.is_p2p_visible).toBeFalsy();
-    });
-
-    it('should check is the client a payment agent ? when onMountCommon was called', async () => {
-        general_store.root_store.client.is_logged_in = true;
-        await general_store.onMountCommon(false);
-
-        expect(
-            general_store.root_store.modules.cashier.payment_agent_transfer.checkIsPaymentAgent
-        ).toHaveBeenCalledTimes(1);
     });
 
     it('should not call setPaymentAgentList method if is_populating_values is equal to true when onMountCommon was called', async () => {
@@ -345,27 +269,6 @@ describe('GeneralStore', () => {
         general_store.setCashierTabIndex(1);
 
         expect(general_store.cashier_route_tab_index).toBe(1);
-    });
-
-    it('should set p2p visibility equal to true', () => {
-        general_store.setIsP2pVisible(true);
-
-        expect(general_store.is_p2p_visible).toBeTruthy();
-    });
-
-    it('should set p2p visibility equal to false and route to /cashier/deposit if current location.pathname = /cashier/p2p and account_prompt_dialog.last_location is equal to null', () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-            location: {
-                pathname: routes.cashier_p2p,
-                hostname: 'localhost.binary.sx',
-            },
-        }));
-        general_store.setIsP2pVisible(false);
-
-        expect(general_store.is_p2p_visible).toBeFalsy();
-        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
     });
 
     it('should change the value of the variable is_loading', () => {

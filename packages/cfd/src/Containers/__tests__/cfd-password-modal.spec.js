@@ -313,7 +313,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('IcRebrandingDerivx')).toBeInTheDocument();
+        expect(await screen.findByText('IcDxtradeDerivxPlatform')).toBeInTheDocument();
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {

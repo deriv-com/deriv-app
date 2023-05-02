@@ -28,10 +28,7 @@ type TTradeModalProps = {
 const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: string) => {
     return (
         <React.Fragment>
-            <Icon
-                icon={platform === 'derivez' ? 'IcBrandDerivEz' : `IcBrand${capitalizeFirstLetter(platform)}`}
-                size={24}
-            />
+            <Icon icon={`IcRebranding${platform.charAt(0).toUpperCase()}${platform.slice(1)}Dashboard`} size={24} />
             <div className='cfd-trade-modal__desc'>
                 <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                     <Localize

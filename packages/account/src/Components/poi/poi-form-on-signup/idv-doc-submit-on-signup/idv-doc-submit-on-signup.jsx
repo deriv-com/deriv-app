@@ -241,7 +241,7 @@ export const IdvDocSubmitOnSignup = ({ citizen_data, has_previous, onPrevious, o
                                                                                     'Choose the document type'
                                                                                 )}
                                                                                 list_items={document_list}
-                                                                                value={values.document_type.text ?? ''}
+                                                                                value={values.document_type.text}
                                                                                 onBlur={e => {
                                                                                     handleBlur(e);
                                                                                     if (!getDocument(e.target.value)) {

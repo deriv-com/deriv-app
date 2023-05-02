@@ -18,6 +18,7 @@ import {
     isStaging,
     isTestLink,
     redirectToLogin,
+    removeCookies,
     routes,
     setCurrencies,
     toMoment,
@@ -1183,8 +1184,7 @@ export default class ClientStore extends BaseStore {
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('region', { domain });
-            Cookies.remove('client_information', { domain });
+            removeCookies('region', 'client_information', 'is_p2p_disabled');
             this.has_cookie_account = false;
         }
     }
@@ -1325,6 +1325,7 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
+        this.root_store.ui.setRealAccountSignupParams(form_values);
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = form_values?.citizen || this.account_settings.citizen || this.residence;
 

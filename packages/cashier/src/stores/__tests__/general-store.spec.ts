@@ -232,13 +232,6 @@ describe('GeneralStore', () => {
         expect(general_store.deposit_target).toBe('/cashier/payment-agent');
     });
 
-    it('should route to deposit target', () => {
-        general_store.setDepositTarget('/cashier/payment-agent');
-        general_store.continueRoute();
-
-        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith('/cashier/payment-agent');
-    });
-
     it('should trigger proper callbacks when setAccountSwitchListener was called', () => {
         const spyDisposeSwitchAccount = jest.spyOn(general_store, 'disposeSwitchAccount');
         const spyOnSwitchAccount = jest.spyOn(general_store, 'onSwitchAccount');

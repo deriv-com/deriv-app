@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import NumberSelector from 'App/Components/Form/number-selector.jsx';
+import NumberSelector from 'App/Components/Form/number-selector.tsx';
 import Fieldset from 'App/Components/Form/fieldset.tsx';
 import { connect } from 'Stores/connect';
 

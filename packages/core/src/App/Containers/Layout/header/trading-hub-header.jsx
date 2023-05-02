@@ -159,7 +159,18 @@ const TradingHubHeader = ({
                 toggleDialog={toggleAccountsDialog}
             />
         ),
-        [is_acc_switcher_on]
+        [
+            is_acc_switcher_on,
+            balance,
+            currency,
+            is_acc_switcher_disabled,
+            is_eu,
+            is_virtual,
+            country_standpoint,
+            toggleAccountsDialog,
+            account_type,
+            acc_switcher_disabled_message,
+        ]
     );
 
     const DefaultMobileLinks = () => (

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageError } from '@deriv/components';
+import { PageError, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -67,14 +67,11 @@ const ErrorComponent = ({
             />
         );
     }
+
     return (
-        <PageError
-            header={header || localize('Something’s not right')}
-            messages={
-                message
-                    ? [message, refresh_message]
-                    : [localize('Sorry, an error occured while processing your request.'), refresh_message]
-            }
+        <PageErrorContainer
+            error_header={header ?? ''}
+            error_messages={message ? message[(message, refresh_message)] : []}
             redirect_urls={[redirect_to]}
             redirect_labels={[redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => location.reload())}

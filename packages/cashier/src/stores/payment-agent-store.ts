@@ -1,5 +1,5 @@
 import { action, computed, observable, makeObservable, IObservableArray } from 'mobx';
-import { PaymentAgentDetailsResponse, PaymentAgentListResponse, PaymentagentList } from '@deriv/api-types';
+import { PaymentAgentDetailsResponse, PaymentagentList } from '@deriv/api-types';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';

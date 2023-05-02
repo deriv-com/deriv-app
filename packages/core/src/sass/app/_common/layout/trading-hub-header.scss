@@ -22,8 +22,7 @@
     }
 
     @media screen and (max-width: 380px) {
-        &__cashier-button,
-        &__logo-wrapper {
+        &__cashier-button {
             display: none;
         }
     }
@@ -32,6 +31,15 @@
         display: flex;
         justify-content: space-between;
         height: 4rem;
+    }
+
+    &__logo-wrapper {
+        display: block;
+        @media screen and (max-width: 380px) {
+            &--cashier {
+                display: none;
+            }
+        }
     }
 
     &__menu-left {

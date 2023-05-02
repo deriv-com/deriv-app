@@ -12,7 +12,7 @@ import {
     tradingAssessmentConfig,
 } from '@deriv/account';
 
-import AddressDetails from './address-details.jsx';
+import AddressDetails from './address-details';
 import CurrencySelector from './currency-selector.jsx';
 import FinancialDetails from './financial-details.jsx';
 

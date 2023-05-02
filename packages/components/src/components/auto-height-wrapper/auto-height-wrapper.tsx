@@ -1,15 +1,15 @@
 import React from 'react';
 import { usePrevious } from '../../hooks';
 
-type TAutoHeightWrapperChildProps = {
-    height: number | string;
-    setRef: (ref: HTMLElement) => void;
+export type TAutoHeightWrapperChildProps = {
+    height: number;
+    setRef: (ref: HTMLFormElement | null) => void;
 };
 
 type TAutoHeightWrapperProps = {
-    default_height: number | string;
+    default_height: number;
     children: (props: TAutoHeightWrapperChildProps) => React.ReactElement;
-    height_offset: number | null;
+    height_offset?: number | null;
 };
 
 const AutoHeightWrapper = (props: TAutoHeightWrapperProps) => {
@@ -31,9 +31,9 @@ const AutoHeightWrapper = (props: TAutoHeightWrapperProps) => {
                 : props.default_height
         );
 
-    const setRef = (ref: HTMLElement) => {
-        if (Number.isInteger(ref?.clientHeight) && ref.clientHeight !== prev_child_client_height) {
-            child_client_height_ref.current = ref.clientHeight;
+    const setRef = (ref: HTMLFormElement | null) => {
+        if (Number.isInteger(ref?.clientHeight) && ref?.clientHeight !== prev_child_client_height) {
+            child_client_height_ref.current = Number(ref?.clientHeight);
             setTimeout(updateHeight, 0);
         }
     };

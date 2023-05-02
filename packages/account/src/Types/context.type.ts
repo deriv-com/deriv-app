@@ -1,10 +1,5 @@
 import { TToken } from './common-prop.type';
 
-export type TPlatformContext = {
-    is_appstore?: boolean;
-    displayName?: string;
-};
-
 export type TApiContext = {
     api_tokens: NonNullable<TToken[]> | undefined;
     deleteToken: (token: string) => Promise<void>;

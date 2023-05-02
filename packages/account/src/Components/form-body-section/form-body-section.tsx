@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
-import { TPlatformContext } from 'Types';
 
 export type TFormBodySection = {
     has_side_note?: boolean;
@@ -10,7 +9,8 @@ export type TFormBodySection = {
 };
 
 const FormBodySection = ({ children, has_side_note, side_note }: React.PropsWithChildren<TFormBodySection>) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
+
     if (has_side_note) {
         return (
             <div

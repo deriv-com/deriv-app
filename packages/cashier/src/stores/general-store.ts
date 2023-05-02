@@ -12,7 +12,6 @@ export default class GeneralStore extends BaseStore {
         makeObservable(this, {
             calculatePercentage: action.bound,
             cashier_route_tab_index: observable,
-            continueRoute: action.bound,
             deposit_target: observable,
             init: action.bound,
             is_cashier_onboarding: observable,
@@ -109,10 +108,6 @@ export default class GeneralStore extends BaseStore {
 
     setDepositTarget(target: string): void {
         this.deposit_target = target;
-    }
-
-    continueRoute(): void {
-        this.root_store.common.routeTo(this.deposit_target);
     }
 
     setAccountSwitchListener(): void {

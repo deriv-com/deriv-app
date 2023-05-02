@@ -16,14 +16,21 @@
     }
 
     &__textarea {
-        margin-top: 2.5rem;
+        height: 9.8rem;
+        margin-bottom: 4rem;
+
+        .dc-input {
+            &__field[type='textarea'] {
+                height: 8.6rem;
+            }
+        }
 
         @include mobile {
-            margin: 0 2vw;
+            margin: 0 1vw;
             width: 96vw;
 
-            &:first-child {
-                margin-top: 2.5rem;
+            .dc-input__label {
+                padding: 0 0.8rem !important;
             }
         }
     }
@@ -38,7 +45,16 @@
                 padding-bottom: 7.4rem;
             }
             @include tablet-up {
-                padding-bottom: 7.4rem + 2.4rem;
+                padding-bottom: 9.8rem;
+            }
+        }
+
+        .dc-input {
+            &__wrapper {
+                margin-top: 2.5rem;
+            }
+            &__footer {
+                margin-bottom: 2rem;
             }
         }
     }

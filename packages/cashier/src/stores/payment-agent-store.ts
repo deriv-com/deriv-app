@@ -83,7 +83,7 @@ export default class PaymentAgentStore {
     is_withdraw = false;
     is_try_withdraw_successful = false;
     is_withdraw_successful = false;
-    confirm: TPaymentAgentWithdrawConfirm | { [key: string]: never } = {};
+    confirm: TPaymentAgentWithdrawConfirm | Record<string, never> = {};
     receipt: TPaymentAgentWithdrawReceipt = {};
     selected_bank: number | string = 0;
     supported_banks: TSupportedBank[] = [];
@@ -273,7 +273,7 @@ export default class PaymentAgentStore {
         this.is_withdraw_successful = is_withdraw_successful;
     }
 
-    setConfirmation(confirm: TPaymentAgentWithdrawConfirm | { [key: string]: never }) {
+    setConfirmation(confirm: TPaymentAgentWithdrawConfirm | Record<string, never>) {
         this.confirm = confirm;
     }
 

@@ -3,7 +3,7 @@
     inset: 0;
     min-height: calc(100vh - 84px) !important;
     min-width: 100vw !important;
-    margin: 48px 0 36px;
+    margin: 4.8rem 0 3.6rem;
     border-radius: unset;
     background-color: var(--general-main-1);
 
@@ -32,14 +32,6 @@
                 justify-content: space-between;
             }
 
-            &__demo--light:before {
-                background-color: $color-white;
-            }
-
-            &__demo--dark:before {
-                background-color: $wallet-demo-dark-watermark-color;
-            }
-
             &__demo:before {
                 content: '';
                 display: block;
@@ -49,6 +41,7 @@
                 width: 100%;
                 height: 100%;
                 opacity: 0.2;
+                background-color: var(--demo-icon-background);
                 background-repeat: repeat;
                 background-position: 3% 30%;
                 border-radius: $BORDER_RADIUS * 4;
@@ -68,24 +61,16 @@
                     padding-right: 0.8rem;
                     color: var(--text-general);
 
-                    &-demo-dark {
-                        color: $color-black-1;
-                    }
-
-                    &-demo-light {
-                        color: $color-grey;
+                    &-demo {
+                        color: var(--demo-text-color-1);
                     }
                 }
 
                 &-balance {
                     color: var(--text-prominent);
 
-                    &-demo-dark {
-                        color: $color-black-1;
-                    }
-
-                    &-demo-light {
-                        color: $color-white;
+                    &-demo {
+                        color: var(--demo-text-color-2);
                     }
                 }
             }

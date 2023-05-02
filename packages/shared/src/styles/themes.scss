@@ -186,6 +186,10 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // Demo view
+        --demo-text-color-1: #{$color-grey};
+        --demo-text-color-2: #{$color-white};
+        --demo-icon-background: #{$color-white};
     }
     .theme--dark {
         // General
@@ -290,5 +294,9 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // Demo view
+        --demo-text-color-1: #{$color-black-1};
+        --demo-text-color-2: #{$color-black-1};
+        --demo-icon-background: #{$color-red-8};
     }
 }

@@ -1,19 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
+import { isMobile } from '@deriv/shared';
+import Text from '../text';
 
 type TBadgeSize = 'medium' | 'large';
-type TBadgeSpacing = 'tight' | 'loose';
-type TWeight = 'bold' | 'regular';
+type TWeight = 'bold' | 'normal';
 type TBackgroundColor = 'blue' | 'orange' | 'red' | 'gray';
 type TRoundedCorners = 4 | 2;
 
 interface Badge extends React.HTMLAttributes<HTMLSpanElement> {
     className?: string;
-    color?: string;
+    custom_color?: string;
     label: string;
     rounded_corners?: TRoundedCorners;
     size?: TBadgeSize;
-    spacing?: TBadgeSpacing;
     weight?: TWeight;
 }
 
@@ -31,11 +31,10 @@ type BadgeProps = BadgeContained | BadgeBordered;
 const Badge = (props: BadgeProps) => {
     const {
         className,
-        color,
+        custom_color,
         label,
         rounded_corners = 4,
         size = 'medium',
-        spacing = 'tight',
         type,
         weight = 'bold',
         ...rest
@@ -44,16 +43,26 @@ const Badge = (props: BadgeProps) => {
     const is_contained = type === 'contained';
     const is_bordered = type === 'bordered';
 
-    const getBadgeStyles = () => {
+    const badge_height = React.useMemo(() => {
+        switch (size) {
+            case 'medium':
+            default:
+                return {
+                    height: isMobile() ? '1.2rem' : '1.4rem',
+                    paddingInline: '0.4rem',
+                };
+            case 'large':
+                return {
+                    height: isMobile() ? '1.6rem' : '2.2rem',
+                    paddingInline: '0.8rem',
+                };
+        }
+    }, [size]);
+
+    const badge_class_names = React.useMemo(() => {
         return classNames(
             'dc-badge',
             {
-                'dc-badge--bold': weight === 'bold',
-                'dc-badge--regular': weight === 'regular',
-                'dc-badge--tight': spacing === 'tight',
-                'dc-badge--loose': spacing === 'loose',
-                'dc-badge__medium': size === 'medium',
-                'dc-badge__large': size === 'large',
                 'dc-badge--contained': is_contained,
                 'dc-badge--bordered': is_bordered,
                 'dc-badge--blue': is_contained && props.background_color === 'blue',
@@ -65,16 +74,22 @@ const Badge = (props: BadgeProps) => {
             },
             className
         );
-    };
-
-    rest.style = { ...rest.style, color: color || rest.style?.color };
+    }, [className, is_bordered, is_contained, is_contained && props.background_color, rounded_corners]);
 
     if (!label) return null;
 
     return (
-        <span className={getBadgeStyles()} {...rest}>
+        <Text
+            as='span'
+            className={badge_class_names}
+            color={custom_color}
+            size={isMobile() ? 'xxxxs' : 'xxxs'}
+            styles={badge_height}
+            weight={weight}
+            {...rest}
+        >
             {label}
-        </span>
+        </Text>
     );
 };
 

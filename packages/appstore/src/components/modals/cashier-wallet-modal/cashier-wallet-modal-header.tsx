@@ -21,36 +21,25 @@ const CashierWalletModalHeader = ({
     is_demo,
     show_wallet_name,
 }: TCashierWalletModalHeaderProps) => {
-    const theme = is_dark ? '--dark' : '';
-
     const header_class_name = 'cashier-wallet-modal__header';
 
-    const getCloseIcon = () => {
-        const close_icon_map = {
-            dark: {
-                demo: 'IcAppstoreCloseLight',
-                real: 'IcAppstoreCloseDark',
-            },
-            light: {
-                demo: 'IcAppstoreCloseDark',
-                real: 'IcAppstoreCloseLight',
-            },
-        };
+    const getCloseIcon = React.useCallback(() => {
+        if (is_demo && is_dark) return 'IcAppstoreCloseLight';
+        if (is_demo && !is_dark) return 'IcAppstoreCloseDark';
+        if (is_dark) return 'IcAppstoreCloseDark';
+        return 'IcAppstoreCloseLight';
+    }, [is_dark, is_demo]);
 
-        const icon_type = is_dark ? 'dark' : 'light';
-        const icon_variant = is_demo ? 'demo' : 'real';
+    const getStylesByClassName = React.useCallback(
+        (class_name: string) => {
+            return classNames(class_name, {
+                [`${class_name}-demo`]: is_demo,
+            });
+        },
+        [is_demo]
+    );
 
-        return close_icon_map[icon_type][icon_variant];
-    };
-
-    const getStylesByClassName = (class_name: string) => {
-        return classNames(class_name, {
-            [`${class_name}-demo-dark`]: is_demo && is_dark,
-            [`${class_name}-demo-light`]: is_demo && !is_dark,
-        });
-    };
-
-    const getCurrencyIconSize = () => {
+    const getCurrencyIconSize = React.useCallback(() => {
         const sizes = {
             mobile: {
                 width: is_demo ? 64 : 48,
@@ -65,30 +54,32 @@ const CashierWalletModalHeader = ({
         const size = isMobile() ? sizes.mobile : sizes.desktop;
 
         return size;
-    };
+    }, [is_demo]);
 
-    const getCurrencyIconProps = () => {
+    const getCurrencyIconProps = React.useCallback(() => {
         const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark);
         const size = getCurrencyIconSize();
 
         return { icon, ...size };
-    };
+    }, [currency, getCurrencyIconSize, is_dark, is_demo]);
 
-    const getBackgroundName = () => {
+    const getBackgroundName = React.useCallback(() => {
         if (is_demo) {
             return 'demo';
         }
         return currency;
-    };
+    }, [is_demo, currency]);
 
     return (
         <div
-            className={classNames(header_class_name, `wallet-modal__${getBackgroundName().toLowerCase()}-bg${theme}`, {
-                [`${header_class_name}--hide-title`]: !show_wallet_name,
-                [`${header_class_name}__demo`]: is_demo,
-                [`${header_class_name}__demo--light`]: is_demo && !is_dark,
-                [`${header_class_name}__demo--dark`]: is_demo && is_dark,
-            })}
+            className={classNames(
+                header_class_name,
+                `wallet-modal__${getBackgroundName().toLowerCase()}-bg${is_dark ? '--dark' : ''}`,
+                {
+                    [`${header_class_name}--hide-title`]: !show_wallet_name,
+                    [`${header_class_name}__demo`]: is_demo,
+                }
+            )}
         >
             <div className={`${header_class_name}__title-wrapper`}>
                 {show_wallet_name && (
@@ -101,7 +92,7 @@ const CashierWalletModalHeader = ({
                             {is_demo ? 'Demo' : ''} {currency} Wallet
                         </Text>
                         {is_demo ? (
-                            <Badge type='contained' background_color='blue' label='Demo' />
+                            <Badge type='contained' background_color='blue' label='' />
                         ) : (
                             <Badge type='bordered' label='SVG' />
                         )}

@@ -191,6 +191,12 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // wallets
+        --wallets-banner-ready-bg-color: #{$READY-BANNER-BG-COLOR};
+        --wallets-banner-ready-tick-bg-color: #{$READY-BANNER-TICK-BG-COLOR};
+        --wallets-banner-border-color: #{$color-grey-4};
+        --wallets-banner-dot-color: #{$color-grey-6};
+        --wallets-banner-active-dot-color: #{$color-red};
     }
     .theme--dark {
         // General
@@ -300,5 +306,11 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // wallets
+        --wallets-banner-ready-bg-color: #{$READY-BANNER-BG-COLOR};
+        --wallets-banner-ready-tick-bg-color: #{$READY-BANNER-TICK-BG-COLOR};
+        --wallets-banner-border-color: #{$color-grey-4};
+        --wallets-banner-dot-color: #{$color-grey-6};
+        --wallets-banner-active-dot-color: #{$color-red};
     }
 }

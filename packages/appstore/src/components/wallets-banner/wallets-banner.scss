@@ -1,0 +1,185 @@
+.wallets-banner {
+    &__container {
+        position: relative;
+        padding-inline: 4.8rem;
+        margin-bottom: 2.4rem;
+        overflow: hidden;
+
+        border: 1px solid var(--wallets-banner-border-color);
+        box-shadow: 0px 12px 16px -4px rgba(14, 14, 14, 0.08), 0px 4px 6px -2px rgba(14, 14, 14, 0.03);
+        border-radius: $BORDER_RADIUS * 4;
+
+        @include mobile {
+            padding: 1.4rem 1.6rem;
+            border-radius: $BORDER_RADIUS * 2;
+        }
+    }
+
+    &__image {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        border-top-right-radius: $BORDER_RADIUS * 4;
+        border-bottom-right-radius: $BORDER_RADIUS * 4;
+
+        @include mobile {
+            border-top-right-radius: $BORDER_RADIUS * 2;
+            border-bottom-right-radius: $BORDER_RADIUS * 2;
+        }
+    }
+
+    &__upgrade-banner {
+        height: 18rem;
+
+        @include mobile {
+            height: 10.8rem;
+        }
+
+        &-description {
+            width: 45%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: baseline;
+
+            @include mobile {
+                width: 70%;
+            }
+        }
+
+        &-button {
+            margin-top: 0.8rem;
+            padding-inline: 6.7rem;
+
+            @include mobile {
+                padding-inline: 1.6rem;
+            }
+        }
+    }
+
+    &__upgrading-banner {
+        display: flex;
+        align-items: center;
+        height: 18.2rem;
+
+        @include mobile {
+            height: 14.2rem;
+        }
+
+        &-description {
+            width: 45%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: baseline;
+
+            @include mobile {
+                width: 70%;
+            }
+        }
+
+        &-loading {
+            span {
+                animation-name: loading;
+                animation-duration: 1.5s;
+                animation-iteration-count: infinite;
+                animation-timing-function: cubic-bezier(1, 0, 0, 1);
+            }
+
+            span:nth-child(2) {
+                animation-delay: 0.5s;
+            }
+
+            span:nth-child(3) {
+                animation-delay: 1s;
+            }
+        }
+
+        &-dot {
+            height: 0.8rem;
+            width: 0.8rem;
+            background-color: var(--wallets-banner-dot-color);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.6rem;
+
+            @include mobile {
+                height: 0.5rem;
+                width: 0.5rem;
+            }
+        }
+
+        &-image {
+            opacity: 50%;
+            height: 100%;
+        }
+    }
+
+    &__ready-banner {
+        display: flex;
+        align-items: center;
+        height: 23rem;
+        background-color: var(--wallets-banner-ready-bg-color);
+
+        @include mobile {
+            height: 19rem;
+        }
+
+        &-tick {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--wallets-banner-ready-tick-bg-color);
+            border-radius: 50%;
+            width: 4.8rem;
+            height: 4.8rem;
+
+            @include mobile {
+                width: 3.2rem;
+                height: 3.2rem;
+            }
+        }
+
+        &-description {
+            width: 45%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: baseline;
+
+            @include mobile {
+                width: 70%;
+            }
+        }
+
+        &-button {
+            margin-top: 0.8rem;
+            padding-inline: 8.6rem;
+
+            @include mobile {
+                padding-inline: 5rem;
+            }
+        }
+
+        &-image {
+            opacity: 90%;
+            height: 100%;
+
+            @include mobile {
+                opacity: 100%;
+            }
+        }
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-color: var(--wallets-banner-active-dot-color);
+    }
+    100% {
+        opacity: var(--wallets-banner-dot-color);
+    }
+}

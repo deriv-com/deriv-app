@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset.tsx';
 import { connect } from 'Stores/connect';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 import classNames from 'classnames';

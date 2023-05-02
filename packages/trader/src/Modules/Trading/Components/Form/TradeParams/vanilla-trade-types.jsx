@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonToggle } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset.tsx';
 
 const VanillaTradeTypes = ({ onChange, onChangeUiStore, vanilla_trade_type }) => {
     const changeTradeType = ({ target }) => {

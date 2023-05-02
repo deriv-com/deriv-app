@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset.tsx';
 import { connect } from 'Stores/connect';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 

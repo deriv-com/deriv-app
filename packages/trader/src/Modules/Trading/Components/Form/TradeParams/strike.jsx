@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset.tsx';
 import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import './strike-field.scss';

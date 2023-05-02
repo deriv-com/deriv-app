@@ -1,9 +1,30 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Popover } from '@deriv/components';
 
-const Fieldset = ({ children, className, header, header_tooltip, is_center, onMouseEnter, onMouseLeave }) => {
+// ToDo:
+// - Refactor Last Digit to keep the children as array type.
+//   Currently last_digit.jsx returns object (React-Element) as 'children'
+//   props type.
+type TFieldset = {
+    children: React.ReactNode[] | React.ReactNode;
+    className: string;
+    header?: string | React.ReactNode;
+    header_tooltip?: string | React.ReactNode;
+    is_center?: boolean;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+};
+
+const Fieldset = ({
+    children,
+    className,
+    header,
+    header_tooltip,
+    is_center,
+    onMouseEnter,
+    onMouseLeave,
+}: TFieldset) => {
     const fieldset_header_class = classNames('trade-container__fieldset-header', {
         'center-text': is_center,
         'trade-container__fieldset-header--inline': header_tooltip,
@@ -33,20 +54,6 @@ const Fieldset = ({ children, className, header, header_tooltip, is_center, onMo
             {children}
         </fieldset>
     );
-};
-
-// ToDo:
-// - Refactor Last Digit to keep the children as array type.
-//   Currently last_digit.jsx returns object (React-Element) as 'children'
-//   props type.
-Fieldset.propTypes = {
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    className: PropTypes.string,
-    header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    is_center: PropTypes.bool,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
 };
 
 export default Fieldset;

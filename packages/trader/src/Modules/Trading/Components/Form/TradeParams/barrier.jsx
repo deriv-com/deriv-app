@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, Icon, InputField, MobileWrapper } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset.tsx';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';

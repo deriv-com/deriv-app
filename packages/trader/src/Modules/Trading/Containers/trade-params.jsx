@@ -15,7 +15,7 @@ import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
 import { connect } from 'Stores/connect';
-import Fieldset from 'App/Components/Form/fieldset.jsx';
+import Fieldset from 'App/Components/Form/fieldset.tsx';
 
 const TradeParams = ({ form_components, is_minimized }) => {
     const isVisible = component_key => {

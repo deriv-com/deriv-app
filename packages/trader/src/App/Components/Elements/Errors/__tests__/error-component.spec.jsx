@@ -25,13 +25,13 @@ describe('ErrorComponent', () => {
     });
 
     it('should render ErrorComponent', () => {
-        const { container } = render(
+        render(
             <Router history={browser_history}>
                 <ErrorComponent />
             </Router>
         );
 
-        expect(container).toBeInTheDocument();
+        expect(screen.getByText(common_error_message)).toBeInTheDocument();
     });
     it('should render child component Dialog if ErrorComponent recive is_dialog === true', () => {
         render(<ErrorComponent is_dialog />);

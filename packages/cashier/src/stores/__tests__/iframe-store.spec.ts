@@ -24,7 +24,7 @@ beforeEach(() => {
             is_dark_mode_on: true,
             is_mobile: false,
         },
-    });
+    }) as TRootStore;
     iframe_store = new IframeStore(root_store);
 });
 

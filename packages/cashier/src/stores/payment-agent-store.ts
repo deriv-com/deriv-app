@@ -1,5 +1,5 @@
 import { action, computed, observable, makeObservable, IObservableArray } from 'mobx';
-import { PaymentAgentDetailsResponse } from '@deriv/api-types';
+import { PaymentAgentDetailsResponse, PaymentAgentListResponse, PaymentagentList } from '@deriv/api-types';
 import { formatMoney, routes, shuffleArray } from '@deriv/shared';
 import { getNormalizedPaymentMethod } from 'Utils/utility';
 import Constants from 'Constants/constants';
@@ -12,8 +12,6 @@ import {
     TPaymentAgentWithdrawConfirm,
     TPaymentAgentWithdrawReceipt,
     TPaymentAgentWithdrawRequest,
-    TPaymentAgentListResponse,
-    TExtendedPaymentAgentList,
     TSupportedBank,
     TPartialPaymentAgentList,
     TTarget,
@@ -302,7 +300,7 @@ export default class PaymentAgentStore {
         };
     }
 
-    addPaymentAgent(payment_agent: TExtendedPaymentAgentList[0]) {
+    addPaymentAgent(payment_agent: Required<PaymentagentList>['list'][0]) {
         this.agents.push({
             text: payment_agent.name,
             value: payment_agent.paymentagent_loginid,

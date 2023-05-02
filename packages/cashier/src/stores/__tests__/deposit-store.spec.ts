@@ -1,6 +1,6 @@
 import DepositStore from '../deposit-store';
 import { configure } from 'mobx';
-import { TWebSocket } from '../../types';
+import { TRootStore, TWebSocket } from '../../types';
 import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
@@ -42,7 +42,7 @@ describe('DepositStore', () => {
             send: jest.fn(() => Promise.resolve({})),
         };
 
-        deposit_store = new DepositStore(WS as TWebSocket, root_store);
+        deposit_store = new DepositStore(WS as TWebSocket, root_store as TRootStore);
     });
 
     it('should mount deposit properly', async () => {

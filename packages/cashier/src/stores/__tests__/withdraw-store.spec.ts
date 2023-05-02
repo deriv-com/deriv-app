@@ -83,7 +83,7 @@ describe('WithdrawStore', () => {
                     },
                 },
             },
-        });
+        }) as TRootStore;
         WS = {
             authorized: {
                 cashier: jest.fn(() => Promise.resolve({ cashier: 'https://deriv.com' })),
@@ -202,7 +202,6 @@ describe('WithdrawStore', () => {
         const verification_code = 'aBcDefXa';
 
         withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-        withdraw_store.root_store.modules.cashier.general_store.is_crypto = true;
         await withdraw_store.onMountWithdraw(verification_code);
         expect(setIframeUrl).toHaveBeenCalledWith('');
 

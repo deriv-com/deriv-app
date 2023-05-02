@@ -184,7 +184,7 @@ beforeEach(() => {
             },
             combined_cfd_mt5_accounts: [],
         },
-    });
+    }) as TRootStore;
     account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store);
 });
 
@@ -546,9 +546,9 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set transferred amount in receipt', () => {
-        account_transfer_store.setReceiptTransfer({ amount: 1000 });
+        account_transfer_store.setReceiptTransfer({ amount: '1000' });
 
-        expect(account_transfer_store.receipt.amount_transferred).toBe(1000);
+        expect(account_transfer_store.receipt.amount_transferred).toBe('1000');
     });
 
     it('should switch the value of selected_from and selected_to, if new value of selected_from is the same as the current selected_to', async () => {
@@ -707,10 +707,9 @@ describe('AccountTransferStore', () => {
         await account_transfer_store.sortAccountsTransfer({ accounts });
         await account_transfer_store.requestTransferBetweenAccounts({ amount: 10 });
 
-        expect(account_transfer_store.root_store.modules.cashier.general_store.setLoading.mock.calls).toEqual([
-            [true],
-            [false],
-        ]);
+        expect(
+            (account_transfer_store.root_store.modules.cashier.general_store.setLoading as jest.Mock).mock.calls
+        ).toEqual([[true], [false]]);
     });
 
     it('should call WS.mt5LoginList and WS.balanceAll methods to update the balance for mt account when calling requestTransferBetweenAccounts', async () => {

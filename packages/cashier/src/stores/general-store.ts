@@ -160,7 +160,7 @@ export default class GeneralStore extends BaseStore {
 
             if (is_logged_in) {
                 if (!switched) {
-                    payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
+                    payment_agent.setPaymentAgentList().then(() => payment_agent.filterPaymentAgentList());
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();

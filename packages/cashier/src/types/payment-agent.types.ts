@@ -1,12 +1,10 @@
 import { PaymentagentList } from '@deriv/api-types';
 
-export type TAgent = {
-    email?: string;
-    max_withdrawal?: string | null;
-    min_withdrawal?: string | null;
-    phone_numbers?: { phone_number: string }[];
+export type TAgent = DeepPartial<
+    Pick<PaymentagentList['list'][0], 'email' | 'max_withdrawal' | 'min_withdrawal' | 'phone_numbers'>
+> & {
     text?: string;
-    url?: { url: string }[];
+    url?: { url?: string }[];
     value?: string;
 };
 
@@ -33,8 +31,8 @@ export type TPaymentAgentWithdrawReceipt = {
     payment_agent_email?: string;
     payment_agent_id?: string;
     payment_agent_name?: string;
-    payment_agent_phone?: { phone_number: string }[];
-    payment_agent_url?: { url: string }[];
+    payment_agent_phone?: { phone_number?: string }[];
+    payment_agent_url?: { url?: string }[];
 };
 
 export type TPartialPaymentAgentList = {
@@ -51,14 +49,6 @@ export type TPartialPaymentAgentList = {
     urls?: { url?: string }[];
     withdrawal_commission?: string;
 };
-
-type TExtendedPaymentAgentFields = {
-    phone_numbers: { phone_number: string }[];
-    supported_payment_methods: { payment_method: string }[];
-    urls: { url: string }[];
-};
-
-export type TExtendedPaymentAgentList = (PaymentagentList['list'][0] & TExtendedPaymentAgentFields)[];
 
 export type TPaymentAgentTransferConfirm = {
     amount?: number;

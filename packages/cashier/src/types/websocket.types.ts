@@ -73,8 +73,6 @@ export type TPaymentAgentWithdrawRequest = Omit<
     'paymentagent_withdraw' | 'passthrough' | 'req_id' | 'paymentagent_loginid'
 > & { loginid: string };
 
-export type TPaymentAgentListResponse = Omit<PaymentAgentListResponse, 'echo_req' | 'msg_type'>;
-
 type TWebSocketCall = {
     cashier: (
         action: string,
@@ -82,7 +80,9 @@ type TWebSocketCall = {
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
     cashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
-    paymentAgentTransfer: (request: TPaymentAgentTransferRequest) => Promise<PaymentAgentTransferResponse>;
+    paymentAgentTransfer: (
+        request: TPaymentAgentTransferRequest
+    ) => Promise<PaymentAgentTransferResponse & { error: TServerError }>;
     p2pAdvertiserInfo?: () => Promise<unknown>;
     send?: (obj: unknown) => Promise<TAuthorizedSend>;
     storage: TStorage;

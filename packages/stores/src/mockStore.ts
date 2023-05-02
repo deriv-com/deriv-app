@@ -343,6 +343,7 @@ const mock = (): TStores => {
             is_low_risk_cr_eu_real: false,
             CFDs_restricted_countries: [],
             show_eu_related_content: false,
+            financial_restricted_countries: false,
             selected_account_type: 'real',
             no_CR_account: false,
             no_MF_account: false,

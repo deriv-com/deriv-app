@@ -401,10 +401,11 @@ type TTradersHubStore = {
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     show_eu_related_content: boolean;
-    selectRegion: (region: string) => void;
     CFDs_restricted_countries: string[];
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
+    selectRegion: (region: string) => void;
+    financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;

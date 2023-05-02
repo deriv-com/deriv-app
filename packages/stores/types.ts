@@ -162,6 +162,7 @@ type TClientStore = {
     is_eu_country: boolean;
     is_eu: boolean;
     is_uk: boolean;
+    is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
@@ -223,7 +224,6 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
-    is_crypto: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
     isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
     fetchResidenceList?: () => Promise<void>;
@@ -278,6 +278,7 @@ type TClientStore = {
     is_fully_authenticated: boolean;
     states_list: StatesList;
     fetchStatesList: () => Promise<void>;
+    is_crypto: (currency?: string) => boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;

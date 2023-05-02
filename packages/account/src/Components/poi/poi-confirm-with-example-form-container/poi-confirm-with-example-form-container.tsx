@@ -168,7 +168,7 @@ const PoiConfirmWithExampleFormContainer = ({
                             setFieldValue={setFieldValue}
                             setFieldTouched={setFieldTouched}
                             disabled_items={[]}
-                            is_rendered_for_onfido={true}
+                            is_rendered_for_onfido
                         />
                         <button
                             type='submit'

@@ -70,15 +70,15 @@ const BuySellHeader = ({ table_type }) => {
 
     return (
         <div
-            className={classNames('buy-sell__header', {
-                'buy-sell__header-position-static': !!buy_sell_store.api_error_message,
+            className={classNames('buy-sell-header', {
+                'buy-sell-header__position-static': !!buy_sell_store.api_error_message,
             })}
         >
-            <div className='buy-sell__header-container'>
+            <div className='buy-sell-header__container'>
                 <ToggleContainer>
                     <ButtonToggle
                         buttons_arr={getBuySellFilters()}
-                        className='buy-sell__header-filters'
+                        className='buy-sell-header__filters'
                         is_animated
                         name='filter'
                         onChange={buy_sell_store.onChangeTableType}
@@ -87,8 +87,8 @@ const BuySellHeader = ({ table_type }) => {
                     />
                 </ToggleContainer>
                 <div
-                    className={classNames('buy-sell__header-row', {
-                        'buy-sell__header-row--selector': is_currency_selector_visible,
+                    className={classNames('buy-sell-header__row', {
+                        'buy-sell-header__row--selector': is_currency_selector_visible,
                     })}
                 >
                     {is_currency_selector_visible && <CurrencyDropdown />}
@@ -99,7 +99,7 @@ const BuySellHeader = ({ table_type }) => {
                     />
                     <SortDropdown />
                     <Icon
-                        className='buy-sell__header-row--filter'
+                        className='buy-sell-header__row--filter'
                         icon='IcFilter'
                         onClick={() => general_store.showModal({ key: 'FilterModal', props: {} })}
                         size={40}

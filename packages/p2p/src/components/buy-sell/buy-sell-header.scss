@@ -1,4 +1,4 @@
-.buy-sell__header {
+.buy-sell-header {
     display: flex;
     flex-direction: column;
 
@@ -21,7 +21,7 @@
         z-index: 1;
     }
 
-    &-container {
+    &__container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -31,7 +31,7 @@
         }
     }
 
-    &-filters {
+    &__filters {
         height: 3.6rem;
         width: 16.8rem;
 
@@ -41,7 +41,7 @@
         }
     }
 
-    &-match-ads {
+    &__match-ads {
         display: flex;
         flex-direction: row;
 
@@ -61,7 +61,7 @@
         }
     }
 
-    &-row {
+    &__row {
         display: flex;
         flex-direction: row;
 
@@ -95,6 +95,6 @@
     }
 }
 
-.buy-sell__header-position-static {
+.buy-sell-header__position-static {
     position: static;
 }

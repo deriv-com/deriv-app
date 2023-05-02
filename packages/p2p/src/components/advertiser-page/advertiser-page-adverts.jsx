@@ -7,7 +7,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import Empty from 'Components/empty/empty.jsx';
 import AdvertiserPageRow from './advertiser-page-row.jsx';
-import './advertiser-page.scss';
+import './advertiser-page-adverts.scss';
 
 const AdvertiserPageAdverts = () => {
     const {
@@ -21,10 +21,10 @@ const AdvertiserPageAdverts = () => {
     );
 
     return (
-        <div className='advertiser-page__adverts'>
+        <div className='advertiser-page-adverts'>
             <Tabs
                 active_index={advertiser_page_store.active_index}
-                className='advertiser-page__adverts-tabs'
+                className='advertiser-page-adverts__tabs'
                 is_full_width={isMobile()}
                 onTabItemClick={advertiser_page_store.handleTabItemClick}
                 header_fit_content
@@ -34,16 +34,16 @@ const AdvertiserPageAdverts = () => {
                 <div label={localize('Sell')} />
             </Tabs>
             {advertiser_page_store.is_loading_adverts ? (
-                <div className='advertiser-page__adverts-table'>
+                <div className='advertiser-page-adverts__table'>
                     <Loading is_fullscreen={false} />
                 </div>
             ) : (
                 <React.Fragment>
                     {advertiser_page_store.adverts.length ? (
-                        <Table className='advertiser-page__adverts-table'>
+                        <Table className='advertiser-page-adverts__table'>
                             {isDesktop() && (
                                 <Table.Header>
-                                    <Table.Row className='advertiser-page__adverts-table_row'>
+                                    <Table.Row className='advertiser-page-adverts__table-row'>
                                         <Table.Head>{localize('Limits')}</Table.Head>
                                         <Table.Head>
                                             {localize('Rate (1 {{currency}})', {
@@ -57,7 +57,7 @@ const AdvertiserPageAdverts = () => {
                                     </Table.Row>
                                 </Table.Header>
                             )}
-                            <Table.Body className='advertiser-page__adverts-table-body'>
+                            <Table.Body className='advertiser-page-adverts__table-body'>
                                 <InfiniteDataList
                                     data_list_className='advertiser-page__data-list'
                                     items={advertiser_page_store.adverts}

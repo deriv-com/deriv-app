@@ -8,7 +8,7 @@ import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
-import NoAds from './no-ads/no-ads.jsx';
+import NoAds from 'Components/buy-sell//no-ads';
 
 const BuySellRowRendererComponent = row_props => {
     const { buy_sell_store } = useStores();

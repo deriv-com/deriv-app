@@ -8,7 +8,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { generateEffectiveRate } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import './advertiser-page.scss';
+import './advertiser-page-row.scss';
 
 const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
@@ -48,7 +48,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
 
     if (isMobile()) {
         return (
-            <Table.Row className='advertiser-page__adverts-table_row'>
+            <Table.Row className='advertiser-page-adverts__table-row'>
                 <Table.Cell className='advertiser-page__cell'>
                     <Text size='xxs' line_height='m'>
                         <Localize
@@ -58,12 +58,9 @@ const AdvertiserPageRow = ({ row: advert }) => {
                             }}
                         />
                     </Text>
-
-                    <div className='advertiser-page__adverts-price'>
-                        <Text color='profit-success' size='s' weight='bold' line_height='m'>
-                            {display_effective_rate} {local_currency}
-                        </Text>
-                    </div>
+                    <Text color='profit-success' size='s' weight='bold' line_height='m'>
+                        {display_effective_rate} {local_currency}
+                    </Text>
                     <div className='advertiser-page__cell-limit'>
                         <Text size='xxs' line_height='m'>
                             <Localize
@@ -93,7 +90,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                 {is_my_advert ? (
                     <Table.Cell />
                 ) : (
-                    <Table.Cell className='advertiser-page__adverts-button'>
+                    <Table.Cell className='advertiser-page-adverts__button'>
                         <Button primary large onClick={showAdForm} is_disabled={general_store.is_barred}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
@@ -104,19 +101,19 @@ const AdvertiserPageRow = ({ row: advert }) => {
     }
 
     return (
-        <Table.Row className='advertiser-page__adverts-table_row'>
+        <Table.Row className='advertiser-page-adverts__table-row'>
             <Table.Cell>{`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}</Table.Cell>
-            <Table.Cell className='advertiser-page__adverts-price'>
+            <Table.Cell>
                 <Text color='profit-success' line-height='m' size='xs' weight='bold'>
                     {display_effective_rate} {local_currency}
                 </Text>
             </Table.Cell>
             <Table.Cell>
-                <div className='buy-sell-row__payment-method'>
+                <div className='advertiser-page__payment-methods-list'>
                     {payment_method_names
                         ? payment_method_names.map((payment_method, key) => {
                               return (
-                                  <div className='buy-sell-row__payment-method--label' key={key}>
+                                  <div className='advertiser-page__payment-method' key={key}>
                                       <Text color='general' size='xs' line-height='l'>
                                           {payment_method}
                                       </Text>
@@ -129,7 +126,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
             {is_my_advert ? (
                 <Table.Cell />
             ) : (
-                <Table.Cell className='advertiser-page__adverts-button'>
+                <Table.Cell className='advertiser-page-adverts__button'>
                     <Button is_disabled={general_store.is_barred} onClick={showAdForm} primary small>
                         {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                     </Button>

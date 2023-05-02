@@ -1,0 +1,7 @@
+.buy-sell-form-receive-amount {
+    @include mobile {
+        border-top: 1px solid var(--general-section-2);
+        padding: 0.8rem 1.6rem;
+        background-color: var(--general-main-1);
+    }
+}

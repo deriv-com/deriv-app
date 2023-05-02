@@ -45,11 +45,11 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     let virtual_accounts = [];
     let eu_accounts = [];
     let non_eu_accounts = [];
-        Object.keys(accounts).forEach(account => {
-                if (account.startsWith('VR')) virtual_accounts.push({ ...accounts[account], account });
-                if (account.startsWith('MF')) eu_accounts.push({ ...accounts[account], account });
-                if (account.startsWith('CR')) non_eu_accounts.push({ ...accounts[account], account });
-        });
+    Object.keys(accounts).forEach(account => {
+        if (account.startsWith('VR')) virtual_accounts.push({ ...accounts[account], account });
+        if (account.startsWith('MF')) eu_accounts.push({ ...accounts[account], account });
+        if (account.startsWith('CR')) non_eu_accounts.push({ ...accounts[account], account });
+    });    
     let real_account = [...non_eu_accounts, ...eu_accounts];
 
     const is_real = activeTab === 'real';
@@ -163,11 +163,10 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         <span className='account__switcher-total-balance-amount account__switcher-balance'>
                             {activeTab === 'demo'
                                 ? getTotalDemo(accounts)
-                                : low_risk_without_account || high_risk_without_account
-                                    ? 0
-                                    : balance.toLocaleString(undefined, {
-                                        minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
-                                    })}
+                                : low_risk_without_account || high_risk_without_account ? 0 : balance.toLocaleString(undefined, {
+                                    minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
+                                })
+                            }
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>

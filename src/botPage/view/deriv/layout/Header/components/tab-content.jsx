@@ -46,13 +46,6 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                         accounts.length > 0 &&
                         accounts
                             .sort((acc, acc1) => {
-                                //TODO Need to use this logic to sort accounts 
-                                //used an harcoded array for now
-                                console.log({
-                                    account1: acc.currency,
-                                    account2: acc1.currency,
-                                    check: acc.currency < acc1.currency,
-                                })
                                 const a_currency = acc.currency;
                                 const b_currency = acc1.currency;
                                 const a_is_crypto = CRYPTO_CURRENCIES.includes(a_currency);
@@ -69,7 +62,6 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                 return 1;
                             })
                             .map((account, index) => {
-                                console.log(account);
                                 const { demo_account, currency, balance } = account;
                                 const currency_icon = demo_account ? 'virtual' : currency?.toLowerCase() || 'unknown';
                                 const getBalance = () => {

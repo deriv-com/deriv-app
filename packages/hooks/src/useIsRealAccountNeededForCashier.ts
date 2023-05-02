@@ -1,6 +1,6 @@
 import { useStore } from '@deriv/stores';
-import useHasSvgAccount from './useHasSvgAccount';
 import useHasMaltaInvestAccount from './useHasMaltaInvestAccount';
+import useHasSvgAccount from './useHasSvgAccount';
 
 const useIsRealAccountNeededForCashier = () => {
     const { traders_hub } = useStore();

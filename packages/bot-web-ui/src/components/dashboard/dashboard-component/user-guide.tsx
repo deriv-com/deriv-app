@@ -10,7 +10,7 @@ type TUserGuide = {
 const UserGuide = ({ setActiveTab }: TUserGuide) => {
     return (
         <div className='tab__dashboard__home__retrigger'>
-            <button onClick={() => setActiveTab(DBOT_TABS.TUTORIAL)}>
+            <button data-testid='btn-user-guide' onClick={() => setActiveTab(DBOT_TABS.TUTORIAL)}>
                 <Icon
                     className='tab__dashboard__home__retrigger__icon'
                     width='2.4rem'

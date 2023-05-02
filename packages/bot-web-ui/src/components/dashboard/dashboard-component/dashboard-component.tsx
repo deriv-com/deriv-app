@@ -10,6 +10,11 @@ import UserGuide from './user-guide';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { observer } from '@deriv/stores';
 
+type TMobileIconGuide = {
+    has_dashboard_strategies: boolean;
+    handleTabChange: (active_number: number) => void;
+};
+
 type TDashboardMobileCommonProps = {
     is_mobile: boolean;
     has_dashboard_strategies: boolean;
@@ -27,10 +32,10 @@ const DashboardTitle = ({ is_mobile, has_dashboard_strategies }: TDashboardMobil
     </div>
 );
 
-const MobileIconGuide = () => (
+const MobileIconGuide = ({ handleTabChange }: TMobileIconGuide) => (
     <MobileWrapper>
         <div>
-            <Local />
+            <Local handleTabChange={handleTabChange} />
         </div>
     </MobileWrapper>
 );
@@ -98,7 +103,10 @@ const DashboardComponent = observer(() => {
                                         has_dashboard_strategies={has_dashboard_strategies}
                                     />
                                 )}
-                                <MobileIconGuide />
+                                <MobileIconGuide
+                                    handleTabChange={handleTabChange}
+                                    has_dashboard_strategies={has_dashboard_strategies}
+                                />
                             </div>
                             {is_mobile && !has_dashboard_strategies && (
                                 <DashboardDescription
@@ -112,7 +120,7 @@ const DashboardComponent = observer(() => {
 
                     {has_dashboard_strategies && !is_mobile && (
                         <div className='tab__dashboard__preview'>
-                            <Local />
+                            <Local handleTabChange={handleTabChange} />
                         </div>
                     )}
                 </div>

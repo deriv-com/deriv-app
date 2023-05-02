@@ -240,7 +240,7 @@ const Dashboard = ({
                         top
                     >
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id='id-dbot-dashboard'>
-                            <DashboardComponent />
+                            <DashboardComponent handleTabChange={handleTabChange} />
                         </div>
                         <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>

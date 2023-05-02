@@ -1,14 +1,13 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Button, Text } from '@deriv/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import BalanceText from 'Components/elements/text/balance-text';
 import './demo-account-card.scss';
 import { localize } from '@deriv/translations';
 import { usePlatformAccounts } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 
-const DemoAccountCard = () => {
+const DemoAccountCard = observer(() => {
     const { client, traders_hub } = useStore();
     const { accounts, loginid, resetVirtualBalance, default_currency } = client;
     const { selected_account_type } = traders_hub;
@@ -42,6 +41,6 @@ const DemoAccountCard = () => {
             />
         </CurrencySwitcherContainer>
     );
-};
+});
 
-export default observer(DemoAccountCard);
+export default DemoAccountCard;

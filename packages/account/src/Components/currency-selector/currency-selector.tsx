@@ -2,7 +2,14 @@ import classNames from 'classnames';
 import React, { HTMLAttributes, RefObject } from 'react';
 import { Field, Formik, FormikHandlers, FormikProps, FormikState, FormikValues } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { getPlatformSettings, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
+import {
+    getPlatformSettings,
+    isMobile,
+    isDesktop,
+    reorderCurrencies,
+    PlatformContext,
+    getAddressDetailsFields,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group';
 import RadioButton from './radio-button';
@@ -16,6 +23,7 @@ type TCurrencySelectorExtend = {
     available_crypto_currencies: TCurrencyConfig[];
     getCurrentStep?: () => number;
     goToNextStep: () => void;
+    goToStep: (step: number) => void;
     goToPreviousStep: () => void;
     has_cancel: boolean;
     has_currency: boolean;
@@ -51,6 +59,7 @@ type TCurrencySelector = HTMLAttributes<HTMLInputElement | HTMLLabelElement> & T
 const CurrencySelector = ({
     getCurrentStep,
     goToNextStep,
+    goToStep,
     has_currency,
     has_real_account,
     legal_allowed_currencies,
@@ -119,8 +128,13 @@ const CurrencySelector = ({
     }, []);
 
     React.useEffect(() => {
-        if (is_bypass_step) {
-            goToNextStep();
+        if (is_bypass_step && real_account_signup?.error_details) {
+            const keys = Object.keys(real_account_signup?.error_details);
+            const route_to_address_details = Object.keys(getAddressDetailsFields()).filter(item => keys.includes(item));
+            if (route_to_address_details?.length > 0) goToStep(3);
+            else {
+                goToNextStep();
+            }
             resetRealAccountSignupParams();
             setIsBypassStep(false);
         }

@@ -7,7 +7,8 @@ import { filterObjProperties, toMoment, validLength, validName, WS } from '@deri
 import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
-import PoiConfirmWithExampleForm from 'Components/poi/poi-confirm-with-example-form';
+// import PoiConfirmWithExampleForm from 'Components/poi/poi-confirm-with-example-form';
+import PersonalDetailsForm from 'Components/forms/personal-details-form';
 
 type TValues = { [p: string]: string };
 
@@ -147,16 +148,38 @@ const PoiConfirmWithExampleFormContainer = ({
 
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
-            {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
-                <Form className='account-form__poi-confirm-example_container ' onSubmit={handleSubmit}>
+            {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                setFieldValue,
+                setFieldTouched,
+            }) => (
+                <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
-                        <PoiConfirmWithExampleForm
+                        {/* <PoiConfirmWithExampleForm
                             values={values}
                             handleChange={handleChange}
                             handleBlur={handleBlur}
                             errors={errors}
                             setFieldValue={setFieldValue}
                             checked={checked}
+                        /> */}
+
+                        <PersonalDetailsForm
+                            errors={errors}
+                            touched={touched}
+                            values={values}
+                            handleChange={handleChange}
+                            handleBlur={handleBlur}
+                            setFieldValue={setFieldValue}
+                            setFieldTouched={setFieldTouched}
+                            disabled_items={[]}
+                            is_rendered_for_onfido={true}
                         />
                         <button
                             type='submit'

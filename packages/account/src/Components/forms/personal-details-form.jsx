@@ -91,6 +91,7 @@ const PersonalDetailsForm = ({
         account_opening_reason_list,
         closeRealAccountSignup,
         salutation_list,
+        is_rendered_for_onfido,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
@@ -126,7 +127,10 @@ const PersonalDetailsForm = ({
     return (
         <div className={classNames({ 'account-form__poi-confirm-example': is_qualified_for_idv })}>
             <InlineNoteWithIcon message={name_dob_clarification_message} font_size='xs' />
-            <FormBodySection has_side_note={is_qualified_for_idv} side_note={<PoiNameDobExampleIcon />}>
+            <FormBodySection
+                has_side_note={is_qualified_for_idv || is_rendered_for_onfido}
+                side_note={<PoiNameDobExampleIcon />}
+            >
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (
                         <div>
@@ -151,7 +155,7 @@ const PersonalDetailsForm = ({
                             </Text>
                         </div>
                     )}
-                    {!is_qualified_for_idv && !is_appstore && (
+                    {!is_qualified_for_idv && !is_appstore && !is_rendered_for_onfido && (
                         <FormSubHeader title={'salutation' in values ? localize('Title and name') : localize('Name')} />
                     )}
                     {'salutation' in values && (
@@ -197,7 +201,9 @@ const PersonalDetailsForm = ({
                             data-testid='last_name'
                         />
                     )}
-                    {!is_appstore && !is_qualified_for_idv && <FormSubHeader title={localize('Other details')} />}
+                    {!is_appstore && !is_qualified_for_idv && !is_rendered_for_onfido && (
+                        <FormSubHeader title={localize('Other details')} />
+                    )}
                     {'date_of_birth' in values && (
                         <DateOfBirthField
                             name='date_of_birth'

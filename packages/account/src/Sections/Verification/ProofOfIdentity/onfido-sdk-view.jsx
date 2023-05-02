@@ -231,7 +231,7 @@ const OnfidoSdkView = ({
                         }}
                         unmountOnExit
                     >
-                        <div className='account-form__poi-confirm-example_wrapper'>
+                        <div className='account-form__poi-confirm-example_wrapper account-form__poi-confirm-example_container'>
                             <PoiConfirmWithExampleFormContainer
                                 account_settings={account_settings}
                                 getChangeableFields={getChangeableFields}

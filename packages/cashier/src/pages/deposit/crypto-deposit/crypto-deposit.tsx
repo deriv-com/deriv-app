@@ -171,7 +171,7 @@ const CryptoDeposit = observer(() => {
                     </div>
                 ) : (
                     <>
-                        {isSuccess && data?.currencies_config[currency].minimum_deposit ? (
+                        {isSuccess && data?.currencies_config[currency]?.minimum_deposit ? (
                             <AlertBanner
                                 classname='crypto-third-party-alert'
                                 icon='IcAlertWarningDark'

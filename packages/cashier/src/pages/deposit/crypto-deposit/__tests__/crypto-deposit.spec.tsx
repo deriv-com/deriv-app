@@ -27,6 +27,40 @@ jest.mock('Components/recent-transaction', () => {
     return RecentTransactions;
 });
 
+jest.mock('@deriv/api', () => {
+    return {
+        ...jest.requireActual('@deriv/api'),
+        useFetch: jest.fn(() => ({
+            data: {
+                currencies_config: {
+                    tUSDT: {
+                        minimum_deposit: 2,
+                        minimum_withdrawal: 4.54,
+                    },
+                    BTC: {
+                        minimum_deposit: undefined,
+                        minimum_withdrawal: undefined,
+                    },
+                    ETH: {
+                        minimum_deposit: undefined,
+                        minimum_withdrawal: undefined,
+                    },
+                    USDC: {
+                        minimum_deposit: undefined,
+                        minimum_withdrawal: undefined,
+                    },
+                    eUSDT: {
+                        minimum_deposit: undefined,
+                        minimum_withdrawal: undefined,
+                    },
+                },
+            },
+            isLoading: false,
+            isSuccess: true,
+        })),
+    };
+});
+
 describe('<CryptoDeposit />', () => {
     let history: ReturnType<typeof createBrowserHistory>;
     const renderWithRouter = (component: JSX.Element, mockRootStore: TRootStore) => {
@@ -439,23 +473,6 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
-        jest.mock('@deriv/api', () => {
-            return {
-                ...jest.requireActual('@deriv/api'),
-                useFetch: jest.fn(() => ({
-                    data: {
-                        currencies_config: {
-                            tUSDT: {
-                                minimum_deposit: 2,
-                                minimum_withdrawal: 4.54,
-                            },
-                        },
-                    },
-                    isLoading: false,
-                    isSuccess: true,
-                })),
-            };
-        });
         const mockRootStore = {
             client: {
                 currency: 'tUSDT',

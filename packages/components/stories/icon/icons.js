@@ -409,6 +409,7 @@ export const icons =
         'IcInstallationWebDemo',
         'IcInstallationWebReal',
         'IcInstallationWindows',
+        'IcInvalidError',
         'IcJetonDark',
         'IcJetonLight',
         'IcLanguage',

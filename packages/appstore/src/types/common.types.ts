@@ -167,6 +167,7 @@ export interface AccountListDetail {
     title: string;
 }
 
+export type TWalletsMigrationStatus = 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
 export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
 export type TWalletSvgCurrency =
     | Extract<Currency, 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'LTC' | 'USDC'>

@@ -116,16 +116,24 @@
             margin-bottom: 0.8rem;
         }
     }
-    &__wrapper .account-transfer-form__input {
-        margin-bottom: -0.8rem !important;
-        min-width: 36rem;
-        &-fit-content {
-            width: fit-content;
+    &__wrapper {
+        .cashier__form-submit {
+            margin-top: 0;
         }
-        @include mobile {
-            width: 100%;
-            min-width: auto;
-            margin-bottom: 2.6rem !important;
+        .account-transfer-form__input {
+            margin-bottom: -0.8rem !important;
+            min-width: 36rem;
+            .dc-input__hint {
+                margin: 0.9rem 0 -1.9rem 1.3rem;
+            }
+            &-fit-content {
+                width: fit-content;
+            }
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+                margin-bottom: 2.6rem !important;
+            }
         }
     }
     &__currency,

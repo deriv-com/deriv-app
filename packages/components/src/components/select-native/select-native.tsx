@@ -124,80 +124,87 @@ const SelectNative = ({
                     'dc-input--error': error,
                 })}
             >
-                <div className='dc-select-native__display'>
-                    {list_items && value && (
-                        <div
-                            className={classNames('dc-select-native__display-text', classNameDisplay)}
-                            data-testid='selected_value'
-                        >
-                            {!hide_selected_value && (use_text ? value : getDisplayText(list_items, value))}
-                        </div>
-                    )}
-                </div>
                 <div
-                    className={classNames('dc-select-native__placeholder', {
-                        'dc-select-native__placeholder--has-value': value,
-                        'dc-select-native__placeholder--hide-top-placeholder': value && hide_top_placeholder,
-                        'dc-select-native__placeholder--disabled': disabled,
+                    className={classNames('dc-select-native__container', {
+                        'dc-select-native__container--error': error,
+                        'dc-select-native__container--disabled': disabled,
                     })}
                 >
-                    {label}
-                </div>
-                {!suffix_icon ? (
-                    <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
-                ) : (
-                    <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} />
-                )}
-                <select
-                    className='dc-select-native__picker'
-                    value={value}
-                    disabled={disabled}
-                    data-testid={data_testid}
-                    {...props}
-                    id='dt_components_select-native_select-tag'
-                >
-                    {Array.isArray(list_items) ? (
-                        <React.Fragment>
-                            {/*
-                             * In native select, first option is selected by default.
-                             * Added an empty option to avoid it from selecting first item
-                             * from list_items provided
-                             */}
-                            {should_show_empty_option && <option value=''>{placeholder}</option>}
-                            {/*
-                             * Safari on ios allows to select a disabled option. So, we should avoid showing it
-                             */}
-                            <SelectNativeOptions
-                                list_items={list_items}
-                                should_hide_disabled_options={should_hide_disabled_options}
-                                use_text={use_text}
-                            />
-                        </React.Fragment>
+                    <div className='dc-select-native__display'>
+                        {list_items && value && (
+                            <div
+                                className={classNames('dc-select-native__display-text', classNameDisplay)}
+                                data-testid='selected_value'
+                            >
+                                {!hide_selected_value && (use_text ? value : getDisplayText(list_items, value))}
+                            </div>
+                        )}
+                    </div>
+                    <div
+                        className={classNames('dc-select-native__placeholder', {
+                            'dc-select-native__placeholder--has-value': value,
+                            'dc-select-native__placeholder--hide-top-placeholder': value && hide_top_placeholder,
+                            'dc-select-native__placeholder--disabled': disabled,
+                        })}
+                    >
+                        {label}
+                    </div>
+                    {!suffix_icon ? (
+                        <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
                     ) : (
-                        Object.keys(list_items).map((key: string) => {
-                            const items = should_hide_disabled_options
-                                ? list_items[key].filter((opt: TListItem) => !opt.disabled)
-                                : list_items[key];
-
-                            if (items.length > 0) {
-                                return (
-                                    <optgroup key={key} label={key}>
-                                        {/*
-                                         * Safari on ios allows to select a disabled option. So, we should avoid showing it
-                                         */}
-                                        <SelectNativeOptions
-                                            list_items={list_items[key]}
-                                            should_hide_disabled_options={should_hide_disabled_options}
-                                            use_text={use_text}
-                                        />
-                                    </optgroup>
-                                );
-                            }
-
-                            return null;
-                        })
+                        <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} />
                     )}
-                </select>
+                    <select
+                        className='dc-select-native__picker'
+                        value={value}
+                        disabled={disabled}
+                        data-testid={data_testid}
+                        {...props}
+                        id='dt_components_select-native_select-tag'
+                    >
+                        {Array.isArray(list_items) ? (
+                            <React.Fragment>
+                                {/*
+                                 * In native select, first option is selected by default.
+                                 * Added an empty option to avoid it from selecting first item
+                                 * from list_items provided
+                                 */}
+                                {should_show_empty_option && <option value=''>{placeholder}</option>}
+                                {/*
+                                 * Safari on ios allows to select a disabled option. So, we should avoid showing it
+                                 */}
+                                <SelectNativeOptions
+                                    list_items={list_items}
+                                    should_hide_disabled_options={should_hide_disabled_options}
+                                    use_text={use_text}
+                                />
+                            </React.Fragment>
+                        ) : (
+                            Object.keys(list_items).map((key: string) => {
+                                const items = should_hide_disabled_options
+                                    ? list_items[key].filter((opt: TListItem) => !opt.disabled)
+                                    : list_items[key];
+
+                                if (items.length > 0) {
+                                    return (
+                                        <optgroup key={key} label={key}>
+                                            {/*
+                                             * Safari on ios allows to select a disabled option. So, we should avoid showing it
+                                             */}
+                                            <SelectNativeOptions
+                                                list_items={list_items[key]}
+                                                should_hide_disabled_options={should_hide_disabled_options}
+                                                use_text={use_text}
+                                            />
+                                        </optgroup>
+                                    );
+                                }
+
+                                return null;
+                            })
+                        )}
+                    </select>
+                </div>
                 {error && <Field message={error} type='error' />}
             </div>
         </div>

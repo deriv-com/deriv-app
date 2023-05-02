@@ -1,5 +1,6 @@
-import { Formik, Field, Form } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
+import { Formik, Field, Form } from 'formik';
 import {
     Modal,
     AutoHeightWrapper,
@@ -8,14 +9,13 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, PlatformContext, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import FormSubHeader from '../form-sub-header';
-import classNames from 'classnames';
+import { localize, Localize } from '@deriv/translations';
 import { shouldShowIdentityInformation, documentAdditionalError, getRegex } from 'Helpers/utils';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
+import FormSubHeader from '../form-sub-header';
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -72,8 +72,6 @@ const PersonalDetails = ({
         residence_list,
         real_account_signup_target,
     });
-
-    // console.log('is_qualified_for_idv: ', is_qualified_for_idv);
 
     const validateIDV = values => {
         const errors = {};

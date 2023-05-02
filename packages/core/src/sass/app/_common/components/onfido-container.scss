@@ -89,6 +89,12 @@
             grid-gap: 0;
         }
 
+        .account-form__section-side-note {
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+        }
+
         .account-form__section-content {
             margin-top: 0.8rem;
 

@@ -11,7 +11,7 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
-import ConnectedAppsArticle from './connected-apps-article.js';
+import ConnectedAppsArticle from './connected-apps-article';
 import { PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';

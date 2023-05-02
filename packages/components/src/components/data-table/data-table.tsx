@@ -21,7 +21,7 @@ import List from '@enykeev/react-virtualized/dist/es/List';
       2. implement filtering per column
 */
 export type TSource = {
-    [key: string]: unknown;
+    [key: string]: string;
 };
 
 type TMeasure = {

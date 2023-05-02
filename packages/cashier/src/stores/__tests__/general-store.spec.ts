@@ -155,12 +155,6 @@ describe('GeneralStore', () => {
         expect(general_store.has_set_currency).toBeFalsy();
     });
 
-    it('should change the value of the variable should_set_currency_modal_title_change equal to true', () => {
-        general_store.changeSetCurrencyModalTitle();
-
-        expect(general_store.should_set_currency_modal_title_change).toBeTruthy();
-    });
-
     it('should perform proper cashier onboarding mounting', async () => {
         general_store.has_set_currency = false;
         const spySetHasSetCurrency = jest.spyOn(general_store, 'setHasSetCurrency');

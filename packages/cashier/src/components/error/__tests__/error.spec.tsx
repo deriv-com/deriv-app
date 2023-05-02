@@ -1,6 +1,6 @@
 import React from 'react';
 import Error from '../error';
-import { fireEvent, Matcher, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 
@@ -79,7 +79,7 @@ describe('<Error />', () => {
     });
 
     it('should clear an error.message if one of the buttons ["Resend email", "Update my details", "Try again"] was clicked', () => {
-        const checkButton = (btn_name: Matcher, error_code: string) => {
+        const checkButton = (btn_name: string, error_code: string) => {
             const history = createBrowserHistory();
             const error = {
                 code: error_code,

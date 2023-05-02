@@ -287,6 +287,7 @@ const OnfidoSdkView = ({
                         className={classNames({
                             'onfido-container__disabled': is_onfido_disabled,
                             'onfido-container__hidden': component_to_load,
+                            'onfido-container__layout': isMobile(),
                         })}
                     />
                 </div>

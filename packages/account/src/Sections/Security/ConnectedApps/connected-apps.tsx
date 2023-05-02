@@ -11,17 +11,17 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
-import ConnectedAppsArticle from './connected-apps-article.jsx';
+import ConnectedAppsArticle from './connected-apps-article.js';
 import { PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
-import GetConnectedAppsColumnsTemplate from './data-table-template.jsx';
+import GetConnectedAppsColumnsTemplate from './data-table-template';
 
 const ConnectedApps = () => {
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setLoading] = React.useState(true);
     const [is_modal_open, setModalVisibility] = React.useState(false);
-    const [selected_app_id, setAppId] = React.useState(null);
+    const [selected_app_id, setAppId] = React.useState<number | null>(null);
     const [is_error, setError] = React.useState(false);
     const [connected_apps, setConnectedApps] = React.useState([]);
 
@@ -39,24 +39,26 @@ const ConnectedApps = () => {
     };
 
     const handleToggleModal = React.useCallback(
-        (app_id = null) => {
+        (app_id: number | null = null) => {
             setModalVisibility(!is_modal_open);
             setAppId(app_id);
         },
         [is_modal_open]
     );
 
+    type TC = ReturnType<typeof GetConnectedAppsColumnsTemplate>[number];
+
     const columns_map = React.useMemo(
         () =>
             GetConnectedAppsColumnsTemplate(app_id => handleToggleModal(app_id)).reduce((map, item) => {
                 map[item.col_index] = item;
                 return map;
-            }, {}),
+            }, {} as { [k in TC['col_index']]: TC }),
         [handleToggleModal]
     );
 
     const mobileRowRenderer = React.useCallback(
-        ({ row }) => (
+        ({ row }: { row: TC['renderCellContent'] }) => (
             <div className='data-list__row'>
                 <div className='data-list__col'>
                     <DataList.Cell row={row} column={columns_map.name} />
@@ -71,12 +73,7 @@ const ConnectedApps = () => {
         [columns_map, is_appstore]
     );
 
-    const handleRevokeAccess = React.useCallback(() => {
-        setModalVisibility(false);
-        revokeConnectedApp(selected_app_id);
-    }, [revokeConnectedApp, selected_app_id]);
-
-    const revokeConnectedApp = React.useCallback(async app_id => {
+    const revokeConnectedApp = React.useCallback(async (app_id: number | null) => {
         setLoading(true);
         const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
@@ -85,6 +82,11 @@ const ConnectedApps = () => {
             setError(true);
         }
     }, []);
+
+    const handleRevokeAccess = React.useCallback(() => {
+        setModalVisibility(false);
+        revokeConnectedApp(selected_app_id);
+    }, [revokeConnectedApp, selected_app_id]);
 
     return (
         <section

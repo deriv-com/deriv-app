@@ -15,6 +15,7 @@ import RadioButtonGroup from './radio-button-group';
 import RadioButton from './radio-button';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import { TAuthAccountInfo, TCurrencyConfig, TRealAccount, TFormValidation } from 'Types';
+import { observer, useStore } from '@deriv/stores';
 
 export const Hr = () => <div className='currency-hr' />;
 
@@ -56,239 +57,254 @@ type TCurrencySelectorExtend = {
 
 type TCurrencySelector = HTMLAttributes<HTMLInputElement | HTMLLabelElement> & TCurrencySelectorExtend;
 
-const CurrencySelector = ({
-    getCurrentStep,
-    goToNextStep,
-    goToStep,
-    has_currency,
-    has_real_account,
-    legal_allowed_currencies,
-    onSubmit,
-    onSave,
-    onCancel,
-    goToPreviousStep,
-    real_account_signup,
-    real_account_signup_target,
-    resetRealAccountSignupParams,
-    set_currency,
-    validate,
-    has_cancel = false,
-    selected_step_ref,
-    onSubmitEnabledChange,
-    has_wallet_account,
-    is_dxtrade_allowed,
-    is_mt5_allowed,
-    available_crypto_currencies,
-    has_fiat,
-    accounts,
-    is_eu,
-    ...props
-}: TCurrencySelector) => {
-    const { is_appstore } = React.useContext(PlatformContext);
-    const crypto = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'crypto');
-    const fiat = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'fiat');
-    const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);
-    const is_submit_disabled_ref = React.useRef<boolean>(true);
+const CurrencySelector = observer(
+    ({
+        getCurrentStep,
+        goToNextStep,
+        goToStep,
+        onSubmit,
+        onSave,
+        onCancel,
+        goToPreviousStep,
+        set_currency,
+        validate,
+        has_cancel = false,
+        selected_step_ref,
+        onSubmitEnabledChange,
+        has_wallet_account,
+        ...props
+    }: TCurrencySelector) => {
+        const { client, ui } = useStore();
+        const {
+            currency,
+            has_active_real_account: has_real_account,
+            upgradeable_currencies: legal_allowed_currencies,
+            available_crypto_currencies,
+            is_dxtrade_allowed,
+            is_mt5_allowed,
+            has_fiat,
+            accounts,
+            is_eu,
+        } = client;
+        const { real_account_signup_target, real_account_signup, resetRealAccountSignupParams } = ui;
+        const has_currency = !!currency;
+        const { is_appstore } = React.useContext(PlatformContext);
+        const crypto = legal_allowed_currencies.filter((currencyVal: TCurrencyConfig) => currencyVal.type === 'crypto');
+        const fiat = legal_allowed_currencies.filter((currencyVal: TCurrencyConfig) => currencyVal.type === 'fiat');
+        const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);
+        const is_submit_disabled_ref = React.useRef<boolean>(true);
 
-    const should_disable_fiat = !!Object.values(accounts).filter(
-        item => item.landing_company_shortcode === real_account_signup_target
-    ).length;
+        const should_disable_fiat = !!Object.values(accounts).filter(
+            item => item.landing_company_shortcode === real_account_signup_target
+        ).length;
 
-    const isSubmitDisabled = (values: FormikValues) => {
-        return selected_step_ref?.current?.isSubmitting || !values.currency;
-    };
+        const isSubmitDisabled = (values: FormikValues) => {
+            return selected_step_ref?.current?.isSubmitting || !values.currency;
+        };
 
-    const checkSubmitStatus = (values: FormikValues) => {
-        const is_submit_disabled = isSubmitDisabled(values);
+        const checkSubmitStatus = (values: FormikValues) => {
+            const is_submit_disabled = isSubmitDisabled(values);
 
-        if (is_submit_disabled_ref.current !== is_submit_disabled) {
-            is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange?.(!is_submit_disabled);
-        }
-    };
-
-    const handleCancel = (values: FormikValues) => {
-        const current_step = getCurrentStep() - 1;
-        onSave(current_step, values);
-        onCancel(current_step, goToPreviousStep);
-    };
-
-    const handleValidate = (values: FormikValues) => {
-        checkSubmitStatus(values);
-        const { errors }: Partial<TFormValidation> = splitValidationResultTypes(validate(values));
-        return errors;
-    };
-
-    // In case of form error bypass to update personal data
-    React.useEffect(() => {
-        if (real_account_signup?.error_code) {
-            setIsBypassStep(true);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    React.useEffect(() => {
-        if (is_bypass_step && real_account_signup?.error_details) {
-            const keys = Object.keys(real_account_signup?.error_details);
-            const route_to_address_details = Object.keys(getAddressDetailsFields()).filter(item => keys.includes(item));
-            if (route_to_address_details?.length > 0) goToStep(3);
-            else {
-                goToNextStep();
+            if (is_submit_disabled_ref.current !== is_submit_disabled) {
+                is_submit_disabled_ref.current = is_submit_disabled;
+                onSubmitEnabledChange?.(!is_submit_disabled);
             }
-            resetRealAccountSignupParams();
-            setIsBypassStep(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_bypass_step]);
+        };
 
-    const getHeightOffset = () => {
-        if (is_appstore) {
-            return '222px';
-        } else if (!has_currency && has_real_account) {
-            return '89px';
-        }
-        return '159px';
-    };
+        const handleCancel = (values: FormikValues) => {
+            const current_step = getCurrentStep() - 1;
+            onSave(current_step, values);
+            onCancel(current_step, goToPreviousStep);
+        };
 
-    const getSubmitLabel = () => {
-        if (set_currency) {
-            return localize('Set currency');
-        } else if (has_wallet_account) {
-            return localize('Finish');
-        }
-        return localize('Next');
-    };
+        const handleValidate = (values: FormikValues) => {
+            checkSubmitStatus(values);
+            const { errors }: Partial<TFormValidation> = splitValidationResultTypes(validate(values));
+            return errors;
+        };
 
-    const description = React.useMemo(() => {
-        const dmt5_label = is_eu ? localize('CFDs') : localize('Deriv MT5');
-        const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+        // In case of form error bypass to update personal data
+        React.useEffect(() => {
+            if (real_account_signup?.error_code) {
+                setIsBypassStep(true);
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
 
-        if (is_dxtrade_allowed && is_mt5_allowed) {
+        React.useEffect(() => {
+            if (is_bypass_step && real_account_signup?.error_details) {
+                const keys = Object.keys(real_account_signup?.error_details);
+                const route_to_address_details = Object.keys(getAddressDetailsFields()).filter(item =>
+                    keys.includes(item)
+                );
+                if (route_to_address_details?.length > 0) goToStep(3);
+                else {
+                    goToNextStep();
+                }
+                resetRealAccountSignupParams();
+                setIsBypassStep(false);
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [is_bypass_step]);
+
+        const getHeightOffset = () => {
+            if (is_appstore) {
+                return '222px';
+            } else if (!has_currency && has_real_account) {
+                return '89px';
+            }
+            return '159px';
+        };
+
+        const getSubmitLabel = () => {
+            if (set_currency) {
+                return localize('Set currency');
+            } else if (has_wallet_account) {
+                return localize('Finish');
+            }
+            return localize('Next');
+        };
+
+        const description = React.useMemo(() => {
+            const dmt5_label = is_eu ? localize('CFDs') : localize('Deriv MT5');
+            const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+
+            if (is_dxtrade_allowed && is_mt5_allowed) {
+                return (
+                    <Localize
+                        i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
+                        values={{ dmt5_label, platform_name_dxtrade }}
+                    />
+                );
+            } else if (!is_dxtrade_allowed && is_mt5_allowed) {
+                return (
+                    <Localize
+                        i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} account.'
+                        values={{ dmt5_label }}
+                    />
+                );
+            }
+
             return (
-                <Localize
-                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
-                    values={{ dmt5_label, platform_name_dxtrade }}
-                />
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
             );
-        } else if (!is_dxtrade_allowed && is_mt5_allowed) {
-            return (
-                <Localize
-                    i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} account.'
-                    values={{ dmt5_label }}
-                />
-            );
-        }
+        }, [is_eu, is_dxtrade_allowed, is_mt5_allowed]);
 
         return (
-            <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
-        );
-    }, [is_eu, is_dxtrade_allowed, is_mt5_allowed]);
-
-    return (
-        <Formik
-            innerRef={selected_step_ref}
-            initialValues={props.value}
-            onSubmit={(values, actions) => {
-                onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
-            }}
-            validate={handleValidate}
-        >
-            {({ handleSubmit, values }: FormikState<FormikValues> & FormikHandlers) => (
-                <AutoHeightWrapper default_height={450}>
-                    {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
-                        <form
-                            ref={setRef}
-                            onSubmit={handleSubmit}
-                            className='currency-selector'
-                            data-testid='currency_selector_form'
-                        >
-                            <Div100vhContainer
-                                className={classNames('currency-selector__container', {
-                                    'currency-selector__container--no-top-margin':
-                                        !has_currency && has_real_account && isMobile(),
-                                })}
-                                height_offset={getHeightOffset()}
-                                is_disabled={isDesktop()}
+            <Formik
+                innerRef={selected_step_ref}
+                initialValues={props.value}
+                onSubmit={(values, actions) => {
+                    onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
+                }}
+                validate={handleValidate}
+            >
+                {({ handleSubmit, values }: FormikState<FormikValues> & FormikHandlers) => (
+                    <AutoHeightWrapper default_height={450}>
+                        {({
+                            setRef,
+                            height,
+                        }: {
+                            setRef: (instance: HTMLFormElement | null) => void;
+                            height: number;
+                        }) => (
+                            <form
+                                ref={setRef}
+                                onSubmit={handleSubmit}
+                                className='currency-selector'
+                                data-testid='currency_selector_form'
                             >
-                                <ThemedScrollbars height={height}>
-                                    {!!reorderCurrencies(fiat)?.length && (
-                                        <React.Fragment>
-                                            <RadioButtonGroup
-                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                label={localize('Fiat currencies')}
-                                                is_fiat
-                                                item_count={reorderCurrencies(fiat).length}
-                                                description={description}
-                                                has_fiat={should_disable_fiat && has_fiat}
-                                            >
-                                                {reorderCurrencies(fiat).map((currency: FormikValues) => (
-                                                    <Field
-                                                        key={currency.value}
-                                                        component={RadioButton}
-                                                        name='currency'
-                                                        id={currency.value}
-                                                        label={currency.name}
-                                                        selected={should_disable_fiat && has_fiat}
-                                                    />
-                                                ))}
-                                            </RadioButtonGroup>
-                                            {!!reorderCurrencies(crypto, 'crypto')?.length && <Hr />}
-                                        </React.Fragment>
-                                    )}
-                                    {!!reorderCurrencies(crypto, 'crypto')?.length && (
-                                        <React.Fragment>
-                                            <RadioButtonGroup
-                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                label={localize('Cryptocurrencies')}
-                                                item_count={reorderCurrencies(crypto, 'crypto').length}
-                                                description={description}
-                                            >
-                                                {reorderCurrencies(crypto, 'crypto').map((currency: FormikValues) => (
-                                                    <Field
-                                                        key={currency.value}
-                                                        component={RadioButton}
-                                                        selected={
-                                                            available_crypto_currencies?.filter(
-                                                                ({ value }: TCurrencyConfig) => value === currency.value
-                                                            )?.length === 0
-                                                        }
-                                                        name='currency'
-                                                        id={currency.value}
-                                                        label={currency.name}
-                                                    />
-                                                ))}
-                                            </RadioButtonGroup>
-                                        </React.Fragment>
-                                    )}
-                                </ThemedScrollbars>
-                            </Div100vhContainer>
-                            <Modal.Footer is_bypassed={isMobile()}>
-                                <FormSubmitButton
-                                    className={
-                                        set_currency
-                                            ? 'currency-selector--set-currency'
-                                            : 'currency-selector--deriv-account'
-                                    }
-                                    is_disabled={isSubmitDisabled(values)}
-                                    is_center={false}
-                                    is_absolute={set_currency || is_appstore}
-                                    label={getSubmitLabel()}
-                                    {...(has_cancel
-                                        ? {
-                                              cancel_label: localize('Previous'),
-                                              has_cancel: true,
-                                              onCancel: () => handleCancel(values),
-                                          }
-                                        : {})}
-                                />
-                            </Modal.Footer>
-                        </form>
-                    )}
-                </AutoHeightWrapper>
-            )}
-        </Formik>
-    );
-};
+                                <Div100vhContainer
+                                    className={classNames('currency-selector__container', {
+                                        'currency-selector__container--no-top-margin':
+                                            !has_currency && has_real_account && isMobile(),
+                                    })}
+                                    height_offset={getHeightOffset()}
+                                    is_disabled={isDesktop()}
+                                >
+                                    <ThemedScrollbars height={height}>
+                                        {!!reorderCurrencies(fiat)?.length && (
+                                            <React.Fragment>
+                                                <RadioButtonGroup
+                                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                                    label={localize('Fiat currencies')}
+                                                    is_fiat
+                                                    item_count={reorderCurrencies(fiat).length}
+                                                    description={description}
+                                                    has_fiat={should_disable_fiat && has_fiat}
+                                                >
+                                                    {reorderCurrencies(fiat).map((currencyVal: FormikValues) => (
+                                                        <Field
+                                                            key={currencyVal.value}
+                                                            component={RadioButton}
+                                                            name='currency'
+                                                            id={currencyVal.value}
+                                                            label={currencyVal.name}
+                                                            selected={should_disable_fiat && has_fiat}
+                                                        />
+                                                    ))}
+                                                </RadioButtonGroup>
+                                                {!!reorderCurrencies(crypto, 'crypto')?.length && <Hr />}
+                                            </React.Fragment>
+                                        )}
+                                        {!!reorderCurrencies(crypto, 'crypto')?.length && (
+                                            <React.Fragment>
+                                                <RadioButtonGroup
+                                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                                    label={localize('Cryptocurrencies')}
+                                                    item_count={reorderCurrencies(crypto, 'crypto').length}
+                                                    description={description}
+                                                >
+                                                    {reorderCurrencies(crypto, 'crypto').map(
+                                                        (currencyVal: FormikValues) => (
+                                                            <Field
+                                                                key={currencyVal.value}
+                                                                component={RadioButton}
+                                                                selected={
+                                                                    available_crypto_currencies?.filter(
+                                                                        ({ value }: TCurrencyConfig) =>
+                                                                            value === currencyVal.value
+                                                                    )?.length === 0
+                                                                }
+                                                                name='currency'
+                                                                id={currencyVal.value}
+                                                                label={currencyVal.name}
+                                                            />
+                                                        )
+                                                    )}
+                                                </RadioButtonGroup>
+                                            </React.Fragment>
+                                        )}
+                                    </ThemedScrollbars>
+                                </Div100vhContainer>
+                                <Modal.Footer is_bypassed={isMobile()}>
+                                    <FormSubmitButton
+                                        className={
+                                            set_currency
+                                                ? 'currency-selector--set-currency'
+                                                : 'currency-selector--deriv-account'
+                                        }
+                                        is_disabled={isSubmitDisabled(values)}
+                                        is_center={false}
+                                        is_absolute={set_currency || is_appstore}
+                                        label={getSubmitLabel()}
+                                        {...(has_cancel
+                                            ? {
+                                                  cancel_label: localize('Previous'),
+                                                  has_cancel: true,
+                                                  onCancel: () => handleCancel(values),
+                                              }
+                                            : {})}
+                                    />
+                                </Modal.Footer>
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
+                )}
+            </Formik>
+        );
+    }
+);
 export type { TCurrencySelector };
 
 export default CurrencySelector;

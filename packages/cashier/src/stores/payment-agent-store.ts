@@ -300,7 +300,7 @@ export default class PaymentAgentStore {
         };
     }
 
-    addPaymentAgent(payment_agent: Required<PaymentagentList>['list'][0]) {
+    addPaymentAgent(payment_agent: DeepPartial<PaymentagentList['list'][0]>) {
         this.agents.push({
             text: payment_agent.name,
             value: payment_agent.paymentagent_loginid,

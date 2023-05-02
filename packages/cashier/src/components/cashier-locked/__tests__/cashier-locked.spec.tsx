@@ -10,7 +10,6 @@ jest.mock('@deriv/hooks', () => ({
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
 }));
-
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 

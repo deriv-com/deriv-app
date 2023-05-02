@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
@@ -6,17 +6,17 @@ import { getPropertyValue, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_language_changing }) => {
-    const [is_success, setSuccess] = useState(false);
-    const [is_ready_for_verification, setReadyForVerification] = useState(false);
+    const [is_success, setSuccess] = React.useState(false);
+    const [is_ready_for_verification, setReadyForVerification] = React.useState(false);
     const button_text = is_enabled ? localize('Disable') : localize('Enable');
-    const formik_ref = useRef();
+    const formik_ref = React.useRef();
     let enable_response;
 
     const initial_form = {
         digit_code: '',
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (is_language_changing) {
             formik_ref.current.setFieldTouched('digit_code');
         }

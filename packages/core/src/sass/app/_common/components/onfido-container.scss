@@ -16,8 +16,12 @@
     &__info-message {
         position: absolute;
         top: 2.4rem;
-        right: 25%;
+        left: 25%;
         z-index: 1;
+        @include mobile {
+            top: 1.6rem;
+            left: 5rem;
+        }
     }
 
     &__status-message {
@@ -38,6 +42,11 @@
             min-height: 4rem;
             text-align: center;
         }
+    }
+
+    &__layout {
+        width: 98vw;
+        height: 100vh;
     }
 }
 

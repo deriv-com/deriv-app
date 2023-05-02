@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
+import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon, Button } from '@deriv/components';
 import { ContentFlag } from '@deriv/shared';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
@@ -18,6 +18,7 @@ const MainTitleBar = () => {
         toggleRegulatorsCompareModal,
         content_flag,
         setShouldShowWalletConsentPopup,
+        toggleWalletsUpgrade,
     } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
@@ -27,6 +28,15 @@ const MainTitleBar = () => {
 
     return (
         <React.Fragment>
+            {/* To be replaced with the banner component  */}
+            <Button
+                className='dc-dialog__button'
+                onClick={() => toggleWalletsUpgrade(true)}
+                has_effect
+                text={localize('Upgrade Wallets')}
+                primary
+                large
+            />
             <DesktopWrapper>
                 {/* TODO: This is for testing purposes only */}
                 <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>

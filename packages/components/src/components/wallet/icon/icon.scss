@@ -1,0 +1,28 @@
+.wallet-icon {
+    &--merged {
+        position: relative;
+        height: 2.8rem;
+        width: 4rem;
+    }
+
+    &__account {
+        display: block;
+        position: absolute;
+        width: 1.6rem;
+        height: 1.6rem;
+        z-index: 1;
+        padding: 0;
+    }
+
+    &__wallet {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 3.2rem;
+        height: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: $BORDER_RADIUS;
+    }
+}

@@ -34,6 +34,7 @@ export default class TradersHubStore extends BaseStore {
     is_account_transfer_modal_open = false;
     selected_account = {};
     show_wallet_consent_popup = false;
+    is_real_wallets_upgrade_on = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -62,6 +63,7 @@ export default class TradersHubStore extends BaseStore {
             selected_platform_type: observable,
             selected_region: observable,
             open_failed_verification_for: observable,
+            is_real_wallets_upgrade_on: observable,
             can_get_more_cfd_mt5_accounts: computed,
             closeModal: action.bound,
             content_flag: computed,
@@ -105,6 +107,7 @@ export default class TradersHubStore extends BaseStore {
             showTopUpModal: action.bound,
             show_wallet_consent_popup: observable,
             setShouldShowWalletConsentPopup: action.bound,
+            toggleWalletsUpgrade: action.bound,
         });
 
         reaction(
@@ -267,7 +270,7 @@ export default class TradersHubStore extends BaseStore {
         const { is_logged_in, landing_companies, residence } = this.root_store.client;
         const { financial_company, gaming_company } = landing_companies;
 
-        //this is a conditional check for countries like Australia/Norway which fulfiles one of these following conditions
+        //this is a conditional check for countries like Australia/Norway which fulfills one of these following conditions
         const restricted_countries = financial_company?.shortcode === 'svg' || gaming_company?.shortcode === 'svg';
 
         if (!is_logged_in) return '';
@@ -795,5 +798,9 @@ export default class TradersHubStore extends BaseStore {
             type: data.market_type,
         });
         openTopUpModal();
+    }
+
+    toggleWalletsUpgrade(value) {
+        this.is_real_wallets_upgrade_on = value;
     }
 }

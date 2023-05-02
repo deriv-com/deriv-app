@@ -459,9 +459,9 @@
             margin-bottom: 0.5rem;
         }
     }
-    &__header:not(:first-child) {
-        margin-top: 1.6rem;
-    }
+    // &__header:not(:first-child) {
+    //     margin-top: 1.6rem;
+    // }
     &__title {
         padding-right: 0.8rem;
     }
@@ -779,5 +779,7 @@
 
 .personal-details-form {
     width: 100%;
-    padding: 0 16rem;
+    @include mobile() {
+        padding: 0 1.6rem;
+    }
 }

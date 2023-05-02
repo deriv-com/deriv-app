@@ -43,10 +43,10 @@ type TCashierOptions = {
     count?: number;
     default?: boolean;
     has_side_note: boolean;
-    icon?: string;
+    icon: string;
     label: string;
     path?: string;
-    value: TRoute['component'];
+    value?: typeof React.Component;
 };
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {

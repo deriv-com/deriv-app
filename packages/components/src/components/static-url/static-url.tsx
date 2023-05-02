@@ -1,20 +1,18 @@
 import React from 'react';
-import { getStaticUrl, setUrlLanguage } from '@deriv/shared';
+import { getStaticUrl, PlatformContext, setUrlLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 
-type TStatusUrl = {
-    href: string;
+type TStaticUrl = React.HTMLAttributes<HTMLAnchorElement> & {
+    href?: string;
     is_document?: boolean;
-    children?: React.ReactNode;
-    className?: string;
-    id?: string;
-    'area-label'?: string;
+    is_eu_url?: boolean;
 };
 
-const StaticUrl = ({ href, is_document, children, ...props }: TStatusUrl) => {
+const StaticUrl = ({ href, is_document, is_eu_url = false, children = null, ...props }: TStaticUrl) => {
+    const { is_appstore }: { is_appstore: boolean } = React.useContext(PlatformContext);
     const getHref = () => {
         setUrlLanguage(getLanguage());
-        return getStaticUrl(href, is_document);
+        return getStaticUrl(href, { is_appstore }, is_document, is_eu_url);
     };
 
     return (

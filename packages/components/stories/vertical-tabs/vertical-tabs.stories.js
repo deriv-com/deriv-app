@@ -99,7 +99,6 @@ stories.add(
                     <VerticalTab
                         header_title='Header'
                         action_bar={action_bar_items}
-                        alignment='center'
                         current_path='/'
                         is_routed={false}
                         is_full_width={boolean('full screen', true)}

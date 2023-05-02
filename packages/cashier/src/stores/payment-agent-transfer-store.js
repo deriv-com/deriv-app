@@ -1,5 +1,4 @@
-import { action, computed, observable, makeObservable } from 'mobx';
-import { routes } from '@deriv/shared';
+import { action, observable, makeObservable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
 
@@ -8,14 +7,11 @@ export default class PaymentAgentTransferStore {
         makeObservable(this, {
             container: observable,
             error: observable,
-            is_payment_agent: observable,
             is_try_transfer_successful: observable,
             is_transfer_successful: observable,
             confirm: observable,
             receipt: observable,
             transfer_limit: observable,
-            is_payment_agent_transfer_visible: computed,
-            setIsPaymentAgent: action.bound,
             setIsTryTransferSuccessful: action.bound,
             setIsTransferSuccessful: action.bound,
             setConfirmationPaymentAgentTransfer: action.bound,
@@ -33,34 +29,11 @@ export default class PaymentAgentTransferStore {
 
     container = Constants.containers.payment_agent_transfer;
     error = new ErrorStore();
-    is_payment_agent = false;
     is_try_transfer_successful = false;
     is_transfer_successful = false;
     confirm = {};
     receipt = {};
     transfer_limit = {};
-
-    get is_payment_agent_transfer_visible() {
-        return this.is_payment_agent;
-    }
-
-    async checkIsPaymentAgent() {
-        const { client, ui } = this.root_store;
-        const { account_settings } = client;
-        const { is_real_acc_signup_on } = ui;
-        const get_settings =
-            Object.keys(account_settings).length > 0 && is_real_acc_signup_on
-                ? account_settings
-                : (await this.WS.authorized.storage.getSettings()).get_settings;
-        this.setIsPaymentAgent(get_settings?.is_authenticated_payment_agent ?? false);
-    }
-
-    setIsPaymentAgent(is_payment_agent) {
-        if (!is_payment_agent && window.location.pathname.endsWith(routes.cashier_pa_transfer)) {
-            this.root_store.common.routeTo(routes.cashier_deposit);
-        }
-        this.is_payment_agent = !!is_payment_agent;
-    }
 
     setIsTryTransferSuccessful(is_try_transfer_successful) {
         this.error.setErrorMessage('');

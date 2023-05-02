@@ -13,7 +13,6 @@ export default class GeneralStore extends BaseStore {
             calculatePercentage: action.bound,
             cashier_route_tab_index: observable,
             changeSetCurrencyModalTitle: action.bound,
-            continueRoute: action.bound,
             deposit_target: observable,
             has_set_currency: observable,
             init: action.bound,
@@ -149,10 +148,6 @@ export default class GeneralStore extends BaseStore {
 
     setDepositTarget(target: string): void {
         this.deposit_target = target;
-    }
-
-    continueRoute(): void {
-        this.root_store.common.routeTo(this.deposit_target);
     }
 
     setAccountSwitchListener(): void {

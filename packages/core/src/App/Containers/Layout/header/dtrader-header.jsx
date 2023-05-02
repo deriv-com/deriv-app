@@ -40,7 +40,6 @@ const DTraderHeader = ({
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_pre_appstore,
     is_route_modal_on,
     is_virtual,
     notifications_count,
@@ -52,6 +51,7 @@ const DTraderHeader = ({
     is_switching,
     toggleReadyToDepositModal,
     has_any_real_account,
+    setTogglePlatformType,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -103,7 +103,7 @@ const DTraderHeader = ({
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
-                            is_pre_appstore={is_pre_appstore}
+                            setTogglePlatformType={setTogglePlatformType}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -203,13 +203,13 @@ DTraderHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    is_pre_appstore: PropTypes.bool,
     is_switching: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
+    setTogglePlatformType: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, notifications }) => ({
+export default connect(({ client, common, ui, notifications, traders_hub }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -240,8 +240,8 @@ export default connect(({ client, common, ui, notifications }) => ({
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_pre_appstore: client.is_pre_appstore,
     is_switching: client.is_switching,
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     has_any_real_account: client.has_any_real_account,
+    setTogglePlatformType: traders_hub.setTogglePlatformType,
 }))(withRouter(DTraderHeader));

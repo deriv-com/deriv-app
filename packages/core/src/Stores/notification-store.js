@@ -1,6 +1,9 @@
 import debounce from 'lodash.debounce';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import {
+    LocalStore,
     daysSince,
     formatDate,
     formatMoney,
@@ -12,24 +15,21 @@ import {
     isEmptyObject,
     isMobile,
     isMultiplierContract,
-    LocalStore,
     platform_name,
     routes,
     unique,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import React from 'react';
 import { WS } from 'Services';
-import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
-import BaseStore from './base-store';
 import {
     excluded_notifications,
     getCashierValidations,
     getStatusValidations,
     hasMissingRequiredField,
 } from './Helpers/client-notifications';
+import { sortNotifications, sortNotificationsMobile } from '../App/Components/Elements/NotificationMessage/constants';
+import BaseStore from './base-store';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -100,6 +100,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
+                root_store.client.has_changed_two_fa,
                 this.p2p_order_props.order_id,
                 root_store.client.p2p_advertiser_info,
             ],
@@ -107,8 +108,8 @@ export default class NotificationStore extends BaseStore {
                 if (
                     root_store.client.is_logged_in &&
                     !root_store.client.is_virtual &&
-                    Object.keys(root_store.client.account_status).length > 0 &&
-                    Object.keys(root_store.client.landing_companies).length > 0 &&
+                    Object.keys(root_store.client.account_status || {}).length > 0 &&
+                    Object.keys(root_store.client.landing_companies || {}).length > 0 &&
                     root_store.modules?.cashier?.general_store?.is_p2p_visible
                 ) {
                     await debouncedGetP2pCompletedOrders();
@@ -116,8 +117,8 @@ export default class NotificationStore extends BaseStore {
 
                 if (
                     !root_store.client.is_logged_in ||
-                    (Object.keys(root_store.client.account_status).length > 0 &&
-                        Object.keys(root_store.client.landing_companies).length > 0)
+                    (Object.keys(root_store.client.account_status || {}).length > 0 &&
+                        Object.keys(root_store.client.landing_companies || {}).length > 0)
                 ) {
                     this.removeNotifications();
                     this.removeAllNotificationMessages();
@@ -181,9 +182,8 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    notification.key.includes('svg') ||
-                    notification.key === 'p2p_daily_limit_increase' ||
-                    !excluded_notifications.includes(notification.key)
+                    ['svg', 'p2p'].some(key => notification.key?.includes(key)) ||
+                    (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
                 }
@@ -259,7 +259,7 @@ export default class NotificationStore extends BaseStore {
 
         if (refined_list.length) {
             refined_list.map(refined => {
-                if (refined === 'p2p_daily_limit_increase') {
+                if (refined.includes('p2p')) {
                     if (is_p2p_notifications_visible === false) {
                         this.removeNotificationByKey({ key: refined });
                     }
@@ -289,11 +289,12 @@ export default class NotificationStore extends BaseStore {
             obj_total_balance,
             website_status,
             has_enabled_two_fa,
+            has_changed_two_fa,
             is_poi_dob_mismatch,
-            is_risky_client,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
+            is_pending_proof_of_ownership,
             p2p_advertiser_info,
         } = this.root_store.client;
         const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
@@ -342,10 +343,10 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a.key });
             }
 
-            if (is_risky_client && is_financial_information_incomplete) {
-                this.addNotificationMessage(this.client_notifications.risk_client);
+            if (malta_account && is_financial_information_incomplete) {
+                this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
-                this.removeNotificationByKey({ key: this.client_notifications.risk_client });
+                this.removeNotificationByKey({ key: this.client_notifications.need_fa });
             }
 
             if (is_poi_dob_mismatch) {
@@ -372,6 +373,10 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.acuity);
             if (!has_acuity_mt5_download && getPathname() === platform_name.DMT5) {
                 this.addNotificationMessage(this.client_notifications.acuity_mt5_download);
+            }
+
+            if (has_changed_two_fa) {
+                this.addNotificationMessage(this.client_notifications.has_changed_two_fa);
             }
 
             const client = accounts[loginid];
@@ -405,21 +410,16 @@ export default class NotificationStore extends BaseStore {
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
                 const poo_required = ownership?.requests?.length > 0 && ownership?.status?.toLowerCase() !== 'rejected';
-                const poo_rejected =
-                    needs_verification?.includes('ownership') && ownership?.status?.toLowerCase() === 'rejected';
+                const poo_rejected = is_pending_proof_of_ownership && ownership?.status?.toLowerCase() === 'rejected';
                 const svg_needs_poi_poa =
                     cr_account &&
                     status.includes('allow_document_upload') &&
-                    (identity?.status === 'none' || identity?.status === 'rejected') &&
-                    (document?.status === 'none' || document?.status === 'rejected');
+                    identity?.status === 'none' &&
+                    document?.status === 'none';
                 const svg_needs_poa =
-                    cr_account &&
-                    status.includes('allow_document_upload') &&
-                    (document?.status === 'none' || document?.status === 'rejected');
+                    cr_account && status.includes('allow_document_upload') && document?.status === 'none';
                 const svg_needs_poi =
-                    cr_account &&
-                    status.includes('allow_document_upload') &&
-                    (identity?.status === 'none' || identity?.status === 'rejected');
+                    cr_account && status.includes('allow_document_upload') && identity?.status === 'none';
                 const svg_poi_expired = cr_account && identity?.status === 'expired';
 
                 this.addVerificationNotifications(
@@ -582,7 +582,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {
-        const notification_key = `order-${order_id}`;
+        const notification_key = `p2p_order_${order_id}`;
 
         const notification_redirect_action =
             routes.cashier_p2p === window.location.pathname
@@ -713,6 +713,8 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
+        const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
 
@@ -877,24 +879,24 @@ export default class NotificationStore extends BaseStore {
             },
             p2p_daily_limit_increase: (currency, max_daily_buy, max_daily_sell) => {
                 return {
-                    action:
-                        routes.cashier_p2p === window.location.pathname
-                            ? {
-                                  onClick: () => {
-                                      this.p2p_redirect_to.redirectTo('my_profile');
-                                      if (this.is_notifications_visible) this.toggleNotificationsModal();
+                    action: window.location.pathname.includes(routes.cashier_p2p)
+                        ? {
+                              onClick: () => {
+                                  this.p2p_redirect_to.redirectTo('my_profile');
+                                  if (this.is_notifications_visible) this.toggleNotificationsModal();
 
-                                      this.removeNotificationMessage({
-                                          key: 'p2p_daily_limit_increase',
-                                          should_show_again: false,
-                                      });
-                                  },
-                                  text: localize('Yes, increase my limits'),
-                              }
-                            : {
-                                  route: routes.cashier_p2p_profile,
-                                  text: localize('Yes, increase my limits'),
+                                  this.removeNotificationMessage({
+                                      key: 'p2p_daily_limit_increase',
+                                      should_show_again: false,
+                                  });
                               },
+                              text: localize('Yes, increase my limits'),
+                          }
+                        : {
+                              // TODO: replace this with proper when fixing routes in p2p
+                              route: routes.cashier_p2p_profile,
+                              text: localize('Yes, increase my limits'),
+                          },
                     header: <Localize i18n_default_text='Enjoy higher daily limits' />,
                     key: 'p2p_daily_limit_increase',
                     message: (
@@ -1293,6 +1295,22 @@ export default class NotificationStore extends BaseStore {
                 ),
                 type: 'warning',
             },
+            has_changed_two_fa: {
+                key: 'has_changed_two_fa',
+                header: localize('Logging out on other devices'),
+                message: (
+                    <Localize
+                        i18n_default_text="You've {{two_fa_status}} 2FA on this device. You'll be logged out of your account on other devices (if any). Use your password and a 2FA code to log back in."
+                        values={{ two_fa_status }}
+                    />
+                ),
+                type: 'info',
+                delay: 4000,
+                is_auto_close: true,
+                closeOnClick: () => {
+                    setTwoFAChangedStatus(false);
+                },
+            },
             two_f_a: {
                 key: 'two_f_a',
                 header: localize('Stronger security for your Deriv account'),
@@ -1412,8 +1430,8 @@ export default class NotificationStore extends BaseStore {
                 },
                 type: 'warning',
             },
-            risk_client: {
-                key: 'risk_client',
+            need_fa: {
+                key: 'need_fa',
                 header: localize('You can only make deposits.'),
                 message: (
                     <Localize i18n_default_text='You can only make deposits at the moment. To enable withdrawals, please complete your financial assessment.' />
@@ -1423,6 +1441,8 @@ export default class NotificationStore extends BaseStore {
                     route: routes.financial_assessment,
                     text: localize('Start assessment'),
                 },
+                should_show_again: true,
+                closeOnClick: notification_obj => this.markNotificationMessage({ key: notification_obj.key }),
             },
             svg_needs_poi_poa: {
                 key: 'svg_needs_poi_poa',
@@ -1500,9 +1520,9 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            message.key.includes('svg') || message.key === 'p2p_daily_limit_increase'
+            ['svg', 'p2p'].some(key => message.key?.includes(key))
                 ? message
-                : !excluded_notifications.includes(message.key)
+                : excluded_notifications && !excluded_notifications.includes(message.key)
         );
     }
 
@@ -1572,10 +1592,11 @@ export default class NotificationStore extends BaseStore {
     };
 
     async getP2pCompletedOrders() {
+        await WS.wait('authorize');
         const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
 
         if (!response?.error) {
-            this.p2p_completed_orders = response.p2p_order_list?.list || [];
+            this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }
 }

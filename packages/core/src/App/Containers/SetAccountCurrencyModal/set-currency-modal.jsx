@@ -37,7 +37,7 @@ const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleMo
                                 toggleModal();
                                 // timeout is to ensure no jumpy animation when modals are overlapping enter/exit transitions
                                 setTimeout(() => {
-                                    setCurrency();
+                                    setCurrency('set_currency');
                                 }, 250);
                             }}
                             primary

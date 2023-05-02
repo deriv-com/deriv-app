@@ -9,6 +9,7 @@ export type TOptions = {
     type?: string;
     decimals?: string | number;
     regex?: RegExp;
+    is_required?: boolean;
 };
 
 const validRequired = (value?: string | number /* , options, field */) => {
@@ -19,11 +20,31 @@ const validRequired = (value?: string | number /* , options, field */) => {
     const str = value.toString().replace(/\s/g, '');
     return str.length > 0;
 };
-export const validAddress = (value: string) => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
+export const address_permitted_special_characters_message = ". , ' : ; ( ) ° @ # / -";
+export const validAddress = (value: string, options?: TOptions) => {
+    if (options?.is_required && (!value || value.match(/^\s*$/))) {
+        return {
+            is_ok: false,
+            message: form_error_messages.empty_address(),
+        };
+    } else if (!validLength(value, { min: 0, max: 70 })) {
+        return {
+            is_ok: false,
+            message: form_error_messages.maxNumber(70),
+        };
+    } else if (!/^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u.test(value)) {
+        return {
+            is_ok: false,
+            message: form_error_messages.address(),
+        };
+    }
+    return { is_ok: true };
+};
 export const validPostCode = (value: string) => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = (value: string) => /(?!^$|\s+)[A-Za-z0-9./\s-]$/.test(value);
 export const validPhone = (value: string) => /^\+?([0-9-]+\s)*[0-9-]+$/.test(value);
 export const validLetterSymbol = (value: string) => /^[A-Za-z]+([a-zA-Z.' -])*[a-zA-Z.' -]+$/.test(value);
+export const validName = (value: string) => /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u.test(value);
 export const validLength = (value = '', options: TOptions) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
 export const validPassword = (value: string) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
@@ -31,7 +52,7 @@ export const validEmail = (value: string) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.
 const validBarrier = (value: string) => /^[+-]?\d+\.?\d*$/.test(value);
 const validGeneral = (value: string) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value: string, options: TOptions) => options.regex?.test(value);
-const confirmRequired = (value: string) => !!value === true;
+const confirmRequired = (value: string) => !!value;
 const checkPOBox = (value: string) => !/p[.\s]+o[.\s]+box/i.test(value);
 const validEmailToken = (value: string) => value.trim().length === 8;
 
@@ -108,9 +129,9 @@ const initPreBuildDVRs = () => ({
         message: form_error_messages.general,
     },
     length: { func: validLength, message: '' }, // Message will be set in validLength function on initiation
-    letter_symbol: {
-        func: validLetterSymbol,
-        message: form_error_messages.letter_symbol,
+    name: {
+        func: validName,
+        message: form_error_messages.name,
     },
     number: {
         func: (...args: [string, TOptions, Record<string, string | boolean>]) => {

@@ -4,7 +4,8 @@ import { load as loadLang } from '../../common/lang';
 
 loadLang();
 
-const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'ETC'];
+export const CRYPTO_CURRENCIES = ['BTC', 'BUSD', 'DAI', 'EURS', 'IDK', 'PAX', 'TUSD', 'USDC',
+    'USDK', 'eUSDT', 'tUSDT','BCH', 'ETH', 'ETC', 'LTC', 'UST', 'USDT'];
 
 const config = {
     lists: {

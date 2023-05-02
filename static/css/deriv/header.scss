@@ -742,17 +742,21 @@
             &-acc {
                 display: flex;
                 align-items: center;
-                padding: 3px 8px;
+                padding: 3px 16px;
                 border-radius: 3px;
                 font-size: $FONT_SIZE_S;
                 cursor: pointer;
 
                 &--active {
-                    background: var(--state-hover);
+                    background: var(--state-active);
                     cursor: auto;
+                    span {
+                        font-weight: 700;
+                        color: #333;
+                    }
                 }
 
-                &:hover {
+                &:not(.account__switcher-acc--active):hover {
                     background: var(--state-hover);
                 }
 
@@ -821,7 +825,7 @@
                 &-header {
                     &-text {
                         height: 40px;
-                        margin: 0 8px;
+                        margin: 0 16px;
                         display: flex;
                         align-items: center;
                         justify-content: space-between;

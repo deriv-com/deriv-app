@@ -1,3 +1,3 @@
-import WalletHeader from './wallet-header';
+import Wallet from './wallet';
 
-export default WalletHeader;
+export default Wallet;

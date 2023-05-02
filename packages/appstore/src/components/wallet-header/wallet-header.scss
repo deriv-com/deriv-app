@@ -1,8 +1,8 @@
 .wallet-header {
-    margin: 2.4rem 0;
+    // margin-block-start: 2.4rem;
     padding: 2.4rem;
     background-color: var(--general-main-1);
-    border-radius: $BORDER_RADIUS * 4;
+    // border-radius: $BORDER_RADIUS * 4;
     height: 12.8rem;
 
     &__demo {

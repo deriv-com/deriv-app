@@ -14,6 +14,8 @@ import classNames from 'classnames';
 
 import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
+import Wallet from 'Components/wallet';
+import { TWalletTestAccount } from 'Components/wallet/wallet';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -74,6 +76,44 @@ const TradersHub = () => {
         );
     };
 
+    const wallet_test_accounts: TWalletTestAccount[] = [
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USD',
+            jurisdiction: 'svg',
+            account_type: 'demo',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'EUR',
+            jurisdiction: 'malta',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USD',
+            jurisdiction: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'ETH',
+            jurisdiction: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'AUD',
+            jurisdiction: 'svg',
+            account_type: 'real',
+        },
+    ];
+
     return (
         <>
             <Div100vhContainer
@@ -86,9 +126,16 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <WalletHeader account_type='demo' />
-                    <WalletHeader currency={'EUR'} jurisdiction={'malta'} />
-                    <WalletHeader currency={'USD'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'BTC'} jurisdiction={'svg'} />
+                    {wallet_test_accounts.map(account => (
+                        <Wallet
+                            key={`${account.account_type}-${account.jurisdiction}-${account.currency}`}
+                            account={account}
+                        />
+                    ))}
+                    {/* <Wallet account_type='demo' /> */}
+                    {/* <WalletHeader currency={'EUR'} jurisdiction={'malta'} /> */}
+                    {/* <WalletHeader currency={'USD'} jurisdiction={'svg'} /> */}
+                    {/* <WalletHeader currency={'BTC'} jurisdiction={'svg'} /> */}
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

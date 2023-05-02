@@ -83,7 +83,6 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 const RealAccountSignup = ({
     available_crypto_currencies,
     closeRealAccountSignup,
-    continueRoute,
     country_standpoint,
     currency,
     deposit_real_account_signup_target,
@@ -175,7 +174,6 @@ const RealAccountSignup = ({
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
                     closeRealAccountSignup={closeRealAccountSignup}
-                    continueRoute={continueRoute}
                     setIsDeposit={setIsDeposit}
                     history={history}
                 />
@@ -237,7 +235,6 @@ const RealAccountSignup = ({
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
                     closeRealAccountSignup={closeRealAccountSignup}
-                    continueRoute={continueRoute}
                     setIsDeposit={setIsDeposit}
                     history={history}
                 />
@@ -625,7 +622,6 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
-    continueRoute: modules.cashier.general_store.continueRoute,
     country_standpoint: client.country_standpoint,
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,

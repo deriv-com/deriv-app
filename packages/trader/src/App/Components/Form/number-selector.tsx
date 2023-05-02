@@ -25,9 +25,9 @@ const NumberSelector = ({
     selected_number,
     should_show_in_percents,
 }: TNumberSelector) => {
-    const handleSelect = (item: React.MouseEvent<HTMLSpanElement>) => {
-        if (Number(item.currentTarget.getAttribute('data-value')) !== selected_number) {
-            onChange({ target: { name, value: Number(item.currentTarget.getAttribute('data-value')) } });
+    const handleSelect = (event: React.MouseEvent<HTMLSpanElement>) => {
+        if (Number(event.currentTarget.getAttribute('data-value')) !== selected_number) {
+            onChange({ target: { name, value: Number(event.currentTarget.getAttribute('data-value')) } });
         }
     };
 

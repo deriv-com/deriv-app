@@ -1,4 +1,4 @@
-import { PaymentagentList } from '@deriv/api-types';
+import { PaymentagentList, PaymentAgentWithdrawRequest } from '@deriv/api-types';
 
 export type TAgent = DeepPartial<
     Pick<PaymentagentList['list'][0], 'email' | 'max_withdrawal' | 'min_withdrawal' | 'phone_numbers'>
@@ -19,11 +19,9 @@ export type TSupportedBank = {
     value: string;
 };
 
-export type TPaymentAgentWithdrawConfirm = {
-    amount?: number;
-    currency?: string;
-    loginid?: string;
-    payment_agent_name?: string;
+export type TPaymentAgentWithdrawConfirm = Pick<PaymentAgentWithdrawRequest, 'amount' | 'currency'> & {
+    loginid: string;
+    payment_agent_name: string;
 };
 
 export type TPaymentAgentWithdrawReceipt = {

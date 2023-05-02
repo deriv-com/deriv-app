@@ -1,5 +1,4 @@
 import PaymentAgentTransferStore from '../payment-agent-transfer-store';
-import { routes } from '@deriv/shared';
 import { configure } from 'mobx';
 import { mockStore } from '@deriv/stores';
 import { PaymentAgentListResponse } from '@deriv/api-types';
@@ -55,7 +54,7 @@ beforeEach(() => {
         ui: {
             is_real_acc_signup_on: false,
         },
-    });
+    }) as TRootStore;
     payment_agent_transfer_store = new PaymentAgentTransferStore(WS, root_store);
     response_payment_agent = {
         paymentagent_list: {

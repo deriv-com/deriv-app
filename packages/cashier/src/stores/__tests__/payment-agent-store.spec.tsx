@@ -1,13 +1,13 @@
 import { routes } from '@deriv/shared';
 import PaymentAgentStore from '../payment-agent-store';
 import { configure } from 'mobx';
-import { TWebSocket } from '../../types';
+import { TRootStore, TWebSocket } from '../../types';
 import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
 describe('PaymentAgentStore', () => {
-    let payment_agent_store: PaymentAgentStore, spyWindow;
+    let payment_agent_store: PaymentAgentStore, spyWindow: jest.SpyInstance<Window, []>;
     const mocked_payment_agent_list = {
         list: [
             {
@@ -115,7 +115,7 @@ describe('PaymentAgentStore', () => {
             wait: () => Promise.resolve(),
         };
 
-        payment_agent_store = new PaymentAgentStore(WS as unknown as TWebSocket, root_store);
+        payment_agent_store = new PaymentAgentStore(WS as unknown as TWebSocket, root_store as TRootStore);
     });
 
     beforeAll(() => {

@@ -1,6 +1,6 @@
 import TransactionHistoryStore from '../transaction-history-store';
 import { configure } from 'mobx';
-import { TStatusCode, TTransactionType, TWebSocket } from '../../types';
+import { TStatusCode, TTransactionType, TRootStore, TWebSocket } from '../../types';
 import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
@@ -45,7 +45,7 @@ describe('TransactionHistoryStore', () => {
     };
 
     beforeEach(() => {
-        transaction_history_store = new TransactionHistoryStore(WS as TWebSocket, root_store);
+        transaction_history_store = new TransactionHistoryStore(WS as TWebSocket, root_store as TRootStore);
     });
 
     it('should load crypto transactions properly', async () => {

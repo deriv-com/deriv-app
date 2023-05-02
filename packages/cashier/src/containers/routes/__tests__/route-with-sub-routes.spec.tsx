@@ -27,6 +27,7 @@ const route = {
     is_logged_in: true,
     exact: true,
     path: '/test-path',
+    icon_component: '',
 };
 
 const MockRouteWithSubRoutes = () => <RouteWithSubRoutes {...route} />;

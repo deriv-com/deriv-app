@@ -10,7 +10,6 @@ type TMockPlatformDropdown = {
         link_to?: string;
         href?: string;
         name: string;
-        title: () => string;
         description: () => string;
     }[];
 };
@@ -40,18 +39,15 @@ const MockPlatformDropdown = ({ platform_config }: TMockPlatformDropdown) => {
 };
 
 describe('PlatformBox component', () => {
-    it('should render "title", "icon" and "description"', () => {
+    it('should render "icon" and "description"', () => {
         const platform = {
             icon: 'test',
-            title: () => 'test title',
             description: () => 'test description',
         };
         render(<PlatformBox platform={platform} />);
         const icon = screen.getByTestId('dt_platform_box_icon');
-        const title = screen.getByText('test title');
         const description = screen.getByText('test description');
         expect(icon).toBeInTheDocument();
-        expect(title).toBeInTheDocument();
         expect(description).toBeInTheDocument();
     });
 });
@@ -67,7 +63,6 @@ describe('PlatformDropdown component', () => {
                     {
                         link_to: '/test',
                         name: 'DTrader',
-                        title: () => 'test title',
                         description: () => 'test description',
                     },
                 ]}
@@ -81,7 +76,6 @@ describe('PlatformDropdown component', () => {
                     {
                         href: '/test',
                         name: 'DTrader',
-                        title: () => 'test title',
                         description: () => 'test description',
                     },
                 ]}

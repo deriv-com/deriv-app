@@ -1,17 +1,18 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@deriv/components';
-import { routes, platforms } from '@deriv/shared';
+import { routes, platforms, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { BinaryLink } from 'App/Components/Routes';
-import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-brand-logo.svg';
-import DerivBrandLogoDark from 'Assets/SvgComponents/header/deriv-brand-logo-dark.svg';
+import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
+import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
@@ -83,23 +84,40 @@ const ShowNotifications = ({ is_notifications_visible, notifications_count, togg
     );
 };
 
-const TradingHubHeader = observer(() => {
+const TradingHubHeader = observer(({ is_acc_switcher_disabled }) => {
     const { client, common, notifications, ui, traders_hub } = useStore();
+    const { platform } = common;
+    const {
+        account_type,
+        balance,
+        currency,
+        country_standpoint,
+        has_any_real_account,
+        is_eu_country,
+        is_eu,
+        is_logged_in,
+        is_mt5_allowed,
+        is_virtual,
+        loginid,
+    } = client;
+    const { toggleNotificationsModal: toggleNotifications, is_notifications_visible } = notifications;
+    const { modal_data, setIsOnboardingVisited, toggleIsTourOpen } = traders_hub;
     const {
         header_extension,
         is_app_disabled,
         is_dark_mode_on: is_dark_mode,
         is_route_modal_on,
+        account_switcher_disabled_message: acc_switcher_disabled_message,
+        is_accounts_switcher_on,
+        toggleAccountsDialog,
         toggleReadyToDepositModal,
         toggleNeedRealAccountForCashierModal,
     } = ui;
-    const { platform } = common;
-    const { is_eu_country, is_eu, is_logged_in, is_mt5_allowed, has_any_real_account, is_virtual, loginid } = client;
-    const { setIsOnboardingVisited, toggleIsTourOpen, modal_data } = traders_hub;
-    const { is_notifications_visible, toggleNotificationsModal: toggleNotifications } = notifications;
+    const is_acc_switcher_on = !!is_accounts_switcher_on;
     const notifications_count = notifications.notifications.length;
+    const { pathname } = useLocation();
+    const cashier_routes = pathname.startsWith(routes.cashier);
     const is_mf = loginid?.startsWith('MF');
-
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -127,6 +145,62 @@ const TradingHubHeader = observer(() => {
         }
     };
 
+    const AccountInfoComponent = React.useCallback(
+        () => (
+            <AccountInfo
+                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                account_type={account_type}
+                balance={formatMoney(currency, balance, true)}
+                is_disabled={is_acc_switcher_disabled}
+                is_eu={is_eu}
+                is_virtual={is_virtual}
+                currency={currency}
+                country_standpoint={country_standpoint}
+                is_dialog_on={is_acc_switcher_on}
+                toggleDialog={toggleAccountsDialog}
+            />
+        ),
+        [is_acc_switcher_on]
+    );
+
+    const DefaultMobileLinks = () => (
+        <React.Fragment>
+            <div className='trading-hub-header__menu-right--items--onboarding'>
+                <TradingHubOnboarding
+                    is_dark_mode={is_dark_mode}
+                    toggleIsTourOpen={toggleIsTourOpen}
+                    is_mf={is_mf}
+                    is_eu={is_eu}
+                    is_eu_country={is_eu_country}
+                    setIsOnboardingVisited={setIsOnboardingVisited}
+                />
+            </div>
+            <div className='trading-hub-header__menu-right--items--notifications'>
+                <ShowNotifications
+                    is_notifications_visible={is_notifications_visible}
+                    notifications_count={notifications_count}
+                    toggleNotifications={toggleNotifications}
+                />
+            </div>
+            <Popover
+                classNameBubble='account-settings-toggle__tooltip'
+                alignment='bottom'
+                message={<Localize i18n_default_text='Manage account settings' />}
+                should_disable_pointer_events
+                zIndex={9999}
+            >
+                <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
+                    <Icon icon='IcUserOutline' size={20} />
+                </BinaryLink>
+            </Popover>
+            <div className='trading-hub-header__cashier-button'>
+                <Button primary small onClick={handleClickCashier}>
+                    <Localize i18n_default_text='Cashier' />
+                </Button>
+            </div>
+        </React.Fragment>
+    );
+
     return (
         <header
             className={classNames('trading-hub-header', {
@@ -140,11 +214,7 @@ const TradingHubHeader = observer(() => {
 
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                {is_dark_mode ? (
-                    <DerivBrandLogoDark className='trading-hub-header__logo' />
-                ) : (
-                    <DerivBrandLogo className='trading-hub-header__logo' />
-                )}
+                <DerivBrandLogo className='trading-hub-header__logo' />
                 <DesktopWrapper>
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
@@ -179,6 +249,11 @@ const TradingHubHeader = observer(() => {
                                 <Icon icon='IcUserOutline' size={20} />
                             </BinaryLink>
                         </Popover>
+                        {cashier_routes && (
+                            <div className='trading-hub-header__menu-right--items--account-toggle'>
+                                <AccountInfoComponent />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <RealAccountSignup />
@@ -186,39 +261,22 @@ const TradingHubHeader = observer(() => {
             <MobileWrapper>
                 <div className='trading-hub-header__mobile-parent'>
                     <div className='trading-hub-header__menu-middle'>
-                        <div className='trading-hub-header__menu-right--items--onboarding'>
-                            <TradingHubOnboarding
-                                is_dark_mode={is_dark_mode}
-                                toggleIsTourOpen={toggleIsTourOpen}
-                                is_mf={is_mf}
-                                is_eu={is_eu}
-                                is_eu_country={is_eu_country}
-                                setIsOnboardingVisited={setIsOnboardingVisited}
-                            />
-                        </div>
-                        <div className='trading-hub-header__menu-right--items--notifications'>
-                            <ShowNotifications
-                                is_notifications_visible={is_notifications_visible}
-                                notifications_count={notifications_count}
-                                toggleNotifications={toggleNotifications}
-                            />
-                        </div>
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={9999}
-                        >
-                            <BinaryLink className='trading-hub-header__setting' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' size={20} />
-                            </BinaryLink>
-                        </Popover>
-                    </div>
-                    <div className='trading-hub-header__cashier-button'>
-                        <Button primary small onClick={handleClickCashier}>
-                            <Localize i18n_default_text='Cashier' />
-                        </Button>
+                        {cashier_routes ? (
+                            <React.Fragment>
+                                <div className='trading-hub-header__menu-right--items--notifications__cashier'>
+                                    <ShowNotifications
+                                        is_notifications_visible={is_notifications_visible}
+                                        notifications_count={notifications_count}
+                                        toggleNotifications={toggleNotifications}
+                                    />
+                                </div>
+                                <div className='trading-hub-header__menu-right--items--account-toggle'>
+                                    <AccountInfoComponent />
+                                </div>
+                            </React.Fragment>
+                        ) : (
+                            <DefaultMobileLinks />
+                        )}
                     </div>
                 </div>
                 <RealAccountSignup />
@@ -228,5 +286,9 @@ const TradingHubHeader = observer(() => {
         </header>
     );
 });
+
+TradingHubHeader.propTypes = {
+    is_acc_switcher_disabled: PropTypes.bool,
+};
 
 export default withRouter(TradingHubHeader);

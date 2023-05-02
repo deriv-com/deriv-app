@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { PageError } from '@deriv/components';
+import { PageError, PageErrorContainer } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { CloseMxMltAccountContent } from 'App/Containers/CloseMxMltAccountModal/close-mx-mlt-account-modal.jsx';
 import { observer, useStore } from '@deriv/stores';
+import { CloseMxMltAccountContent } from 'App/Containers/CloseMxMltAccountModal/close-mx-mlt-account-modal.jsx';
 
 const ErrorComponent = observer(
     ({
@@ -20,11 +20,12 @@ const ErrorComponent = observer(
         redirect_to = routes.trade,
         should_show_refresh = true,
     }) => {
-        const history = useHistory();
         const { client, notifications, ui } = useStore();
+        const { can_have_mlt_account, country_standpoint, has_malta_account } = client;
         const { removeNotificationMessageByKey } = notifications;
-        const { has_malta_account, can_have_mlt_account, country_standpoint } = client;
         const { showCloseMxMltAccountPopup } = ui;
+        const history = useHistory();
+
         React.useEffect(() => {
             if (!history) return undefined;
             return history.listen(() => {
@@ -66,14 +67,11 @@ const ErrorComponent = observer(
                 />
             );
         }
+
         return (
-            <PageError
-                header={header || localize('Something’s not right')}
-                messages={
-                    message
-                        ? [message, refresh_message]
-                        : [localize('Sorry, an error occured while processing your request.'), refresh_message]
-                }
+            <PageErrorContainer
+                error_header={header ?? ''}
+                error_messages={message ? message[(message, refresh_message)] : []}
                 redirect_urls={[redirect_to]}
                 redirect_labels={[redirect_label || localize('Refresh')]}
                 buttonOnClick={redirectOnClick || (() => location.reload())}

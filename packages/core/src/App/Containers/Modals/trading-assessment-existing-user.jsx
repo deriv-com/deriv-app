@@ -102,7 +102,6 @@ const TradingAssessmentExistingUser = observer(() => {
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -119,7 +118,6 @@ const TradingAssessmentExistingUser = observer(() => {
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </MobileDialog>
                 </MobileWrapper>

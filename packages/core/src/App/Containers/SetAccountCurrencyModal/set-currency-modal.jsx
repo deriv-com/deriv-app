@@ -1,19 +1,21 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
+import { useHasSetCurrency } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
 import 'Sass/set-currency-modal.scss';
 
 const SetAccountCurrencyModal = observer(() => {
-    const { client, modules, ui } = useStore();
+    const { client, ui } = useStore();
     const { is_virtual } = client;
     const {
         is_set_currency_modal_visible: is_visible,
         openRealAccountSignup: setCurrency,
         toggleSetCurrencyModal: toggleModal,
     } = ui;
-    const should_set_currency_modal_title_change = modules.cashier.general_store.should_set_currency_modal_title_change;
+    const has_set_currency = useHasSetCurrency();
+
     return (
         <Modal
             id='dt_set_account_currency_modal'
@@ -22,7 +24,7 @@ const SetAccountCurrencyModal = observer(() => {
             small
             toggleModal={toggleModal}
             title={
-                should_set_currency_modal_title_change
+                !has_set_currency
                     ? localize('No currency assigned to your account')
                     : localize('You have an account that needs action')
             }
@@ -41,7 +43,7 @@ const SetAccountCurrencyModal = observer(() => {
                                 toggleModal();
                                 // timeout is to ensure no jumpy animation when modals are overlapping enter/exit transitions
                                 setTimeout(() => {
-                                    setCurrency();
+                                    setCurrency('set_currency');
                                 }, 250);
                             }}
                             primary

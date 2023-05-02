@@ -17,6 +17,7 @@ export const Input = ({
     currency,
     current_focus,
     error_messages,
+    is_market_closed,
     is_nativepicker,
     is_single_currency,
     onChange,
@@ -36,6 +37,7 @@ export const Input = ({
         is_float
         is_hj_whitelisted
         is_incrementable
+        is_market_closed={is_market_closed}
         is_nativepicker={is_nativepicker}
         is_negative_disabled
         max_length={AMOUNT_MAX_LENGTH}
@@ -62,6 +64,7 @@ const Amount = ({
     expiry_type,
     is_accumulator,
     is_equal,
+    is_market_closed,
     is_minimized,
     is_multiplier,
     is_nativepicker,
@@ -138,6 +141,7 @@ const Amount = ({
                         current_focus={current_focus}
                         error_messages={error_messages}
                         is_single_currency={is_single_currency}
+                        is_market_closed={is_market_closed}
                         is_nativepicker={is_nativepicker}
                         onChange={onChange}
                         setCurrentFocus={setCurrentFocus}
@@ -162,6 +166,7 @@ const Amount = ({
                     current_focus={current_focus}
                     error_messages={error_messages}
                     is_single_currency={is_single_currency}
+                    is_market_closed={is_market_closed}
                     is_nativepicker={is_nativepicker}
                     onChange={onChange}
                     setCurrentFocus={setCurrentFocus}
@@ -221,6 +226,7 @@ Amount.propTypes = {
     expiry_type: PropTypes.string,
     is_accumulator: PropTypes.bool,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    is_market_closed: PropTypes.bool,
     is_minimized: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
@@ -248,6 +254,7 @@ export default connect(({ modules, client, ui }) => ({
     is_accumulator: modules.trade.is_accumulator,
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
+    is_market_closed: modules.trade.is_market_closed,
     is_multiplier: modules.trade.is_multiplier,
     has_equals_only: modules.trade.has_equals_only,
     stop_out: modules.trade.stop_out,

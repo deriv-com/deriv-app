@@ -35,6 +35,7 @@ const InputField = ({
     is_hj_whitelisted = false,
     is_incrementable,
     is_incrementable_on_long_press,
+    is_market_closed,
     is_negative_disabled,
     is_read_only = false,
     is_signed = false,
@@ -281,7 +282,7 @@ const InputField = ({
             className={classNames('trade-container__tooltip', { 'dc-tooltip--with-label': label })}
             alignment={error_message_alignment || 'left'}
             message={has_error ? error_messages[0] : null}
-            has_error={!is_error_tooltip_hidden && has_error}
+            has_error={!is_error_tooltip_hidden && !is_market_closed && has_error}
         >
             {!!label && (
                 <label htmlFor={name} className='dc-input-field__label'>
@@ -357,6 +358,7 @@ InputField.propTypes = {
     is_hj_whitelisted: PropTypes.bool,
     is_incrementable: PropTypes.bool,
     is_incrementable_on_long_press: PropTypes.bool,
+    is_market_closed: PropTypes.bool,
     is_negative_disabled: PropTypes.bool,
     is_read_only: PropTypes.bool,
     is_signed: PropTypes.bool,

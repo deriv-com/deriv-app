@@ -287,6 +287,7 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;

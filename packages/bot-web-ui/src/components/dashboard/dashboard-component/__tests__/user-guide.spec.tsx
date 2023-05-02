@@ -12,6 +12,9 @@ jest.mock('@deriv/components', () => {
         Cards: jest.fn(() => 'Cards'),
         messageWithButton: jest.fn(() => 'messageWithButton'),
         arrayAsMessage: jest.fn(() => 'messageWithButton'),
+        DesktopWrapper: jest.fn(() => 'DesktopWrapper'),
+        MobileWrapper: jest.fn(() => 'MobileWrapper'),
+        Text: jest.fn(() => 'Text'),
     };
 });
 describe('<UserGuide />', () => {

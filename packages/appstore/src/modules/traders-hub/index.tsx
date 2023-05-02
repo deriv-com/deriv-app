@@ -11,7 +11,6 @@ import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
 import Wallet from 'Components/wallet';

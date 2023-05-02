@@ -1,11 +1,15 @@
 .wallet {
     margin-block-start: 2.4rem;
-    padding: 2.4rem;
+    // padding: 2.4rem;
     background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS * 4;
 
     &__divider {
         border: 1px solid var(--general-section-1);
-        margin: 2.4rem 0;
+        margin-inline: 2.4rem;
+    }
+
+    &__content {
+        padding: 2.4rem;
     }
 }

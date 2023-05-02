@@ -2,9 +2,13 @@ import React from 'react';
 // import { Icon } from '@deriv/components';
 import classNames from 'classnames';
 // import { TAccountCategory, TAccountStatus, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
-import './wallet.scss';
 import WalletHeader from 'Components/wallet-header';
 import { TAccountCategory, TAccountStatus, TWalletSvgCurrency } from 'Types';
+import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
+import CFDsListing from 'Components/cfds-listing';
+import { DesktopWrapper, MobileWrapper, ButtonToggle } from '@deriv/components';
+import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import './wallet.scss';
 
 // type TWalletHeaderCommon = {
 //     balance?: string;
@@ -57,11 +61,16 @@ const Wallet = React.memo(({ account }: TWallet) => {
                 account_status={account.account_status}
             />
             <Divider />
-            <span>tra la la</span>
+            <CFDsListing />
             <Divider />
-            <Divider />
-            <div className='wallet__divider' />
-            <Divider />
+            <OptionsAndMultipliersListing />
+
+            <DesktopWrapper>
+                <div className='traders-hub__main-container'>
+                    <OptionsAndMultipliersListing />
+                    <CFDsListing />
+                </div>
+            </DesktopWrapper>
         </div>
     );
 });

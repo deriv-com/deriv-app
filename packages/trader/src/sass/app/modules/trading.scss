@@ -128,6 +128,18 @@
         &--no-padding {
             padding: 0;
         }
+        &.accu-info-display {
+            height: 7rem;
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 1.6rem;
+
+            .accu-info-display__column {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        }
         .dc-datepicker {
             .dc-input {
                 border: 1px solid var(--fill-normal);
@@ -137,6 +149,11 @@
                 &__field {
                     height: 3.2rem;
                 }
+            }
+        }
+        &.accumulator {
+            .number-selector__row {
+                margin-bottom: 0;
             }
         }
     }
@@ -519,7 +536,9 @@
             }
         }
     }
-    &__multipliers-trade-info {
+    &__multipliers-trade-info,
+    &__accumulators-trade-info,
+    &__max-payout-trade-info {
         display: flex;
         justify-content: space-around;
         gap: 2.8rem;
@@ -535,6 +554,17 @@
                 border-bottom: 1px dotted var(--text-general);
             }
         }
+    }
+    &__max-payout-trade-info {
+        justify-content: flex-start;
+        gap: unset;
+
+        &-tooltip-text {
+            flex-direction: unset;
+        }
+    }
+    &__accumulators-trade-info {
+        gap: unset;
     }
     &__popover {
         /* postcss-bem-linter: ignore */
@@ -603,13 +633,14 @@
 }
 
 /** @define purchase-container; weak */
-.purchase-container {
+.purchase-container,
+.purchase-container--accumulator {
     position: relative;
 
     &__option {
         padding: 1.6rem 0.8rem;
 
-        &:not(:only-child) {
+        &:not(:only-of-type) {
             &:nth-last-child(2) {
                 border-bottom-width: 0;
                 border-bottom-left-radius: 0;
@@ -649,7 +680,41 @@
         display: grid;
         grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
+
+        &--accumulator {
+            grid-template-areas: 'a';
+            .purchase-container__option {
+                margin-bottom: 0 !important;
+            }
+        }
     }
+
+    .purchase-buttons-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        border-radius: $BORDER_RADIUS;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--general-section-1);
+        opacity: 0.9;
+        cursor: not-allowed;
+
+        &__caption {
+            width: 17.2rem;
+            height: 4rem;
+            color: var(--text-less-prominent);
+            text-align: center;
+        }
+        &__one-button {
+            padding-top: 0.5rem;
+        }
+    }
+
     //&__lock {
     //    position: absolute;
     //    display: flex;

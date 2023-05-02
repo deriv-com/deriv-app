@@ -61,7 +61,6 @@ describe('<CFDPasswordModal/>', () => {
         is_cfd_password_modal_enabled: true,
         is_cfd_success_dialog_enabled: false,
         is_dxtrade_allowed: false,
-        is_pre_appstore: false,
         jurisdiction_selected_shortcode: 'svg',
         platform: 'mt5',
         has_cfd_error: false,
@@ -276,7 +275,6 @@ describe('<CFDPasswordModal/>', () => {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             error_type: 'PasswordError',
             account_type: { category: 'real', type: 'synthetic' },
-            is_pre_appstore: true,
         };
         render(
             <Router history={history}>
@@ -284,7 +282,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('MockedMT5Icon')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5SyntheticPlatform')).toBeInTheDocument();
     });
 
     it('should display Financial icon in Success Dialog', async () => {
@@ -302,12 +300,12 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
     });
 
-    it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
+    it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
         const props = {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
             error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'synthetic' },
+            account_type: { category: 'real', type: 'all' },
         };
         render(
             <Router history={history}>
@@ -315,23 +313,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
-    });
-
-    it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            platform: 'dxtrade',
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'financial' },
-        };
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
-            </Router>
-        );
-
-        expect(await screen.findByText('IcDxtradeFinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcRebrandingDerivx')).toBeInTheDocument();
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {

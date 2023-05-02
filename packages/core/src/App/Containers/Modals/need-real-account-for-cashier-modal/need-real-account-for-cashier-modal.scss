@@ -1,0 +1,15 @@
+.need-real-account-for-cashier-dialog {
+    .dc-dialog {
+        &__header-wrapper {
+            margin: 0 0 2rem;
+        }
+    }
+    @include mobile {
+        .dc-dialog {
+            &__content,
+            &__button {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

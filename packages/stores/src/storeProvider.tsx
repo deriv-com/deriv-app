@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
+import { ExchangeRatesProvider } from './providers';
 import StoreContext from './storeContext';
 import { ExchangeRatesStore } from './stores';
-import { ExchangeRatesProvider } from './providers';
 import type { TCoreStores, TStores } from '../types';
 
 const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TCoreStores }>) => {

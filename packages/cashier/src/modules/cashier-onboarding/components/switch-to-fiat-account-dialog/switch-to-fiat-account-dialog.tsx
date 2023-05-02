@@ -1,8 +1,8 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
+import { useFiatAccountList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useFiatAccountList } from '@deriv/hooks';
 
 type TProps = {
     is_visible: boolean;

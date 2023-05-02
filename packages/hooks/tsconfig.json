@@ -6,5 +6,5 @@
         },
         "baseUrl": "./"
     },
-    "include": ["src", "../../utils.d.ts"]
+    "include": ["src"]
 }

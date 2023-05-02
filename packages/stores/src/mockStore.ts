@@ -299,4 +299,4 @@ const mock = (): TStores => {
 
 const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
-export { mockStore };
+export default mockStore;

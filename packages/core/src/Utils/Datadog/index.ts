@@ -9,7 +9,7 @@ datadogRum.init({
     applicationId: DATADOG_APP_ID,
     clientToken: DATADOG_CLIENT_TOKEN,
     site: 'datadoghq.com',
-    service: 'deriv.com',
+    service: 'app.deriv.com',
     env: 'production',
     sessionSampleRate: +DATADOG_SESSION_SAMPLE_RATE,
     sessionReplaySampleRate: +DATADOG_SESSION_REPLAY_SAMPLE_RATE,

@@ -259,7 +259,7 @@ const OnfidoSdkView = ({
                             icon_height={16}
                             icon_width={16}
                             message={
-                                <Text as='p' size='xs'>
+                                <Text as='p' size='xxxs'>
                                     <Localize i18n_default_text='Your personal details have been saved successfully.' />
                                 </Text>
                             }

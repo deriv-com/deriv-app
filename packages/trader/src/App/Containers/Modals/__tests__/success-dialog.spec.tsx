@@ -47,6 +47,7 @@ describe('<SuccessDialog />', () => {
     const modal_root_el = document.createElement('div');
     modal_root_el.setAttribute('id', 'modal_root');
     document.body.appendChild(modal_root_el);
+    const mock_message = 'mockMessage';
 
     let props: React.ComponentProps<typeof SuccessDialog>;
     beforeEach(() => {
@@ -55,7 +56,7 @@ describe('<SuccessDialog />', () => {
             has_cancel: false,
             has_submit: true,
             icon: <div>Icon</div>,
-            message: 'mockMessage',
+            message: mock_message,
             heading: '',
             is_open: true,
             toggleModal: jest.fn(() => {
@@ -101,13 +102,13 @@ describe('<SuccessDialog />', () => {
     });
     it('Expect mockMessage with classNameMessage to be rendered when message is a string', () => {
         render(<SuccessDialog {...props} />);
-        expect(screen.getByText(/mockmessage/i)).toBeInTheDocument();
-        expect(screen.getByText(/mockmessage/i)).toHaveClass('classNameMessage');
+        expect(screen.getByText(mock_message)).toBeInTheDocument();
+        expect(screen.getByText(mock_message)).toHaveClass('classNameMessage');
     });
     it('Expect mockMessage with classNameMessage to not be rendered when message is an Element', () => {
         props.message = <div>mockMessage</div>;
         render(<SuccessDialog {...props} />);
-        expect(screen.getByText(/mockmessage/i)).not.toHaveClass('classNameMessage');
+        expect(screen.getByText(mock_message)).not.toHaveClass('classNameMessage');
     });
     it('Cancel button should not be rendered when has_cancel = false and Submit button should be rendered when has_submit = true', () => {
         render(<SuccessDialog {...props} />);

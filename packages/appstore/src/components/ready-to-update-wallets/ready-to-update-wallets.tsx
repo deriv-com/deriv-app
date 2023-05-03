@@ -84,7 +84,7 @@ const ReadyToUpdateWallets = () => {
                     has_full_height
                     onClose={() => setShouldShowWalletConsentPopup(false)}
                 >
-                    <Div100vhContainer className='wallet-wrapper--body' height_offset='15rem'>
+                    <Div100vhContainer className='wallet-wrapper--body'>
                         <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} is_low_risk={low_risk} />
                         <Checkbox
                             onChange={toggleCheckbox}

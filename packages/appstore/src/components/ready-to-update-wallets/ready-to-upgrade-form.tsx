@@ -12,7 +12,7 @@ const ReadyToUpgradeForm = ({ is_eu, is_low_risk }: TReadyToUpgradeForm) => {
     const form_line_height = isMobile() ? 'm' : 'l';
     return (
         <React.Fragment>
-            <WalletsImage image='ready_to_update_wallets_image' className='wallet-wrapper--icon' />
+            <WalletsImage image='ready_to_update_wallets_image' className='wallet-wrapper--image' />
             <div className='wallet-wrapper--text'>
                 <Text size={isMobile() ? 'xsm' : 'm'} align='center' weight='bold' line_height={form_line_height}>
                     <Localize i18n_default_text='Ready to upgrade?' />

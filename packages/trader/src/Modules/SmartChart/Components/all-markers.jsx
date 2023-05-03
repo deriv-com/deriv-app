@@ -240,17 +240,6 @@ const TickContract = RawMarkerMaker(
     }) => {
         /** @type {CanvasRenderingContext2D} */
         const ctx = context;
-
-        const color = getColor({
-            is_dark_theme,
-            status,
-            profit: is_sold ? profit : null,
-        });
-
-        ctx.strokeStyle = color;
-        ctx.fillStyle = color;
-        ctx.save();
-
         const draw_start_line = is_last_contract && start.visible && !is_sold;
         const is_accumulators_contract = isAccumulatorContract(contract_type);
         const scale = calc_scale(start.zoom);
@@ -298,7 +287,15 @@ const TickContract = RawMarkerMaker(
             });
         }
         if (is_in_contract_details) return;
-        ctx.restore();
+
+        const color = getColor({
+            is_dark_theme,
+            status,
+            profit: is_sold ? profit : null,
+        });
+
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
 
         if (draw_start_line) {
             render_label({

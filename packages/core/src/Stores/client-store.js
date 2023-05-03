@@ -2661,14 +2661,14 @@ export default class ClientStore extends BaseStore {
         this.prev_account_type = acc_type;
     };
 
-    /** @deprecated Use `useIsP2PEnabled` from `@deriv/stores` package instead.
+    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
      *
      * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
      *
      * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
      * */
     get is_p2p_enabled() {
-        const { is_low_risk_cr_eu_real } = this.root_store.traders_hub;
+        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
 
         const is_p2p_supported_currency = Boolean(
             this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())

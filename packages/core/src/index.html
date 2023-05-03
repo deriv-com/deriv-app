@@ -159,21 +159,20 @@
                 opacity: 0 !important;
             }
         </style>
+        <!-- Google Tag Manager -->
         <script>
-            var gtm_id = 'GTM-NF7884S';
-            if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
-            (function (a, s, y, n, c, h, i, d, e) {
-                s.className += ' ' + y;
-                h.end = i = function () {
-                    s.className = s.className.replace(RegExp(' ?' + y), '');
-                };
-                (a[n] = a[n] || []).hide = h;
-                setTimeout(function () {
-                    i();
-                    h.end = null;
-                }, c);
-            })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { [gtm_id]: true });
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-PDQM939');
         </script>
+        <!-- End Google Tag Manager -->
         <!-- End GTM Script -->
 
         <!-- Start URL Handler -->
@@ -240,26 +239,16 @@
     </head>
 
     <body class="body theme">
-        <!-- Start GTM NoScript -->
+        <!-- Google Tag Manager (noscript) -->
         <noscript
             ><iframe
-                src="https://www.googletagmanager.com/ns.html?id=GTM-NF7884S"
+                src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM939"
                 height="0"
                 width="0"
                 style="display: none; visibility: hidden"
             ></iframe
         ></noscript>
-        <!-- End GTM NoScript -->
-        <!-- Start GTM NoScript of GTM Test Environment -->
-        <noscript
-            ><iframe
-                src="https://www.googletagmanager.com/ns.html?id=GTM-TNX2ZKH"
-                height="0"
-                width="0"
-                style="display: none; visibility: hidden"
-            ></iframe
-        ></noscript>
-        <!-- End GTM NoScript of GTM Test Environment -->
+        <!-- End Google Tag Manager (noscript) -->
 
         <!-- TODO: Display shell platform icon and text based on route -->
 

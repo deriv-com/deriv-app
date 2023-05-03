@@ -32,6 +32,8 @@ const {
     svg_file_loaders,
     svg_loaders,
 } = require('./loaders-config');
+const Dotenv = require('dotenv-webpack');
+const { DefinePlugin } = require('webpack');
 
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -124,6 +126,15 @@ const MINIMIZERS = !IS_RELEASE
 
 const plugins = ({ base, is_test_env }) => {
     return [
+        new Dotenv({}),
+        new DefinePlugin({
+            'process.env.DATADOG_APPLICATION_ID': JSON.stringify(process.env.DATADOG_APPLICATION_ID),
+            'process.env.DATADOG_CLIENT_TOKEN': JSON.stringify(process.env.DATADOG_CLIENT_TOKEN),
+            'process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE': JSON.stringify(
+                process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE
+            ),
+            'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
+        }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),
         new HtmlWebPackPlugin(htmlOutputConfig(IS_RELEASE)),

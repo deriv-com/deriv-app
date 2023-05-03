@@ -205,7 +205,7 @@ stories
                         <DatePicker value={toMoment()} label='Year' calendar_view='year' readOnly />
                     </DatePickerWrapper>
                     <DatePickerWrapper>
-                        <DatePicker value={toMoment()} label='Decade' calendar_view='decade' readOnly />
+                        <DatePicker value={toMoment()} label='Decade' calendar_view='years' readOnly />
                     </DatePickerWrapper>
                 </FlexWrapper>
             </Theme>

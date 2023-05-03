@@ -1,13 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getTotalProfit } from '../contract';
-import { TGetTotalProfit } from '../contract/contract-types';
+import { TContractStore } from '../contract/contract-types';
 import { getBuyPrice } from './logic';
-
-type TContractStore = {
-    contract_update_stop_loss?: number;
-    contract_info: TGetTotalProfit;
-    contract_update_take_profit?: string;
-};
 
 type TOptions = {
     message?: string;
@@ -43,7 +37,7 @@ export const getContractValidationRules = () => ({
                 {
                     func: (value: number, options: TOptions, contract_store: TContractStore) => {
                         const stake = getBuyPrice(contract_store);
-                        return value < stake + 1;
+                        return value < Number(stake) + 1;
                     },
                     message: localize('Invalid stop loss. Stop loss cannot be more than stake.'),
                 },

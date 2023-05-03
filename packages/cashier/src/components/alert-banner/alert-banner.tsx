@@ -6,17 +6,16 @@ import './alert-banner.scss';
 
 type TAlertBanner = {
     className?: string;
-    i18n_default_text?: string;
     icon: string;
-    values?: object;
+    message?: JSX.Element | string;
 };
 
-const AlertBanner = ({ className, icon, i18n_default_text, values }: TAlertBanner) => {
+const AlertBanner = ({ className, icon, message }: TAlertBanner) => {
     return (
         <div className={classNames('alert-banner', className)}>
             <Icon size={16} icon={icon} className='alert-banner__icon' />
             <Text as='p' align='center' size='xs' className='alert-banner__text'>
-                <Localize i18n_default_text={i18n_default_text} values={values} />
+                {message}
             </Text>
         </div>
     );

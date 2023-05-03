@@ -16,7 +16,7 @@ type TSelectNative = {
     suffix_icon?: string;
     data_testid?: string;
     hide_selected_value?: boolean;
-    hide_top_placeholder: boolean;
+    hide_top_placeholder?: boolean;
     value: string | number;
     list_items: Array<TListItem> | { [key: string]: Array<TListItem> };
 } & Omit<TSelectNativeOptions, 'list_items'> &

@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { PlatformContext } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import { findRouteByPath, normalizePath } from './helpers';
-import { TPlatformContext } from 'Types';
 
 type TBinaryLink = {
     active_class: string;
@@ -11,7 +10,7 @@ type TBinaryLink = {
 };
 
 const BinaryLink = ({ active_class, to, children, ...props }: React.PropsWithChildren<Partial<TBinaryLink>>) => {
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const path = normalizePath(to as string);
     const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
 

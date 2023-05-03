@@ -164,7 +164,7 @@ const getAccountTitle = (
     if (platform === CFD_PLATFORMS.DXTRADE) {
         return getDxCompanies()[account_type.category as keyof TDxCompanies][
             account_type.type as keyof TDxCompanies['demo' | 'real']
-        ].title;
+        ].short_title;
     }
 
     return account_title;
@@ -829,6 +829,8 @@ const CFDPasswordModal = ({
             getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
                 type as keyof TMtCompanies['demo' | 'real']
             ].short_title;
+        const deriv_x_type_label =
+            getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
         const mt5_platform_label = jurisdiction_selected_shortcode !== 'maltainvest' ? 'MT5' : '';
@@ -840,7 +842,7 @@ const CFDPasswordModal = ({
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
-                            type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
+                            type: platform === CFD_PLATFORMS.DXTRADE ? deriv_x_type_label : type_label,
                             platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : 'Deriv X',
                             category: category_label,
                             jurisdiction_selected_shortcode:
@@ -863,9 +865,10 @@ const CFDPasswordModal = ({
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} Deriv <0>{{platform}}</0> <1>{{type}}</1> account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} {{deriv_keyword}} <0>{{platform}}</0> <1>{{type}}</1> account.'
                 values={{
-                    type: type_label,
+                    deriv_keyword: platform === CFD_PLATFORMS.MT5 ? 'Deriv' : '',
+                    type: platform === CFD_PLATFORMS.DXTRADE ? deriv_x_type_label : type_label,
                     platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
@@ -878,7 +881,7 @@ const CFDPasswordModal = ({
         <CFDPasswordForm
             is_bvi={is_bvi}
             context={context}
-            account_title={getAccountTitle(platform, account_type, account_title)}
+            account_title={account_title}
             account_type={account_type}
             closeModal={closeModal}
             error_type={error_type}

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
-import Fieldset from 'App/Components/Form/fieldset.tsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { connect } from 'Stores/connect';
 
 const TakeProfit = ({

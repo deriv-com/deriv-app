@@ -3,7 +3,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.tsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { Dropdown } from '@deriv/components';
 import { toMoment } from '@deriv/shared';

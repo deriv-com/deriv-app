@@ -3,7 +3,7 @@ import { ButtonToggle, Dropdown, InputField, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
 import AllowEquals from './allow-equals.jsx';
-import Fieldset from 'App/Components/Form/fieldset.tsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import Multiplier from './Multiplier/multiplier.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';

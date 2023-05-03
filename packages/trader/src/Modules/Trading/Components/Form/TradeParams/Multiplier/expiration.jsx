@@ -3,7 +3,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv/shared';
 import { Text } from '@deriv/components';
-import Fieldset from 'App/Components/Form/fieldset.tsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { connect } from 'Stores/connect';
 
 const Expiration = ({ expiration, start_time, is_text_only, text_size }) => {

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import Fieldset from 'App/Components/Form/fieldset.tsx';
+import Fieldset from 'App/Components/Form/fieldset';
 import { connect } from 'Stores/connect';
 import { isDesktop } from '@deriv/shared';
 

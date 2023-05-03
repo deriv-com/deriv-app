@@ -1,28 +1,19 @@
 import classNames from 'classnames';
 import React from 'react';
 import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
-import { TGetDisplayStatus } from '@deriv/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ContractCardItem from './contract-card-item';
 import Icon from '../../icon';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-
-export type TContractInfo = {
-    buy_price: number;
-    bid_price: number;
-    entry_spot_display_value: string;
-    barrier: string;
-    sell_price?: number;
-    profit: number;
-    status: string;
-}
+import { TGetCardLables } from '../../types';
 
 export type TVanillaOptionsCardBodyProps = {
   contract_info: TContractInfo;
   currency: string;
-  getCardLabels: () => { [key: string]: string };
+  getCardLabels: TGetCardLables;
   is_sold: boolean;
   progress_slider: React.ReactNode;
   status: string;
@@ -46,11 +37,11 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contra
                     </ContractCardItem>
 
                     <ContractCardItem header={ENTRY_SPOT}>
-                        <Money amount={entry_spot_display_value} />
+                        {entry_spot_display_value && <Money amount={entry_spot_display_value} />}
                     </ContractCardItem>
 
                     <ContractCardItem header={STRIKE}>
-                        <Money amount={barrier} />
+                        {barrier && <Money amount={barrier} />}
                     </ContractCardItem>
                 </div>
                 <ContractCardItem
@@ -80,7 +71,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contra
                         </ContractCardItem>
 
                         <ContractCardItem header={ENTRY_SPOT}>
-                            <Money amount={entry_spot_display_value} currency={currency} />
+                            {entry_spot_display_value && <Money amount={entry_spot_display_value} currency={currency} />}
                         </ContractCardItem>
                     </div>
 
@@ -89,15 +80,15 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contra
                             <Money amount={contract_value} currency={currency} />
                         </ContractCardItem>
 
-                        <ContractCardItem header={STRIKE}>
-                            <Money amount={barrier} currency={currency} />
+                        <ContractCardItem header={STRIKE}>  
+                            {barrier && <Money amount={barrier} currency={currency} />}
                         </ContractCardItem>
                     </div>
 
                     {is_sold ? (
                         <ResultStatusIcon
                             getCardLabels={getCardLabels}
-                            is_contract_won={getDisplayStatus(contract_info as TGetDisplayStatus) === 'won'}
+                            is_contract_won={getDisplayStatus(contract_info) === 'won'}
                         />
                     ) : (
                         progress_slider

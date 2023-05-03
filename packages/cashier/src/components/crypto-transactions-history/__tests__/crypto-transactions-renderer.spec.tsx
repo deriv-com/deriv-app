@@ -4,8 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
 import CashierProviders from '../../../cashier-providers';
-import { transaction } from 'mobx';
-import { freemem } from 'os';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),

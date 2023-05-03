@@ -62,6 +62,8 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
         showCryptoTransactionsStatusModal(description, name);
     };
 
+    const is_third_party_transaction = transaction_url?.includes('CP:');
+
     if (isMobile()) {
         return (
             <div>
@@ -131,7 +133,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                         <Text as='p' color='prominent' size='xxs' weight='bold'>
                             {localize('Transaction hash')}
                         </Text>
-                        {transaction_url?.includes('CP:') && (
+                        {is_third_party_transaction && (
                             <Icon
                                 className='crypto-transactions-history__table-tooltip'
                                 data_testid='dt_crypto_transactions_history_table_tooltip_mobile'

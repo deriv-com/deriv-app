@@ -7,15 +7,15 @@ import './alert-banner.scss';
 type TAlertBanner = {
     icon: string;
     message: string;
-    classname?: string;
+    className?: string;
 };
 
-const AlertBanner = ({ icon, message, classname }: TAlertBanner) => {
+const AlertBanner = ({ icon, message, className }: TAlertBanner) => {
     return (
-        <div className={classNames('alert-banner', classname)}>
+        <div className={classNames('alert-banner', className)}>
             <Icon size={16} icon={icon} className='alert-banner__icon' />
             <Text as='p' align='center' size='xs' className='alert-banner__text'>
-                <Localize i18n_default_text={`${message}`} />
+                <Localize i18n_default_text={message} />
             </Text>
         </div>
     );

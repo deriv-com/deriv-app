@@ -19,11 +19,8 @@ const CryptoDeposit = observer(() => {
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
 
-    const { data, isLoading, isSuccess } = useFetch('crypto_config', {
-        payload: {
-            currency_code: currency,
-        },
-    });
+    const { data } = useFetch('crypto_config', { payload: { currency_code: currency } });
+    const minimum_deposit = data?.currencies_config[currency]?.minimum_deposit;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -171,11 +168,11 @@ const CryptoDeposit = observer(() => {
                     </div>
                 ) : (
                     <>
-                        {isSuccess && data?.currencies_config[currency]?.minimum_deposit ? (
+                        {minimum_deposit ? (
                             <AlertBanner
-                                classname='crypto-third-party-alert'
+                                className='crypto-third-party-alert'
                                 icon='IcAlertWarningDark'
-                                message={`A minimum deposit value of ${data?.currencies_config[currency].minimum_deposit} ${currency} is required. Otherwise, the funds will be lost and cannot be recovered.`}
+                                message={`A minimum deposit value of ${minimum_deposit} ${currency} is required. Otherwise, the funds will be lost and cannot be recovered.`}
                             />
                         ) : (
                             <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>

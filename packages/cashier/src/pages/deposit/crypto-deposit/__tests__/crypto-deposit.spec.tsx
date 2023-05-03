@@ -37,22 +37,6 @@ jest.mock('@deriv/api', () => {
                         minimum_deposit: 2,
                         minimum_withdrawal: 4.54,
                     },
-                    BTC: {
-                        minimum_deposit: undefined,
-                        minimum_withdrawal: undefined,
-                    },
-                    ETH: {
-                        minimum_deposit: undefined,
-                        minimum_withdrawal: undefined,
-                    },
-                    USDC: {
-                        minimum_deposit: undefined,
-                        minimum_withdrawal: undefined,
-                    },
-                    eUSDT: {
-                        minimum_deposit: undefined,
-                        minimum_withdrawal: undefined,
-                    },
                 },
             },
             isLoading: false,
@@ -473,6 +457,8 @@ describe('<CryptoDeposit />', () => {
     });
 
     it('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
+        const minimum_deposit = 2;
+        const currency = 'tUSDT';
         const mockRootStore = {
             client: {
                 currency: 'tUSDT',
@@ -496,5 +482,10 @@ describe('<CryptoDeposit />', () => {
             },
         };
         renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+        expect(
+            screen.getByText(
+                `A minimum deposit value of ${minimum_deposit} ${currency} is required. Otherwise, the funds will be lost and cannot be recovered.`
+            )
+        ).toBeInTheDocument();
     });
 });

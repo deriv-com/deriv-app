@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Badge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TWalletSvgCurrency } from 'Types';
 
@@ -30,21 +30,16 @@ const WalletHeaderTitle = React.memo(({ is_demo, currency, jurisdiction }: TWall
         </Text>
     );
 
-    const badge = (
-        <Text weight='bold' size='xxxs' line_height='xxxs' className='wallet-header__description-badge'>
-            <Localize
-                i18n_default_text='{{jurisdiction}}'
-                values={{
-                    jurisdiction: jurisdiction.toUpperCase(),
-                }}
-            />
-        </Text>
-    );
-
     return (
         <div className='wallet-header__description-title'>
             {title}
-            {!is_demo && badge}
+            {!is_demo && (
+                <Badge
+                    className='wallet-header__description-badge'
+                    type='bordered'
+                    label={jurisdiction.toUpperCase()}
+                />
+            )}
         </div>
     );
 });

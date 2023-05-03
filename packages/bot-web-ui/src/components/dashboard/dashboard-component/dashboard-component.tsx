@@ -56,7 +56,7 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
     </div>
 );
 
-const DashboardComponent = observer(() => {
+const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
     const { setActiveTab, has_started_onboarding_tour } = dashboard;

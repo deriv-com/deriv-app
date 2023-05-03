@@ -108,7 +108,7 @@ export const DBOT_ONBOARDING = [
                         'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
                     ),
                 ]}
-                img={getImageLocation('dbot-onboarding-step-1.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-1.gif')}
                 dashboard_tab_index={0}
                 step_index={1}
             />
@@ -122,7 +122,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Monitor the market')}
                 content={[localize('View the market price of your favourite assets.')]}
-                img={getImageLocation('dbot-onboarding-step-2.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-2.gif')}
                 dashboard_tab_index={0}
                 step_index={2}
             />
@@ -136,7 +136,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Guides and FAQs to help you')}
                 content={[localize('Start with a video guide and the FAQs.')]}
-                img={getImageLocation('dbot-onboarding-step-3.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-3.gif')}
                 dashboard_tab_index={0}
                 step_index={3}
             />
@@ -164,7 +164,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('How is my bot doing?')}
                 content={[localize("See your bot's performance in real-time.")]}
-                img={getImageLocation('dbot-onboarding-step-5.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-5.gif')}
                 dashboard_tab_index={0}
                 step_index={5}
             />
@@ -179,7 +179,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Run or stop your bot')}
                 content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
-                img={getImageLocation('dbot-onboarding-step-6.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-6.gif')}
                 dashboard_tab_index={0}
                 step_index={6}
             />

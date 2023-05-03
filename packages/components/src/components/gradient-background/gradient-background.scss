@@ -1,15 +1,20 @@
 .gradient-background {
-    overflow-y: hidden;
     width: 100%;
+    overflow-y: hidden;
+    overflow-x: visible;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    @include mobile {
+        overflow-x: hidden;
+    }
+
     &__container {
-        width: 100%;
-        max-width: 1280px;
-        height: 160px;
         position: relative;
+        width: 100%;
+        height: 160px;
+        max-width: 1280px;
         display: flex;
         align-items: center;
 
@@ -20,30 +25,57 @@
 
     &__primary {
         position: absolute;
-        width: 45.8%;
         aspect-ratio: 1;
+        width: 45.8%;
         right: -1.9%;
+        opacity: 1;
         filter: blur(400px);
+
+        @include mobile {
+            width: 111%;
+            right: -30%;
+            top: 30%;
+            opacity: 0.8;
+            filter: blur(200px);
+        }
     }
 
     &__secondary {
         position: absolute;
-        width: 23%;
         aspect-ratio: 1;
+        transform: translateY(-48%);
+        width: 23%;
         right: -11%;
         top: 0;
-        transform: translateY(-48%);
+        opacity: 1;
         filter: blur(140px);
+
+        @include mobile {
+            width: 62%;
+            right: -33%;
+            top: -10%;
+            opacity: 0.8;
+            filter: blur(100px);
+        }
     }
 
     &__tertiary {
         position: absolute;
-        width: 28%;
+        transform: translateY(-54%);
         aspect-ratio: 1;
+        width: 28%;
         left: -15%;
         top: 0;
-        transform: translateY(-54%);
+        opacity: 1;
         filter: blur(240px);
+
+        @include mobile {
+            width: 71%;
+            left: -35%;
+            top: 10%;
+            opacity: 0.8;
+            filter: blur(200px);
+        }
     }
 
     &__children {

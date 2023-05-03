@@ -283,12 +283,15 @@ export default class TradersHubStore extends BaseStore {
 
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
-        if (this.is_eu_user && !this.is_demo_low_risk) {
+        if ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk) {
             this.available_platforms = appstore_platforms.filter(platform =>
                 ['EU', 'All'].some(region => region === platform.availability)
             );
             return;
-        } else if (this.selected_region === 'Non-EU' || this.is_demo_low_risk) {
+        } else if (
+            (this.selected_region === 'Non-EU' && !this.financial_restricted_countries) ||
+            this.is_demo_low_risk
+        ) {
             this.available_platforms = appstore_platforms.filter(platform =>
                 ['Non-EU', 'All'].some(region => region === platform.availability)
             );

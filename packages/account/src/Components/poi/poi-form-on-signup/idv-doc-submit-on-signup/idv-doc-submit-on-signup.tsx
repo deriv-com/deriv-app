@@ -14,14 +14,14 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop, formatInput, isMobile } from '@deriv/shared';
-import {
-    documentAdditionalError,
-    getDocumentData,
-    getRegex,
-    preventEmptyClipboardPaste,
-} from '../../idv-document-submit/utils';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
-import { generatePlaceholderText } from 'Helpers/utils';
+import {
+    generatePlaceholderText,
+    getDocumentData,
+    documentAdditionalError,
+    preventEmptyClipboardPaste,
+    getRegex,
+} from 'Helpers/utils';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;

@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Badge, Icon, Text } from '@deriv/components';
-import { formatMoney, isMobile } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 
 type TCashierWalletModalHeaderProps = {
@@ -9,6 +10,7 @@ type TCashierWalletModalHeaderProps = {
     currency: string;
     is_dark: boolean;
     is_demo: boolean;
+    is_mobile: boolean;
     closeModal: VoidFunction;
     show_wallet_name: boolean;
 };
@@ -19,6 +21,7 @@ const CashierWalletModalHeader = ({
     currency,
     is_dark,
     is_demo,
+    is_mobile,
     show_wallet_name,
 }: TCashierWalletModalHeaderProps) => {
     const header_class_name = 'cashier-wallet-modal__header';
@@ -51,10 +54,10 @@ const CashierWalletModalHeader = ({
             },
         };
 
-        const size = isMobile() ? sizes.mobile : sizes.desktop;
+        const size = is_mobile ? sizes.mobile : sizes.desktop;
 
         return size;
-    }, [is_demo]);
+    }, [is_demo, is_mobile]);
 
     const getCurrencyIconProps = React.useCallback(() => {
         const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark);
@@ -85,14 +88,14 @@ const CashierWalletModalHeader = ({
                 {show_wallet_name && (
                     <div className={classNames(`${header_class_name}__title`)}>
                         <Text
-                            size={isMobile() ? 'xs' : 's'}
+                            size={is_mobile ? 'xs' : 's'}
                             as='span'
                             className={getStylesByClassName(`${header_class_name}__title-wallet`)}
                         >
-                            {is_demo ? 'Demo' : ''} {currency} Wallet
+                            {is_demo ? 'Demo' : ''} {currency} {localize('Wallet')}
                         </Text>
                         {is_demo ? (
-                            <Badge type='contained' background_color='blue' label='' />
+                            <Badge type='contained' background_color='blue' label='Demo' />
                         ) : (
                             <Badge type='bordered' label='SVG' />
                         )}
@@ -100,7 +103,7 @@ const CashierWalletModalHeader = ({
                 )}
                 <Text
                     as='p'
-                    size={isMobile() ? 'xsm' : 'm'}
+                    size={is_mobile ? 'xsm' : 'm'}
                     weight='bold'
                     className={getStylesByClassName(`${header_class_name}__title-balance`)}
                 >
@@ -109,11 +112,11 @@ const CashierWalletModalHeader = ({
             </div>
             {show_wallet_name && (
                 <div className={classNames(`${header_class_name}__currency-icon`)}>
-                    <Icon {...getCurrencyIconProps()} />
+                    <Icon {...getCurrencyIconProps()} data_testid='dt_currency_icon' />
                 </div>
             )}
             <div className={classNames(`${header_class_name}__close-icon`)}>
-                <Icon icon={getCloseIcon()} onClick={closeModal} />
+                <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />
             </div>
         </div>
     );

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 import AccountTransfer from '@deriv/cashier/src/pages/account-transfer';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
@@ -8,15 +10,17 @@ export const getCashierOptions = (type: TWalletType) => {
     switch (type) {
         case 'real':
             return [
-                //Remove AccountTransfer after QA testing (testing scroll behaviour)
                 {
                     icon: 'IcAdd',
                     label: localize('Deposit'),
-                    content: (
+                    //Remove AccountTransfer after QA testing (testing scroll behaviour)
+                    content: isMobile() ? (
                         <>
-                            <AccountTransfer />
-                            <AccountTransfer />
+                            <AccountTransfer onClose={() => {}} />
+                            <AccountTransfer onClose={() => {}} />
                         </>
+                    ) : (
+                        <p>Deposit Real</p>
                     ),
                 },
                 { icon: 'IcMinus', label: localize('Withdraw'), content: <p>Withdraw Real</p> },

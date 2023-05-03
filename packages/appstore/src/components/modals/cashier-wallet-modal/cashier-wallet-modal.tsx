@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import CashierWalletModalHeader from './cashier-wallet-modal-header';
 import CashierWalletModalBody from './cashier-wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
@@ -9,7 +8,7 @@ const CashierWalletModal = observer(() => {
     const store = useStore();
     const {
         client: { balance, currency },
-        ui: { is_dark_mode_on, is_cashier_wallet_modal_visible, setIsCashierWalletModalVisible },
+        ui: { is_dark_mode_on, is_cashier_wallet_modal_visible, is_mobile, setIsCashierWalletModalVisible },
         traders_hub: { is_demo },
     } = store;
 
@@ -34,18 +33,15 @@ const CashierWalletModal = observer(() => {
             setShowWalletName(!(target.scrollTop > 0));
         };
 
-        el_tab_content?.addEventListener('scroll', handleScroll);
+        if (is_mobile) {
+            el_tab_content?.addEventListener('scroll', handleScroll);
+            setShowWalletName(true);
+        }
 
         return () => {
             el_tab_content?.removeEventListener('scroll', handleScroll);
         };
-    }, [active_tab_index, is_cashier_wallet_modal_visible]);
-
-    React.useEffect(() => {
-        if (isMobile()) {
-            setShowWalletName(true);
-        }
-    }, [active_tab_index, is_cashier_wallet_modal_visible]);
+    }, [active_tab_index, is_cashier_wallet_modal_visible, is_mobile]);
 
     return (
         <Modal is_open={is_cashier_wallet_modal_visible} className='cashier-wallet-modal' portalId='app_contents'>
@@ -55,6 +51,7 @@ const CashierWalletModal = observer(() => {
                 currency={currency}
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
+                is_mobile={is_mobile}
                 show_wallet_name={show_wallet_name}
             />
             <CashierWalletModalBody
@@ -63,6 +60,7 @@ const CashierWalletModal = observer(() => {
                 is_demo={is_demo}
                 ref={tab_content_ref}
                 setActiveTabIndex={setActiveTabIndex}
+                show_wallet_name={show_wallet_name}
                 wallet_type={wallet_type}
             />
         </Modal>

@@ -150,12 +150,17 @@
             font-size: var(--text-size-l);
             color: var(--text-prominent);
             display: flex;
+            align-items: center;
             justify-content: center;
 
             @include mobile {
                 height: calc(100vh - 12.2rem);
-                padding: 1.6rem;
+                padding: 0 1.6rem;
                 font-size: var(--text-size-xs);
+
+                &.content-scrolled {
+                    height: calc(100vh - 8.2rem);
+                }
             }
         }
     }

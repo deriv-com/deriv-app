@@ -16,7 +16,6 @@ type TUpgradeInformationList = TReadyToUpgradeForm & {
 
 const getUpgradeInformationList = ({
     is_eu,
-    is_low_risk,
     text_info_size,
     form_line_height,
 }: TUpgradeInformationList): TInformationList[] => [
@@ -43,20 +42,13 @@ const getUpgradeInformationList = ({
         ),
     },
     {
-        name: 'low_risk_payment_agents',
-        visiblity: !is_eu && is_low_risk,
+        name: 'payment_agents',
+        visiblity: !is_eu,
         content: (
             <Localize
                 i18n_default_text="You can use <0>Payment agents'</0> services to deposit by adding a Payment Agent Wallet after the upgrade."
                 components={<Text weight='bold' size={text_info_size} line_height={form_line_height} key={0} />}
             />
-        ),
-    },
-    {
-        name: 'high_risk_payment_agents',
-        visiblity: !is_eu && !is_low_risk,
-        content: (
-            <Localize i18n_default_text="You can use Payment agents' services to deposit by adding a Payment Agent Wallet after the upgrade." />
         ),
     },
 ];

@@ -6,7 +6,7 @@ import { TReadyToUpgradeForm } from 'Types';
 import WalletsImage from 'Assets/svgs/wallets';
 import getUpgradeInformationList from 'Constants/upgrade-info-lists-config';
 
-const ReadyToUpgradeForm = ({ is_eu, is_low_risk }: TReadyToUpgradeForm) => {
+const ReadyToUpgradeForm = ({ is_eu }: TReadyToUpgradeForm) => {
     const text_body_size = isMobile() ? 'xs' : 's';
     const text_info_size = isMobile() ? 'xxs' : 'xs';
     const form_line_height = isMobile() ? 'm' : 'l';
@@ -34,7 +34,7 @@ const ReadyToUpgradeForm = ({ is_eu, is_low_risk }: TReadyToUpgradeForm) => {
                 </Text>
             </div>
             <div className='wallet-wrapper--info-section'>
-                {getUpgradeInformationList({ is_eu, is_low_risk, text_info_size, form_line_height })
+                {getUpgradeInformationList({ is_eu, text_info_size, form_line_height })
                     .filter(info => info.visiblity)
                     .map(({ name, content }) => (
                         <div className='wallet-wrapper--info-section__text' key={name}>

@@ -1,27 +1,16 @@
 // TODO: Once everything is merged place this in main component at the last step
 import React from 'react';
-import {
-    Button,
-    Checkbox,
-    Modal,
-    DesktopWrapper,
-    MobileWrapper,
-    MobileDialog,
-    Div100vhContainer,
-} from '@deriv/components';
+import { Button, Checkbox, Modal, DesktopWrapper, MobileWrapper, MobileDialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ReadyToUpgradeForm from './ready-to-upgrade-form';
 import { useStore, observer } from '@deriv/stores';
-import { ContentFlag } from '@deriv/shared';
 
 const ReadyToUpdateWallets = () => {
     const [is_disabled, setIsDisabled] = React.useState(false);
 
     const { client, traders_hub } = useStore();
     const { is_eu } = client;
-    const { is_eu_user, show_wallet_consent_popup, setShouldShowWalletConsentPopup, content_flag } = traders_hub;
-
-    const low_risk = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+    const { is_eu_user, show_wallet_consent_popup, setShouldShowWalletConsentPopup } = traders_hub;
 
     React.useEffect(() => {
         return () => {
@@ -50,7 +39,7 @@ const ReadyToUpdateWallets = () => {
                 >
                     <Modal.Body className='wallet-wrapper'>
                         <div className='wallet-wrapper--body'>
-                            <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} is_low_risk={low_risk} />
+                            <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} />
                             <Checkbox
                                 onChange={toggleCheckbox}
                                 className='wallet-wrapper--checkbox'
@@ -84,14 +73,14 @@ const ReadyToUpdateWallets = () => {
                     has_full_height
                     onClose={() => setShouldShowWalletConsentPopup(false)}
                 >
-                    <Div100vhContainer className='wallet-wrapper--body'>
-                        <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} is_low_risk={low_risk} />
+                    <div className='wallet-wrapper--body'>
+                        <ReadyToUpgradeForm is_eu={is_eu || is_eu_user} />
                         <Checkbox
                             onChange={toggleCheckbox}
                             className='wallet-wrapper--checkbox'
                             label={localize('I understand and agree to upgrade to Wallets.')}
                         />
-                    </Div100vhContainer>
+                    </div>
                     {/* TODO: Once merged with the main component the button will not be needed as it will be handled on the main component */}
                     <div className='wallet-wrapper--footer'>
                         <Button

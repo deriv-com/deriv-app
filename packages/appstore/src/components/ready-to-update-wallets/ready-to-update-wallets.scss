@@ -3,6 +3,9 @@
     place-content: center;
     width: 100%;
     height: 100%;
+    @include mobile {
+        height: calc(100% - 1rem);
+    }
 
     &--body,
     &--text {
@@ -32,6 +35,7 @@
         max-width: 73.9rem;
         @include mobile {
             margin: 1.6rem 1.6rem 3.2rem;
+            min-height: calc(100% - 11rem);
         }
     }
 

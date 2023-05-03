@@ -4,10 +4,10 @@ import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import { TGetDisplayStatus } from '@deriv/shared/src/utils/contract/contract-types';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
-import ContractCardItem from './contract-card-item.jsx';
+import ContractCardItem from './contract-card-item';
 import Icon from '../../icon';
 import Money from '../../money';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
 
 export type TContractInfo = {
     buy_price: number;

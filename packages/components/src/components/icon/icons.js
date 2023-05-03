@@ -397,6 +397,7 @@ import './common/ic-installation-macos.svg';
 import './common/ic-installation-web-demo.svg';
 import './common/ic-installation-web-real.svg';
 import './common/ic-installation-windows.svg';
+import './common/ic-invalid-error.svg';
 import './common/ic-jeton-dark.svg';
 import './common/ic-jeton-light.svg';
 import './common/ic-language.svg';

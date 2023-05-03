@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { urlForLanguage } from '@deriv/shared';
+import { urlSetQuery } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
@@ -23,6 +23,7 @@ const Routes = ({
     error,
     has_error,
     history,
+    is_dark_mode_on,
     is_logged_in,
     is_logging_in,
     location,
@@ -57,8 +58,6 @@ const Routes = ({
     }, []);
 
     const lang = getLanguage();
-    const lang_regex = /[?&]lang=/;
-    const has_lang = lang_regex.test(location.search);
 
     if (has_error) {
         return <Error {...error} />;
@@ -70,10 +69,12 @@ const Routes = ({
     // non-supported language, the language still
     // shows up in the URL. This is not in sync
     // with the default language (EN), so we
-    // will remove it.
-    if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
-        window.history.replaceState({}, document.title, urlForLanguage(lang));
-    }
+    // will remove it. (The same thing for dark_mode)
+    window.history.replaceState(
+        {},
+        document.title,
+        urlSetQuery({ lang: lang.replace('EN', ''), dark: Number(is_dark_mode_on) })
+    );
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 };
@@ -83,6 +84,7 @@ Routes.propTypes = {
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
     history: PropTypes.object,
+    is_dark_mode_on: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -95,7 +97,8 @@ Routes.propTypes = {
 // need to wrap withRouter around connect
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
-    connect(({ client, common }) => ({
+    connect(({ client, common, ui }) => ({
+        is_dark_mode_on: ui.is_dark_mode_on,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         error: common.error,

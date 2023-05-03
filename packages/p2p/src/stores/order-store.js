@@ -135,10 +135,7 @@ export default class OrderStore {
                     this.setErrorCode(code);
 
                     if (code === api_error_codes.ORDER_EMAIL_VERIFICATION_REQUIRED) {
-                       setTimeout(
-                            () => general_store.showModal({ key: 'EmailVerificationModal', props: {} }),
-                            230
-                        );
+                        setTimeout(() => general_store.showModal({ key: 'EmailVerificationModal', props: {} }), 230);
                     } else if (
                         code === api_error_codes.INVALID_VERIFICATION_TOKEN ||
                         code === api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
@@ -461,7 +458,7 @@ export default class OrderStore {
 
         if (get_order_status.is_completed_order && !get_order_status.is_reviewable) {
             // Remove notification once order review period is finished
-            const notification_key = `order-${p2p_order_info.id}`;
+            const notification_key = `p2p_order_${p2p_order_info.id}`;
             general_store.external_stores?.notifications.removeNotificationMessage({ key: notification_key });
             general_store.external_stores?.notifications.removeNotificationByKey({ key: notification_key });
         }

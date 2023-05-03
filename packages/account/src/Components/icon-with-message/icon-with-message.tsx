@@ -4,7 +4,6 @@ import { Icon, Text, Button } from '@deriv/components';
 import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { TPlatformContext } from 'Types';
 
 type TIconWithMessage = {
     icon: string;
@@ -14,9 +13,9 @@ type TIconWithMessage = {
 
 const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessage) => {
     const { client, ui } = useStore();
-    const { has_active_real_account } = client;
+    const { has_any_real_account: has_real_account } = client;
     const { toggleAccountsDialog, toggleShouldShowRealAccountsList } = ui;
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <div className={classNames('da-icon-with-message', { 'da-icon-with-message-full-width': is_appstore })}>
@@ -41,7 +40,7 @@ const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessag
                     className='account__demo-message-button'
                     data-testid='icon-with-message-button'
                 >
-                    {has_active_real_account ? localize('Switch to real account') : localize('Add a real account')}
+                    {has_real_account ? localize('Switch to real account') : localize('Add a real account')}
                 </Button>
             )}
         </div>

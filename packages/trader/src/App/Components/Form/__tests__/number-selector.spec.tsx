@@ -18,12 +18,12 @@ describe('NumberSelector', () => {
         jest.clearAllMocks();
     });
 
-    it('should render all of members of arr_arr_numbers', () => {
+    it('should render all members of arr_arr_numbers', () => {
         render(<NumberSelector {...mock_props} />);
 
         tests_arr_arr_numbers.flat().forEach(number => expect(screen.getByText(number)).toBeInTheDocument());
     });
-    it('should render all of members of arr_arr_numbers with percentage if it should_show_in_percents === true', () => {
+    it('should render all members of arr_arr_numbers with percentage if should_show_in_percents === true', () => {
         render(<NumberSelector {...mock_props} should_show_in_percents />);
 
         tests_arr_arr_numbers

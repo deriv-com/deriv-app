@@ -43,9 +43,8 @@ describe('Fieldset', () => {
                 {test_children}
             </Fieldset>
         );
-        const header = screen.getByText(test_header_text);
 
-        expect(header).toBeInTheDocument();
+        expect(screen.getByText(test_header_text)).toBeInTheDocument();
         expect(screen.getByTestId('dt_popover_wrapper')).toBeInTheDocument();
     });
 });

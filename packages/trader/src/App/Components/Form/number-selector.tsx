@@ -34,7 +34,7 @@ const NumberSelector = ({
     return (
         <div className='number-selector'>
             {arr_arr_numbers.map((arr_numbers, idx) => (
-                <div className='number-selector__row' key={`${idx}_row`}>
+                <div className='number-selector__row' key={idx}>
                     {arr_numbers.map(i => (
                         <span
                             key={i}

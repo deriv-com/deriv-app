@@ -18,10 +18,12 @@ import {
     isStaging,
     isTestLink,
     redirectToLogin,
+    removeCookies,
     routes,
     setCurrencies,
     toMoment,
     urlForLanguage,
+    CookieStorage,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -72,6 +74,7 @@ export default class ClientStore extends BaseStore {
     account_settings = {};
     account_status = {};
     device_data = {};
+    is_authorize = false;
     is_logging_in = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
@@ -182,6 +185,7 @@ export default class ClientStore extends BaseStore {
             account_settings: observable,
             account_status: observable,
             device_data: observable,
+            is_authorize: observable,
             is_logging_in: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
@@ -244,7 +248,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
-            is_crypto: computed,
+            is_crypto: action.bound,
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
@@ -334,6 +338,7 @@ export default class ClientStore extends BaseStore {
             setLoginId: action.bound,
             setAccounts: action.bound,
             setSwitched: action.bound,
+            setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
             broadcastAccountChange: action.bound,
@@ -660,8 +665,8 @@ export default class ClientStore extends BaseStore {
         return this.default_currency;
     }
 
-    get is_crypto() {
-        return isCryptocurrency(this.currency);
+    is_crypto(currency) {
+        return isCryptocurrency(currency || this.currency);
     }
 
     get default_currency() {
@@ -1083,6 +1088,10 @@ export default class ClientStore extends BaseStore {
         this.loginid = loginid;
     }
 
+    setIsAuthorize(value) {
+        this.is_authorize = value;
+    }
+
     getBasicUpgradeInfo() {
         const upgradeable_landing_companies = [
             ...new Set(State.getResponse('authorize.upgradeable_landing_companies')),
@@ -1183,8 +1192,7 @@ export default class ClientStore extends BaseStore {
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('region', { domain });
-            Cookies.remove('client_information', { domain });
+            removeCookies('region', 'client_information', 'is_p2p_disabled');
             this.has_cookie_account = false;
         }
     }
@@ -1263,6 +1271,7 @@ export default class ClientStore extends BaseStore {
         return new Promise(resolve => {
             let client_accounts;
             const has_client_accounts = !!LocalStore.get(storage_key);
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
 
             runInAction(() => {
                 this.is_populating_account_list = true;
@@ -1271,6 +1280,7 @@ export default class ClientStore extends BaseStore {
             if (this.is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.set(storage_key, JSON.stringify(this.accounts));
+                this.syncWithLegacyPlatforms(client_id, this.accounts);
             }
 
             try {
@@ -1280,7 +1290,6 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};
@@ -1296,6 +1305,7 @@ export default class ClientStore extends BaseStore {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
+                    this.syncWithLegacyPlatforms(client_id, client_accounts);
                 })
                 .catch(error => {
                     // eslint-disable-next-line no-console
@@ -1323,6 +1333,7 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
+        this.root_store.ui.setRealAccountSignupParams(form_values);
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = form_values?.citizen || this.account_settings.citizen || this.residence;
 
@@ -1867,6 +1878,7 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
+        this.setIsAuthorize(false);
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -2648,5 +2660,26 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
+
+    /** @deprecated Use `useIsP2PEnabled` from `@deriv/stores` package instead.
+     *
+     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
+     *
+     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
+     * */
+    get is_p2p_enabled() {
+        const { is_low_risk_cr_eu_real } = this.root_store.traders_hub;
+
+        const is_p2p_supported_currency = Boolean(
+            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
+        );
+
+        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+
+        const p2p_cookie = new CookieStorage('is_p2p_disabled');
+        p2p_cookie.set('is_p2p_disabled', !is_p2p_visible);
+
+        return is_p2p_visible;
+    }
 }
 /* eslint-enable */

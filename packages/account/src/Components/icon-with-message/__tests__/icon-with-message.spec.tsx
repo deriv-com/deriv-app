@@ -37,7 +37,7 @@ describe('<IconWithMessage />', () => {
         expect(btn).not.toBeInTheDocument();
     });
     it('should show "Switch to real account" button label if user have real account', () => {
-        store.client.has_active_real_account = true;
+        store.client.has_any_real_account = true;
         render(
             <StoreProvider store={store}>
                 <IconWithMessage {...props} has_button={true} />
@@ -49,7 +49,7 @@ describe('<IconWithMessage />', () => {
     });
 
     it('should show "Add a real account" button label if user doesnt have real account', () => {
-        store.client.has_active_real_account = false;
+        store.client.has_any_real_account = false;
         render(
             <StoreProvider store={store}>
                 <IconWithMessage {...props} has_button={true} />
@@ -64,7 +64,7 @@ describe('<IconWithMessage />', () => {
             message: 'title',
             has_button: true,
         };
-        store.client.has_active_real_account = true;
+        store.client.has_any_real_account = true;
         const toggleShouldShowRealAccountsList = jest.fn();
         const toggleAccountsDialog = jest.fn();
         store.ui.toggleShouldShowRealAccountsList = toggleShouldShowRealAccountsList;

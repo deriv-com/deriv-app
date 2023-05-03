@@ -68,7 +68,7 @@ const addLabelAlignment = (tick, idx, arr) => {
 
 const createTickMarkers = contract_info => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
-    const is_contract_closed = contract_info.status && contract_info.exit_tick_time;
+    const is_contract_closed = contract_info.status !== 'open';
     const available_ticks = (is_accumulator && contract_info.audit_details?.all_ticks) || contract_info.tick_stream;
     const tick_stream = unique(available_ticks, 'epoch').map(addLabelAlignment);
     const result = [];
@@ -102,11 +102,11 @@ const createTickMarkers = contract_info => {
         if (is_accumulator) {
             const exit_spot_index = tick_stream.findIndex(isExitSpot);
             const is_current_last_spot = !is_exit_spot && idx === tick_stream.length - 1;
-            const is_preexit_spot = idx === exit_spot_index - 1 || idx === tick_stream.length - 2;
+            const is_preexit_spot = is_contract_closed ? idx === exit_spot_index - 1 : idx === tick_stream.length - 2;
             const has_accumulator_bold_marker = is_preexit_spot || is_exit_spot;
 
-            if (is_current_last_spot) return;
-            if (is_middle_spot || has_accumulator_bold_marker) {
+            if (is_current_last_spot && !is_contract_closed) return;
+            if (marker_config && (is_middle_spot || has_accumulator_bold_marker)) {
                 const spot_className = marker_config.content_config.spot_className;
                 marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
                     has_accumulator_bold_marker ? '-bold' : '-small'

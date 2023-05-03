@@ -22,7 +22,7 @@ export const getDxCompanies = () => {
     return {
         demo: {
             all: {
-                mt5_account_type: all_config.account_type,
+                dxtrade_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo'),
                 short_title: all_config.short_title,
@@ -42,6 +42,12 @@ export const getDxCompanies = () => {
         },
         real: {
             all: {
+                dxtrade_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Real'),
+                short_title: all_config.short_title,
+            },
+            dxtrade: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Real'),

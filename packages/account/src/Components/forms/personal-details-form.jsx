@@ -126,7 +126,13 @@ const PersonalDetailsForm = ({
 
     return (
         <div className={classNames({ 'account-form__poi-confirm-example': is_qualified_for_idv })}>
-            <InlineNoteWithIcon message={name_dob_clarification_message} font_size={isMobile() ? 'xxxs' : 'xs'} />
+            {!is_qualified_for_idv ||
+                (is_rendered_for_onfido && (
+                    <InlineNoteWithIcon
+                        message={name_dob_clarification_message}
+                        font_size={isMobile() ? 'xxxs' : 'xs'}
+                    />
+                ))}
             <FormBodySection
                 has_side_note={is_qualified_for_idv || is_rendered_for_onfido}
                 side_note={<PoiNameDobExampleIcon />}

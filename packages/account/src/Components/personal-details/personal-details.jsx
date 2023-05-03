@@ -143,6 +143,9 @@ const PersonalDetails = ({
         return example_format ? localize('Example: ') + example_format : '';
     };
 
+    const citizen = account_settings?.citizen || residence;
+    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -198,9 +201,7 @@ const PersonalDetails = ({
                                                 <Field name='document'>
                                                     {({ field }) => (
                                                         <IDVForm
-                                                            account_settings={account_settings}
-                                                            residence={residence}
-                                                            residence_list={residence_list}
+                                                            selected_country={selected_country}
                                                             errors={errors}
                                                             touched={touched}
                                                             values={values}

@@ -41,8 +41,7 @@ const PersonalDetails = ({
 }) => {
     const { account_status, account_settings, residence, real_account_signup_target } = props;
     const { is_appstore } = React.useContext(PlatformContext);
-    const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
-    const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+    const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
     const is_submit_disabled_ref = React.useRef(true);
 
@@ -116,22 +115,7 @@ const PersonalDetails = ({
         return error_data;
     };
 
-    const closeTooltipOnScroll = () => {
-        // Close any open tooltip
-        if (!is_tax_residence_popover_open || !is_tin_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-            setIsTinPopoverOpen(false);
-        }
-    };
-
-    const handleClickOutside = () => {
-        if (is_tax_residence_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-        }
-        if (is_tin_popover_open) {
-            setIsTinPopoverOpen(false);
-        }
-    };
+    const closeToolTip = () => setShouldCloseTooltip(true);
 
     /*
     In most modern browsers, setting autocomplete to "off" will not prevent a password manager from asking the user if they would like to save username and password information, or from automatically filling in those values in a site's login form.
@@ -163,8 +147,9 @@ const PersonalDetails = ({
                             ref={setRef}
                             onSubmit={handleSubmit}
                             autoComplete='off'
-                            onClick={handleClickOutside}
+                            onClick={closeToolTip}
                             data-testid='personal_details_form'
+                            style={{ border: '1px solid red' }}
                         >
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
@@ -178,7 +163,7 @@ const PersonalDetails = ({
                                 )}
                                 <ThemedScrollbars
                                     height={height}
-                                    onScroll={closeTooltipOnScroll}
+                                    onScroll={closeToolTip}
                                     testId='dt_personal_details_container'
                                 >
                                     {!is_qualified_for_idv && is_appstore && (
@@ -246,6 +231,8 @@ const PersonalDetails = ({
                                                             salutation_list={salutation_list}
                                                             warning_items={warning_items}
                                                             account_opening_reason_list={account_opening_reason_list}
+                                                            should_close_tooltip={should_close_tooltip}
+                                                            setShouldCloseTooltip={setShouldCloseTooltip}
                                                             {...field}
                                                         />
                                                     </div>

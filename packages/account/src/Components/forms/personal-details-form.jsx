@@ -92,12 +92,21 @@ const PersonalDetailsForm = ({
         closeRealAccountSignup,
         salutation_list,
         is_rendered_for_onfido,
+        should_close_tooltip,
+        setShouldCloseTooltip,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        if (should_close_tooltip) {
+            handleToolTipStatus();
+            setShouldCloseTooltip(false);
+        }
+    }, [should_close_tooltip]);
 
     const getLastNameLabel = () => {
         if (is_appstore) return localize('Family name*');
@@ -115,6 +124,15 @@ const PersonalDetailsForm = ({
                 values={{ field_name }}
             />
         );
+    };
+
+    const handleToolTipStatus = () => {
+        if (is_tax_residence_popover_open) {
+            setIsTaxResidencePopoverOpen(false);
+        }
+        if (is_tin_popover_open) {
+            setIsTinPopoverOpen(false);
+        }
     };
 
     const name_dob_clarification_message = (

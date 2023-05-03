@@ -1,6 +1,6 @@
-import MediaItem from './media-item.jsx';
+import MediaItem from './media-item.tsx';
 
-export * from './media-description.jsx';
-export * from './media-heading.jsx';
-export * from './media-icon.jsx';
+export * from './media-description.tsx';
+export * from './media-heading.tsx';
+export * from './media-icon.tsx';
 export default MediaItem;

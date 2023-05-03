@@ -14,6 +14,10 @@ const mock_props = {
 };
 
 describe('NumberSelector', () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render all of members of arr_arr_numbers', () => {
         render(<NumberSelector {...mock_props} />);
 
@@ -28,14 +32,15 @@ describe('NumberSelector', () => {
     });
     it('should call onChange function if user click not on the selected value', () => {
         render(<NumberSelector {...mock_props} selected_number={2} />);
-        userEvent.click(screen.getByText('1'));
+        userEvent.click(screen.getByText('3'));
 
         expect(mock_props.onChange).toHaveBeenCalled();
+        expect(mock_props.onChange).toHaveBeenCalledWith({ target: { name: 'test name', value: 3 } });
     });
     it('should not call onChange function if user click on the selected value', () => {
         render(<NumberSelector {...mock_props} selected_number={2} />);
         userEvent.click(screen.getByText('2'));
 
-        expect(mock_props.onChange).toHaveBeenCalled();
+        expect(mock_props.onChange).not.toHaveBeenCalled();
     });
 });

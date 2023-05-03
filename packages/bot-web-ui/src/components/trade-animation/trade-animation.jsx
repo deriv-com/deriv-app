@@ -89,7 +89,6 @@ const TradeAnimation = ({
 }) => {
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
-
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
         performSelfExclusionCheck();

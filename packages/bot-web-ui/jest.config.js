@@ -13,4 +13,7 @@ module.exports = {
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
     collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
+    globals: {
+        __webpack_public_path__: '/',
+    },
 };

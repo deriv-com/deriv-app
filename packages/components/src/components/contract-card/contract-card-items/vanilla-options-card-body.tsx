@@ -9,19 +9,26 @@ import Icon from '../../icon';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import { TGetCardLables } from '../../types';
-import { bool } from 'prop-types';
 
 export type TVanillaOptionsCardBodyProps = {
-  contract_info: TContractInfo;
-  currency: string;
-  getCardLabels: TGetCardLables;
-  is_sold: boolean;
-  progress_slider: React.ReactNode;
-  status: string;
-}
+    contract_info: TContractInfo;
+    currency: string;
+    getCardLabels: TGetCardLables;
+    is_sold: boolean;
+    progress_slider: React.ReactNode;
+    status: string;
+};
 
-const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contract_info, currency, getCardLabels, is_sold, progress_slider, status }) => {
-    const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit }: TContractInfo = contract_info;
+const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
+    contract_info,
+    currency,
+    getCardLabels,
+    is_sold,
+    progress_slider,
+    status,
+}) => {
+    const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit }: TContractInfo =
+        contract_info;
     const contract_value = is_sold ? sell_price : bid_price;
     const { CONTRACT_VALUE, ENTRY_SPOT, PURCHASE_PRICE, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
 
@@ -72,7 +79,9 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contra
                         </ContractCardItem>
 
                         <ContractCardItem header={ENTRY_SPOT}>
-                            {entry_spot_display_value && <Money amount={entry_spot_display_value} currency={currency} />}
+                            {entry_spot_display_value && (
+                                <Money amount={entry_spot_display_value} currency={currency} />
+                            )}
                         </ContractCardItem>
                     </div>
 
@@ -81,7 +90,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({ contra
                             <Money amount={contract_value} currency={currency} />
                         </ContractCardItem>
 
-                        <ContractCardItem header={STRIKE}>  
+                        <ContractCardItem header={STRIKE}>
                             {barrier && <Money amount={barrier} currency={currency} />}
                         </ContractCardItem>
                     </div>

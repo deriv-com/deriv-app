@@ -14,14 +14,14 @@ import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group';
 import RadioButton from './radio-button';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
-import { TAuthAccountInfo, TCurrencyConfig, TPlatformContext, TRealAccount, TFormValidation } from 'Types';
+import { TAuthAccountInfo, TCurrencyConfig, TRealAccount, TFormValidation } from 'Types';
 
 export const Hr = () => <div className='currency-hr' />;
 
 type TCurrencySelectorExtend = {
     accounts: { [key: string]: TAuthAccountInfo };
     available_crypto_currencies: TCurrencyConfig[];
-    getCurrentStep?: () => number;
+    getCurrentStep: () => number;
     goToNextStep: () => void;
     goToStep: (step: number) => void;
     goToPreviousStep: () => void;
@@ -84,7 +84,7 @@ const CurrencySelector = ({
     is_eu,
     ...props
 }: TCurrencySelector) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter((currency: TCurrencyConfig) => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState<boolean>(false);
@@ -195,7 +195,7 @@ const CurrencySelector = ({
         >
             {({ handleSubmit, values }: FormikState<FormikValues> & FormikHandlers) => (
                 <AutoHeightWrapper default_height={450}>
-                    {({ setRef, height }: { setRef: string; height: number }) => (
+                    {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
                         <form
                             ref={setRef}
                             onSubmit={handleSubmit}
@@ -221,7 +221,7 @@ const CurrencySelector = ({
                                                 description={description}
                                                 has_fiat={should_disable_fiat && has_fiat}
                                             >
-                                                {reorderCurrencies(fiat).map((currency: TCurrencyConfig) => (
+                                                {reorderCurrencies(fiat).map((currency: FormikValues) => (
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
@@ -243,23 +243,20 @@ const CurrencySelector = ({
                                                 item_count={reorderCurrencies(crypto, 'crypto').length}
                                                 description={description}
                                             >
-                                                {reorderCurrencies(crypto, 'crypto').map(
-                                                    (currency: TCurrencyConfig) => (
-                                                        <Field
-                                                            key={currency.value}
-                                                            component={RadioButton}
-                                                            selected={
-                                                                available_crypto_currencies?.filter(
-                                                                    ({ value }: TCurrencyConfig) =>
-                                                                        value === currency.value
-                                                                )?.length === 0
-                                                            }
-                                                            name='currency'
-                                                            id={currency.value}
-                                                            label={currency.name}
-                                                        />
-                                                    )
-                                                )}
+                                                {reorderCurrencies(crypto, 'crypto').map((currency: FormikValues) => (
+                                                    <Field
+                                                        key={currency.value}
+                                                        component={RadioButton}
+                                                        selected={
+                                                            available_crypto_currencies?.filter(
+                                                                ({ value }: TCurrencyConfig) => value === currency.value
+                                                            )?.length === 0
+                                                        }
+                                                        name='currency'
+                                                        id={currency.value}
+                                                        label={currency.name}
+                                                    />
+                                                ))}
                                             </RadioButtonGroup>
                                         </React.Fragment>
                                     )}

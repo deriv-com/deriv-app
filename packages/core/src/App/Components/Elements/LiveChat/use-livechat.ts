@@ -14,7 +14,8 @@ const useLiveChat = (has_cookie_account = false) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
-    const { lang, dark } = useParams<TQueryParams>();
+    const search_params = window.location.search;
+    // const { lang, dark } = useParams<TQueryParams>();
     const widget = window.LiveChatWidget;
 
     const liveChatDeletion = () =>
@@ -110,7 +111,8 @@ const useLiveChat = (has_cookie_account = false) => {
 
     useEffect(() => {
         onHistoryChange();
-    }, [lang, dark, onHistoryChange]);
+    }, [search_params, onHistoryChange]);
+    // }, [lang, dark, onHistoryChange]);
 
     useEffect(() => {
         if (isReady && !widget) {

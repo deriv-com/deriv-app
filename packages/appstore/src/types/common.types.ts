@@ -166,3 +166,5 @@ export interface AccountListDetail {
     loginid: string;
     title: string;
 }
+
+export type TWalletsMigrationStatus = 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';

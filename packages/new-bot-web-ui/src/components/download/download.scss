@@ -1,0 +1,19 @@
+.download {
+    &__container {
+        display: flex;
+        padding: 12px;
+        padding-left: 16px;
+        border: solid 1px var(--general-section-1);
+    }
+    &__icon {
+        align-self: left;
+        width: 16px;
+        height: 16px;
+    }
+    &__button {
+        background-color: transparent;
+        width: 23px;
+        height: 16px !important;
+        padding: 0 !important;
+    }
+}

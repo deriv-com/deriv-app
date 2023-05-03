@@ -18,6 +18,7 @@ const Passwords = ({
     is_mt5_password_not_set,
     is_dxtrade_password_not_set,
     is_from_derivgo,
+    landing_company_shortcode,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
@@ -43,6 +44,7 @@ const Passwords = ({
                 is_dark_mode_on={is_dark_mode_on}
                 is_social_signup={is_social_signup}
                 social_identity_provider={social_identity_provider}
+                landing_company_shortcode={landing_company_shortcode}
             />
             {!is_from_derivgo && (mt5_login_list?.length > 0 || !is_mt5_password_not_set) && (
                 <PasswordsPlatform
@@ -72,6 +74,7 @@ Passwords.propTypes = {
     is_mt5_password_not_set: PropTypes.bool,
     is_dxtrade_password_not_set: PropTypes.bool,
     is_from_derivgo: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
 };
 
 export default connect(({ client, ui, common }) => ({
@@ -86,4 +89,5 @@ export default connect(({ client, ui, common }) => ({
     is_mt5_password_not_set: client.is_mt5_password_not_set,
     is_dxtrade_password_not_set: client.is_dxtrade_password_not_set,
     is_from_derivgo: common.is_from_derivgo,
+    landing_company_shortcode: client.landing_company_shortcode,
 }))(Passwords);

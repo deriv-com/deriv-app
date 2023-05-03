@@ -1,6 +1,6 @@
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
 import type { RouteComponentProps } from 'react-router';
+import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
@@ -87,6 +87,8 @@ type TNotification =
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
 
+type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+
 type TClientStore = {
     accounts: { [k: string]: TAccount };
     active_accounts: TActiveAccount[];
@@ -100,7 +102,7 @@ type TClientStore = {
         };
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -118,12 +120,14 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
@@ -179,7 +183,10 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
-    is_crypto: boolean;
+    is_crypto: (currency?: string) => boolean;
+    dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    default_currency: string;
+    resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
@@ -226,7 +233,7 @@ type TUiStore = {
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
     notification_messages_ui: JSX.Element | null;
-    openRealAccountSignup: (value: string) => void;
+    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
@@ -278,10 +285,14 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
     is_demo: boolean;
+    financial_restricted_countries: boolean;
     selected_account_type: string;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
 };
 
 /**
@@ -297,4 +308,8 @@ export type TCoreStores = {
     modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
+};
+
+export type TStores = TCoreStores & {
+    exchange_rates: ExchangeRatesStore;
 };

@@ -86,19 +86,19 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <WalletHeader account_type='demo' />
-                    <WalletHeader currency='AUD' jurisdiction='svg' />
-                    <WalletHeader currency='EUR' jurisdiction='svg' is_open_wallet={true} />
-                    <WalletHeader currency='USD' jurisdiction='malta' />
-                    <WalletHeader currency='BTC' jurisdiction='svg' />
-                    <WalletHeader currency='ETH' jurisdiction='svg' />
-                    <WalletHeader currency='USDT' jurisdiction='svg' />
-                    <WalletHeader currency='eUSDT' jurisdiction='svg' />
-                    <WalletHeader currency='tUSDT' jurisdiction='svg' />
-                    <WalletHeader currency='LTC' jurisdiction='svg' />
-                    <WalletHeader currency='USDC' jurisdiction='svg' />
-                    <WalletHeader account_status='pending' currency='ETH' jurisdiction='svg' />
-                    <WalletHeader account_status='need_verification' currency='EUR' jurisdiction='malta' />
-                    <WalletHeader account_status='failed' currency='USD' jurisdiction='svg' />
+                    <WalletHeader currency='AUD' shortcode='svg' />
+                    <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />
+                    <WalletHeader currency='USD' shortcode='malta' />
+                    <WalletHeader currency='BTC' shortcode='svg' />
+                    <WalletHeader currency='ETH' shortcode='svg' />
+                    <WalletHeader currency='USDT' shortcode='svg' />
+                    <WalletHeader currency='eUSDT' shortcode='svg' />
+                    <WalletHeader currency='tUSDT' shortcode='svg' />
+                    <WalletHeader currency='LTC' shortcode='svg' />
+                    <WalletHeader currency='USDC' shortcode='svg' />
+                    <WalletHeader account_status='pending' currency='ETH' shortcode='svg' />
+                    <WalletHeader account_status='need_verification' currency='EUR' shortcode='malta' />
+                    <WalletHeader account_status='failed' currency='USD' shortcode='svg' />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

@@ -19,11 +19,9 @@ const WalletCurrencyCard = observer(({ account_type, currency }: TWalletCurrency
     const theme = is_dark_mode_on ? '--dark' : '';
     const class_currency = is_demo ? 'demo' : currency.toLowerCase();
 
-    const currency_icon_path = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on);
-
     // add check (currency !== 'USDT') because response from BE doesn't have USDT currency, just UST
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
-    const currency_icon_name = currency_icon_path;
+    const currency_icon_name = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on);
     const currency_icon_size = is_fiat && !is_demo ? 48 : 100;
     return (
         <div

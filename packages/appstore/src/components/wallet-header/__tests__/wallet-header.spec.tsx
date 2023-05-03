@@ -34,7 +34,7 @@ describe('<WalletHeader />', () => {
             const dt_currency = currency.toLowerCase();
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} jurisdiction='svg' />
+                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -48,7 +48,7 @@ describe('<WalletHeader />', () => {
             const dt_currency = currency.toLowerCase();
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} jurisdiction='svg' />
+                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -62,7 +62,7 @@ describe('<WalletHeader />', () => {
             const dt_currency = currency.toLowerCase();
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} jurisdiction='malta' />
+                    <WalletHeader account_type={account_type} currency={currency} shortcode='malta' />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -108,12 +108,7 @@ describe('<WalletHeader />', () => {
             const currency = 'EUR';
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader
-                        account_type={account_type}
-                        balance={balance}
-                        currency={currency}
-                        jurisdiction='svg'
-                    />
+                    <WalletHeader account_type={account_type} balance={balance} currency={currency} shortcode='svg' />
                 </StoreProvider>
             );
             const balance_label = screen.queryByText(`${balance} ${currency}`);
@@ -126,7 +121,7 @@ describe('<WalletHeader />', () => {
             const currency = 'EUR';
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} jurisdiction='svg' />
+                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
                 </StoreProvider>
             );
             const balance_label = screen.queryByText(`0.00 ${currency}`);
@@ -146,7 +141,7 @@ describe('<WalletHeader />', () => {
                         account_status={account_status}
                         account_type={account_type}
                         currency={currency}
-                        jurisdiction='svg'
+                        shortcode='svg'
                     />
                 </StoreProvider>
             );
@@ -169,7 +164,7 @@ describe('<WalletHeader />', () => {
                         account_status={account_status}
                         account_type={account_type}
                         currency={currency}
-                        jurisdiction='svg'
+                        shortcode='svg'
                     />
                 </StoreProvider>
             );
@@ -193,7 +188,7 @@ describe('<WalletHeader />', () => {
                         account_status={account_status}
                         account_type={account_type}
                         currency={currency}
-                        jurisdiction='svg'
+                        shortcode='svg'
                     />
                 </StoreProvider>
             );
@@ -267,7 +262,7 @@ describe('<WalletHeader />', () => {
         it('Check buttons for real', () => {
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='real' jurisdiction='svg' currency='USD' />
+                    <WalletHeader account_type='real' shortcode='svg' currency='USD' />
                 </StoreProvider>
             );
 

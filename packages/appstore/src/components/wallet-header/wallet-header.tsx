@@ -5,33 +5,34 @@ import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
-import { TAccountCategory, TAccountStatus, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
+import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-header.scss';
 
 type TWalletHeaderCommon = {
     balance?: string;
     is_open_wallet?: boolean;
+    shortcode?: TJurisdictionData['jurisdiction'];
 };
 
 type TWalletHeaderDemo = TWalletHeaderCommon & {
     account_type: Extract<TAccountCategory, 'demo'>;
     account_status?: never;
-    jurisdiction?: never;
+    shortcode?: never;
     currency?: never;
 };
 
 type TWalletHeaderSvg = TWalletHeaderCommon & {
     account_status?: TAccountStatus;
     account_type?: Extract<TAccountCategory, 'real'>;
-    jurisdiction: 'svg';
+    shortcode: Extract<TJurisdictionData['jurisdiction'], 'svg'>;
     currency: TWalletSvgCurrency;
 };
 
 type TWalletHeaderMalta = TWalletHeaderCommon & {
     account_status?: TAccountStatus;
     account_type?: Extract<TAccountCategory, 'real'>;
-    jurisdiction: 'malta';
+    shortcode: Extract<TJurisdictionData['jurisdiction'], 'malta'>;
     currency: TWalletMaltaCurrency;
 };
 
@@ -42,7 +43,7 @@ const WalletHeader = React.memo(
         account_status = '',
         balance = '0.00',
         currency = 'USD',
-        jurisdiction = 'svg',
+        shortcode = 'svg',
         account_type = 'real',
         is_open_wallet = false,
     }: TWalletHeader) => {
@@ -64,7 +65,7 @@ const WalletHeader = React.memo(
                 <div className='wallet-header__container'>
                     <WalletCurrencyCard account_type={account_type} currency={currency} />
                     <div className='wallet-header__description'>
-                        <WalletHeaderTitle is_demo={is_demo} currency={currency} jurisdiction={jurisdiction} />
+                        <WalletHeaderTitle is_demo={is_demo} currency={currency} shortcode={shortcode} />
                         <WalletHeaderButtons is_disabled={!!account_status} is_open={is_open} btns={wallet_btns} />
                     </div>
                     <div className='wallet-header__balance'>

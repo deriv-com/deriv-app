@@ -1,15 +1,15 @@
 import React from 'react';
 import { Text, Badge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TWalletSvgCurrency } from 'Types';
+import { TJurisdictionData, TWalletSvgCurrency } from 'Types';
 
 type TWalletHeaderTitle = {
     is_demo: boolean;
     currency: TWalletSvgCurrency;
-    jurisdiction: 'svg' | 'malta';
+    shortcode: Exclude<TJurisdictionData['jurisdiction'], undefined>;
 };
 
-const WalletHeaderTitle = React.memo(({ is_demo, currency, jurisdiction }: TWalletHeaderTitle) => {
+const WalletHeaderTitle = React.memo(({ is_demo, currency, shortcode }: TWalletHeaderTitle) => {
     const title = is_demo ? (
         <Text weight='bold' size='sm'>
             <Localize
@@ -34,11 +34,7 @@ const WalletHeaderTitle = React.memo(({ is_demo, currency, jurisdiction }: TWall
         <div className='wallet-header__description-title'>
             {title}
             {!is_demo && (
-                <Badge
-                    className='wallet-header__description-badge'
-                    type='bordered'
-                    label={jurisdiction.toUpperCase()}
-                />
+                <Badge className='wallet-header__description-badge' type='bordered' label={shortcode.toUpperCase()} />
             )}
         </div>
     );

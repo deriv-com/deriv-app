@@ -305,7 +305,7 @@ export default class ContractReplayStore extends BaseStore {
         if (this.has_error) {
             this.removeErrorMessage();
             this.onMount(contract_id);
-        } else if (!this.root_store.common.is_language_changing){
+        } else if (!this.root_store.common.is_language_changing) {
             history.push(routes.reports);
         }
         return Promise.resolve();

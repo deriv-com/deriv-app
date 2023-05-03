@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MediaItem from '../media-item';
-import { MediaDescription, MediaHeading, MediaIcon } from 'App/Components/Elements/Media';
+import { MediaDescription } from '../media-description';
+import { MediaHeading } from '../media-heading';
+import { MediaIcon } from '../media-icon';
 import IntervalDurationDisabledLightIcon from 'Assets/SvgComponents/settings/interval-disabled.svg';
 import IntervalDurationEnabledLightIcon from 'Assets/SvgComponents/settings/interval-enabled.svg';
 
@@ -12,6 +14,7 @@ const mock_props = {
     id: 'test_id',
     is_enabled: true,
 };
+
 describe('MediaItem', () => {
     it('should render children inside of proper div container with className', () => {
         render(<MediaItem>{test_children}</MediaItem>);

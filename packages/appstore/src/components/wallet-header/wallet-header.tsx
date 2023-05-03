@@ -5,9 +5,9 @@ import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
-import './wallet-header.scss';
 import { TAccountCategory, TAccountStatus, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
+import './wallet-header.scss';
 
 type TWalletHeaderCommon = {
     balance?: string;

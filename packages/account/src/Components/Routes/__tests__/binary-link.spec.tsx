@@ -26,7 +26,7 @@ describe('<BinaryLink />', () => {
 
     it('should show and trigger Navlink with path and active className', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
+            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <Router history={history}>
                     <BinaryLink to='test-link'>Simple test link</BinaryLink>
                 </Router>
@@ -41,7 +41,7 @@ describe('<BinaryLink />', () => {
 
     it('should show simple link text', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
+            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <Router history={history}>
                     <BinaryLink>Simple test link without Navlink</BinaryLink>
                 </Router>
@@ -55,7 +55,9 @@ describe('<BinaryLink />', () => {
 
         expect(() =>
             render(
-                <PlatformContext.Provider value={{ is_appstore: false }}>
+                <PlatformContext.Provider
+                    value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}
+                >
                     <Router history={history}>
                         <BinaryLink to='test-link'>Simple test link</BinaryLink>
                     </Router>

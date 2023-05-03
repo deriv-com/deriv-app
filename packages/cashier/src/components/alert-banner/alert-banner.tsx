@@ -5,17 +5,18 @@ import { Localize } from '@deriv/translations';
 import './alert-banner.scss';
 
 type TAlertBanner = {
-    icon: string;
-    message: string;
     className?: string;
+    i18n_default_text?: string;
+    icon: string;
+    values?: object;
 };
 
-const AlertBanner = ({ icon, message, className }: TAlertBanner) => {
+const AlertBanner = ({ className, icon, i18n_default_text, values }: TAlertBanner) => {
     return (
         <div className={classNames('alert-banner', className)}>
             <Icon size={16} icon={icon} className='alert-banner__icon' />
             <Text as='p' align='center' size='xs' className='alert-banner__text'>
-                <Localize i18n_default_text={message} />
+                <Localize i18n_default_text={i18n_default_text} values={values} />
             </Text>
         </div>
     );

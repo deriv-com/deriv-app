@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import SuccessDialog from '../success-dialog';
+import userEvent from '@testing-library/user-event';
 
 type TModal = React.FC<{
     children: React.ReactNode;
@@ -75,7 +76,7 @@ describe('<SuccessDialog />', () => {
     it('should close after close button (IcCross) is clicked in the modal', () => {
         const { rerender } = render(<SuccessDialog {...props} />);
         const close_icon = within(screen.getByTestId('modal')).getByText('IcCross');
-        fireEvent.click(close_icon);
+        userEvent.click(close_icon);
         expect(props.toggleModal).toBeCalled();
         expect(props.is_open).toBeFalsy();
 

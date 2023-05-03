@@ -66,14 +66,14 @@ const SuccessDialog = ({
                     {icon}
                     <Checkmark className='bottom-right-overlay' />
                 </div>
-                {!heading && (
+                {!heading ? (
                     <Text as='h2' weight='bold' size='s' className='dc-modal-header__title'>
                         <Localize i18n_default_text='Success!' />
                     </Text>
+                ) : (
+                    heading
                 )}
-                {heading && heading}
-                {React.isValidElement(message) && message}
-                {!React.isValidElement(message) && <p className={classNameMessage}>{message}</p>}
+                {React.isValidElement(message) ? message : <p className={classNameMessage}>{message}</p>}
             </Modal.Body>
             <Modal.Footer>
                 {has_cancel && (

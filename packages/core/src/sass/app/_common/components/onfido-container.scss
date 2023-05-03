@@ -55,8 +55,8 @@
         }
 
         &_container {
-            margin-bottom: 2.4rem;
-            min-height: 4rem;
+            margin-bottom: 0.8rem;
+            min-height: 3.4rem;
             text-align: center;
         }
     }
@@ -91,6 +91,7 @@
                 .account-form__section {
                     align-items: center;
                     justify-content: space-between;
+                    margin-top: 0.8rem;
 
                     @include mobile() {
                         margin-bottom: 0;
@@ -133,8 +134,6 @@
         }
 
         .account-form__section-content {
-            margin-top: 0.8rem;
-
             .dc-input__bottom-label > * {
                 font-size: var(--text-size-xxs);
             }

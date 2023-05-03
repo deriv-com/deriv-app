@@ -7,7 +7,7 @@ import './alert-banner.scss';
 type TAlertBanner = {
     className?: string;
     icon: string;
-    message?: JSX.Element | string;
+    message: JSX.Element | string;
 };
 
 const AlertBanner = ({ className, icon, message }: TAlertBanner) => {

@@ -157,7 +157,9 @@ const CryptoDeposit = observer(() => {
                     <div className='crypto-api-error'>
                         <AlertBanner
                             icon='IcAlertWarning'
-                            message="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
+                            message={
+                                <Localize i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later." />
+                            }
                         />
                         <Button
                             text={localize('Refresh')}

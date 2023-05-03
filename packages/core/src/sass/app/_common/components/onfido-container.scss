@@ -2,7 +2,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.6rem;
+
+    .onfido-sdk-ui-Modal-inner {
+        border-radius: 0.8rem;
+    }
+
+    @include mobile() {
+        gap: 0.4rem;
+
+        .onfido-sdk-ui-PageTitle-titleSpan {
+            font-size: 2rem;
+        }
+    }
+
     .onfido-sdk-ui-Camera-webcamContainer {
         left: auto;
         width: -webkit-fill-available;
@@ -20,7 +33,7 @@
         z-index: 1;
         @include mobile {
             top: 1.6rem;
-            left: 5rem;
+            left: 3.1rem;
         }
     }
 
@@ -31,6 +44,10 @@
         transition: transform 0.35s ease, opacity 0.35s linear;
         transform-origin: top;
         opacity: 1;
+
+        @include mobile() {
+            width: 32rem;
+        }
 
         &--exit {
             transform: scale(1, 0);
@@ -45,8 +62,9 @@
     }
 
     &__layout {
-        width: 98vw;
-        height: 100vh;
+        width: 32.8rem;
+        height: 50rem;
+        margin: auto;
     }
 }
 
@@ -66,9 +84,17 @@
             .account__scrollbars_container {
                 padding: 0;
 
+                &--grid-layout {
+                    height: auto !important;
+                }
+
                 .account-form__section {
                     align-items: center;
                     justify-content: space-between;
+
+                    @include mobile() {
+                        margin-bottom: 0;
+                    }
                 }
             }
         }
@@ -114,6 +140,8 @@
             }
 
             .account-form__fieldset {
+                margin-bottom: 0;
+
                 .dc-input {
                     margin-bottom: 1rem;
                 }
@@ -134,11 +162,18 @@
             &__disabled > * {
                 cursor: not-allowed;
             }
+
+            @include mobile() {
+                .dc-checkbox__label {
+                    font-size: var(--text-size-xxs);
+                }
+            }
         }
     }
 
     &__section {
         display: grid;
+
         @include desktop() {
             grid-template-areas: 'section-side-note section-content';
             grid-template-columns: 0.5fr 1fr;

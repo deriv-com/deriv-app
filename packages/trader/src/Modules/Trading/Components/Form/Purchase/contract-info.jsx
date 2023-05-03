@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getGrowthRatePercentage, getLocalizedBasis, isMobile } from '@deriv/shared';
+import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import { getCurrencyDisplayCode, getLocalizedBasis, isMobile, getGrowthRatePercentage } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
-    <div className='strike--value-container'>
+    <div className={classNames({ 'strike--value-container': is_vanilla })}>
         <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
             {!has_error_or_not_loaded && (
                 <Money
@@ -62,14 +62,14 @@ const ContractInfo = ({
 
     const setBasisText = () => {
         if (is_vanilla) {
-            return 'Payout per point';
+            return localize('Payout per point');
         }
         return proposal_info.obj_contract_basis.text;
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
 
-    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : localize('{{value}}', { value: setBasisText() });
+    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : setBasisText();
 
     const { message, obj_contract_basis, stake } = proposal_info;
 

@@ -196,37 +196,38 @@ const DMT5TradeModal = ({
                         <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                     </div>
                 </div>
-                {isDesktop() && mt5_trade_account.market_type === 'financial' && (
-                    <div className='acuity-container'>
-                        <Button
-                            onClick={() => {
-                                toggleModal();
-                                setIsAcuityModalOpen(true);
-                            }}
-                            className='acuity-banner'
-                            type='button'
-                            transparent
-                        >
-                            <div className='acuity-banner--wrapper'>
-                                <Icon icon='icMt5Acuity' className='acuity-banner--wrapper--icon' />
-                                <Text
-                                    as='p'
-                                    size='xxs'
-                                    weight='bold'
-                                    color='prominent'
-                                    className='acuity-banner--wrapper--text'
-                                >
-                                    <Localize i18n_default_text='Get Acuity trading tools' />
-                                </Text>
-                                <Icon
-                                    icon='IcChevronRightBold'
-                                    color='primary'
-                                    className='acuity-banner--wrapper--arrow-icon'
-                                />
-                            </div>
-                        </Button>
-                    </div>
-                )}
+                {isDesktop() &&
+                    (mt5_trade_account.market_type === 'financial' || mt5_trade_account.market_type === 'all') && (
+                        <div className='acuity-container'>
+                            <Button
+                                onClick={() => {
+                                    toggleModal();
+                                    setIsAcuityModalOpen(true);
+                                }}
+                                className='acuity-banner'
+                                type='button'
+                                transparent
+                            >
+                                <div className='acuity-banner--wrapper'>
+                                    <Icon icon='icMt5Acuity' className='acuity-banner--wrapper--icon' />
+                                    <Text
+                                        as='p'
+                                        size='xxs'
+                                        weight='bold'
+                                        color='prominent'
+                                        className='acuity-banner--wrapper--text'
+                                    >
+                                        <Localize i18n_default_text='Get Acuity trading tools' />
+                                    </Text>
+                                    <Icon
+                                        icon='IcChevronRightBold'
+                                        color='primary'
+                                        className='acuity-banner--wrapper--arrow-icon'
+                                    />
+                                </div>
+                            </Button>
+                        </div>
+                    )}
             </div>
             <div className='cfd-trade-modal__download-center-app'>
                 <div className='cfd-trade-modal__download-center-app--option'>

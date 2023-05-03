@@ -1,23 +1,42 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-const Checkmark = ({ className }) => (
+type TSuccessDialog = {
+    classNameMessage?: string;
+    has_cancel?: boolean;
+    has_submit?: boolean;
+    icon: React.ReactElement;
+    message: React.ReactElement | string;
+    onCancel?: () => void;
+    onSubmit?: () => void;
+    heading: React.ReactElement | string;
+    icon_size?: string;
+    text_submit?: string;
+    text_cancel?: string;
+    is_open: boolean;
+    toggleModal: () => void;
+    title?: string;
+    has_close_icon: boolean;
+    width: string;
+    is_medium_button?: boolean;
+};
+
+const Checkmark = ({ className }: { className: string }) => (
     <Icon className={className} icon='IcCheckmarkCircle' custom_color='var(--status-success)' size={24} />
 );
 
 const SuccessDialog = ({
     classNameMessage = '',
-    has_cancel,
-    has_submit,
+    has_cancel = false,
+    has_submit = true,
     icon,
     message,
     onCancel,
     onSubmit,
     heading,
-    icon_size,
+    icon_size = 'large',
     text_submit,
     text_cancel,
     is_open,
@@ -26,7 +45,7 @@ const SuccessDialog = ({
     has_close_icon,
     width = '',
     is_medium_button,
-}) => {
+}: TSuccessDialog) => {
     return (
         <Modal
             className='cfd-success-dialog'
@@ -78,33 +97,6 @@ const SuccessDialog = ({
             </Modal.Footer>
         </Modal>
     );
-};
-
-SuccessDialog.defaultProps = {
-    icon_size: 'large',
-    has_cancel: false,
-    has_submit: true,
-};
-
-SuccessDialog.propTypes = {
-    classNameMessage: PropTypes.string,
-    has_cancel: PropTypes.bool,
-    has_close_icon: PropTypes.bool,
-    has_submit: PropTypes.bool,
-    heading: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    icon: PropTypes.object,
-    icon_size: PropTypes.string,
-    icon_type: PropTypes.string,
-    is_medium_button: PropTypes.bool,
-    is_open: PropTypes.bool,
-    message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    onCancel: PropTypes.func,
-    onSubmit: PropTypes.func,
-    text_cancel: PropTypes.string,
-    text_submit: PropTypes.string,
-    title: PropTypes.string,
-    toggleModal: PropTypes.func,
-    width: PropTypes.string,
 };
 
 export default SuccessDialog;

@@ -32,15 +32,15 @@
         }
 
         .crypto-third-party-alert {
-            background-color: #ffad3a;
+            background-color: $color-yellow;
 
             .dc-text {
-                background-color: #ffad3a;
-                color: #333333;
+                background-color: $color-yellow;
+                color: $color-black-1;
             }
 
             .dc-icon {
-                --fill-color1: #333333;
+                --fill-color1: $color-black-1;
             }
         }
     }

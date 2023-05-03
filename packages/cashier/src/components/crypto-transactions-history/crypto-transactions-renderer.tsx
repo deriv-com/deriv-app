@@ -252,14 +252,14 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                                     </Text>
                                 </a>
                             </Popover>
-                            {transaction_url.includes('CP:') && (
+                            {is_third_party_transaction && (
                                 <Popover
                                     alignment='right'
                                     className='crypto-transactions-history__table-tooltip'
                                     data_testid='dt_crypto_transactions_history_table_tooltip'
                                     message={localize('The details of this transaction is available on CoinsPaid.')}
                                 >
-                                    <Icon icon='IcHelpCentre' custom_color='#999999' />
+                                    <Icon icon='IcHelpCentre' custom_color='var(--status-adjustment)' />
                                 </Popover>
                             )}
                         </>

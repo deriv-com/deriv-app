@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataList, Icon, Loading, MobileWrapper, Table, Text, Modal } from '@deriv/components';
+import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
@@ -102,10 +102,11 @@ const CryptoTransactionsHistory = observer(() => {
             <Modal
                 has_close_icon
                 is_open={is_modal_visible}
-                title={'Note'}
+                title='Note'
                 toggleModal={() => setIsModalVisible(old => !old)}
-                width={'44rem'}
-                height={'14rem'}
+                width='44rem'
+                height='14rem'
+                className='crypto-transactions-history__modal'
             >
                 <Modal.Body className='crypto-transactions-history__modal-body'>
                     {localize('The details of this transaction is available on CoinsPaid.')}

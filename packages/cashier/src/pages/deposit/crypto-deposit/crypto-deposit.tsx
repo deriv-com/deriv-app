@@ -157,7 +157,7 @@ const CryptoDeposit = observer(() => {
                     <div className='crypto-api-error'>
                         <AlertBanner
                             icon='IcAlertWarning'
-                            message="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
+                            i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
                         />
                         <Button
                             text={localize('Refresh')}
@@ -172,7 +172,8 @@ const CryptoDeposit = observer(() => {
                             <AlertBanner
                                 className='crypto-third-party-alert'
                                 icon='IcAlertWarningDark'
-                                message={`A minimum deposit value of ${minimum_deposit} ${currency} is required. Otherwise, the funds will be lost and cannot be recovered.`}
+                                i18n_default_text='A minimum deposit value of {{minimum_deposit}} {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.'
+                                values={{ minimum_deposit, currency }}
                             />
                         ) : (
                             <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>

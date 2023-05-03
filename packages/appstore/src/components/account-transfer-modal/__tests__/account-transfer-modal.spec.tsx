@@ -68,7 +68,7 @@ describe('AccountTransferModal', () => {
         expect(screen.getByText('AccountTransfer')).toBeInTheDocument();
     });
 
-    it('should hasve account-transfer-modal classname if should switch account is true', async () => {
+    it('should have account-transfer-modal classname if should switch account is true', async () => {
         const mock = mockStore({
             modules: {
                 cashier: {

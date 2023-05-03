@@ -1,7 +1,7 @@
 import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared';
-import ContractCardDialog from './contract-card-dialog.jsx';
-import ContractUpdateForm from './contract-update-form.jsx';
+import ContractCardDialog from './contract-card-dialog';
+import ContractUpdateForm from './contract-update-form';
 import Icon from '../../icon';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileDialog from '../../mobile-dialog';

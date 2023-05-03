@@ -1837,3 +1837,32 @@
 .cfd-accounts__compare-table-title {
     cursor: pointer;
 }
+.acuity {
+    &-container {
+        background: var(--general-section-3);
+        display: flex;
+        position: relative;
+        top: 0.9rem;
+        align-items: center;
+    }
+    &-banner {
+        display: flex;
+        flex-grow: 1;
+        &--wrapper {
+            display: flex;
+            &--icon {
+                display: flex;
+                position: absolute;
+                left: 0.8rem;
+            }
+            &--text {
+                position: relative;
+                right: 17rem;
+            }
+            &--arrow-icon {
+                position: relative;
+                left: 19rem;
+            }
+        }
+    }
+}

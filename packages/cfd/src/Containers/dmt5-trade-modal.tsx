@@ -10,6 +10,7 @@ import {
     getPlatformSettings,
     getUrlBase,
     getCFDAccountKey,
+    isDesktop,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
@@ -28,6 +29,7 @@ type TMT5TradeModalProps = {
     ) => void;
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    setIsAcuityModalOpen: (value: boolean) => void;
 };
 
 export type TSpecBoxProps = {
@@ -94,6 +96,7 @@ const DMT5TradeModal = ({
     show_eu_related_content,
     onPasswordManager,
     toggleModal,
+    setIsAcuityModalOpen,
 }: TMT5TradeModalProps) => {
     const getCompanyShortcode = () => {
         if (
@@ -193,6 +196,37 @@ const DMT5TradeModal = ({
                         <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                     </div>
                 </div>
+                {isDesktop() && mt5_trade_account.market_type === 'financial' && (
+                    <div className='acuity-container'>
+                        <Button
+                            onClick={() => {
+                                toggleModal();
+                                setIsAcuityModalOpen(true);
+                            }}
+                            className='acuity-banner'
+                            type='button'
+                            transparent
+                        >
+                            <div className='acuity-banner--wrapper'>
+                                <Icon icon='icMt5Acuity' className='acuity-banner--wrapper--icon' />
+                                <Text
+                                    as='p'
+                                    size='xxs'
+                                    weight='bold'
+                                    color='prominent'
+                                    className='acuity-banner--wrapper--text'
+                                >
+                                    <Localize i18n_default_text='Get Acuity trading tools' />
+                                </Text>
+                                <Icon
+                                    icon='IcChevronRightBold'
+                                    color='primary'
+                                    className='acuity-banner--wrapper--arrow-icon'
+                                />
+                            </div>
+                        </Button>
+                    </div>
+                )}
             </div>
             <div className='cfd-trade-modal__download-center-app'>
                 <div className='cfd-trade-modal__download-center-app--option'>

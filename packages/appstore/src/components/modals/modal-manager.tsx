@@ -61,6 +61,7 @@ const ModalManager = () => {
         setShouldShowCooldownModal,
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
+        setIsAcuityModalOpen,
     } = ui;
     const { is_demo, is_account_transfer_modal_open, toggleAccountTransferModal } = traders_hub;
 
@@ -152,6 +153,7 @@ const ModalManager = () => {
                 toggleModal={toggleMT5TradeModal}
                 is_eu_user={(is_logged_in && is_eu) || (!is_logged_in && is_eu_country)}
                 is_demo={is_demo}
+                setIsAcuityModalOpen={setIsAcuityModalOpen}
             />
             <CFDPasswordManagerModal
                 is_visible={password_manager.is_visible}

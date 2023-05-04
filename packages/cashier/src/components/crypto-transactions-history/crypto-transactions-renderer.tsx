@@ -139,7 +139,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                                 data_testid='dt_crypto_transactions_history_table_tooltip_mobile'
                                 onClick={onTooltipClick}
                                 icon='IcHelpCentre'
-                                custom_color='#999999'
+                                custom_color='var(--button-secondary-default)'
                             />
                         )}
                     </Table.Cell>
@@ -259,7 +259,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                                     data_testid='dt_crypto_transactions_history_table_tooltip'
                                     message={localize('The details of this transaction is available on CoinsPaid.')}
                                 >
-                                    <Icon icon='IcHelpCentre' custom_color='var(--status-adjustment)' />
+                                    <Icon icon='IcHelpCentre' custom_color='var(--button-secondary-default)' />
                                 </Popover>
                             )}
                         </>

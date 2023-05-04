@@ -56,7 +56,7 @@ describe('TransactionHistoryStore', () => {
     it('should subscribe to crypto transactions', async () => {
         const spyUpdateCryptoTransactions = jest.spyOn(transaction_history_store, 'updateCryptoTransactions');
 
-        transaction_history_store.getCryptoTransactions();
+        await transaction_history_store.getCryptoTransactions();
         expect(spyUpdateCryptoTransactions).toHaveBeenCalledWith(crypto_transactions);
         expect(transaction_history_store.crypto_transactions).toEqual(crypto_transactions);
     });

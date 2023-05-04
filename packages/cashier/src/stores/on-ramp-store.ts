@@ -173,12 +173,12 @@ export default class OnRampStore extends BaseStore {
         this.setShouldShowWidget(true);
     }
 
-    onClickGoToDepositPage() {
-        this.pollApiForDepositAddress(false);
+    async onClickGoToDepositPage() {
+        await this.pollApiForDepositAddress(false);
         window.open(websiteUrl() + routes.cashier_deposit.substring(1));
     }
 
-    pollApiForDepositAddress(should_allow_empty_address: boolean) {
+    async pollApiForDepositAddress(should_allow_empty_address: boolean) {
         // should_allow_empty_address: API returns empty deposit address for legacy accounts
         // that have never generated a deposit address. Setting this to "true" will allow
         // the user to be redirected to the Deposit page (where an address will be generated).
@@ -188,8 +188,8 @@ export default class OnRampStore extends BaseStore {
         this.setApiError(null);
 
         const deposit_address_interval = setInterval(() => getDepositAddressFromApi, 3000);
-        const getDepositAddressFromApi = () => {
-            this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
+        const getDepositAddressFromApi = async () => {
+            await this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
                 let should_clear_interval = false;
 
                 if (response.error) {
@@ -211,18 +211,18 @@ export default class OnRampStore extends BaseStore {
             });
         };
 
-        getDepositAddressFromApi();
+        await getDepositAddressFromApi();
         setTimeout(() => {
             clearInterval(deposit_address_interval);
             this.setIsDepositAddressLoading(false);
         }, 30000);
     }
 
-    resetPopup() {
+    async resetPopup() {
         this.setApiError(null);
         this.setDepositAddress(null);
         this.setIsDepositAddressLoading(true);
-        this.setSelectedProvider(null);
+        await this.setSelectedProvider(null);
         this.setShouldShowWidget(false);
         this.setWidgetError(null);
         this.setWidgetHtml(null);
@@ -248,11 +248,11 @@ export default class OnRampStore extends BaseStore {
         this.is_requesting_widget_html = is_requesting_widget_html;
     }
 
-    setSelectedProvider(provider?: TOnRampProvider | null) {
+    async setSelectedProvider(provider?: TOnRampProvider | null) {
         if (provider) {
             this.selected_provider = provider;
             this.setIsOnRampModalOpen(true);
-            this.pollApiForDepositAddress(true);
+            await this.pollApiForDepositAddress(true);
         } else {
             this.setIsOnRampModalOpen(false);
             this.selected_provider = null;

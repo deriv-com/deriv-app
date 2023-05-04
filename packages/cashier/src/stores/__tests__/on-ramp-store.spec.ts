@@ -110,14 +110,14 @@ describe('OnRampStore', () => {
         const spyOnMountOnramp = jest.spyOn(onramp_store, 'onMountOnramp');
         onramp_store.onMountOnramp();
         banxa_provider.getScriptDependencies = jest.fn().mockReturnValueOnce([]);
-        onramp_store.setSelectedProvider(banxa_provider);
+        await onramp_store.setSelectedProvider(banxa_provider);
 
         expect(spyOnMountOnramp).toHaveReturned();
     });
 
     it('should set widget html if it is defined when disposeGetWidgetHtmlReaction reaction is running', async () => {
         const spySetWidgetHtml = jest.spyOn(onramp_store, 'setWidgetHtml');
-        onramp_store.setSelectedProvider(banxa_provider);
+        await onramp_store.setSelectedProvider(banxa_provider);
         banxa_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('widget');
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
@@ -127,7 +127,7 @@ describe('OnRampStore', () => {
 
     it('should set should_show_widget into false if html widget is not defined when disposeGetWidgetHtmlReaction reaction is running', async () => {
         const spySetShouldShowWidget = jest.spyOn(onramp_store, 'setShouldShowWidget');
-        onramp_store.setSelectedProvider(banxa_provider);
+        await onramp_store.setSelectedProvider(banxa_provider);
         banxa_provider.getWidgetHtml = jest.fn().mockResolvedValueOnce('');
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
@@ -139,7 +139,7 @@ describe('OnRampStore', () => {
 
     it('should set widget error if there is an error when requesting widget when disposeGetWidgetHtmlReaction reaction is running', async () => {
         const spySetWidgetError = jest.spyOn(onramp_store, 'setWidgetError');
-        onramp_store.setSelectedProvider(banxa_provider);
+        await onramp_store.setSelectedProvider(banxa_provider);
         banxa_provider.getWidgetHtml = jest.fn().mockRejectedValueOnce('Request error');
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
@@ -175,9 +175,9 @@ describe('OnRampStore', () => {
         expect(onramp_store.should_show_widget).toBeTruthy();
     });
 
-    it('should go to deposit page when onClickGoToDepositPage method was called', () => {
+    it('should go to deposit page when onClickGoToDepositPage method was called', async () => {
         window.open = jest.fn();
-        onramp_store.onClickGoToDepositPage();
+        await onramp_store.onClickGoToDepositPage();
 
         expect(window.open).toHaveBeenCalledWith('https://app.deriv.com/cashier/deposit');
 
@@ -190,7 +190,7 @@ describe('OnRampStore', () => {
         onramp_store.WS.authorized.cashier = jest
             .fn()
             .mockResolvedValueOnce({ error: { code: 'API Error', message: 'API Error' } });
-        onramp_store.pollApiForDepositAddress(false);
+        await onramp_store.pollApiForDepositAddress(false);
 
         expect(await spySetApiError).toHaveBeenLastCalledWith({ code: 'API Error', message: 'API Error' });
         expect(clearInterval).toHaveBeenCalledTimes(1);
@@ -202,7 +202,7 @@ describe('OnRampStore', () => {
         jest.useFakeTimers();
         const spySetDepositAddress = jest.spyOn(onramp_store, 'setDepositAddress');
         onramp_store.WS.authorized.cashier = jest.fn().mockResolvedValueOnce({ cashier: { deposit: { address: '' } } });
-        onramp_store.pollApiForDepositAddress(true);
+        await onramp_store.pollApiForDepositAddress(true);
 
         expect(await spySetDepositAddress).toHaveBeenCalledWith('');
         expect(clearInterval).toHaveBeenCalledTimes(1);
@@ -213,7 +213,7 @@ describe('OnRampStore', () => {
     it('should set deposit address when pollApiForDepositAddress method was called with should_allow_empty_address = false', async () => {
         jest.useFakeTimers();
         const spySetDepositAddress = jest.spyOn(onramp_store, 'setDepositAddress');
-        onramp_store.pollApiForDepositAddress(false);
+        await onramp_store.pollApiForDepositAddress(false);
 
         expect(await spySetDepositAddress).toHaveBeenCalledWith('deposit address');
         expect(clearInterval).toHaveBeenCalledTimes(1);
@@ -223,7 +223,7 @@ describe('OnRampStore', () => {
 
     it('should set deposit address interval to 3 seconds when pollApiForDepositAddress method was called', async () => {
         jest.useFakeTimers();
-        onramp_store.pollApiForDepositAddress(false);
+        await onramp_store.pollApiForDepositAddress(false);
         jest.runOnlyPendingTimers();
 
         expect(setInterval).toHaveBeenCalledTimes(1);
@@ -234,7 +234,7 @@ describe('OnRampStore', () => {
 
     it('should clear interval after 30 seconds if there is an empty deposit address in response when pollApiForDepositAddress method was called with should_allow_empty_address = false', async () => {
         jest.useFakeTimers();
-        onramp_store.pollApiForDepositAddress(false);
+        await onramp_store.pollApiForDepositAddress(false);
         jest.runOnlyPendingTimers();
 
         expect(setTimeout).toHaveBeenCalledTimes(1);
@@ -245,9 +245,9 @@ describe('OnRampStore', () => {
 
     it('should set deposit address loading when pollApiForDepositAddress method was called', async () => {
         const spySetIsDepositAddressLoading = jest.spyOn(onramp_store, 'setIsDepositAddressLoading');
-        onramp_store.pollApiForDepositAddress(false);
+        await onramp_store.pollApiForDepositAddress(false);
 
-        expect(await spySetIsDepositAddressLoading.mock.calls).toEqual([[true], [false]]);
+        expect(spySetIsDepositAddressLoading.mock.calls).toEqual([[true], [false]]);
     });
 
     it('should reset popup', () => {

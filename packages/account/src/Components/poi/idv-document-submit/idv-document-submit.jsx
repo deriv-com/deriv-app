@@ -4,7 +4,7 @@ import { Button, Text } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
-import { documentAdditionalError, getRegex } from './utils';
+import { documentAdditionalError, getRegex } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';

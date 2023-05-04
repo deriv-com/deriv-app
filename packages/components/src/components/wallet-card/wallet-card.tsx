@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import Icon from '../icon';
 import Text from '../text';
 import classNames from 'classnames';
+import { WalletSmall } from '../wallet/small';
 
 type WalletCardProps = {
     active?: boolean;
@@ -38,22 +39,18 @@ const WalletCard = ({
                 'wallet-card--active': active && !disabled && !add_wallet,
                 'wallet-card--add-wallet': add_wallet,
                 'wallet-card--disabled': disabled,
+                'wallet-card--dark': dark,
                 'wallet-card--faded': faded,
                 [`wallet-card--${size}`]: size,
             })}
         >
             <div className='wallet-card__background' />
-            {active && !disabled && !add_wallet && (
-                <Icon
-                    data_testid='ic-checkmark-circle'
-                    icon='IcCheckmarkCircle'
-                    style={{ '--fill-color1': 'var(--brand-red-coral)', '--fill-color3': 'white' }}
-                    className={classNames('wallet-card__active-icon', 'dc-icon--red')}
-                />
+            {active && !disabled && (
+                <Icon data_testid='ic-checkmark-circle' icon='IcCheckmarkCircle' className='wallet-card__active-icon' />
             )}
-            {size !== 'small' ? (
-                <React.Fragment>
-                    <div className='wallet-card__content'>
+            <div className='wallet-card__content'>
+                {size !== 'small' ? (
+                    <React.Fragment>
                         <div className='wallet-card__icon-badge'>
                             {icon ? (
                                 <div className={classNames('wallet-card__icon')}>
@@ -94,13 +91,15 @@ const WalletCard = ({
                                 </>
                             )}
                         </div>
+                    </React.Fragment>
+                ) : icon ? (
+                    <div className={classNames('wallet-card__icon--small')}>
+                        <Icon size={24} icon={icon} />
                     </div>
-                </React.Fragment>
-            ) : (
-                <React.Fragment>
-                    <Icon icon='IcCurrencyEurs' size={24} />
-                </React.Fragment>
-            )}
+                ) : (
+                    <div className={classNames('wallet-card__icon--small', 'wallet-card__icon--placeholder')} />
+                )}
+            </div>
         </div>
     );
 };

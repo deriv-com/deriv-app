@@ -3,6 +3,7 @@
     box-sizing: border-box;
     position: relative;
     border-radius: 0.8rem;
+    color: $color-black-1 !important;
 
     &__background {
         position: absolute;
@@ -15,14 +16,23 @@
         width: 100%;
         height: 100%;
         border-radius: inherit;
+
+        // background-color: lightgreen;
     }
 
     &--active {
+        #{$parent}__content {
+            background: $gradient-color-black-5;
+        }
+
+        #{$parent}__content,
+        .dark {
+            background: $gradient-color-black-6;
+        }
+
         #{$parent}__background {
             border: 2px solid $COLOR_CORAL_RED;
         }
-
-        background: $gradient-color-black-5;
     }
 
     &__active-icon {
@@ -32,6 +42,9 @@
         right: -0.2rem;
         width: 1.6rem;
         height: 1.6rem;
+
+        --fill-color1: #{$COLOR_CORAL_RED};
+        --fill-color3: #{$COLOR_WHITE};
     }
 
     &__content {
@@ -55,12 +68,6 @@
         justify-content: space-between;
     }
 
-    &__wallet_name-balance {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
     &__icon {
         width: 6.4rem;
         height: 4rem;
@@ -68,12 +75,18 @@
         justify-content: flex-start;
         border-radius: 0.4rem;
 
-        .dc-icon {
-            // width: 100%;
-        }
-
         &--placeholder {
             background-color: $color-black-1;
+        }
+
+        &--small {
+            width: 4.8rem;
+            height: 3rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            border-radius: $BORDER_RADIUS;
         }
     }
 
@@ -87,10 +100,19 @@
         font-weight: bold;
     }
 
+    &__wallet_name-balance {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        color: inherit;
+    }
+
     &__wallet_name {
+        color: inherit;
         font-size: var(--text-size-xxxs);
     }
     &__balance {
+        color: inherit;
         font-size: var(--text-size-xs);
         font-weight: bold;
     }
@@ -111,16 +133,17 @@
     }
 
     &--small {
-        padding: 0.2rem 0.4rem;
-        width: 6.4rem;
+        width: 6.4rem !important;
         height: 4rem;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: $BORDER_RADIUS;
 
-        &:not(.disabled *):hover {
-            background: $gradient-color-black-5;
+        #{$parent}__content {
+            padding: 0;
+            align-items: center;
+            justify-content: center;
         }
     }
 
@@ -142,6 +165,20 @@
         opacity: 0.32;
     }
 
+    &--dark {
+        color: $COLOR_WHITE !important;
+
+        #{$parent}__content {
+            &:not(.disabled *):hover {
+                background: $gradient-color-black-6;
+            }
+        }
+
+        #{$parent}__background {
+            // background-color: darkgreen;
+        }
+    }
+
     &:not(&--small) {
         #{$parent}__active-icon {
             position: absolute;
@@ -151,20 +188,6 @@
             transform: translate(-50%, -50%);
             width: 3.2rem;
             height: 3.2rem;
-        }
-
-        #{$parent}__logo--aud,
-        #{$parent}__logo--eur,
-        #{$parent}__logo--gbp,
-        #{$parent}__logo--usd {
-            position: relative;
-            top: -4px;
-            left: -16px;
-
-            @media (max-width: 992px) {
-                top: -3px;
-                left: -12px;
-            }
         }
     }
 }

@@ -168,6 +168,7 @@
 }
 
 .idv-form {
+    display: grid;
     grid-template-rows: unset !important;
 
     .details-form {

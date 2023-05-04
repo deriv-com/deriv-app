@@ -219,3 +219,15 @@
         }
     }
 }
+
+.idv-layout {
+    width: 60%;
+    .poi-form-on-signup__fields {
+        .proof-of-identity__container {
+            width: 100%;
+        }
+        .proof-of-identity__fieldset {
+            margin-bottom: unset;
+        }
+    }
+}

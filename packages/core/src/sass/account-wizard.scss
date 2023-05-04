@@ -822,7 +822,7 @@
 
 .personal-details-form {
     width: 100%;
-    @include desktop() {
-        padding: 0 1.6rem;
+    @include desktop {
+        padding: 0 16rem;
     }
 }

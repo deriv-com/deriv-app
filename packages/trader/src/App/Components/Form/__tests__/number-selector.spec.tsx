@@ -30,7 +30,7 @@ describe('NumberSelector', () => {
             .flat()
             .forEach(number => expect(screen.getByText(`${number * 100}%`)).toBeInTheDocument());
     });
-    it('should call onChange function if user click not on the selected value', () => {
+    it('should call onChange function if user clicks not on the selected value', () => {
         render(<NumberSelector {...mock_props} selected_number={2} />);
         userEvent.click(screen.getByText('3'));
 

@@ -154,9 +154,10 @@ const Redirect = ({
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
             sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
-            window.location.href = loginUrl({
+            const new_href = loginUrl({
                 language: getLanguage(),
             });
+            window.location.href = new_href;
             break;
         }
         case 'trading_platform_investor_password_reset': {

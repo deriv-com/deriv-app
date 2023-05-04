@@ -13,7 +13,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
-const DefinePlugin = require('webpack').DefinePlugin;
 const webpack = require('webpack');
 
 const {
@@ -33,6 +32,8 @@ const {
     svg_file_loaders,
     svg_loaders,
 } = require('./loaders-config');
+const Dotenv = require('dotenv-webpack');
+const { DefinePlugin } = require('webpack');
 
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -123,16 +124,16 @@ const MINIMIZERS = !IS_RELEASE
           new CssMinimizerPlugin(),
       ];
 
-const plugins = ({ base, is_test_env, env }) => {
-    let is_qawolf = false;
-
-    if (env.IS_QAWOLF) {
-        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
-    }
-
+const plugins = ({ base, is_test_env }) => {
     return [
+        new Dotenv({}),
         new DefinePlugin({
-            'process.env.IS_QAWOLF': is_qawolf,
+            'process.env.DATADOG_APPLICATION_ID': JSON.stringify(process.env.DATADOG_APPLICATION_ID),
+            'process.env.DATADOG_CLIENT_TOKEN': JSON.stringify(process.env.DATADOG_CLIENT_TOKEN),
+            'process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE': JSON.stringify(
+                process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE
+            ),
+            'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),

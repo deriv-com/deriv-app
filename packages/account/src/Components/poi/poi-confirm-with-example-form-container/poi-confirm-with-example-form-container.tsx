@@ -22,8 +22,7 @@ type TRestState = {
 type TPoiConfirmWithExampleFormContainer = {
     account_settings: GetSettings;
     getChangeableFields: () => string[];
-    onFormConfirm: () => void;
-    updateAccountStatus: () => void;
+    onFormConfirm?: () => void;
 };
 
 const validate =
@@ -87,7 +86,7 @@ const PoiConfirmWithExampleFormContainer = ({
             setRestState({ ...rest_state, ...response.get_settings });
             setChecked(true);
             setIsLoading(false);
-            onFormConfirm();
+            onFormConfirm?.();
         }
     };
 

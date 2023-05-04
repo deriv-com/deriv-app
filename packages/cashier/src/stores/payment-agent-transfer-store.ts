@@ -92,7 +92,7 @@ export default class PaymentAgentTransferStore {
         const { general_store, payment_agent } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
-        this.onRemount = this.onMountPaymentAgentTransfer;
+        this.onRemount = () => this.onMountPaymentAgentTransfer;
         await general_store.onMountCommon();
         if (!this.transfer_limit.min_withdrawal) {
             const response = await payment_agent.getPaymentAgentList();

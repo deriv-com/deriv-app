@@ -312,7 +312,7 @@ export default class PaymentAgentStore {
         const { setLoading, onMountCommon } = modules.cashier.general_store;
 
         setLoading(true);
-        this.setOnRemount(this.onMountPaymentAgentWithdraw);
+        this.setOnRemount(() => this.onMountPaymentAgentWithdraw);
         await onMountCommon();
 
         this.setIsWithdraw(true);
@@ -379,7 +379,7 @@ export default class PaymentAgentStore {
         const { setLoading, onMountCommon } = this.root_store.modules.cashier.general_store;
 
         setLoading(true);
-        this.onRemount = this.onMountPaymentAgentList;
+        this.onRemount = () => this.onMountPaymentAgentList;
         await onMountCommon();
         await this.getPaymentAgentList();
 

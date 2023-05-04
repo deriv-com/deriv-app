@@ -66,11 +66,7 @@ export default class OnRampStore extends BaseStore {
     get is_onramp_tab_visible() {
         const { client } = this.root_store;
 
-        return (
-            client.is_virtual === false &&
-            isCryptocurrency(client.currency) &&
-            this.filtered_onramp_providers.length > 0
-        );
+        return !client.is_virtual && isCryptocurrency(client.currency) && this.filtered_onramp_providers.length > 0;
     }
 
     get filtered_onramp_providers() {

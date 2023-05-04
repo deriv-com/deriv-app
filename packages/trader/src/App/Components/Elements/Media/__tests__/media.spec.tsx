@@ -2,16 +2,13 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MediaItem from '../media-item';
 import { MediaHeading, MediaDescription, MediaIcon } from 'App/Components/Elements/Media';
-// import { MediaHeading } from '../media-heading';
-// import { MediaDescription } from '../media-description';
-// import { MediaIcon } from '../media-icon';
-import IntervalDurationDisabledLightIcon from 'Assets/SvgComponents/settings/interval-disabled.svg';
-import IntervalDurationEnabledLightIcon from 'Assets/SvgComponents/settings/interval-enabled.svg';
 
 const test_children = 'Test Children';
+const test_disabled = 'Interval Duration Disabled Light Icon';
+const test_enabled = 'Interval Duration Enabled Light Icon';
 const mock_props = {
-    disabled: IntervalDurationDisabledLightIcon,
-    enabled: IntervalDurationEnabledLightIcon,
+    disabled: jest.fn(() => <div>{test_disabled}</div>),
+    enabled: jest.fn(() => <div>{test_enabled}</div>),
     id: 'test_id',
     is_enabled: true,
 };
@@ -47,9 +44,14 @@ describe('MediaDescription', () => {
 });
 
 describe('MediaIcon', () => {
-    it('should render MediaIcon component', () => {
-        const { container } = render(<MediaIcon {...mock_props} />);
+    it('should render MediaIcon component with enabled SVG if is_enabled === true', () => {
+        render(<MediaIcon {...mock_props} />);
 
-        expect(container).not.toBeEmptyDOMElement();
+        expect(screen.getByText(test_enabled)).toBeInTheDocument();
+    });
+    it('should render MediaIcon component with disabled SVG if is_enabled === false', () => {
+        render(<MediaIcon {...mock_props} is_enabled={false} />);
+
+        expect(screen.getByText(test_disabled)).toBeInTheDocument();
     });
 });

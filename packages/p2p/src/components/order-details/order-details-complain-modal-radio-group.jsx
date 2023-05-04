@@ -38,6 +38,11 @@ const OrderDetailsComplainModalRadioGroup = ({ dispute_reason, onCheckboxChange,
                     : localize('I’ve received more than the agreed amount.')
             }
         />
+        <RadioGroup.Item
+            value='buyer_third_party_payment_method'
+            label={localize('I’ve received payment from 3rd party.')}
+            is_hidden={is_buy_order_for_user}
+        />
     </RadioGroup>
 );
 

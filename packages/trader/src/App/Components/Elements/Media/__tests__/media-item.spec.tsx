@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MediaItem from '../media-item';
-import { MediaDescription } from '../media-description';
-import { MediaHeading } from '../media-heading';
-import { MediaIcon } from '../media-icon';
+import { MediaHeading, MediaDescription, MediaIcon } from 'App/Components/Elements/Media';
+// import { MediaHeading } from '../media-heading';
+// import { MediaDescription } from '../media-description';
+// import { MediaIcon } from '../media-icon';
 import IntervalDurationDisabledLightIcon from 'Assets/SvgComponents/settings/interval-disabled.svg';
 import IntervalDurationEnabledLightIcon from 'Assets/SvgComponents/settings/interval-enabled.svg';
 
@@ -16,7 +17,7 @@ const mock_props = {
 };
 
 describe('MediaItem', () => {
-    it('should render children inside of proper div container with className', () => {
+    it('should render children inside of proper MediaItem div container with className', () => {
         render(<MediaItem>{test_children}</MediaItem>);
         const test_props_children = screen.getByText(test_children);
 
@@ -26,7 +27,7 @@ describe('MediaItem', () => {
 });
 
 describe('MediaHeading', () => {
-    it('should render children inside of proper div container with className', () => {
+    it('should render children inside of proper MediaHeading div container with className', () => {
         render(<MediaHeading>{test_children}</MediaHeading>);
         const test_props_children = screen.getByText(test_children);
 
@@ -36,7 +37,7 @@ describe('MediaHeading', () => {
 });
 
 describe('MediaDescription', () => {
-    it('should render children inside of proper div container with className', () => {
+    it('should render children inside of proper MediaDescription div container with className', () => {
         render(<MediaDescription>{test_children}</MediaDescription>);
         const test_props_children = screen.getByText(test_children);
 
@@ -45,10 +46,10 @@ describe('MediaDescription', () => {
     });
 });
 
-// describe('MediaIcon', () => {
-//     it('should render MediaIcon component', () => {
-//         const { container } = render(<MediaIcon {...mock_props} />);
+describe('MediaIcon', () => {
+    it('should render MediaIcon component', () => {
+        const { container } = render(<MediaIcon {...mock_props} />);
 
-//         expect(container).not.toBeEmpty();
-//     });
-// });
+        expect(container).not.toBeEmptyDOMElement();
+    });
+});

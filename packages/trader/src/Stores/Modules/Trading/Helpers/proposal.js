@@ -1,5 +1,4 @@
 import { convertToUnix, getDecimalPlaces, getPropertyValue, isAccumulatorContract, toMoment } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 
 const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -30,7 +29,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         ? { text: 'Payout', value: 'number_of_contracts' }
         : basis_list.find(o => o.value !== store.basis) || {};
 
-    const is_stake = contract_basis.text === localize('Stake');
+    const is_stake = contract_basis.value === 'stake';
     const price = is_stake ? stake : proposal[contract_basis.value];
     let has_increased = price > obj_prev_contract_basis.value;
 

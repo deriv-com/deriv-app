@@ -36,7 +36,7 @@
                 background-color: var(--general-main-1);
             }
         </style>
-        <script type="text/javascript">
+        <script nonce="r4nd0m" type="text/javascript">
             !(function () {
                 if ('PerformanceLongTaskTiming' in window) {
                     var g = (window.__tti = { e: [] });
@@ -47,7 +47,7 @@
                 }
             })();
         </script>
-        <script type="text/javascript">
+        <script nonce="r4nd0m" type="text/javascript">
             var ui_store = localStorage.getItem('ui_store');
             var l = window.location;
             var is_bot =
@@ -80,7 +80,7 @@
                 display: none !important;
             }
         </style>
-        <script type="text/javascript">
+        <script nonce="r4nd0m" type="text/javascript">
             if (self === top) {
                 var antiClickjack = document.getElementById('antiClickjack');
                 antiClickjack.parentNode.removeChild(antiClickjack);
@@ -93,7 +93,7 @@
         <noscript>Your browser does not support JavaScript!</noscript>
 
         <!-- Start RudderStack Script -->
-        <script type="text/javascript">
+        <script nonce="r4nd0m" type="text/javascript">
             const isProduction = () => {
                 return (
                     window.location.hostname === 'app.deriv.com' ||
@@ -133,11 +133,11 @@
                 rudderanalytics.load('1lN3tsFD2nruGFgM5F074DC2hMB', 'https://deriv-dataplane.rudderstack.com');
             }
         </script>
-        <script async src="https://cdn.rudderlabs.com/rudder-analytics.min.js"></script>
+        <script nonce="r4nd0m" async src="https://cdn.rudderlabs.com/rudder-analytics.min.js"></script>
         <!-- End RudderStack Script -->
 
         <!-- Start GTM Script -->
-        <script>
+        <script nonce="r4nd0m">
             var gtm_id = 'GTM-NF7884S';
             if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
             (function (w, d, s, l, i) {
@@ -159,7 +159,7 @@
                 opacity: 0 !important;
             }
         </style>
-        <script>
+        <script nonce="r4nd0m">
             var gtm_id = 'GTM-NF7884S';
             if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
             (function (a, s, y, n, c, h, i, d, e) {
@@ -177,7 +177,7 @@
         <!-- End GTM Script -->
 
         <!-- Start URL Handler -->
-        <script type="text/javascript">
+        <script nonce="r4nd0m" type="text/javascript">
             (function (l) {
                 if (l.search) {
                     var q = {};
@@ -201,7 +201,7 @@
         <!-- End URL Handler -->
 
         <!-- Start Cookies script -->
-        <script src="https://static.deriv.com/scripts/cookie.js" async></script>
+        <script nonce="r4nd0m" src="https://static.deriv.com/scripts/cookie.js" async></script>
         <!-- End Cookies script -->
 
         <meta
@@ -213,6 +213,8 @@
             content=" digital options, forex, forex trading, online trading, financial trading, binary trading, index trading, trading indices, forex trades, trading commodities, digital options strategy, binary broker, binary bet, digital options trading platform, binary strategy, finance, stocks, investment, trading"
         />
         <meta name="author" content="Deriv" />
+        <!-- Added nonce value to avoid CSP console errors -->
+        <meta http-equiv="Content-Security-Policy" content="'nonce-r4nd0m'; object-src 'none'; base-uri 'none';" />
         <!-- TODO: iOS zoom bug for input elements means we'll get a lower user accessibility score since we're not allowing app.deriv.com to be scalable on mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta name="theme-color" content="#2a3052" />
@@ -226,7 +228,6 @@
         <!-- TODO: Use og_image.gif once the new design is ready -->
         <meta name="google" content="notranslate" />
         <meta name="referrer" content="origin" />
-
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://browser-update.org" />
@@ -337,7 +338,7 @@
         </div>
         <!-- End Temporary Mobile Landscape UI Blocker -->
         <!-- LiveChat script -->
-        <script type="text/javascript">
+        <script nonce="r4nd0m" type="text/javascript">
             window.__lc = window.__lc || {};
             window.__lc.license = 12049137;
             (function (n, t, c) {

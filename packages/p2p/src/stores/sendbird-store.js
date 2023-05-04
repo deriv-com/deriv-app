@@ -242,7 +242,7 @@ export default class SendbirdStore extends BaseStore {
                 const { scrollHeight, scrollTop, clientHeight } = this.messages_ref.current;
                 const is_at_bottom = scrollHeight - scrollTop === clientHeight;
 
-                if (is_at_bottom) {
+                if (is_at_bottom && this.active_chat_channel?.unreadMessageCount > 0) {
                     this.active_chat_channel.markAsRead();
                 }
             } else {

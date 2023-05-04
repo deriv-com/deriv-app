@@ -5,8 +5,9 @@ import IdvDocumentSubmit from '../idv-document-submit';
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
-jest.mock('../utils.js', () => ({
-    getDocumentData: function (country_code, key) {
+jest.mock('Helpers/utils.ts', () => ({
+    ...jest.requireActual('Helpers/utils.ts'),
+    getDocumentData: jest.fn((country_code, key) => {
         const data = {
             tc: {
                 document_1: {
@@ -22,7 +23,7 @@ jest.mock('../utils.js', () => ({
             },
         };
         return data[country_code][key];
-    },
+    }),
     getRegex: jest.fn(() => /5436454364243/i),
 }));
 

@@ -116,6 +116,9 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             categories.push({
                 label: localize('Options'),
                 contract_categories: options_category,
+                component: options_category.some(category => category.key === 'Vanillas') && (
+                    <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
+                ),
                 key: 'Options',
             });
         }
@@ -168,6 +171,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
             .filter(type => type.value !== 'rise_fall_equal')
             .findIndex(type => type.value === item?.value);
     };
+
     return (
         <div
             data-testid='dt_contract_widget'

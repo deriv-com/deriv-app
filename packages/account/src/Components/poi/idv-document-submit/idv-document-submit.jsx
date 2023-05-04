@@ -5,15 +5,8 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { formatInput, WS } from '@deriv/shared';
-import {
-    documentAdditionalError,
-    getDocumentData,
-    getRegex,
-    isRecurringNumberRegex,
-    isSequentialNumber,
-    preventEmptyClipboardPaste,
-    isIDVWhitelistDocumentNumber,
-} from './utils';
+import { generatePlaceholderText } from 'Helpers/utils';
+import { documentAdditionalError, getDocumentData, getRegex, preventEmptyClipboardPaste } from './utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
@@ -22,7 +15,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [is_doc_selected, setDocSelected] = React.useState(false);
+    const [selected_doc, setSelectedDoc] = React.useState(null);
+
     const document_data = selected_country.identity.services.idv.documents_supported;
 
     const {
@@ -112,17 +106,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
-        const is_sequential_number = isSequentialNumber(document_number);
-        const is_recurring_number = isRecurringNumberRegex(document_number);
         const needs_additional_document = !!document_type.additional;
-        const is_idv_whitelist_document_number = isIDVWhitelistDocumentNumber(
-            country_code,
-            document_type.id,
-            document_number
-        );
-        const is_document_number_invalid =
-            (!is_idv_whitelist_document_number && (is_recurring_number || is_sequential_number)) ||
-            document_number === document_type.example_format;
+        const is_document_number_invalid = document_number === document_type.example_format;
 
         if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
@@ -222,11 +207,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
                                                             if (item.text === 'No results found' || !item.text) {
-                                                                setDocSelected(false);
+                                                                setSelectedDoc(null);
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             } else {
                                                                 setFieldValue('document_type', item, true);
-                                                                setDocSelected(true);
+                                                                setSelectedDoc(item.id);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
                                                                 }
@@ -249,7 +234,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                         handleChange(e);
                                                         const selected_document = getDocument(e.target.value);
                                                         if (selected_document) {
-                                                            setDocSelected(true);
+                                                            setSelectedDoc(selected_document.id);
                                                             setFieldValue('document_type', selected_document, true);
                                                             if (has_visual_sample) {
                                                                 setDocumentImage(selected_document.sample_image);
@@ -281,7 +266,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                                                     errors.error_message
                                                 }
                                                 autoComplete='off'
-                                                placeholder='Enter your document number'
+                                                placeholder={generatePlaceholderText(selected_doc)}
                                                 value={values.document_number}
                                                 onPaste={preventEmptyClipboardPaste}
                                                 onBlur={handleBlur}
@@ -339,7 +324,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country, i
                             </div>
                         )}
                     </div>
-                    {is_doc_selected && (
+                    {selected_doc && (
                         <Text
                             className={classNames('proof-of-identity__text btm-spacer', {
                                 'top-spacer': is_from_external,

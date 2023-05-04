@@ -235,6 +235,6 @@ const DataList = React.memo(
 );
 
 DataList.displayName = 'DataList';
-DataList.Cell = DataListCell;
+(DataList as any).Cell = DataListCell;
 
 export default DataList;

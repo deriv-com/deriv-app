@@ -13,8 +13,8 @@ type TAlertBanner = {
 const AlertBanner = ({ className, icon, message }: TAlertBanner) => {
     return (
         <div className={classNames('alert-banner', className)}>
-            <Icon size={16} icon={icon} className='alert-banner__icon' />
-            <Text as='p' align='center' size='xs' className='alert-banner__text'>
+            <Icon size={16} icon={icon} />
+            <Text as='p' align='center' size='xs'>
                 {message}
             </Text>
         </div>

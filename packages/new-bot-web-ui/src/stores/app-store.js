@@ -95,7 +95,8 @@ export default class AppStore {
                 // otherwise it should change language without refresh.
                 const { pathname } = window.location;
                 const is_bot =
-                    /^\/bot/.test(pathname) || (/^\/(br_)/.test(pathname) && pathname.split('/')[2] === 'bot');
+                    /^\/bot\/bot-builder/.test(pathname) ||
+                    (/^\/(br_)/.test(pathname) && pathname.split('/')[2] === 'new-builder');
                 if (is_bot) window.location.reload();
             }
         );
@@ -158,7 +159,7 @@ export default class AppStore {
             () => {
                 if (
                     (!client.is_logged_in && client.is_eu_country) ||
-                    (client.is_eu && window.location.pathname === routes.bot) ||
+                    (client.is_eu && window.location.pathname === routes.new_bot) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
@@ -182,7 +183,7 @@ export default class AppStore {
             () => {
                 if (
                     (!client.is_logged_in && client.is_eu_country) ||
-                    (client.is_eu && window.location.pathname === routes.bot) ||
+                    (client.is_eu && window.location.pathname === routes.new_bot) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked
                 ) {
@@ -241,7 +242,7 @@ export default class AppStore {
     showDigitalOptionsMaltainvestError = (client, common) => {
         if (
             (!client.is_logged_in && client.is_eu_country) ||
-            (client.is_eu && window.location.pathname === routes.bot) ||
+            (client.is_eu && window.location.pathname === routes.new_bot) ||
             isEuResidenceWithOnlyVRTC(client.active_accounts) ||
             client.is_options_blocked
         ) {

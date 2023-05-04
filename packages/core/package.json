@@ -90,6 +90,7 @@
         "@deriv/account": "^1.0.0",
         "@deriv/appstore": "^0.0.4",
         "@deriv/bot-web-ui": "^1.0.0",
+        "@deriv/new-bot-web-ui": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
         "@deriv/components": "^1.0.0",

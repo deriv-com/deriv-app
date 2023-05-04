@@ -18,6 +18,13 @@ const platform_config = [
         link_to: routes.bot,
     },
     {
+        icon: getPlatformSettings('newdbot').icon,
+        title: () => getPlatformSettings('newdbot').name,
+        name: getPlatformSettings('newdbot').name,
+        description: () => localize('Automated trading at your fingertips. No coding needed.'),
+        link_to: routes.new_bot,
+    },
+    {
         icon: getPlatformSettings('smarttrader').icon,
         title: () => getPlatformSettings('smarttrader').name,
         name: getPlatformSettings('smarttrader').name,

@@ -10,8 +10,8 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { BOT_BUILDER_TOUR } from '../joyride-config';
 import QuickStrategy from '../quick-strategy';
+import Blocks from 'Components/blocks';
 import TourSlider from '../tour-slider';
-import WorkspaceWrapper from './workspace-wrapper';
 
 type TBotBuilder = {
     app: AppStore;
@@ -70,16 +70,9 @@ const BotBuilder = ({
                 })}
             >
                 {is_preview_on_popup ? null : (
-                    <div
-                        id='scratch_div'
-                        ref={el_ref}
-                        style={{
-                            width: 'calc(100vw - 3.2rem)',
-                            height: 'var(--bot-content-height)',
-                        }}
-                    >
-                        <WorkspaceWrapper />
-                    </div>
+                    <>
+                        <Blocks />
+                    </>
                 )}
             </div>
             {has_started_bot_builder_tour && active_tab === 1 && !has_started_onboarding_tour && (

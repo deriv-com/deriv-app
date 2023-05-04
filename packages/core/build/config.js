@@ -20,6 +20,18 @@ const copyConfig = base => {
             to: 'bot/js/',
         },
         {
+            from: path.resolve(__dirname, '../node_modules/@deriv/new-bot-web-ui/dist/bot/css/'),
+            to: 'bot/css/',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/new-bot-web-ui/dist/bot/media/'),
+            to: 'media',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/new-bot-web-ui/dist/bot/js/'),
+            to: 'bot/js/',
+        },
+        {
             from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist'),
             to: 'js/smartcharts/',
         },

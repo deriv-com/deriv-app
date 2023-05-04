@@ -8,7 +8,6 @@ import {
     CellMeasurerProps,
     AutoSizer as _AutoSizer,
     type AutoSizerProps,
-    ScrollParams,
     ListProps,
     ListRowProps,
 } from 'react-virtualized';
@@ -35,7 +34,7 @@ type TDataList = {
     getRowSize?: (params: { index: number }) => number;
     keyMapper?: (row: TRow) => number | string;
     onRowsRendered?: () => void;
-    onScroll?: (ev: ScrollParams) => void;
+    onScroll?: React.UIEventHandler<HTMLDivElement>;
     passthrough?: TPassThrough;
     row_gap?: number;
     setListRef?: (ref: MeasuredCellParent) => void;
@@ -139,18 +138,20 @@ const DataList = React.memo(
             );
         };
 
-        const handleScroll = (ev: React.UIEventHandler<HTMLDivElement>) => {
+        const handleScroll: React.UIEventHandler<HTMLDivElement> = ev => {
+            let timeout;
+
             clearTimeout(timeout);
             if (!is_scrolling) {
                 setIsScrolling(true);
             }
-            const timeout = setTimeout(() => {
+            timeout = setTimeout(() => {
                 if (!is_loading) {
                     setIsScrolling(false);
                 }
             }, 200);
 
-            setScrollTop(ev.target.scrollTop);
+            setScrollTop((ev.target as HTMLElement).scrollTop);
             if (typeof onScroll === 'function') {
                 onScroll(ev);
             }
@@ -196,7 +197,7 @@ const DataList = React.memo(
                                             width={width}
                                             {...(isDesktop()
                                                 ? { scrollTop: scroll_top, autoHeight: true }
-                                                : { onScroll: target => handleScroll({ target }) })}
+                                                : { onScroll: target => handleScroll({ target } as any) })}
                                         />
                                     </ThemedScrollbars>
                                 </TransitionGroup>
@@ -220,6 +221,6 @@ const DataList = React.memo(
 );
 
 DataList.displayName = 'DataList';
-DataList.Cell = DataListCell;
+(DataList as any).Cell = DataListCell;
 
 export default DataList;

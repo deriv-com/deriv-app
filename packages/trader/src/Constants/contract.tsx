@@ -1,7 +1,16 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 
-export const getCardLabels = () => ({
+type TGetLabels = () => { [key: string]: string };
+type TObjectWithTwoFields = {
+    button_name?: React.ReactNode;
+    name: React.ReactNode;
+    position: string;
+};
+type TGetUnsupportedContracts = () => { [key: string]: TObjectWithTwoFields };
+type TGetSupportedContracts = (is_high_low: boolean) => { [key: string]: TObjectWithTwoFields };
+
+export const getCardLabels: TGetLabels = () => ({
     APPLY: localize('Apply'),
     BUY_PRICE: localize('Buy price:'),
     CANCEL: localize('Cancel'),
@@ -38,7 +47,7 @@ export const getCardLabels = () => ({
     WON: localize('Won'),
 });
 
-export const getMarketNamesMap = () => ({
+export const getMarketNamesMap: TGetLabels = () => ({
     FRXAUDCAD: localize('AUD/CAD'),
     FRXAUDCHF: localize('AUD/CHF'),
     FRXAUDJPY: localize('AUD/JPY'),
@@ -135,7 +144,7 @@ export const getMarketNamesMap = () => ({
     CRYLTCUSD: localize('LTC/USD'),
 });
 
-export const getUnsupportedContracts = () => ({
+export const getUnsupportedContracts: TGetUnsupportedContracts = () => ({
     EXPIRYMISS: {
         name: <Localize i18n_default_text='Ends Outside' />,
         position: 'top',
@@ -207,7 +216,7 @@ export const getUnsupportedContracts = () => ({
 });
 
 // Config to display trade button and their position
-export const getSupportedContracts = is_high_low => ({
+export const getSupportedContracts: TGetSupportedContracts = is_high_low => ({
     ACCU: {
         button_name: <Localize i18n_default_text='Buy' />,
         name: <Localize i18n_default_text='Accumulator' />,
@@ -279,15 +288,15 @@ export const getSupportedContracts = is_high_low => ({
     },
 });
 
-export const getContractConfig = is_high_low => ({
+export const getContractConfig = (is_high_low: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false, show_button_name = false) => {
+export const getContractTypeDisplay = (type: string, is_high_low = false, show_button_name = false) => {
     const contract_config = getContractConfig(is_high_low)[type];
     return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
-export const getContractTypePosition = (type, is_high_low = false) =>
+export const getContractTypePosition = (type: string, is_high_low = false) =>
     getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].position : 'top';

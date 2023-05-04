@@ -8,6 +8,7 @@ import { TAccountStatus } from 'Types';
 import { getStatusBadgeConfig } from '@deriv/account';
 
 const mocked_root_store = mockStore({});
+const setIsOpen = jest.fn();
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
@@ -20,7 +21,7 @@ describe('<WalletHeader />', () => {
             const account_type = 'demo';
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} />
+                    <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_demo`);
@@ -34,7 +35,13 @@ describe('<WalletHeader />', () => {
             const dt_currency = currency.toLowerCase();
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -48,7 +55,13 @@ describe('<WalletHeader />', () => {
             const dt_currency = currency.toLowerCase();
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -62,7 +75,13 @@ describe('<WalletHeader />', () => {
             const dt_currency = currency.toLowerCase();
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='malta' />
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='malta'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -76,7 +95,7 @@ describe('<WalletHeader />', () => {
             const account_type = 'demo';
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} />
+                    <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_demo`);
@@ -91,7 +110,7 @@ describe('<WalletHeader />', () => {
             const account_type = 'demo';
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} />
+                    <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_demo`);
@@ -108,7 +127,14 @@ describe('<WalletHeader />', () => {
             const currency = 'EUR';
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} balance={balance} currency={currency} shortcode='svg' />
+                    <WalletHeader
+                        account_type={account_type}
+                        balance={balance}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const balance_label = screen.queryByText(`${balance} ${currency}`);
@@ -121,7 +147,13 @@ describe('<WalletHeader />', () => {
             const currency = 'EUR';
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const balance_label = screen.queryByText(`0.00 ${currency}`);
@@ -142,6 +174,8 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
                     />
                 </StoreProvider>
             );
@@ -165,6 +199,8 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
                     />
                 </StoreProvider>
             );
@@ -189,6 +225,8 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
                     />
                 </StoreProvider>
             );
@@ -205,7 +243,7 @@ describe('<WalletHeader />', () => {
         it('Buttons collapsed', () => {
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' />
+                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
 
@@ -217,7 +255,7 @@ describe('<WalletHeader />', () => {
         it('Buttons uncollapsed', () => {
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' is_open_wallet={true} />
+                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
 
@@ -227,26 +265,28 @@ describe('<WalletHeader />', () => {
         });
 
         it('Arrow button click', async () => {
-            render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' />
-                </StoreProvider>
-            );
+            const Wrapper = () => {
+                const [is_open, wrapperSetIsOpen] = React.useState(false);
 
+                return (
+                    <StoreProvider store={mocked_root_store}>
+                        <WalletHeader account_type='demo' is_open_wallet={is_open} setIsOpen={wrapperSetIsOpen} />
+                    </StoreProvider>
+                );
+            };
+
+            render(<Wrapper />);
             const btn_text = screen.queryByText(/Transfer/i);
             const btn_arrow = screen.getByTestId('dt_arrow');
-
             expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
-
             await userEvent.click(btn_arrow);
-
             expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
         });
 
         it('Check buttons for demo', () => {
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' />
+                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
 
@@ -262,7 +302,13 @@ describe('<WalletHeader />', () => {
         it('Check buttons for real', () => {
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='real' shortcode='svg' currency='USD' />
+                    <WalletHeader
+                        account_type='real'
+                        shortcode='svg'
+                        currency='USD'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
 

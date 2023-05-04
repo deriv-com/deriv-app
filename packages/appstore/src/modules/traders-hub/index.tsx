@@ -80,38 +80,42 @@ const TradersHub = () => {
             account_status: '',
             balance: '0.00',
             currency: 'USD',
-            jurisdiction: 'svg',
+            shortcode: 'svg',
             account_type: 'demo',
         },
         {
             account_status: '',
             balance: '0.00',
             currency: 'EUR',
-            jurisdiction: 'malta',
+            shortcode: 'malta',
             account_type: 'real',
         },
         {
             account_status: '',
             balance: '0.00',
             currency: 'USD',
-            jurisdiction: 'svg',
+            shortcode: 'svg',
             account_type: 'real',
         },
         {
             account_status: '',
             balance: '0.00',
             currency: 'ETH',
-            jurisdiction: 'svg',
+            shortcode: 'svg',
             account_type: 'real',
         },
         {
             account_status: '',
             balance: '0.00',
             currency: 'AUD',
-            jurisdiction: 'svg',
+            shortcode: 'svg',
             account_type: 'real',
         },
     ];
+
+    // just for testing
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const fn = () => {};
 
     return (
         <>
@@ -124,11 +128,12 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <WalletHeader account_type='demo' />
-                    {wallet_test_accounts.map(account => (
+                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={fn} />
+                    {wallet_test_accounts.map((account, index) => (
                         <Wallet
-                            key={`${account.account_type}-${account.jurisdiction}-${account.currency}`}
+                            key={`${account.account_type}-${account.shortcode}-${account.currency}`}
                             account={account}
+                            is_open_wallet={index === 0}
                         />
                     ))}
                     {/* <Wallet account_type='demo' /> */}

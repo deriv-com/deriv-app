@@ -11,8 +11,9 @@ import './wallet-header.scss';
 
 type TWalletHeaderCommon = {
     balance?: string;
-    is_open_wallet?: boolean;
     shortcode?: TJurisdictionData['jurisdiction'];
+    is_open_wallet: boolean;
+    setIsOpen: (is_open: boolean) => void;
 };
 
 type TWalletHeaderDemo = TWalletHeaderCommon & {
@@ -45,15 +46,16 @@ const WalletHeader = React.memo(
         currency = 'USD',
         shortcode = 'svg',
         account_type = 'real',
-        is_open_wallet = false,
+        is_open_wallet,
+        setIsOpen,
     }: TWalletHeader) => {
-        const [is_open, setIsOpen] = React.useState(is_open_wallet);
+        // const [is_open, setIsOpen] = React.useState(is_open_wallet);
         const is_demo = account_type === 'demo';
 
         const wallet_btns = getWalletHeaderButtons(is_demo);
 
         const onArrowClickHandler = () => {
-            setIsOpen(!is_open);
+            setIsOpen(!is_open_wallet);
         };
 
         return (
@@ -66,7 +68,11 @@ const WalletHeader = React.memo(
                     <WalletCurrencyCard account_type={account_type} currency={currency} />
                     <div className='wallet-header__description'>
                         <WalletHeaderTitle is_demo={is_demo} currency={currency} shortcode={shortcode} />
-                        <WalletHeaderButtons is_disabled={!!account_status} is_open={is_open} btns={wallet_btns} />
+                        <WalletHeaderButtons
+                            is_disabled={!!account_status}
+                            is_open={is_open_wallet}
+                            btns={wallet_btns}
+                        />
                     </div>
                     <div className='wallet-header__balance'>
                         <WalletHeaderBalance account_status={account_status} balance={balance} currency={currency} />
@@ -75,7 +81,7 @@ const WalletHeader = React.memo(
                             onClick={onArrowClickHandler}
                             icon='IcChevronDownBold'
                             className={classNames('wallet-header__balance-arrow-icon', {
-                                'wallet-header__balance-arrow-icon-active': is_open,
+                                'wallet-header__balance-arrow-icon-active': is_open_wallet,
                             })}
                         />
                     </div>

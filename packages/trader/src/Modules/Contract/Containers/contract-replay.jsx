@@ -257,7 +257,7 @@ const Chart = props => {
             chartType={props.chart_type}
             endEpoch={props.end_epoch}
             margin={props.margin || null}
-            handlePOCResponse={props.is_accumulator_contract ? props.refToAddTick : undefined}
+            shouldDrawTicksFromContractInfo={props.is_accumulator_contract}
             isMobile={isMobile()}
             enabledNavigationWidget={isDesktop()}
             enabledChartFooter={false}
@@ -327,7 +327,6 @@ Chart.propTypes = {
     is_static_chart: PropTypes.bool,
     margin: PropTypes.number,
     markers_array: PropTypes.array,
-    refToAddTick: PropTypes.func,
     replay_controls: PropTypes.object,
     scroll_to_epoch: PropTypes.number,
     settings: PropTypes.object,
@@ -387,7 +386,6 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         all_ticks: contract_store.contract_info.audit_details
             ? contract_store.contract_info.audit_details.all_ticks
             : [],
-        refToAddTick: contract_store.refToAddTick,
         wsForget: trade.wsForget,
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,

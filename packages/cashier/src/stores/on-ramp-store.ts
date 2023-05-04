@@ -120,10 +120,10 @@ export default class OnRampStore extends BaseStore {
                 const script_name = `${getKebabCase(provider.name)}-onramp`;
                 if (!loadjs.isDefined(script_name)) {
                     loadjs(dependencies, script_name, {
-                        error: () => {
+                        error: async () => {
                             // eslint-disable-next-line no-console
                             console.warn(`Dependencies for onramp provider ${provider.name} could not be loaded.`);
-                            this.setSelectedProvider(null);
+                            await this.setSelectedProvider(null);
                         },
                     });
                 }

@@ -78,15 +78,15 @@ describe('OnRampStore', () => {
         expect(onramp_store.onramp_popup_modal_title).toBe('Payment channel');
     });
 
-    it('should return proper onramp popup modal title if should_show_widget = false and there is selected provider with should_show_dialog = true', () => {
-        onramp_store.setSelectedProvider(banxa_provider);
+    it('should return proper onramp popup modal title if should_show_widget = false and there is selected provider with should_show_dialog = true', async () => {
+        await onramp_store.setSelectedProvider(banxa_provider);
         onramp_store.setApiError({ code: 'API Error', message: 'API Error' });
 
         expect(onramp_store.onramp_popup_modal_title).toBe('Our server cannot retrieve an address.');
     });
 
-    it('should return empty string to render header + close icon if should_show_widget = false and there is selected provider with should_show_dialog = false', () => {
-        onramp_store.setSelectedProvider(banxa_provider);
+    it('should return empty string to render header + close icon if should_show_widget = false and there is selected provider with should_show_dialog = false', async () => {
+        await onramp_store.setSelectedProvider(banxa_provider);
         onramp_store.setApiError(null);
 
         expect(onramp_store.onramp_popup_modal_title).toBe(' ');
@@ -96,12 +96,12 @@ describe('OnRampStore', () => {
         expect(onramp_store.onramp_popup_modal_title).toBe(undefined);
     });
 
-    it('should have returned from onMountOnramp method if there is no selected_provider', () => {
+    it('should have returned from onMountOnramp method if there is no selected_provider', async () => {
         const spyOnMountOnramp = jest.spyOn(onramp_store, 'onMountOnramp');
         onramp_store.onMountOnramp();
         banxa_provider.getScriptDependencies = jest.fn().mockReturnValueOnce(['dependency']);
-        onramp_store.setSelectedProvider(banxa_provider);
-        onramp_store.setSelectedProvider();
+        await onramp_store.setSelectedProvider(banxa_provider);
+        await onramp_store.setSelectedProvider();
 
         expect(spyOnMountOnramp).toHaveReturned();
     });
@@ -149,10 +149,10 @@ describe('OnRampStore', () => {
         });
     });
 
-    it('should not call setIsRequestingWidgetHtml method if is_requesting_widget_html already equal to true when disposeGetWidgetHtmlReaction reaction is running', () => {
+    it('should not call setIsRequestingWidgetHtml method if is_requesting_widget_html already equal to true when disposeGetWidgetHtmlReaction reaction is running', async () => {
         const spySetIsRequestingWidgetHtml = jest.spyOn(onramp_store, 'setIsRequestingWidgetHtml');
         onramp_store.is_requesting_widget_html = true;
-        onramp_store.setSelectedProvider(banxa_provider);
+        await onramp_store.setSelectedProvider(banxa_provider);
         onramp_store.onMountOnramp();
         onramp_store.setShouldShowWidget(true);
 
@@ -250,8 +250,8 @@ describe('OnRampStore', () => {
         expect(spySetIsDepositAddressLoading.mock.calls).toEqual([[true], [false]]);
     });
 
-    it('should reset popup', () => {
-        onramp_store.resetPopup();
+    it('should reset popup', async () => {
+        await onramp_store.resetPopup();
 
         expect(onramp_store.api_error).toBeNull();
         expect(onramp_store.deposit_address).toBeNull();
@@ -292,17 +292,17 @@ describe('OnRampStore', () => {
         expect(onramp_store.is_requesting_widget_html).toBeTruthy();
     });
 
-    it('should set selected provider', () => {
+    it('should set selected provider', async () => {
         const spyPollApiForDepositAddress = jest.spyOn(onramp_store, 'pollApiForDepositAddress');
         const provider = createBanxaProvider(onramp_store);
-        onramp_store.setSelectedProvider(provider);
+        await onramp_store.setSelectedProvider(provider);
         expect(onramp_store.selected_provider).toBe(provider);
         expect(onramp_store.is_onramp_modal_open).toBeTruthy();
         expect(spyPollApiForDepositAddress).toHaveBeenCalledWith(true);
     });
 
-    it('should set selected provider to null if there is no provider', () => {
-        onramp_store.setSelectedProvider();
+    it('should set selected provider to null if there is no provider', async () => {
+        await onramp_store.setSelectedProvider();
 
         expect(onramp_store.selected_provider).toBeNull();
         expect(onramp_store.is_onramp_modal_open).toBeFalsy();

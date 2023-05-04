@@ -1,0 +1,37 @@
+.wallet-content {
+    // padding: 2.4rem;
+
+    // TODO: delete border and border-radius in listing-container
+
+    &__divider {
+        border: 1px solid var(--general-section-1);
+        margin-inline: 2.4rem;
+
+        &-demo {
+            border-color: var(--wallet-demo-divider-color);
+        }
+    }
+
+    &__disclaimer {
+        width: 100%;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        backface-visibility: hidden;
+        background-color: var(--wallet-eu-disclaimer);
+        border-radius: 0 0 $BORDER_RADIUS * 4 $BORDER_RADIUS * 4;
+
+        @include mobile {
+            height: 8rem;
+            border: 1px solid var(--wallet-eu-disclaimer);
+        }
+
+        &-text {
+            padding: 0 3rem;
+
+            @include mobile {
+                padding: 0 1.5rem;
+            }
+        }
+    }
+}

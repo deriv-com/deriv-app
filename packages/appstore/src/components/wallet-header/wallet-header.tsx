@@ -9,7 +9,9 @@ import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletMaltaCurren
 import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-header.scss';
 
+/*
 type TWalletHeaderCommon = {
+    account_type: TAccountCategory;
     balance?: string;
     shortcode?: TJurisdictionData['jurisdiction'];
     is_open_wallet: boolean;
@@ -24,20 +26,30 @@ type TWalletHeaderDemo = TWalletHeaderCommon & {
 };
 
 type TWalletHeaderSvg = TWalletHeaderCommon & {
+    account_type: Extract<TAccountCategory, 'real'>;
     account_status?: TAccountStatus;
-    account_type?: Extract<TAccountCategory, 'real'>;
     shortcode: Extract<TJurisdictionData['jurisdiction'], 'svg'>;
     currency: TWalletSvgCurrency;
 };
 
 type TWalletHeaderMalta = TWalletHeaderCommon & {
+    account_type: Extract<TAccountCategory, 'real'>;
     account_status?: TAccountStatus;
-    account_type?: Extract<TAccountCategory, 'real'>;
     shortcode: Extract<TJurisdictionData['jurisdiction'], 'malta'>;
     currency: TWalletMaltaCurrency;
 };
+*/
 
-type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
+// type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
+type TWalletHeader = {
+    account_type: TAccountCategory;
+    shortcode?: Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+    currency?: TWalletSvgCurrency;
+    balance?: string;
+    account_status?: TAccountStatus;
+    is_open_wallet: boolean;
+    setIsOpen: (is_open: boolean) => void;
+};
 
 const WalletHeader = React.memo(
     ({

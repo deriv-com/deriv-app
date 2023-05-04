@@ -136,10 +136,6 @@ const TradersHub = () => {
                             is_open_wallet={index === 0}
                         />
                     ))}
-                    {/* <Wallet account_type='demo' /> */}
-                    {/* <WalletHeader currency={'EUR'} jurisdiction={'malta'} /> */}
-                    {/* <WalletHeader currency={'USD'} jurisdiction={'svg'} /> */}
-                    {/* <WalletHeader currency={'BTC'} jurisdiction={'svg'} /> */}
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

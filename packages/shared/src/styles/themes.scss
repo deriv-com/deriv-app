@@ -198,6 +198,8 @@
         --wallets-banner-dot-color: #{$color-grey-6};
         --wallets-banner-active-dot-color: #{$color-red};
         --wallet-demo-bg-color: #{$wallet-demo-bg-color};
+        --wallet-demo-divider-color: #{$wallet-demo-divider-color};
+        --wallet-eu-disclaimer: #{$color-grey-4};
     }
     .theme--dark {
         // General
@@ -314,5 +316,7 @@
         --wallets-banner-dot-color: #{$color-grey-6};
         --wallets-banner-active-dot-color: #{$color-red};
         --wallet-demo-bg-color: #{$wallet-demo-bg-color};
+        --wallet-demo-divider-color: #{$wallet-demo-divider-color};
+        --wallet-eu-disclaimer: #{$color-grey-4};
     }
 }

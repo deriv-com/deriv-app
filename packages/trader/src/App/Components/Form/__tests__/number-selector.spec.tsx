@@ -37,7 +37,7 @@ describe('NumberSelector', () => {
         expect(mock_props.onChange).toHaveBeenCalled();
         expect(mock_props.onChange).toHaveBeenCalledWith({ target: { name: 'test name', value: 3 } });
     });
-    it('should not call onChange function if user click on the selected value', () => {
+    it('should not call onChange function if user clicks on the selected value', () => {
         render(<NumberSelector {...mock_props} selected_number={2} />);
         userEvent.click(screen.getByText('2'));
 

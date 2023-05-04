@@ -1,6 +1,6 @@
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
-import { SelfExclusionComponent } from 'Components/self-exclusion/self-exclusion.tsx';
+import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion';
 import 'Components/self-exclusion/self-exclusion.scss';
 
 const SelfExclusion = props => {

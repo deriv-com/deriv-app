@@ -2,7 +2,6 @@ import type {
     Authorize,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
-    GetLimits,
     GetSettings,
     LogOutResponse,
     ResidenceList,
@@ -12,6 +11,33 @@ import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccountLimitsCollection = {
+    level?: string;
+    name: string;
+    payout_limit: number;
+    profile_name: string;
+    turnover_limit: number;
+};
+type TAccount_limits = {
+    api_initial_load_error?: string;
+    open_positions?: React.ReactNode;
+    account_balance: string | number;
+    daily_transfers?: object;
+    payout: string | number;
+    lifetime_limit?: number;
+    market_specific: {
+        commodities: TAccountLimitsCollection[];
+        cryptocurrency: TAccountLimitsCollection[];
+        forex: TAccountLimitsCollection[];
+        indices: TAccountLimitsCollection[];
+        synthetic_index: TAccountLimitsCollection[];
+    };
+    num_of_days?: number;
+    num_of_days_limit: string | number;
+    remainder: string | number;
+    withdrawal_for_x_days_monetary?: number;
+    withdrawal_since_inception_monetary: string | number;
+};
 
 type TAccountsList = {
     account?: {
@@ -106,14 +132,7 @@ type TClientStore = {
     active_accounts: TActiveAccount[];
     account_settings: GetSettings;
     active_account_landing_company: string;
-    account_limits: {
-        daily_transfers?: {
-            [k: string]: {
-                allowed: boolean;
-                available: boolean;
-            };
-        };
-    };
+    account_limits: TAccount_limits;
     account_list: TAccountsList;
     account_status: TAccountStatus;
     available_crypto_currencies: string[];
@@ -125,7 +144,7 @@ type TClientStore = {
     residence_list: ResidenceList;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    getLimits: () => { get_limits?: GetLimits };
+    getLimits: () => Promise<{ data: object }>;
     has_any_real_account: boolean;
     has_active_real_account: boolean;
     has_logged_out: boolean;
@@ -171,7 +190,12 @@ type TClientStore = {
         trading_platform_accounts: DetailsOfEachMT5Loginid[];
     }) => DetailsOfEachMT5Loginid[];
     standpoint: {
-        iom: string;
+        iom: boolean;
+        svg: boolean;
+        malta: boolean;
+        maltainvest: boolean;
+        gaming_company: boolean;
+        financial_company: boolean;
     };
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
@@ -209,6 +233,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    is_fully_authenticated: boolean;
 };
 
 type TCommonStoreError = {
@@ -265,6 +290,7 @@ type TUiStore = {
     toggleLanguageSettingsModal: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
+    is_tablet: boolean;
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;

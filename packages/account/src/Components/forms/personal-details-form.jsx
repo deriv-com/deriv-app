@@ -92,12 +92,21 @@ const PersonalDetailsForm = ({
         closeRealAccountSignup,
         salutation_list,
         is_rendered_for_onfido,
+        should_close_tooltip,
+        setShouldCloseTooltip,
     } = props;
     const autocomplete_value = 'none';
     const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        if (should_close_tooltip) {
+            handleToolTipStatus();
+            setShouldCloseTooltip(false);
+        }
+    }, [should_close_tooltip]);
 
     const getLastNameLabel = () => {
         if (is_appstore) return localize('Family name*');
@@ -117,6 +126,15 @@ const PersonalDetailsForm = ({
         );
     };
 
+    const handleToolTipStatus = () => {
+        if (is_tax_residence_popover_open) {
+            setIsTaxResidencePopoverOpen(false);
+        }
+        if (is_tin_popover_open) {
+            setIsTinPopoverOpen(false);
+        }
+    };
+
     const name_dob_clarification_message = (
         <Localize
             i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
@@ -126,7 +144,13 @@ const PersonalDetailsForm = ({
 
     return (
         <div className={classNames({ 'account-form__poi-confirm-example': is_qualified_for_idv })}>
-            <InlineNoteWithIcon message={name_dob_clarification_message} font_size={isMobile() ? 'xxxs' : 'xs'} />
+            {!is_qualified_for_idv ||
+                (is_rendered_for_onfido && (
+                    <InlineNoteWithIcon
+                        message={name_dob_clarification_message}
+                        font_size={isMobile() ? 'xxxs' : 'xs'}
+                    />
+                ))}
             <FormBodySection
                 has_side_note={is_qualified_for_idv || is_rendered_for_onfido}
                 side_note={<PoiNameDobExampleIcon />}

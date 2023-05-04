@@ -1,16 +1,16 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import {
+    getCardLabels,
+    getMarketNamesMap,
+    getUnsupportedContracts,
+    getSupportedContracts,
+    getContractConfig,
+    getContractTypeDisplay,
+    getContractTypePosition,
+} from '../contract';
 
-type TGetLabels = () => { [key: string]: string };
-type TObjectWithTwoFields = {
-    button_name?: React.ReactNode;
-    name: React.ReactNode;
-    position: string;
-};
-type TGetUnsupportedContracts = () => { [key: string]: TObjectWithTwoFields };
-type TGetSupportedContracts = (is_high_low: boolean) => { [key: string]: TObjectWithTwoFields };
-
-export const getCardLabels: TGetLabels = () => ({
+const card_labels = {
     APPLY: localize('Apply'),
     BUY_PRICE: localize('Buy price:'),
     CANCEL: localize('Cancel'),
@@ -45,9 +45,8 @@ export const getCardLabels: TGetLabels = () => ({
         'Take profit and/or stop loss are not available while deal cancellation is active.'
     ),
     WON: localize('Won'),
-});
-
-export const getMarketNamesMap: TGetLabels = () => ({
+};
+const markets_names = {
     FRXAUDCAD: localize('AUD/CAD'),
     FRXAUDCHF: localize('AUD/CHF'),
     FRXAUDJPY: localize('AUD/JPY'),
@@ -142,9 +141,8 @@ export const getMarketNamesMap: TGetLabels = () => ({
     CRYETHUSD: localize('ETH/USD'),
     CRYEOSUSD: localize('EOS/USD'),
     CRYLTCUSD: localize('LTC/USD'),
-});
-
-export const getUnsupportedContracts: TGetUnsupportedContracts = () => ({
+};
+const unsupported_contracts = {
     EXPIRYMISS: {
         name: <Localize i18n_default_text='Ends Outside' />,
         position: 'top',
@@ -213,22 +211,12 @@ export const getUnsupportedContracts: TGetUnsupportedContracts = () => ({
         name: <Localize i18n_default_text='Only Downs' />,
         position: 'bottom',
     },
-});
-
-// Config to display trade button and their position
-export const getSupportedContracts: TGetSupportedContracts = is_high_low => ({
+};
+const supported_contracts = {
     ACCU: {
         button_name: <Localize i18n_default_text='Buy' />,
         name: <Localize i18n_default_text='Accumulator' />,
         position: 'top',
-    },
-    CALL: {
-        name: is_high_low ? <Localize i18n_default_text='Higher' /> : <Localize i18n_default_text='Rise' />,
-        position: 'top',
-    },
-    PUT: {
-        name: is_high_low ? <Localize i18n_default_text='Lower' /> : <Localize i18n_default_text='Fall' />,
-        position: 'bottom',
     },
     CALLE: {
         name: <Localize i18n_default_text='Rise' />,
@@ -286,17 +274,97 @@ export const getSupportedContracts: TGetSupportedContracts = is_high_low => ({
         name: <Localize i18n_default_text='Put' />,
         position: 'bottom',
     },
-});
-
-export const getContractConfig = (is_high_low: boolean) => ({
-    ...getSupportedContracts(is_high_low),
-    ...getUnsupportedContracts(),
-});
-
-export const getContractTypeDisplay = (type: string, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)?.[type];
-    return (show_button_name && contract_config?.button_name) || contract_config?.name || '';
+};
+const supported_hight_low = {
+    CALL: {
+        name: <Localize i18n_default_text='Higher' />,
+        position: 'top',
+    },
+    PUT: {
+        name: <Localize i18n_default_text='Lower' />,
+        position: 'bottom',
+    },
+};
+const not_supported_hight_low = {
+    CALL: {
+        name: <Localize i18n_default_text='Rise' />,
+        position: 'top',
+    },
+    PUT: {
+        name: <Localize i18n_default_text='Fall' />,
+        position: 'bottom',
+    },
 };
 
-export const getContractTypePosition = (type: string, is_high_low = false) =>
-    getContractConfig(is_high_low)?.[type] ? getContractConfig(is_high_low)?.[type.toUpperCase()]?.position : 'top';
+describe('getCardLabels', () => {
+    it('should return object with card labels', () => {
+        expect(getCardLabels()).toEqual(card_labels);
+    });
+});
+
+describe('getMarketNamesMap', () => {
+    it('should return object with markets names', () => {
+        expect(getMarketNamesMap()).toEqual(markets_names);
+    });
+});
+
+describe('getUnsupportedContracts', () => {
+    it('should return object with unsupported contracts', () => {
+        expect(getUnsupportedContracts()).toEqual(unsupported_contracts);
+    });
+});
+
+describe('getSupportedContracts', () => {
+    it('should return object with proper supported contracts if is_high_low === true', () => {
+        expect(getSupportedContracts(true)).toEqual({ ...supported_contracts, ...supported_hight_low });
+    });
+
+    it('should return object with proper supported contracts if is_high_low === false', () => {
+        expect(getSupportedContracts(false)).toEqual({ ...supported_contracts, ...not_supported_hight_low });
+    });
+});
+
+describe('getContractConfig', () => {
+    it('should return object with proper contracts if is_high_low === true', () => {
+        expect(getContractConfig(true)).toEqual({
+            ...supported_contracts,
+            ...supported_hight_low,
+            ...unsupported_contracts,
+        });
+    });
+
+    it('should return object with proper contracts if is_high_low === false', () => {
+        expect(getContractConfig(false)).toEqual({
+            ...supported_contracts,
+            ...not_supported_hight_low,
+            ...unsupported_contracts,
+        });
+    });
+});
+
+describe('getContractTypeDisplay', () => {
+    it('should return button name if show_button_name === true and contract_config has button_name field', () => {
+        expect(getContractTypeDisplay('ACCU', false, true)).toEqual(<Localize i18n_default_text='Buy' />);
+    });
+    it('should return contract name if show_button_name === false but contract_config has button_name field', () => {
+        expect(getContractTypeDisplay('ACCU')).toEqual(<Localize i18n_default_text='Accumulator' />);
+    });
+    it('should return contract name if show_button_name === true but contract_config has no button_name field', () => {
+        expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(<Localize i18n_default_text='Down' />);
+    });
+    it('should return empty string if show_button_name === false and contract_config has no name field', () => {
+        expect(getContractTypeDisplay('TEST', true, false)).toEqual('');
+    });
+    it('should return empty string if show_button_name === true and contract_config has no name field and button_name', () => {
+        expect(getContractTypeDisplay('TEST', true, true)).toEqual('');
+    });
+});
+
+describe('getContractTypePosition', () => {
+    it('should return button position if such type exist', () => {
+        expect(getContractTypePosition('NOTOUCH')).toEqual('bottom');
+    });
+    it('should return top position if such type does not exist', () => {
+        expect(getContractTypePosition('TEST')).toEqual('top');
+    });
+});

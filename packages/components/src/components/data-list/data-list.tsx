@@ -129,7 +129,7 @@ const DataList = React.memo(
             );
 
             return is_dynamic_height && cache.current ? (
-                <CellMeasurer cache={cache?.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+                <CellMeasurer cache={cache.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
                     {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
                 </CellMeasurer>
             ) : (
@@ -139,22 +139,21 @@ const DataList = React.memo(
             );
         };
 
-        let timeout: ReturnType<typeof setTimeout>;
-        const handleScroll = (e: ScrollParams): void => {
-            const { scrollTop } = e;
-
+        const handleScroll = (ev: React.UIEventHandler<HTMLDivElement>) => {
             clearTimeout(timeout);
             if (!is_scrolling) {
                 setIsScrolling(true);
             }
-            timeout = setTimeout(() => {
+            const timeout = setTimeout(() => {
                 if (!is_loading) {
                     setIsScrolling(false);
                 }
             }, 200);
 
-            setScrollTop(scrollTop);
-            onScroll?.(e);
+            setScrollTop(ev.target.scrollTop);
+            if (typeof onScroll === 'function') {
+                onScroll(ev);
+            }
         };
 
         const setRef = (ref: MeasuredCellParent) => {
@@ -178,21 +177,7 @@ const DataList = React.memo(
                             {({ width, height }) => (
                                 // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
                                 <TransitionGroup style={{ height, width }}>
-                                    <ThemedScrollbars
-                                        onScroll={e => {
-                                            const event = {
-                                                clientHeight: e.currentTarget.clientHeight,
-                                                clientWidth: e.currentTarget.clientWidth,
-                                                scrollHeight: e.currentTarget.scrollHeight,
-                                                scrollLeft: e.currentTarget.scrollLeft,
-                                                scrollTop: e.currentTarget.scrollTop,
-                                                scrollWidth: e.currentTarget.scrollWidth,
-                                            };
-                                            handleScroll(event);
-                                        }}
-                                        autohide
-                                        is_bypassed={isMobile()}
-                                    >
+                                    <ThemedScrollbars onScroll={handleScroll} autohide is_bypassed={isMobile()}>
                                         <List
                                             className={className}
                                             deferredMeasurementCache={cache?.current}
@@ -211,7 +196,7 @@ const DataList = React.memo(
                                             width={width}
                                             {...(isDesktop()
                                                 ? { scrollTop: scroll_top, autoHeight: true }
-                                                : { onScroll: target => handleScroll(target) })}
+                                                : { onScroll: target => handleScroll({ target }) })}
                                         />
                                     </ThemedScrollbars>
                                 </TransitionGroup>
@@ -235,6 +220,6 @@ const DataList = React.memo(
 );
 
 DataList.displayName = 'DataList';
-(DataList as any).Cell = DataListCell;
+DataList.Cell = DataListCell;
 
 export default DataList;

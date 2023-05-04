@@ -1,15 +1,15 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text, Badge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TWalletSvgCurrency } from 'Types';
+import { TJurisdictionData, TWalletSvgCurrency } from 'Types';
 
 type TWalletHeaderTitle = {
     is_demo: boolean;
     currency: TWalletSvgCurrency;
-    jurisdiction: 'svg' | 'malta';
+    shortcode: Exclude<TJurisdictionData['jurisdiction'], undefined>;
 };
 
-const WalletHeaderTitle = React.memo(({ is_demo, currency, jurisdiction }: TWalletHeaderTitle) => {
+const WalletHeaderTitle = React.memo(({ is_demo, currency, shortcode }: TWalletHeaderTitle) => {
     const title = is_demo ? (
         <Text weight='bold' size='sm'>
             <Localize
@@ -30,21 +30,12 @@ const WalletHeaderTitle = React.memo(({ is_demo, currency, jurisdiction }: TWall
         </Text>
     );
 
-    const badge = (
-        <Text weight='bold' size='xxxs' line_height='xxxs' className='wallet-header__description-badge'>
-            <Localize
-                i18n_default_text='{{jurisdiction}}'
-                values={{
-                    jurisdiction: jurisdiction.toUpperCase(),
-                }}
-            />
-        </Text>
-    );
-
     return (
         <div className='wallet-header__description-title'>
             {title}
-            {!is_demo && badge}
+            {!is_demo && (
+                <Badge className='wallet-header__description-badge' type='bordered' label={shortcode.toUpperCase()} />
+            )}
         </div>
     );
 });

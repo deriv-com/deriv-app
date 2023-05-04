@@ -200,6 +200,10 @@ export default class DashboardStore implements IDashboardStore {
             } = this.root_store;
             previewRecentStrategy(selected_strategy_id);
         }
+        if (this.has_started_bot_builder_tour) {
+            this.setTourActive(false);
+            this.setBotBuilderTourState(false);
+        }
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {

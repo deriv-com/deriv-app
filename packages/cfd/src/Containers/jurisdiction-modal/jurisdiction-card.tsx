@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { SyntheticEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
@@ -27,7 +27,7 @@ const JurisdictionCard = ({
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
 
-    const toggleCardFlip = (event: SyntheticEvent) => {
+    const toggleCardFlip = (event: React.MouseEvent) => {
         event.stopPropagation();
         setIsCardFlipped(!is_card_flipped);
     };

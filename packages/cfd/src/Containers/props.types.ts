@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -18,7 +19,6 @@ import {
     TJurisdictionCardItemVerification,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
-import { SyntheticEvent } from 'react';
 
 export type TCFDPersonalDetailsContainerProps = {
     account_settings: GetSettings;
@@ -182,7 +182,7 @@ export type TJurisdictionCardProps = {
 export type TJurisdictionCardBackProps = {
     card_classname: string;
     is_card_selected: boolean;
-    toggleCardFlip: (event: SyntheticEvent) => void;
+    toggleCardFlip: (event: React.MouseEvent) => void;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
@@ -196,7 +196,7 @@ export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
 
 export type TJurisdictionClickableDescriptionProps = {
     clickable_description: Array<TClickableDescription>;
-    toggleCardFlip: (event: SyntheticEvent) => void;
+    toggleCardFlip: (event: React.MouseEvent) => void;
 };
 
 export type TJurisdictionTitleIndicatorProps = {
@@ -209,7 +209,7 @@ export type TJurisdictionTitleIndicatorProps = {
 export type TJurisdictionCardSectionProps = {
     account_status: GetAccountStatus;
     card_section_item: TJurisdictionCardSection;
-    toggleCardFlip: (event: SyntheticEvent) => void;
+    toggleCardFlip: (event: React.MouseEvent) => void;
     type_of_card: TJurisdictionCardType;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };

@@ -46,7 +46,7 @@ const CashierOnboardingCashCard: React.FC = observer(() => {
         <CashierOnboardingCard
             title={localize('Deposit via bank wire, credit card, and e-wallet')}
             description={localize('Deposit via the following payment methods:')}
-            onClick={onClick}
+            onClick={is_dialog_visible ? undefined : onClick}
         >
             <CashierOnboardingIconMarquee icons={icons} />
             {can_switch_to_fiat_account && (

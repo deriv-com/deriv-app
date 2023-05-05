@@ -47,7 +47,7 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
             description={localize(
                 'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )}
-            onClick={onClick}
+            onClick={is_dialog_visible ? undefined : onClick}
         >
             {can_switch_to_fiat_account && (
                 <SwitchToFiatAccountDialog

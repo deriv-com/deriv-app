@@ -6,7 +6,7 @@ import './cashier-onboarding-card.scss';
 type TProps = {
     title: string;
     description: string;
-    onClick: VoidFunction;
+    onClick?: VoidFunction;
 };
 
 const CashierOnboardingCard: React.FC<React.PropsWithChildren<TProps>> = observer(

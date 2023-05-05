@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-export const AccumulatorTradeDescription = () => {
+const AccumulatorTradeDescription = () => {
     const content = [
         {
             type: 'paragraph',
@@ -57,3 +57,5 @@ export const AccumulatorTradeDescription = () => {
         </React.Fragment>
     );
 };
+
+export default AccumulatorTradeDescription;

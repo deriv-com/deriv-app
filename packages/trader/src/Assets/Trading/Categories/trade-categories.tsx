@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { AccumulatorTradeDescription } from './accumulator-trade-description';
+import AccumulatorTradeDescription from './accumulator-trade-description';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
-const TradeCategories = ({ category }) => {
+const TradeCategories = ({ category }: { category?: string }) => {
     let TradeTypeTemplate;
     if (category) {
         switch (category) {
@@ -463,10 +462,6 @@ const TradeCategories = ({ category }) => {
         }
     }
     return <>{TradeTypeTemplate}</>;
-};
-
-TradeCategories.propTypes = {
-    category: PropTypes.string,
 };
 
 export default TradeCategories;

@@ -1,9 +1,13 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 
-const IconTradeCategory = ({ category, className }) => {
+type TIconTradeCategory = {
+    category: string;
+    className?: string;
+};
+
+const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
     let IconCategory;
     if (category) {
         switch (category) {
@@ -236,12 +240,11 @@ const IconTradeCategory = ({ category, className }) => {
                 break;
         }
     }
-    return <div className={classNames('categories-container', className)}>{IconCategory}</div>;
-};
-
-IconTradeCategory.propTypes = {
-    category: PropTypes.string,
-    className: PropTypes.string,
+    return (
+        <div className={classNames('categories-container', className)} data-testid='dt-categories-container'>
+            {IconCategory}
+        </div>
+    );
 };
 
 export default IconTradeCategory;

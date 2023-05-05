@@ -5,6 +5,7 @@ import { isDesktop } from '@deriv/shared';
 import { TStepProps } from 'Types';
 
 const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => {
+    // here
     return (
         <React.Fragment>
             <Modal.Body className='wallet-steps'>

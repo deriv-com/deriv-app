@@ -4,10 +4,13 @@ import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
+import { useStores } from 'Stores/index';
 
 const WalletsBannerUpgrade = () => {
     const image: TWalletsImagesListKeys = isMobile() ? 'upgrade_mobile' : 'upgrade_desktop';
     const size: string = isMobile() ? 'xs' : 'm';
+    const { traders_hub } = useStores();
+    const { toggleWalletsUpgrade } = traders_hub;
 
     return (
         <div className='wallets-banner__container wallets-banner__upgrade-banner'>
@@ -19,12 +22,12 @@ const WalletsBannerUpgrade = () => {
                     />
                 </div>
                 <Button
-                    // Onclick props will be added here to show the upgrade wallets wizard in stitching user story
                     className='wallets-banner__upgrade-banner-button'
                     has_effect
                     text={localize('Upgrade now')}
                     primary
                     large={!isMobile()}
+                    onClick={() => toggleWalletsUpgrade(true)}
                 />
             </div>
             <WalletsImage image={image} className='wallets-banner__image' />

@@ -46,7 +46,7 @@ describe('CFDMT5DemoAccountDisplay', () => {
 
     it('should render a loading component when is_loading is false', () => {
         render(<CFDMT5DemoAccountDisplay {...mock_props} is_loading={false} />);
-        // screen.debug();
+
         expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toHaveClass('cfd-demo-accounts-display');
         expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();
     });

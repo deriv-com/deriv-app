@@ -44,16 +44,13 @@ describe('CFDMT5DemoAccountDisplay', () => {
         expect(screen.getByTestId('dt_barspinner')).toBeInTheDocument();
     });
 
-    it('should render a loading component when is_loading is false', () => {
+    it('should render CFDAccountCard if is_loading is false', () => {
         render(<CFDMT5DemoAccountDisplay {...mock_props} />);
-
         expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toHaveClass('cfd-demo-accounts-display');
         expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();
     });
 
     it('should render the synthetic account card when isSyntheticCardVisible returns true', () => {
-        mock_props.current_list = { 'mt5.demo.synthetic.01': {} };
-
         render(<CFDMT5DemoAccountDisplay {...mock_props} />);
         expect(screen.getByText('CFDAccountCard')).toBeInTheDocument();
     });

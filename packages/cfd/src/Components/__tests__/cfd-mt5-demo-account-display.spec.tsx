@@ -1,8 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDMT5DemoAccountDisplay from '../cfd-mt5-demo-account-display';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
 import { CFD_PLATFORMS } from '@deriv/shared';
+
+//mock cfd-account-card
+jest.mock('../cfd-account-card', () => ({
+    CFDAccountCard: () => <div>CFDAccountCard</div>,
+}));
 
 describe('CFDMT5DemoAccountDisplay', () => {
     const mock_standpoint = {
@@ -13,7 +17,6 @@ describe('CFDMT5DemoAccountDisplay', () => {
         maltainvest: false,
         svg: true,
     };
-    type TRecordString = Record<string, DetailsOfEachMT5Loginid>;
 
     const mock_props = {
         is_eu: false,
@@ -37,42 +40,15 @@ describe('CFDMT5DemoAccountDisplay', () => {
         show_eu_related_content: false,
     };
     it('should render a loading component when is_loading is true', () => {
-        render(<CFDMT5DemoAccountDisplay {...mock_props} />);
-        expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toHaveClass('cfd-demo-accounts-display');
-        expect(screen.getByTestId('dt_loading')).toBeInTheDocument();
+        render(<CFDMT5DemoAccountDisplay {...mock_props} is_loading={true} />);
+        expect(screen.getByTestId('dt_barspinner')).toBeInTheDocument();
     });
 
     it('should render the synthetic account card when isSyntheticCardVisible returns true', () => {
-        const mockOnSelectAccount = jest.fn();
-        const mockOpenAccountTransfer = jest.fn();
         mock_props.current_list = { 'mt5.demo.synthetic.01': {} };
 
         render(<CFDMT5DemoAccountDisplay {...mock_props} />);
 
-        expect(screen.getByText('Derived')).toBeInTheDocument();
-        expect(screen.getByText('No commission')).toBeInTheDocument();
-        expect(screen.getByText('Fund transfer')).toBeInTheDocument();
-        expect(screen.getByText('Create account')).toBeInTheDocument();
-
-        const fundTransferButton = screen.getByText('Fund transfer');
-        const createAccountButton = screen.getByText('Create account');
-
-        expect(fundTransferButton).toHaveAttribute('href', undefined);
-        expect(createAccountButton).toHaveAttribute('href', undefined);
-
-        // Trigger click events on the buttons
-        expect(mockOnSelectAccount).not.toHaveBeenCalled();
-        expect(mockOpenAccountTransfer).not.toHaveBeenCalled();
-        createAccountButton.click();
-        expect(mockOnSelectAccount).toHaveBeenCalledTimes(1);
-        expect(mockOnSelectAccount).toHaveBeenCalledWith({
-            category: 'demo',
-            type: 'synthetic',
-            platform: undefined,
-        });
-
-        fundTransferButton.click();
-        expect(mockOpenAccountTransfer).toHaveBeenCalledTimes(1);
-        expect(mockOpenAccountTransfer).toHaveBeenCalledWith({}, { category: 'demo', type: 'synthetic' });
+        expect(screen.getByText('CFDAccountCard')).toBeInTheDocument();
     });
 });

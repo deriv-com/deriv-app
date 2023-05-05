@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { TJurisdictionCardItems } from 'Components/props.types';
 
-export const jurisdictionSvgContents = (): TJurisdictionCardItems => ({
+export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
     is_over_header_available: false,
     header: localize('St. Vincent & Grenadines'),
     synthetic_contents: [

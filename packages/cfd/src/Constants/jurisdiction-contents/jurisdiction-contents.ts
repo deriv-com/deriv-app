@@ -1,9 +1,9 @@
 import { TJurisdictionCardItems } from 'Components/props.types';
-import { jurisdictionBviContents } from './jurisdiction-bvi-contents';
-import { jurisdictionLabuanContents } from './jurisdiction-labuan-contents';
-import { jurisdictionSvgContents } from './jurisdiction-svg-contents';
-import { jurisdictionVanuatuContents } from './jurisdiction-vanuatu-contents';
-import { jurisdictionMaltainvestContents } from './jurisdiction_maltainvest_contents';
+import { getJurisdictionBviContents } from './jurisdiction-bvi-contents';
+import { getJurisdictionLabuanContents } from './jurisdiction-labuan-contents';
+import { getJurisdictionSvgContents } from './jurisdiction-svg-contents';
+import { getJurisdictionVanuatuContents } from './jurisdiction-vanuatu-contents';
+import { getJurisdictionMaltainvestContents } from './jurisdiction_maltainvest_contents';
 
 type TJurisdictionContent = {
     svg: TJurisdictionCardItems;
@@ -14,9 +14,9 @@ type TJurisdictionContent = {
 };
 
 export const getJurisdictionContents = (): TJurisdictionContent => ({
-    svg: jurisdictionSvgContents(),
-    bvi: jurisdictionBviContents(),
-    vanuatu: jurisdictionVanuatuContents(),
-    labuan: jurisdictionLabuanContents(),
-    maltainvest: jurisdictionMaltainvestContents(),
+    svg: getJurisdictionSvgContents(),
+    bvi: getJurisdictionBviContents(),
+    vanuatu: getJurisdictionVanuatuContents(),
+    labuan: getJurisdictionLabuanContents(),
+    maltainvest: getJurisdictionMaltainvestContents(),
 });

@@ -64,7 +64,7 @@ const StaticDashboard = ({
     loginid,
 }: TStaticDashboard) => {
     const { client, traders_hub } = useStores();
-    const { content_flag, CFDs_restricted_countries } = traders_hub;
+    const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 
     const [index, setIndex] = React.useState<number>(0);
@@ -152,7 +152,7 @@ const StaticDashboard = ({
                                         color={
                                             is_blurry.options_text || is_blurry.options_description
                                                 ? 'less-prominent'
-                                                : 'prominent'
+                                                : 'general'
                                         }
                                     >
                                         {eu_user ? (
@@ -175,7 +175,7 @@ const StaticDashboard = ({
                                             />
                                         ) : (
                                             <Localize
-                                                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
+                                                i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                                                 components={[
                                                     <Text
                                                         key={0}
@@ -262,7 +262,7 @@ const StaticDashboard = ({
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon='DTrader'
-                                        name='DTrader'
+                                        name='Deriv Trader'
                                         description={localize('Multipliers trading platform.')}
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
@@ -273,7 +273,7 @@ const StaticDashboard = ({
                                 <div className='static-dashboard-wrapper__body--apps-item'>
                                     <StaticTradingAppCard
                                         icon='DTrader'
-                                        name='DTrader'
+                                        name='Deriv Trader'
                                         description={localize('Options and multipliers trading platform.')}
                                         availability='All'
                                         has_applauncher_account={has_applauncher_account}
@@ -288,7 +288,7 @@ const StaticDashboard = ({
                                     <div className='static-dashboard-wrapper__body--apps-item'>
                                         <StaticTradingAppCard
                                             icon='DBot'
-                                            name='DBot'
+                                            name='Deriv Bot'
                                             description={localize('Automate your trading, no coding needed.')}
                                             availability='Non-EU'
                                             has_applauncher_account={has_applauncher_account}
@@ -387,7 +387,7 @@ const StaticDashboard = ({
                             <Text
                                 as='p'
                                 size='xxs'
-                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'prominent'}
+                                color={is_blurry.cfd_text || is_blurry.cfd_description ? 'less-prominent' : 'general'}
                             >
                                 <Localize
                                     i18n_default_text='Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
@@ -434,7 +434,7 @@ const StaticDashboard = ({
                         </div>
 
                         <div className='static-dashboard-wrapper__body'>
-                            {!is_eu_user && (
+                            {!is_eu_user && !financial_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
@@ -453,7 +453,7 @@ const StaticDashboard = ({
                                 />
                             )}
                             {isMobile() && !has_account && <Divider />}
-                            {is_eu_user && (
+                            {is_eu_user && !financial_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
@@ -501,7 +501,7 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
-                        {!is_eu_user && !CFDs_restricted_countries && (
+                        {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                             <React.Fragment>
                                 <Divider />
                                 <div className='static-dashboard-wrapper__body--header'>
@@ -520,7 +520,7 @@ const StaticDashboard = ({
                                 </div>
                             </React.Fragment>
                         )}
-                        {!is_eu_user && !CFDs_restricted_countries && (
+                        {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                             <StaticCFDAccountManager
                                 type='all'
                                 platform='dxtrade'

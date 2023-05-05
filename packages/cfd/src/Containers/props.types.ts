@@ -12,7 +12,6 @@ import {
     TTradingPlatformAvailableAccount,
     TExistingData,
     TJurisdictionCardSection,
-    TCardFlipStatus,
     TJurisdictionCardSectionTitleIndicators,
     TClickableDescription,
     TJurisdictionCardItems,

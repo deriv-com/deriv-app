@@ -26,7 +26,7 @@ describe('JurisdictionCard', () => {
                 needs_verification: string[];
             };
             currency_config: {
-                [k: string]: { is_deposit_suspended?: 0 | 1 | undefined; is_withdrawal_suspended?: 0 | 1 | undefined };
+                [k: string]: { is_deposit_suspended?: 0 | 1; is_withdrawal_suspended?: 0 | 1 };
             };
             p2p_status: 'none' | 'active' | 'temp_ban' | 'perm_ban';
             prompt_client_to_authenticate: 0 | 1;

@@ -9,6 +9,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 import NoAds from 'Components/buy-sell//no-ads';
+import './buy-sell-table.scss';
 
 const BuySellRowRendererComponent = row_props => {
     const { buy_sell_store } = useStores();
@@ -55,7 +56,7 @@ const BuySellTable = ({ onScroll }) => {
     if (buy_sell_store.items.length) {
         return (
             <>
-                <Table className='buy-sell__table'>
+                <Table className='buy-sell-table'>
                     <Modal
                         name='sort'
                         className='sort'
@@ -88,7 +89,7 @@ const BuySellTable = ({ onScroll }) => {
                     </Modal>
                     {isDesktop() && (
                         <Table.Header>
-                            <Table.Row className='buy-sell__table-header'>
+                            <Table.Row className='buy-sell-table__header'>
                                 <Table.Head>
                                     <Localize i18n_default_text='Advertisers' />
                                 </Table.Head>
@@ -105,7 +106,7 @@ const BuySellTable = ({ onScroll }) => {
                             </Table.Row>
                         </Table.Header>
                     )}
-                    <Table.Body className='buy-sell__table-body'>
+                    <Table.Body className='buy-sell-table__body'>
                         <InfiniteDataList
                             data_list_className='buy-sell__data-list'
                             items={buy_sell_store.rendered_items}

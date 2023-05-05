@@ -12,7 +12,7 @@ import Verification from '../verification/verification.jsx';
 import './my-ads.scss';
 
 const MyAdsState = ({ message }) => (
-    <div className='p2p-my-ads__state'>
+    <div className='my-ads__state'>
         <TableError message={message} />
     </div>
 );
@@ -46,20 +46,20 @@ const MyAds = () => {
     if (general_store.is_advertiser) {
         if (my_ads_store.show_ad_form) {
             return (
-                <div className='p2p-my-ads'>
+                <div className='my-ads'>
                     <CreateAd />
                 </div>
             );
         } else if (my_ads_store.show_edit_ad_form) {
             return (
-                <div className='p2p-my-ads'>
+                <div className='my-ads'>
                     <EditAd />
                 </div>
             );
         }
 
         return (
-            <div className='p2p-my-ads'>
+            <div className='my-ads'>
                 <MyAdsTable />
             </div>
         );

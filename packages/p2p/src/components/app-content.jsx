@@ -66,7 +66,7 @@ const AppContent = ({ order_id }) => {
     return (
         <Tabs
             active_index={general_store.active_index}
-            className='p2p-cashier__tabs'
+            className='p2p__tabs'
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
             is_scrollable

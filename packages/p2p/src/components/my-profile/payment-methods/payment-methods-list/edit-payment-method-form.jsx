@@ -9,6 +9,7 @@ import { useStores } from 'Stores';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
+import './edit-payment-method-form.scss';
 
 const EditPaymentMethodForm = () => {
     const { general_store, my_profile_store } = useStores();
@@ -51,8 +52,8 @@ const EditPaymentMethodForm = () => {
                                     page_title={localize('Edit payment method')}
                                 />
                             </DesktopWrapper>
-                            <Form className='add-payment-method-form__form'>
-                                <div className='add-payment-method-form__form-wrapper'>
+                            <Form className='edit-payment-method-form__form'>
+                                <div className='edit-payment-method-form__form-wrapper'>
                                     <Field name='choose_payment_method'>
                                         {({ field }) => (
                                             <Input
@@ -89,7 +90,7 @@ const EditPaymentMethodForm = () => {
                                                             }
                                                             label={payment_method_field[1].display_name}
                                                             className={classNames({
-                                                                'add-payment-method-form__payment-method-field':
+                                                                'edit-payment-method-form__payment-method-field':
                                                                     !errors[payment_method_field[0]]?.length,
                                                             })}
                                                             onChange={handleChange}
@@ -103,10 +104,10 @@ const EditPaymentMethodForm = () => {
                                     )}
                                 </div>
                                 <div
-                                    className={classNames('add-payment-method-form__buttons', {
-                                        'add-payment-method-form__buttons--separated-footer':
+                                    className={classNames('edit-payment-method-form__buttons', {
+                                        'edit-payment-method-form__buttons--separated-footer':
                                             general_store.active_index === 3 && isMobile(),
-                                        'add-payment-method-form__buttons--separated-footer-profile':
+                                        'edit-payment-method-form__buttons--separated-footer-profile':
                                             general_store.active_index === 3 && isDesktop(),
                                     })}
                                 >
@@ -128,7 +129,7 @@ const EditPaymentMethodForm = () => {
                                         <Localize i18n_default_text='Cancel' />
                                     </Button>
                                     <Button
-                                        className='add-payment-method-form__buttons--add'
+                                        className='edit-payment-method-form__buttons--add'
                                         primary
                                         large
                                         is_disabled={isSubmitting || !dirty || !!Object.keys(errors)?.length}

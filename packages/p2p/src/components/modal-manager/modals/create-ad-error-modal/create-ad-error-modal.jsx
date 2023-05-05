@@ -13,7 +13,7 @@ const CreateAdErrorModal = () => {
     if (my_ads_store.error_code === api_error_codes.DUPLICATE_ADVERT) {
         return (
             <Modal
-                className='p2p-my-ads__modal-error'
+                className='my-ads__modal-error'
                 is_open={is_modal_open}
                 small
                 has_close_icon={false}
@@ -32,7 +32,7 @@ const CreateAdErrorModal = () => {
     } else if (my_ads_store.error_code === api_error_codes.ADVERT_SAME_LIMITS) {
         return (
             <Modal
-                className='p2p-my-ads__modal-error'
+                className='my-ads__modal-error'
                 is_open={is_modal_open}
                 small
                 has_close_icon={false}
@@ -51,7 +51,7 @@ const CreateAdErrorModal = () => {
     }
     return (
         <Modal
-            className='p2p-my-ads__modal-error'
+            className='my-ads__modal-error'
             is_open={is_modal_open}
             small
             has_close_icon={false}

@@ -10,7 +10,7 @@ const AdErrorTooltipModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
-        <Modal className='p2p-my-ads__modal-error' is_open={is_modal_open} small has_close_icon={false}>
+        <Modal className='my-ads__modal-error' is_open={is_modal_open} small has_close_icon={false}>
             <Modal.Body>
                 <Text as='p' color='prominent' size='xs'>
                     <Localize

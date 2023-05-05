@@ -13,10 +13,10 @@ const VerificationWrapper = ({ should_wrap, children }) => {
     if (should_wrap) {
         return (
             <div
-                className={classNames('dp2p-verification__wrapper', {
-                    'dp2p-verification__wrapper--mobile': isMobile(),
+                className={classNames('verification__wrapper', {
+                    'verification__wrapper--mobile': isMobile(),
                 })}
-                data-testid='dp2p-verification_wrapper'
+                data-testid='verification_wrapper'
             >
                 {children}
             </div>
@@ -54,19 +54,19 @@ const Verification = ({ should_wrap }) => {
 
     return (
         <VerificationWrapper should_wrap={should_wrap}>
-            <div className='dp2p-verification' data-testid='dp2p-verification_container'>
-                <Icon icon='IcCashierSendEmail' className='dp2p-verification__icon' size={102} />
-                <div className='dp2p-verification__text'>
-                    <div className='dp2p-verification__text-title'>
+            <div className='verification' data-testid='verification_container'>
+                <Icon icon='IcCashierSendEmail' className='verification__icon' size={102} />
+                <div className='verification__text'>
+                    <div className='verification__text-title'>
                         <Localize i18n_default_text='Please register with us!' />
                     </div>
-                    <div className='dp2p-verification__text-description'>
+                    <div className='verification__text-description'>
                         <Text as='p' size='xs' line_height='s' align='center'>
                             <Localize i18n_default_text='To use Deriv P2P, you need to choose a display name (a nickname) and verify your identity.' />
                         </Text>
                     </div>
                 </div>
-                <Checklist className='dp2p-verification__checklist' items={checklist_items} />
+                <Checklist className='verification__checklist' items={checklist_items} />
             </div>
         </VerificationWrapper>
     );

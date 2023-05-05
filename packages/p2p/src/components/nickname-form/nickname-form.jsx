@@ -42,7 +42,7 @@ const InputComponent = observer(({ field }) => {
             data-lpignore='true'
             error={general_store.nickname_error || errors.nickname}
             label={localize('Your nickname')}
-            className='dp2p-nickname__form-field'
+            className='nickname-form__field'
             onChange={e => {
                 handleChange(e);
                 general_store.setNicknameError(undefined);
@@ -58,12 +58,9 @@ const NicknameForm = () => {
     return (
         <NicknameFormWrapper>
             {!isMobile() && (
-                <div className='dp2p-nickname__form-header dp2p-nickname__form-header--no-border'>
-                    <div className='dp2p-nickname__form-header_wrapper dp2p-nickname__form-header_right'>
-                        <IconClose
-                            className='dp2p-nickname__form-close_icon'
-                            onClick={general_store.onNicknamePopupClose}
-                        />
+                <div className='nickname-form__header nickname-form__header--no-border'>
+                    <div className='nickname-form__header_wrapper nickname-form__header_right'>
+                        <IconClose className='nickname-form__close_icon' onClick={general_store.onNicknamePopupClose} />
                     </div>
                 </div>
             )}
@@ -74,33 +71,33 @@ const NicknameForm = () => {
                     await general_store.createAdvertiser(values.nickname);
                 }}
             >
-                <Form className='dp2p-nickname__form-wrapper' noValidate>
-                    <div className='dp2p-nickname__form-content dp2p-nickname__form-content__centre'>
+                <Form className='nickname-form__wrapper' noValidate>
+                    <div className='nickname-form__content nickname-form__content__centre'>
                         <Icon icon='IcCashierP2pUser' width='128' height='128' />
                         <Text
                             as='h5'
                             size='s'
                             weight='bold'
                             line_height='unset'
-                            className='dp2p-nickname__form-content--title'
+                            className='nickname-form__content--title'
                         >
                             {localize('Choose a nickname')}
                         </Text>
-                        <Text as='p' size='xs' line_height='unset' className='dp2p-nickname__form-content--text'>
+                        <Text as='p' size='xs' line_height='unset' className='nickname-form__content--text'>
                             {localize('You will appear to other users as')}
                         </Text>
-                        <div className='dp2p-nickname__form-field_wrapper'>
+                        <div className='nickname-form__field_wrapper'>
                             <Field name='nickname'>
                                 {({ field }) => {
                                     return <InputComponent field={field} />;
                                 }}
                             </Field>
                         </div>
-                        <div className='dp2p-nickname__form-content--ps'>
+                        <div className='nickname-form__content--ps'>
                             {localize('Once set, your nickname cannot be changed.')}
                         </div>
                     </div>
-                    <div className='dp2p-nickname__form-footer'>
+                    <div className='nickname-form__footer'>
                         <ButtonGroupComponent />
                     </div>
                 </Form>

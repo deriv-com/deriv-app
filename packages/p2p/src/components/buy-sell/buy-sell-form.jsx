@@ -269,7 +269,7 @@ const BuySellForm = props => {
                                 <div className='buy-sell-form__line' />
                                 {buy_sell_store.is_sell_advert && payment_method_names && (
                                     <React.Fragment>
-                                        <div className='buy-sell-form_payment-method'>
+                                        <div className='buy-sell-form__payment-method'>
                                             <Text
                                                 as='p'
                                                 className='buy-sell-form__payment-method--title'

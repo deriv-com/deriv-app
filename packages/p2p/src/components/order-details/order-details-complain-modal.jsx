@@ -4,7 +4,7 @@ import { Button, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { isMobile, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import FormError from 'Components/form/error.jsx';
+import FormError from 'Components/form/form-submit-error-message';
 import OrderDetailsComplainModalRadioGroup from './order-details-complain-modal-radio-group.jsx';
 import 'Components/order-details/order-details-complain-modal.scss';
 

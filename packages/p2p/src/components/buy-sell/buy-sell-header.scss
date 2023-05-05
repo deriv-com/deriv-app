@@ -74,11 +74,11 @@
         }
 
         &--filter {
-            align-self: center;
             border: 1px solid var(--border-normal);
             border-radius: 4px;
             display: flex;
             margin-left: 0.8rem;
+            margin-top: 2.4rem;
             padding: 1.3rem;
 
             @include mobile {

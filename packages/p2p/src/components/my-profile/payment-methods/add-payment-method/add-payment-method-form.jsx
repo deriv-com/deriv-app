@@ -9,6 +9,7 @@ import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import ModalForm from 'Components/modal-manager/modal-form';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import './add-payment-method-form.scss';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
     const { general_store, my_profile_store } = useStores();

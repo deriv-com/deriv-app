@@ -1,5 +1,5 @@
-.dp2p-nickname__form {
-    &-header {
+.nickname-form {
+    &__header {
         border-bottom: 1px solid var(--general-section-2);
 
         &_wrapper {
@@ -26,7 +26,8 @@
             border: none;
         }
     }
-    &-content {
+
+    &__content {
         &__centre {
             align-items: center;
             display: flex;
@@ -62,7 +63,8 @@
             text-align: center;
         }
     }
-    &-field {
+
+    &__field {
         flex: 1;
         height: 4rem;
         margin-bottom: unset;
@@ -105,7 +107,8 @@
             width: 88%;
         }
     }
-    &-info {
+
+    &__info {
         margin-bottom: 1.6rem;
 
         &_notes {
@@ -124,7 +127,8 @@
             font-weight: bold;
         }
     }
-    &-footer {
+
+    &__footer {
         align-items: center;
         bottom: 0;
         display: flex;
@@ -137,11 +141,13 @@
             padding: 1.6rem;
         }
     }
-    &-close_icon {
+
+    &__close_icon {
         cursor: pointer;
         fill: var(--text-general);
     }
-    &-wrapper {
+
+    &__wrapper {
         @include mobile {
             height: 100%;
         }

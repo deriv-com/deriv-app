@@ -4,6 +4,7 @@ import { Formik, Field } from 'formik';
 import { Autocomplete, Icon, Loading, Text } from '@deriv/components';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
+import './select-payment-method.scss';
 
 const SelectPaymentMethod = () => {
     const { my_profile_store } = useStores();
@@ -21,7 +22,7 @@ const SelectPaymentMethod = () => {
     return (
         <Formik enableReinitialize initialValues={{}}>
             {() => (
-                <div className='add-payment-method-select'>
+                <div className='select-payment-method'>
                     <Field name='payment_method'>
                         {({ field }) => (
                             <Autocomplete
@@ -39,7 +40,7 @@ const SelectPaymentMethod = () => {
                             />
                         )}
                     </Field>
-                    <div className='add-payment-method-hint'>
+                    <div className='select-payment-method__hint'>
                         <Localize
                             i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
                             components={[

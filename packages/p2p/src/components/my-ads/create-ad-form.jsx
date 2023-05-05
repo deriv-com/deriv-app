@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import {
     Button,
@@ -22,6 +23,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from '../../constants/api-error-codes.js';
+import './create-ad-form.scss';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -155,19 +157,16 @@ const CreateAdForm = () => {
                     };
 
                     return (
-                        <div className='p2p-my-ads__form' data-testid='dp2p-create-ad-form_container'>
+                        <div className='create-ad-form' data-testid='dp2p-create-ad-form_container'>
                             <Form noValidate>
-                                <ThemedScrollbars
-                                    className='p2p-my-ads__form-scrollbar'
-                                    is_scrollbar_hidden={isMobile()}
-                                >
+                                <ThemedScrollbars className='create-ad-form-scrollbar' is_scrollbar_hidden={isMobile()}>
                                     <CreateAdFormWrapper>
-                                        <div className='p2p-my-ads__form-scrollbar-container'>
+                                        <div className='create-ad-form-scrollbar-container'>
                                             <Field name='type'>
                                                 {({ field }) => (
                                                     <RadioGroup
                                                         {...field}
-                                                        className='p2p-my-ads__form-radio-group'
+                                                        className='create-ad-form-radio-group'
                                                         name='type'
                                                         onToggle={event => onChangeAdTypeHandler(event.target.value)}
                                                         selected={values.type}
@@ -184,7 +183,7 @@ const CreateAdForm = () => {
                                                     </RadioGroup>
                                                 )}
                                             </Field>
-                                            <div className='p2p-my-ads__form-summary'>
+                                            <div className='create-ad-form-summary'>
                                                 <CreateAdSummary
                                                     market_feed={
                                                         floating_rate_store.rate_type === ad_type.FLOAT
@@ -196,7 +195,7 @@ const CreateAdForm = () => {
                                                     type={values.type}
                                                 />
                                             </div>
-                                            <div className='p2p-my-ads__form-container'>
+                                            <div className='create-ad-form-container'>
                                                 <Field name='offer_amount'>
                                                     {({ field }) => (
                                                         <Input
@@ -206,7 +205,10 @@ const CreateAdForm = () => {
                                                             type='text'
                                                             error={touched.offer_amount && errors.offer_amount}
                                                             label={localize('Total amount')}
-                                                            className='p2p-my-ads__form-field'
+                                                            className={classNames('create-ad-form-field', {
+                                                                'create-ad-form__offer-amt__sell-ad':
+                                                                    values.type === buy_sell.SELL,
+                                                            })}
                                                             trailing_icon={
                                                                 <Text
                                                                     color={isDesktop() ? 'less-prominent' : 'prominent'}
@@ -246,7 +248,7 @@ const CreateAdForm = () => {
                                                     {({ field }) =>
                                                         floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                             <FloatingRate
-                                                                className='p2p-my-ads__form-field'
+                                                                className='create-ad-form-field'
                                                                 data_testid='float_rate_type'
                                                                 error_messages={errors.rate_type}
                                                                 fiat_currency={currency}
@@ -277,7 +279,7 @@ const CreateAdForm = () => {
                                                                 label={localize('Fixed rate (1 {{currency}})', {
                                                                     currency,
                                                                 })}
-                                                                className='p2p-my-ads__form-field'
+                                                                className='create-ad-form-field'
                                                                 trailing_icon={
                                                                     <Text
                                                                         color={
@@ -298,7 +300,7 @@ const CreateAdForm = () => {
                                                     }
                                                 </Field>
                                             </div>
-                                            <div className='p2p-my-ads__form-container'>
+                                            <div className='create-ad-form-container'>
                                                 <Field name='min_transaction'>
                                                     {({ field }) => (
                                                         <Input
@@ -308,7 +310,7 @@ const CreateAdForm = () => {
                                                             type='text'
                                                             error={touched.min_transaction && errors.min_transaction}
                                                             label={localize('Min order')}
-                                                            className='p2p-my-ads__form-field'
+                                                            className='create-ad-form-field'
                                                             trailing_icon={
                                                                 <Text
                                                                     color={isDesktop() ? 'less-prominent' : 'prominent'}
@@ -334,7 +336,7 @@ const CreateAdForm = () => {
                                                             type='text'
                                                             error={touched.max_transaction && errors.max_transaction}
                                                             label={localize('Max order')}
-                                                            className='p2p-my-ads__form-field'
+                                                            className='create-ad-form-field'
                                                             trailing_icon={
                                                                 <Text
                                                                     color={isDesktop() ? 'less-prominent' : 'prominent'}
@@ -353,7 +355,7 @@ const CreateAdForm = () => {
                                                 </Field>
                                             </div>
                                             {is_sell_advert && (
-                                                <div className='p2p-my-ads__form-field--contact-details'>
+                                                <div className='create-ad-form-field--contact-details'>
                                                     <Field name='contact_info'>
                                                         {({ field }) => (
                                                             <Input
@@ -367,7 +369,7 @@ const CreateAdForm = () => {
                                                                     </Text>
                                                                 }
                                                                 error={touched.contact_info && errors.contact_info}
-                                                                className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                className='create-ad-form-field create-ad-form-field--textarea'
                                                                 initial_character_count={
                                                                     general_store.contact_info.length
                                                                 }
@@ -396,7 +398,7 @@ const CreateAdForm = () => {
                                                             </Text>
                                                         }
                                                         hint={localize('This information will be visible to everyone.')}
-                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                        className='create-ad-form-field create-ad-form-field--textarea'
                                                         initial_character_count={
                                                             general_store.default_advert_description.length
                                                         }
@@ -406,7 +408,7 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
-                                            <div className='p2p-my-ads__form-payment-methods--text'>
+                                            <div className='create-ad-form-payment-methods--text'>
                                                 <Text color='prominent'>
                                                     <Localize i18n_default_text='Payment methods' />
                                                 </Text>
@@ -423,9 +425,9 @@ const CreateAdForm = () => {
                                                 is_sell_advert={is_sell_advert}
                                             />
                                         </div>
-                                        <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
+                                        <div className='create-ad-form-container create-ad-form-footer'>
                                             <Button
-                                                className='p2p-my-ads__form-button'
+                                                className='create-ad-form-button'
                                                 secondary
                                                 large
                                                 onClick={onCleanup}
@@ -434,7 +436,7 @@ const CreateAdForm = () => {
                                                 <Localize i18n_default_text='Cancel' />
                                             </Button>
                                             <Button
-                                                className='p2p-my-ads__form-button'
+                                                className='create-ad-form-button'
                                                 primary
                                                 large
                                                 is_disabled={
@@ -455,7 +457,7 @@ const CreateAdForm = () => {
                 }}
             </Formik>
             <Modal
-                className='p2p-my-ads__ad-created'
+                className='my-ads__ad-created'
                 has_close_icon={false}
                 is_open={my_ads_store.is_ad_created_modal_visible}
                 small

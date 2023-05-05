@@ -1,7 +1,7 @@
 @import '../../../shared/src/styles/reset.scss';
 @import '../../../shared/src/styles/themes.scss';
 
-.p2p-cashier {
+.p2p {
     background: transparent;
     height: 100%;
     width: 100%;
@@ -10,29 +10,12 @@
     flex-direction: column;
     overflow: hidden;
 
-    &__barred-user {
-        .dc-hint-box {
-            margin-top: 1.6rem;
-
-            &__icon {
-                @include mobile {
-                    align-self: flex-start;
-                    min-width: 16px;
-                    min-height: 16px;
-                }
-            }
-
-            @include mobile {
-                margin: 1rem 2rem;
-            }
-        }
-    }
-
     &__content {
         padding: 0 1.6rem;
     }
+
     & .dc-tabs {
-        &--p2p-cashier__tabs {
+        &--p2p__tabs {
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -59,6 +42,7 @@
             }
         }
     }
+
     & .dc-button-menu {
         &__wrapper {
             background-color: var(--state-disabled);
@@ -84,10 +68,12 @@
             background-color: var(--state-normal) !important;
         }
     }
+
     &__separator {
         width: 100%;
         border-top: 1px solid var(--general-section-1);
     }
+
     &__advertiser-tab {
         @include mobile {
             .dc-tabs {
@@ -108,37 +94,10 @@
             }
         }
     }
+
     @include mobile {
         .dc-autocomplete__field {
             border: none;
-        }
-    }
-}
-
-.sendbird-fileviewer__header-delete {
-    display: none !important;
-}
-
-.p2p-nickname {
-    &__dialog {
-        @include mobile {
-            height: 100%;
-        }
-    }
-}
-
-.dc-modal__container_p2p-nickname {
-    &__dialog {
-        height: auto;
-        margin-bottom: 0;
-        max-height: 50rem !important;
-        max-width: 44rem;
-        min-width: 44rem;
-        padding: 0;
-        width: 100%;
-
-        @include mobile {
-            min-width: 0;
         }
     }
 }

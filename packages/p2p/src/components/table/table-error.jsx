@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './table.scss';
 import { Text } from '@deriv/components';
+import './table-error.scss';
 
 export const TableError = ({ message }) => (
-    <Text as='p' color='loss-danger' size='xs' className='dp2p-table-error'>
+    <Text as='p' color='loss-danger' size='xs' className='table-error'>
         {message}
     </Text>
 );

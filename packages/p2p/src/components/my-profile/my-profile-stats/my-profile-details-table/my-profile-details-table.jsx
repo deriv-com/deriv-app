@@ -23,8 +23,8 @@ const MyProfileDetailsTable = () => {
                             <Localize i18n_default_text='Buy' />
                         </Text>
                     </Table.Head>
-                    <Table.Row className='my-profile-details-table--row'>
-                        <Table.Cell className='my-profile-details-table--cell'>
+                    <Table.Row className='my-profile-details-table__row'>
+                        <Table.Cell className='my-profile-details-table__cell'>
                             <Text color='less-prominent' size='xs'>
                                 <Localize i18n_default_text='Daily limit' />
                             </Text>
@@ -32,7 +32,7 @@ const MyProfileDetailsTable = () => {
                                 <Money amount={daily_buy_limit} currency={currency} show_currency />
                             </Text>
                         </Table.Cell>
-                        <Table.Cell className='my-profile-details-table--cell'>
+                        <Table.Cell className='my-profile-details-table__cell'>
                             <Text color='less-prominent' size='xs'>
                                 <Localize i18n_default_text='Available' />
                             </Text>
@@ -48,8 +48,8 @@ const MyProfileDetailsTable = () => {
                             <Localize i18n_default_text='Sell' />
                         </Text>
                     </Table.Head>
-                    <Table.Row className='my-profile-details-table--row'>
-                        <Table.Cell className='my-profile-details-table--cell'>
+                    <Table.Row className='my-profile-details-table__row'>
+                        <Table.Cell className='my-profile-details-table__cell'>
                             <Text color='less-prominent' size='xs'>
                                 <Localize i18n_default_text='Daily limit' />
                             </Text>
@@ -57,7 +57,7 @@ const MyProfileDetailsTable = () => {
                                 <Money amount={daily_sell_limit} currency={currency} show_currency />
                             </Text>
                         </Table.Cell>
-                        <Table.Cell className='my-profile-details-table--cell'>
+                        <Table.Cell className='my-profile-details-table__cell'>
                             <Text color='less-prominent' size='xs'>
                                 <Localize i18n_default_text='Available' />
                             </Text>
@@ -69,7 +69,7 @@ const MyProfileDetailsTable = () => {
                 </Table>
             </div>
             {upgradable_daily_limits && (
-                <Text as='div' className='my-profile-details-table--limit'>
+                <Text as='div' className='my-profile-details-table__limit'>
                     <Text color='less-prominent' line-height='l' size='xxs'>
                         <Localize
                             i18n_default_text='Want to increase your daily limits to <0>{{max_daily_buy}} {{currency}}</0> (buy) and <1>{{max_daily_sell}} {{currency}}</1> (sell)?'

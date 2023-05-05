@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import P2pEmpty from '../empty.jsx';
+import P2pEmpty from '../p2p-empty.jsx';
 
 describe('<P2PEmpty/>', () => {
     it('renders component with passed title and children', () => {

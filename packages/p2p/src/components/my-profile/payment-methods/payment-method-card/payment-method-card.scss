@@ -4,8 +4,11 @@
     margin: 1.6rem 0;
     overflow-wrap: break-word;
 
-    .dc-dropdown__display {
-        border: unset;
+    @include mobile {
+        margin: 1rem;
+        min-height: 8.8rem;
+        min-width: 13.6rem;
+        padding-top: 0.8rem;
     }
 
     &--add {
@@ -53,13 +56,6 @@
         width: 13.6rem;
     }
 
-    @include mobile {
-        margin: 1rem;
-        min-height: 8.8rem;
-        min-width: 13.6rem;
-        padding-top: 0.8rem;
-    }
-
     &__ellipsis {
         cursor: pointer;
         height: 1rem;
@@ -99,17 +95,8 @@
         border-radius: 2px;
     }
 
-    &__menu {
-        background-color: var(--general-main-1);
-        display: flex;
-        flex-direction: column;
-        height: 12.8rem;
-        width: 8rem;
-        z-index: 1000;
-
-        &--text {
-            cursor: pointer;
-        }
+    .dc-dropdown__display {
+        border: unset;
     }
 
     .suffix-icon {

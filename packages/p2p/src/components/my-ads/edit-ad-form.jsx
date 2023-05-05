@@ -15,6 +15,7 @@ import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods.jsx';
 import EditAdSummary from './edit-ad-summary.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import './edit-ad-form.scss';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -168,15 +169,15 @@ const EditAdForm = () => {
                                     ? dirty || is_payment_method_touched
                                     : is_payment_method_touched;
                             return (
-                                <div className='p2p-my-ads__form'>
+                                <div className='edit-ad-form'>
                                     <Form noValidate>
                                         <ThemedScrollbars
-                                            className='p2p-my-ads__form-scrollbar'
+                                            className='edit-ad-form-scrollbar'
                                             is_scrollbar_hidden={isMobile()}
                                         >
                                             <EditAdFormWrapper>
-                                                <div className='p2p-my-ads__form-scrollbar-container'>
-                                                    <div className='p2p-my-ads__form-summary'>
+                                                <div className='edit-ad-form-scrollbar-container'>
+                                                    <div className='edit-ad-form-summary'>
                                                         <EditAdSummary
                                                             offer_amount={
                                                                 errors.offer_amount ? '' : values.offer_amount
@@ -185,7 +186,7 @@ const EditAdForm = () => {
                                                             type={values.type}
                                                         />
                                                     </div>
-                                                    <div className='p2p-my-ads__form-container'>
+                                                    <div className='edit-ad-form-container'>
                                                         <Field name='offer_amount'>
                                                             {({ field }) => (
                                                                 <Input
@@ -196,8 +197,8 @@ const EditAdForm = () => {
                                                                     error={touched.offer_amount && errors.offer_amount}
                                                                     label={localize('Total amount')}
                                                                     className={classNames(
-                                                                        'p2p-my-ads__form-field',
-                                                                        'edit-ad__offer-amt'
+                                                                        'edit-ad-form-field',
+                                                                        'edit-ad-form__offer-amt'
                                                                     )}
                                                                     trailing_icon={
                                                                         <Text
@@ -243,7 +244,7 @@ const EditAdForm = () => {
                                                             {({ field }) =>
                                                                 my_ads_store.required_ad_type === ad_type.FLOAT ? (
                                                                     <FloatingRate
-                                                                        className='p2p-my-ads__form-field'
+                                                                        className='edit-ad-form-field'
                                                                         data_testid='float_rate_type'
                                                                         error_messages={errors.rate_type}
                                                                         fiat_currency={account_currency}
@@ -280,8 +281,8 @@ const EditAdForm = () => {
                                                                                 account_currency,
                                                                             }
                                                                         )}
-                                                                        label_className='p2p-my-ads__form-label--focused'
-                                                                        className='p2p-my-ads__form-field'
+                                                                        label_className='edit-ad-form-label--focused'
+                                                                        className='edit-ad-form-field'
                                                                         trailing_icon={
                                                                             <Text
                                                                                 color={
@@ -307,7 +308,7 @@ const EditAdForm = () => {
                                                             }
                                                         </Field>
                                                     </div>
-                                                    <div className='p2p-my-ads__form-container'>
+                                                    <div className='edit-ad-form-container'>
                                                         <Field name='min_transaction'>
                                                             {({ field }) => (
                                                                 <Input
@@ -320,7 +321,7 @@ const EditAdForm = () => {
                                                                         errors.min_transaction
                                                                     }
                                                                     label={localize('Min order')}
-                                                                    className='p2p-my-ads__form-field'
+                                                                    className='edit-ad-form-field'
                                                                     trailing_icon={
                                                                         <Text
                                                                             color={
@@ -353,7 +354,7 @@ const EditAdForm = () => {
                                                                         errors.max_transaction
                                                                     }
                                                                     label={localize('Max order')}
-                                                                    className='p2p-my-ads__form-field'
+                                                                    className='edit-ad-form-field'
                                                                     trailing_icon={
                                                                         <Text
                                                                             color={
@@ -392,7 +393,7 @@ const EditAdForm = () => {
                                                                         error={
                                                                             touched.contact_info && errors.contact_info
                                                                         }
-                                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                        className='edit-ad-form-field edit-ad-form-field--textarea'
                                                                         initial_character_count={contact_info.length}
                                                                         required
                                                                         has_character_counter
@@ -418,7 +419,7 @@ const EditAdForm = () => {
                                                                 hint={localize(
                                                                     'This information will be visible to everyone.'
                                                                 )}
-                                                                className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                className='edit-ad-form-field edit-ad-form-field--textarea'
                                                                 initial_character_count={
                                                                     description ? description.length : 0
                                                                 }
@@ -427,7 +428,7 @@ const EditAdForm = () => {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <div className='p2p-my-ads__form-payment-methods--text'>
+                                                    <div className='edit-ad-form-payment-methods--text'>
                                                         <Text color='prominent'>
                                                             <Localize i18n_default_text='Payment methods' />
                                                         </Text>
@@ -447,9 +448,9 @@ const EditAdForm = () => {
                                                         touched={setIsPaymentMethodTouched}
                                                     />
                                                 </div>
-                                                <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
+                                                <div className='edit-ad-form-container edit-ad-form-footer'>
                                                     <Button
-                                                        className='p2p-my-ads__form-button'
+                                                        className='edit-ad-form-button'
                                                         secondary
                                                         large
                                                         onClick={() => handleEditAdFormCancel(dirty)}
@@ -458,7 +459,7 @@ const EditAdForm = () => {
                                                         <Localize i18n_default_text='Cancel' />
                                                     </Button>
                                                     <Button
-                                                        className='p2p-my-ads__form-button'
+                                                        className='edit-ad-form-button'
                                                         has_effect
                                                         primary
                                                         large
@@ -484,7 +485,7 @@ const EditAdForm = () => {
                 </React.Fragment>
             )}
             <Modal
-                className='p2p-my-ads__modal-error'
+                className='my-ads__modal-error'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}
                 small
                 has_close_icon={false}

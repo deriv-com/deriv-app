@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import './my-ads.scss';
+import './toggle-ads.scss';
 
 const ToggleAds = observer(() => {
     const { general_store, my_ads_store } = useStores();

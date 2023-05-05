@@ -189,7 +189,7 @@ const App = () => {
 
     return (
         // TODO Wrap components with StoreProvider during routing p2p card
-        <main className='p2p-cashier'>
+        <main className='p2p'>
             <ModalManagerContextProvider>
                 <ModalManager />
                 <AppContent order_id={order_id} />

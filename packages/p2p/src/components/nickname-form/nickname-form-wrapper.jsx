@@ -9,15 +9,11 @@ const NicknameFormWrapper = ({ children }) => {
     const { general_store } = useStores();
 
     if (isMobile()) {
-        return (
-            <div className='dp2p-nickname__container' data-testid='mobile_nicknme_form'>
-                {children}
-            </div>
-        );
+        return <div data-testid='mobile_nickname_form'>{children}</div>;
     }
 
     return (
-        <Modal className='dp2p-nickname__container' width='440px' is_open={general_store.should_show_popup}>
+        <Modal width='440px' is_open={general_store.should_show_popup}>
             {children}
         </Modal>
     );

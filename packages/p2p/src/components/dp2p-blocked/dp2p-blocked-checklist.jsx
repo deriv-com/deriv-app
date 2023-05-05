@@ -5,6 +5,7 @@ import { routes } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from '../i18next';
+import './dp2p-blocked-checklist.scss';
 
 const Dp2pBlockedChecklist = () => {
     const { general_store } = useStores();
@@ -23,8 +24,8 @@ const Dp2pBlockedChecklist = () => {
         ];
 
         return (
-            <div className='dp2p-blocked__checklist-container'>
-                <Checklist className='dp2p-blocked__checklist' items={checklist_items} />
+            <div className='dp2p-blocked-checklist__container'>
+                <Checklist className='dp2p-blocked-checklist' items={checklist_items} />
             </div>
         );
     }

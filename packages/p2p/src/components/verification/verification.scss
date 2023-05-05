@@ -1,4 +1,4 @@
-.dp2p-verification {
+.verification {
     width: 100%;
     max-width: 67.2rem;
     display: flex;
@@ -17,6 +17,7 @@
     &__icon {
         margin-bottom: 3.4rem;
     }
+
     &__text {
         text-align: center;
 
@@ -38,6 +39,7 @@
             }
         }
     }
+
     &__checklist {
         width: 400px;
 

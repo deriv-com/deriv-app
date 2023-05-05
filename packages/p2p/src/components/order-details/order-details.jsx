@@ -278,7 +278,7 @@ const OrderDetails = observer(() => {
                                                 {labels.payment_details}
                                             </Text>
                                             <Button
-                                                className='p2p-my-ads__expand-button'
+                                                className='my-ads__expand-button'
                                                 onClick={() => setShouldExpandAll(prev_state => !prev_state)}
                                                 transparent
                                             >

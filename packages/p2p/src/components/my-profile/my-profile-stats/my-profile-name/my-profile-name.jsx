@@ -39,15 +39,15 @@ const MyProfileName = () => {
                 text_size={isMobile() ? 's' : 'sm'}
             />
             <div className='my-profile-name__name'>
-                <div className='my-profile-name--privacy'>
-                    <div className='my-profile-name--column'>
+                <div className='my-profile-name__privacy'>
+                    <div className='my-profile-name__column'>
                         <Text color='prominent' weight='bold' size='s' line_height='m'>
                             {general_store.nickname}
                         </Text>
                         <MobileWrapper>
                             <div className='my-profile-name__row'>
                                 <Text
-                                    className='my-profile-name--rating__row'
+                                    className='my-profile-name__rating__row'
                                     color='less-prominent'
                                     size={isMobile() ? 'xxxs' : 'xs'}
                                 >
@@ -62,10 +62,10 @@ const MyProfileName = () => {
                                 </Text>
                             </div>
                         </MobileWrapper>
-                        <div className='my-profile-name--rating'>
+                        <div className='my-profile-name__rating'>
                             <DesktopWrapper>
                                 <Text
-                                    className='my-profile-name--rating__row'
+                                    className='my-profile-name__rating__row'
                                     color='less-prominent'
                                     size={isMobile() ? 'xxxs' : 'xs'}
                                 >
@@ -81,7 +81,7 @@ const MyProfileName = () => {
                             </DesktopWrapper>
                             {rating_average ? (
                                 <React.Fragment>
-                                    <div className='my-profile-name--rating__row'>
+                                    <div className='my-profile-name__rating__row'>
                                         <StarRating
                                             empty_star_icon='IcEmptyStar'
                                             full_star_icon='IcFullStar'
@@ -91,7 +91,7 @@ const MyProfileName = () => {
                                             should_allow_hover_effect={false}
                                             star_size={isMobile() ? 17 : 20}
                                         />
-                                        <div className='my-profile-name--rating__text'>
+                                        <div className='my-profile-name__rating__text'>
                                             <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                                 {rating_average_decimal}
                                             </Text>
@@ -110,7 +110,7 @@ const MyProfileName = () => {
                                             </Text>
                                         </div>
                                     </div>
-                                    <div className='my-profile-name--rating__row'>
+                                    <div className='my-profile-name__rating__row'>
                                         <RecommendedBy
                                             recommended_average={recommended_average}
                                             recommended_count={recommended_count}
@@ -118,14 +118,14 @@ const MyProfileName = () => {
                                     </div>
                                 </React.Fragment>
                             ) : (
-                                <div className='my-profile-name--rating__row'>
+                                <div className='my-profile-name__rating__row'>
                                     <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                                         <Localize i18n_default_text='Not rated yet' />
                                     </Text>
                                 </div>
                             )}
                             <DesktopWrapper>
-                                <div className='my-profile-name--rating__row'>
+                                <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
                             </DesktopWrapper>
@@ -133,7 +133,7 @@ const MyProfileName = () => {
 
                         <MobileWrapper>
                             <div className='my-profile-name__row'>
-                                <div className='my-profile-name--rating__row'>
+                                <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
                             </div>

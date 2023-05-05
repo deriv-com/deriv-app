@@ -1,4 +1,4 @@
-.buy-sell__modal {
+.buy-sell-modal {
     opacity: 1 !important;
 
     @include mobile {
@@ -7,7 +7,7 @@
         }
     }
 
-    &-body {
+    &__body {
         position: relative;
         display: block;
         padding-top: 2.4rem;
@@ -19,17 +19,15 @@
         }
     }
 
-    &-danger {
-        margin-bottom: 1.6rem;
-        width: fit-content;
-        align-items: flex-start;
+    &__error-message {
+        padding: 0 2.4rem;
     }
 
-    &-form {
+    &__form {
         height: fit-content !important;
     }
 
-    &-footer {
+    &__footer {
         @include mobile {
             border-top: 2px solid var(--general-section-1);
             display: flex;
@@ -40,21 +38,23 @@
         }
     }
 
-    &-icon {
+    &__icon {
         margin-right: 0.8rem;
     }
 
-    &--layout {
+    &__layout {
         padding: unset;
     }
 
-    &--error-message {
-        padding: 0 2.4rem;
+    &--danger {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        align-items: flex-start;
     }
 }
 
-.dc-modal__container_buy-sell__modal {
-    .dc-modal-header--buy-sell__modal {
+.dc-modal__container_buy-sell-modal {
+    .dc-modal-header--buy-sell-modal {
         border-bottom: 2px solid var(--general-section-5);
     }
 

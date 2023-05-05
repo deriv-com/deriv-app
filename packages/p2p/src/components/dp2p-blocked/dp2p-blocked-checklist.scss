@@ -1,0 +1,13 @@
+.dp2p-blocked-checklist {
+    &__container {
+        margin-top: 2.4rem;
+    }
+
+    .dc-checklist__item {
+        width: 40rem;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+}

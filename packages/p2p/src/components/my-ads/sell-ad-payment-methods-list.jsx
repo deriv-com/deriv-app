@@ -32,8 +32,8 @@ const SellAdPaymentMethodsList = ({
 
     return (
         <ThemedScrollbars
-            className={classNames('sell-ad-payment-methods__container', {
-                'sell-ad-payment-methods__container--horizontal': is_only_horizontal,
+            className={classNames('sell-ad-payment-methods-list__container', {
+                'sell-ad-payment-methods-list__container--horizontal': is_only_horizontal,
             })}
             is_scrollbar_hidden
             is_scrollable={is_scrollable}

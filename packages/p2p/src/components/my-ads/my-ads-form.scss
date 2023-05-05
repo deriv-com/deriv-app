@@ -1,0 +1,152 @@
+.my-ads-form {
+    @include mobile {
+        .dc-input__footer {
+            justify-content: space-between;
+            width: 86vw;
+        }
+
+        .dc-input__hint--relative {
+            margin-left: unset;
+        }
+    }
+
+    &__label {
+        &--focused {
+            color: var(--text-prominent);
+            background-color: var(--general-main-1);
+        }
+    }
+
+    &__payment-methods {
+        &--empty {
+            max-width: 67.2rem;
+            padding: 1.2rem 0;
+        }
+
+        &--text {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 1rem;
+        }
+    }
+
+    &__radio-group {
+        display: flex;
+        margin-top: unset;
+        padding-bottom: 1.2rem;
+
+        .dc-radio-group__circle {
+            border: 2px solid var(--border-hover);
+
+            &--selected {
+                border: 4px solid var(--brand-red-coral);
+            }
+        }
+
+        @include mobile {
+            padding: 0.5rem 0;
+        }
+    }
+
+    &__summary {
+        color: var(--text-less-prominent);
+        font-size: 1.4rem;
+        margin-bottom: -1.6rem;
+
+        @include mobile {
+            margin: 0.6rem 0;
+        }
+    }
+
+    &__scrollbar {
+        height: calc(100% - 2.4rem - 9.2rem);
+        position: absolute;
+        width: calc(100% - 4.8rem);
+
+        .dc-input {
+            max-width: 67.2rem;
+        }
+
+        &-container {
+            @include mobile {
+                width: 90vw;
+                margin: 0 1.6rem;
+            }
+        }
+
+        @include mobile {
+            height: fit-content;
+            position: unset;
+            width: 100%;
+        }
+    }
+
+    &__container {
+        display: flex;
+        height: 8rem;
+        justify-content: space-between;
+        width: 67.2rem;
+
+        @include mobile {
+            flex-direction: column;
+            height: unset;
+            width: unset;
+        }
+    }
+
+    &__field {
+        height: 4rem;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-top: 4.3rem;
+        width: 32.4rem;
+
+        @include mobile {
+            margin: 2.1rem 0;
+        }
+
+        &--single {
+            width: 18.9rem;
+        }
+        &--textarea {
+            height: 9.6rem;
+            margin-bottom: 0;
+            width: 67.2rem;
+
+            @include mobile {
+                width: 90vw;
+            }
+
+            .dc-input__hint {
+                top: 9.7rem;
+            }
+            .dc-input__counter {
+                top: 9.7rem;
+                right: 0rem;
+
+                @include mobile {
+                    display: flex;
+                    right: 0;
+                }
+            }
+        }
+    }
+
+    &__button {
+        margin-left: 0.8rem;
+    }
+
+    &__footer {
+        align-items: center;
+        background-color: var(--general-main-1);
+        display: flex;
+        justify-content: flex-end;
+
+        @include mobile {
+            border-top: 2px solid var(--general-section-1);
+            flex-direction: row;
+            padding: 1.6rem;
+            width: 100vw;
+        }
+    }
+}

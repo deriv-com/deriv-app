@@ -10,7 +10,7 @@
         width: 100vw;
     }
 
-    &--cell {
+    &__cell {
         align-items: flex-start;
         border-right: 1px solid var(--general-section-2);
         display: flex;
@@ -34,7 +34,7 @@
         }
     }
 
-    &--row {
+    &__row {
         display: flex;
         flex-direction: row;
         width: 29.2rem;
@@ -46,7 +46,7 @@
         }
     }
 
-    &--limit {
+    &__limit {
         display: flex;
         align-items: center;
 

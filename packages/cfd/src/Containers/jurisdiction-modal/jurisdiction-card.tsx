@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
@@ -20,7 +20,7 @@ const JurisdictionCard = ({
     const verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs
         : card_values?.financial_verification_docs;
-    const [is_card_flipped, setIsCardFlipped] = useState(false);
+    const [is_card_flipped, setIsCardFlipped] = React.useState(false);
     const is_card_selected = jurisdiction_selected_shortcode === type_of_card;
 
     const cardSelection = (cardType: string) => {

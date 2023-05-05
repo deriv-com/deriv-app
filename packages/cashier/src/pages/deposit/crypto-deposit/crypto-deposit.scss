@@ -89,17 +89,4 @@
     &__fiat-onramp-button {
         margin-bottom: 2.4rem;
     }
-
-    &__alert-message-box {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 1.6rem;
-        background-color: $color-yellow;
-
-        &__text {
-            margin-left: 0.8rem;
-            color: $color-black-1;
-        }
-    }
 }

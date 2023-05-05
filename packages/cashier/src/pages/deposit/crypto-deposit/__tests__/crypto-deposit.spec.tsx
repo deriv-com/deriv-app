@@ -6,6 +6,7 @@ import { getCurrencyName, isMobile } from '@deriv/shared';
 import CryptoDeposit from '../crypto-deposit';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -459,7 +460,7 @@ describe('<CryptoDeposit />', () => {
     it('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
         const minimum_deposit = 2;
         const currency = 'tUSDT';
-        const mockRootStore = {
+        const mock = mockStore({
             client: {
                 currency: 'tUSDT',
             },
@@ -480,8 +481,16 @@ describe('<CryptoDeposit />', () => {
                     },
                 },
             },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => {
+            return (
+                <Router history={history}>
+                    <CashierProviders store={mock}>{children}</CashierProviders>;
+                </Router>
+            );
         };
-        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+        render(<CryptoDeposit />, { wrapper });
         expect(
             screen.getByText(
                 `A minimum deposit value of ${minimum_deposit} ${currency} is required. Otherwise, the funds will be lost and cannot be recovered.`

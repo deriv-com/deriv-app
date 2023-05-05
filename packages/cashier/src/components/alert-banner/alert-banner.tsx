@@ -1,13 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import './alert-banner.scss';
 
 type TAlertBanner = {
     className?: string;
     icon: string;
-    message: JSX.Element | string;
+    message: string;
 };
 
 const AlertBanner = ({ className, icon, message }: TAlertBanner) => {

@@ -1,11 +1,10 @@
 import React from 'react';
 import { Modal, Text, Icon, Div100vhContainer } from '@deriv/components';
-import './wallet-steps.scss';
 import { isDesktop } from '@deriv/shared';
 import { TStepProps } from 'Types';
+import './wallet-steps.scss';
 
 const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => {
-    // here
     return (
         <React.Fragment>
             <Modal.Body className='wallet-steps'>

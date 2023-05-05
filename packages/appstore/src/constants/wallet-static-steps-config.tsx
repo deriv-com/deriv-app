@@ -21,7 +21,10 @@ export const steps = (eu_user: boolean): TStep[] => [
             eu_user
                 ? localize('Keep track of your trading funds in one place')
                 : localize('A Wallet for each currency to focus your funds'),
-            !eu_user && localize(`Get one Wallet, get several \u2014 your choice`),
+            !eu_user &&
+                localize('Get one Wallet, get several {{dash}} your choice', {
+                    dash: '\u2014',
+                }),
         ],
     },
     {

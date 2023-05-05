@@ -416,6 +416,11 @@ const RealAccountSignup = ({
             setIsClosingCreateRealAccountModal(true);
             return;
         }
+        const url = external_url_params?.url;
+        const redirect_action = external_url_params?.redirect_action;
+        if (redirect_action) {
+            window.location.replace(url);
+        }
         closeRealAccountSignup();
     };
 

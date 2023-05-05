@@ -77,6 +77,7 @@ const TradingAssessmentExistingUser = ({
                     />
                 }
                 has_icon
+                has_sub_header
             />
         );
     } else if (should_show_trade_assessment_form) {
@@ -97,7 +98,6 @@ const TradingAssessmentExistingUser = ({
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -114,7 +114,6 @@ const TradingAssessmentExistingUser = ({
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </MobileDialog>
                 </MobileWrapper>

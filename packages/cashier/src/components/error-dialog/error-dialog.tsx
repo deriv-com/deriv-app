@@ -50,6 +50,7 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
                     'Fiat2CryptoTransferOverLimit',
                     'Crypto2FiatTransferOverLimit',
                     'Crypto2CryptoTransferOverLimit',
+                    'CryptoLimitAgeVerified',
                 ].includes(error_code)
             ) {
                 setDetails({
@@ -79,7 +80,17 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
                         />
                     ),
                 });
-            } else if (error_code === 'CryptoWithdrawalError') {
+            } else if (
+                error_code &&
+                [
+                    'CryptoMissingRequiredParameter',
+                    'CryptoWithdrawalBalanceExceeded',
+                    'CryptoWithdrawalLimitExceeded',
+                    'CryptoWithdrawalMaxReached',
+                    'CryptoWithdrawalNotAuthenticated',
+                    'CryptoWithdrawalError',
+                ].includes(error_code)
+            ) {
                 setDetails({
                     title: localize('Error'),
                     cancel_button_text: undefined,
@@ -147,7 +158,8 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
             enableApp={enableApp}
             is_visible={is_visible}
             portal_element_id='modal_root'
-            has_close_icon={details.has_close_icon}
+            dismissable={false}
+            has_close_icon={details.has_close_icon ?? false}
         >
             {/* to avoid the message disappearing before the pop-up */}
             {/* use details.message instead of error.message */}

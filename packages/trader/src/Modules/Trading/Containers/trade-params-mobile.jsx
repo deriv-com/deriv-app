@@ -289,7 +289,7 @@ const TradeParamsMobile = ({
             top
         >
             {isVisible('duration') && (
-                <div header_content={getHeaderContent('duration')}>
+                <div data-header-content={getHeaderContent('duration')}>
                     <DurationMobile
                         toggleModal={toggleModal}
                         amount_tab_idx={amount_tab_idx}
@@ -309,7 +309,7 @@ const TradeParamsMobile = ({
                 </div>
             )}
             {isVisible('amount') && (
-                <div header_content={getHeaderContent('amount')}>
+                <div data-header-content={getHeaderContent('amount')}>
                     <AmountMobile
                         duration_unit={duration_unit}
                         duration_value={duration_value}

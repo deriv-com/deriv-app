@@ -9,6 +9,7 @@ import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTrans
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -37,7 +38,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(l.pathname);
     const [is_translation_loaded] = useOnLoadTranslation();
     const initCashierStore = () => {
-        root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
+        root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
         root_store.modules.cashier.general_store.init();
     };
     // TODO: investigate the order of cashier store initialization
@@ -71,24 +72,26 @@ const AppWithoutTranslation = ({ root_store }) => {
                 <Router basename={has_base ? `/${base}` : null}>
                     <MobxContentProvider store={root_store}>
                         <StoreProvider store={root_store}>
-                            <PlatformContainer>
-                                <Header />
-                                <ErrorBoundary>
-                                    <AppContents>
-                                        {/* TODO: [trader-remove-client-base] */}
-                                        <Routes passthrough={platform_passthrough} />
-                                    </AppContents>
-                                </ErrorBoundary>
-                                <DesktopWrapper>
-                                    <Footer />
-                                </DesktopWrapper>
-                                <ErrorBoundary>
-                                    <AppModals />
-                                </ErrorBoundary>
-                                <SmartTraderIFrame />
-                                <BinaryBotIFrame />
-                                <AppToastMessages />
-                            </PlatformContainer>
+                            <APIProvider>
+                                <PlatformContainer>
+                                    <Header />
+                                    <ErrorBoundary>
+                                        <AppContents>
+                                            {/* TODO: [trader-remove-client-base] */}
+                                            <Routes passthrough={platform_passthrough} />
+                                        </AppContents>
+                                    </ErrorBoundary>
+                                    <DesktopWrapper>
+                                        <Footer />
+                                    </DesktopWrapper>
+                                    <ErrorBoundary>
+                                        <AppModals />
+                                    </ErrorBoundary>
+                                    <SmartTraderIFrame />
+                                    <BinaryBotIFrame />
+                                    <AppToastMessages />
+                                </PlatformContainer>
+                            </APIProvider>
                         </StoreProvider>
                     </MobxContentProvider>
                 </Router>

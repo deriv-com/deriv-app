@@ -19,6 +19,18 @@ describe('<DerivPassword />', () => {
         social_identity_provider: undefined,
         landing_company_shortcode: 'maltainvest',
     };
+
+    let modal_root_el;
+
+    beforeAll(() => {
+        modal_root_el = document.createElement('div');
+        modal_root_el.setAttribute('id', 'modal_root');
+        document.body.appendChild(modal_root_el);
+    });
+
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
     test('Should render properly', async () => {
         render(<DerivPassword {...mock_props} />);
         expect(
@@ -53,6 +65,8 @@ describe('<DerivPassword />', () => {
             name: /change password/i,
         });
         fireEvent.click(ele_change_btn);
+        expect(screen.queryByText(/we’ve sent you an email/i)).toBeInTheDocument();
+        expect(screen.getByText(/please click on the link in the email to reset your password\./i)).toBeInTheDocument();
         await waitFor(() => {
             expect(WS.verifyEmail).toHaveBeenCalled();
         });

@@ -100,7 +100,7 @@ describe('<SuccessDialog />', () => {
         expect(screen.queryByText(/success!/i)).not.toBeInTheDocument();
         expect(screen.getByText(/mockheading/i)).toBeInTheDocument();
     });
-    it('should render when the mockMessage when message is a string', () => {
+    it('should render the mockMessage when message is a string', () => {
         render(<SuccessDialog {...props} />);
         expect(screen.getByText(mock_message)).toBeInTheDocument();
         expect(screen.getByText(mock_message)).toHaveClass('classNameMessage');

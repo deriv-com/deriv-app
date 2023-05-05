@@ -23,7 +23,6 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    CookieStorage,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -1190,6 +1189,9 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
+            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
+            Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
+
             this.has_cookie_account = true;
         } else {
             removeCookies('region', 'client_information', 'is_p2p_disabled');
@@ -2664,23 +2666,20 @@ export default class ClientStore extends BaseStore {
         this.prev_account_type = acc_type;
     };
 
-    /** @deprecated Use `useIsP2PEnabled` from `@deriv/stores` package instead.
+    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
      *
      * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
      *
      * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
      * */
     get is_p2p_enabled() {
-        const { is_low_risk_cr_eu_real } = this.root_store.traders_hub;
+        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
 
         const is_p2p_supported_currency = Boolean(
             this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
         );
 
         const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
-
-        const p2p_cookie = new CookieStorage('is_p2p_disabled');
-        p2p_cookie.set('is_p2p_disabled', !is_p2p_visible);
 
         return is_p2p_visible;
     }

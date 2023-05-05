@@ -27,7 +27,7 @@ describe('CFDMT5DemoAccountDisplay', () => {
         standpoint: mock_standpoint,
         is_loading: false,
         is_logged_in: true,
-        isSyntheticCardVisible: jest.fn((account_category: string) => true),
+        isSyntheticCardVisible: jest.fn(() => true),
         isFinancialCardVisible: jest.fn().mockReturnValue(false),
         onSelectAccount: jest.fn(),
         openAccountTransfer: jest.fn(),

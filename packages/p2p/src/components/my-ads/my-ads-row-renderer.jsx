@@ -192,7 +192,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             {payment_method_names ? (
                                 payment_method_names.map((payment_method, key) => {
                                     return (
-                                        <div className='my-ads-table___payment-method--label' key={key}>
+                                        <div className='my-ads-table__payment-method--label' key={key}>
                                             <Text color={ad_pause_color} size='xxxs' line-height='l'>
                                                 {payment_method}
                                             </Text>

@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, ThemedScrollbars, Carousel } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
-import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
+import TradeCategories from 'Assets/Trading/Categories/trade-categories';
+import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
 import { getContractTypes } from '../../../../Helpers/contract-type';
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {

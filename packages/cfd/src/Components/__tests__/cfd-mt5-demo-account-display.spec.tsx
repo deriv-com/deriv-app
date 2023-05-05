@@ -58,12 +58,4 @@ describe('CFDMT5DemoAccountDisplay', () => {
 
         expect(screen.getByText('CFDAccountCard')).toBeInTheDocument();
     });
-
-    // it('should render the financial account card when isFinancialCardVisible returns true', () => {
-    //     mock_props.current_list = { 'mt5.demo.financial.01': {} };
-
-    //     render(<CFDMT5DemoAccountDisplay {...mock_props} />);
-
-    //     expect(screen.getByText('CFDAccountCard')).toBeInTheDocument();
-    // });
 });

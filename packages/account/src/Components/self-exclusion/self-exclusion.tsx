@@ -28,7 +28,6 @@ type TSelfExclusion = {
     is_wrapper_bypassed: boolean;
     overlay_ref: HTMLDivElement;
     setIsOverlayShown?: React.Dispatch<React.SetStateAction<boolean>>;
-    ws: FormikValues;
 };
 
 type TExclusionData = {
@@ -178,7 +177,6 @@ const SelfExclusion = observer(
         }, [state.show_article, setIsOverlayShown]);
 
         const resetState = () => setState(initial_state);
-
         const validateFields = (values: FormikValues) => {
             const errors: Record<string, string | null | undefined> = {};
 
@@ -291,7 +289,6 @@ const SelfExclusion = observer(
             });
             return errors;
         };
-
         const handleSubmit = async (values: FormikValues, { setSubmitting }: FormikHelpers<FormikValues>) => {
             const need_logout_exclusions = ['exclude_until', 'timeout_until'];
             const string_exclusions = ['exclude_until'];

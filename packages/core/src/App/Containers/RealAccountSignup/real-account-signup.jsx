@@ -89,7 +89,6 @@ const RealAccountSignup = ({
     currency,
     deposit_real_account_signup_target,
     deposit_target,
-    external_url_params,
     redirectToLegacyPlatform,
     fetchAccountSettings,
     has_fiat,
@@ -418,7 +417,7 @@ const RealAccountSignup = ({
             return;
         }
         closeRealAccountSignup();
-        if (external_url_params?.should_redirect) redirectToLegacyPlatform();
+        redirectToLegacyPlatform();
     };
 
     const onErrorConfirm = () => {
@@ -675,7 +674,6 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
     deposit_target: modules.cashier.general_store.deposit_target,
-    external_url_params: client.external_url_params,
     redirectToLegacyPlatform: client.redirectToLegacyPlatform,
     fetchAccountSettings: client.fetchAccountSettings,
     fetchFinancialAssessment: client.fetchFinancialAssessment,

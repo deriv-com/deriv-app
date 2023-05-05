@@ -27,7 +27,7 @@ describe('CFDMT5DemoAccountDisplay', () => {
         standpoint: mock_standpoint,
         is_loading: false,
         is_logged_in: true,
-        isSyntheticCardVisible: jest.fn(() => true),
+        isSyntheticCardVisible: jest.fn().mockReturnValue(true),
         isFinancialCardVisible: jest.fn().mockReturnValue(false),
         onSelectAccount: jest.fn(),
         openAccountTransfer: jest.fn(),
@@ -45,7 +45,7 @@ describe('CFDMT5DemoAccountDisplay', () => {
     });
 
     it('should render a loading component when is_loading is false', () => {
-        render(<CFDMT5DemoAccountDisplay {...mock_props} is_loading={false} />);
+        render(<CFDMT5DemoAccountDisplay {...mock_props} />);
 
         expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toHaveClass('cfd-demo-accounts-display');
         expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();

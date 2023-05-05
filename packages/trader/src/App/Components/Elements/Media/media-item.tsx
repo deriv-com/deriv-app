@@ -1,5 +1,5 @@
 import React from 'react';
 
-const MediaItem = (props: { children: React.ReactNode | string }) => <div className='media'>{props.children}</div>;
+const MediaItem: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => <div className='media'>{children}</div>;
 
 export default MediaItem;

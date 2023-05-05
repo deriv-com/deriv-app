@@ -1,7 +1,7 @@
 import React from 'react';
 
-const MediaHeading = (props: { children: React.ReactNode | string }) => (
-    <div className='media__heading'>{props.children}</div>
+const MediaHeading: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => (
+    <div className='media__heading'>{children}</div>
 );
 
 export { MediaHeading };

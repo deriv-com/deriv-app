@@ -1,7 +1,7 @@
 import React from 'react';
 
-const MediaDescription = (props: { children: React.ReactNode | string }) => (
-    <div className='media__description'>{props.children}</div>
+const MediaDescription: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => (
+    <div className='media__description'>{children}</div>
 );
 
 export { MediaDescription };

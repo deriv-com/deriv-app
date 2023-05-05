@@ -353,18 +353,18 @@ describe('getContractTypeDisplay', () => {
         expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(<Localize i18n_default_text='Down' />);
     });
     it('should return empty string if show_button_name === false and contract_config has no name field', () => {
-        expect(getContractTypeDisplay('TEST', true, false)).toEqual('');
+        expect(getContractTypeDisplay('TEST', true, false)).toBe('');
     });
     it('should return empty string if show_button_name === true and contract_config has no name field and button_name', () => {
-        expect(getContractTypeDisplay('TEST', true, true)).toEqual('');
+        expect(getContractTypeDisplay('TEST', true, true)).toBe('');
     });
 });
 
 describe('getContractTypePosition', () => {
     it('should return button position if such type exist', () => {
-        expect(getContractTypePosition('NOTOUCH')).toEqual('bottom');
+        expect(getContractTypePosition('NOTOUCH')).toBe('bottom');
     });
     it('should return top position if such type does not exist', () => {
-        expect(getContractTypePosition('TEST')).toEqual('top');
+        expect(getContractTypePosition('TEST')).toBe('top');
     });
 });

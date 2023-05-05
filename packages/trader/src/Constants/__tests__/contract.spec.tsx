@@ -8,6 +8,7 @@ import {
     getContractConfig,
     getContractTypeDisplay,
     getContractTypePosition,
+    TContractsKeys,
 } from '../contract';
 
 const card_labels = {
@@ -353,10 +354,10 @@ describe('getContractTypeDisplay', () => {
         expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(<Localize i18n_default_text='Down' />);
     });
     it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
-        expect(getContractTypeDisplay('TEST', true, false)).toBe('');
+        expect(getContractTypeDisplay('TEST' as TContractsKeys, true, false)).toBe('');
     });
     it('should return an empty string if show_button_name === true and contract_config has no name field and no button_name', () => {
-        expect(getContractTypeDisplay('TEST', true, true)).toBe('');
+        expect(getContractTypeDisplay('TEST' as TContractsKeys, true, true)).toBe('');
     });
 });
 
@@ -365,6 +366,6 @@ describe('getContractTypePosition', () => {
         expect(getContractTypePosition('NOTOUCH')).toBe('bottom');
     });
     it('should return a top position if such type does not exist', () => {
-        expect(getContractTypePosition('TEST')).toBe('top');
+        expect(getContractTypePosition('TEST' as TContractsKeys)).toBe('top');
     });
 });

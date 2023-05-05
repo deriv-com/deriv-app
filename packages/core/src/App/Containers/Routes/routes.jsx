@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { urlSetQuery } from '@deriv/shared';
+import { urlForLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { observer, useStore } from '@deriv/stores';
@@ -18,10 +18,9 @@ const Error = Loadable({
 });
 
 const Routes = observer(({ history, location, passthrough }) => {
-    const { client, common, ui } = useStore();
+    const { client, common } = useStore();
     const { is_logged_in, is_logging_in } = client;
     const { error, has_error, setAppRouterHistory, addRouteHistoryItem, setInitialRouteHistoryItem } = common;
-    const { is_dark_mode_on } = ui;
     const initial_route = React.useRef(null);
     const unlisten_to_change = React.useRef(null);
 
@@ -49,6 +48,8 @@ const Routes = observer(({ history, location, passthrough }) => {
     }, []);
 
     const lang = getLanguage();
+    const lang_regex = /[?&]lang=/;
+    const has_lang = lang_regex.test(location.search);
 
     if (has_error) {
         return <Error {...error} />;
@@ -60,12 +61,10 @@ const Routes = observer(({ history, location, passthrough }) => {
     // non-supported language, the language still
     // shows up in the URL. This is not in sync
     // with the default language (EN), so we
-    // will remove it. (The same thing for dark_mode)
-    window.history.replaceState(
-        {},
-        document.title,
-        urlSetQuery({ lang: lang.replace('EN', ''), dark: Number(is_dark_mode_on) })
-    );
+    // will remove it.
+    if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
+        window.history.replaceState({}, document.title, urlForLanguage(lang));
+    }
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 });

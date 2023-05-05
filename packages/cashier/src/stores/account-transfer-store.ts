@@ -293,6 +293,9 @@ export default class AccountTransferStore {
         const dxtrade_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE))
             ?.trading_platform_accounts;
 
+        const ctrader_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER))
+            ?.trading_platform_accounts;
+
         const derivez_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ))
             ?.trading_platform_accounts;
 

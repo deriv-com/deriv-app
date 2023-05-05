@@ -2,6 +2,7 @@ import React from 'react';
 import BinaryBot from 'Assets/svgs/trading-platform/branding/ic-branding-binarybot-dashboard.svg';
 import BinaryBotBlue from 'Assets/svgs/trading-platform/ic-appstore-binarybot-blue.svg';
 import CFDs from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-cfds.svg';
+import CTrader from 'Assets/svgs/trading-platform/branding/ic-branding-ctrader.svg';
 import DBot from 'Assets/svgs/trading-platform/branding/ic-branding-dbot-dashboard.svg';
 import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
 import Derived from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-derived-dashboard.svg';
@@ -22,6 +23,7 @@ export const PlatformIcons = {
     BinaryBot,
     BinaryBotBlue,
     CFDs,
+    CTrader,
     DBot,
     Demo,
     Derived,

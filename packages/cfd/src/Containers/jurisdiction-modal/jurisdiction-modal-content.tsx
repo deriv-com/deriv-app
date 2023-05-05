@@ -9,6 +9,7 @@ const JurisdictionModalContent = ({
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
     financial_available_accounts,
+    all_market_type_available_accounts,
     context,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
@@ -18,7 +19,9 @@ const JurisdictionModalContent = ({
     const cardsToBeShown = (type_of_card: string) =>
         account_type === 'synthetic'
             ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
-            : financial_available_accounts?.some(account => account.shortcode === type_of_card);
+            : account_type === 'financial'
+            ? financial_available_accounts?.some(account => account.shortcode === type_of_card)
+            : all_market_type_available_accounts?.some(account => account.shortcode === type_of_card);
 
     const disableCard = (type_of_card: string) => {
         if (is_virtual && type_of_card !== 'svg') {
@@ -43,6 +46,7 @@ const JurisdictionModalContent = ({
                                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                                 synthetic_available_accounts={synthetic_available_accounts}
                                 financial_available_accounts={financial_available_accounts}
+                                all_market_type_available_accounts={all_market_type_available_accounts}
                                 account_type={account_type}
                                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                             />

@@ -152,6 +152,12 @@ export default class CFDStore extends BaseStore {
             };
         });
 
+        this.root_store.client.ctrader_accounts_list.forEach(account => {
+            list[getAccountListKey(account, CFD_PLATFORMS.CTRADER)] = {
+                ...account,
+            };
+        });
+
         return list;
     }
 
@@ -216,7 +222,7 @@ export default class CFDStore extends BaseStore {
         this.is_cfd_password_modal_enabled = false;
     }
 
-    createCFDAccount({ category, platform, type, set_password }) {
+    async createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
         this.setAccountType({
             category,
@@ -227,6 +233,21 @@ export default class CFDStore extends BaseStore {
                 this.realCFDSignup(set_password);
             } else {
                 this.demoCFDSignup();
+            }
+        } else if (platform === CFD_PLATFORMS.CTRADER) {
+            if (this.account_type.category === 'demo') this.setJurisdictionSelectedShortcode('svg');
+            const account_creation_values = {
+                platform,
+                account_type: this.account_type.category,
+                market_type: this.account_type.type,
+            };
+            const response = await this.openCFDAccount(account_creation_values);
+            if (!response.error) {
+                this.setError(false);
+                this.enableCFDPasswordModal();
+                this.setCFDSuccessDialog(true);
+            } else {
+                this.setError(true, response.error);
             }
         } else if (platform === CFD_PLATFORMS.MT5) {
             if (category === 'real') {
@@ -291,10 +312,13 @@ export default class CFDStore extends BaseStore {
 
     openCFDAccount(values) {
         return WS.tradingPlatformNewAccount({
-            password: values.password,
+            password: CFD_PLATFORMS.DXTRADE ? values.password : '',
             platform: values.platform,
             account_type: this.account_type.category,
-            market_type: this.account_type.type === 'dxtrade' ? 'all' : this.account_type.type,
+            market_type:
+                this.account_type.type === 'dxtrade' || this.account_type.type === 'cTrader'
+                    ? 'all'
+                    : this.account_type.type,
         });
     }
 
@@ -465,7 +489,7 @@ export default class CFDStore extends BaseStore {
     }
 
     async submitCFDPassword(values, actions) {
-        if (this.root_store.client.is_dxtrade_password_not_set) {
+        if (CFD_PLATFORMS.DXTRADE && this.root_store.client.is_dxtrade_password_not_set) {
             const has_error = await this.createCFDPassword(values, actions);
             if (has_error) return;
         }
@@ -549,6 +573,15 @@ export default class CFDStore extends BaseStore {
                         .tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE)
                         .then(this.root_store.client.responseTradingPlatformAccountsList);
                     new_balance = this.root_store.client.dxtrade_accounts_list.find(
+                        item => item.account_id === this.current_account.account_id
+                    )?.balance;
+                    break;
+                }
+                case CFD_PLATFORMS.CTRADER: {
+                    await WS.authorized
+                        .tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER)
+                        .then(this.root_store.client.responseTradingPlatformAccountsList);
+                    new_balance = this.root_store.client.ctrader_accounts_list.find(
                         item => item.account_id === this.current_account.account_id
                     )?.balance;
                     break;

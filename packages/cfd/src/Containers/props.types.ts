@@ -166,6 +166,7 @@ export type TJurisdictionCardProps = {
     context: RootStore;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    all_market_type_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
     type_of_card: string;
@@ -209,10 +210,13 @@ export type TJurisdictionModalProps = {
     };
     account_status: GetAccountStatus;
     context: RootStore;
+    openCTraderRealAccount: (values: { platform: string; type: string; category: string }) => void;
     disableApp: () => void;
     enableApp: () => void;
     is_jurisdiction_modal_visible: boolean;
     is_virtual: boolean;
+    enableCFDPasswordModal: () => void;
+    setCFDSuccessDialog: (is_open: boolean) => void;
     jurisdiction_selected_shortcode: string;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
@@ -220,6 +224,7 @@ export type TJurisdictionModalProps = {
     should_restrict_vanuatu_account_creation: boolean;
     show_eu_related_content: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    ctrader_available_accounts: TTradingPlatformAvailableAccount[];
     fetchAccountSettings: () => void;
     toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
@@ -236,6 +241,7 @@ export type TJurisdictionModalContentProps = {
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    all_market_type_available_accounts: TTradingPlatformAvailableAccount[];
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     is_virtual: boolean;

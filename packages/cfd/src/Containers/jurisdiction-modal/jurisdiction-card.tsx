@@ -12,6 +12,7 @@ const JurisdictionCard = ({
     context,
     jurisdiction_selected_shortcode,
     financial_available_accounts,
+    all_market_type_available_accounts,
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
     type_of_card,
@@ -19,10 +20,16 @@ const JurisdictionCard = ({
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
+    const number_of_all_accounts_to_be_shown = all_market_type_available_accounts?.length;
 
     const is_synthetic = account_type === 'synthetic';
+    const is_financial = account_type === 'financial';
     const [number_of_cards] = React.useState(
-        is_synthetic ? number_of_synthetic_accounts_to_be_shown : number_of_financial_accounts_to_be_shown
+        is_synthetic
+            ? number_of_synthetic_accounts_to_be_shown
+            : is_financial
+            ? number_of_financial_accounts_to_be_shown
+            : number_of_all_accounts_to_be_shown
     );
 
     const card_values = getJurisdictionContents()[type_of_card as TJurisdictionCardType];

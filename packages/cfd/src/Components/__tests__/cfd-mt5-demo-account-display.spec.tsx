@@ -18,7 +18,7 @@ describe('CFDMT5DemoAccountDisplay', () => {
         svg: true,
     };
 
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof CFDMT5DemoAccountDisplay> = {
         is_eu: false,
         is_eu_country: false,
         has_maltainvest_account: false,
@@ -44,6 +44,13 @@ describe('CFDMT5DemoAccountDisplay', () => {
         expect(screen.getByTestId('dt_barspinner')).toBeInTheDocument();
     });
 
+    it('should render a loading component when is_loading is false', () => {
+        render(<CFDMT5DemoAccountDisplay {...mock_props} is_loading={false} />);
+        // screen.debug();
+        expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toHaveClass('cfd-demo-accounts-display');
+        expect(screen.getByTestId('dt_cfd_demo_accounts_display')).toBeInTheDocument();
+    });
+
     it('should render the synthetic account card when isSyntheticCardVisible returns true', () => {
         mock_props.current_list = { 'mt5.demo.synthetic.01': {} };
 
@@ -51,4 +58,12 @@ describe('CFDMT5DemoAccountDisplay', () => {
 
         expect(screen.getByText('CFDAccountCard')).toBeInTheDocument();
     });
+
+    // it('should render the financial account card when isFinancialCardVisible returns true', () => {
+    //     mock_props.current_list = { 'mt5.demo.financial.01': {} };
+
+    //     render(<CFDMT5DemoAccountDisplay {...mock_props} />);
+
+    //     expect(screen.getByText('CFDAccountCard')).toBeInTheDocument();
+    // });
 });

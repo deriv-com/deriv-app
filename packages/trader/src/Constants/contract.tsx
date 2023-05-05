@@ -291,13 +291,12 @@ export const getContractConfig = (is_high_low: boolean) => ({
 });
 
 export const getContractTypeDisplay = (type: TContractsKeys, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)?.[type];
-
-    return (
-        (show_button_name && contract_config && 'button_name' in contract_config && contract_config.button_name) ||
-        contract_config?.name ||
-        ''
-    );
+    const contract_configs = getContractConfig(is_high_low);
+    const contract_config = contract_configs[type];
+    if (show_button_name && contract_config && 'button_name' in contract_config) {
+        return contract_config.button_name;
+    }
+    return contract_config?.name || '';
 };
 
 export const getContractTypePosition = (type: TContractsKeys, is_high_low = false) =>

@@ -490,7 +490,7 @@
 .cfd-jurisdiction-card--synthetic,
 .cfd-jurisdiction-card--financial {
     border: solid 2px var(--border-normal);
-    border-radius: 1.6rem;
+    border-radius: $BORDER_RADIUS * 4;
     display: flex;
     justify-content: space-between;
     flex-direction: column;

@@ -84,12 +84,12 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 
 const RealAccountSignup = ({
     available_crypto_currencies,
-    external_url_params,
     closeRealAccountSignup,
     country_standpoint,
     currency,
     deposit_real_account_signup_target,
     deposit_target,
+    external_url_params,
     fetchAccountSettings,
     has_fiat,
     has_real_account,
@@ -232,6 +232,7 @@ const RealAccountSignup = ({
         {
             body: local_props => (
                 <FinishedAddCurrency
+                    external_url_params={external_url_params}
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
                     onSubmit={closeModalThenOpenCashier}
@@ -416,11 +417,6 @@ const RealAccountSignup = ({
             return;
         }
         closeRealAccountSignup();
-        const url = external_url_params?.url;
-        const redirect_action = external_url_params?.redirect_action;
-        if (redirect_action) {
-            window.location.replace(url);
-        }
     };
 
     const onErrorConfirm = () => {
@@ -671,13 +667,13 @@ const RealAccountSignup = ({
 
 export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
-    external_url_params: client.external_url_params,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     country_standpoint: client.country_standpoint,
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
     deposit_target: modules.cashier.general_store.deposit_target,
+    external_url_params: client.external_url_params,
     fetchAccountSettings: client.fetchAccountSettings,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     has_fiat: client.has_fiat,

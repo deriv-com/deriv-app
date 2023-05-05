@@ -1087,12 +1087,13 @@ export default class ClientStore extends BaseStore {
      * @param loginid
      */
     resetLocalStorageValues(loginid) {
-        runInAction(() => (this.is_switching = true));
+        this.is_switching = true;
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
+        this.is_switching = false;
     }
 
     setIsAuthorize(value) {
@@ -2551,7 +2552,6 @@ export default class ClientStore extends BaseStore {
                 );
             }
         });
-        runInAction(() => (this.is_switching = false));
     }
 
     get is_high_risk() {

@@ -8,6 +8,7 @@ const FinishedAddCurrency = ({
     current,
     closeRealAccountSignup,
     deposit_target,
+    external_url_params,
     deposit_real_account_signup_target,
     history,
     onSubmit,
@@ -15,6 +16,13 @@ const FinishedAddCurrency = ({
 }) => {
     const IconNextCurrency = () => <Icon icon={`IcCurrency-${current.toLowerCase()}`} height={120} width={90} />;
     const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
+    const redirectToLegacyPlatform = () => {
+        const url = external_url_params?.url;
+        const redirect_action = external_url_params?.redirect_action;
+        if (redirect_action) {
+            window.location.replace(url);
+        }
+    };
 
     const closeModalThenOpenCashier = () => {
         closeRealAccountSignup();
@@ -22,11 +30,13 @@ const FinishedAddCurrency = ({
         if (deposit_target === routes.cashier_deposit) {
             setIsDeposit(true);
         }
+        redirectToLegacyPlatform();
     };
 
     const onCancel = () => {
         closeRealAccountSignup();
         setIsDeposit(false);
+        redirectToLegacyPlatform();
     };
 
     return (

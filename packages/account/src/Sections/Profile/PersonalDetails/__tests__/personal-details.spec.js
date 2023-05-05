@@ -142,6 +142,56 @@ describe('<PersonalDetailsForm />', () => {
         expect(screen.getAllByText('This field is required')).toHaveLength(5);
     });
 
+    it('should display error for 2-50 characters length validation, for First and Last name when entered characters are less than 2', async () => {
+        renderComponent();
+        await waitFor(async () => {
+            const first_name = screen.getByTestId('first_name');
+            const last_name = screen.getByTestId('last_name');
+            fireEvent.input(first_name, { target: { value: 'a' } });
+            fireEvent.input(last_name, { target: { value: 'b' } });
+        });
+        expect(screen.getAllByText('You should enter 2-50 characters.')).toHaveLength(2);
+    });
+
+    it('should display error for 2-50 characters length validation, for First and Last name when entered characters are more than 50', async () => {
+        renderComponent();
+        await waitFor(async () => {
+            const first_name = screen.getByTestId('first_name');
+            const last_name = screen.getByTestId('last_name');
+            fireEvent.input(first_name, { target: { value: 'fifty chars fifty chars fifty chars fifty chars fifty' } });
+            fireEvent.input(last_name, { target: { value: 'fifty chars fifty chars fifty chars fifty chars fifty' } });
+        });
+        expect(screen.getAllByText('You should enter 2-50 characters.')).toHaveLength(2);
+    });
+
+    it('should display error for the regex validation, for First and Last name when unacceptable characters are entered', async () => {
+        renderComponent();
+        await waitFor(async () => {
+            const first_name = screen.getByTestId('first_name');
+            const last_name = screen.getByTestId('last_name');
+            fireEvent.input(first_name, { target: { value: 'test 3' } });
+            fireEvent.input(last_name, { target: { value: 'name_' } });
+            expect(screen.getAllByText('Letters, spaces, periods, hyphens, apostrophes only.')).toHaveLength(2);
+            fireEvent.input(first_name, { target: { value: 'name_' } });
+            fireEvent.input(last_name, { target: { value: 'test 3' } });
+            expect(screen.getAllByText('Letters, spaces, periods, hyphens, apostrophes only.')).toHaveLength(2);
+        });
+    });
+
+    it('should not display error for the regex validation, for First and Last name when acceptable characters are entered', async () => {
+        renderComponent();
+        await waitFor(async () => {
+            const first_name = screen.getByTestId('first_name');
+            const last_name = screen.getByTestId('last_name');
+            fireEvent.input(first_name, { target: { value: "test-with' chars." } });
+            fireEvent.input(last_name, { target: { value: 'Deuxième Prénom résidence' } });
+            expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();
+            fireEvent.input(first_name, { target: { value: 'Deuxième Prénom résidence' } });
+            fireEvent.input(last_name, { target: { value: "test-with' chars." } });
+            expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();
+        });
+    });
+
     test.todo('Personal details component tests for different landing companies');
     test.todo('Personal detail update Profile');
 });

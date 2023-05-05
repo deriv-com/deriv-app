@@ -12,7 +12,7 @@ jest.mock('@deriv/account', () => ({
     getStatusBadgeConfig: jest.fn(() => ({ icon: '', text: '' })),
 }));
 
-describe('<WalletHeader />', () => {
+describe('<Wallet />', () => {
     describe('Check currency card', () => {
         it('Should render right currency card for DEMO', () => {
             render(

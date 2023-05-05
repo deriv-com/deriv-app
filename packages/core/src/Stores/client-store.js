@@ -151,6 +151,7 @@ export default class ClientStore extends BaseStore {
     prev_real_account_loginid = '';
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
+    external_url_params = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -158,6 +159,8 @@ export default class ClientStore extends BaseStore {
 
         makeObservable(this, {
             loginid: observable,
+            external_url_params: observable,
+            setExternalParams: action.bound,
             preferred_language: observable,
             upgrade_info: observable,
             email: observable,
@@ -972,6 +975,10 @@ export default class ClientStore extends BaseStore {
     get is_bot_allowed() {
         return this.isBotAllowed();
     }
+
+    setExternalParams = params => {
+        this.external_url_params = params;
+    };
 
     getIsMarketTypeMatching = (account, market_type) =>
         market_type === 'synthetic'

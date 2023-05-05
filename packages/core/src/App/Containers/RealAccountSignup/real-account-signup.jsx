@@ -84,6 +84,7 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 
 const RealAccountSignup = ({
     available_crypto_currencies,
+    external_url_params,
     closeRealAccountSignup,
     country_standpoint,
     currency,
@@ -302,7 +303,6 @@ const RealAccountSignup = ({
             currency: curr,
         });
     };
-
     const closeModalthenOpenWelcomeModal = curr => {
         closeRealAccountSignup();
         setParams({
@@ -416,6 +416,11 @@ const RealAccountSignup = ({
             return;
         }
         closeRealAccountSignup();
+        const url = external_url_params?.url;
+        const redirect_action = external_url_params?.redirect_action;
+        if (redirect_action) {
+            window.location.replace(url);
+        }
     };
 
     const onErrorConfirm = () => {
@@ -666,6 +671,7 @@ const RealAccountSignup = ({
 
 export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
+    external_url_params: client.external_url_params,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     country_standpoint: client.country_standpoint,

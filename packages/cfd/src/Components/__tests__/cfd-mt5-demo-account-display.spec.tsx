@@ -55,7 +55,6 @@ describe('CFDMT5DemoAccountDisplay', () => {
         mock_props.current_list = { 'mt5.demo.synthetic.01': {} };
 
         render(<CFDMT5DemoAccountDisplay {...mock_props} />);
-
         expect(screen.getByText('CFDAccountCard')).toBeInTheDocument();
     });
 });

@@ -18,7 +18,7 @@ datadogRum.init({
     trackResources: true,
     trackLongTasks: true,
     defaultPrivacyLevel: 'mask-user-input',
-    version: CIRCLE_TAG,
+    version: `deriv-app-${CIRCLE_TAG}`,
     trackFrustrations: true,
     enableExperimentalFeatures: ['clickmap'],
 });

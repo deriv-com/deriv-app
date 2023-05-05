@@ -1,6 +1,8 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 
+export type TContractsKeys = keyof ReturnType<typeof getContractConfig>;
+
 export const getCardLabels = () =>
     ({
         APPLY: localize('Apply'),
@@ -287,8 +289,6 @@ export const getContractConfig = (is_high_low: boolean) => ({
     ...getSupportedContracts(is_high_low),
     ...getUnsupportedContracts(),
 });
-
-export type TContractsKeys = keyof ReturnType<typeof getContractConfig>;
 
 export const getContractTypeDisplay = (type: TContractsKeys, is_high_low = false, show_button_name = false) => {
     const contract_config = getContractConfig(is_high_low)?.[type];

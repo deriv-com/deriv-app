@@ -276,7 +276,7 @@ const supported_contracts = {
         position: 'bottom',
     },
 };
-const supported_hight_low = {
+const supported_high_low = {
     CALL: {
         name: <Localize i18n_default_text='Higher' />,
         position: 'top',
@@ -286,7 +286,7 @@ const supported_hight_low = {
         position: 'bottom',
     },
 };
-const not_supported_hight_low = {
+const not_supported_high_low = {
     CALL: {
         name: <Localize i18n_default_text='Rise' />,
         position: 'top',
@@ -317,11 +317,11 @@ describe('getUnsupportedContracts', () => {
 
 describe('getSupportedContracts', () => {
     it('should return an object with specific supported contracts if is_high_low === true', () => {
-        expect(getSupportedContracts(true)).toEqual({ ...supported_contracts, ...supported_hight_low });
+        expect(getSupportedContracts(true)).toEqual({ ...supported_contracts, ...supported_high_low });
     });
 
     it('should return an object with specific supported contracts if is_high_low === false', () => {
-        expect(getSupportedContracts(false)).toEqual({ ...supported_contracts, ...not_supported_hight_low });
+        expect(getSupportedContracts(false)).toEqual({ ...supported_contracts, ...not_supported_high_low });
     });
 });
 
@@ -329,7 +329,7 @@ describe('getContractConfig', () => {
     it('should return an object with specific contracts if is_high_low === true', () => {
         expect(getContractConfig(true)).toEqual({
             ...supported_contracts,
-            ...supported_hight_low,
+            ...supported_high_low,
             ...unsupported_contracts,
         });
     });
@@ -337,7 +337,7 @@ describe('getContractConfig', () => {
     it('should return object with specific contracts if is_high_low === false', () => {
         expect(getContractConfig(false)).toEqual({
             ...supported_contracts,
-            ...not_supported_hight_low,
+            ...not_supported_high_low,
             ...unsupported_contracts,
         });
     });

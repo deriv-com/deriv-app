@@ -1,11 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletSvgCurrency } from 'Types';
-import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
-import CFDsListing from 'Components/cfds-listing';
+// import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
+// import CFDsListing from 'Components/cfds-listing';
 import { isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import ContentDivider from './wallet-content-divider';
+import WalletCFDsListing from 'Components/wallet-cfds-listing';
+import WalletOptionsAndMultipliersListing from 'Components/wallet-options-multipliers-listing';
 import './wallet-content.scss';
 
 export type TWalletTestAccount = {
@@ -22,7 +25,7 @@ type TWallet = {
 };
 
 const WalletContent = React.memo(({ is_demo, is_eu = true }: any) => {
-    const EUDisclaimer = () => (
+    const EUDisclaimer = (
         <div className='wallet-content__disclaimer'>
             <Text align='left' className='wallet-content__disclaimer-text' size={isMobile() ? 'xxxs' : 'xs'}>
                 <Localize
@@ -39,16 +42,11 @@ const WalletContent = React.memo(({ is_demo, is_eu = true }: any) => {
                 'wallet-content__demo': is_demo,
             })}
         >
-            {/* <div className={`wallet-content__divider${is_demo ? '-demo' : ''}`} /> */}
-            <div
-                className={classNames('wallet-content__divider', {
-                    'wallet-content__divider-demo': is_demo,
-                })}
-            />
-            <CFDsListing />
-            <div className='wallet-content__divider' />
-            <OptionsAndMultipliersListing />
-            {is_eu && <EUDisclaimer />}
+            <ContentDivider is_demo_divider={true} />
+            <WalletCFDsListing />
+            <ContentDivider />
+            <WalletOptionsAndMultipliersListing />
+            {is_eu && EUDisclaimer}
         </div>
     );
 });

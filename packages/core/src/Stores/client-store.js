@@ -161,6 +161,7 @@ export default class ClientStore extends BaseStore {
             loginid: observable,
             external_url_params: observable,
             setExternalParams: action.bound,
+            redirectToLegacyPlatform: action.bound,
             preferred_language: observable,
             upgrade_info: observable,
             email: observable,
@@ -978,6 +979,13 @@ export default class ClientStore extends BaseStore {
 
     setExternalParams = params => {
         this.external_url_params = params;
+    };
+
+    redirectToLegacyPlatform = () => {
+        const { url, should_redirect } = this.external_url_params;
+        if (should_redirect) {
+            window.location.replace(url);
+        }
     };
 
     getIsMarketTypeMatching = (account, market_type) =>

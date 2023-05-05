@@ -167,7 +167,7 @@ export default class CommonStore extends BaseStore {
             const { setExternalParams } = this.root_store.client;
             setExternalParams({
                 url: ext_url,
-                redirect_action: true,
+                should_redirect: true,
             });
             if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });

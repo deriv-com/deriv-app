@@ -297,35 +297,35 @@ const not_supported_hight_low = {
 };
 
 describe('getCardLabels', () => {
-    it('should return object with card labels', () => {
+    it('should return an object with card labels', () => {
         expect(getCardLabels()).toEqual(card_labels);
     });
 });
 
 describe('getMarketNamesMap', () => {
-    it('should return object with markets names', () => {
+    it('should return an object with markets names', () => {
         expect(getMarketNamesMap()).toEqual(markets_names);
     });
 });
 
 describe('getUnsupportedContracts', () => {
-    it('should return object with unsupported contracts', () => {
+    it('should return an object with unsupported contracts', () => {
         expect(getUnsupportedContracts()).toEqual(unsupported_contracts);
     });
 });
 
 describe('getSupportedContracts', () => {
-    it('should return object with proper supported contracts if is_high_low === true', () => {
+    it('should return an object with specific supported contracts if is_high_low === true', () => {
         expect(getSupportedContracts(true)).toEqual({ ...supported_contracts, ...supported_hight_low });
     });
 
-    it('should return object with proper supported contracts if is_high_low === false', () => {
+    it('should return an object with specific supported contracts if is_high_low === false', () => {
         expect(getSupportedContracts(false)).toEqual({ ...supported_contracts, ...not_supported_hight_low });
     });
 });
 
 describe('getContractConfig', () => {
-    it('should return object with proper contracts if is_high_low === true', () => {
+    it('should return an object with specific contracts if is_high_low === true', () => {
         expect(getContractConfig(true)).toEqual({
             ...supported_contracts,
             ...supported_hight_low,
@@ -333,7 +333,7 @@ describe('getContractConfig', () => {
         });
     });
 
-    it('should return object with proper contracts if is_high_low === false', () => {
+    it('should return object with specific contracts if is_high_low === false', () => {
         expect(getContractConfig(false)).toEqual({
             ...supported_contracts,
             ...not_supported_hight_low,
@@ -343,28 +343,28 @@ describe('getContractConfig', () => {
 });
 
 describe('getContractTypeDisplay', () => {
-    it('should return button name if show_button_name === true and contract_config has button_name field', () => {
+    it('should return a specific button name if show_button_name === true and contract_config has a button_name field', () => {
         expect(getContractTypeDisplay('ACCU', false, true)).toEqual(<Localize i18n_default_text='Buy' />);
     });
-    it('should return contract name if show_button_name === false but contract_config has button_name field', () => {
+    it('should return a specific contract name if show_button_name === false but contract_config has a button_name field', () => {
         expect(getContractTypeDisplay('ACCU')).toEqual(<Localize i18n_default_text='Accumulator' />);
     });
-    it('should return contract name if show_button_name === true but contract_config has no button_name field', () => {
+    it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
         expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(<Localize i18n_default_text='Down' />);
     });
-    it('should return empty string if show_button_name === false and contract_config has no name field', () => {
+    it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
         expect(getContractTypeDisplay('TEST', true, false)).toBe('');
     });
-    it('should return empty string if show_button_name === true and contract_config has no name field and button_name', () => {
+    it('should return an empty string if show_button_name === true and contract_config has no name field and no button_name', () => {
         expect(getContractTypeDisplay('TEST', true, true)).toBe('');
     });
 });
 
 describe('getContractTypePosition', () => {
-    it('should return button position if such type exist', () => {
+    it('should return a specific button position if such type exist', () => {
         expect(getContractTypePosition('NOTOUCH')).toBe('bottom');
     });
-    it('should return top position if such type does not exist', () => {
+    it('should return a top position if such type does not exist', () => {
         expect(getContractTypePosition('TEST')).toBe('top');
     });
 });

@@ -1,14 +1,14 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 
-type TGetLabels = () => { [key: string]: string };
-type TObjectWithTwoFields = {
+type TGetLabels = () => Record<string, string>;
+type TButtonsInfo = {
     button_name?: React.ReactNode;
     name: React.ReactNode;
     position: string;
 };
-type TGetUnsupportedContracts = () => { [key: string]: TObjectWithTwoFields };
-type TGetSupportedContracts = (is_high_low: boolean) => { [key: string]: TObjectWithTwoFields };
+type TGetUnsupportedContracts = () => Record<string, TButtonsInfo>;
+type TGetSupportedContracts = (is_high_low: boolean) => Record<string, TButtonsInfo>;
 
 export const getCardLabels: TGetLabels = () => ({
     APPLY: localize('Apply'),

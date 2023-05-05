@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
+import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories';
 
 const Item = ({ contract_types, handleInfoClick, handleSelect, name, value }) =>
     contract_types.map((type, idx) => (

@@ -1,6 +1,6 @@
 import { jest, test } from '@jest/globals';
 import React from 'react';
-import { cleanup, render, waitForElementToBeRemoved, waitFor, screen } from '@testing-library/react';
+import { cleanup, render, waitForElementToBeRemoved, waitFor, screen, fireEvent } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { PersonalDetailsForm } from '../personal-details.jsx';
@@ -36,7 +36,9 @@ describe('<PersonalDetailsForm />', () => {
         fetchStatesList: jest.fn(),
         has_residence: false,
         account_settings: {},
-        getChangeableFields: jest.fn().mockReturnValue([]),
+        getChangeableFields: jest
+            .fn()
+            .mockReturnValue(['first_name', 'last_name', 'phone', 'address_line_1', 'address_city']),
         current_landing_company: {},
         history: {},
         is_social_signup: false,
@@ -45,10 +47,14 @@ describe('<PersonalDetailsForm />', () => {
         is_language_changing: false,
     };
 
-    renderComponent = () => {
+    renderComponent = (modified_props = {}) => {
+        const updated_props = {
+            ...mock_props,
+            ...modified_props,
+        };
         render(
             <Router history={history}>
-                <PersonalDetailsForm {...mock_props} />
+                <PersonalDetailsForm {...updated_props} />
             </Router>
         );
     };
@@ -106,19 +112,34 @@ describe('<PersonalDetailsForm />', () => {
     });
 
     it('should display label "Place of birth" without asterisk if is_svg is true', async () => {
-        mock_props.is_svg = true;
-        renderComponent();
+        renderComponent({ is_svg: true });
         await waitFor(() => {
             expect(screen.queryByText('Place of birth')).toBeInTheDocument();
         });
     });
 
     it('should display label "Citizenship" without asterisk if is_eu is false', async () => {
-        mock_props.is_eu = false;
-        renderComponent();
+        renderComponent({ is_eu: false });
         await waitFor(() => {
             expect(screen.queryByText('Citizenship')).toBeInTheDocument();
         });
+    });
+
+    it('should have "required" validation errors on required form fields', async () => {
+        renderComponent();
+        await waitFor(async () => {
+            const first_name = screen.getByTestId('first_name');
+            const last_name = screen.getByTestId('last_name');
+            const phone = screen.getByTestId('phone');
+            const address_line_1 = screen.getByTestId('address_line_1');
+            const address_city = screen.getByTestId('address_city');
+            fireEvent.blur(first_name);
+            fireEvent.blur(last_name);
+            fireEvent.blur(phone);
+            fireEvent.blur(address_line_1);
+            fireEvent.blur(address_city);
+        });
+        expect(screen.getAllByText('This field is required')).toHaveLength(5);
     });
 
     test.todo('Personal details component tests for different landing companies');

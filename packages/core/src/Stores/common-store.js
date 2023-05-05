@@ -133,8 +133,8 @@ export default class CommonStore extends BaseStore {
                 try {
                     await changeLanguage(key, () => {
                         this.changeCurrentLanguage(key);
-                        this.root_store.client.setIsAuthorize(false);
                         BinarySocket.closeAndOpenNewConnection(key);
+                        this.root_store.client.setIsAuthorize(false);
                     });
                     resolve();
                 } catch (e) {

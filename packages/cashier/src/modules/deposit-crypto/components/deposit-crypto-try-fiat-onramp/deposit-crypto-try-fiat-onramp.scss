@@ -1,0 +1,9 @@
+.deposit-crypto-try-fiat-onramp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__description {
+        margin: 2.4rem 0;
+    }
+}

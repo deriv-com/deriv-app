@@ -5,25 +5,21 @@ import { useCashierLocked, useDepositLocked, useWithdrawLocked } from '@deriv/ho
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
-describe('<CashierLocked />', () => {
-    beforeEach(() => {
-        (useWithdrawLocked as jest.Mock).mockReturnValue(false);
-        (useDepositLocked as jest.Mock).mockReturnValue(false);
-    });
-});
-
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
+    useWithdrawLocked: jest.fn(() => false),
 }));
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+const mockUseWithdrawLocked = useWithdrawLocked as jest.MockedFunction<typeof useWithdrawLocked>;
 
 describe('<CashierLocked />', () => {
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
+        mockUseWithdrawLocked.mockReturnValue(false);
     });
 
     it('should show the proper message if there is a crypto cashier maintenance', () => {

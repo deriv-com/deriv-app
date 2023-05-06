@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import countries from 'i18n-iso-countries';
 import * as Cookies from 'js-cookie';
-import { init } from 'onfido-sdk-ui';
+import { init, SdkHandle, SdkResponse, SupportedLanguages } from 'onfido-sdk-ui';
 import { CSSTransition } from 'react-transition-group';
+import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { HintBox, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
@@ -12,6 +13,28 @@ import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
 
+type TAPI_error = {
+    code?: string;
+    message?: string;
+    type?: string;
+};
+
+type TService_token = {
+    error: TAPI_error;
+    service_token: { onfido: { token: string } };
+};
+
+type TOnfidoSdkView = {
+    account_settings: GetSettings;
+    country_code: string;
+    documents_supported:
+        | string[]
+        | DeepRequired<ResidenceList>[0]['identity']['services']['onfido']['documents_supported'];
+    getChangeableFields: () => string[];
+    handleViewComplete: () => void;
+    height?: number | string;
+};
+
 const OnfidoSdkView = ({
     account_settings,
     country_code,
@@ -19,15 +42,14 @@ const OnfidoSdkView = ({
     getChangeableFields,
     handleViewComplete,
     height,
-    updateAccountStatus,
-}) => {
-    const [api_error, setAPIError] = React.useState();
-    const [onfido_service_token, setOnfidoToken] = React.useState();
-    const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
+}: TOnfidoSdkView) => {
+    const [api_error, setAPIError] = React.useState<TAPI_error>();
+    const [onfido_service_token, setOnfidoToken] = React.useState('');
+    const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
     const [is_status_loading, setStatusLoading] = React.useState(true);
     const [retry_count, setRetryCount] = React.useState(0);
     const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(true);
-    const token_timeout_ref = React.useRef();
+    const token_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
     const [are_details_saved, setAreDetailsSaved] = React.useState(false);
     const [is_status_message_visible, setIsStatusMessageVisible] = React.useState(false);
 
@@ -46,13 +68,12 @@ const OnfidoSdkView = ({
         ? documents_supported
         : Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
-    const onfido_init = React.useRef();
+    const onfido_init = React.useRef<SdkHandle>();
 
     const onComplete = React.useCallback(
-        data => {
+        (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
             onfido_init?.current?.tearDown();
-            const document_ids = Object.keys(data).map(key => data[key].id);
-
+            const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id);
             WS.notificationEvent({
                 notification_event: 1,
                 category: 'authentication',
@@ -60,23 +81,19 @@ const OnfidoSdkView = ({
                 args: {
                     documents: document_ids,
                 },
-            }).then(response => {
-                if (response.error) {
-                    setAPIError(response.error);
-                    return;
-                }
+            }).then(() => {
                 handleViewComplete();
             });
         },
-        [setAPIError, handleViewComplete]
+        [handleViewComplete]
     );
 
     const initOnfido = React.useCallback(async () => {
         try {
-            const onfido_ref = await init({
+            onfido_init.current = await init({
                 containerId: 'onfido',
                 language: {
-                    locale: getLanguage().toLowerCase() || 'en',
+                    locale: (getLanguage().toLowerCase() as SupportedLanguages) || 'en',
                     phrases: getOnfidoPhrases(),
                     mobilePhrases: getOnfidoPhrases(),
                 },
@@ -109,14 +126,13 @@ const OnfidoSdkView = ({
                     'face',
                 ],
             });
-            onfido_init.current = onfido_ref;
         } catch (err) {
-            setAPIError(err);
+            setAPIError(err as TAPI_error);
         }
     }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code]);
 
     const getOnfidoServiceToken = React.useCallback(
-        () =>
+        (): Promise<string | { error: TAPI_error }> =>
             new Promise(resolve => {
                 const onfido_cookie_name = 'onfido_token';
                 const onfido_cookie = Cookies.get(onfido_cookie_name);
@@ -126,7 +142,7 @@ const OnfidoSdkView = ({
                         service_token: 1,
                         service: 'onfido',
                         country: token_country_code,
-                    }).then(response => {
+                    }).then((response: TService_token) => {
                         if (response.error) {
                             resolve({ error: response.error });
                             return;
@@ -147,7 +163,7 @@ const OnfidoSdkView = ({
         [token_country_code]
     );
 
-    const handleError = error => {
+    const handleError = (error: TAPI_error) => {
         switch (error.code) {
             case 'MissingPersonalDetails':
                 setMissingPersonalDetails('all');
@@ -163,11 +179,11 @@ const OnfidoSdkView = ({
 
     const fetchServiceToken = () => {
         getOnfidoServiceToken().then(response_token => {
-            if (response_token.error) {
+            if (typeof response_token !== 'string' && response_token?.error) {
                 handleError(response_token.error);
                 setStatusLoading(false);
                 setRetryCount(retry_count + 1);
-            } else {
+            } else if (typeof response_token === 'string') {
                 setOnfidoToken(response_token);
                 initOnfido().then(() => {
                     setStatusLoading(false);
@@ -198,6 +214,7 @@ const OnfidoSdkView = ({
                 fetchServiceToken();
             }, Math.pow(2, retry_count) + Math.random() * 1000);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getOnfidoServiceToken, initOnfido, retry_count]);
 
     let component_to_load;
@@ -213,7 +230,7 @@ const OnfidoSdkView = ({
         );
     } else if (retry_count >= 3 && api_error) {
         // Error message will only display if retry count exceeds 3
-        component_to_load = <ErrorMessage error_message={api_error?.message || api_error} />;
+        component_to_load = <ErrorMessage error_message={(api_error as TAPI_error)?.message || api_error} />;
     }
 
     return (
@@ -235,7 +252,6 @@ const OnfidoSdkView = ({
                             <PoiConfirmWithExampleFormContainer
                                 account_settings={account_settings}
                                 getChangeableFields={getChangeableFields}
-                                updateAccountStatus={updateAccountStatus}
                                 onFormConfirm={onConfirm}
                             />
                         </div>

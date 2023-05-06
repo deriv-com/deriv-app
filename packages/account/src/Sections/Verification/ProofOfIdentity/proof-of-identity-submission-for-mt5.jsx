@@ -2,7 +2,7 @@
 import React from 'react';
 import { WS } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
-import OnfidoUpload from './onfido-sdk-view.jsx';
+import OnfidoUpload from './onfido-sdk-view';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { AutoHeightWrapper } from '@deriv/components';
@@ -18,7 +18,6 @@ const POISubmissionForMT5 = ({
     citizen_data,
     has_idv_error,
     jurisdiction_selected_shortcode,
-    updateAccountStatus,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
@@ -93,13 +92,11 @@ const POISubmissionForMT5 = ({
                             <div ref={setRef} style={{ height }}>
                                 <OnfidoUpload
                                     account_settings={account_settings}
-                                    updateAccountStatus={updateAccountStatus}
                                     getChangeableFields={getChangeableFields}
                                     country_code={country_code}
                                     documents_supported={documents_supported}
                                     handleViewComplete={handlePOIComplete}
                                     height={height}
-                                    refreshNotifications={refreshNotifications}
                                 />
                             </div>
                         )}

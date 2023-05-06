@@ -6,7 +6,7 @@ import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
-import OnfidoUpload from './onfido-sdk-view.jsx';
+import OnfidoUpload from './onfido-sdk-view';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISubmission = ({
@@ -26,7 +26,6 @@ const POISubmission = ({
     refreshNotifications,
     residence_list,
     setIsCfdPoiCompleted,
-    updateAccountStatus,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -148,8 +147,6 @@ const POISubmission = ({
                             getChangeableFields={getChangeableFields}
                             handleViewComplete={handleViewComplete}
                             height={height}
-                            refreshNotifications={refreshNotifications}
-                            updateAccountStatus={updateAccountStatus}
                         />
                     );
                 }

@@ -35,7 +35,8 @@ declare global {
         ? WeakSet<DeepRequired<Values>>
         : Type extends Promise<infer Value>
         ? Promise<DeepRequired<Value>>
-        : Type extends Record<string, unknown>
+        : // eslint-disable-next-line
+        Type extends {}
         ? { [Key in keyof Type]-?: DeepRequired<Type[Key]> }
         : Required<Type>;
 }

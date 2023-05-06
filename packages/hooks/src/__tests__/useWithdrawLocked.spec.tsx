@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useWithdrawLocked from '../useWithdrawLocked';
 import useNeedPOI from '../useNeedPOI';
+import useWithdrawLocked from '../useWithdrawLocked';
 
 jest.mock('../useNeedPOI');
 

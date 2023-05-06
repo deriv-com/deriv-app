@@ -2,8 +2,9 @@ import { useStore } from '@deriv/stores';
 
 const useNeedPOI = () => {
     const { client } = useStore();
-    const authentication = client.account_status?.authentication;
-    const is_need_poi = authentication?.needs_verification.includes('identity') || false;
+    const { account_status } = client;
+
+    const is_need_poi = account_status?.authentication?.needs_verification.includes('identity') || false;
 
     return is_need_poi;
 };

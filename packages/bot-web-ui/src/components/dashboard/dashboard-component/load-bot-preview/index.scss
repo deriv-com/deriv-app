@@ -155,6 +155,7 @@
             height: calc(100% - 3.8rem);
 
             @include mobile {
+                overflow: auto;
                 height: calc(100vh - 36rem);
             }
 

@@ -5,9 +5,11 @@ import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
-import { useCashierLocked } from '@deriv/hooks';
+import { mockStore } from '@deriv/stores';
+import { TStores } from '@deriv/stores/types';
+import { useCashierLocked, useWithdrawLocked } from '@deriv/hooks';
 
+jest.mock('@deriv/hooks');
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
 jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
@@ -64,6 +66,7 @@ describe('<Withdrawal />', () => {
     let setSideNotes: VoidFunction;
 
     beforeEach(() => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(false);
         setSideNotes = jest.fn();
         mockUseCashierLocked.mockReturnValue(false);
     });
@@ -80,6 +83,7 @@ describe('<Withdrawal />', () => {
     };
 
     it('should render <CashierLocked /> component', () => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
@@ -152,6 +156,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',

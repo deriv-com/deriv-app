@@ -102,7 +102,7 @@ type TClientStore = {
         };
     };
     account_list: TAccountsList;
-    account_status: TAccountStatus;
+    account_status?: TAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;

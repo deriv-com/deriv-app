@@ -1,0 +1,18 @@
+.deposit-crypto {
+    width: 100%;
+    height: calc(100vh - 17rem);
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+    display: flex;
+    flex-direction: column;
+
+    @include mobile {
+        height: calc(100vh - 8rem);
+    }
+
+    &__divider {
+        height: 2px;
+        width: 100%;
+        background-color: var(--general-section-1);
+    }
+}

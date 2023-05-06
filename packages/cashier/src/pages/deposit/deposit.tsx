@@ -9,11 +9,10 @@ import Error from '../../components/error';
 import FundsProtection from '../../components/funds-protection';
 import USDTSideNote from '../../components/usdt-side-note';
 import RecentTransaction from '../../components/recent-transaction';
-import CryptoDeposit from './crypto-deposit';
 import DepositLocked from './deposit-locked';
 import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { CashierOnboardingModule } from '../../modules';
+import { CashierOnboardingModule, DepositCryptoModule } from '../../modules';
 import { CashierOnboardingSideNotes } from '../../modules/cashier-onboarding/components';
 
 type TDeposit = {
@@ -122,7 +121,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             return <Error error={error} />;
         }
         if (is_crypto) {
-            return <CryptoDeposit />;
+            return <DepositCryptoModule />;
         }
 
         return (

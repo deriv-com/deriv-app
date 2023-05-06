@@ -45,7 +45,7 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
     }, [has_set_currency, history, setIsCashierOnboarding, toggleSetCurrencyModal]);
 
     return (
-        <ThemedScrollbars className='cashier-onboarding-page'>
+        <ThemedScrollbars className='cashier-onboarding'>
             <CashierOnboardingTitle />
             <CashierOnboardingCashCard />
             <CashierOnboardingCryptoCard />

@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog } from '@deriv/components';
 import { useFiatAccountList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 type TProps = {
     is_visible: boolean;
@@ -35,10 +35,9 @@ const SwitchToFiatAccountDialog: React.FC<TProps> = observer(({ is_visible = fal
             has_close_icon={false}
             portal_element_id='modal_root'
         >
-            <Localize
-                i18n_default_text='To deposit money, please switch to your {{currency_symbol}} account.'
-                values={{ currency_symbol: fiat_account_currency?.toUpperCase() }}
-            />
+            {localize('To deposit money, please switch to your {{currency_symbol}} account.', {
+                currency_symbol: fiat_account_currency,
+            })}
         </Dialog>
     );
 });

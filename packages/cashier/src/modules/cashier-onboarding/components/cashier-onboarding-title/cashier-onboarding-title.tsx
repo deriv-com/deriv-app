@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Text } from '@deriv/components';
 import { getStaticUrl } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import './cashier-onboarding-title.scss';
 
 const CashierOnboardingTitle: React.FC = observer(() => {
@@ -19,7 +19,7 @@ const CashierOnboardingTitle: React.FC = observer(() => {
                 onClick={() => window.open(getStaticUrl('/payment-methods'))}
             >
                 <Text size='xs' color='red'>
-                    <Localize i18n_default_text='Learn more about payment methods' />
+                    {localize('Learn more about payment methods')}
                 </Text>
             </div>
         ),
@@ -30,10 +30,10 @@ const CashierOnboardingTitle: React.FC = observer(() => {
         <>
             <div className='cashier-onboarding-title' data-testid='dt_cashier_onboarding_title'>
                 <Text size={is_mobile ? 's' : 'sm'} line_height='xxl' align='center'>
-                    <Localize i18n_default_text='Choose a way to fund your account' />
+                    {localize('Choose a way to fund your account')}
                 </Text>
                 <Text size={is_mobile ? 'xs' : 's'} line_height={is_mobile ? 'xl' : 'xxl'} align='center'>
-                    <Localize i18n_default_text='Please note that some payment methods might not be available in your country.' />
+                    {localize('Please note that some payment methods might not be available in your country.')}
                 </Text>
             </div>
             {should_show_learn_more && <LearnMore />}

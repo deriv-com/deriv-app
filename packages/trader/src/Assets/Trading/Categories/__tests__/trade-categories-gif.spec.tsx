@@ -12,10 +12,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageAsian'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='asian' />);
-                expect(screen.getByText(/imageasian/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='asian' />);
+                    expect(screen.getByText(/imageasian/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageSpread to be rendered when trade category is callputspread', async () => {
@@ -25,10 +29,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageSpread'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='callputspread' />);
-                expect(screen.getByText(/imagespread/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='callputspread' />);
+                    expect(screen.getByText(/imagespread/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageEndsInOut to be rendered when trade category is end', async () => {
@@ -38,10 +46,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageEndsInOut'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='end' />);
-                expect(screen.getByText(/imageendsinout/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='end' />);
+                    expect(screen.getByText(/imageendsinout/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageEvenOdd to be rendered when trade category is even_odd', async () => {
@@ -51,10 +63,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageEvenOdd'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='even_odd' />);
-                expect(screen.getByText(/imageevenodd/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='even_odd' />);
+                    expect(screen.getByText(/imageevenodd/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageHighLow to be rendered when trade category is high_low', async () => {
@@ -64,10 +80,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageHighLow'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='high_low' />);
-                expect(screen.getByText(/imagehighlow/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='high_low' />);
+                    expect(screen.getByText(/imagehighlow/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageCloseToLow to be rendered when trade category is lb_call', async () => {
@@ -77,10 +97,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageCloseToLow'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='lb_call' />);
-                expect(screen.getByText(/imageclosetolow/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='lb_call' />);
+                    expect(screen.getByText(/imageclosetolow/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageHighToClose to be rendered when trade category is lb_put', async () => {
@@ -90,10 +114,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageHighToClose'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='lb_put' />);
-                expect(screen.getByText(/imagehightoclose/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='lb_put' />);
+                    expect(screen.getByText(/imagehightoclose/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageHighToLow to be rendered when trade category is lb_high_low', async () => {
@@ -103,10 +131,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageHighToLow'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='lb_high_low' />);
-                expect(screen.getByText(/imagehightolow/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='lb_high_low' />);
+                    expect(screen.getByText(/imagehightolow/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageRiseFall to be rendered when trade category is rise_fall', async () => {
@@ -116,10 +148,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageRiseFall'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='rise_fall' />);
-                expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='rise_fall' />);
+                    expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageRiseFall to be rendered when trade category is rise_fall_equal', async () => {
@@ -129,10 +165,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageRiseFall'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='rise_fall_equal' />);
-                expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='rise_fall_equal' />);
+                    expect(screen.getByText(/imagerisefall/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageMatchDiff to be rendered when trade category is match_diff', async () => {
@@ -142,10 +182,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageMatchDiff'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='match_diff' />);
-                expect(screen.getByText(/imagematchdiff/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='match_diff' />);
+                    expect(screen.getByText(/imagematchdiff/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageMultiplier to be rendered when trade category is multiplier', async () => {
@@ -155,10 +199,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageMultiplier'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='multiplier' />);
-                expect(screen.getByText(/imagemultiplier/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='multiplier' />);
+                    expect(screen.getByText(/imagemultiplier/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageOverUnder to be rendered when trade category is over_under', async () => {
@@ -168,10 +216,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageOverUnder'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='over_under' />);
-                expect(screen.getByText(/imageoverunder/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='over_under' />);
+                    expect(screen.getByText(/imageoverunder/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageReset to be rendered when trade category is reset', async () => {
@@ -181,10 +233,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageReset'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='reset' />);
-                expect(screen.getByText(/imagereset/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='reset' />);
+                    expect(screen.getByText(/imagereset/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageRunHighLow to be rendered when trade category is run_high_low', async () => {
@@ -194,10 +250,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageRunHighLow'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='run_high_low' />);
-                expect(screen.getByText(/imagerunhighlow/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='run_high_low' />);
+                    expect(screen.getByText(/imagerunhighlow/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageAccumulator to be rendered when trade category is accumulator', async () => {
@@ -207,10 +267,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageAccumulator'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='accumulator' />);
-                expect(screen.getByText(/imageaccumulator/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='accumulator' />);
+                    expect(screen.getByText(/imageaccumulator/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageTickHighLow to be rendered when trade category is tick_high_low', async () => {
@@ -220,10 +284,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageTickHighLow'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='tick_high_low' />);
-                expect(screen.getByText(/imagetickhighlow/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='tick_high_low' />);
+                    expect(screen.getByText(/imagetickhighlow/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageTouch to be rendered when trade category is touch', async () => {
@@ -233,10 +301,14 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageTouch'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='touch' />);
-                expect(screen.getByText(/imagetouch/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='touch' />);
+                    expect(screen.getByText(/imagetouch/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('expect ImageVanilla to be rendered when trade category is vanilla', async () => {
@@ -246,16 +318,24 @@ describe('<TradeCategoriesGIF />', () => {
                 default: jest.fn(() => 'ImageVanilla'),
             }));
 
-            import('../trade-categories-gif').then(moduleName => {
-                render(<moduleName.default category='vanilla' />);
-                expect(screen.getByText(/imagevanilla/i)).toBeInTheDocument();
-            });
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='vanilla' />);
+                    expect(screen.getByText(/imagevanilla/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
         });
     });
     it('component should return null if category is not defined correctly', async () => {
-        import('../trade-categories-gif').then(moduleName => {
-            const { container } = render(<moduleName.default category='wrong_trade_category' />);
-            expect(container).toBeEmptyDOMElement();
-        });
+        import('../trade-categories-gif')
+            .then(moduleName => {
+                const { container } = render(<moduleName.default category='wrong_trade_category' />);
+                expect(container).toBeEmptyDOMElement();
+            })
+            .catch(error => {
+                throw new Error(error);
+            });
     });
 });

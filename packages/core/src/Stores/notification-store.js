@@ -96,7 +96,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.account_settings,
                 root_store.client.account_status,
                 root_store.client.landing_companies,
-                root_store.modules?.cashier?.general_store?.is_p2p_visible,
+                root_store.client.is_p2p_enabled,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
@@ -110,7 +110,7 @@ export default class NotificationStore extends BaseStore {
                     !root_store.client.is_virtual &&
                     Object.keys(root_store.client.account_status || {}).length > 0 &&
                     Object.keys(root_store.client.landing_companies || {}).length > 0 &&
-                    root_store.modules?.cashier?.general_store?.is_p2p_visible
+                    root_store.client.is_p2p_enabled
                 ) {
                     await debouncedGetP2pCompletedOrders();
                 }
@@ -296,8 +296,8 @@ export default class NotificationStore extends BaseStore {
             has_mt5_account_with_rejected_poa,
             is_pending_proof_of_ownership,
             p2p_advertiser_info,
+            is_p2p_enabled,
         } = this.root_store.client;
-        const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -505,7 +505,7 @@ export default class NotificationStore extends BaseStore {
 
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
-                if (is_p2p_visible) {
+                if (is_p2p_enabled) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
 
                     this.p2p_completed_orders?.map(order => {

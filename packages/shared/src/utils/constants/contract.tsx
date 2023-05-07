@@ -30,7 +30,7 @@ type TContractConfig = {
     position: string;
 };
 
-type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+export type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {

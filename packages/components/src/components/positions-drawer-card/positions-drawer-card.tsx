@@ -13,15 +13,8 @@ import {
     getEndTime,
     isVanillaContract,
 } from '@deriv/shared';
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
-
-type TToastConfig = {
-    key?: number;
-    content: string;
-    timeout?: number;
-    is_bottom?: boolean;
-    type?: string;
-};
+import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
+import { TToastConfig } from '../types/contract.types';
 
 type TGetEndTime = Pick<
     TContractInfo,
@@ -37,26 +30,26 @@ type TPositionsDrawerCardProps = {
     currency: string;
     current_focus: string;
     display_name: string;
-    getContractById: (contract_id: string) => Record<string, any>;
+    getContractById: (contract_id?: number) => TContractStore;
     is_mobile: boolean;
     is_sell_requested: boolean;
     is_unsupported: boolean;
     is_link_disabled: boolean;
     profit_loss: number;
-    onClickCancel: (contract_id: string) => void;
-    onClickSell: (contract_id: string) => void;
-    onClickRemove?: () => void;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
+    onClickRemove: (contract_id?: number) => void;
     onFooterEntered: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
-    removeToast: (key: number) => void;
+    removeToast: (key: string) => void;
     result: string;
     setCurrentFocus: (value: string) => void;
     server_time: moment.Moment;
     should_show_transition: boolean;
     should_show_cancellation_warning: boolean;
     status: string;
-    toggleCancellationWarning: (value: boolean) => void;
+    toggleCancellationWarning: () => void;
     toggleUnsupportedContractModal: (value: boolean) => void;
     measure?: () => void;
 };
@@ -158,7 +151,6 @@ const PositionsDrawerCard = ({
             is_multiplier={is_multiplier}
             is_positions
             is_sell_requested={is_sell_requested}
-            measure={measure}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             onFooterEntered={onFooterEntered}

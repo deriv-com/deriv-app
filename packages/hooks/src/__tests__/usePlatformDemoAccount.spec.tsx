@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import usePlatformDemoAccount from '../usePlatformDemoAccount';
 
 describe('usePlatformDemoAccount', () => {
-    test('should return null when user has no platform demo accounts', async () => {
+    test('should return undefined when user has no platform demo accounts', async () => {
         const mock = mockStore({
             client: {
                 accounts: {

@@ -9,6 +9,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { useStores } from 'Stores/index';
 import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import AccountTranferForTest from '../../components/modals/account-transfer-for-test/account-transfer-for-test';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
@@ -84,6 +85,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    <AccountTranferForTest />
                     <WalletsBanner />
                     <MainTitleBar />
                     <DesktopWrapper>

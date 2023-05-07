@@ -48,7 +48,11 @@ const TransferAccountSelector = ({
     };
 
     return (
-        <div className='transfer-account-selector' onClick={openAccountsList}>
+        <div
+            className='transfer-account-selector'
+            onClick={is_list_modal_open ? undefined : openAccountsList}
+            data-testid='dt_transfer-account-selector'
+        >
             <div className='transfer-account-selector__heading'>
                 <span className='transfer-account-selector__label'>{label}</span>
 

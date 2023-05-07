@@ -32,6 +32,7 @@ const WalletTile = ({ account, icon, className, has_hover, is_active, is_mobile,
                     'wallet-tile--hover': has_hover,
                     'wallet-tile--active': is_active,
                 })}
+                data-testid={`dt_wallet_title_${account.currency?.toLowerCase()}`}
                 onClick={() => onClick?.()}
             >
                 <div className='wallet-tile__header'>
@@ -57,6 +58,7 @@ const WalletTile = ({ account, icon, className, has_hover, is_active, is_mobile,
                 'wallet-tile--active': is_active,
             })}
             onClick={() => onClick?.()}
+            data-testid={`dt_wallet_title_${account.currency?.toLowerCase()}`}
         >
             <div className='wallet-tile__icon'>{icon}</div>
 

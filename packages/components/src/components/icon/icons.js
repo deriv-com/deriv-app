@@ -23,6 +23,7 @@ import './appstore/ic-appstore-information.svg';
 import './appstore/ic-appstore-link-wallet.svg';
 import './appstore/ic-appstore-linked-wallets.svg';
 import './appstore/ic-appstore-menu-homepage.svg';
+import './appstore/ic-appstore-mt5-test.svg';
 import './appstore/ic-appstore-multipliers-trade-type.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';

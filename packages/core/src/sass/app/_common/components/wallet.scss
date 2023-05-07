@@ -11,6 +11,14 @@ $wallet-bg-color: (
         'light': linear-gradient(to right, #a9e5ba, #b9e8ad, #cdea9f, #e5ea93, #ffe88a),
         'dark': linear-gradient(to right, #214f3e, #2e5937, #44622a, #60681b, #816b0d),
     ),
+    'btc': (
+        'light': linear-gradient(to right, #fbdbb4, #fbdeb3, #fbe2b1, #fae5b1, #f9e9b0),
+        'dark': linear-gradient(to right, #664419, #6d4c19, #735519, #785e19, #7d6819),
+    ),
+    'eth': (
+        'light': linear-gradient(to right, #c1c2d1, #c2c4d3, #c3c6d5, #c4c8d7, #c5cad9),
+        'dark': linear-gradient(to right, #383a48, #3f4251, #474b59, #4f5462, #575d6b),
+    ),
 );
 
 /// Wallet background color generator

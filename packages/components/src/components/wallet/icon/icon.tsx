@@ -30,7 +30,7 @@ const WalletIcon = ({
     return (
         <div className={classNames('wallet-icon', { className, 'wallet-icon--merged': !is_solo })}>
             {is_solo ? (
-                <WalletSmall bg={wallet_bg} icon={icon} />
+                <WalletSmall bg={wallet_bg} icon={icon} data_testid='dt_account_icon_solo' />
             ) : (
                 <React.Fragment>
                     <WalletSmall

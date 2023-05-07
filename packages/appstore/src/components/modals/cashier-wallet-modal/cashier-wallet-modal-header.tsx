@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Badge, Icon, Text } from '@deriv/components';
+import { Badge, GradientBackground, Icon, Text, Watermark } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
+import { getCashierWalletModalBackgrounds } from 'Constants/wallet-backgrounds';
 
 type TCashierWalletModalHeaderProps = {
     balance?: string | number;
@@ -43,21 +44,27 @@ const CashierWalletModalHeader = ({
     );
 
     const getCurrencyIconSize = React.useCallback(() => {
+        // TODO: add p2p and payment_agent check
+        const is_square_icon =
+            ['btc', 'eth', 'ltc', 'usdt', 'eusdt', 'tusdt', 'ust', 'usdc', 'p2p', 'payment_agent'].includes(
+                currency.toLowerCase()
+            ) || is_demo;
+
         const sizes = {
             mobile: {
-                width: is_demo ? 64 : 48,
-                height: is_demo ? 40 : 48,
+                width: is_square_icon ? 64 : 48,
+                height: is_square_icon ? 40 : 48,
             },
             desktop: {
-                width: is_demo ? 128 : 64,
-                height: is_demo ? 80 : 64,
+                width: is_square_icon ? 128 : 64,
+                height: is_square_icon ? 80 : 64,
             },
         };
 
         const size = is_mobile ? sizes.mobile : sizes.desktop;
 
         return size;
-    }, [is_demo, is_mobile]);
+    }, [currency, is_demo, is_mobile]);
 
     const getCurrencyIconProps = React.useCallback(() => {
         const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark);
@@ -70,55 +77,54 @@ const CashierWalletModalHeader = ({
         if (is_demo) {
             return 'demo';
         }
-        return currency;
+        return currency.toLowerCase();
     }, [is_demo, currency]);
 
     return (
-        <div
-            className={classNames(
-                header_class_name,
-                `wallet-modal__${getBackgroundName().toLowerCase()}-bg${is_dark ? '--dark' : ''}`,
-                {
+        <GradientBackground {...getCashierWalletModalBackgrounds(getBackgroundName())}>
+            <div
+                className={classNames(header_class_name, {
                     [`${header_class_name}--hide-title`]: !show_wallet_name,
                     [`${header_class_name}__demo`]: is_demo,
-                }
-            )}
-        >
-            <div className={`${header_class_name}__title-wrapper`}>
+                })}
+            >
+                <Watermark image='url(/packages/appstore/src/public/images/wallet-demo-bg.svg)' />
+                <div className={`${header_class_name}__title-wrapper`}>
+                    {show_wallet_name && (
+                        <div className={classNames(`${header_class_name}__title`)}>
+                            <Text
+                                size={is_mobile ? 'xs' : 's'}
+                                as='span'
+                                className={getStylesByClassName(`${header_class_name}__title-wallet`)}
+                            >
+                                {is_demo ? 'Demo' : ''} {currency} {localize('Wallet')}
+                            </Text>
+                            {is_demo ? (
+                                <Badge type='contained' background_color='blue' label='Demo' />
+                            ) : (
+                                <Badge type='bordered' label='SVG' />
+                            )}
+                        </div>
+                    )}
+                    <Text
+                        as='p'
+                        size={is_mobile ? 'xsm' : 'm'}
+                        weight='bold'
+                        className={getStylesByClassName(`${header_class_name}__title-balance`)}
+                    >
+                        {formatMoney(currency, balance, true)} {currency}
+                    </Text>
+                </div>
                 {show_wallet_name && (
-                    <div className={classNames(`${header_class_name}__title`)}>
-                        <Text
-                            size={is_mobile ? 'xs' : 's'}
-                            as='span'
-                            className={getStylesByClassName(`${header_class_name}__title-wallet`)}
-                        >
-                            {is_demo ? 'Demo' : ''} {currency} {localize('Wallet')}
-                        </Text>
-                        {is_demo ? (
-                            <Badge type='contained' background_color='blue' label='Demo' />
-                        ) : (
-                            <Badge type='bordered' label='SVG' />
-                        )}
+                    <div className={classNames(`${header_class_name}__currency-icon`)}>
+                        <Icon {...getCurrencyIconProps()} data_testid='dt_currency_icon' />
                     </div>
                 )}
-                <Text
-                    as='p'
-                    size={is_mobile ? 'xsm' : 'm'}
-                    weight='bold'
-                    className={getStylesByClassName(`${header_class_name}__title-balance`)}
-                >
-                    {formatMoney(currency, balance, true)} {currency}
-                </Text>
-            </div>
-            {show_wallet_name && (
-                <div className={classNames(`${header_class_name}__currency-icon`)}>
-                    <Icon {...getCurrencyIconProps()} data_testid='dt_currency_icon' />
+                <div className={classNames(`${header_class_name}__close-icon`)}>
+                    <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />
                 </div>
-            )}
-            <div className={classNames(`${header_class_name}__close-icon`)}>
-                <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />
             </div>
-        </div>
+        </GradientBackground>
     );
 };
 

@@ -1,4 +1,6 @@
 .dc-modal__container_cashier-wallet-modal {
+    display: flex;
+    align-items: center;
     position: fixed;
     inset: 0;
     min-height: calc(100vh - 84px) !important;
@@ -16,6 +18,7 @@
 
     .cashier-wallet-modal {
         &__header {
+            width: 100%;
             display: flex;
             position: relative;
             height: 16rem;
@@ -32,22 +35,22 @@
                 justify-content: space-between;
             }
 
-            &__demo:before {
-                content: '';
-                display: block;
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                opacity: 0.2;
-                background-color: var(--demo-icon-background);
-                background-repeat: repeat;
-                background-position: 3% 30%;
-                border-radius: $BORDER_RADIUS * 4;
-                -webkit-mask-image: url('../../../public/images/wallet-demo-bg.svg');
-                mask-image: url('../../../public/images/wallet-demo-bg.svg');
-            }
+            // &__demo:before {
+            //     content: '';
+            //     display: block;
+            //     position: absolute;
+            //     left: 0;
+            //     top: 0;
+            //     width: 100%;
+            //     height: 100%;
+            //     opacity: 0.05;
+            //     background-color: var(--demo-icon-background);
+            //     background-repeat: repeat;
+            //     background-position: 3% 30%;
+            //     border-radius: $BORDER_RADIUS * 4;
+            //     -webkit-mask-image: url('../../../public/images/wallet-demo-bg.svg');
+            //     mask-image: url('../../../public/images/wallet-demo-bg.svg');
+            // }
 
             &__title-wrapper {
                 position: relative;
@@ -96,6 +99,8 @@
     }
 
     .dc-tabs {
+        max-width: 128rem;
+        width: 100%;
         margin-top: -4.8rem;
 
         @include mobile {

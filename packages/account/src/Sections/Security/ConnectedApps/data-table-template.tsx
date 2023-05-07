@@ -4,7 +4,23 @@ import { toMoment } from '@deriv/shared';
 import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const GetConnectedAppsColumnsTemplate = handleToggleModal => [
+type Column = {
+    title: string;
+    col_index: 'name' | 'scopes' | 'last_used' | 'app_id';
+    renderCellContent: React.FC<{ cell_value: string & number & string[] }>;
+};
+
+type TGetConnectedAppsColumnsTemplate = {
+    handleToggleModal: (app_id: number | null) => void;
+};
+
+type Permissions = {
+    [key: string]: string;
+};
+
+const GetConnectedAppsColumnsTemplate = (
+    handleToggleModal: TGetConnectedAppsColumnsTemplate['handleToggleModal']
+): Column[] => [
     {
         title: localize('Name'),
         col_index: 'name',
@@ -35,7 +51,10 @@ const GetConnectedAppsColumnsTemplate = handleToggleModal => [
     },
 ];
 
-const PrepareConnectedAppsAction = (app_id, handleToggleModal) => {
+const PrepareConnectedAppsAction = (
+    app_id: number,
+    handleToggleModal: TGetConnectedAppsColumnsTemplate['handleToggleModal']
+) => {
     return (
         <Button className='revoke_access' small secondary onClick={() => handleToggleModal(app_id)}>
             {localize('Revoke access')}
@@ -43,13 +62,13 @@ const PrepareConnectedAppsAction = (app_id, handleToggleModal) => {
     );
 };
 
-const PrepareConnectedAppsLastLogin = last_used => (
+const PrepareConnectedAppsLastLogin = (last_used: number) => (
     <Text as='p' size='xs' className='last_used_content'>
         {toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}
     </Text>
 );
 
-const generatePermissions = () => ({
+const generatePermissions = (): Permissions => ({
     read: localize('Read'),
     trade: localize('Trade'),
     trading_information: localize('Trading information'),
@@ -57,7 +76,7 @@ const generatePermissions = () => ({
     admin: localize('Admin'),
 });
 
-const PrepareConnectedAppsScopes = permissions_list => {
+const PrepareConnectedAppsScopes = (permissions_list: string[]) => {
     const is_trading_information = permissions_list.includes('trading_information');
     let oauth_apps_list = [];
     if (is_trading_information) {
@@ -66,7 +85,7 @@ const PrepareConnectedAppsScopes = permissions_list => {
     } else {
         oauth_apps_list = permissions_list;
     }
-    const sorted_app_list = [];
+    const sorted_app_list: string[] = [];
     oauth_apps_list.forEach((permission, index) => {
         if (permissions_list.length - 1 !== index) {
             sorted_app_list.push(`${generatePermissions()[permission]}, `);

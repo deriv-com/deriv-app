@@ -1,7 +1,10 @@
-.cashier-onboarding-page {
+.page-container {
+    width: 100%;
     height: calc(100vh - 17rem);
     padding-left: 2.4rem;
     padding-right: 2.4rem;
+    display: flex;
+    flex-direction: column;
 
     @include mobile {
         height: calc(100vh - 8rem);

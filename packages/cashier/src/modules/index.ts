@@ -1,1 +1,1 @@
-export * from './cashier-onboarding';
+export { default as CashierOnboardingModule } from './cashier-onboarding';

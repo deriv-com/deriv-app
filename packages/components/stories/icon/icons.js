@@ -369,7 +369,6 @@ export const icons =
         'IcEmailOutlineNew',
         'IcEmailOutline',
         'IcEmailSentDashboard',
-        'IcEmailSentExpired',
         'IcEmailSentP2p',
         'IcEmailSent',
         'IcEmailSpam',

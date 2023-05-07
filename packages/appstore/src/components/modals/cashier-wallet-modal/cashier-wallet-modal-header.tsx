@@ -82,13 +82,15 @@ const CashierWalletModalHeader = ({
 
     return (
         <GradientBackground {...getCashierWalletModalBackgrounds(getBackgroundName())}>
+            <Watermark
+                image='url(/packages/appstore/src/public/images/wallet-demo-bg.svg)'
+                // image='url(https://i.postimg.cc/jqGY1q6R/Style-white.png)' - works fine
+            />
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hide-title`]: !show_wallet_name,
-                    [`${header_class_name}__demo`]: is_demo,
                 })}
             >
-                <Watermark image='url(/packages/appstore/src/public/images/wallet-demo-bg.svg)' />
                 <div className={`${header_class_name}__title-wrapper`}>
                     {show_wallet_name && (
                         <div className={classNames(`${header_class_name}__title`)}>

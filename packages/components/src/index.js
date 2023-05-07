@@ -107,5 +107,5 @@ export { default as Tooltip } from './components/tooltip';
 export { default as UILoader } from './components/u-i-loader';
 export { default as VerticalTab } from './components/vertical-tab';
 export { default as Wizard } from './components/wizard';
-export * from './components/wallet';
+export * from './components/wallet-icon';
 export * from './hooks';

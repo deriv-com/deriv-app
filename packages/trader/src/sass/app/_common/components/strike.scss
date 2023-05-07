@@ -8,7 +8,8 @@
     grid-template-columns: 1fr 1fr 1fr;
     height: 4rem;
     margin: 0 0 0.8rem;
-    padding: 1rem 0.8rem;
+    padding: 0 0.8rem;
+    box-sizing: border-box;
 
     .mobile-widget {
         &__spot {

@@ -353,27 +353,31 @@ const CreateAdForm = () => {
                                                 </Field>
                                             </div>
                                             {is_sell_advert && (
-                                                <Field name='contact_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-testid='contact_info'
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your contact details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.contact_info && errors.contact_info}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={general_store.contact_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
+                                                <div className='p2p-my-ads__form-field--contact-details'>
+                                                    <Field name='contact_info'>
+                                                        {({ field }) => (
+                                                            <Input
+                                                                {...field}
+                                                                data-testid='contact_info'
+                                                                data-lpignore='true'
+                                                                type='textarea'
+                                                                label={
+                                                                    <Text color='less-prominent' size='xs'>
+                                                                        <Localize i18n_default_text='Your contact details' />
+                                                                    </Text>
+                                                                }
+                                                                error={touched.contact_info && errors.contact_info}
+                                                                className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                initial_character_count={
+                                                                    general_store.contact_info.length
+                                                                }
+                                                                required
+                                                                has_character_counter
+                                                                max_characters={300}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </div>
                                             )}
                                             <Field name='default_advert_description'>
                                                 {({ field }) => (

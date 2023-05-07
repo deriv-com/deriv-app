@@ -88,6 +88,7 @@
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
         "@deriv/account": "^1.0.0",
+        "@deriv/api": "^1.0.0",
         "@deriv/appstore": "^0.0.4",
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/cashier": "^1.0.0",

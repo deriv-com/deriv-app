@@ -60,9 +60,6 @@ describe('usePlatformRealAccounts', () => {
 
     test('should return proper data when user has both real and demo accounts', async () => {
         const mock = mockStore({
-            traders_hub: {
-                is_eu_user: false,
-            },
             client: {
                 accounts: {
                     CR1234: {

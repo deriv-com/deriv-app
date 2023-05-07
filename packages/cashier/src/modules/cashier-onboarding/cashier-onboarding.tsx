@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { ThemedScrollbars } from '@deriv/components';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useCashierStore } from 'Stores/useCashierStores';
 import { useHistory } from 'react-router';
+import { PageContainer } from '../../components/page-container';
+import { useCashierStore } from '../../stores/useCashierStores';
 import {
     CashierOnboardingCashCard,
     CashierOnboardingCryptoCard,
@@ -14,7 +14,6 @@ import {
     CashierOnboardingSideNotes,
     CashierOnboardingTitle,
 } from './components';
-import './cashier-onboarding.scss';
 
 type TProps = {
     setSideNotes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
@@ -45,7 +44,7 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
     }, [has_set_currency, history, setIsCashierOnboarding, toggleSetCurrencyModal]);
 
     return (
-        <ThemedScrollbars className='cashier-onboarding'>
+        <PageContainer>
             <CashierOnboardingTitle />
             <CashierOnboardingCashCard />
             <CashierOnboardingCryptoCard />
@@ -53,7 +52,7 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
             <CashierOnboardingPaymentAgentCard />
             <CashierOnboardingP2PCard />
             {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
-        </ThemedScrollbars>
+        </PageContainer>
     );
 });
 

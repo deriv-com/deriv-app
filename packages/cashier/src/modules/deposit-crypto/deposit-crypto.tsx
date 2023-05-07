@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import CashierBreadcrumb from 'Components/cashier-breadcrumb';
-import { useCashierStore } from 'Stores/useCashierStores';
+import CashierBreadcrumb from '../../components/cashier-breadcrumb';
+import { PageContainer } from '../../components/page-container';
+import { useCashierStore } from '../../stores/useCashierStores';
 import { DepositCryptoCurrencyDetails, DepositCryptoTryFiatOnRamp, DepositCryptoWalletAddress } from './components';
 import './deposit-crypto.scss';
 
@@ -17,14 +17,14 @@ const DepositCrypto: React.FC = observer(() => {
     }, [setIsDeposit, recentTransactionOnMount]);
 
     return (
-        <ThemedScrollbars className='deposit-crypto'>
+        <PageContainer>
             <CashierBreadcrumb is_crypto_deposit />
             <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
             <div className='deposit-crypto__divider' />
             <DepositCryptoTryFiatOnRamp />
             {/* {is_mobile && <RecentTransaction />} */}
-        </ThemedScrollbars>
+        </PageContainer>
     );
 });
 

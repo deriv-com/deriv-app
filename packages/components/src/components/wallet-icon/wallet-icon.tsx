@@ -9,7 +9,7 @@ type TWalletIcon = {
     rounded?: string;
     size: 'small' | 'medium' | 'large';
 };
-
+/* TODO: Handle icon loading, gradient background, dark mode */
 const WalletIcon = ({ currency, dark, rounded, size }: TWalletIcon) => {
     return (
         <div

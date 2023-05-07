@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useCurrencyExchangeRate from '../useCurrencyExchangeRate';
+import useExchangeRate from '../useExchangeRate';
 
-describe('useCurrencyExchangeRate', () => {
+describe('useExchangeRate', () => {
     test('should return 1 if currency is not found', async () => {
         const mock = mockStore({
             exchange_rates: {
@@ -21,8 +21,9 @@ describe('useCurrencyExchangeRate', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useCurrencyExchangeRate('JPY'), { wrapper });
-        expect(result.current).toBe(1);
+        const { result } = renderHook(() => useExchangeRate(), { wrapper });
+        const rate = result.current.getRate('JPY');
+        expect(rate).toBe(1);
     });
 
     test('should return correct rate for the given currency other than USD', async () => {
@@ -40,7 +41,8 @@ describe('useCurrencyExchangeRate', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useCurrencyExchangeRate('EUR'), { wrapper });
-        expect(result.current).toBe(1.3);
+        const { result } = renderHook(() => useExchangeRate(), { wrapper });
+        const rate = result.current.getRate('EUR');
+        expect(rate).toBe(1.3);
     });
 });

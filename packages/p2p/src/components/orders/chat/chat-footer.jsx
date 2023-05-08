@@ -8,6 +8,7 @@ import { localize, Localize } from 'Components/i18next';
 import ChatFooterIcon from 'Components/orders/chat/chat-footer-icon.jsx';
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
+import './chat-footer.scss';
 
 const ChatFooter = observer(() => {
     const { order_store, sendbird_store } = useStores();
@@ -79,7 +80,7 @@ const ChatFooter = observer(() => {
 
     if (sendbird_store.is_chat_frozen || order_store.order_information.is_inactive_order) {
         return (
-            <Text align='center' className='order-chat__footer--frozen' color='prominent' line_height='s' size='xs'>
+            <Text align='center' className='chat-footer--frozen' color='prominent' line_height='s' size='xs'>
                 <Localize i18n_default_text='This conversation is closed.' />
             </Text>
         );
@@ -87,15 +88,15 @@ const ChatFooter = observer(() => {
 
     return (
         <React.Fragment>
-            <Text className='order-chat__footer-disclaimer' color='less-prominent' size='xxs'>
+            <Text className='chat-footer-disclaimer' color='less-prominent' size='xxs'>
                 <Localize i18n_default_text='In case of a dispute, we will only consider the communication through Deriv P2P chat channel.' />
             </Text>
             <div
-                className={classNames('order-chat__footer', {
-                    'order-chat__footer--empty': sendbird_store.chat_messages.length === 0,
+                className={classNames('chat-footer', {
+                    'chat-footer--empty': sendbird_store.chat_messages.length === 0,
                 })}
             >
-                <div className='order-chat__footer-input'>
+                <div className='chat-footer-input'>
                     <Input
                         has_character_counter
                         initial_character_count={character_count}
@@ -107,7 +108,7 @@ const ChatFooter = observer(() => {
                         rows={1}
                         trailing_icon={
                             <div
-                                className='order-chat__footer-icon-container'
+                                className='chat-footer-icon-container'
                                 onClick={
                                     should_show_attachment_icon ? () => file_input_ref.current.click() : sendMessage
                                 }

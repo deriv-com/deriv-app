@@ -290,7 +290,6 @@ const OrderDetails = observer(() => {
                                             </Button>
                                         </section>
                                         <P2PAccordion
-                                            className='order-details-card__accordion'
                                             icon_close='IcChevronRight'
                                             icon_open='IcChevronDown'
                                             list={order_store?.order_payment_method_details?.map(payment_method => ({

@@ -140,7 +140,7 @@ const BuySellForm = props => {
     return (
         <React.Fragment>
             {rate_type === ad_type.FLOAT && !should_disable_field && (
-                <div className='buy-sell-form__hintbox'>
+                <div className='buy-sell-form-hintbox'>
                     <HintBox
                         icon='IcAlertInfo'
                         message={
@@ -175,9 +175,9 @@ const BuySellForm = props => {
 
                     return (
                         <Form noValidate>
-                            <div className='buy-sell-form__content'>
-                                <div className='buy-sell-form__field-wrapper'>
-                                    <div className='buy-sell-form__field'>
+                            <div className='buy-sell-form-content'>
+                                <div className='buy-sell-form-field-wrapper'>
+                                    <div className='buy-sell-form-field'>
                                         <Text as='p' color='less-prominent' line_height='m' size='xxs'>
                                             {buy_sell_store.is_buy_advert ? (
                                                 <Localize i18n_default_text='Seller' />
@@ -189,7 +189,7 @@ const BuySellForm = props => {
                                             {advertiser_details.name}
                                         </Text>
                                     </div>
-                                    <div className='buy-sell-form__field'>
+                                    <div className='buy-sell-form-field'>
                                         <Text as='p' color='less-prominent' line_height='m' size='xxs'>
                                             <Localize
                                                 i18n_default_text='Rate (1 {{ currency }})'
@@ -201,11 +201,11 @@ const BuySellForm = props => {
                                         </Text>
                                     </div>
                                 </div>
-                                <div className='buy-sell-form__payment-method--container'>
+                                <div className='buy-sell-form-payment-method--container'>
                                     {payment_method_names && (
                                         <Text
                                             as='p'
-                                            className='buy-sell-form__payment-method--title'
+                                            className='buy-sell-form-payment-method--title'
                                             color='less-prominent'
                                             line_height='m'
                                             size='xxs'
@@ -219,9 +219,9 @@ const BuySellForm = props => {
 
                                             if (method === 'BankTransfer' || method === 'Other') {
                                                 return (
-                                                    <div className='buy-sell-form__payment-method--row' key={key}>
+                                                    <div className='buy-sell-form-payment-method--row' key={key}>
                                                         <Icon
-                                                            className='buy-sell-form__payment-method--icon'
+                                                            className='buy-sell-form-payment-method--icon'
                                                             icon={`IcCashier${method}`}
                                                             size={16}
                                                         />
@@ -233,9 +233,9 @@ const BuySellForm = props => {
                                             }
 
                                             return (
-                                                <div className='buy-sell-form__payment-method--row' key={key}>
+                                                <div className='buy-sell-form-payment-method--row' key={key}>
                                                     <Icon
-                                                        className='buy-sell-form__payment-method--icon'
+                                                        className='buy-sell-form-payment-method--icon'
                                                         icon='IcCashierEwallet'
                                                         size={16}
                                                     />
@@ -246,8 +246,8 @@ const BuySellForm = props => {
                                             );
                                         })}
                                 </div>
-                                <div className='buy-sell-form__field-wrapper'>
-                                    <div className='buy-sell-form__field'>
+                                <div className='buy-sell-form-field-wrapper'>
+                                    <div className='buy-sell-form-field'>
                                         <Text as='p' color='less-prominent' line_height='m' size='xxs'>
                                             {buy_sell_store.is_buy_advert ? (
                                                 <Localize i18n_default_text="Seller's instructions" />
@@ -266,13 +266,13 @@ const BuySellForm = props => {
                                             ))}
                                     </div>
                                 </div>
-                                <div className='buy-sell-form__line' />
+                                <div className='buy-sell-form-line' />
                                 {buy_sell_store.is_sell_advert && payment_method_names && (
                                     <React.Fragment>
-                                        <div className='buy-sell-form__payment-method'>
+                                        <div className='buy-sell-form-payment-method'>
                                             <Text
                                                 as='p'
-                                                className='buy-sell-form__payment-method--title'
+                                                className='buy-sell-form-payment-method--title'
                                                 color='less-prominent'
                                                 line_height='m'
                                                 size='xxs'
@@ -289,8 +289,8 @@ const BuySellForm = props => {
                                             <Observer>
                                                 {() => (
                                                     <div
-                                                        className={classNames('buy-sell-form__sell-payment-methods', {
-                                                            'buy-sell-form__sell-payment-methods--disable':
+                                                        className={classNames('buy-sell-form--sell-payment-methods', {
+                                                            'buy-sell-form--sell-payment-methods--disable':
                                                                 should_disable_field,
                                                         })}
                                                     >
@@ -360,16 +360,16 @@ const BuySellForm = props => {
                                                 )}
                                             </Observer>
                                         </div>
-                                        <div className='buy-sell-form__line' />
+                                        <div className='buy-sell-form-line' />
                                     </React.Fragment>
                                 )}
-                                <div className='buy-sell-form__input'>
+                                <div className='buy-sell-form--input'>
                                     <Text color='less-prominent' size='xxs'>
                                         {localize('Enter {{transaction_type}} amount', {
                                             transaction_type: buy_sell_store.is_buy_advert ? 'buy' : 'sell',
                                         })}
                                     </Text>
-                                    <section className='buy-sell-form__input-field'>
+                                    <section className='buy-sell-form--input-field'>
                                         <Field name='amount'>
                                             {({ field }) => (
                                                 <Input
@@ -393,7 +393,7 @@ const BuySellForm = props => {
                                                         />
                                                     }
                                                     is_relative_hint
-                                                    className='buy-sell-form__field'
+                                                    className='buy-sell-form-field'
                                                     trailing_icon={
                                                         <Text color='less-prominent' line-height='m' size='xs'>
                                                             {buy_sell_store.account_currency}
@@ -425,8 +425,8 @@ const BuySellForm = props => {
                                         </Field>
                                         {isDesktop() && (
                                             <div
-                                                className={classNames('buy-sell-form__field', {
-                                                    'buy-sell-form__field--disable': should_disable_field,
+                                                className={classNames('buy-sell-form-field', {
+                                                    'buy-sell-form-field--disable': should_disable_field,
                                                 })}
                                             >
                                                 <BuySellFormReceiveAmount />
@@ -437,7 +437,7 @@ const BuySellForm = props => {
                                 {buy_sell_store.is_sell_advert && (
                                     <React.Fragment>
                                         {!payment_method_names && (
-                                            <div className='buy-sell-form__field--textarea'>
+                                            <div className='buy-sell-form-field--textarea'>
                                                 <Field name='payment_info'>
                                                     {({ field }) => (
                                                         <Input
@@ -460,7 +460,7 @@ const BuySellForm = props => {
                                                 </Field>
                                             </div>
                                         )}
-                                        <div className='buy-sell-form__field--textarea'>
+                                        <div className='buy-sell-form-field--textarea'>
                                             <Field name='contact_info'>
                                                 {({ field }) => (
                                                     <Input

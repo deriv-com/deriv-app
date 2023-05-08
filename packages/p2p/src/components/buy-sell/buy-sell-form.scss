@@ -1,25 +1,39 @@
 .buy-sell-form {
-    &__hintbox {
-        margin: -0.5rem 0 2.4rem;
-        padding: 0 2.4rem;
+    opacity: 1 !important;
 
-        .dc-hint-box {
-            &__icon {
-                align-self: flex-start;
+    @include mobile {
+        .dc-mobile-full-page-modal__header--border-bottom {
+            border-bottom: 2px solid var(--general-section-1);
+        }
+    }
+
+    &-body {
+        position: relative;
+        display: block;
+        padding-top: 2.4rem;
+
+        @include mobile {
+            & > form {
+                height: fit-content !important;
             }
         }
     }
 
-    &__content {
-        .dc-input {
-            margin-bottom: unset;
-        }
+    &-danger {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        align-items: flex-start;
     }
 
-    &__field {
+    &-field {
         margin-bottom: 0 !important;
-        margin-right: 0.7rem;
         flex: 1;
+        height: 4rem;
+
+        .dc-input__container {
+            width: 91%;
+            padding: 0.5rem 1rem 0.5rem 1.2rem;
+        }
 
         &--disable {
             opacity: 0.32;
@@ -27,11 +41,18 @@
 
         &--textarea {
             border-top: 1px solid var(--general-section-5);
+            margin-bottom: 3.5rem;
             padding: 1.8rem 2.4rem 0;
-        }
 
-        @include mobile {
-            margin: 0.8rem 0;
+            .dc-input {
+                &__container {
+                    height: 9.7rem;
+                }
+
+                &__field {
+                    padding-block: 1rem;
+                }
+            }
         }
 
         &-wrapper {
@@ -60,30 +81,72 @@
         }
     }
 
-    &__input {
+    &-form {
+        height: fit-content !important;
+    }
+
+    &-footer {
+        @include mobile {
+            border-top: 2px solid var(--general-section-1);
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-top: auto;
+            padding: 1.6rem;
+        }
+    }
+
+    &--input {
         display: flex;
         gap: 2rem;
         flex-direction: column;
         padding: 0 2.4rem 2rem;
+        margin-bottom: 2rem;
         .dc-input__wrapper {
+            margin-right: 0.2rem;
             margin-bottom: unset;
         }
 
         &-field {
             @include desktop() {
                 display: flex;
-                gap: 2rem;
+            }
+        }
+        @include mobile {
+            .dc-input {
+                &__container {
+                    width: 100%;
+                    padding: 0.5rem 1rem 0.5rem 1.2rem;
+                }
+                &__wrapper {
+                    margin: 0.8rem 0.2rem 1.4rem 0;
+                }
             }
         }
     }
 
-    &__line {
+    &-hintbox {
+        margin: -0.5rem 0 2.4rem;
+        padding: 0 2.4rem;
+
+        .dc-hint-box {
+            &__icon {
+                align-self: flex-start;
+            }
+        }
+    }
+
+    &-icon {
+        margin-right: 0.8rem;
+    }
+
+    &-line {
         border-top: 1px solid var(--general-section-5);
         margin: 1.6rem 0;
         width: 100%;
     }
 
-    &__payment-method {
+    &-payment-method {
         padding: 0 2.4rem;
         &--container {
             align-self: center;
@@ -110,7 +173,15 @@
         }
     }
 
-    &__sell-payment-methods {
+    &-receive-amount {
+        @include mobile {
+            border-top: 1px solid var(--general-section-2);
+            padding: 0.8rem 1.6rem;
+            background-color: var(--general-main-1);
+        }
+    }
+
+    &--sell-payment-methods {
         display: flex;
         flex-wrap: wrap;
         gap: 0.8rem;
@@ -145,5 +216,29 @@
         &--disable {
             opacity: 0.32;
         }
+    }
+
+    &--layout {
+        padding: unset;
+    }
+
+    &--error-message {
+        padding: 0 2.4rem;
+    }
+}
+
+.buy-sell-form-content {
+    .dc-input {
+        margin-bottom: unset;
+    }
+}
+.dc-modal__container_buy-sell-form {
+    .dc-modal-header--buy-sell-form {
+        border-bottom: 2px solid var(--general-section-5);
+    }
+
+    .dc-modal-footer--separator {
+        margin-top: 1rem;
+        border-top: 2px solid var(--general-section-5);
     }
 }

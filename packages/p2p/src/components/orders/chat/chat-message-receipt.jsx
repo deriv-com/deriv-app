@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@deriv/components';
 import ChatMessage from 'Utils/chat-message';
+import './chat-message-receipt.scss';
 
 const ChatMessageReceipt = ({ chat_channel, message, sendbird_user_id }) => {
     let icon_name;
@@ -22,7 +23,7 @@ const ChatMessageReceipt = ({ chat_channel, message, sendbird_user_id }) => {
         }
     }
 
-    return <Icon className='order-chat__messages-item-timestamp-receipt' icon={icon_name} size={16} />;
+    return <Icon className='chat-message-receipt' icon={icon_name} size={16} />;
 };
 
 ChatMessageReceipt.propTypes = {

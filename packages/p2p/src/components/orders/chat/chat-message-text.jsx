@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import PropTypes from 'prop-types';
+import './chat-message-text.scss';
 
 const ChatMessageText = React.memo(({ children, colour }) => (
-    <div className={`order-chat__messages-item-message`}>
+    <div className='chat-message-text'>
         <Text as='p' color={colour} line_height='m' size='xs'>
             {children}
         </Text>

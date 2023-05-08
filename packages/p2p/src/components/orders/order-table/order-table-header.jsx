@@ -5,16 +5,17 @@ import { Table } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import './order-table-header.scss';
 
 const OrderTableHeader = observer(({ children }) => {
     const { general_store } = useStores();
 
     return (
-        <Table className='orders__table'>
+        <Table className='order-table-header'>
             <Table.Header>
                 <Table.Row
-                    className={classnames('orders__table-grid', {
-                        'orders__table-grid--active': general_store.is_active_tab,
+                    className={classnames('order-table-grid', {
+                        'order-table-grid--active': general_store.is_active_tab,
                     })}
                 >
                     <Table.Head>{localize('Order')}</Table.Head>
@@ -26,7 +27,7 @@ const OrderTableHeader = observer(({ children }) => {
                     {general_store.order_table_type === 'active' && <Table.Head>{localize('Time')}</Table.Head>}
                 </Table.Row>
             </Table.Header>
-            <Table.Body className='orders__table-body'>{children}</Table.Body>
+            <Table.Body className='order-table-body'>{children}</Table.Body>
         </Table>
     );
 });

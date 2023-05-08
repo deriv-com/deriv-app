@@ -1,0 +1,12 @@
+.order-details-timer {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    text-align: center;
+
+    &-counter {
+        margin-top: 0.4rem;
+        border: 1px solid var(--border-normal);
+        border-radius: 16px;
+        padding: 0.4rem 0.8rem;
+    }
+}

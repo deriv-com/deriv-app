@@ -12,6 +12,7 @@ import { formatMoney, routes } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import './order-table-row.scss';
 
 const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
@@ -149,9 +150,9 @@ const OrderRow = ({ row: order }) => {
             <div onClick={onRowClick}>
                 <DesktopWrapper>
                     <Table.Row
-                        className={classNames('orders__table-row orders__table-grid', {
-                            'orders__table-grid--active': general_store.is_active_tab,
-                            'orders__table-row--attention': !isOrderSeen(id),
+                        className={classNames('order-table-row order-table-grid', {
+                            'order-table-grid--active': general_store.is_active_tab,
+                            'order-table-row--attention': !isOrderSeen(id),
                         })}
                     >
                         <Table.Cell>{order_type}</Table.Cell>
@@ -162,11 +163,11 @@ const OrderRow = ({ row: order }) => {
                                 as='div'
                                 size='xxs' // TODO: Change the font-size once design is ready
                                 weight='bold'
-                                className={classNames('orders__table-status', {
-                                    'orders__table-status--danger': should_highlight_danger,
-                                    'orders__table-status--alert': should_highlight_alert,
-                                    'orders__table-status--success': should_highlight_success,
-                                    'orders__table-status--disabled': should_highlight_disabled,
+                                className={classNames('order-table-status', {
+                                    'order-table-status--danger': should_highlight_danger,
+                                    'order-table-status--alert': should_highlight_alert,
+                                    'order-table-status--success': should_highlight_success,
+                                    'order-table-status--disabled': should_highlight_disabled,
                                 })}
                             >
                                 {status_string}
@@ -176,7 +177,7 @@ const OrderRow = ({ row: order }) => {
                         <Table.Cell>{is_buy_order_for_user ? offer_amount : transaction_amount}</Table.Cell>
                         <Table.Cell>
                             {general_store.is_active_tab ? (
-                                <div className='orders__table-time'>{remaining_time}</div>
+                                <div className='order-table-time'>{remaining_time}</div>
                             ) : (
                                 is_completed_order && (
                                     <RatingCellRenderer
@@ -201,7 +202,7 @@ const OrderRow = ({ row: order }) => {
                     >
                         <Table.Cell
                             className={classNames('orders__mobile-header', {
-                                'orders__table-grid--active': general_store.is_active_tab,
+                                'order-table-grid--active': general_store.is_active_tab,
                             })}
                         >
                             <Text
@@ -210,10 +211,10 @@ const OrderRow = ({ row: order }) => {
                                 size='xxs' // TODO: Change the font-size once design is ready
                                 weight='bold'
                                 className={classNames('orders__mobile-status', {
-                                    'orders__table-status--danger': should_highlight_danger,
-                                    'orders__table-status--alert': should_highlight_alert,
-                                    'orders__table-status--success': should_highlight_success,
-                                    'orders__table-status--disabled': should_highlight_disabled,
+                                    'order-table-status--danger': should_highlight_danger,
+                                    'order-table-status--alert': should_highlight_alert,
+                                    'order-table-status--success': should_highlight_success,
+                                    'order-table-status--disabled': should_highlight_disabled,
                                 })}
                             >
                                 {status_string}

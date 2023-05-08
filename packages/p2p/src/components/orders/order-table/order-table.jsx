@@ -7,6 +7,7 @@ import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';
+import './order-table.scss';
 
 const OrderTable = ({ showDetails }) => {
     const { general_store } = useStores();
@@ -27,12 +28,12 @@ const OrderTable = ({ showDetails }) => {
     const is_active_tab = general_store.order_table_type === order_list.ACTIVE;
     return (
         <React.Fragment>
-            <div className='orders-tab'>
-                <div className='orders-tab__header '>
+            <div className='order-table'>
+                <div className='order-table__toggle-wrapper '>
                     <ToggleContainer>
                         <ButtonToggle
                             buttons_arr={orders_list_filters}
-                            className='orders-tab__header-filter'
+                            className='order-table__toggle-wrapper-filter'
                             is_animated
                             name='filter'
                             onChange={({ target: { value } }) => general_store.setOrderTableType(value)}

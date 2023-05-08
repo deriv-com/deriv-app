@@ -1,14 +1,15 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
+import './payment-method-accordion-header.scss';
 
 const PaymentMethodAccordionHeader = ({ payment_method }) => {
     const method = payment_method.display_name.replace(/\s|-/gm, '');
 
     if (method === 'BankTransfer' || method === 'Other') {
         return (
-            <div className='order-details-card__accordion-row'>
-                <Icon className='order-details-card__accordion-icon' icon={`IcCashier${method}`} size={16} />
-                <div className='order-details-card__accordion-title'>
+            <div className='payment-method-accordion-header-row'>
+                <Icon className='payment-method-accordion-header-icon' icon={`IcCashier${method}`} size={16} />
+                <div className='payment-method-accordion-header-title'>
                     <Text color='prominent' size='xs'>
                         {payment_method.display_name}
                     </Text>
@@ -23,9 +24,9 @@ const PaymentMethodAccordionHeader = ({ payment_method }) => {
     }
 
     return (
-        <div className='order-details-card__accordion-row'>
+        <div className='payment-method-accordion-header-row'>
             <Icon icon='IcCashierEwallet' size={16} />
-            <div className='order-details-card__accordion-column'>
+            <div className='payment-method-accordion-header-column'>
                 <Text color='prominent' size='xs'>
                     {payment_method.display_name}
                 </Text>

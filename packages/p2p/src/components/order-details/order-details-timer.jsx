@@ -5,6 +5,7 @@ import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
+import './order-details-timer.scss';
 
 const OrderDetailsTimer = observer(() => {
     const getTimeLeft = time => {
@@ -36,9 +37,9 @@ const OrderDetailsTimer = observer(() => {
 
     if (should_show_order_timer) {
         return (
-            <div className='order-details-card__header-timer'>
+            <div className='order-details-timer'>
                 <div>{localize('Time left')}</div>
-                <div className='order-details-card__header-timer-counter'>{remaining_time}</div>
+                <div className='order-details-timer-counter'>{remaining_time}</div>
             </div>
         );
     }

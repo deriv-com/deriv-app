@@ -1,0 +1,15 @@
+.order-table-row {
+    padding: 2.4rem;
+    cursor: pointer;
+
+    &--attention {
+        background: var(--button-tertiary-hover);
+    }
+    &:not(.order-table-row--header) {
+        cursor: pointer;
+
+        &:hover {
+            background: var(--general-hover);
+        }
+    }
+}

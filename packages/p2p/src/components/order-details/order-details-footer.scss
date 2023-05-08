@@ -1,0 +1,22 @@
+.order-details-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    font-size: 1.4rem;
+    line-height: 1.43;
+    color: var(--text-general);
+    padding: 1.6rem 2.4rem;
+
+    @include mobile {
+        width: 100%;
+        padding: unset;
+    }
+    @include tablet-up {
+        width: 100%;
+        padding: 0 1.6rem 1.6rem;
+    }
+
+    &--right {
+        margin-left: auto;
+    }
+}

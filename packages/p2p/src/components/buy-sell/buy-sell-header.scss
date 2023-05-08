@@ -21,7 +21,7 @@
         z-index: 1;
     }
 
-    &__container {
+    &-container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -31,7 +31,7 @@
         }
     }
 
-    &__filters {
+    &-filters {
         height: 3.6rem;
         width: 16.8rem;
 
@@ -41,7 +41,7 @@
         }
     }
 
-    &__match-ads {
+    &-match-ads {
         display: flex;
         flex-direction: row;
 
@@ -61,7 +61,7 @@
         }
     }
 
-    &__row {
+    &-row {
         display: flex;
         flex-direction: row;
 
@@ -78,12 +78,13 @@
             border-radius: 4px;
             display: flex;
             margin-left: 0.8rem;
-            margin-top: 2.4rem;
+            margin-top: 2.5rem;
             padding: 1.3rem;
 
             @include mobile {
                 justify-self: center;
                 margin-left: 0;
+                margin-top: 0;
             }
         }
 
@@ -95,6 +96,6 @@
     }
 }
 
-.buy-sell-header__position-static {
+.buy-sell-header-position-static {
     position: static;
 }

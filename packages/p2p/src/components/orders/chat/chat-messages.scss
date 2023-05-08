@@ -1,4 +1,4 @@
-&__messages {
+.chat-messages {
     background-color: var(--general-main-1);
     margin-top: auto;
     margin-right: 0.8rem;
@@ -30,31 +30,16 @@
                 }
             }
         }
-        &-message {
-            border-radius: 1.6rem;
-            max-width: 100%;
-            padding: 0.8rem 1.6rem;
-            width: fit-content;
-            word-break: break-word;
-
-            > p {
-                white-space: pre-wrap;
-            }
-        }
         &-timestamp {
             align-items: center;
             display: flex;
             margin-top: 0.4rem;
-
-            &-receipt {
-                margin-left: 0.4rem;
-            }
         }
 
         &--incoming {
             align-items: flex-start;
 
-            .order-chat__messages-item-message {
+            .chat-message-text {
                 background-color: var(--general-active);
                 border-bottom-left-radius: $BORDER_RADIUS;
             }
@@ -62,7 +47,7 @@
         &--outgoing {
             align-items: flex-end;
 
-            .order-chat__messages-item-message {
+            .chat-message-text {
                 background-color: var(--brand-secondary);
                 border-bottom-right-radius: $BORDER_RADIUS;
             }

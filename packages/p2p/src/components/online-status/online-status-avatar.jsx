@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import OnlineStatusIcon from './online-status-icon';
-import './online-status.scss';
+import './online-status-avatar.scss';
 
 const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }) => {
     return (
-        <div className='online-status__avatar'>
-            <Text className='online-status__avatar-text' color='colored-background' line_height='m' size={text_size}>
+        <div className='online-status-avatar'>
+            <Text className='online-status-avatar-text' color='colored-background' line_height='m' size={text_size}>
                 {getShortNickname(nickname)}
             </Text>
 

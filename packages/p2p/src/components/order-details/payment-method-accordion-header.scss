@@ -1,0 +1,34 @@
+.payment-method-accordion-header {
+    &-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &-column {
+        display: flex;
+        flex-direction: column;
+        padding-left: 1.6rem;
+    }
+    &-icon {
+        flex-shrink: 0;
+    }
+    &-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 2rem;
+        word-break: break-word;
+    }
+
+    .dc-accordion__item {
+        border: none;
+    }
+
+    .dc-accordion__item-header {
+        align-items: center;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+    }
+}

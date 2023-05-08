@@ -1,0 +1,87 @@
+.order-table {
+    @include mobile {
+        height: 7.7rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        border-bottom: 1px solid var(--general-section-1);
+    }
+
+    &__toggle-wrapper {
+        width: fit-content;
+        border-radius: 4px;
+
+        &-filter {
+            .dc-button-menu__wrapper {
+                button.dc-btn {
+                    height: 3.6rem;
+                    min-width: 12rem !important;
+                    white-space: nowrap;
+                    padding: 0.8rem 1.8rem;
+                }
+            }
+        }
+        @include mobile {
+            align-self: center;
+        }
+    }
+
+    &-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-time {
+        border: solid 1px var(--border-normal);
+        border-radius: 16px;
+        width: 78px;
+        height: 24px;
+        padding: 2px;
+        text-align: center;
+        font-size: var(--text-size-xxs);
+        letter-spacing: 1px;
+    }
+    &-grid {
+        // Sizes are different for inactive due to timeout being full time string.
+        grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 2fr;
+
+        &--active {
+            grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 1.5fr;
+            margin-right: 0.5rem;
+        }
+    }
+    &-status {
+        border-radius: 16px;
+        padding: 0.2rem 1.6rem;
+        white-space: nowrap;
+
+        &--danger {
+            color: var(--brand-red-coral);
+            background-color: rgba(236, 63, 63, 0.16);
+        }
+        &--alert {
+            color: var(--status-warning);
+            background-color: rgba(255, 173, 58, 0.16);
+        }
+        &--success {
+            color: var(--text-profit-success);
+            background-color: rgba(75, 180, 179, 0.16);
+        }
+        &--disabled {
+            color: var(--text-less-prominent);
+            background-color: rgba(153, 153, 153, 0.16);
+        }
+        &--info {
+            color: var(--status-info);
+            background-color: rgba(28, 90, 227, 0.16);
+        }
+    }
+
+    .dc-table-header {
+        > .order-table-grid {
+            padding: 0 2.4rem;
+        }
+    }
+}

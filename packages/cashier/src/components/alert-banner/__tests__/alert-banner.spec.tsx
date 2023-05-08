@@ -6,7 +6,7 @@ describe('<AlertBanner />', () => {
     it('should render the icon and message props passed for the banner', () => {
         const props: React.ComponentProps<typeof AlertBanner> = {
             icon: 'IcAlertWarningDark',
-            message: 'Alert banner test messsage.',
+            message: 'Alert banner test message.',
         };
         render(<AlertBanner {...props} />);
         const dt_alert_banner_icon = screen.getByTestId('dt_alert_banner_icon');

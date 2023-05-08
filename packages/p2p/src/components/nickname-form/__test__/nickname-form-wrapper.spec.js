@@ -23,13 +23,13 @@ describe('<NicknameFormWrapper/>', () => {
     it('renders mobile view if isMobile is evaluted to true', () => {
         isMobile.mockImplementation(() => true);
         render(<NicknameFormWrapper />);
-        expect(screen.getByTestId('mobile_nicknme_form')).toBeInTheDocument();
+        expect(screen.getByTestId('mobile_nickname_form')).toBeInTheDocument();
     });
 
     it('renders the desktop view when isMobile is evaluated to false', () => {
         isMobile.mockReset();
         render(<NicknameFormWrapper />);
         expect(screen.getByText('Modal')).toBeInTheDocument();
-        expect(screen.queryByTestId('mobile_nicknme_form')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('mobile_nickname_form')).not.toBeInTheDocument();
     });
 });

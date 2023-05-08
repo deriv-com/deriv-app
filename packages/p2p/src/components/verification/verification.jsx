@@ -16,7 +16,7 @@ const VerificationWrapper = ({ should_wrap, children }) => {
                 className={classNames('verification__wrapper', {
                     'verification__wrapper--mobile': isMobile(),
                 })}
-                data-testid='verification_wrapper'
+                data-testid='dp2p-verification_wrapper'
             >
                 {children}
             </div>
@@ -54,7 +54,7 @@ const Verification = ({ should_wrap }) => {
 
     return (
         <VerificationWrapper should_wrap={should_wrap}>
-            <div className='verification' data-testid='verification_container'>
+            <div className='verification' data-testid='dp2p-verification_container'>
                 <Icon icon='IcCashierSendEmail' className='verification__icon' size={102} />
                 <div className='verification__text'>
                     <div className='verification__text-title'>

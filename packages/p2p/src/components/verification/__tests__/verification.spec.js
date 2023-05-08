@@ -26,7 +26,7 @@ describe('<Verification />', () => {
 
         render(<Verification should_wrap={false} />);
 
-        const el_dp2p_verification_container = screen.getByTestId('dp2p-verification_container');
+        const el_dp2p_verification_container = screen.getByTestId('dt_verification_container');
         expect(el_dp2p_verification_container).toBeInTheDocument();
     });
 
@@ -37,7 +37,7 @@ describe('<Verification />', () => {
 
         render(<Verification should_wrap />);
 
-        const el_dp2p_verification_wrapper = screen.getByTestId('dp2p-verification_wrapper');
+        const el_dp2p_verification_wrapper = screen.getByTestId('dt_verification_wrapper');
         expect(el_dp2p_verification_wrapper).toBeInTheDocument();
     });
 

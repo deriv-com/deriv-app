@@ -1,4 +1,5 @@
 import React from 'react';
+import { DemoLight, DemoDark } from '../../../public/images/index';
 import classNames from 'classnames';
 import { Badge, GradientBackground, Icon, Text, Watermark } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
@@ -82,10 +83,7 @@ const CashierWalletModalHeader = ({
 
     return (
         <GradientBackground {...getCashierWalletModalBackgrounds(getBackgroundName())}>
-            <Watermark
-                image='url(/packages/appstore/src/public/images/wallet-demo-bg.svg)'
-                // image='url(https://i.postimg.cc/jqGY1q6R/Style-white.png)' - works fine
-            />
+            <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} />
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hide-title`]: !show_wallet_name,

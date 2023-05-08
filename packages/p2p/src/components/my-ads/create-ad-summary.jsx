@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { formatMoney } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
@@ -10,8 +10,12 @@ import { useStores } from 'Stores';
 import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
 
 const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
-    const { floating_rate_store, general_store } = useStores();
-    const { currency, local_currency_config } = general_store.client;
+    const {
+        client: { currency, local_currency_config },
+    } = useStore();
+
+    const { floating_rate_store } = useStores();
+
     const market_feed = floating_rate_store.rate_type === ad_type.FLOAT ? floating_rate_store.market_rate : null;
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 

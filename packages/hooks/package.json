@@ -6,7 +6,6 @@
     "dependencies": {
         "@deriv/api": "^1.0.0",
         "@deriv/stores": "^1.0.0",
-        "@deriv/shared": "^1.0.0",
         "react": "^17.0.2"
     },
     "devDependencies": {

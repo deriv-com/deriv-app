@@ -1,7 +1,8 @@
 /** Add types that are shared between components */
 
+import { InferProps, Requireable } from 'prop-types';
+
 import { Authorize } from '@deriv/api-types';
-import { Requireable, InferProps } from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {
@@ -13,15 +14,11 @@ export type TToken = {
 
 export type TPoaStatusProps = {
     needs_poi: boolean;
-    is_description_enabled?: boolean;
+    redirect_button: React.ReactNode;
 };
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;
-};
-
-export type TPlatformContext = {
-    is_appstore: boolean;
 };
 
 export type TCurrencyConfig = {
@@ -56,6 +53,7 @@ export type TRealAccount = {
     previous_currency: string;
     success_message: string;
     error_code: number;
+    error_details?: Record<string, string>;
 };
 
 export type TApiContext = {
@@ -93,7 +91,6 @@ export type TRouteConfig = TRoute & {
 };
 
 export type TBinaryRoutes = {
-    is_pre_appstore: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
 };

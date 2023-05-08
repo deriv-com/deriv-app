@@ -40,7 +40,6 @@ const DTraderHeader = ({
     is_logging_in,
     is_mt5_allowed,
     is_notifications_visible,
-    is_pre_appstore,
     is_route_modal_on,
     is_virtual,
     notifications_count,
@@ -50,6 +49,9 @@ const DTraderHeader = ({
     toggleAccountsDialog,
     toggleNotifications,
     is_switching,
+    toggleReadyToDepositModal,
+    has_any_real_account,
+    setTogglePlatformType,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -62,7 +64,14 @@ const DTraderHeader = ({
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
 
-    const onClickDeposit = () => history.push(routes.cashier_deposit);
+    const handleClickCashier = () => {
+        if (!has_any_real_account && is_virtual) {
+            toggleReadyToDepositModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
+
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -94,7 +103,7 @@ const DTraderHeader = ({
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
-                            is_pre_appstore={is_pre_appstore}
+                            setTogglePlatformType={setTogglePlatformType}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -146,7 +155,7 @@ const DTraderHeader = ({
                             is_notifications_visible={is_notifications_visible}
                             is_logged_in={is_logged_in}
                             is_virtual={is_virtual}
-                            onClickDeposit={onClickDeposit}
+                            onClickDeposit={handleClickCashier}
                             notifications_count={notifications_count}
                             toggleAccountsDialog={toggleAccountsDialog}
                             toggleNotifications={toggleNotifications}
@@ -194,11 +203,13 @@ DTraderHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    is_pre_appstore: PropTypes.bool,
     is_switching: PropTypes.bool,
+    toggleReadyToDepositModal: PropTypes.func,
+    has_any_real_account: PropTypes.bool,
+    setTogglePlatformType: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, notifications }) => ({
+export default connect(({ client, common, ui, notifications, traders_hub }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -229,6 +240,8 @@ export default connect(({ client, common, ui, notifications }) => ({
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,
-    is_pre_appstore: client.is_pre_appstore,
     is_switching: client.is_switching,
+    toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
+    has_any_real_account: client.has_any_real_account,
+    setTogglePlatformType: traders_hub.setTogglePlatformType,
 }))(withRouter(DTraderHeader));

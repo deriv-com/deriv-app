@@ -1,0 +1,26 @@
+.strike-widget {
+    align-items: center;
+    background-color: var(--general-main-1);
+    border-radius: $BORDER_RADIUS;
+    display: grid;
+    flex: 1;
+    grid-template-areas: 'spot amount unit';
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 4rem;
+    margin: 0 0 0.8rem;
+    padding: 0 0.8rem;
+    box-sizing: border-box;
+
+    .mobile-widget {
+        &__spot {
+            grid-area: spot;
+        }
+        &__amount {
+            grid-area: amount;
+        }
+        &__type {
+            grid-area: unit;
+            justify-self: end;
+        }
+    }
+}

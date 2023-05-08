@@ -8,6 +8,7 @@ export const CFD_TEXT = {
     synthetic: () => localize('Derived'),
     synthetic_bvi: () => localize('Derived BVI'),
     synthetic_svg: () => localize('Derived SVG'),
+    synthetic_v: () => localize('Derived Vanuatu'),
     financial: () => localize('Financial'),
     financial_bvi: () => localize('Financial BVI'),
     financial_fx: () => localize('Financial Labuan'),

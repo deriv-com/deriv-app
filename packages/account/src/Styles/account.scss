@@ -379,6 +379,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .cfd-personal-details-modal__form & {
                 margin: unset;
+                max-width: unset;
             }
 
             &--2-cols {
@@ -420,7 +421,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
 
             .dc-input__label {
-                top: 0.9rem;
+                top: 1rem;
             }
 
             @include mobile {
@@ -495,6 +496,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include mobile {
                     width: auto;
                     text-align: center;
+                    align-self: center;
                     &--dashboard {
                         margin: 0 1.6rem;
                         text-align: left;
@@ -705,10 +707,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 1.6rem;
             }
 
-            &__single-icon {
-                margin-right: 0.4rem;
-            }
-
             &__icons {
                 display: inline-grid;
                 grid-column-gap: 0.8rem;
@@ -786,7 +784,7 @@ $MIN_HEIGHT_FLOATING: calc(
                             width: inherit;
                             max-width: 40rem;
                             .email-input {
-                                margin-bottom: 1.6rem;
+                                margin-bottom: 0.8rem;
                             }
                         }
                         width: 40rem;
@@ -2552,9 +2550,18 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__input {
-            margin: 16px 0 0;
+            margin: 0.8rem 0 0;
             max-width: 400px;
             text-overflow: ellipsis;
+            .dc-input {
+                &__container {
+                    height: 9.8rem;
+                    padding: 0.5rem 1rem;
+                }
+                &__field[type='textarea'] {
+                    height: 8rem;
+                }
+            }
 
             > input {
                 min-height: 96px;

@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -79,13 +78,12 @@ export type TError = {
     message: string;
 };
 
-export type TCFDResetPasswordModal = RouteComponentProps & {
+export type TCFDResetPasswordModal = {
     current_list: Record<string, DetailsOfEachMT5Loginid>;
     email: string;
     context?: RootStore;
     is_cfd_reset_password_modal_enabled: boolean;
     is_eu: boolean;
-    is_pre_appstore: boolean;
     is_logged_in: boolean;
     platform: CFD_Platform;
     setCFDPasswordResetModal: (value: boolean) => void;
@@ -174,6 +172,8 @@ export type TJurisdictionCardProps = {
     disabled: boolean;
 };
 
+export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
+
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;
     account_type: string;
@@ -185,6 +185,7 @@ export type TVerificationStatusBannerProps = {
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
 };
 
 export type TJurisdictionCheckBoxProps = {
@@ -194,6 +195,7 @@ export type TJurisdictionCheckBoxProps = {
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
 };
 type TOpenAccountTransferMeta = {
     category: string;
@@ -215,6 +217,7 @@ export type TJurisdictionModalProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
     show_eu_related_content: boolean;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     fetchAccountSettings: () => void;
@@ -227,18 +230,14 @@ export type TJurisdictionModalProps = {
 };
 
 export type TJurisdictionModalContentProps = {
-    account_status: GetAccountStatus;
     context: RootStore;
     account_type: string;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
-    checked: boolean;
-    setChecked: React.Dispatch<React.SetStateAction<boolean>>;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
-    should_restrict_bvi_account_creation: boolean;
     is_virtual: boolean;
 };
 
@@ -249,6 +248,7 @@ export type TJurisdictionModalFootNoteProps = {
     context: RootStore;
     jurisdiction_selected_shortcode: string;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
 };
 
 export type TCompareAccountRowItem = {
@@ -269,6 +269,8 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     is_pre_appstore_setting: boolean;
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
+    CFDs_restricted_countries: string[];
+    is_preappstore_restricted_cr_demo_account: boolean;
 };
 
 export type TCompareAccountContentProps = {
@@ -292,6 +294,7 @@ export type TDMT5CompareModalContentProps = {
     is_logged_in: boolean;
     is_pre_appstore_setting: boolean;
     is_preappstore_cr_demo_account: boolean;
+    is_preappstore_restricted_cr_demo_account: boolean;
     is_real_enabled: boolean;
     is_virtual: boolean;
     openDerivRealAccountNeededModal: () => void;
@@ -304,6 +307,7 @@ export type TDMT5CompareModalContentProps = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
     should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
     toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
@@ -315,6 +319,7 @@ export type TDMT5CompareModalContentProps = {
     no_CR_account: boolean;
     is_eu_user: boolean;
     no_MF_account: boolean;
+    CFDs_restricted_countries: string[];
 };
 
 export type TCFDDbviOnboardingProps = {

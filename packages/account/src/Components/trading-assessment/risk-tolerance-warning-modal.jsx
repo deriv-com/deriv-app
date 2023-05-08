@@ -1,45 +1,82 @@
 import React from 'react';
-import { Button, DesktopWrapper, Icon, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
+import { Button, Icon, Modal, Text, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const RiskToleranceWarningModal = ({ show_risk_modal, onClick, title, button_text, body_content, has_icon }) => {
+const RiskToleranceWarningModal = ({
+    show_risk_modal,
+    handleAcceptRisk,
+    title,
+    button_text,
+    body_content,
+    has_sub_header = false,
+}) => {
     return (
         <React.Fragment>
-            <MobileWrapper>
-                <MobileDialog
-                    portal_element_id='modal_root'
-                    visible={show_risk_modal}
-                    title={title}
-                    wrapper_classname='risk-acceptance'
-                    has_close_icon={false}
-                >
-                    <Icon icon='IcRedWarning' size={65} />
-                    <Text as='p' size='xs' align='center' line_height='l'>
-                        {body_content}
-                    </Text>
-                    <Button type='button' large text={button_text || localize('OK')} primary onClick={onClick} />
-                </MobileDialog>
-            </MobileWrapper>
             <DesktopWrapper>
                 <Modal
                     width='44rem'
-                    height={has_icon ? '44rem' : '37.4rem'}
                     title={title}
+                    height='41rem'
                     is_open={show_risk_modal}
-                    has_close_icon={false}
                     className='center-risk-modal'
+                    toggleModal={handleAcceptRisk}
+                    has_close_icon={false}
                 >
                     <Modal.Body>
-                        {has_icon && <Icon icon='IcRedWarning' size={63} />}
-                        <Text as='p' size='xs' align='center' line_height='0.24rem' className='risk-acceptance__text'>
+                        <Icon icon='IcRedWarning' size='63' />
+                        <Text as='p' size='xs' align='center' line_height='s' className='risk-acceptance__text'>
                             {body_content}
                         </Text>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type='button' large text={button_text || localize('OK')} primary onClick={onClick} />
+                        <Button
+                            type='button'
+                            large
+                            text={button_text || localize('OK')}
+                            primary
+                            onClick={handleAcceptRisk}
+                        />
                     </Modal.Footer>
                 </Modal>
             </DesktopWrapper>
+            <MobileWrapper>
+                <MobileDialog
+                    visible={show_risk_modal}
+                    title={has_sub_header ? localize('Trading Experience Assessment') : title}
+                    portal_element_id='modal_root'
+                    has_close_icon={false}
+                >
+                    <Modal.Body className='risk-tolerance-modal'>
+                        {has_sub_header ? (
+                            <Text
+                                size='xs'
+                                line_height='s'
+                                weight='bold'
+                                as='p'
+                                className='risk-tolerance-modal__title'
+                            >
+                                {title}
+                                <div className='risk-tolerance-modal__title--separator' />
+                            </Text>
+                        ) : null}
+                        <div className='risk-tolerance-modal__wrapper'>
+                            <Icon icon='IcRedWarning' size='65' />
+                            <Text as='p' size='xs' align='center' line_height='l' className='risk-acceptance__text'>
+                                {body_content}
+                            </Text>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer className='risk-tolerance-modal__footer'>
+                        <Button
+                            type='button'
+                            large
+                            text={button_text || localize('OK')}
+                            primary
+                            onClick={handleAcceptRisk}
+                        />
+                    </Modal.Footer>
+                </MobileDialog>
+            </MobileWrapper>
         </React.Fragment>
     );
 };

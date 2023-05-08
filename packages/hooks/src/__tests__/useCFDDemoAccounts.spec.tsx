@@ -15,7 +15,7 @@ describe('useCFDDemoAccounts', () => {
         expect(result.current?.length).toBe(0);
     });
 
-    test('should return empty array when user has no cfd demo accounts', async () => {
+    test('should return empty array when user has no CFD demo accounts', async () => {
         const mock = mockStore({
             client: {
                 mt5_login_list: [

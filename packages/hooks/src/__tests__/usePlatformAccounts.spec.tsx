@@ -33,7 +33,7 @@ describe('usePlatformRealAccounts', () => {
         );
         const { result } = renderHook(() => usePlatformAccounts(), { wrapper });
 
-        expect(result.current.demo?.loginid).toBe('VR1234');
+        expect(result.current.demo?.loginid).toBe(mock.client.accounts.VR1234.loginid);
         expect(result.current.real.length).toBe(0);
     });
 

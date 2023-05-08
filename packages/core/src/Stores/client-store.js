@@ -23,7 +23,6 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    CookieStorage,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -1190,6 +1189,9 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
+            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
+            Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
+
             this.has_cookie_account = true;
         } else {
             removeCookies('region', 'client_information', 'is_p2p_disabled');
@@ -2675,9 +2677,6 @@ export default class ClientStore extends BaseStore {
         );
 
         const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
-
-        const p2p_cookie = new CookieStorage('is_p2p_disabled');
-        p2p_cookie.set('is_p2p_disabled', !is_p2p_visible);
 
         return is_p2p_visible;
     }

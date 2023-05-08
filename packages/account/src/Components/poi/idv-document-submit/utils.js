@@ -1,13 +1,14 @@
 import { getUrlBase } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 export const documentAdditionalError = (document_additional, document_additional_format) => {
     let error_message = null;
     if (!document_additional) {
-        error_message = 'Please enter your document number. ';
+        error_message = localize('Please enter your document number. ');
     } else {
         const format_regex = getRegex(document_additional_format);
         if (!format_regex.test(document_additional)) {
-            error_message = 'Please enter the correct format. ';
+            error_message = localize('Please enter the correct format. ');
         }
     }
 
@@ -71,24 +72,24 @@ const idv_document_data = {
     },
     za: {
         national_id: {
-            new_display_name: 'National ID',
+            new_display_name: localize('National ID'),
             example_format: '1234567890123',
             sample_image: getImageLocation('za_national_identity_card.png'),
         },
         national_id_no_photo: {
-            new_display_name: 'National ID (No Photo)',
+            new_display_name: localize('National ID (No Photo)'),
             example_format: '1234567890123',
             sample_image: '',
         },
     },
     ng: {
         bvn: {
-            new_display_name: 'Bank Verification Number',
+            new_display_name: localize('Bank Verification Number'),
             example_format: '12345678901',
             sample_image: '',
         },
         cac: {
-            new_display_name: 'Corporate Affairs Commission',
+            new_display_name: localize('Corporate Affairs Commission'),
             example_format: '12345678',
             sample_image: '',
         },
@@ -98,22 +99,22 @@ const idv_document_data = {
             sample_image: getImageLocation('ng_drivers_license.png'),
         },
         nin: {
-            new_display_name: 'National Identity Number',
+            new_display_name: localize('National Identity Number'),
             example_format: '12345678901',
             sample_image: '',
         },
         nin_slip: {
-            new_display_name: 'National Identity Number Slip',
+            new_display_name: localize('National Identity Number Slip'),
             example_format: '12345678901',
             sample_image: getImageLocation('ng_nin_slip.png'),
         },
         tin: {
-            new_display_name: 'Taxpayer identification number',
+            new_display_name: localize('Taxpayer identification number'),
             example_format: '12345678-1234',
             sample_image: '',
         },
         voter_id: {
-            new_display_name: 'Voter ID',
+            new_display_name: localize('Voter ID'),
             example_format: '1234567890123456789',
             sample_image: getImageLocation('ng_voter_id.png'),
         },
@@ -121,52 +122,52 @@ const idv_document_data = {
     gh: {
         drivers_license: {
             new_display_name: '',
-            example_format: 'B1234567',
+            example_format: '12345678A1',
             sample_image: '',
         },
         national_id: {
-            new_display_name: 'National ID',
+            new_display_name: localize('National ID'),
             example_format: 'GHA-123456789-1',
             sample_image: '',
         },
         passport: {
-            new_display_name: 'Passport',
+            new_display_name: localize('Passport'),
             example_format: 'G1234567',
             sample_image: '',
         },
         ssnit: {
-            new_display_name: 'Social Security and National Insurance Trust',
+            new_display_name: localize('Social Security and National Insurance Trust'),
             example_format: 'C123456789012',
             sample_image: '',
         },
         voter_id: {
-            new_display_name: 'Voter ID',
+            new_display_name: localize('Voter ID'),
             example_format: '01234567890',
             sample_image: '',
         },
     },
     br: {
         cpf: {
-            new_display_name: 'CPF',
+            new_display_name: localize('CPF'),
             example_format: '123.456.789-12',
             sample_image: '',
         },
     },
     ug: {
         national_id: {
-            new_display_name: 'National ID',
+            new_display_name: localize('National ID'),
             example_format: 'CM12345678PE1D',
             sample_image: getImageLocation('ug_national_identity_card.png'),
         },
         national_id_no_photo: {
-            new_display_name: 'National ID (No Photo)',
+            new_display_name: localize('National ID (No Photo)'),
             example_format: 'CM12345678PE1D',
             sample_image: '',
         },
     },
     zw: {
         national_id: {
-            new_display_name: 'National ID',
+            new_display_name: localize('National ID'),
             example_format: '081234567F53',
             sample_image: getImageLocation('zw_national_identity_card.png'),
         },

@@ -38,6 +38,8 @@ module.exports = {
         // 'no-multi-spaces'                   : [2, { exceptions: { 'BinaryExpression': true, 'VariableDeclarator': true, 'ImportDeclaration': true } }],
         'no-param-reassign': ['error', { props: false }],
         'no-restricted-globals': 0,
+        'no-shadow': 'off',
+        '@typescript-eslint/no-shadow': 'error',
         'no-script-url': 0,
         // 'no-trailing-spaces'                : ['error', { skipBlankLines: true }],
         // 'object-curly-spacing'              : ['error', 'always', { arraysInObjects: true, objectsInObjects: true }],

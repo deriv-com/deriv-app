@@ -178,7 +178,6 @@ const CFDAccountCardComponent = ({
     is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
-    is_eu,
     is_logged_in,
     is_virtual,
     isEligibleForMoreDemoMt5Svg,
@@ -542,15 +541,11 @@ const CFDAccountCardComponent = ({
                                 <div className='cfd-account-card__item' key={index}>
                                     {existing_data?.display_balance && is_logged_in && !show_eu_related_content && (
                                         <div className='cfd-account-card__item--banner'>
-                                            <Localize
-                                                i18n_default_text={
-                                                    acc.landing_company_short &&
-                                                    !['svg', 'bvi'].includes(acc?.landing_company_short)
-                                                        ? acc.landing_company_short?.charAt(0).toUpperCase() +
-                                                          acc.landing_company_short.slice(1)
-                                                        : acc.landing_company_short?.toUpperCase()
-                                                }
-                                            />
+                                            {acc.landing_company_short &&
+                                            !['svg', 'bvi'].includes(acc?.landing_company_short)
+                                                ? acc.landing_company_short?.charAt(0).toUpperCase() +
+                                                  acc.landing_company_short.slice(1)
+                                                : acc.landing_company_short?.toUpperCase()}
                                         </div>
                                     )}
                                     {(acc as TTradingPlatformAccounts)?.display_login && (

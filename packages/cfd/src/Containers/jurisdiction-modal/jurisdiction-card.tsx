@@ -46,7 +46,7 @@ const JurisdictionCard = ({
                 onClick={disabled ? () => undefined : () => cardSelection(type_of_card)}
                 style={[1, 2, 3].includes(number_of_cards) ? { width: '32em' } : { width: '27.6em' }}
             >
-                {card_values.is_over_header_available && (
+                {card_values.over_header && (
                     <div className={classNames(`${card_classname}__over-header`)}>
                         <Text as='p' color={'info-blue'} line_height='xxl' weight='bold'>
                             <Localize i18n_default_text={card_values.over_header} />

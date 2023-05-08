@@ -27,7 +27,7 @@ const JurisdictionCard = ({
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
     };
 
-    const toggleCardFlip = (event: React.MouseEvent) => {
+    const toggleCardFlip: React.MouseEventHandler<HTMLSpanElement> = event => {
         event.stopPropagation();
         setIsCardFlipped(!is_card_flipped);
     };

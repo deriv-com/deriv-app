@@ -182,7 +182,7 @@ export type TJurisdictionCardProps = {
 export type TJurisdictionCardBackProps = {
     card_classname: string;
     is_card_selected: boolean;
-    toggleCardFlip: (event: React.MouseEvent) => void;
+    toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
@@ -196,7 +196,7 @@ export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
 
 export type TJurisdictionClickableDescriptionProps = {
     clickable_description: Array<TClickableDescription>;
-    toggleCardFlip: (event: React.MouseEvent) => void;
+    toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionTitleIndicatorProps = {
@@ -209,7 +209,7 @@ export type TJurisdictionTitleIndicatorProps = {
 export type TJurisdictionCardSectionProps = {
     account_status: GetAccountStatus;
     card_section_item: TJurisdictionCardSection;
-    toggleCardFlip: (event: React.MouseEvent) => void;
+    toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
     type_of_card: TJurisdictionCardType;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };

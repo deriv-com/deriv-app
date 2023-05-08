@@ -145,7 +145,7 @@ describe('useRealTotalAssetCurrency', () => {
         );
         const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
 
-        expect(result.current).toBe('USDC');
+        expect(result.current).toBe(mock.client.currency);
     });
 
     test('should return undefined when user only has crypto account with no currency set', async () => {

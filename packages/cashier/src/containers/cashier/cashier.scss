@@ -90,13 +90,12 @@
             }
         }
         .withdraw__input {
-            margin: 2.4rem 0 !important;
             width: fit-content;
             min-width: 36rem;
             @include mobile {
                 width: 100%;
                 min-width: auto;
-                margin-bottom: 2.6rem !important;
+                margin-bottom: 1.3rem !important;
             }
         }
     }
@@ -111,6 +110,7 @@
     &__form {
         &-submit {
             text-align: right;
+            margin-top: 3.2rem;
         }
         &-submit-button {
             margin: 3.9rem 0 2.4rem 2.4rem;

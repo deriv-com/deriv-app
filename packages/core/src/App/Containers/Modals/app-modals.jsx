@@ -8,8 +8,9 @@ import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
-import ExitTradersHubModal from './exit-traders-hub-modal';
+import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -75,9 +76,10 @@ const AppModals = ({
     active_account_landing_company,
     is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible,
-    is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible,
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
+    is_need_real_account_for_cashier_modal_visible,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -86,7 +88,9 @@ const AppModals = ({
 
     React.useEffect(() => {
         if (is_logged_in) {
-            fetchFinancialAssessment().then(response => setCFDScore(response?.cfd_score ?? 0));
+            fetchFinancialAssessment().then(response => {
+                setCFDScore(response?.cfd_score ?? 0);
+            });
         }
     }, [is_logged_in]);
 
@@ -148,10 +152,15 @@ const AppModals = ({
         ComponentToLoad = <CompletedAssessmentModal />;
     } else if (is_deriv_account_needed_modal_visible) {
         ComponentToLoad = <DerivRealAccountRequiredModal />;
-    } else if (is_exit_traders_hub_modal_visible) {
-        ComponentToLoad = <ExitTradersHubModal />;
     } else if (should_show_risk_accept_modal) {
         ComponentToLoad = <RiskAcceptTestWarningModal />;
+    }
+    if (is_ready_to_deposit_modal_visible) {
+        ComponentToLoad = <ReadyToDepositModal />;
+    }
+
+    if (is_need_real_account_for_cashier_modal_visible) {
+        ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
 
     return (
@@ -183,7 +192,8 @@ export default connect(({ client, ui, traders_hub }) => ({
     active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,
     is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
-    is_exit_traders_hub_modal_visible: ui.is_exit_traders_hub_modal_visible,
+    is_ready_to_deposit_modal_visible: ui.is_ready_to_deposit_modal_visible,
+    is_need_real_account_for_cashier_modal_visible: ui.is_need_real_account_for_cashier_modal_visible,
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,

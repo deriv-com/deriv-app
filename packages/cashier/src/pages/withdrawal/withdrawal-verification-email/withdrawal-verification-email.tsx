@@ -9,6 +9,7 @@ import EmailVerificationEmptyState from '../../../components/email-verification-
 import EmptyState from '../../../components/empty-state';
 import Error from '../../../components/error';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import ErrorStore from '../../../stores/error-store';
 
 const WithdrawalVerificationEmail = observer(() => {
     const verify = useVerifyEmail('payment_withdraw');
@@ -19,7 +20,7 @@ const WithdrawalVerificationEmail = observer(() => {
         transaction_history.onMount();
     }, [transaction_history]);
 
-    if (verify.error) return <Error error={verify.error} />;
+    if (verify.error) return <Error error={verify.error as ErrorStore} />;
 
     if (verify.has_been_sent) return <EmailVerificationEmptyState type={'payment_withdraw'} />;
 

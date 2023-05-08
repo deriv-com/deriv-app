@@ -17,6 +17,8 @@ const TradingAssessmentExistingUser = ({
     setShouldShowAssessmentCompleteModal,
     setIsTradingAssessmentForExistingUserEnabled,
     setIsTradingAssessmentForNewUserEnabled,
+    setShouldShowTradingAssessmentModal,
+    setSubSectionIndex,
 }) => {
     // Get the Trading assessment questions and initial_value
     const [form_values, setFormValue] = React.useState({});
@@ -63,13 +65,18 @@ const TradingAssessmentExistingUser = ({
         setShouldShowTradeAssessmentForm(true);
     };
 
+    const handleCancel = () => {
+        setShouldShowTradingAssessmentModal(true);
+        setShouldShowTradeAssessmentForm(false);
+    };
+
     if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
                 show_risk_modal={should_show_risk_warning_modal}
                 title={localize('Risk Tolerance Warning')}
                 button_text={localize('Yes, I understand the risk.')}
-                onClick={handleAcceptRisk}
+                handleAcceptRisk={handleAcceptRisk}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, you must confirm that you understand your capital is at risk.'
@@ -77,6 +84,7 @@ const TradingAssessmentExistingUser = ({
                     />
                 }
                 has_icon
+                has_sub_header
             />
         );
     } else if (should_show_trade_assessment_form) {
@@ -95,9 +103,10 @@ const TradingAssessmentExistingUser = ({
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            onCancel={handleCancel}
+                            setSubSectionIndex={setSubSectionIndex}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -112,9 +121,10 @@ const TradingAssessmentExistingUser = ({
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            onCancel={handleCancel}
+                            setSubSectionIndex={setSubSectionIndex}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </MobileDialog>
                 </MobileWrapper>
@@ -136,4 +146,6 @@ export default connect(({ client, ui }) => ({
     setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
     active_account_landing_company: client.landing_company_shortcode,
     setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
+    setSubSectionIndex: ui.setSubSectionIndex,
+    setShouldShowTradingAssessmentModal: ui.setShouldShowTradingAssessmentModal,
 }))(TradingAssessmentExistingUser);

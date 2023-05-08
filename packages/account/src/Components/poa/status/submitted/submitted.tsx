@@ -3,13 +3,13 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PlatformContext } from '@deriv/shared';
-import { TPlatformContext, TPoaStatusProps } from 'Types';
+import { TPoaStatusProps } from 'Types';
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import PoiButton from 'Components/poi/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Submitted = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
-    const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);
+export const Submitted = ({ needs_poi, redirect_button }: TPoaStatusProps) => {
+    const { is_appstore } = React.useContext(PlatformContext);
     const message = localize('Your documents were submitted successfully');
     if (needs_poi) {
         return (
@@ -48,7 +48,7 @@ export const Submitted = ({ needs_poi, is_description_enabled = true }: TPoaStat
                 icon={<Icon icon='IcPoaVerified' size={128} />}
                 full_width={is_appstore}
             >
-                {!is_description_enabled && <ContinueTradingButton />}
+                {redirect_button || <ContinueTradingButton />}
             </IconMessageContent>
         </div>
     );

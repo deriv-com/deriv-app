@@ -20,7 +20,7 @@ describe('<BinaryRoutes />', () => {
 
     it('should render BinaryRoutes with mocked route component', () => {
         render(
-            <PlatformContext.Provider value={{ is_appstore: false }}>
+            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <Router history={history}>
                     <BinaryRoutes />
                 </Router>

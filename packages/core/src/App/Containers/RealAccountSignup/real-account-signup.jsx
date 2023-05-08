@@ -29,15 +29,11 @@ const modal_pages_indices = {
     choose_crypto_currency: 6,
     add_currency: 7,
     finished_add_currency: 8,
+    restricted_country_signup_error: 9,
+    invalid_input_error: 10,
 };
 
-const WizardHeading = ({
-    country_standpoint,
-    currency,
-    is_isle_of_man_residence,
-    is_pre_appstore,
-    real_account_signup_target,
-}) => {
+const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence, real_account_signup_target }) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
@@ -54,23 +50,18 @@ const WizardHeading = ({
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
 
-    // if (is_pre_appstore) {
-    //     return <Localize i18n_default_text='Get an Options account' />;
-    // }
-
     switch (real_account_signup_target) {
         case 'malta':
             if (
                 country_standpoint.is_united_kingdom ||
                 country_standpoint.is_rest_of_eu ||
-                country_standpoint.is_belgium ||
-                is_pre_appstore
+                country_standpoint.is_belgium
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Options account' />;
             }
             return <Localize i18n_default_text='Add a Derived account' />;
         case 'iom':
-            if (country_standpoint.is_united_kingdom || is_pre_appstore) {
+            if (country_standpoint.is_united_kingdom) {
                 return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
             }
             return <Localize i18n_default_text='Add a Derived account' />;
@@ -79,8 +70,7 @@ const WizardHeading = ({
                 country_standpoint.is_united_kingdom ||
                 country_standpoint.is_france ||
                 country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu ||
-                is_pre_appstore
+                country_standpoint.is_rest_of_eu
             ) {
                 return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
             }
@@ -95,7 +85,6 @@ const WizardHeading = ({
 const RealAccountSignup = ({
     available_crypto_currencies,
     closeRealAccountSignup,
-    continueRoute,
     country_standpoint,
     currency,
     deposit_real_account_signup_target,
@@ -108,7 +97,6 @@ const RealAccountSignup = ({
     show_eu_related_content,
     is_from_restricted_country,
     is_isle_of_man_residence,
-    is_pre_appstore,
     is_real_acc_signup_on,
     real_account_signup_target,
     realAccountSignup,
@@ -123,6 +111,8 @@ const RealAccountSignup = ({
     should_show_risk_warning_modal,
     state_index,
     state_value,
+    is_trading_experience_incomplete,
+    is_trading_assessment_for_new_user_enabled,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -186,7 +176,6 @@ const RealAccountSignup = ({
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
                     closeRealAccountSignup={closeRealAccountSignup}
-                    continueRoute={continueRoute}
                     setIsDeposit={setIsDeposit}
                     history={history}
                 />
@@ -248,9 +237,33 @@ const RealAccountSignup = ({
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
                     closeRealAccountSignup={closeRealAccountSignup}
-                    continueRoute={continueRoute}
                     setIsDeposit={setIsDeposit}
                     history={history}
+                />
+            ),
+        },
+        {
+            body: local_props => (
+                <SignupErrorContent
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
+                    code={local_props.state_value.error_code}
+                    onConfirm={closeRealAccountSignup}
+                    className='restricted-country-error'
+                />
+            ),
+        },
+        {
+            body: local_props => (
+                <SignupErrorContent
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
+                    code={local_props.state_value.error_code}
+                    onConfirm={onErrorConfirm}
+                    error_field={local_props.state_value}
+                    className='invalid-input-error'
                 />
             ),
         },
@@ -259,7 +272,8 @@ const RealAccountSignup = ({
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
     const getModalHeight = () => {
-        if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
+        if (is_from_restricted_country) return '304px';
+        else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -274,8 +288,12 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
-
         return '740px'; // Account wizard modal
+    };
+    const getModalWidth = () => {
+        if (is_from_restricted_country || getActiveModalIndex() === modal_pages_indices.invalid_input_error)
+            return '440px';
+        return !has_close_icon ? 'auto' : '955px';
     };
 
     const showStatusDialog = curr => {
@@ -336,16 +354,19 @@ const RealAccountSignup = ({
 
     React.useEffect(() => {
         setRiskWarningTitle(localize('Risk Tolerance Warning'));
-        return () => setIsTradingAssessmentForNewUserEnabled(false);
+        return () => setIsTradingAssessmentForNewUserEnabled(is_trading_experience_incomplete);
     }, []);
 
     // setCurrentAction callback useEffect to set error details
     React.useEffect(() => {
         if (!error) return;
         setParams({
-            active_modal_index: modal_pages_indices.signup_error,
+            active_modal_index: ['InputValidationFailed', 'PoBoxInAddress', 'InvalidPhone'].includes(error.code)
+                ? modal_pages_indices.invalid_input_error
+                : modal_pages_indices.signup_error,
             error_message: error.message,
             error_code: error.code,
+            ...(error.code === 'InputValidationFailed' && { error_details: error.details }),
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error]);
@@ -353,8 +374,8 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         if (!is_from_restricted_country) return;
         setParams({
-            active_modal_index: modal_pages_indices.signup_error,
-            error_message: localize('Sorry, account opening is unavailable in your region.'),
+            active_modal_index: modal_pages_indices.restricted_country_signup_error,
+            error_message: localize('Adding more real accounts has been restricted for your country.'),
             error_code: 'InvalidAccount',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -437,8 +458,16 @@ const RealAccountSignup = ({
 
     // set title and body of the modal
     const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
-    const { account_wizard, add_or_manage_account, finished_set_currency, status_dialog, set_currency, signup_error } =
-        modal_pages_indices;
+    const {
+        account_wizard,
+        add_or_manage_account,
+        finished_set_currency,
+        status_dialog,
+        set_currency,
+        signup_error,
+        restricted_country_signup_error,
+        invalid_input_error,
+    } = modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
         getActiveModalIndex()
@@ -487,10 +516,9 @@ const RealAccountSignup = ({
     if (assessment_decline) {
         return (
             <RiskToleranceWarningModal
-                has_icon={false}
                 show_risk_modal={assessment_decline}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the risk of losing your money. <0/><0/>
@@ -500,13 +528,12 @@ const RealAccountSignup = ({
                 }
             />
         );
-    } else if (should_show_risk_warning_modal) {
+    } else if (is_trading_assessment_for_new_user_enabled && should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
-                has_icon={true}
                 show_risk_modal={should_show_risk_warning_modal}
-                onClick={handleRiskAcceptance}
                 title={risk_warning_title}
+                handleAcceptRisk={handleRiskAcceptance}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, kindly note that you would need to wait 24 hours before you can proceed further.'
@@ -550,8 +577,11 @@ const RealAccountSignup = ({
                         <Modal
                             id='real_account_signup_modal'
                             className={classNames('real-account-signup-modal', {
-                                'dc-modal__container_real-account-signup-modal--error':
-                                    getActiveModalIndex() === signup_error,
+                                'dc-modal__container_real-account-signup-modal--error': [
+                                    signup_error,
+                                    restricted_country_signup_error,
+                                    invalid_input_error,
+                                ].includes(getActiveModalIndex()),
                                 'dc-modal__container_real-account-signup-modal--success': [
                                     finished_set_currency,
                                     status_dialog,
@@ -572,7 +602,6 @@ const RealAccountSignup = ({
                                             is_belgium_residence={is_belgium_residence}
                                             is_eu={show_eu_related_content}
                                             is_isle_of_man_residence={is_isle_of_man_residence}
-                                            is_pre_appstore={is_pre_appstore}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
@@ -583,7 +612,7 @@ const RealAccountSignup = ({
                             }}
                             toggleModal={closeModal}
                             height={getModalHeight()}
-                            width={!has_close_icon ? 'auto' : '955px'}
+                            width={getModalWidth()}
                             elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <ModalContent
@@ -610,7 +639,6 @@ const RealAccountSignup = ({
                                             currency={currency}
                                             is_belgium_residence={is_belgium_residence}
                                             is_isle_of_man_residence={is_isle_of_man_residence}
-                                            is_pre_appstore={is_pre_appstore}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
@@ -640,7 +668,6 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
-    continueRoute: modules.cashier.general_store.continueRoute,
     country_standpoint: client.country_standpoint,
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
@@ -652,7 +679,6 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_from_restricted_country: client.is_from_restricted_country,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
-    is_pre_appstore: client.is_pre_appstore,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     realAccountSignup: client.realAccountSignup,
@@ -669,4 +695,5 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     should_show_risk_warning_modal: ui.should_show_risk_warning_modal,
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
 }))(withRouter(RealAccountSignup));

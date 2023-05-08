@@ -5,27 +5,17 @@
 
     &__text {
         &--demo {
-            color: var(--text-profit-success);
+            color: var(--status-info);
             padding-right: 0.5rem;
         }
 
         &--real {
-            color: var(--text-general);
-            padding-right: 0.5rem;
-        }
-
-        &--amount {
-            color: var(--text-profit-success);
-            padding-right: 0.5rem;
-        }
-
-        &--no-amount {
-            color: var(--text-general);
+            color: var(--status-success);
             padding-right: 0.5rem;
         }
     }
 
     &--dotted {
-        border-bottom: 4px dotted var(--checkbox-disabled-grey);
+        border-bottom: 4px dotted var(--border-normal-3);
     }
 }

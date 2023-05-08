@@ -33,6 +33,8 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
             return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/derivmt5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
+        case 'ios':
+            return 'https://apps.apple.com/us/app/metatrader-5/id413251709';
         case 'macos':
             return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case 'huawei':

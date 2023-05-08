@@ -4,7 +4,7 @@ import { formatMoney, getDecimalPlaces, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
-import { requestWS } from 'Utils/websocket';
+import { requestWS, subscribeWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { removeTrailingZeros } from 'Utils/format-value';
@@ -41,6 +41,7 @@ export default class BuySellStore extends BaseStore {
     submitForm = () => {};
     table_type = buy_sell.BUY;
     form_props = {};
+    is_create_order_subscribed = false;
 
     initial_values = {
         amount: this.advert?.min_order_amount_limit,
@@ -84,6 +85,7 @@ export default class BuySellStore extends BaseStore {
             submitForm: observable,
             table_type: observable,
             form_props: observable,
+            is_create_order_subscribed: observable,
             account_currency: computed,
             advert: computed,
             has_payment_info: computed,
@@ -93,7 +95,6 @@ export default class BuySellStore extends BaseStore {
             modal_title: computed,
             rendered_items: computed,
             should_filter_by_payment_method: computed,
-            getSupportedPaymentMethods: action.bound,
             getWebsiteStatus: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
@@ -141,8 +142,12 @@ export default class BuySellStore extends BaseStore {
             validatePopup: action.bound,
             sort_list: computed,
             fetchAdvertiserAdverts: action.bound,
+            handleResponse: action.bound,
+            setIsCreateOrderSubscribed: action.bound,
         });
     }
+
+    create_order_subscription = {};
 
     get account_currency() {
         return this.advert?.account_currency;
@@ -226,20 +231,6 @@ export default class BuySellStore extends BaseStore {
         }
     }
 
-    getSupportedPaymentMethods(payment_method_names) {
-        const { my_profile_store } = this.root_store;
-
-        //Get all payment methods supported in the country
-        const payment_methods = payment_method_names?.filter(
-            payment_method_name =>
-                Object.entries(my_profile_store.available_payment_methods).findIndex(
-                    payment_method => payment_method[1].display_name === payment_method_name
-                ) !== -1
-        );
-
-        return payment_methods;
-    }
-
     getWebsiteStatus() {
         requestWS({ website_status: 1 }).then(response => {
             if (response) {
@@ -259,6 +250,33 @@ export default class BuySellStore extends BaseStore {
         this.loadMoreItems({ startIndex: 0 });
         this.setIsSortDropdownOpen(false);
     }
+
+    handleResponse = async order => {
+        const { sendbird_store, order_store, general_store, floating_rate_store } = this.root_store;
+        const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
+        if (order.error) {
+            setErrorMessage(order.error.message);
+            this.setFormErrorCode(order.error.code);
+        } else {
+            if (order?.subscription?.id && !this.is_create_order_subscribed) {
+                this.setIsCreateOrderSubscribed(true);
+            }
+            setErrorMessage(null);
+            general_store.hideModal();
+            floating_rate_store.setIsMarketRateChanged(false);
+            sendbird_store.setChatChannelUrl(order?.p2p_order_create?.chat_channel_url ?? '');
+            if (order?.p2p_order_create?.id) {
+                const response = await requestWS({ p2p_order_info: 1, id: order?.p2p_order_create?.id });
+                handleConfirm(response?.p2p_order_info);
+            }
+            handleClose();
+            this.payment_method_ids = [];
+        }
+        if (order?.p2p_order_info?.id && order?.p2p_order_info?.chat_channel_url) {
+            sendbird_store.setChatChannelUrl(order?.p2p_order_info?.chat_channel_url ?? '');
+            order_store.setOrderDetails(order);
+        }
+    };
 
     handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
         if (isMountedFn()) {
@@ -284,20 +302,7 @@ export default class BuySellStore extends BaseStore {
             payload.rate = values.rate;
         }
 
-        const order = await requestWS({ ...payload });
-
-        if (order.error) {
-            this.form_props.setErrorMessage(order.error.message);
-            this.setFormErrorCode(order.error.code);
-        } else {
-            this.form_props.setErrorMessage(null);
-            this.root_store.general_store.hideModal();
-            this.root_store.floating_rate_store.setIsMarketRateChanged(false);
-            const response = await requestWS({ p2p_order_info: 1, id: order.p2p_order_create.id });
-            this.form_props.handleConfirm(response.p2p_order_info);
-            this.form_props.handleClose();
-            this.payment_method_ids = [];
-        }
+        this.create_order_subscription = subscribeWS({ ...payload }, [this.handleResponse]);
 
         if (isMountedFn()) {
             setSubmitting(false);
@@ -343,10 +348,6 @@ export default class BuySellStore extends BaseStore {
 
                             list.forEach(new_item => {
                                 const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
-
-                                new_item.payment_method_names = this.getSupportedPaymentMethods(
-                                    new_item.payment_method_names
-                                );
 
                                 if (old_item_idx > -1) {
                                     old_items[old_item_idx] = new_item;
@@ -511,6 +512,7 @@ export default class BuySellStore extends BaseStore {
                         </Text>
                     </div>
                 ),
+                display_name,
                 has_adverts,
                 is_default,
                 text: symbol,
@@ -600,6 +602,10 @@ export default class BuySellStore extends BaseStore {
 
     setSubmitFormFn(submitFormFn) {
         this.submitForm = submitFormFn;
+    }
+
+    setIsCreateOrderSubscribed(is_create_order_subscribed) {
+        this.is_create_order_subscribed = is_create_order_subscribed;
     }
 
     showAdvertiserPage(selected_advert) {
@@ -702,10 +708,6 @@ export default class BuySellStore extends BaseStore {
                                 if (response?.error) return;
                                 const { p2p_advert_info } = response;
 
-                                p2p_advert_info.payment_method_names = this.getSupportedPaymentMethods(
-                                    p2p_advert_info.payment_method_names
-                                );
-
                                 if (this.selected_ad_state?.id === p2p_advert_info.id) {
                                     this.setSelectedAdState(p2p_advert_info);
                                 }
@@ -720,4 +722,10 @@ export default class BuySellStore extends BaseStore {
 
         return () => disposeAdvertIntervalReaction();
     }
+
+    unsubscribeCreateOrder = () => {
+        if (this.create_order_subscription.unsubscribe) {
+            this.create_order_subscription.unsubscribe();
+        }
+    };
 }

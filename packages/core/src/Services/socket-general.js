@@ -22,7 +22,17 @@ const BinarySocketGeneral = (() => {
                 client_store.logout();
                 return;
             }
-            WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+
+            if (client_store.is_logged_in || client_store.is_logging_in) {
+                WS.get()
+                    .expectResponse('authorize')
+                    .then(() => {
+                        WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+                    });
+            } else {
+                WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
+            }
+
             ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
@@ -76,7 +86,7 @@ const BinarySocketGeneral = (() => {
                 client_store.setAccountStatus(response.get_account_status);
                 break;
             case 'payout_currencies':
-                client_store.responsePayoutCurrencies(response.payout_currencies);
+                client_store.responsePayoutCurrencies(response?.payout_currencies);
                 break;
             case 'transaction':
                 gtm_store.pushTransactionData(response);
@@ -88,7 +98,7 @@ const BinarySocketGeneral = (() => {
     const setResidence = residence => {
         if (residence) {
             client_store.setResidence(residence);
-            WS.landingCompany(residence);
+            WS.landingCompany(residence).then(client_store.responseLandingCompany);
         }
     };
 
@@ -187,7 +197,6 @@ const BinarySocketGeneral = (() => {
                         'trading_platform_password_reset',
                         'trading_platform_investor_password_reset',
                         'new_account_virtual',
-                        'p2p_advertiser_info',
                         'portfolio',
                         'proposal_open_contract',
                         'change_email',
@@ -250,6 +259,7 @@ const BinarySocketGeneral = (() => {
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
+        client_store.setIsAuthorize(true);
         if (!client_store.is_virtual) {
             WS.getSelfExclusion();
         }

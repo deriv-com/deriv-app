@@ -85,7 +85,7 @@ describe('usePlatformRealAccounts', () => {
         );
         const { result } = renderHook(() => usePlatformAccounts(), { wrapper });
 
-        expect(result.current.demo?.loginid).toBe('VR1236');
+        expect(result.current.demo?.loginid).toBe(mock.client.accounts.VR1235.loginid);
         expect(result.current.real.length).toBe(1);
         expect(result.current.real[0].landing_company_shortcode).toBe('svg');
     });

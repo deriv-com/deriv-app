@@ -108,7 +108,7 @@ const CashierWalletModalHeader = ({
                                 {is_demo ? 'Demo' : ''} {currency} {localize('Wallet')}
                             </Text>
                             {is_demo ? (
-                                <Badge type='contained' background_color='blue' label='Demo' />
+                                <Badge type='contained' background_color='blue' label={getBadgeLabel()} />
                             ) : (
                                 <Badge type='bordered' label={getBadgeLabel()} />
                             )}

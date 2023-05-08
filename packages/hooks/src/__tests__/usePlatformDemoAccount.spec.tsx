@@ -40,6 +40,6 @@ describe('usePlatformDemoAccount', () => {
         );
         const { result } = renderHook(() => usePlatformDemoAccount(), { wrapper });
 
-        expect(result.current?.loginid).toBe('VR1234');
+        expect(result.current?.loginid).toBe(mock.client.accounts.VR1234.loginid);
     });
 });

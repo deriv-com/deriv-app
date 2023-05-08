@@ -39,7 +39,7 @@ describe('useCFDRealAccounts', () => {
         expect(result.current?.length).toBe(0);
     });
 
-    test('should return proper data when user has cfd real accounts', async () => {
+    test('should return proper data when user has CFD real accounts', async () => {
         const mock = mockStore({
             client: {
                 mt5_login_list: [

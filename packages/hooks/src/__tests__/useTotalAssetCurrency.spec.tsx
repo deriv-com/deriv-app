@@ -112,7 +112,8 @@ describe('useRealTotalAssetCurrency', () => {
         );
         const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
 
-        expect(result.current).toBe('ETH');
+        const first_account_currency = mock.client.accounts[Object.keys(mock.client.accounts)[0]].currency;
+        expect(result.current).toBe(first_account_currency);
     });
 
     test('should return the current selected currency when user only has crypto account and is_crypto() is false', async () => {

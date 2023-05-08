@@ -15,7 +15,7 @@ describe('useCFDAllAccounts', () => {
         expect(result.current.length).toBe(0);
     });
 
-    test('should return proper data when client has mt5 accounts', async () => {
+    test('should return proper data when client has MT5 accounts', async () => {
         const mock = mockStore({
             client: {
                 mt5_login_list: [

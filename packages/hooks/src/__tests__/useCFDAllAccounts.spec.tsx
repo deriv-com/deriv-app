@@ -57,7 +57,7 @@ describe('useCFDAllAccounts', () => {
         expect(result.current.length).toBe(1);
     });
 
-    test('should return proper data when client has both  mt5 and dxtrade accounts', async () => {
+    test('should return proper data when client has both MT5 and dxtrade accounts', async () => {
         const mock = mockStore({
             client: {
                 mt5_login_list: [

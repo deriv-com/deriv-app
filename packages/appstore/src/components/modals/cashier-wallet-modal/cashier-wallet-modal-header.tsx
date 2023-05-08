@@ -13,7 +13,7 @@ type TCashierWalletModalHeaderProps = {
     is_dark: boolean;
     is_demo: boolean;
     is_mobile: boolean;
-    landing_company_shortcode: string;
+    landing_company_shortcode: 'svg' | 'malta';
     closeModal: VoidFunction;
     show_wallet_name: boolean;
 };
@@ -25,10 +25,16 @@ const CashierWalletModalHeader = ({
     is_dark,
     is_demo,
     is_mobile,
-    landing_company_shortcode,
+    landing_company_shortcode: shortcode,
     show_wallet_name,
 }: TCashierWalletModalHeaderProps) => {
     const header_class_name = 'cashier-wallet-modal__header';
+
+    const getBadgeLabel = React.useCallback(() => {
+        if (is_demo) return 'Demo';
+        if (['svg', 'malta'].includes(shortcode)) return shortcode.toUpperCase();
+        return '';
+    }, [is_demo, shortcode]);
 
     const getCloseIcon = React.useCallback(() => {
         if (is_demo && is_dark) return 'IcAppstoreCloseLight';
@@ -104,7 +110,7 @@ const CashierWalletModalHeader = ({
                             {is_demo ? (
                                 <Badge type='contained' background_color='blue' label='Demo' />
                             ) : (
-                                <Badge type='bordered' label={landing_company_shortcode.toUpperCase()} />
+                                <Badge type='bordered' label={getBadgeLabel()} />
                             )}
                         </div>
                     )}

@@ -7,9 +7,9 @@ const PaymentMethodAccordionHeader = ({ payment_method }) => {
 
     if (method === 'BankTransfer' || method === 'Other') {
         return (
-            <div className='payment-method-accordion-header-row'>
-                <Icon className='payment-method-accordion-header-icon' icon={`IcCashier${method}`} size={16} />
-                <div className='payment-method-accordion-header-title'>
+            <div className='payment-method-accordion-header__row'>
+                <Icon className='payment-method-accordion-header__icon' icon={`IcCashier${method}`} size={16} />
+                <div className='payment-method-accordion-header__title'>
                     <Text color='prominent' size='xs'>
                         {payment_method.display_name}
                     </Text>
@@ -24,9 +24,9 @@ const PaymentMethodAccordionHeader = ({ payment_method }) => {
     }
 
     return (
-        <div className='payment-method-accordion-header-row'>
+        <div className='payment-method-accordion-header__row'>
             <Icon icon='IcCashierEwallet' size={16} />
-            <div className='payment-method-accordion-header-column'>
+            <div className='payment-method-accordion-header__column'>
                 <Text color='prominent' size='xs'>
                     {payment_method.display_name}
                 </Text>

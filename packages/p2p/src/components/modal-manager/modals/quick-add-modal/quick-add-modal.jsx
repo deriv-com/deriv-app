@@ -188,7 +188,7 @@ const QuickAddModal = ({ advert }) => {
     if (is_buy_advert) {
         return (
             <Modal
-                className='my-ads__modal-error'
+                className='quick-add-modal'
                 has_close_icon
                 height='452px'
                 is_open={is_modal_open}
@@ -234,7 +234,7 @@ const QuickAddModal = ({ advert }) => {
 
     return (
         <Modal
-            className='my-ads__modal-error'
+            className='quick-add-modal'
             has_close_icon
             height={my_ads_store.should_show_add_payment_method ? '660px' : 'auto'}
             is_open={is_modal_open}

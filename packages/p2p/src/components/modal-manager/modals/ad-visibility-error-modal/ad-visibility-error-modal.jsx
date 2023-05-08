@@ -13,7 +13,7 @@ const AdVisibilityErrorModal = ({ error_code }) => {
     if (error_code === api_error_codes.AD_EXCEEDS_BALANCE) {
         return (
             <Modal
-                className='my-ads__modal-error'
+                className='ad-visibility-error-modal'
                 is_open={is_modal_open}
                 small
                 has_close_icon={false}
@@ -35,7 +35,7 @@ const AdVisibilityErrorModal = ({ error_code }) => {
     } else if (error_code === api_error_codes.AD_EXCEEDS_DAILY_LIMIT) {
         return (
             <Modal
-                className='my-ads__modal-error'
+                className='ad-visibility-error-modal'
                 is_open={is_modal_open}
                 small
                 has_close_icon={false}
@@ -70,7 +70,7 @@ const AdVisibilityErrorModal = ({ error_code }) => {
     }
     return (
         <Modal
-            className='my-ads__modal-error'
+            className='ad-visibility-error-modal'
             is_open={is_modal_open}
             small
             has_close_icon={false}

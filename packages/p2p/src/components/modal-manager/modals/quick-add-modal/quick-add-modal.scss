@@ -1,4 +1,20 @@
 .quick-add-modal {
+    &--form {
+        height: fit-content !important;
+    }
+    .dc-modal-header__title--quick-add-modal {
+        padding: 2.4rem 2.4rem 0 !important;
+    }
+    .dc-modal__container_quick-add-modal {
+        .dc-modal-footer {
+            padding-top: 0 !important;
+        }
+
+        .dc-modal-header {
+            padding-bottom: 1rem;
+        }
+    }
+
     &__body {
         display: flex;
         flex-direction: column;

@@ -9,13 +9,13 @@ type TWalletIcon = {
         primary: CSSProperties['backgroundColor'];
         secondary: CSSProperties['backgroundColor'];
     };
-    currency: string;
     dark?: string;
+    icon: string;
     rounded?: string;
     size: 'small' | 'medium' | 'large';
 };
-/* TODO: Handle icon loading, gradient background, dark mode */
-const WalletIcon = ({ colors, currency, dark, rounded, size }: TWalletIcon) => {
+
+const WalletIcon = ({ colors, dark, icon, rounded, size }: TWalletIcon) => {
     return (
         <div
             className={classNames('wallet-icon', {
@@ -30,7 +30,7 @@ const WalletIcon = ({ colors, currency, dark, rounded, size }: TWalletIcon) => {
                 size={size}
             >
                 <Icon
-                    icon={currency}
+                    icon={icon}
                     className={classNames('wallet-icon__icon', {
                         'wallet-icon__icon--rounded': rounded,
                     })}

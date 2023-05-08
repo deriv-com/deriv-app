@@ -1,0 +1,52 @@
+.wallet-icon {
+    $parent: &;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4rem;
+
+    &--small {
+        width: 4.6rem;
+        height: 2.4rem;
+
+        #{$parent}__icon {
+            width: 80%;
+            height: 83%;
+
+            &--rounded {
+                width: 1.6rem;
+                height: 1.6rem;
+            }
+        }
+    }
+
+    &--medium {
+        width: 6.4rem;
+        height: 4rem;
+
+        #{$parent}__icon {
+            width: 75%;
+            height: 75%;
+
+            &--rounded {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+    }
+
+    &--large {
+        width: 12.8rem;
+        height: 8rem;
+
+        #{$parent}__icon {
+            width: 75%;
+            height: 75%;
+
+            &--rounded {
+                width: 4.8rem;
+                height: 4.8rem;
+            }
+        }
+    }
+}

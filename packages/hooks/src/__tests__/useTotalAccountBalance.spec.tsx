@@ -5,11 +5,7 @@ import useTotalAccountBalance from '../useTotalAccountBalance';
 
 describe('useTotalAccountBalance', () => {
     test('should return zero when user has no account', async () => {
-        const mock = mockStore({
-            client: {
-                active_accounts: [],
-            },
-        });
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>

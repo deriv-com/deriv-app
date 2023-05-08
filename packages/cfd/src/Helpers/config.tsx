@@ -8,7 +8,7 @@ import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
-    const qr_code_mobile = isMobile() ? '100%' : '80%';
+    const qr_code_width = isMobile() ? '100%' : '80%';
     const os = OSDetect();
     const checkForDesktop = isDesktopOs() ? (os === 'mac' ? 'ios' : 'android') : os;
 
@@ -17,7 +17,7 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
             <QRCode
                 value={mobileDownloadLink(acc_type, checkForDesktop)}
                 size={5}
-                style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
+                style={{ height: 'auto', maxWidth: '100%', width: qr_code_width }}
             />
             <Text align='center' size='xxs'>
                 <Localize

@@ -631,13 +631,13 @@ export default class ClientStore extends BaseStore {
         if (!this.is_logged_in) return false;
         let list;
         switch (platform) {
-            case 'mt5':
+            case CFD_PLATFORMS.MT5:
                 list = this.mt5_login_list;
                 break;
-            case 'dxtrade':
+            case CFD_PLATFORMS.DXTRADE:
                 list = this.dxtrade_accounts_list;
                 break;
-            case 'derivez':
+            case CFD_PLATFORMS.DERIVEZ:
                 list = this.derivez_accounts_list;
                 break;
             default:

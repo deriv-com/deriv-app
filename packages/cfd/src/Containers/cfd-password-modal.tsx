@@ -807,19 +807,26 @@ const CFDPasswordModal = ({
         const mt5_platform_label = jurisdiction_selected_shortcode !== 'maltainvest' ? 'MT5' : '';
 
         if (category === 'real') {
+            let platformName = '';
+            switch (platform) {
+                case CFD_PLATFORMS.MT5:
+                    platformName = mt5_platform_label;
+                    break;
+                case CFD_PLATFORMS.DERIVEZ:
+                    platformName = 'Deriv Ez';
+                    break;
+                default:
+                    platformName = 'Deriv X';
+                    break;
+            }
+
             return (
                 <React.Fragment>
                     <Localize
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
-                            // TODO: remove below condition once deriv x changes are completed
                             type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
-                            platform:
-                                platform === CFD_PLATFORMS.MT5
-                                    ? mt5_platform_label
-                                    : platform === CFD_PLATFORMS.DERIVEZ
-                                    ? 'Deriv Ez'
-                                    : 'Deriv X',
+                            platform: platformName,
                             category: category_label,
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
@@ -831,7 +838,7 @@ const CFDPasswordModal = ({
                     ) : (
                         <ReviewMessageForMT5
                             is_selected_mt5_verified={is_selected_mt5_verified}
-                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            jurisdiction_selected_shortcode={jurisdiction_label}
                             manual_status={manual_status}
                         />
                     )}

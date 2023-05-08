@@ -11,7 +11,7 @@ import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-
+import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
 
@@ -85,20 +85,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <WalletHeader account_type='demo' />
-                    <WalletHeader currency={'AUD'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'EUR'} jurisdiction={'svg'} is_open_wallet={true} />
-                    <WalletHeader currency={'USD'} jurisdiction={'malta'} />
-                    <WalletHeader currency={'BTC'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'ETH'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'USDT'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'eUSDT'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'tUSDT'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'LTC'} jurisdiction={'svg'} />
-                    <WalletHeader currency={'USDC'} jurisdiction={'svg'} />
-                    <WalletHeader account_status='pending' currency={'ETH'} jurisdiction={'svg'} />
-                    <WalletHeader account_status='need_verification' currency={'EUR'} jurisdiction={'malta'} />
-                    <WalletHeader account_status='failed' currency={'USD'} jurisdiction={'svg'} />
+                    <WalletsBanner />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

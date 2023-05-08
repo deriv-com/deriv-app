@@ -13,6 +13,12 @@ const mock = (): TStores => {
                     value: 'value',
                 },
             ],
+            states_list: [
+                {
+                    text: 'Text',
+                    value: 'value',
+                },
+            ],
             accounts: {
                 loginid: {
                     account_type: 'trading',

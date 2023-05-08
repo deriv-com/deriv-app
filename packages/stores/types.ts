@@ -142,6 +142,7 @@ type TClientStore = {
     setCFDScore: (score: number) => void;
     currency: string;
     residence_list: ResidenceList;
+    states_list: StatesList;
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => Promise<{ data: object }>;

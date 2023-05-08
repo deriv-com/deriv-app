@@ -9,17 +9,15 @@ type TWalletIcon = {
         primary: CSSProperties['backgroundColor'];
         secondary: CSSProperties['backgroundColor'];
     };
-    dark?: string;
     icon: string;
     rounded?: string;
     size: 'small' | 'medium' | 'large';
 };
 
-const WalletIcon = ({ colors, dark, icon, rounded, size }: TWalletIcon) => {
+const WalletIcon = ({ colors, icon, rounded, size }: TWalletIcon) => {
     return (
         <div
             className={classNames('wallet-icon', {
-                'wallet-icon--dark': dark,
                 [`wallet-icon--${size}`]: size,
             })}
         >

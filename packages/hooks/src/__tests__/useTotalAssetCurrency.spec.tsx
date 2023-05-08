@@ -35,7 +35,7 @@ describe('useRealTotalAssetCurrency', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
-        expect(result.current).toBe('EUR');
+        expect(result.current).toBe(mock.client.default_currency);
     });
 
     test('should return proper currency when user has non_crypto account', async () => {

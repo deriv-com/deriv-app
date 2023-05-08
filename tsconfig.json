@@ -22,7 +22,8 @@
         "incremental": true, // Enable incremental compilation by reading/writing information from prior compilations to a file on disk
         "removeComments": true, // Disable emitting comments
         "skipDefaultLibCheck": true, // Skip type checking .d.ts files that are included with TypeScript
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "paths": { "@deriv/*": ["./packages/*/src"] }
     },
     "files": ["./types/global.d.ts", "./types/utils.d.ts", "./types/svg.d.ts"],
     "exclude": ["node_modules", "build", "**/*.js", "**/*.jsx"] // *** The files to not type check ***

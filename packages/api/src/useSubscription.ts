@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useWS } from '@deriv/shared';
 import type {
-    TSocketSubscribableEndpointNames,
     TSocketAcceptableProps,
+    TSocketRequestPayload,
     TSocketResponseData,
-    TSocketRequestCleaned,
+    TSocketSubscribableEndpointNames,
 } from '../types';
 
 const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
@@ -18,14 +18,14 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
     const subscribe = useCallback(
         (...props: TSocketAcceptableProps<T>) => {
             const prop = props?.[0];
-            const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestCleaned<T>) : undefined;
+            const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
 
             setIsLoading(true);
             setSubscribed(true);
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const onData = (response: any) => {
-                setData(response[name === 'ticks' ? 'tick' : name]);
+                setData(response);
                 setIsLoading(false);
             };
 

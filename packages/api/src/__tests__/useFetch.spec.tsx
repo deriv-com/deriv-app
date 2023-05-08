@@ -1,8 +1,8 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import useFetch from '../useFetch';
-import APIProvider from '../APIProvider';
 import { TSocketResponse } from '../../types';
+import APIProvider from '../APIProvider';
+import useFetch from '../useFetch';
 
 jest.mock('@deriv/shared', () => ({
     WS: {
@@ -24,6 +24,6 @@ describe('useFetch', () => {
 
         await waitFor(() => result.current.isSuccess, { timeout: 10000 });
 
-        expect(result.current.data).toEqual('pong');
+        expect(result.current.data?.ping).toEqual('pong');
     });
 });

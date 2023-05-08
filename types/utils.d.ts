@@ -18,6 +18,8 @@ declare global {
         : T extends ReadonlyMap<infer KeyType, infer ValueType>
         ? ReadonlyMap<DeepPartial<KeyType>, DeepPartial<ValueType>>
         : { [K in keyof T]?: DeepPartial<T[K]> };
+
+    type NoStringIndex<T> = { [K in keyof T as string extends K ? never : K]: T[K] };
 }
 
 export {};

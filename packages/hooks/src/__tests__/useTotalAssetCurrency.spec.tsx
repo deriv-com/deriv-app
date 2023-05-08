@@ -232,6 +232,6 @@ describe('useRealTotalAssetCurrency', () => {
         );
         const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
 
-        expect(result.current).toBe('GBP');
+        expect(result.current).toBe(mock.client.default_currency);
     });
 });

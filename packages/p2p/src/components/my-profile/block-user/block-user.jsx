@@ -34,7 +34,7 @@ const BlockUser = () => {
                     body_className='block-user__modal'
                     height_offset='80px'
                     is_flex
-                    is_modal_open
+                    is_modal_open={my_profile_store.active_tab === my_profile_tabs.MY_COUNTERPARTIES}
                     page_header_className='buy-sell__modal-header'
                     page_header_text={localize('My counterparties')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}

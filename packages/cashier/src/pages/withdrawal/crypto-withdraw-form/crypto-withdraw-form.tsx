@@ -153,7 +153,7 @@ const CryptoWithdrawForm = observer(() => {
                                 />
                             )}
                         </Field>
-                        <div>
+                        <div className='crypto-withdraw-form__percentage-container'>
                             <div className='crypto-withdraw-form__percentage-selector'>
                                 <PercentageSelector
                                     amount={Number(balance)}

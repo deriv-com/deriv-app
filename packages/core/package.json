@@ -87,13 +87,14 @@
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
         "@deriv/account": "^1.0.0",
+        "@deriv/api": "^1.0.0",
         "@deriv/appstore": "^0.0.4",
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.11",
-        "@deriv/deriv-charts": "1.1.8",
+        "@deriv/deriv-charts": "1.1.9",
         "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
         "@deriv/reports": "^1.0.0",
@@ -133,6 +134,8 @@
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "4.4.2",
         "react-window": "^1.8.5",
-        "web-push-notifications": "^3.33.0"
+        "web-push-notifications": "^3.33.0",
+        "dotenv-webpack": "^8.0.1",
+        "@datadog/browser-rum": "^4.37.0"
     }
 }

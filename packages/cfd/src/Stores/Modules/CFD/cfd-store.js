@@ -246,6 +246,12 @@ export default class CFDStore extends BaseStore {
                 this.setError(false);
                 this.enableCFDPasswordModal();
                 this.setCFDSuccessDialog(true);
+
+                const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(
+                    CFD_PLATFORMS.CTRADER
+                );
+                this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+                WS.transferBetweenAccounts();
             } else {
                 this.setError(true, response.error);
             }

@@ -1644,7 +1644,7 @@ export default class ClientStore extends BaseStore {
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
-            WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseCTraderAvailableAccounts);
+            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(this.responseCTraderAvailableAccounts);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
 
             this.responseStatement(
@@ -2473,7 +2473,7 @@ export default class ClientStore extends BaseStore {
 
     responseCTraderAvailableAccounts(response) {
         if (!response.error) {
-            this.ctrader_available_accounts = response.trading_platform_accounts;
+            this.ctrader_available_accounts = response.trading_platform_available_accounts;
         }
     }
 

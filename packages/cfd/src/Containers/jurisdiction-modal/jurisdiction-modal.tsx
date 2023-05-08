@@ -132,8 +132,8 @@ const JurisdictionModal = ({
 
         const ctrader_values = {
             platform: CFD_PLATFORMS.CTRADER,
-            type: type_of_account.category,
-            category: type_of_account.type,
+            type: type_of_account.type,
+            category: type_of_account.category,
         };
 
         if (is_svg_selected) {

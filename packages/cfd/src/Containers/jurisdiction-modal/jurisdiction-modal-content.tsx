@@ -19,9 +19,9 @@ const JurisdictionModalContent = ({
     const cardsToBeShown = (type_of_card: string) =>
         account_type === 'synthetic'
             ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
-            : account_type === 'financial'
-            ? financial_available_accounts?.some(account => account.shortcode === type_of_card)
-            : all_market_type_available_accounts?.some(account => account.shortcode === type_of_card);
+            : account_type === 'all'
+            ? all_market_type_available_accounts?.some(account => account.shortcode === type_of_card)
+            : financial_available_accounts?.some(account => account.shortcode === type_of_card);
 
     const disableCard = (type_of_card: string) => {
         if (is_virtual && type_of_card !== 'svg') {

@@ -13,6 +13,7 @@ type TCashierWalletModalHeaderProps = {
     is_dark: boolean;
     is_demo: boolean;
     is_mobile: boolean;
+    landing_company_shortcode: string;
     closeModal: VoidFunction;
     show_wallet_name: boolean;
 };
@@ -24,6 +25,7 @@ const CashierWalletModalHeader = ({
     is_dark,
     is_demo,
     is_mobile,
+    landing_company_shortcode,
     show_wallet_name,
 }: TCashierWalletModalHeaderProps) => {
     const header_class_name = 'cashier-wallet-modal__header';
@@ -83,7 +85,7 @@ const CashierWalletModalHeader = ({
 
     return (
         <GradientBackground {...getCashierWalletModalBackgrounds(getBackgroundName())}>
-            <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} />
+            {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} />}
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hide-title`]: !show_wallet_name,
@@ -102,7 +104,7 @@ const CashierWalletModalHeader = ({
                             {is_demo ? (
                                 <Badge type='contained' background_color='blue' label='Demo' />
                             ) : (
-                                <Badge type='bordered' label='SVG' />
+                                <Badge type='bordered' label={landing_company_shortcode.toUpperCase()} />
                             )}
                         </div>
                     )}

@@ -7,7 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 const CashierWalletModal = observer(() => {
     const store = useStore();
     const {
-        client: { balance, currency },
+        client: { balance, currency, landing_company_shortcode },
         ui: { is_dark_mode_on, is_cashier_wallet_modal_visible, is_mobile, setIsCashierWalletModalVisible },
         traders_hub: { is_demo },
     } = store;
@@ -24,7 +24,6 @@ const CashierWalletModal = observer(() => {
         setActiveTabIndex(0);
     };
 
-    //TODO: refactor in one useEffect
     React.useEffect(() => {
         const el_tab_content = tab_content_ref.current;
 
@@ -52,6 +51,7 @@ const CashierWalletModal = observer(() => {
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
                 is_mobile={is_mobile}
+                landing_company_shortcode={landing_company_shortcode}
                 show_wallet_name={show_wallet_name}
             />
             <CashierWalletModalBody

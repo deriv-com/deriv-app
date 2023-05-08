@@ -4,10 +4,8 @@ import { renderHook } from '@testing-library/react-hooks';
 import useCFDAllAccounts from '../useCFDAllAccounts';
 
 describe('useCFDAllAccounts', () => {
-    test('should return empty array when client has no cfd accounts', async () => {
-        const mock = mockStore({
-            client: {},
-        });
+    test('should return empty array when client has no CFD accounts', async () => {
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>

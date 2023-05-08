@@ -57,11 +57,16 @@ export const icons =
         'IcAppstoreWarning',
     ],
     'brand': [
+        'IcBrandCtraderWordmark',
+        'IcBrandCtrader',
+        'IcBrandDerivEzWordmark',
+        'IcBrandDerivEz',
         'IcBrandDeriv',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',
         'IcBrandDmt5Synthetics',
+        'IcBrandDxtradeWordmark',
     ],
     'cashier': [
         'IcCashierAdd',

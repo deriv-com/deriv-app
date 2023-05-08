@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDDashboardContainer } from '../Components/props.types';
 import DMT5TradeModal from './dmt5-trade-modal';
-import DerivXTradeModal from './derivx-trade-modal';
+import TradeModal from './trade-modal';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -20,7 +20,7 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    platform: 'mt5' | 'dxtrade';
+    platform: 'mt5' | 'dxtrade' | 'ctrader' | 'derivez';
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     is_demo: string;
     show_eu_related_content: boolean;
@@ -50,13 +50,14 @@ const MT5TradeModal = ({
             );
         }
         return (
-            <DerivXTradeModal
+            <TradeModal
                 mt5_trade_account={mt5_trade_account}
                 is_eu_user={is_eu_user}
                 onPasswordManager={onPasswordManager}
                 toggleModal={toggleModal}
                 dxtrade_tokens={dxtrade_tokens}
                 is_demo={is_demo}
+                platform={platform}
             />
         );
     };

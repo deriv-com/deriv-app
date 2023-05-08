@@ -128,11 +128,11 @@ describe('<PersonalDetailsForm />', () => {
     it('should have "required" validation errors on required form fields', async () => {
         renderComponent();
         await waitFor(async () => {
-            const first_name = screen.getByTestId('first_name');
-            const last_name = screen.getByTestId('last_name');
-            const phone = screen.getByTestId('phone');
-            const address_line_1 = screen.getByTestId('address_line_1');
-            const address_city = screen.getByTestId('address_city');
+            const first_name = screen.getByTestId('dt_first_name');
+            const last_name = screen.getByTestId('dt_last_name');
+            const phone = screen.getByTestId('dt_phone');
+            const address_line_1 = screen.getByTestId('dt_address_line_1');
+            const address_city = screen.getByTestId('dt_address_city');
             fireEvent.blur(first_name);
             fireEvent.blur(last_name);
             fireEvent.blur(phone);
@@ -145,8 +145,8 @@ describe('<PersonalDetailsForm />', () => {
     it('should display error for 2-50 characters length validation, for First and Last name when entered characters are less than 2', async () => {
         renderComponent();
         await waitFor(async () => {
-            const first_name = screen.getByTestId('first_name');
-            const last_name = screen.getByTestId('last_name');
+            const first_name = screen.getByTestId('dt_first_name');
+            const last_name = screen.getByTestId('dt_last_name');
             fireEvent.input(first_name, { target: { value: 'a' } });
             fireEvent.input(last_name, { target: { value: 'b' } });
         });
@@ -156,8 +156,8 @@ describe('<PersonalDetailsForm />', () => {
     it('should display error for 2-50 characters length validation, for First and Last name when entered characters are more than 50', async () => {
         renderComponent();
         await waitFor(async () => {
-            const first_name = screen.getByTestId('first_name');
-            const last_name = screen.getByTestId('last_name');
+            const first_name = screen.getByTestId('dt_first_name');
+            const last_name = screen.getByTestId('dt_last_name');
             fireEvent.input(first_name, { target: { value: 'fifty chars fifty chars fifty chars fifty chars fifty' } });
             fireEvent.input(last_name, { target: { value: 'fifty chars fifty chars fifty chars fifty chars fifty' } });
         });
@@ -167,8 +167,8 @@ describe('<PersonalDetailsForm />', () => {
     it('should display error for the regex validation, for First and Last name when unacceptable characters are entered', async () => {
         renderComponent();
         await waitFor(async () => {
-            const first_name = screen.getByTestId('first_name');
-            const last_name = screen.getByTestId('last_name');
+            const first_name = screen.getByTestId('dt_first_name');
+            const last_name = screen.getByTestId('dt_last_name');
             fireEvent.input(first_name, { target: { value: 'test 3' } });
             fireEvent.input(last_name, { target: { value: 'name_' } });
             expect(screen.getAllByText('Letters, spaces, periods, hyphens, apostrophes only.')).toHaveLength(2);
@@ -181,8 +181,8 @@ describe('<PersonalDetailsForm />', () => {
     it('should not display error for the regex validation, for First and Last name when acceptable characters are entered', async () => {
         renderComponent();
         await waitFor(async () => {
-            const first_name = screen.getByTestId('first_name');
-            const last_name = screen.getByTestId('last_name');
+            const first_name = screen.getByTestId('dt_first_name');
+            const last_name = screen.getByTestId('dt_last_name');
             fireEvent.input(first_name, { target: { value: "test-with' chars." } });
             fireEvent.input(last_name, { target: { value: 'Deuxième Prénom résidence' } });
             expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();

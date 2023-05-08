@@ -653,7 +653,7 @@ export const PersonalDetailsForm = ({
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
                                                         id={'first_name'}
-                                                        data-testid='first_name'
+                                                        data-testid='dt_first_name'
                                                     />
                                                     <Input
                                                         id={'last_name'}
@@ -667,7 +667,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
-                                                        data-testid='last_name'
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </InputGroup>
                                             </DesktopWrapper>
@@ -685,7 +685,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
-                                                        data-testid='first_name'
+                                                        data-testid='dt_first_name'
                                                     />
                                                 </fieldset>
                                                 <fieldset className='account-form__fieldset'>
@@ -701,7 +701,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
-                                                        data-testid='last_name'
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </fieldset>
                                             </MobileWrapper>
@@ -877,7 +877,7 @@ export const PersonalDetailsForm = ({
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
-                                                    data-testid='phone'
+                                                    data-testid='dt_phone'
                                                 />
                                             </fieldset>
                                         </FormBodySection>
@@ -1013,7 +1013,7 @@ export const PersonalDetailsForm = ({
                                                             error={errors.address_line_1}
                                                             required
                                                             disabled={!isChangeableField('address_line_1')}
-                                                            data-testid='address_line_1'
+                                                            data-testid='dt_address_line_1'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -1047,7 +1047,7 @@ export const PersonalDetailsForm = ({
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!isChangeableField('address_city')}
-                                                            data-testid='address_city'
+                                                            data-testid='dt_address_city'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>

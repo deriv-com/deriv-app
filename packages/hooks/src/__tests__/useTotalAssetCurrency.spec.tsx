@@ -60,7 +60,7 @@ describe('useRealTotalAssetCurrency', () => {
         );
         const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
 
-        expect(result.current).toBe('AUD');
+        expect(result.current).toBe(mock.client.accounts.non_crypto_acc.currency);
     });
 
     test('should return empty string when user has non_crypto account with no currency set', async () => {

@@ -196,7 +196,7 @@ describe('useRealTotalAssetCurrency', () => {
         );
         const { result } = renderHook(() => useRealTotalAssetCurrency(), { wrapper });
 
-        expect(result.current).toBe('EUR');
+        expect(result.current).toBe(mock.client.accounts.MF1234.currency);
     });
 
     test("should return default currency when user switch to eu account type but MF account's currency is not set", async () => {

@@ -24,7 +24,7 @@ const WalletIcon = ({ colors, currency, dark, rounded, size }: TWalletIcon) => {
             })}
         >
             <GradientBackgroundWalletIcon
-                color='white'
+                color='var(--general-main-2)'
                 primary={colors.primary}
                 secondary={colors.secondary}
                 size={size}

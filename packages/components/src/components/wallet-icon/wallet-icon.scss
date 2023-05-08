@@ -4,14 +4,14 @@
     align-items: center;
     justify-content: center;
     border-radius: 0.4rem;
-    // background: lightgreen;
+    overflow: hidden;
 
     &__icon {
         z-index: 3;
     }
 
     &--small {
-        width: 4.6rem;
+        width: 4rem;
         height: 2.4rem;
 
         #{$parent}__icon {

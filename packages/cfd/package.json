@@ -48,11 +48,6 @@
         "css-minimizer-webpack-plugin": "^3.0.1",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
-
-
-
-
-
         "file-loader": "^6.2.0",
         "fork-ts-checker-webpack-plugin": "^6.5.0",
         "html-loader": "^1.3.2",

@@ -37,8 +37,6 @@
         "ts-jest": "^26.4.2",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
-
-
         "eslint-plugin-prettier": "^3.3.1"
     },
     "dependencies": {

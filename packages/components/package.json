@@ -50,11 +50,6 @@
     "cross-env": "^5.2.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-binary": "^1.0.2",
-
-
-
-
-
     "lint-staged": "^10.4.0",
     "node-sass": "^7.0.1",
     "sass-loader": "^12.6.0",

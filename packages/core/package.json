@@ -43,12 +43,6 @@
         "css-minimizer-webpack-plugin": "^3.0.1",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
-
-
-
-
-
-
         "file-loader": "^6.2.0",
         "gh-pages": "^2.1.1",
         "git-revision-webpack-plugin": "^5.0.0",

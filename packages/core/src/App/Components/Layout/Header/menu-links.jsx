@@ -1,13 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, Icon, Counter } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import './menu-links.scss';
+import { useHistory } from 'react-router';
 
-const MenuItems = ({ id, text, icon, link_to }) => {
+const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
     return (
         <BinaryLink
             id={id}
@@ -15,6 +17,7 @@ const MenuItems = ({ id, text, icon, link_to }) => {
             to={link_to}
             className='header__menu-link'
             active_class='header__menu-link--active'
+            onClick={handleClickCashier}
         >
             <Text size='m' line_height='xs' title={text} className='header__menu-link-text'>
                 {icon}
@@ -34,7 +37,37 @@ const ReportTab = () => (
 );
 
 const CashierTab = observer(() => {
+    const { client, ui } = useStore();
+    const { has_any_real_account, is_virtual } = client;
+    const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
+    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+
+    const history = useHistory();
+
+    const toggle_modal_routes =
+        window.location.pathname === routes.root ||
+        window.location.pathname === routes.traders_hub ||
+        window.location.pathname === routes.bot;
+
+    const toggleModal = () => {
+        if (toggle_modal_routes && !has_any_real_account) {
+            toggleReadyToDepositModal();
+        } else if (window.location.pathname === routes.traders_hub) {
+            toggleNeedRealAccountForCashierModal();
+        }
+    };
+
+    const handleClickCashier = () => {
+        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
+            toggleModal();
+        } else {
+            history.push(routes.cashier_deposit);
+        }
+    };
+
+    const cashier_redirect =
+        (toggle_modal_routes && !has_any_real_account && is_virtual) || real_account_needed_for_cashier;
 
     return (
         <MenuItems
@@ -48,22 +81,23 @@ const CashierTab = observer(() => {
                 </>
             }
             text={localize('Cashier')}
-            link_to={routes.cashier}
+            link_to={!cashier_redirect ? routes.cashier : null}
+            handleClickCashier={handleClickCashier}
         />
     );
 });
 
-const MenuLinks = observer(() => {
+const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
+    const { i18n } = useTranslation();
     const { client, ui } = useStore();
     const { is_logged_in } = client;
     const { is_mobile } = ui;
-    const is_traders_hub = window.location.pathname === routes.traders_hub;
 
     if (!is_logged_in) return <></>;
 
     return (
-        <div className='header__menu-links'>
-            {!is_traders_hub && <ReportTab />}
+        <div key={`menu-links__${i18n.language}`} className='header__menu-links'>
+            {!is_traders_hub_routes && <ReportTab />}
             {!is_mobile && <CashierTab />}
         </div>
     );

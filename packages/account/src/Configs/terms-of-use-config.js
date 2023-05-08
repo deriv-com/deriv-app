@@ -1,13 +1,14 @@
-import { isDesktop, getDefaultFields } from '@deriv/shared';
+import { getDefaultFields, isDesktop } from '@deriv/shared';
+
 import { localize } from '@deriv/translations';
 
 const terms_of_use_config = {
     agreed_tos: {
-        supported_in: ['svg', 'iom'],
+        supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
     agreed_tnc: {
-        supported_in: ['svg', 'iom'],
+        supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
 };

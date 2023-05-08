@@ -12,4 +12,6 @@ export const api_error_codes = Object.freeze({
     PERMISSION_DENIED: 'PermissionDenied',
     RESTRICTED_COUNTRY: 'RestrictedCountry',
     TEMPORARY_BAR: 'TemporaryBar',
+    AD_EXCEEDS_DAILY_LIMIT: 'advertiser_daily_limit',
+    AD_EXCEEDS_BALANCE: 'advertiser_balance',
 });

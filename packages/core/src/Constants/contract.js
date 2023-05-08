@@ -33,19 +33,19 @@ export const getMarketNamesMap = () => ({
     FRXXAUUSD: localize('Gold/USD'),
     FRXXPDUSD: localize('Palladium/USD'),
     FRXXPTUSD: localize('Platinum/USD'),
-    OTC_AEX: localize('Dutch Index'),
-    OTC_AS51: localize('Australian Index'),
-    OTC_DJI: localize('Wall Street Index'),
-    OTC_FCHI: localize('French Index'),
-    OTC_FTSE: localize('UK Index'),
-    OTC_GDAXI: localize('German Index'),
-    OTC_HSI: localize('Hong Kong Index'),
+    OTC_AEX: localize('Netherlands 25'),
+    OTC_AS51: localize('Australia 200'),
+    OTC_DJI: localize('Wall Street 30'),
+    OTC_FCHI: localize('France 40'),
+    OTC_FTSE: localize('UK 100'),
+    OTC_GDAXI: localize('Germany 40'),
+    OTC_HSI: localize('Hong Kong 50'),
     OTC_IBEX35: localize('Spanish Index'),
-    OTC_N225: localize('Japanese Index'),
-    OTC_NDX: localize('US Tech Index'),
-    OTC_SPC: localize('US Index'),
-    OTC_SSMI: localize('Swiss Index'),
-    OTC_SX5E: localize('Euro 50 Index'),
+    OTC_N225: localize('Japan 225'),
+    OTC_NDX: localize('US Tech 100'),
+    OTC_SPC: localize('US 500'),
+    OTC_SSMI: localize('Swiss 20'),
+    OTC_SX5E: localize('Euro 50'),
     R_10: localize('Volatility 10 Index'),
     R_25: localize('Volatility 25 Index'),
     R_50: localize('Volatility 50 Index'),
@@ -169,6 +169,11 @@ export const getUnsupportedContracts = () => ({
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        button_name: localize('Buy'),
+        name: localize('Accumulator'),
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? localize('Higher') : localize('Rise'),
         position: 'top',
@@ -224,9 +229,9 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    // console.log(getContractConfig(is_high_low)[type]);
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type];
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
 export const getContractTypePosition = (type, is_high_low = false) =>

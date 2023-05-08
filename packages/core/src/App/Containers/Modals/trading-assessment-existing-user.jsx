@@ -69,7 +69,7 @@ const TradingAssessmentExistingUser = ({
                 show_risk_modal={should_show_risk_warning_modal}
                 title={localize('Risk Tolerance Warning')}
                 button_text={localize('Yes, I understand the risk.')}
-                onClick={handleAcceptRisk}
+                handleAcceptRisk={handleAcceptRisk}
                 body_content={
                     <Localize
                         i18n_default_text='CFDs and other financial instruments come with a high risk of losing money rapidly due to leverage. You should consider whether you understand how CFDs and other financial instruments work and whether you can afford to take the high risk of losing your money. <0/><0/> To continue, you must confirm that you understand your capital is at risk.'
@@ -77,6 +77,7 @@ const TradingAssessmentExistingUser = ({
                     />
                 }
                 has_icon
+                has_sub_header
             />
         );
     } else if (should_show_trade_assessment_form) {
@@ -97,7 +98,6 @@ const TradingAssessmentExistingUser = ({
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -114,7 +114,6 @@ const TradingAssessmentExistingUser = ({
                             onSubmit={handleSubmit}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_independent_section
                         />
                     </MobileDialog>
                 </MobileWrapper>

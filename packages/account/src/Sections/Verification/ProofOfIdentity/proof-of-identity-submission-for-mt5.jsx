@@ -4,7 +4,7 @@ import { WS } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
-import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup.jsx';
+import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { AutoHeightWrapper } from '@deriv/components';
 
 const POISubmissionForMT5 = ({
@@ -50,7 +50,8 @@ const POISubmissionForMT5 = ({
             refreshNotifications();
         });
     };
-    const handleIdvSubmit = values => {
+    const handleIdvSubmit = (values, { setSubmitting, setErrors }) => {
+        setSubmitting(true);
         const { document_number, document_type } = values;
         const submit_data = {
             identity_verification_document_add: 1,
@@ -59,7 +60,12 @@ const POISubmissionForMT5 = ({
             issuing_country: citizen_data.value,
         };
 
-        WS.send(submit_data).then(() => {
+        WS.send(submit_data).then(response => {
+            setSubmitting(false);
+            if (response.error) {
+                setErrors({ error_message: response.error.message });
+                return;
+            }
             handlePOIComplete();
         });
     };

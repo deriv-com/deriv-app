@@ -66,6 +66,7 @@ const StaticCFDAccountManager = ({
     is_eu_user,
 }: TStaticCFDAccountManager) => {
     const icon_size = 48;
+    const platform_color = platform === 'options' ? 'prominent' : 'general';
     return (
         <div
             className={classNames('static-cfd-account-manager', {
@@ -138,7 +139,7 @@ const StaticCFDAccountManager = ({
                 <Text
                     size='xs'
                     weight={has_account ? 'normal' : 'bold'}
-                    color={is_blurry.item || is_last_step ? 'less-prominent' : 'prominent'}
+                    color={is_blurry.item || is_last_step ? 'less-prominent' : platform_color}
                 >
                     {appname}
                 </Text>
@@ -167,7 +168,7 @@ const StaticCFDAccountManager = ({
                 ) : (
                     <Text
                         size='xxs'
-                        color={is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'}
+                        color={is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'general'}
                     >
                         {description}
                     </Text>

@@ -7,7 +7,7 @@ import useCFDRealAccounts from './useCFDRealAccounts';
  * and it returns different cfd account types which are demo, real, and all
  */
 
-const useGetCfdAccounts = () => {
+const useGetCFDAccounts = () => {
     const all_cfd_accounts = useCFDAccounts();
     const cfd_demo_accounts = useCFDDemoAccounts();
     const cfd_real_accounts = useCFDRealAccounts();
@@ -19,4 +19,4 @@ const useGetCfdAccounts = () => {
     };
 };
 
-export default useGetCfdAccounts;
+export default useGetCFDAccounts;

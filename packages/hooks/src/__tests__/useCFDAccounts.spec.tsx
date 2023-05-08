@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useGetCFDAccounts from '../useCFDAccounts';
+import useCFDAccounts from '../useCFDAccounts';
 
-describe('useGetCFDAccounts', () => {
+describe('useCFDAccounts', () => {
     test('should return empty array when client has no CFD accounts', async () => {
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useGetCFDAccounts(), { wrapper });
+        const { result } = renderHook(() => useCFDAccounts(), { wrapper });
 
         expect(result.current.all.length).toBe(0);
         expect(result.current.demo.length).toBe(0);
@@ -33,7 +33,7 @@ describe('useGetCFDAccounts', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useGetCFDAccounts(), { wrapper });
+        const { result } = renderHook(() => useCFDAccounts(), { wrapper });
 
         expect(result.current.all.length).toBe(1);
         expect(result.current.demo.length).toBe(1);
@@ -56,7 +56,7 @@ describe('useGetCFDAccounts', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useGetCFDAccounts(), { wrapper });
+        const { result } = renderHook(() => useCFDAccounts(), { wrapper });
 
         expect(result.current.all.length).toBe(1);
         expect(result.current.demo.length).toBe(0);
@@ -86,7 +86,7 @@ describe('useGetCFDAccounts', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useGetCFDAccounts(), { wrapper });
+        const { result } = renderHook(() => useCFDAccounts(), { wrapper });
 
         expect(result.current.all.length).toBe(2);
         expect(result.current.demo.length).toBe(1);

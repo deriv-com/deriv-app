@@ -21,7 +21,6 @@ export default class TradersHubStore extends BaseStore {
     is_account_type_modal_visible = false;
     account_type_card = '';
     selected_platform_type = 'options';
-    active_indx = 0;
     open_failed_verification_for = '';
     modal_data = {
         active_modal: '',

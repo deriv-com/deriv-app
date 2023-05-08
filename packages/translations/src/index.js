@@ -1,5 +1,22 @@
-import Localize from './components';
+import { Localize, TranslationProvider } from './components';
 import { localize } from './i18next/localize';
-import { getAllLanguages, getAllowedLanguages, getInitialLanguage, getLanguage } from './i18next/utils';
+import {
+    changeLanguage,
+    getAllLanguages,
+    getAllowedLanguages,
+    getInitialLanguage,
+    getLanguage,
+    initializeTranslations,
+} from './i18next/utils';
 
-export { Localize, localize, getAllLanguages, getAllowedLanguages, getInitialLanguage, getLanguage };
+export {
+    Localize,
+    TranslationProvider,
+    localize,
+    changeLanguage,
+    getAllLanguages,
+    getAllowedLanguages,
+    getInitialLanguage,
+    getLanguage,
+    initializeTranslations,
+};

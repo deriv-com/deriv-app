@@ -8,9 +8,5 @@
         },
         "typeRoots": ["./types", "@types"]
     },
-    "include": [
-        "src",
-        "./@types/react-div-100vh/react-div-100vh-config.d.ts",
-        "../../utils.d.ts"
-    ]
+    "include": ["src", "./@types/react-div-100vh/react-div-100vh-config.d.ts", "../../utils.d.ts"]
 }

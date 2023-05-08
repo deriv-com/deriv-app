@@ -1,3 +1,4 @@
 import Localize from './localize';
+import TranslationProvider from './provider';
 
-export default Localize;
+export { Localize, TranslationProvider };

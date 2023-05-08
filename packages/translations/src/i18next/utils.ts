@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import { str as crc32 } from 'crc-32';
 import { isLocal, isProduction } from '../../../shared/src/utils/config/config';
 import { isStaging } from '../../../shared/src/utils/url/helpers';
-import { ALL_LANGUAGES, DEFAULT_LANGUAGE, LANGUAGE_KEY } from './config';
+import { ALL_LANGUAGES, DEFAULT_LANGUAGE, LANGUAGE_KEY, Language } from './config';
 
 export const getAllLanguages = () => ALL_LANGUAGES;
 
@@ -65,6 +65,48 @@ export const getInitialLanguage = () => {
 };
 
 export const getLanguage = () => i18n.language || getInitialLanguage();
+
+const loadIncontextTranslation = () => {
+    const is_ach = getLanguage().toUpperCase() === 'ACH';
+    if (is_ach) {
+        const jipt = document.createElement('script');
+        jipt.type = 'text/javascript';
+        jipt.text = `
+            var _jipt = []; _jipt.push(['project', 'deriv-app']);
+            var crowdin = document.createElement("script");
+            crowdin.setAttribute('src', '//cdn.crowdin.com/jipt/jipt.js');
+            document.head.appendChild(crowdin);
+        `;
+        document.head.appendChild(jipt);
+    }
+};
+
+const loadLanguageJson = async (lang: string) => {
+    if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
+        const response = await import(/* webpackChunkName: "[request]" */ `../translations/${lang.toLowerCase()}.json`);
+
+        const lang_json = response;
+        i18n.addResourceBundle(lang, 'translations', lang_json);
+        document.documentElement.setAttribute('lang', lang);
+    }
+};
+
+export const initializeTranslations = async () => {
+    if (isStaging() || isLocal()) {
+        loadIncontextTranslation();
+    }
+    await loadLanguageJson(getInitialLanguage());
+};
+
+export const changeLanguage = async (lang: Language, cb: (lang: Language) => void) => {
+    if (isLanguageAvailable(lang)) {
+        await loadLanguageJson(lang);
+        await i18n.changeLanguage(lang, () => {
+            localStorage.setItem(LANGUAGE_KEY, lang);
+            cb(lang);
+        });
+    }
+};
 
 i18n.use(initReactI18next).init({
     react: {

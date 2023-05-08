@@ -89,9 +89,6 @@ describe('useRealTotalAssetCurrency', () => {
 
     test("should return the first account's currency when user only has crypto account", async () => {
         const mock = mockStore({
-            traders_hub: {
-                is_eu_user: false,
-            },
             client: {
                 is_crypto: (currency: string) => ['BTC', 'ETH'].includes(currency) || true,
                 accounts: {

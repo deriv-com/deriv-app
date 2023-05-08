@@ -46,23 +46,23 @@ const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }:
 
 const WalletsBanner = () => {
     // just for testing purpose
-    const [migrationStatus, setMigrationStatus] = React.useState<TWalletsMigrationStatus>('migrated');
-    const [isEu, setIsEu] = React.useState(false);
+    const [migration_status, setMigrationStatus] = React.useState<TWalletsMigrationStatus>('migrated');
+    const [is_eu, setIsEu] = React.useState(false);
 
     // just for testing purpose too
     const Wrapper = ({ children }: { children?: React.ReactNode }) => (
         <React.Fragment>
             <BannerSwitcher
-                status={migrationStatus}
+                status={migration_status}
                 onChangeStatus={setMigrationStatus}
-                is_eu={isEu}
+                is_eu={is_eu}
                 onChangeEU={setIsEu}
             />
             {children}
         </React.Fragment>
     );
 
-    switch (migrationStatus) {
+    switch (migration_status) {
         // the user can upgrade to the wallets
         case 'eligible':
         case 'failed':
@@ -75,14 +75,14 @@ const WalletsBanner = () => {
         case 'in_progress':
             return (
                 <Wrapper>
-                    <WalletsBannerUpgrading is_eu={isEu} />
+                    <WalletsBannerUpgrading is_eu={is_eu} />
                 </Wrapper>
             );
         // the wallets upgrading completed
         case 'migrated':
             return (
                 <Wrapper>
-                    <WalletsBannerReady is_eu={isEu} />
+                    <WalletsBannerReady is_eu={is_eu} />
                 </Wrapper>
             );
         // the user can't upgrade to the wallets

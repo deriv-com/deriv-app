@@ -1,4 +1,3 @@
-import WalletSteps from './wallet-steps';
-import './wallet-steps.scss';
+import StepComponent from './wallet-steps';
 
-export default WalletSteps;
+export default StepComponent;

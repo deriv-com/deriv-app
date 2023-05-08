@@ -22,6 +22,8 @@ const TradingAssessmentExistingUser = observer(() => {
         setShouldShowAssessmentCompleteModal,
         setIsTradingAssessmentForExistingUserEnabled,
         setIsTradingAssessmentForNewUserEnabled,
+        setShouldShowTradingAssessmentModal,
+        setSubSectionIndex,
     } = ui;
     const [form_values, setFormValue] = React.useState({});
     const [assessment_questions, setAssessmentQuestions] = React.useState({});
@@ -67,6 +69,11 @@ const TradingAssessmentExistingUser = observer(() => {
         setShouldShowTradeAssessmentForm(true);
     };
 
+    const handleCancel = () => {
+        setShouldShowTradingAssessmentModal(true);
+        setShouldShowTradeAssessmentForm(false);
+    };
+
     if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
@@ -100,6 +107,8 @@ const TradingAssessmentExistingUser = observer(() => {
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            onCancel={handleCancel}
+                            setSubSectionIndex={setSubSectionIndex}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
                         />
@@ -116,6 +125,8 @@ const TradingAssessmentExistingUser = observer(() => {
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            onCancel={handleCancel}
+                            setSubSectionIndex={setSubSectionIndex}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
                         />

@@ -313,7 +313,7 @@ const AccountSwitcher = ({
                                             <Button
                                                 id='dt_core_account-switcher_add-new-account'
                                                 onClick={() => {
-                                                    if (real_account_creation_unlock_date) {
+                                                    if (real_account_creation_unlock_date && is_eu) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
                                                     } else openRealAccountSignup(account);

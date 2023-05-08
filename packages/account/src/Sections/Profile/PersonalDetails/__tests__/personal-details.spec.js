@@ -47,7 +47,7 @@ describe('<PersonalDetailsForm />', () => {
         is_language_changing: false,
     };
 
-    renderComponent = (modified_props = {}) => {
+    const renderComponent = (modified_props = {}) => {
         const updated_props = {
             ...mock_props,
             ...modified_props,

@@ -14,7 +14,7 @@ export type TCashierOnboardingProvider = {
 const cash_contents = [
     {
         icons: [
-            { light: 'IcWalletCreditDebitLight', dark: 'IcWalletCreditDebitDark' },
+            { light: 'IcCashierCreditDebitLight', dark: 'IcCashierCreditDebitDark' },
             { light: 'IcCashierInstantBankTransferLight', dark: 'IcCashierInstantBankTransferDark' },
             { light: 'IcCashierEwalletLight', dark: 'IcCashierEwalletDark' },
             { light: 'IcCashierLocalPaymentMethodsLight', dark: 'IcCashierLocalPaymentMethodsDark' },

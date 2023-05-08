@@ -16,8 +16,8 @@ describe('<CashierOnboardingDetails />', () => {
                 {
                     icons: [
                         {
-                            dark: 'IcWalletCreditDebitDark',
-                            light: 'IcWalletCreditDebitLight',
+                            dark: 'IcCashierCreditDebitDark',
+                            light: 'IcCashierCreditDebitLight',
                         },
                     ],
                 },

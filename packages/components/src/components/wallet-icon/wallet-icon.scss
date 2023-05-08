@@ -4,6 +4,11 @@
     align-items: center;
     justify-content: center;
     border-radius: 0.4rem;
+    // background: lightgreen;
+
+    &__icon {
+        z-index: 3;
+    }
 
     &--small {
         width: 4.6rem;

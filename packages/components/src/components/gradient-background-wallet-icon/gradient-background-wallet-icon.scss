@@ -1,0 +1,68 @@
+.gradient-background-wallet-icon {
+    $parent: &;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    &__primary,
+    &__secondary {
+        z-index: 0;
+        position: absolute;
+        aspect-ratio: 1;
+        opacity: 0.7;
+    }
+
+    &--small {
+        width: 4rem;
+        height: 2.4rem;
+
+        #{$parent}__primary {
+            width: 60%;
+            left: -20%;
+            filter: blur(20px);
+        }
+
+        #{$parent}__secondary {
+            width: 80%;
+            top: 45%;
+            right: -45%;
+            filter: blur(25px);
+        }
+    }
+
+    &--medium {
+        width: 6.4rem;
+        height: 4rem;
+
+        #{$parent}__primary {
+            width: 62.5%;
+            left: -38%;
+            filter: blur(28px);
+        }
+
+        #{$parent}__secondary {
+            width: 75%;
+            right: -50%;
+            filter: blur(28px);
+        }
+    }
+
+    &--large {
+        width: 12.8rem;
+        height: 8rem;
+
+        #{$parent}__primary {
+            width: 62.5%;
+            left: -38%;
+            filter: blur(48px);
+        }
+
+        #{$parent}__secondary {
+            width: 75%;
+            right: -40%;
+            filter: blur(56px);
+        }
+    }
+}

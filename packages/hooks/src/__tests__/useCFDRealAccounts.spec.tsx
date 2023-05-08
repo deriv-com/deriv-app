@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useCFDRealAccounts from '../useCFDRealAccounts';
 
 describe('useCFDRealAccounts', () => {
-    test('should return empty array when user has no cfd accounts', async () => {
+    test('should return empty array when user has no CFD accounts', async () => {
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

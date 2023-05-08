@@ -43,6 +43,7 @@ const PersonalDetails = ({
     const { is_appstore } = React.useContext(PlatformContext);
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
+    const [should_hide_helper_image, setShouldHideHelperImage] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
@@ -149,7 +150,6 @@ const PersonalDetails = ({
                             autoComplete='off'
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
-                            style={{ border: '1px solid red' }}
                         >
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {!is_qualified_for_idv && (
@@ -184,19 +184,25 @@ const PersonalDetails = ({
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Identity verification')} />
                                                 <Field name='document'>
-                                                    {({ field }) => (
-                                                        <IDVForm
-                                                            selected_country={selected_country}
-                                                            errors={errors}
-                                                            touched={touched}
-                                                            values={values}
-                                                            handleChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            setFieldValue={setFieldValue}
-                                                            hide_hint={true}
-                                                            {...field}
-                                                        />
-                                                    )}
+                                                    {({ field, form }) => {
+                                                        setShouldHideHelperImage(
+                                                            form.values?.document_type?.id ===
+                                                                IDV_NOT_APPLICABLE_OPTION.id
+                                                        );
+                                                        return (
+                                                            <IDVForm
+                                                                selected_country={selected_country}
+                                                                errors={errors}
+                                                                touched={touched}
+                                                                values={values}
+                                                                handleChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                setFieldValue={setFieldValue}
+                                                                hide_hint={true}
+                                                                {...field}
+                                                            />
+                                                        );
+                                                    }}
                                                 </Field>
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
@@ -207,7 +213,7 @@ const PersonalDetails = ({
                                                     <div
                                                         className={classNames({
                                                             'account-form__poi-confirm-example_container':
-                                                                is_qualified_for_idv,
+                                                                is_qualified_for_idv && !should_hide_helper_image,
                                                         })}
                                                     >
                                                         <PersonalDetailsForm
@@ -233,6 +239,7 @@ const PersonalDetails = ({
                                                             account_opening_reason_list={account_opening_reason_list}
                                                             should_close_tooltip={should_close_tooltip}
                                                             setShouldCloseTooltip={setShouldCloseTooltip}
+                                                            should_hide_helper_image={should_hide_helper_image}
                                                             {...field}
                                                         />
                                                     </div>

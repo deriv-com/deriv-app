@@ -175,5 +175,9 @@
         @include mobile {
             overflow: unset;
         }
+
+        @include desktop {
+            padding: unset;
+        }
     }
 }

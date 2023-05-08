@@ -40,7 +40,7 @@ describe('useGetCfdAccounts', () => {
         expect(result.current.real.length).toBe(0);
     });
 
-    test('should return proper data when client only has cfd real accounts', async () => {
+    test('should return proper data when client only has CFD real accounts', async () => {
         const mock = mockStore({
             client: {
                 mt5_login_list: [

@@ -199,7 +199,7 @@ const Step1 = ({ show_label = false }) => (
         )}
         <div className='joyride-content__left'>
             <Localize
-                i18n_default_text={`Let's start by setting up the <0>first block.</0>`}
+                i18n_default_text={`First, set the <0>Trade parameters</0> block.`}
                 components={[<strong key={0} />]}
             />
         </div>
@@ -388,7 +388,7 @@ const Step5 = ({ show_label = false }) => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='Drag the <0>Trade again</0> block and add it to the <0>do</0> part of the <0>Repeat until</0> block.'
+                        i18n_default_text='Drag the <0>Trade again</0> block and add it into the <0>do</0> part of the <0>Repeat until</0> block.'
                         components={[<strong key={0} />]}
                     />
                 </li>

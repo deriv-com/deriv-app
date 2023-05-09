@@ -5,24 +5,25 @@ import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const LeavePageModal = ({ onLeavePage = () => {} }) => {
+const LeavePageModal = ({ onLeavePage = () => {}, onCancel = () => {} }) => {
     const { buy_sell_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     const onClickCancel = () => {
-        buy_sell_store.setShowFilterPaymentMethods(true);
+        onCancel();
         hideModal({
             should_restore_local_state: true,
         });
-    }
-    
+    };
+
     const onClickLeavePage = () => {
         buy_sell_store.setShowFilterPaymentMethods(false);
         onLeavePage();
         hideModal({
             should_restore_local_state: false,
+            should_hide_all_modals: true,
         });
-    }
+    };
 
     return (
         <Modal
@@ -41,18 +42,10 @@ const LeavePageModal = ({ onLeavePage = () => {} }) => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button
-                    large
-                    onClick={onClickCancel}
-                    secondary
-                >
+                <Button large onClick={onClickCancel} secondary>
                     <Localize i18n_default_text='Cancel' />
                 </Button>
-                <Button
-                    large
-                    onClick={onClickLeavePage}
-                    primary
-                >
+                <Button large onClick={onClickLeavePage} primary>
                     <Localize i18n_default_text='Leave page' />
                 </Button>
             </Modal.Footer>

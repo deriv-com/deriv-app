@@ -48,7 +48,6 @@ export default class BuySellStore extends BaseStore {
         // For sell orders we require extra information.
         ...(this.is_sell_advert ? { contact_info: this.root_store.general_store.contact_info } : {}),
     };
-    filter_payment_methods = [];
     payment_method_ids = [];
 
     constructor(root_store) {
@@ -103,7 +102,6 @@ export default class BuySellStore extends BaseStore {
             loadMoreItems: action.bound,
             onChangeTableType: action.bound,
             onClickApply: action.bound,
-            onClickReset: action.bound,
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
             setApiErrorMessage: action.bound,
@@ -401,10 +399,6 @@ export default class BuySellStore extends BaseStore {
         this.setItems([]);
         this.setIsLoading(true);
         this.loadMoreItems({ startIndex: 0 });
-    }
-
-    onClickReset() {
-        this.setShouldUseClientLimits(false);
     }
 
     onConfirmClick(order_info) {

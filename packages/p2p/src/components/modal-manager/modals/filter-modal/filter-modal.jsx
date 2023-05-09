@@ -64,16 +64,14 @@ const FilterModal = () => {
         'selected_methods_text',
         buy_sell_store.selected_payment_method_text ?? []
     );
+    const [has_made_changes, setHasMadeChanges] = useSavedState('has_made_changes', false);
+    const [has_clicked_reset, setHasClickedReset] = useSavedState('has_clicked_reset', false);
 
     const onChange = payment_method => {
-        if (!buy_sell_store.filter_payment_methods.includes(payment_method.value)) {
-            buy_sell_store.filter_payment_methods.push(payment_method.value);
+        if (!selected_methods.includes(payment_method.value)) {
             setSelectedMethods(prev_selected_methods => [...prev_selected_methods, payment_method.value]);
             setSelectedMethodsText(prev_selected_methods_text => [...prev_selected_methods_text, payment_method.text]);
         } else {
-            buy_sell_store.filter_payment_methods = buy_sell_store.filter_payment_methods.filter(
-                payment_method_id => payment_method_id !== payment_method.value
-            );
             setSelectedMethods(prev_selected_methods => prev_selected_methods.filter(i => i !== payment_method.value));
             setSelectedMethodsText(prev_selected_methods_text =>
                 prev_selected_methods_text.filter(i => i !== payment_method.text)
@@ -81,46 +79,70 @@ const FilterModal = () => {
         }
     };
 
-    const onClickClear = () => {
-        buy_sell_store.filter_payment_methods = [];
-        setSelectedMethods([]);
-        setSelectedMethodsText([]);
-        buy_sell_store.setSelectedPaymentMethodValue([]);
-        buy_sell_store.setSelectedPaymentMethodText([]);
-    };
-
-    // this is to ensure when user clicks the back button after selecting some payment methods and clicking Leave Page button in the modal
-    // the previously selected payment methods should not be saved in the filter_payment_methods observable (by default its saved due to the onChange function applied to the checkbox)
-    // otherwise, when user goes back to the payment methods selection, it will assume that the user has already selected those previous payment methods
-    const resetFilterPaymentMethods = () => {
-        buy_sell_store.filter_payment_methods = buy_sell_store.filter_payment_methods.filter(
-            filtered_payment_method => !selected_methods.includes(filtered_payment_method)
-        );
-    };
-
-    const onClickClose = () => {
-        resetFilterPaymentMethods();
-        buy_sell_store.setShowFilterPaymentMethods(false);
-        my_profile_store.setSearchTerm('');
-        my_profile_store.setSearchResults([]);
-        hideModal({
-            should_restore_local_state: false,
-        });
+    const onClose = () => {
+        if (has_selected_payment_methods || has_made_changes) {
+            showModal({
+                key: 'LeavePageModal',
+                props: {
+                    onLeavePage: () => {
+                        if (isMobile()) {
+                            setSelectedMethods(
+                                selected_methods.filter(selected_method =>
+                                    buy_sell_store.selected_payment_method_value.includes(selected_method)
+                                )
+                            );
+                            setSelectedMethodsText(
+                                selected_methods_text.filter(selected_method_text =>
+                                    buy_sell_store.selected_payment_method_text.includes(selected_method_text)
+                                )
+                            );
+                        }
+                        setSelectedMethods(buy_sell_store.selected_payment_method_value);
+                        setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
+                        hideModal({
+                            should_restore_local_state: false,
+                            should_hide_all_modals: true,
+                        });
+                    },
+                },
+            });
+        } else {
+            buy_sell_store.setShowFilterPaymentMethods(false);
+            my_profile_store.setSearchTerm('');
+            my_profile_store.setSearchResults([]);
+            hideModal({
+                should_restore_local_state: false,
+            });
+        }
     };
 
     const onClickReset = () => {
-        buy_sell_store.onClickReset();
-        onClickClear();
+        buy_sell_store.setShouldUseClientLimits(false);
+        setSelectedMethods(buy_sell_store.selected_payment_method_value);
+        setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
+        setHasClickedReset(true);
+        setHasMadeChanges(false);
     };
 
     const onClickConfirmPaymentMethods = () => {
-        buy_sell_store.setSelectedPaymentMethodValue(selected_methods);
-        buy_sell_store.setSelectedPaymentMethodText(selected_methods_text);
         buy_sell_store.setShowFilterPaymentMethods(false);
+        setHasMadeChanges(true);
+    };
+
+    const onClickClearPaymentMethods = () => {
+        setSelectedMethods([]);
+        setSelectedMethodsText([]);
     };
 
     const onClickApply = () => {
-        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+        if (has_clicked_reset) {
+            buy_sell_store.setSelectedPaymentMethodValue([]);
+            buy_sell_store.setSelectedPaymentMethodText([]);
+        } else {
+            buy_sell_store.setSelectedPaymentMethodValue(selected_methods);
+            buy_sell_store.setSelectedPaymentMethodText(selected_methods_text);
+            buy_sell_store.onClickApply(selected_methods, selected_methods_text);
+        }
         hideModal();
     };
 
@@ -149,31 +171,12 @@ const FilterModal = () => {
     }, []);
 
     const pageHeaderReturnFn = () => {
-        if (has_selected_payment_methods) {
-            showModal({
-                key: 'LeavePageModal',
-                props: {
-                    onLeavePage: () => {
-                        resetFilterPaymentMethods();
-                        if (isMobile()) {
-                            setSelectedMethods(
-                                selected_methods.filter(selected_method =>
-                                    buy_sell_store.selected_payment_method_value.includes(selected_method)
-                                )
-                            );
-                            setSelectedMethodsText(
-                                selected_methods_text.filter(selected_method_text =>
-                                    buy_sell_store.selected_payment_method_text.includes(selected_method_text)
-                                )
-                            );
-                        }
-                    },
-                },
-            });
-        } else if (buy_sell_store.show_filter_payment_methods) {
-            buy_sell_store.setShowFilterPaymentMethods(false);
+        if (buy_sell_store.show_filter_payment_methods) {
             my_profile_store.setSearchTerm('');
             my_profile_store.setSearchResults([]);
+            setSelectedMethods(buy_sell_store.selected_payment_method_value);
+            setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
+            buy_sell_store.setShowFilterPaymentMethods(false);
         } else {
             hideModal({
                 should_restore_local_state: false,
@@ -190,7 +193,7 @@ const FilterModal = () => {
                     height='56rem'
                     title={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
                     is_open={is_modal_open}
-                    toggleModal={onClickClose}
+                    toggleModal={onClose}
                     width='44rem'
                 >
                     <Modal.Body>
@@ -243,11 +246,12 @@ const FilterModal = () => {
                                         id='toggle-filter-modal'
                                         classNameButton='filter-modal__toggle-button'
                                         classNameLabel='filter-modal__toggle-label'
-                                        handleToggle={() =>
+                                        handleToggle={() => {
                                             buy_sell_store.setShouldUseClientLimits(
                                                 !buy_sell_store.should_use_client_limits
-                                            )
-                                        }
+                                            );
+                                            setHasMadeChanges(true);
+                                        }}
                                         is_enabled={buy_sell_store.should_use_client_limits}
                                     />
                                 </div>
@@ -261,7 +265,7 @@ const FilterModal = () => {
                                     disabled={!has_selected_payment_methods && !has_selected_all_payment_methods}
                                     large
                                     secondary
-                                    onClick={onClickClear}
+                                    onClick={onClickClearPaymentMethods}
                                 >
                                     <Localize i18n_default_text='Clear' />
                                 </Button>
@@ -279,7 +283,7 @@ const FilterModal = () => {
                                 <Button large secondary onClick={onClickReset}>
                                     {localize('Reset')}
                                 </Button>
-                                <Button large primary onClick={onClickApply}>
+                                <Button disabled={!has_made_changes} large primary onClick={onClickApply}>
                                     {localize('Apply')}
                                 </Button>
                             </Button.Group>
@@ -294,7 +298,7 @@ const FilterModal = () => {
                     height_offset='80px'
                     is_flex
                     header={<FilterModalHeader pageHeaderReturnFn={pageHeaderReturnFn} />}
-                    onClickClose={onClickClose}
+                    onClickClose={onClose}
                     renderPageFooterChildren={() => {
                         return (
                             <React.Fragment>
@@ -306,7 +310,7 @@ const FilterModal = () => {
                                             }
                                             large
                                             secondary
-                                            onClick={onClickClear}
+                                            onClick={onClickClearPaymentMethods}
                                         >
                                             <Localize i18n_default_text='Clear' />
                                         </Button>
@@ -324,7 +328,7 @@ const FilterModal = () => {
                                         <Button large secondary onClick={onClickReset}>
                                             {localize('Reset')}
                                         </Button>
-                                        <Button large primary onClick={onClickApply}>
+                                        <Button disabled={!has_made_changes} large primary onClick={onClickApply}>
                                             {localize('Apply')}
                                         </Button>
                                     </Button.Group>
@@ -382,11 +386,12 @@ const FilterModal = () => {
                                     id='toggle-filter-modal'
                                     classNameButton='filter-modal__toggle-button'
                                     classNameLabel='filter-modal__toggle-label'
-                                    handleToggle={() =>
+                                    handleToggle={() => {
                                         buy_sell_store.setShouldUseClientLimits(
                                             !buy_sell_store.should_use_client_limits
-                                        )
-                                    }
+                                        );
+                                        setHasMadeChanges(true);
+                                    }}
                                     is_enabled={buy_sell_store.should_use_client_limits}
                                 />
                             </div>

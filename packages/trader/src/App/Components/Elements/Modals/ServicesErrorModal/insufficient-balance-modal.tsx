@@ -1,11 +1,26 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Modal } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const InsufficientBalanceModal = ({ history, is_virtual, is_visible, message, toggleModal }) => (
+type TInsufficientBalanceModal = {
+    history?: {
+        push?: (url: string) => void;
+    };
+    is_virtual: boolean;
+    is_visible: boolean;
+    message: string;
+    toggleModal: () => void;
+};
+
+const InsufficientBalanceModal = ({
+    history,
+    is_virtual,
+    is_visible,
+    message,
+    toggleModal,
+}: TInsufficientBalanceModal) => (
     <Modal
         id='dt_insufficient_balance_modal'
         is_open={is_visible}
@@ -22,7 +37,7 @@ const InsufficientBalanceModal = ({ history, is_virtual, is_visible, message, to
                 text={is_virtual ? localize('OK') : localize('Deposit now')}
                 onClick={() => {
                     if (!is_virtual) {
-                        history.push(routes.cashier_deposit);
+                        history?.push?.(routes.cashier_deposit);
                     } else {
                         toggleModal();
                     }
@@ -32,13 +47,5 @@ const InsufficientBalanceModal = ({ history, is_virtual, is_visible, message, to
         </Modal.Footer>
     </Modal>
 );
-
-InsufficientBalanceModal.propTypes = {
-    history: PropTypes.object,
-    is_virtual: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    message: PropTypes.string,
-    toggleModal: PropTypes.func,
-};
 
 export default withRouter(InsufficientBalanceModal);

@@ -1,10 +1,21 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { getLanguage, localize } from '@deriv/translations';
 import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
 
-const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_appstore, is_logged_in }) => (
+type TAuthorizationRequiredModal = {
+    is_visible: boolean;
+    toggleModal: () => void;
+    is_appstore?: boolean;
+    is_logged_in: boolean;
+};
+
+const AuthorizationRequiredModal = ({
+    is_visible,
+    toggleModal,
+    is_appstore,
+    is_logged_in,
+}: TAuthorizationRequiredModal) => (
     <Modal
         id='dt_authorization_required_modal'
         is_open={is_visible}
@@ -29,12 +40,5 @@ const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_appstore, is_l
         </Modal.Footer>
     </Modal>
 );
-
-AuthorizationRequiredModal.propTypes = {
-    is_appstore: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    toggleModal: PropTypes.func,
-};
 
 export default AuthorizationRequiredModal;

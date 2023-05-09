@@ -1,8 +1,9 @@
-import { observable, action, reaction, makeObservable } from 'mobx';
+import { observable, action, computed, reaction, makeObservable } from 'mobx';
 import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import { isMobile } from '@deriv/shared';
+import { setColors, blocksCoordinate } from '@deriv/bot-skeleton';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -61,6 +62,7 @@ export default class DashboardStore implements IDashboardStore {
             is_info_panel_visible: observable,
             is_preview_on_popup: observable,
             is_tour_dialog_visible: observable,
+            is_dark_mode: computed,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
@@ -88,6 +90,30 @@ export default class DashboardStore implements IDashboardStore {
             setStrategySaveType: action.bound,
         });
         this.root_store = root_store;
+        const {
+            load_modal: { previewRecentStrategy, current_workspace_id, selected_strategy },
+        } = this.root_store;
+
+        const refreshBotBuilderTheme = () => {
+            Blockly.derivWorkspace.asyncClear();
+            Blockly.Xml.domToWorkspace(
+                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                Blockly.derivWorkspace
+            );
+        };
+
+        reaction(
+            () => this.is_dark_mode,
+            () => {
+                setColors(this.is_dark_mode);
+                if (this.active_tab === 1) {
+                    refreshBotBuilderTheme();
+                } else {
+                    refreshBotBuilderTheme();
+                    previewRecentStrategy(current_workspace_id);
+                }
+            }
+        );
         reaction(
             () => this.is_preview_on_popup,
             async is_preview_on_popup => {
@@ -121,6 +147,17 @@ export default class DashboardStore implements IDashboardStore {
     show_toast = false;
     strategy_save_type = 'unsaved';
     toast_message = '';
+
+    get is_dark_mode() {
+        const {
+            app: {
+                core: {
+                    ui: { is_dark_mode_on },
+                },
+            },
+        } = this.root_store;
+        return is_dark_mode_on;
+    }
 
     setOpenSettings = (toast_message: string, show_toast = true) => {
         this.toast_message = toast_message;
@@ -194,15 +231,12 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
-        if (active_tab === 1) {
-            const {
-                load_modal: { previewRecentStrategy, selected_strategy_id },
-            } = this.root_store;
-            previewRecentStrategy(selected_strategy_id);
-        }
         if (this.has_started_bot_builder_tour) {
             this.setTourActive(false);
             this.setBotBuilderTourState(false);
+        }
+        if (this.active_tab === 1) {
+            //blocksCoordinate();
         }
     };
 

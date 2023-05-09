@@ -28,9 +28,6 @@ const RecentComponent = ({
     strategy_save_type,
 }: TRecentComponent) => {
     React.useEffect(() => {
-        setTimeout(() => {
-            getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
-        }, 2000);
         setStrategySaveType('');
         //this dependency is used when we use the save modal popup
     }, [strategy_save_type]);
@@ -38,7 +35,6 @@ const RecentComponent = ({
     const is_mobile = isMobile();
 
     if (!dashboard_strategies?.length) return null;
-
     return (
         <div className='load-strategy__container load-strategy__container--has-footer'>
             <div className='load-strategy__recent'>

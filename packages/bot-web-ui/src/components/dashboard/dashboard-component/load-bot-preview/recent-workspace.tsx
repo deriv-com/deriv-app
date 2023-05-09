@@ -17,6 +17,7 @@ type TRecentWorkspace = {
     getRecentFileIcon: (string: string) => void;
     getSaveType: (type: string) => string;
     index: number;
+    getSelectedStrategyID: (current_workspace_id: string) => void;
     loadFileFromRecent: () => void;
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     previewRecentStrategy: (workspaceId: string) => void;
@@ -37,6 +38,7 @@ const RecentWorkspace = ({
     onToggleDeleteDialog,
     previewRecentStrategy,
     selected_strategy_id,
+    getSelectedStrategyID,
     setActiveTab,
     setPreviewOnDialog,
     toggleSaveModal,
@@ -109,6 +111,7 @@ const RecentWorkspace = ({
                 e.stopPropagation(); //stop event bubbling for child element
                 if (is_dropdown_visible) setDropdownVisibility(false);
                 viewRecentStrategy(STRATEGY.PREVIEW);
+                getSelectedStrategyID(workspace.id);
             }}
         >
             <div className='load-strategy__recent-item-text'>
@@ -193,6 +196,7 @@ export default connect(({ load_modal, dashboard, save_modal }: RootStore) => ({
     dashboard_strategies: load_modal.dashboard_strategies,
     getRecentFileIcon: load_modal.getRecentFileIcon,
     getSaveType: load_modal.getSaveType,
+    getSelectedStrategyID: load_modal.getSelectedStrategyID,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     onToggleDeleteDialog: load_modal.onToggleDeleteDialog,
     previewRecentStrategy: load_modal.previewRecentStrategy,

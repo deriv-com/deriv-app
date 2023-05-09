@@ -1,0 +1,85 @@
+.wallet-wrapper {
+    display: grid;
+    place-content: center;
+    width: 100%;
+    height: 100%;
+    @include mobile {
+        height: calc(100% - 1rem);
+    }
+
+    &--body,
+    &--text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &--text,
+    &--footer {
+        gap: 0.8rem;
+    }
+
+    &--info-section,
+    &--footer {
+        padding: 1.6rem;
+    }
+
+    &--image {
+        position: relative;
+        left: 1.5rem;
+    }
+
+    &--body {
+        margin: 0 auto;
+        max-width: 73.9rem;
+        @include mobile {
+            margin: 1.6rem 1.6rem 3.2rem;
+            min-height: calc(100% - 11rem);
+        }
+    }
+
+    &--info-section {
+        margin-top: 2.4rem;
+        background-color: var(--transparent-info);
+        border-radius: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0.8rem;
+
+        @include mobile {
+            margin-top: 1.6rem;
+        }
+
+        &__text {
+            display: grid;
+            grid-template-columns: 1.6rem 1fr;
+            grid-column-gap: 0.8rem;
+            align-items: center;
+        }
+    }
+
+    &--checkbox {
+        margin-top: 2.4rem;
+        .dc-checkbox__label {
+            @include mobile {
+                font-size: var(--text-size-xxs);
+            }
+        }
+    }
+
+    // This won't be needed once everything is merged
+    &--footer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0rem 0.2rem 0rem var(--general-section-1);
+
+        &__btn {
+            width: 50%;
+        }
+    }
+}

@@ -7,7 +7,11 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
 import { CFDAccountCopy } from './cfd-account-copy';
-import { getDXTradeWebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
+import {
+    getDXTradeWebTerminalLink,
+    getPlatformDXTradeDownloadLink,
+    getCTraderWebTerminalLink,
+} from '../Helpers/constants';
 import {
     TAccountIconValues,
     TSpecBoxProps,
@@ -171,6 +175,7 @@ const CFDAccountCardComponent = ({
     commission_message,
     descriptor,
     dxtrade_tokens,
+    ctrader_tokens,
     existing_accounts_data,
     has_banner,
     has_cfd_account_error,
@@ -699,6 +704,23 @@ const CFDAccountCardComponent = ({
                                     <Localize i18n_default_text='Trade on web terminal' />
                                 </a>
                             )}
+                        {existing_data &&
+                            is_logged_in &&
+                            !is_web_terminal_unsupported &&
+                            platform === CFD_PLATFORMS.CTRADER && (
+                                <a
+                                    className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                    type='button'
+                                    href={getCTraderWebTerminalLink(
+                                        type.category,
+                                        ctrader_tokens[type.category as 'demo' | 'real']
+                                    )}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    <Localize i18n_default_text='Trade on web terminal' />
+                                </a>
+                            )}
                         {existing_data && is_logged_in && is_web_terminal_unsupported && (
                             <a
                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
@@ -761,6 +783,7 @@ const CFDAccountCardComponent = ({
 
 const CFDAccountCard = connect(({ modules: { cfd }, client, ui, common, traders_hub }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
+    ctrader_tokens: cfd.ctrader_tokens,
     isEligibleForMoreDemoMt5Svg: client.isEligibleForMoreDemoMt5Svg,
     isEligibleForMoreRealMt5: client.isEligibleForMoreRealMt5,
     setAccountType: cfd.setAccountType,

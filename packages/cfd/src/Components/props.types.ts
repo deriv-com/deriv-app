@@ -85,6 +85,10 @@ export type TCFDAccountCard = {
         demo: string;
         real: string;
     };
+    ctrader_tokens: {
+        demo: string;
+        real: string;
+    };
     is_hovered?: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
     isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;

@@ -35,6 +35,11 @@ export default class CFDStore extends BaseStore {
         real: '',
     };
 
+    ctrader_tokens = {
+        demo: '',
+        real: '',
+    };
+
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
 
@@ -60,6 +65,7 @@ export default class CFDStore extends BaseStore {
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
             dxtrade_tokens: observable,
+            ctrader_tokens: observable,
             account_title: computed,
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
@@ -102,14 +108,19 @@ export default class CFDStore extends BaseStore {
             setJurisdictionSelectedShortcode: action.bound,
             toggleCFDVerificationModal: action.bound,
             setDxtradeToken: action.bound,
+            setCTraderToken: action.bound,
             loadDxtradeTokens: action.bound,
+            loadCTraderTokens: action.bound,
         });
 
         reaction(
-            () => [this.root_store.client.dxtrade_accounts_list],
+            () => [this.root_store.client.dxtrade_accounts_list, this.root_store.client.ctrader_accounts_list],
             () => {
                 if (this.root_store.client.dxtrade_accounts_list.length > 0) {
                     this.loadDxtradeTokens();
+                }
+                if (this.root_store.client.ctrader_accounts_list.length > 0) {
+                    this.loadCTraderTokens();
                 }
             }
         );
@@ -632,6 +643,13 @@ export default class CFDStore extends BaseStore {
         }
     }
 
+    setCTraderToken(response, server) {
+        if (!response.error) {
+            const { ctrader } = response.service_token;
+            this.ctrader_tokens[server] = ctrader.token;
+        }
+    }
+
     loadDxtradeTokens() {
         ['demo', 'real'].forEach(account_type => {
             const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
@@ -641,6 +659,20 @@ export default class CFDStore extends BaseStore {
             if (!this.dxtrade_tokens[account_type] && has_existing_account) {
                 WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
                     this.setDxtradeToken(response, account_type)
+                );
+            }
+        });
+    }
+
+    loadCTraderTokens() {
+        ['demo', 'real'].forEach(account_type => {
+            const has_existing_account = this.root_store.client.ctrader_accounts_list.some(
+                account => account.account_type === account_type
+            );
+
+            if (!this.ctrader_tokens[account_type] && has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.CTRADER, account_type).then(response =>
+                    this.setCTtraderToken(response, account_type)
                 );
             }
         });

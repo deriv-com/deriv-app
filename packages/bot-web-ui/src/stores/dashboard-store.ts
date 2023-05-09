@@ -91,7 +91,7 @@ export default class DashboardStore implements IDashboardStore {
         });
         this.root_store = root_store;
         const {
-            load_modal: { previewRecentStrategy, current_workspace_id, selected_strategy },
+            load_modal: { previewRecentStrategy, current_workspace_id },
         } = this.root_store;
 
         const refreshBotBuilderTheme = () => {

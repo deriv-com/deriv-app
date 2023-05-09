@@ -4,8 +4,9 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import { TImageTestID } from 'Assets/svgs/wallets/image-types';
+import WalletsBanner from '../wallets-banner';
+import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import WalletsBannerUpgrading from '../wallets-banner-upgrading';
 import WalletsBannerReady from '../wallets-banner-ready';
 
@@ -18,9 +19,16 @@ describe('<WalletsBanner />', () => {
     describe('Should render properly with right banner if status is eligible: <WalletsBannerUpgrade />', () => {
         const desktop: TImageTestID = 'dt_upgrade_desktop';
         const mobile: TImageTestID = 'dt_upgrade_mobile';
+        const mockRootStore = mockStore({ traders_hub: { toggleWalletsUpgrade: true } });
+
+        render(<WalletsBanner />, {
+            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+        });
 
         it('Should render right button', () => {
-            render(<WalletsBannerUpgrade />);
+            render(<WalletsBannerUpgrade />, {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            });
             const btn = screen.queryByText('Upgrade now');
 
             expect(btn).toBeInTheDocument();
@@ -28,7 +36,9 @@ describe('<WalletsBanner />', () => {
 
         it('Should render image properly for desktop', () => {
             isMobile.mockReturnValue(false);
-            render(<WalletsBannerUpgrade />);
+            render(<WalletsBannerUpgrade />, {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            });
             const desktop_image = screen.queryByTestId(desktop);
             const mobile_image = screen.queryByTestId(mobile);
 
@@ -38,7 +48,9 @@ describe('<WalletsBanner />', () => {
 
         it('Should render image properly for mobile', () => {
             isMobile.mockReturnValue(true);
-            render(<WalletsBannerUpgrade />);
+            render(<WalletsBannerUpgrade />, {
+                wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            });
             const desktop_image = screen.queryByTestId(desktop);
             const mobile_image = screen.queryByTestId(mobile);
 

@@ -3,5 +3,5 @@ export type TStepProps = {
     description: string;
     bullets: string[];
     eu_user?: boolean;
-    icon?: React.ReactNode;
+    image?: React.ReactNode;
 };

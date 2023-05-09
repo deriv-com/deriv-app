@@ -1,3 +1,3 @@
-import StepComponent from './wallet-steps';
+import WalletSteps from './wallet-steps';
 
-export default StepComponent;
+export default WalletSteps;

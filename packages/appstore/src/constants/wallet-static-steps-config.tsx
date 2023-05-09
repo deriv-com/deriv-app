@@ -3,7 +3,7 @@ import WalletsImage from 'Assets/svgs/wallets';
 import { localize } from '@deriv/translations';
 
 type TStep = {
-    icon: JSX.Element;
+    image: JSX.Element;
     title: string;
     description: string;
     bullets: string[];
@@ -11,7 +11,7 @@ type TStep = {
 
 export const steps = (eu_user: boolean): TStep[] => [
     {
-        icon: <WalletsImage image={eu_user ? 'introducing_wallets_eu' : 'introducing_wallets'} />,
+        image: <WalletsImage image={eu_user ? 'introducing_wallets_eu' : 'introducing_wallets'} />,
         title: localize('Introducing Wallets'),
         description: eu_user
             ? localize('A new way to manage your funds')
@@ -28,7 +28,7 @@ export const steps = (eu_user: boolean): TStep[] => [
         ],
     },
     {
-        icon: <WalletsImage image='how_it_works' />,
+        image: <WalletsImage image='how_it_works' />,
         title: localize('How it works'),
         description: eu_user ? localize('Simply add your funds and trade') : localize('Get a Wallet, add funds, trade'),
         bullets: [
@@ -38,7 +38,7 @@ export const steps = (eu_user: boolean): TStep[] => [
         ],
     },
     {
-        icon: <WalletsImage image={eu_user ? 'trading_accounts_eu' : 'trading_accounts'} />,
+        image: <WalletsImage image={eu_user ? 'trading_accounts_eu' : 'trading_accounts'} />,
         title: localize('What happens to my trading accounts'),
         description: localize("We'll link them"),
         bullets: [

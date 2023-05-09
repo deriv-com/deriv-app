@@ -4,12 +4,12 @@ import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
-import { useStores } from 'Stores/index';
+import { useStore } from '@deriv/stores';
 
 const WalletsBannerUpgrade = () => {
     const image: TWalletsImagesListKeys = isMobile() ? 'upgrade_mobile' : 'upgrade_desktop';
     const size: string = isMobile() ? 'xs' : 'm';
-    const { traders_hub } = useStores();
+    const { traders_hub } = useStore();
     const { toggleWalletsUpgrade } = traders_hub;
 
     return (

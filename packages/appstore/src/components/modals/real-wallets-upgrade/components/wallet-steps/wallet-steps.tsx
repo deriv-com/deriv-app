@@ -1,18 +1,12 @@
 import React from 'react';
-import { Modal, Text, Icon, Div100vhContainer } from '@deriv/components';
+import { Text, Icon, Div100vhContainer } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { TStepProps } from 'Types';
-import { steps } from 'Constants/wallet-static-steps-config';
 import './wallet-steps.scss';
 
-type TStepComponent = {
-    eu_user: boolean;
-    current_step: number;
-};
-
-const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => (
+const WalletSteps = ({ image, title, description, bullets }: TStepProps) => (
     <Div100vhContainer className='wallet-steps__content' is_disabled={isDesktop()} height_offset='18.5rem'>
-        {icon}
+        {image}
         <Text
             as='h1'
             color='prominent'
@@ -47,17 +41,4 @@ const WalletSteps = ({ icon, title, description, bullets }: TStepProps) => (
     </Div100vhContainer>
 );
 
-// move this in a seperate file
-const StepComponent = ({ eu_user, current_step }: TStepComponent) => (
-    <Modal.Body className='wallet-steps'>
-        {steps(eu_user).map((step, index) => {
-            if (index === current_step - 1) {
-                return <WalletSteps key={index} {...step} bullets={step?.bullets || []} />;
-            }
-            // replace this with the consent form or whatever
-            return null;
-        })}
-    </Modal.Body>
-);
-
-export default StepComponent;
+export default WalletSteps;

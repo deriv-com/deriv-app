@@ -4,7 +4,26 @@ import { observer } from 'mobx-react-lite';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
-import StepComponent from './components/wallet-steps/wallet-steps';
+import { steps } from 'Constants/wallet-static-steps-config';
+import WalletSteps from './components/wallet-steps';
+
+type TStepComponent = {
+    eu_user: boolean;
+    current_step: number;
+};
+
+// move this in a seperate file
+const StepComponent = ({ eu_user, current_step }: TStepComponent) => (
+    <Modal.Body className='wallet-steps'>
+        {steps(eu_user).map((step, index) => {
+            if (index === current_step - 1) {
+                return <WalletSteps key={index} {...step} bullets={step?.bullets || []} />;
+            }
+            // replace this with the consent form or whatever
+            return null;
+        })}
+    </Modal.Body>
+);
 
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStore();

@@ -83,9 +83,9 @@ const loadIncontextTranslation = () => {
 
 const loadLanguageJson = async (lang: string) => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
-        const response = await import(/* webpackChunkName: "[request]" */ `../translations/${lang.toLowerCase()}.json`);
-
-        const lang_json = response;
+        const lang_json = await import(
+            /* webpackChunkName: "[request]" */ `../translations/${lang.toLowerCase()}.json`
+        );
         i18n.addResourceBundle(lang, 'translations', lang_json);
         document.documentElement.setAttribute('lang', lang);
     }

@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DesktopWrapper } from '@deriv/components';
-import { CashierStore } from '@deriv/cashier';
-import { CFDStore } from '@deriv/cfd';
 import { APIProvider } from '@deriv/api';
 import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTranslation } from '@deriv/shared';
 import { initializeTranslations, getLanguage, TranslationProvider } from '@deriv/translations';
@@ -30,18 +28,6 @@ const App = ({ root_store }) => {
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const [is_translation_loaded] = useOnLoadTranslation();
-    const initCashierStore = () => {
-        root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
-        root_store.modules.cashier.general_store.init();
-    };
-    // TODO: investigate the order of cashier store initialization
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(initCashierStore, []);
-    const initCFDStore = () => {
-        root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
-    };
-
-    React.useEffect(initCFDStore, []);
 
     React.useEffect(() => {
         initializeTranslations();

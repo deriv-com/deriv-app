@@ -1,6 +1,8 @@
 import { configure } from 'mobx';
+import { CashierStore } from '@deriv/cashier';
+import { CFDStore } from '@deriv/cfd';
 import NetworkMonitor from 'Services/network-monitor';
-// import OutdatedBrowser      from 'Services/outdated-browser';
+import WS from 'Services/ws-methods';
 import RootStore from 'Stores';
 
 configure({ enforceActions: 'observed' });
@@ -59,12 +61,14 @@ const initStore = notification_messages => {
     setStorageEvents(root_store);
 
     NetworkMonitor.init(root_store);
-    // TODO: Re-enable and update browser checking
-    // OutdatedBrowser.init(root_store);!
+
     root_store.client.init();
     root_store.common.init();
     root_store.pushwoosh.init();
     root_store.ui.init(notification_messages);
+    root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
+    root_store.modules.cashier.general_store.init();
+    root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
 
     return root_store;
 };

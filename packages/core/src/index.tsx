@@ -27,6 +27,6 @@ if (!has_endpoint_url) {
 
     const wrapper = document.getElementById('deriv_app');
     if (wrapper) {
-        ReactDOM.render(<App useSuspense={false} root_store={root_store} />, wrapper);
+        ReactDOM.render(<App root_store={root_store} />, wrapper);
     }
 }

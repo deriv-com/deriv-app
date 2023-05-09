@@ -130,6 +130,7 @@ const mock = (): TStores => {
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
+            is_eu_country: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,
@@ -258,6 +259,7 @@ const mock = (): TStores => {
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],
             content_flag: '',
+            CFDs_restricted_countries: false,
             openModal: jest.fn(),
             selected_account: {
                 login: '',

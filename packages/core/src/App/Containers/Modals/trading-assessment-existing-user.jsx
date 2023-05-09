@@ -17,6 +17,8 @@ const TradingAssessmentExistingUser = ({
     setShouldShowAssessmentCompleteModal,
     setIsTradingAssessmentForExistingUserEnabled,
     setIsTradingAssessmentForNewUserEnabled,
+    setShouldShowTradingAssessmentModal,
+    setSubSectionIndex,
 }) => {
     // Get the Trading assessment questions and initial_value
     const [form_values, setFormValue] = React.useState({});
@@ -63,6 +65,11 @@ const TradingAssessmentExistingUser = ({
         setShouldShowTradeAssessmentForm(true);
     };
 
+    const handleCancel = () => {
+        setShouldShowTradingAssessmentModal(true);
+        setShouldShowTradeAssessmentForm(false);
+    };
+
     if (should_show_risk_warning_modal) {
         return (
             <RiskToleranceWarningModal
@@ -96,6 +103,8 @@ const TradingAssessmentExistingUser = ({
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            onCancel={handleCancel}
+                            setSubSectionIndex={setSubSectionIndex}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
                         />
@@ -112,6 +121,8 @@ const TradingAssessmentExistingUser = ({
                             assessment_questions={assessment_questions}
                             form_value={form_values}
                             onSubmit={handleSubmit}
+                            onCancel={handleCancel}
+                            setSubSectionIndex={setSubSectionIndex}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
                         />
@@ -135,4 +146,6 @@ export default connect(({ client, ui }) => ({
     setIsTradingAssessmentForExistingUserEnabled: ui.setIsTradingAssessmentForExistingUserEnabled,
     active_account_landing_company: client.landing_company_shortcode,
     setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
+    setSubSectionIndex: ui.setSubSectionIndex,
+    setShouldShowTradingAssessmentModal: ui.setShouldShowTradingAssessmentModal,
 }))(TradingAssessmentExistingUser);

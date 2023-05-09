@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DesktopWrapper } from '@deriv/components';
 import { APIProvider } from '@deriv/api';
-import { setUrlLanguage, initFormErrorMessages, setSharedCFDText } from '@deriv/shared';
+import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, setWebsocket } from '@deriv/shared';
 import { initializeTranslations, getLanguage, TranslationProvider } from '@deriv/translations';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
@@ -43,6 +43,8 @@ const App = ({ root_store }) => {
         root_store,
         WS,
     };
+
+    setWebsocket(WS);
 
     return (
         <TranslationProvider>

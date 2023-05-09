@@ -28,7 +28,7 @@ const log = (measures = [], req_type = '') => {
     measures.forEach(measure => {
         datadogLogs.logger.info(measure.name, {
             name: measure.name,
-            statTime: measure.startTime,
+            startTime: measure.startTimeDate,
             duration: measure.duration,
             detail: measure.detail,
         });
@@ -66,13 +66,15 @@ class APIMiddleware {
         response_promise.then(res => {
             const res_type = getRequestType(res);
             if (res_type) {
+                let measure;
                 if (res_type === 'history') {
                     performance.mark('ticks_history_end');
-                    performance.measure('ticks_history', 'ticks_history_start', 'ticks_history_end');
+                    measure = performance.measure('ticks_history', 'ticks_history_start', 'ticks_history_end');
                 } else {
                     performance.mark(`${res_type}_end`);
-                    performance.measure(`${res_type}`, `${res_type}_start`, `${res_type}_end`);
+                    measure = performance.measure(`${res_type}`, `${res_type}_start`, `${res_type}_end`);
                 }
+                measure.startTimeDate = new Date(Date.now() - measure.startTime);
             }
         });
         return response_promise;

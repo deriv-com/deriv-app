@@ -115,7 +115,7 @@ describe('DMT5TradeModal', () => {
                 dxtrade_tokens={mock_dxtrade_tokens}
             />
         );
-        const passwordEditButton = screen.getByTestId('dt_cfd-trade-modal__password-action');
+        const passwordEditButton = screen.getByTestId('dt_cfd_trade_modal_password_action');
         fireEvent.click(passwordEditButton);
         expect(mockOnPasswordManager).toHaveBeenCalledTimes(1);
         expect(mockToggleModal).toHaveBeenCalledTimes(1);

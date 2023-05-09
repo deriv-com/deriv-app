@@ -106,7 +106,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                     })}
                 >
                     <div
-                        className={classNames('dc-input__container', {
+                        className={classNames('dc-input__container', className, {
                             'dc-input__container--disabled': disabled,
                             'dc-input__container--error': error,
                         })}

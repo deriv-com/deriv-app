@@ -296,6 +296,11 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleAccountTransferModal: jest.fn(),
             is_real_wallets_upgrade_on: false,
             toggleWalletsUpgrade: jest.fn(),
+            financial_restricted_countries: false,
+            selected_account_type: 'real',
+            no_CR_account: false,
+            no_MF_account: false,
+            setTogglePlatformType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

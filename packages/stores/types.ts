@@ -104,6 +104,8 @@ type TNotification =
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
 
+type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
@@ -343,6 +345,11 @@ type TTradersHubStore = {
     is_demo: boolean;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
+    financial_restricted_countries: boolean;
+    selected_account_type: string;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
+    setTogglePlatformType: () => void;
 };
 
 /**

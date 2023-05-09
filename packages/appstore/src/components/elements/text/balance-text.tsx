@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
+import { useStore } from '@deriv/stores';
 import './balance-text.scss';
 
 // Todo: this definitely needs to be somewhere else
@@ -15,7 +15,7 @@ type BalanceTextProps = {
     underline_style?: 'dotted' | 'solid' | 'none';
 };
 
-const BalanceText = observer(({ balance, currency, size = 'm', underline_style = 'none' }: BalanceTextProps) => {
+const BalanceText = ({ balance, currency, size = 'm', underline_style = 'none' }: BalanceTextProps) => {
     const { traders_hub } = useStore();
     const { selected_account_type } = traders_hub;
 
@@ -42,6 +42,6 @@ const BalanceText = observer(({ balance, currency, size = 'm', underline_style =
             </Text>
         </div>
     );
-});
+};
 
 export default BalanceText;

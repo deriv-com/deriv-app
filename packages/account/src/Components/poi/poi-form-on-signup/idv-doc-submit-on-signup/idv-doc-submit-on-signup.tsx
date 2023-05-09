@@ -47,7 +47,6 @@ export const IdvDocSubmitOnSignup = ({
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [selected_doc, setSelectedDoc] = React.useState(null);
-    const [input_value, setInputValue] = React.useState('');
 
     const document_data = citizen_data.identity.services.idv.documents_supported;
     const {
@@ -266,10 +265,7 @@ export const IdvDocSubmitOnSignup = ({
                                                                                     'Choose the document type'
                                                                                 )}
                                                                                 list_items={document_list}
-                                                                                value={
-                                                                                    values.document_type.text ??
-                                                                                    input_value
-                                                                                }
+                                                                                value={values.document_type.text ?? ''}
                                                                                 onBlur={(
                                                                                     e: React.ChangeEvent<HTMLInputElement>
                                                                                 ) => {
@@ -280,12 +276,7 @@ export const IdvDocSubmitOnSignup = ({
                                                                                         );
                                                                                     }
                                                                                 }}
-                                                                                onChange={(
-                                                                                    e: React.ChangeEvent<HTMLInputElement>
-                                                                                ) => {
-                                                                                    setInputValue(e.target.value);
-                                                                                    handleChange(e);
-                                                                                }}
+                                                                                onChange={handleChange}
                                                                                 onItemSelection={(
                                                                                     item: FormikValues
                                                                                 ) => {

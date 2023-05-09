@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import './balance-text.scss';
 
 // Todo: this definitely needs to be somewhere else
@@ -16,7 +16,7 @@ type BalanceTextProps = {
 };
 
 const BalanceText = ({ balance, currency, size = 'm', underline_style = 'none' }: BalanceTextProps) => {
-    const { traders_hub } = useStores();
+    const { traders_hub } = useStore();
     const { selected_account_type } = traders_hub;
 
     const getTextClassName = () => {

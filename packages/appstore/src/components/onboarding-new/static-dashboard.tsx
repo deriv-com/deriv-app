@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
@@ -63,7 +63,7 @@ const StaticDashboard = ({
     is_onboarding_animated,
     loginid,
 }: TStaticDashboard) => {
-    const { client, traders_hub } = useStores();
+    const { client, traders_hub } = useStore();
     const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 

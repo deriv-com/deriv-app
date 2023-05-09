@@ -40,6 +40,10 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
+    ctrader_tokens: {
+        demo: string;
+        real: string;
+    };
 };
 
 export type TCFDAccountCardActionProps = {

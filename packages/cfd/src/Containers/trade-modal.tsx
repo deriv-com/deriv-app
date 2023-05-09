@@ -21,6 +21,7 @@ type TTradeModalProps = {
     ) => void;
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
     is_demo: string;
     platform: TCFDsPlatformType;
 };
@@ -58,6 +59,7 @@ const TradeModal = ({
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
+    ctrader_tokens,
     is_demo,
     platform,
 }: TTradeModalProps) => {
@@ -85,6 +87,7 @@ const TradeModal = ({
                         platform={account_type}
                         is_demo={is_demo}
                         dxtrade_tokens={dxtrade_tokens}
+                        ctrader_tokens={ctrader_tokens}
                     />
                 </div>
             );
@@ -99,6 +102,7 @@ const TradeModal = ({
                             platform={account_type}
                             is_demo={is_demo}
                             dxtrade_tokens={dxtrade_tokens}
+                            ctrader_tokens={ctrader_tokens}
                         />
                     </div>
                     <div className='cfd-trade-modal__download-center-app--option'>
@@ -130,6 +134,7 @@ const TradeModal = ({
                         platform={account_type}
                         is_demo={is_demo}
                         dxtrade_tokens={dxtrade_tokens}
+                        ctrader_tokens={ctrader_tokens}
                     />
                 </div>
             );

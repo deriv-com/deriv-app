@@ -22,6 +22,7 @@ type TMT5TradeModalProps = {
     toggleModal: () => void;
     platform: 'mt5' | 'dxtrade' | 'ctrader' | 'derivez';
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
     is_demo: string;
     show_eu_related_content: boolean;
 };
@@ -33,6 +34,7 @@ const MT5TradeModal = ({
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
+    ctrader_tokens,
     platform,
     is_demo,
     show_eu_related_content,
@@ -56,6 +58,7 @@ const MT5TradeModal = ({
                 onPasswordManager={onPasswordManager}
                 toggleModal={toggleModal}
                 dxtrade_tokens={dxtrade_tokens}
+                ctrader_tokens={ctrader_tokens}
                 is_demo={is_demo}
                 platform={platform}
             />
@@ -95,6 +98,7 @@ const MT5TradeModal = ({
 
 export default connect(({ modules: { cfd }, modules, common, traders_hub }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
+    ctrader_tokens: cfd.ctrader_tokens,
     platform: common.platform,
     mt5_trade_account: modules.cfd.mt5_trade_account,
     show_eu_related_content: traders_hub.show_eu_related_content,

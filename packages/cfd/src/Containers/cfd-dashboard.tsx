@@ -136,6 +136,10 @@ export type TCFDDashboardProps = RouteComponentProps & {
         demo: string;
         real: string;
     };
+    ctrader_tokens: {
+        demo: string;
+        real: string;
+    };
     has_real_account: boolean;
     NotificationMessages: ({ ...props }) => JSX.Element;
     platform: 'mt5' | 'dxtrade';
@@ -400,6 +404,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         createCFDAccount,
         current_list,
         dxtrade_tokens,
+        ctrader_tokens,
         dxtrade_accounts_list_error,
         isAccountOfTypeDisabled,
         is_accounts_switcher_on,
@@ -693,6 +698,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             active_index={active_index}
                             is_dark_mode_on={is_dark_mode_on}
                             dxtrade_tokens={dxtrade_tokens}
+                            ctrader_tokens={ctrader_tokens}
                         />
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
@@ -755,6 +761,7 @@ export default withRouter(
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
         dxtrade_tokens: modules.cfd.dxtrade_tokens,
+        ctrader_tokens: modules.cfd.ctrader_tokens,
         landing_companies: client.landing_companies,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,

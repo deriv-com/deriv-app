@@ -96,7 +96,7 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.account_settings,
                 root_store.client.account_status,
                 root_store.client.landing_companies,
-                root_store.modules?.cashier?.general_store?.is_p2p_visible,
+                root_store.client.is_p2p_enabled,
                 root_store.common?.selected_contract_type,
                 root_store.client.is_eu,
                 root_store.client.has_enabled_two_fa,
@@ -109,7 +109,7 @@ export default class NotificationStore extends BaseStore {
                     !root_store.client.is_virtual &&
                     Object.keys(root_store.client.account_status || {}).length > 0 &&
                     Object.keys(root_store.client.landing_companies || {}).length > 0 &&
-                    root_store.modules?.cashier?.general_store?.is_p2p_visible
+                    root_store.client.is_p2p_enabled
                 ) {
                     await debouncedGetP2pCompletedOrders();
                 }
@@ -181,8 +181,7 @@ export default class NotificationStore extends BaseStore {
                 this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
 
                 if (
-                    (notification.key && notification.key.includes('svg')) ||
-                    notification.key === 'p2p_daily_limit_increase' ||
+                    ['svg', 'p2p'].some(key => notification.key?.includes(key)) ||
                     (excluded_notifications && !excluded_notifications.includes(notification.key))
                 ) {
                     this.updateNotifications(this.notification_messages);
@@ -259,7 +258,7 @@ export default class NotificationStore extends BaseStore {
 
         if (refined_list.length) {
             refined_list.map(refined => {
-                if (refined === 'p2p_daily_limit_increase') {
+                if (refined.includes('p2p')) {
                     if (is_p2p_notifications_visible === false) {
                         this.removeNotificationByKey({ key: refined });
                     }
@@ -295,8 +294,8 @@ export default class NotificationStore extends BaseStore {
             has_mt5_account_with_rejected_poa,
             is_pending_proof_of_ownership,
             p2p_advertiser_info,
+            is_p2p_enabled,
         } = this.root_store.client;
-        const { is_p2p_visible } = this.root_store.modules.cashier.general_store;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -500,7 +499,7 @@ export default class NotificationStore extends BaseStore {
 
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
-                if (is_p2p_visible) {
+                if (is_p2p_enabled) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
 
                     this.p2p_completed_orders?.map(order => {
@@ -577,7 +576,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {
-        const notification_key = `order-${order_id}`;
+        const notification_key = `p2p_order_${order_id}`;
 
         const notification_redirect_action =
             routes.cashier_p2p === window.location.pathname
@@ -1497,7 +1496,7 @@ export default class NotificationStore extends BaseStore {
 
     updateNotifications(notifications_array) {
         this.notifications = notifications_array.filter(message =>
-            (message.key && message.key.includes('svg')) || message.key === 'p2p_daily_limit_increase'
+            ['svg', 'p2p'].some(key => message.key?.includes(key))
                 ? message
                 : excluded_notifications && !excluded_notifications.includes(message.key)
         );
@@ -1572,7 +1571,7 @@ export default class NotificationStore extends BaseStore {
         const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
 
         if (!response?.error) {
-            this.p2p_completed_orders = response.p2p_order_list?.list || [];
+            this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }
 }

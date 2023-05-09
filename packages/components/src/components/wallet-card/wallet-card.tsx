@@ -4,7 +4,6 @@ import { localize } from '@deriv/translations';
 import Icon from '../icon';
 import Text from '../text';
 import classNames from 'classnames';
-import { WalletSmall } from '../wallet/small';
 
 type WalletCardProps = {
     active?: boolean;

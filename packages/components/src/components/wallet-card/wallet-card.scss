@@ -21,13 +21,13 @@
     }
 
     &--active {
-        #{$parent}__content {
+        #{$parent}__content:not(.dark *) {
             background: $gradient-color-black-5;
         }
 
         #{$parent}__content,
         .dark {
-            background: $gradient-color-black-6;
+            background: $gradient-color-white-2;
         }
 
         #{$parent}__background {
@@ -170,7 +170,7 @@
 
         #{$parent}__content {
             &:not(.disabled *):hover {
-                background: $gradient-color-black-6;
+                background: $gradient-color-white-2;
             }
         }
 

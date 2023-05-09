@@ -236,7 +236,7 @@ export default class DashboardStore implements IDashboardStore {
             this.setBotBuilderTourState(false);
         }
         if (this.active_tab === 1) {
-            //blocksCoordinate();
+            blocksCoordinate();
         }
     };
 

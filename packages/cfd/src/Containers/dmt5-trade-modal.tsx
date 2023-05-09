@@ -69,6 +69,7 @@ const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
             zIndex={9999}
         >
             <Button
+                data-testid='dt_cfd-trade-modal__password-action'
                 className='cfd-trade-modal__password-action'
                 transparent
                 onClick={onClick}

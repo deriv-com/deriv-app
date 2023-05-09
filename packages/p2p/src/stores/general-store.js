@@ -181,7 +181,7 @@ export default class GeneralStore extends BaseStore {
             case 3:
                 return routes.p2p_my_profile;
             default:
-                return routes.cashier_p2p;
+                return routes.p2p_buy_sell;
         }
     }
 

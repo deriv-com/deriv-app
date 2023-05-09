@@ -8,7 +8,6 @@ import { Loading, Tabs } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import classNames from 'classnames';
 import AdvertiserPage from 'Components/advertiser-page';
-import BuySell from './buy-sell';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
 import NicknameForm from './nickname-form';
@@ -66,7 +65,7 @@ const AppContent = ({ order_id }) => {
     return (
         <Tabs
             active_index={general_store.active_index}
-            className={classNames({ 'p2p-cashier__tabs': general_store.active_index === 0 })}
+            className={classNames({ 'p2p-cashier__tabs': general_store.active_index === 0 && isMobile() })}
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
             is_scrollable
@@ -81,7 +80,6 @@ const AppContent = ({ order_id }) => {
         >
             <div label={localize('Buy / Sell')}>
                 <TemporarilyBarredHint />
-                <BuySell />
             </div>
             <div data-count={notification_count} label={localize('Orders')} />
             <div label={localize('My ads')}>

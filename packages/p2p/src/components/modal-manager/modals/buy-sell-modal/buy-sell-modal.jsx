@@ -13,9 +13,10 @@ import {
     ThemedScrollbars,
     useSafeState,
 } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, routes } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { reaction } from 'mobx';
+import { useHistory, useLocation } from 'react-router-dom';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -116,6 +117,8 @@ const BuySellModal = () => {
     const [has_rate_changed_recently, setHasRateChangedRecently] = React.useState(false);
     const MAX_ALLOWED_RATE_CHANGED_WARNING_DELAY = 2000;
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
+    const history = useHistory();
+    const location = useLocation();
 
     React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
@@ -207,7 +210,14 @@ const BuySellModal = () => {
     };
 
     const onConfirmClick = order_info => {
+        const current_query_params = new URLSearchParams(location.search);
+        current_query_params.append('order', order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+        history.replace({
+            pathname: routes.p2p_orders,
+            search: current_query_params.toString(),
+            hash: location.hash,
+        });
         order_store.setOrderId(order_info.id);
         hideModal();
         buy_sell_store.fetchAdvertiserAdverts();

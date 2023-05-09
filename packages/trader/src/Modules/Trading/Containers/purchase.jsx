@@ -60,6 +60,7 @@ const Purchase = ({
                         is_multiplier={is_multiplier}
                         is_vanilla={is_vanilla}
                         proposal_info={info}
+                        symbol={symbol}
                         type={type}
                     />
                 )}

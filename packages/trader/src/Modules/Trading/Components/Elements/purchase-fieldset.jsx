@@ -83,12 +83,13 @@ const PurchaseFieldset = ({
                         <ContractInfo
                             basis={basis}
                             currency={currency}
-                            proposal_info={info}
                             has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_vanilla={is_vanilla}
+                            proposal_info={info}
                             should_fade={should_fade}
+                            symbol={symbol}
                             type={type}
                         />
                     )}

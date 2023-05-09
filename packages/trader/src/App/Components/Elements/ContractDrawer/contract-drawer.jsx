@@ -47,19 +47,20 @@ const ContractDrawer = ({
 
         const contract_audit = (
             <ContractAudit
+                contract_end_time={getEndTime(contract_info)}
                 contract_info={contract_info}
                 contract_update_history={contract_update_history}
-                contract_end_time={getEndTime(contract_info)}
+                duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                duration={getDurationTime(contract_info)}
+                exit_spot={exit_spot}
+                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
                 is_open
-                duration={getDurationTime(contract_info)}
-                duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
-                exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator}
-                toggleHistoryTab={toggleHistoryTab}
                 is_vanilla={is_vanilla}
+                symbol={symbol}
+                toggleHistoryTab={toggleHistoryTab}
             />
         );
 

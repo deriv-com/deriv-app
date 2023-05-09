@@ -21,13 +21,11 @@
     }
 
     &--active {
-        #{$parent}__content:not(.dark *) {
+        #{$parent}__content {
             background: $gradient-color-black-5;
-        }
-
-        #{$parent}__content,
-        .dark {
-            background: $gradient-color-white-2;
+            #{$parent}--dark {
+                background: $gradient-color-white-2;
+            }
         }
 
         #{$parent}__background {

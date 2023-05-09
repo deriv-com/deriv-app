@@ -14,6 +14,19 @@ type TWalletIcon = {
     size: 'small' | 'medium' | 'large';
 };
 
+const getBlurRadius = (size: string) => {
+    switch (size) {
+        case 'small':
+            return 16;
+        case 'medium':
+            return 24;
+        case 'large':
+            return 48;
+        default:
+            return undefined;
+    }
+};
+
 const WalletIcon = ({ colors, icon, rounded, size }: TWalletIcon) => {
     return (
         <div
@@ -21,19 +34,20 @@ const WalletIcon = ({ colors, icon, rounded, size }: TWalletIcon) => {
                 [`wallet-icon--${size}`]: size,
             })}
         >
-            <GradientBackgroundWalletIcon
-                color='var(--general-main-2)'
-                primary={colors.primary}
-                secondary={colors.secondary}
-                size={size}
-            >
-                <Icon
-                    icon={icon}
-                    className={classNames('wallet-icon__icon', {
-                        'wallet-icon__icon--rounded': rounded,
-                    })}
+            <div className='wallet-icon__background'>
+                <GradientBackgroundWalletIcon
+                    blurRadius={getBlurRadius(size)}
+                    color='var(--general-main-2)'
+                    primary={colors.primary}
+                    secondary={colors.secondary}
                 />
-            </GradientBackgroundWalletIcon>
+            </div>
+            <Icon
+                icon={icon}
+                className={classNames('wallet-icon__icon', {
+                    'wallet-icon__icon--rounded': rounded,
+                })}
+            />
         </div>
     );
 };

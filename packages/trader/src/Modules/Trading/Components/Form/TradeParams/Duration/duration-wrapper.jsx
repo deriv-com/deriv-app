@@ -15,14 +15,20 @@ const DurationWrapper = observer(() => {
         is_advanced_duration,
         onChangeUiStore,
         simple_duration_unit,
+        duration_t,
     } = ui;
     const {
         contract_expiry_type,
+        contract_type,
         duration,
         duration_unit,
         duration_units_list,
         duration_min_max,
         expiry_type,
+        expiry_date,
+        expiry_time,
+        start_date,
+        market_open_times,
         onChange,
         onChangeMultiple,
     } = useTraderStore();
@@ -37,11 +43,17 @@ const DurationWrapper = observer(() => {
         contract_expiry_type,
         duration,
         duration_unit,
+        duration_t,
         duration_units_list,
         duration_min_max,
         expiry_type,
+        expiry_date,
+        expiry_time,
+        start_date,
+        market_open_times,
         onChange,
         onChangeMultiple,
+        contract_type,
     };
 
     const hasDurationUnit = (duration_type, is_advanced) => {

@@ -127,7 +127,7 @@ export default class LoadModalStore implements ILoadModalStore {
             }
         );
 
-        autorun(async () => {
+        const loadStrategies = async () => {
             try {
                 const timeout = (ms: number) => {
                     return new Promise(resolve => setTimeout(resolve, ms));
@@ -137,7 +137,8 @@ export default class LoadModalStore implements ILoadModalStore {
             } catch (error) {
                 globalObserver.emit('Error', error);
             }
-        });
+        };
+        loadStrategies();
     }
 
     recent_workspace;

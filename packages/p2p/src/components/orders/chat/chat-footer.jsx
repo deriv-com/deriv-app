@@ -120,6 +120,7 @@ const ChatFooter = observer(() => {
                     <input
                         onChange={e => sendbird_store.sendFile(e.target.files[0])}
                         ref={el => (file_input_ref.current = el)}
+                        onClick={() => (file_input_ref.current.value = null)}
                         style={{ display: 'none' }}
                         type='file'
                     />

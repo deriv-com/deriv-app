@@ -202,213 +202,195 @@ export const IdvDocSubmitOnSignup = ({
                 setFieldValue,
                 touched,
                 values,
-            }) => (
-                <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
-                    {({ setRef }) => (
-                        <form ref={setRef} className='poi-form-on-signup' onSubmit={handleSubmit} noValidate>
-                            <ThemedScrollbars height='calc(100vh - 80px'>
-                                <div className='details-form'>
-                                    <div className='poi-form-on-signup__fields'>
-                                        <div className='proof-of-identity__container'>
-                                            <DocumentSubmitLogo className='icon' />
-                                            <Text className='proof-of-identity btm-spacer' align='center' weight='bold'>
-                                                {has_idv_error
-                                                    ? localize('Verify your identity')
-                                                    : localize('Identity information')}
-                                            </Text>
-                                            <Text className='proof-of-identity__text btm-spacer' size='xs'>
-                                                {localize('Please select the document type and enter the ID number.')}
-                                            </Text>
-                                            {has_idv_error && !selected_doc && (
-                                                <>
-                                                    <Text
-                                                        className='proof-of-identity'
-                                                        size='xs'
-                                                        align='center'
-                                                        color='loss-danger'
-                                                    >
-                                                        {localize(
-                                                            'We were unable to verify your ID with the details you provided.'
-                                                        )}
-                                                    </Text>
-                                                    <Text
-                                                        className='proof-of-identity btm-spacer'
-                                                        size='xs'
-                                                        align='center'
-                                                        color='loss-danger'
-                                                    >
-                                                        {localize(
-                                                            'Please check and resubmit or choose a different document type.'
-                                                        )}
-                                                    </Text>
-                                                </>
-                                            )}
-                                            <div className='proof-of-identity__inner-container btm-spacer'>
-                                                <div className='proof-of-identity__fieldset-container'>
-                                                    <fieldset className='proof-of-identity__fieldset'>
-                                                        <Field name='document'>
-                                                            {({ field }: FormikValues) => (
-                                                                <React.Fragment>
-                                                                    <DesktopWrapper>
-                                                                        <div className='document-dropdown'>
-                                                                            <Autocomplete
+            }) => {
+                if (values.document_type.id) {
+                    setSelectedDoc(values.document_type.id);
+                }
+                return (
+                    <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
+                        {({ setRef }) => (
+                            <form ref={setRef} className='poi-form-on-signup' onSubmit={handleSubmit} noValidate>
+                                <ThemedScrollbars height='calc(100vh - 80px'>
+                                    <div className='details-form'>
+                                        <div className='poi-form-on-signup__fields'>
+                                            <div className='proof-of-identity__container'>
+                                                <DocumentSubmitLogo className='icon' />
+                                                <Text
+                                                    className='proof-of-identity btm-spacer'
+                                                    align='center'
+                                                    weight='bold'
+                                                >
+                                                    {has_idv_error
+                                                        ? localize('Verify your identity')
+                                                        : localize('Identity information')}
+                                                </Text>
+                                                <Text className='proof-of-identity__text btm-spacer' size='xs'>
+                                                    {localize(
+                                                        'Please select the document type and enter the ID number.'
+                                                    )}
+                                                </Text>
+                                                {has_idv_error && !selected_doc && (
+                                                    <>
+                                                        <Text
+                                                            className='proof-of-identity'
+                                                            size='xs'
+                                                            align='center'
+                                                            color='loss-danger'
+                                                        >
+                                                            {localize(
+                                                                'We were unable to verify your ID with the details you provided.'
+                                                            )}
+                                                        </Text>
+                                                        <Text
+                                                            className='proof-of-identity btm-spacer'
+                                                            size='xs'
+                                                            align='center'
+                                                            color='loss-danger'
+                                                        >
+                                                            {localize(
+                                                                'Please check and resubmit or choose a different document type.'
+                                                            )}
+                                                        </Text>
+                                                    </>
+                                                )}
+                                                <div className='proof-of-identity__inner-container btm-spacer'>
+                                                    <div className='proof-of-identity__fieldset-container'>
+                                                        <fieldset className='proof-of-identity__fieldset'>
+                                                            <Field name='document'>
+                                                                {({ field }: FormikValues) => (
+                                                                    <React.Fragment>
+                                                                        <DesktopWrapper>
+                                                                            <div className='document-dropdown'>
+                                                                                <Autocomplete
+                                                                                    {...field}
+                                                                                    name='document_type'
+                                                                                    data-lpignore='true'
+                                                                                    error={
+                                                                                        touched.document_type &&
+                                                                                        errors.document_type
+                                                                                    }
+                                                                                    autoComplete='off'
+                                                                                    type='text'
+                                                                                    label={localize(
+                                                                                        'Choose the document type'
+                                                                                    )}
+                                                                                    list_items={document_list}
+                                                                                    value={
+                                                                                        values.document_type.text ?? ''
+                                                                                    }
+                                                                                    onBlur={(
+                                                                                        e: React.ChangeEvent<HTMLInputElement>
+                                                                                    ) => {
+                                                                                        handleBlur(e);
+                                                                                        if (
+                                                                                            !getDocument(e.target.value)
+                                                                                        ) {
+                                                                                            resetDocumentItemSelected(
+                                                                                                setFieldValue
+                                                                                            );
+                                                                                        }
+                                                                                    }}
+                                                                                    onChange={handleChange}
+                                                                                    onItemSelection={(
+                                                                                        item: FormikValues
+                                                                                    ) => {
+                                                                                        if (
+                                                                                            item.text ===
+                                                                                                'No results found' ||
+                                                                                            !item.text
+                                                                                        ) {
+                                                                                            setSelectedDoc(null);
+                                                                                            resetDocumentItemSelected(
+                                                                                                setFieldValue
+                                                                                            );
+                                                                                        } else {
+                                                                                            setFieldValue(
+                                                                                                'document_type',
+                                                                                                item,
+                                                                                                true
+                                                                                            );
+                                                                                            setSelectedDoc(item.id);
+                                                                                            if (has_visual_sample) {
+                                                                                                setDocumentImage(
+                                                                                                    item.sample_image ||
+                                                                                                        ''
+                                                                                                );
+                                                                                            }
+                                                                                        }
+                                                                                    }}
+                                                                                    required
+                                                                                />
+                                                                            </div>
+                                                                        </DesktopWrapper>
+                                                                        <MobileWrapper>
+                                                                            <SelectNative
                                                                                 {...field}
                                                                                 name='document_type'
-                                                                                data-lpignore='true'
                                                                                 error={
                                                                                     touched.document_type &&
                                                                                     errors.document_type
                                                                                 }
-                                                                                autoComplete='off'
-                                                                                type='text'
                                                                                 label={localize(
                                                                                     'Choose the document type'
                                                                                 )}
                                                                                 list_items={document_list}
-                                                                                value={values.document_type.text ?? ''}
-                                                                                onBlur={(
-                                                                                    e: React.ChangeEvent<HTMLInputElement>
-                                                                                ) => {
-                                                                                    handleBlur(e);
-                                                                                    if (!getDocument(e.target.value)) {
-                                                                                        resetDocumentItemSelected(
-                                                                                            setFieldValue
+                                                                                value={values.document_type.text}
+                                                                                onChange={e => {
+                                                                                    handleChange(e);
+                                                                                    const selected_document:
+                                                                                        | undefined
+                                                                                        | FormikValues = getDocument(
+                                                                                        e.target.value
+                                                                                    );
+                                                                                    if (selected_document) {
+                                                                                        setSelectedDoc(
+                                                                                            selected_document.id
                                                                                         );
-                                                                                    }
-                                                                                }}
-                                                                                onChange={handleChange}
-                                                                                onItemSelection={(
-                                                                                    item: FormikValues
-                                                                                ) => {
-                                                                                    if (
-                                                                                        item.text ===
-                                                                                            'No results found' ||
-                                                                                        !item.text
-                                                                                    ) {
-                                                                                        setSelectedDoc(null);
-                                                                                        resetDocumentItemSelected(
-                                                                                            setFieldValue
-                                                                                        );
-                                                                                    } else {
                                                                                         setFieldValue(
                                                                                             'document_type',
-                                                                                            item,
+                                                                                            selected_document,
                                                                                             true
                                                                                         );
-                                                                                        setSelectedDoc(item.id);
                                                                                         if (has_visual_sample) {
                                                                                             setDocumentImage(
-                                                                                                item.sample_image || ''
+                                                                                                // eslint-disable-next-line max-len
+                                                                                                selected_document.sample_image
                                                                                             );
                                                                                         }
                                                                                     }
                                                                                 }}
+                                                                                use_text={true}
                                                                                 required
                                                                             />
-                                                                        </div>
-                                                                    </DesktopWrapper>
-                                                                    <MobileWrapper>
-                                                                        <SelectNative
-                                                                            {...field}
-                                                                            name='document_type'
-                                                                            error={
-                                                                                touched.document_type &&
-                                                                                errors.document_type
-                                                                            }
-                                                                            label={localize('Choose the document type')}
-                                                                            list_items={document_list}
-                                                                            value={values.document_type.text}
-                                                                            onChange={e => {
-                                                                                handleChange(e);
-                                                                                const selected_document:
-                                                                                    | undefined
-                                                                                    | FormikValues = getDocument(
-                                                                                    e.target.value
-                                                                                );
-                                                                                if (selected_document) {
-                                                                                    setSelectedDoc(
-                                                                                        selected_document.id
-                                                                                    );
-                                                                                    setFieldValue(
-                                                                                        'document_type',
-                                                                                        selected_document,
-                                                                                        true
-                                                                                    );
-                                                                                    if (has_visual_sample) {
-                                                                                        setDocumentImage(
-                                                                                            // eslint-disable-next-line max-len
-                                                                                            selected_document.sample_image
-                                                                                        );
-                                                                                    }
-                                                                                }
-                                                                            }}
-                                                                            use_text={true}
-                                                                            required
-                                                                        />
-                                                                    </MobileWrapper>
-                                                                </React.Fragment>
-                                                            )}
-                                                        </Field>
-                                                    </fieldset>
-                                                    <fieldset className='proof-of-identity__fieldset-input'>
-                                                        <Field name='document_number'>
-                                                            {({ field }: FormikValues) => (
-                                                                <React.Fragment>
-                                                                    <Input
-                                                                        {...field}
-                                                                        name='document_number'
-                                                                        bottom_label={
-                                                                            values.document_type &&
-                                                                            getExampleFormat(
-                                                                                values.document_type.example_format
-                                                                            )
-                                                                        }
-                                                                        disabled={is_input_disable}
-                                                                        error={
-                                                                            (touched.document_number &&
-                                                                                errors.document_number) ||
-                                                                            errors.error_message
-                                                                        }
-                                                                        autoComplete='off'
-                                                                        placeholder={generatePlaceholderText(
-                                                                            selected_doc
-                                                                        )}
-                                                                        value={values.document_number}
-                                                                        onPaste={preventEmptyClipboardPaste}
-                                                                        onBlur={handleBlur}
-                                                                        onChange={handleChange}
-                                                                        onKeyUp={(
-                                                                            e: React.KeyboardEvent<HTMLInputElement>
-                                                                        ) =>
-                                                                            onKeyUp(
-                                                                                e,
-                                                                                'document_number',
-                                                                                values,
-                                                                                setFieldValue
-                                                                            )
-                                                                        }
-                                                                        required
-                                                                    />
-                                                                    {values.document_type.additional?.display_name && (
+                                                                        </MobileWrapper>
+                                                                    </React.Fragment>
+                                                                )}
+                                                            </Field>
+                                                        </fieldset>
+                                                        <fieldset className='proof-of-identity__fieldset-input'>
+                                                            <Field name='document_number'>
+                                                                {({ field }: FormikValues) => (
+                                                                    <React.Fragment>
                                                                         <Input
                                                                             {...field}
-                                                                            name='document_additional'
+                                                                            name='document_number'
                                                                             bottom_label={
-                                                                                values.document_type.additional &&
+                                                                                values.document_type &&
                                                                                 getExampleFormat(
-                                                                                    values.document_type.additional
-                                                                                        ?.example_format
+                                                                                    values.document_type.example_format
                                                                                 )
                                                                             }
                                                                             disabled={is_input_disable}
                                                                             error={
-                                                                                (touched.document_additional &&
-                                                                                    errors.document_additional) ||
+                                                                                (touched.document_number &&
+                                                                                    errors.document_number) ||
                                                                                 errors.error_message
                                                                             }
                                                                             autoComplete='off'
-                                                                            placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
-                                                                            value={values.document_additional}
+                                                                            placeholder={generatePlaceholderText(
+                                                                                selected_doc
+                                                                            )}
+                                                                            value={values.document_number}
                                                                             onPaste={preventEmptyClipboardPaste}
                                                                             onBlur={handleBlur}
                                                                             onChange={handleChange}
@@ -417,64 +399,103 @@ export const IdvDocSubmitOnSignup = ({
                                                                             ) =>
                                                                                 onKeyUp(
                                                                                     e,
-                                                                                    'document_additional',
+                                                                                    'document_number',
                                                                                     values,
                                                                                     setFieldValue
                                                                                 )
                                                                             }
                                                                             required
                                                                         />
-                                                                    )}
-                                                                </React.Fragment>
-                                                            )}
-                                                        </Field>
-                                                    </fieldset>
-                                                </div>
-                                                {document_image && (
-                                                    <div className='proof-of-identity__sample-container'>
-                                                        <Text size='xxs' weight='bold'>
-                                                            {localize('Sample:')}
-                                                        </Text>
-                                                        <div className='proof-of-identity__image-container'>
-                                                            <img
-                                                                className='proof-of-identity__image'
-                                                                src={document_image}
-                                                                alt='document sample image'
-                                                            />
-                                                        </div>
+                                                                        {values.document_type.additional
+                                                                            ?.display_name && (
+                                                                            <Input
+                                                                                {...field}
+                                                                                name='document_additional'
+                                                                                bottom_label={
+                                                                                    values.document_type.additional &&
+                                                                                    getExampleFormat(
+                                                                                        values.document_type.additional
+                                                                                            ?.example_format
+                                                                                    )
+                                                                                }
+                                                                                disabled={is_input_disable}
+                                                                                error={
+                                                                                    (touched.document_additional &&
+                                                                                        errors.document_additional) ||
+                                                                                    errors.error_message
+                                                                                }
+                                                                                autoComplete='off'
+                                                                                placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                                                value={values.document_additional}
+                                                                                onPaste={preventEmptyClipboardPaste}
+                                                                                onBlur={handleBlur}
+                                                                                onChange={handleChange}
+                                                                                onKeyUp={(
+                                                                                    e: React.KeyboardEvent<HTMLInputElement>
+                                                                                ) =>
+                                                                                    onKeyUp(
+                                                                                        e,
+                                                                                        'document_additional',
+                                                                                        values,
+                                                                                        setFieldValue
+                                                                                    )
+                                                                                }
+                                                                                required
+                                                                            />
+                                                                        )}
+                                                                    </React.Fragment>
+                                                                )}
+                                                            </Field>
+                                                        </fieldset>
                                                     </div>
-                                                )}
-                                                {selected_doc && (
-                                                    <Text
-                                                        className='proof-of-identity__text-spacer'
-                                                        align='center'
-                                                        size='xs'
-                                                    >
-                                                        <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
-                                                    </Text>
-                                                )}
+                                                    {document_image && (
+                                                        <div className='proof-of-identity__sample-container'>
+                                                            <Text size='xxs' weight='bold'>
+                                                                {localize('Sample:')}
+                                                            </Text>
+                                                            <div className='proof-of-identity__image-container'>
+                                                                <img
+                                                                    className='proof-of-identity__image'
+                                                                    src={document_image}
+                                                                    alt='document sample image'
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {selected_doc && (
+                                                        <Text
+                                                            className='proof-of-identity__text-spacer'
+                                                            align='center'
+                                                            size='xs'
+                                                        >
+                                                            <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
+                                                        </Text>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </ThemedScrollbars>
+                                </ThemedScrollbars>
 
-                            <Modal.Footer has_separator is_bypassed={isMobile()}>
-                                <FormSubmitButton
-                                    is_disabled={
-                                        (!values.document_number && !values.document_type) || !isValid || isSubmitting
-                                    }
-                                    label={localize('Next')}
-                                    is_absolute={isMobile()}
-                                    has_cancel={has_previous}
-                                    cancel_label={localize('Previous')}
-                                    onCancel={() => onPrevious(values)}
-                                />
-                            </Modal.Footer>
-                        </form>
-                    )}
-                </AutoHeightWrapper>
-            )}
+                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                    <FormSubmitButton
+                                        is_disabled={
+                                            (!values.document_number && !values.document_type) ||
+                                            !isValid ||
+                                            isSubmitting
+                                        }
+                                        label={localize('Next')}
+                                        is_absolute={isMobile()}
+                                        has_cancel={has_previous}
+                                        cancel_label={localize('Previous')}
+                                        onCancel={() => onPrevious(values)}
+                                    />
+                                </Modal.Footer>
+                            </form>
+                        )}
+                    </AutoHeightWrapper>
+                );
+            }}
         </Formik>
     );
 };

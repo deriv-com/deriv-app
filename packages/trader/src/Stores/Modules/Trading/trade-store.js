@@ -392,13 +392,6 @@ export default class TradeStore extends BaseStore {
                 this.resetAccumulatorData();
             }
         );
-        reaction(
-            () => this.root_store.common.is_language_changing,
-            () => {
-                this.setValidationRules(getValidationRules());
-                this.changeDurationValidationRules();
-            }
-        );
         when(
             () => this.accumulator_range_list.length,
             () => this.setDefaultGrowthRate()
@@ -1303,13 +1296,7 @@ export default class TradeStore extends BaseStore {
     }
 
     async accountSwitcherListener() {
-        if (this.root_store.common.is_language_changing) {
-            await this.loadActiveSymbols(false, false);
-            this.root_store.common.is_language_changing = false;
-        } else {
-            await this.loadActiveSymbols(true, false);
-        }
-
+        await this.loadActiveSymbols(true, false);
         this.resetErrorServices();
         await this.setContractTypes();
         runInAction(async () => {
@@ -1333,12 +1320,7 @@ export default class TradeStore extends BaseStore {
         this.clearContracts();
         this.refresh();
         this.resetErrorServices();
-        if (this.root_store.common.is_language_changing) {
-            await this.loadActiveSymbols(false);
-            this.root_store.common.is_language_changing = false;
-        } else {
-            await this.loadActiveSymbols();
-        }
+        await this.loadActiveSymbols();
         await this.setContractTypes();
         this.is_trade_enabled = true;
         this.debouncedProposal();

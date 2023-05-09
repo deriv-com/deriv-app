@@ -110,6 +110,8 @@ export const changeLanguage = async (lang: Language, cb: (lang: Language) => voi
 
 i18n.use(initReactI18next).init({
     react: {
+        bindI18n: 'loaded languageChanged',
+        bindI18nStore: 'added',
         hashTransKey(defaultValue: string) {
             return crc32(defaultValue);
         },

@@ -15,7 +15,6 @@ export default class CommonStore extends BaseStore {
         makeObservable(this, {
             server_time: observable,
             current_language: observable,
-            is_language_changing: observable,
             allowed_languages: observable,
             has_error: observable,
             error: observable,
@@ -31,7 +30,6 @@ export default class CommonStore extends BaseStore {
             app_id: observable,
             platform: observable,
             selected_contract_type: observable,
-            changing_language_timer_id: observable,
             setSelectedContractType: action.bound,
             init: action.bound,
             checkAppId: action.bound,
@@ -59,7 +57,6 @@ export default class CommonStore extends BaseStore {
 
     server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     current_language = currentLanguage;
-    is_language_changing = false;
     allowed_languages = Object.keys(getAllowedLanguages());
     has_error = false;
 
@@ -84,8 +81,6 @@ export default class CommonStore extends BaseStore {
     platform = '';
     selected_contract_type = '';
 
-    changing_language_timer_id = '';
-
     setSelectedContractType(contract_type) {
         this.selected_contract_type = contract_type;
     }
@@ -103,12 +98,7 @@ export default class CommonStore extends BaseStore {
 
     changeCurrentLanguage(new_language) {
         if (this.current_language !== new_language) {
-            if (this.changing_language_timer_id) clearTimeout(this.changing_language_timer_id);
             this.current_language = new_language;
-            this.is_language_changing = true;
-            this.changing_language_timer_id = setTimeout(() => {
-                this.is_language_changing = false;
-            }, 2500);
         }
     }
 

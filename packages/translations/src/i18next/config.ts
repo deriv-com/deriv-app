@@ -1,6 +1,7 @@
+export type Language = keyof typeof ALL_LANGUAGES;
+
 export const LANGUAGE_KEY = 'i18n_language';
 export const DEFAULT_LANGUAGE = 'EN';
-export type Language = keyof typeof ALL_LANGUAGES;
 export const ALL_LANGUAGES = Object.freeze({
     ACH: 'Translations',
     EN: 'English',

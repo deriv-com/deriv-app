@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DesktopWrapper } from '@deriv/components';
 import { APIProvider } from '@deriv/api';
-import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTranslation } from '@deriv/shared';
+import { setUrlLanguage, initFormErrorMessages, setSharedCFDText } from '@deriv/shared';
 import { initializeTranslations, getLanguage, TranslationProvider } from '@deriv/translations';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
@@ -27,7 +27,6 @@ const App = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
-    const [is_translation_loaded] = useOnLoadTranslation();
 
     React.useEffect(() => {
         initializeTranslations();
@@ -47,36 +46,32 @@ const App = ({ root_store }) => {
 
     return (
         <TranslationProvider>
-            {is_translation_loaded ? (
-                <Router basename={has_base ? `/${base}` : null}>
-                    <MobxContentProvider store={root_store}>
-                        <StoreProvider store={root_store}>
-                            <APIProvider>
-                                <PlatformContainer>
-                                    <Header />
-                                    <ErrorBoundary>
-                                        <AppContents>
-                                            {/* TODO: [trader-remove-client-base] */}
-                                            <Routes passthrough={platform_passthrough} />
-                                        </AppContents>
-                                    </ErrorBoundary>
-                                    <DesktopWrapper>
-                                        <Footer />
-                                    </DesktopWrapper>
-                                    <ErrorBoundary>
-                                        <AppModals />
-                                    </ErrorBoundary>
-                                    <SmartTraderIFrame />
-                                    <BinaryBotIFrame />
-                                    <AppToastMessages />
-                                </PlatformContainer>
-                            </APIProvider>
-                        </StoreProvider>
-                    </MobxContentProvider>
-                </Router>
-            ) : (
-                <></>
-            )}
+            <Router basename={has_base ? `/${base}` : null}>
+                <MobxContentProvider store={root_store}>
+                    <StoreProvider store={root_store}>
+                        <APIProvider>
+                            <PlatformContainer>
+                                <Header />
+                                <ErrorBoundary>
+                                    <AppContents>
+                                        {/* TODO: [trader-remove-client-base] */}
+                                        <Routes passthrough={platform_passthrough} />
+                                    </AppContents>
+                                </ErrorBoundary>
+                                <DesktopWrapper>
+                                    <Footer />
+                                </DesktopWrapper>
+                                <ErrorBoundary>
+                                    <AppModals />
+                                </ErrorBoundary>
+                                <SmartTraderIFrame />
+                                <BinaryBotIFrame />
+                                <AppToastMessages />
+                            </PlatformContainer>
+                        </APIProvider>
+                    </StoreProvider>
+                </MobxContentProvider>
+            </Router>
         </TranslationProvider>
     );
 };

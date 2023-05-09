@@ -41,9 +41,8 @@ const CreateAdForm = () => {
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
 
-    // eslint-disable-next-line no-shadow
-    const handleSelectPaymentMethods = selected_methods => {
-        setSelectedMethods(selected_methods);
+    const handleSelectPaymentMethods = payment_methods => {
+        setSelectedMethods(payment_methods);
     };
 
     const onCheckboxChange = () =>

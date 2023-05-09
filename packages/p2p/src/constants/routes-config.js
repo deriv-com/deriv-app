@@ -7,7 +7,7 @@ import MyProfile from '../components/my-profile';
 import Orders from '../components/orders';
 
 // Error Routes
-const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../components/page404'));
+const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../components/page-404'));
 
 // Order matters
 const initRoutesConfig = () => {

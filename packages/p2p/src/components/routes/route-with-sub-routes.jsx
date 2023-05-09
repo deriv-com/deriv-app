@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
+import { redirectToLogin, routes, removeBranchName, default_title, isEmptyObject } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 
 const RouteWithSubRoutes = route => {
@@ -16,7 +16,7 @@ const RouteWithSubRoutes = route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
+        } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
             redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute = (route.routes ?? []).reduce(
@@ -39,12 +39,14 @@ const RouteWithSubRoutes = route => {
 
         const title = route.getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
+
+        // alternateLinkTagChange();
+        // canonicalLinkTagChange();
+
         return result;
     };
 
     return <Route exact={route.exact} path={route.path} render={renderFactory} />;
 };
-
-export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
 export default RouteWithSubRoutes;

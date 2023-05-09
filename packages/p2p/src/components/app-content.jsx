@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';

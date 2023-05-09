@@ -1,11 +1,15 @@
 import { datadogLogs } from '@datadog/browser-logs';
 
+const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
+const DATADOG_SESSION_SAMPLE_RATE = process.env.DATADOG_SESSION_SAMPLE_RATE ?? 10;
+const CIRCLE_TAG = process.env.CIRCLE_TAG ?? 'NO_VERSION';
+
 datadogLogs.init({
-    clientToken: 'pub1beb6b75d0f9cdc56ad3aaa7a1427322',
-    site: 'us5.datadoghq.com',
-    forwardErrorsToLogs: true,
-    sessionSampleRate: 100,
+    clientToken: DATADOG_CLIENT_TOKEN,
+    site: 'datadoghq.com',
+    sessionSampleRate: DATADOG_SESSION_SAMPLE_RATE,
     service: 'Dbot',
+    version: `deriv-app-${CIRCLE_TAG}`,
 });
 
 const REQUESTS = [
@@ -21,26 +25,16 @@ const REQUESTS = [
     'history', // only response, there is no `history` type but instead it is response type
 ];
 
-// eslint-disable-next-line consistent-return
-const log = (measures = [], req_type = '') => {
-    if (!measures || !measures.length) return null;
-    //eslint-disable-next-line no-console
-    measures.forEach(measure => {
-        datadogLogs.logger.info(measure.name, {
-            name: measure.name,
-            startTime: measure.startTimeDate,
-            duration: measure.duration,
-            detail: measure.detail,
+const log = (measures = []) => {
+    if (measures && measures.length) {
+        measures.forEach(measure => {
+            datadogLogs.logger.info(measure.name, {
+                name: measure.name,
+                startTime: measure.startTimeDate,
+                duration: measure.duration,
+                detail: measure.detail,
+            });
         });
-    });
-    if (measures.length > 1) {
-        const max = Math.max(...measures.map(i => i.duration));
-        const min = Math.min(...measures.map(i => i.duration));
-
-        //eslint-disable-next-line no-console
-        console.log(`%c ${req_type} --- min: ${min}`, 'color: #00AB41');
-        //eslint-disable-next-line no-console
-        console.log(`%c ${req_type} --- max: ${max}`, 'color: #FF0000');
     }
 };
 

@@ -1,13 +1,10 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Modal } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-type TInsufficientBalanceModal = {
-    history?: {
-        push?: (url: string) => void;
-    };
+type TInsufficientBalanceModal = RouteComponentProps & {
     is_virtual: boolean;
     is_visible: boolean;
     message: string;

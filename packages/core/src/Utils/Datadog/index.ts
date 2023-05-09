@@ -4,6 +4,7 @@ const DATADOG_APP_ID = process.env.DATADOG_APPLICATION_ID ?? '';
 const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
 const DATADOG_SESSION_SAMPLE_RATE = process.env.DATADOG_SESSION_SAMPLE_RATE ?? 10;
 const DATADOG_SESSION_REPLAY_SAMPLE_RATE = process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE ?? 1;
+const CIRCLE_TAG = process.env.CIRCLE_TAG ?? 'NO_VERSION';
 
 datadogRum.init({
     applicationId: DATADOG_APP_ID,
@@ -17,7 +18,7 @@ datadogRum.init({
     trackResources: true,
     trackLongTasks: true,
     defaultPrivacyLevel: 'mask-user-input',
-    version: '1.0.0',
+    version: `deriv-app-${CIRCLE_TAG}`,
     trackFrustrations: true,
     enableExperimentalFeatures: ['clickmap'],
 });

@@ -70,6 +70,7 @@ export default class ToolbarStore implements IToolbarStore {
                     file_name: config.default_file_name,
                     workspace,
                 });
+                Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
             },
             'reset'
         );

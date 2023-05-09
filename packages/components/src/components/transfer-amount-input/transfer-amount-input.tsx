@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Input from '../input';
 
 type TTransferAmountInput = {
@@ -9,19 +9,22 @@ type TTransferAmountInput = {
     label?: React.ReactNode;
 };
 
-const TransferAmountInput = ({ className, currency, initialValue, disabled, label }: TTransferAmountInput) => {
+const TransferAmountInput = ({ className, currency, disabled = false, initialValue, label }: TTransferAmountInput) => {
+    const [value, setValue] = useState(0);
+
     return (
         <div>
             <span>{label}</span>
             <Input
-                type={'text'}
+                value={value.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 disabled={disabled}
                 onChange={e => {
                     let input_value = e.target.value;
                     input_value = input_value.replace(/\D/g, '');
-                    input_value = (Number(input_value) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 });
-                    e.target.value = input_value;
+                    setValue(Number(input_value) / 100);
                 }}
+                type={'text'}
+                placeholder={`${value.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD`}
             />
         </div>
     );

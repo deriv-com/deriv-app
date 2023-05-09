@@ -42,7 +42,7 @@ const Wallet = React.memo(({ account, is_open_wallet = false }: TWallet) => {
                 is_open_wallet={is_open}
                 setIsOpen={setIsOpen}
             />
-            {is_open && <WalletContent is_demo={is_demo} />}
+            {is_open && <WalletContent is_demo={is_demo} is_eu={account.shortcode === 'malta'} />}
         </div>
     );
 });

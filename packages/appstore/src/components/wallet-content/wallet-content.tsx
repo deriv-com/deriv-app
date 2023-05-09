@@ -24,7 +24,7 @@ type TWallet = {
     is_open_wallet?: boolean;
 };
 
-const WalletContent = React.memo(({ is_demo, is_eu = true }: any) => {
+const WalletContent = React.memo(({ is_demo, is_eu }: any) => {
     const EUDisclaimer = (
         <div className='wallet-content__disclaimer'>
             <Text align='left' className='wallet-content__disclaimer-text' size={isMobile() ? 'xxxs' : 'xs'}>
@@ -42,7 +42,7 @@ const WalletContent = React.memo(({ is_demo, is_eu = true }: any) => {
                 'wallet-content__demo': is_demo,
             })}
         >
-            <ContentDivider is_demo_divider={true} />
+            <ContentDivider is_demo_divider={is_demo} />
             <WalletCFDsListing />
             <ContentDivider />
             <WalletOptionsAndMultipliersListing />

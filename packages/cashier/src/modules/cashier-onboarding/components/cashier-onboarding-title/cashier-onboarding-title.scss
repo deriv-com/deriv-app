@@ -1,20 +1,10 @@
 .cashier-onboarding-title {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 9999;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--general-main-1);
-    padding-bottom: 2rem;
+    gap: 1.6rem;
 
     @include mobile {
-        padding-top: 2rem;
-    }
-
-    &-learn-more {
-        text-align: center;
-        cursor: pointer;
+        gap: 2.4rem;
     }
 }

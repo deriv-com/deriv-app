@@ -5,7 +5,8 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
 const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_mobile } = ui;
     const { currency, loginid, is_eu, is_low_risk } = client;
     const currency_code = getCurrencyDisplayCode(currency);
 
@@ -25,12 +26,12 @@ const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
     );
 
     return (
-        <>
-            <Text className='cashier-onboarding-side-notes__text' color='prominent' weight='bold' size='xs' as='p'>
+        <div className='cashier-onboarding-side-notes__content'>
+            <Text color='prominent' weight='bold' size={is_mobile ? 'xxs' : 'xs'}>
                 {is_low_risk && low_risk_title}
                 {!is_low_risk && non_low_risk_title}
             </Text>
-            <Text className='cashier-onboarding-side-notes__text' size='xxs' as='p'>
+            <Text size={is_mobile ? 'xxxs' : 'xxs'}>
                 <Localize
                     i18n_default_text='If you want to change your account currency, please contact us via <0>live chat</0>.'
                     components={[
@@ -42,7 +43,7 @@ const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
                     ]}
                 />
             </Text>
-        </>
+        </div>
     );
 });
 

@@ -12,11 +12,11 @@ type TProps = {
 const CashierOnboardingCard: React.FC<React.PropsWithChildren<TProps>> = observer(
     ({ title, description, onClick, children }) => {
         const { ui } = useStore();
-        const { is_dark_mode_on } = ui;
+        const { is_dark_mode_on, is_mobile } = ui;
 
         return (
             <div className='cashier-onboarding-card'>
-                <Text size='sm' weight='bold' color='prominent'>
+                <Text size={is_mobile ? 's' : 'sm'} weight='bold' color='prominent'>
                     {title}
                 </Text>
                 <div
@@ -25,7 +25,7 @@ const CashierOnboardingCard: React.FC<React.PropsWithChildren<TProps>> = observe
                     onClick={onClick}
                 >
                     <div className='cashier-onboarding-card__content'>
-                        <Text size='xs' className='cashier-onboarding-card__description'>
+                        <Text size={is_mobile ? 'xxs' : 'xs'} className='cashier-onboarding-card__description'>
                             {description}
                         </Text>
                         <Icon icon={is_dark_mode_on ? 'IcChevronRightBoldDark' : 'IcChevronRightBold'} size={16} />

@@ -17,13 +17,16 @@ const CashierOnboardingIconMarquee: React.FC<TProps> = observer(({ icons }) => {
     const { is_dark_mode_on } = ui;
 
     return (
-        <div className='cashier-onboarding-icon-marquee' data-testid='dt_cashier_onboarding_icon-marquee'>
+        <div data-testid='dt_cashier_onboarding_icon-marquee'>
             <NewsTicker speed={10}>
-                <div className={'cashier-onboarding-icon-marquee__container'}>
+                <div className={'cashier-onboarding-icon-marquee'}>
                     {icons.map((icon, index) => (
-                        <div key={`${icon}${index}`} className='cashier-onboarding-icon-marquee__icon'>
-                            <Icon icon={is_dark_mode_on ? icon.dark : icon.light} width={72} height={45} />
-                        </div>
+                        <Icon
+                            key={`${icon}${index}`}
+                            icon={is_dark_mode_on ? icon.dark : icon.light}
+                            width={72}
+                            height={45}
+                        />
                     ))}
                 </div>
             </NewsTicker>

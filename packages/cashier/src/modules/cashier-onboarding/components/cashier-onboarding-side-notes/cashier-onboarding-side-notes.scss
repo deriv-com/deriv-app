@@ -3,28 +3,25 @@
         background-color: var(--general-section-1);
         border-radius: $BORDER_RADIUS * 2;
         padding: 1.6rem 2.4rem;
-        margin: 2.4rem 0;
+        margin-bottom: 2.4rem;
     }
 
-    &__text {
-        margin-bottom: 0.8rem;
-
-        &-nowrap {
-            white-space: nowrap;
-        }
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
 
     &__link {
         cursor: pointer;
         display: flex;
         align-items: center;
+        margin-top: 1.6rem;
+        gap: 0.4rem;
 
         &:hover {
             text-decoration: underline var(--brand-red-coral);
-        }
-
-        .dc-text {
-            margin-right: 0.4rem;
         }
     }
 }

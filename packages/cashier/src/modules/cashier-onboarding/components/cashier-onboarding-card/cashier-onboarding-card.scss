@@ -9,6 +9,7 @@
         border-radius: $BORDER_RADIUS * 2;
         margin-top: 0.8rem;
         cursor: pointer;
+        gap: 1.6rem;
         transition: all 0.25s ease;
 
         &:hover {
@@ -19,9 +20,10 @@
     &__content {
         display: flex;
         align-items: center;
+        gap: 1.2rem;
     }
 
     &__description {
-        width: 100%;
+        flex: 1;
     }
 }

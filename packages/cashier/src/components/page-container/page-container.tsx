@@ -9,7 +9,7 @@ const PageContainer: React.FC<React.PropsWithChildren<unknown>> = observer(({ ch
 
     return (
         <ThemedScrollbars className='page-container'>
-            {is_authorize ? children : <Loading is_fullscreen={false} />}
+            <div className='page-container__content'>{is_authorize ? children : <Loading is_fullscreen={false} />}</div>
         </ThemedScrollbars>
     );
 });

@@ -45,13 +45,13 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
 
     return (
         <PageContainer>
+            {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
             <CashierOnboardingTitle />
             <CashierOnboardingCashCard />
             <CashierOnboardingCryptoCard />
             <CashierOnboardingOnrampCard />
             <CashierOnboardingPaymentAgentCard />
             <CashierOnboardingP2PCard />
-            {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
         </PageContainer>
     );
 });

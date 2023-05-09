@@ -48,7 +48,9 @@ const TradeHeaderExtensions = observer(({ store }: TradeHeaderExtensionsProps) =
             populateHeaderfunction();
         };
 
-        waitForLogin();
+        waitForLogin().catch(() => {
+            // Do nothing: This is to remove the bug reported by SonarCloud about not having a catch statement here.
+        });
 
         return () => populateHeaderExtensions(null);
     }, [

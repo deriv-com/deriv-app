@@ -672,7 +672,7 @@ export default class CFDStore extends BaseStore {
 
             if (!this.ctrader_tokens[account_type] && has_existing_account) {
                 WS.getServiceToken(CFD_PLATFORMS.CTRADER, account_type).then(response =>
-                    this.setCTtraderToken(response, account_type)
+                    this.setCTraderToken(response, account_type)
                 );
             }
         });

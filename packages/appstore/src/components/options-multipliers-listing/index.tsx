@@ -35,7 +35,7 @@ const OptionsAndMultipliersListing = () => {
             );
         } else if ((low_risk_cr_eu || is_eu) && !isMobile()) {
             return (
-                <Text size='sm' line_height='m' weight='bold'>
+                <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
                 </Text>
             );
@@ -50,8 +50,8 @@ const OptionsAndMultipliersListing = () => {
                 low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>Options</0>, or get the
-                    upside of CFDs without risking more than your initial stake with <1>Multipliers</1>.'
+                            i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the
+                    upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                             components={[
                                 <StaticUrl key={0} className='options' href='trade-types/options/' />,
                                 <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,

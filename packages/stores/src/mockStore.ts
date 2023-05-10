@@ -269,6 +269,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_language_changing: false,
             setAppstorePlatform: jest.fn(),
             app_routing_history: [],
+            getExchangeRate: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {
@@ -334,11 +335,28 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_low_risk_cr_eu_real: false,
             CFDs_restricted_countries: [],
             show_eu_related_content: false,
+            platform_real_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            platform_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_real_balance: {
+                currency: '',
+                balance: 0,
+            },
             financial_restricted_countries: false,
             selected_account_type: 'real',
             no_CR_account: false,
             no_MF_account: false,
             setTogglePlatformType: jest.fn(),
+            is_demo: false,
         },
         menu: {
             attach: jest.fn(),

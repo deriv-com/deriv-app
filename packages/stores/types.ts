@@ -315,6 +315,7 @@ type TCommonStore = {
     is_language_changing: boolean;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
+    getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
 };
 
 type TUiStore = {
@@ -405,10 +406,27 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    platform_real_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    platform_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_real_balance: {
+        currency: string;
+        balance: number;
+    };
     financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    is_demo: boolean;
 };
 
 /**

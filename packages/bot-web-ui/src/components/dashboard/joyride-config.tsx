@@ -509,7 +509,7 @@ export const DBOT_ONBOARDING_MOBILE = [
     },
     {
         header: localize('Build from scratch'),
-        img: getImageLocation('ic_onb_step_1.png'),
+        img: getImageLocation('dbot-mobile-onboarding-step-1.gif'),
         content: [
             localize(
                 'Import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot, or choose from our pre-made Quick Strategies. '
@@ -520,35 +520,35 @@ export const DBOT_ONBOARDING_MOBILE = [
     },
     {
         header: localize('Monitor the market'),
-        img: getImageLocation('ic_onb_step_3.png'),
+        img: getImageLocation('dbot-mobile-onboarding-step-2.png'),
         content: [localize('View the market price of your favourite assets.')],
         key: 3,
         step_key: 2,
     },
     {
         header: localize('Guides and FAQs to help you'),
-        img: getImageLocation('ic_onb_step_4.png'),
+        img: getImageLocation('dbot-mobile-onboarding-step-3.gif'),
         content: [localize('Start with a video guide and the FAQs.')],
         key: 4,
         step_key: 3,
     },
     {
         header: localize('Shortcuts'),
-        img: getImageLocation('ic_onb_step_5.png'),
+        img: getImageLocation('dbot-mobile-onboarding-step-4.png'),
         content: [localize('You can also use these shortcuts to import or build your bot.')],
         key: 5,
         step_key: 4,
     },
     {
         header: localize('How is my bot doing?'),
-        img: getImageLocation('ic_onb_step_6.png'),
+        img: getImageLocation('dbot-mobile-onboarding-step-5.gif'),
         content: [localize("See your bot's performance in real-time.")],
         key: 6,
         step_key: 5,
     },
     {
         header: localize('Run or stop your bot'),
-        img: getImageLocation('ic_onb_step_7.png'),
+        img: getImageLocation('dbot-mobile-onboarding-step-6.gif'),
         content: [localize('Click Run when you want to start trading, and click Stop when you want to stop.')],
         key: 7,
         step_key: 6,

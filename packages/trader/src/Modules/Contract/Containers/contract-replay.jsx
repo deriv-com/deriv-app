@@ -23,7 +23,7 @@ import {
     isVanillaContract,
     urlFor,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize, getAllowedLanguages } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
@@ -107,7 +107,11 @@ const ContractReplay = ({
 
     const unsupportedContractOnClose = () => {
         const statementws_url = urlFor('user/statementws', { legacy: true });
-        window.open(statementws_url, '_blank');
+        const params = new URLSearchParams(statementws_url);
+        const lang_query = params.get('lang');
+        if (lang_query || Object.keys(getAllowedLanguages()).includes(lang_query)) {
+            window.open(statementws_url, '_blank');
+        }
     };
 
     return (

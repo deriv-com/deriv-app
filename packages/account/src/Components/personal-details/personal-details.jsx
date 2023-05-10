@@ -74,36 +74,49 @@ const PersonalDetails = ({
 
     const shouldHideHelperImage = document_id => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
+    const isDocumentTypeValid = document_type => {
+        if (!document_type?.text) {
+            return localize('Please select a document type.');
+        }
+        return undefined;
+    };
+
+    const isAdditionalDocumentValid = (document_type, document_additional) => {
+        const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+        if (error_message) {
+            return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+        }
+        return undefined;
+    };
+
+    const isDocumentNumberValid = (document_number, document_type) => {
+        const is_document_number_invalid = document_number === document_type.example_format;
+        if (!document_number) {
+            return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+        } else if (is_document_number_invalid) {
+            return localize('Please enter a valid ID number.');
+        }
+        const format_regex = getRegex(document_type.value);
+        if (!format_regex.test(document_number)) {
+            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
+        }
+        return undefined;
+    };
+
     const validateIDV = values => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
         if (document_type.id === IDV_NOT_APPLICABLE_OPTION.id) return errors;
-        const needs_additional_document = !!document_type.additional;
-        const is_document_number_invalid = document_number === document_type.example_format;
-        if (!document_type || !document_type.text) {
-            errors.document_type = localize('Please select a document type.');
-        }
-        if (!shouldHideHelperImage(document_type?.id)) {
-            if (needs_additional_document) {
-                const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
-                if (error_message)
-                    errors.document_additional =
-                        localize(error_message) + getExampleFormat(document_type.additional?.example_format);
-            }
 
-            if (!document_number) {
-                errors.document_number =
-                    localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-            } else if (is_document_number_invalid) {
-                errors.document_number = localize('Please enter a valid ID number.');
-            } else {
-                const format_regex = getRegex(document_type.value);
-                if (!format_regex.test(document_number)) {
-                    errors.document_number =
-                        localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
-                }
-            }
+        errors.document_type = isDocumentTypeValid(document_type);
+
+        const needs_additional_document = !!document_type.additional;
+
+        if (needs_additional_document) {
+            errors.document_additional = isAdditionalDocumentValid(document_type, document_additional);
         }
+
+        errors.document_number = isDocumentNumberValid(document_number, document_type);
         return errors;
     };
 

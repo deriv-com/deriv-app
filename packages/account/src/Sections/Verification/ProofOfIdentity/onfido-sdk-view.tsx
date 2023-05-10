@@ -234,7 +234,7 @@ const OnfidoSdkView = ({
         );
     } else if (retry_count >= 3 && api_error) {
         // Error message will only display if retry count exceeds 3
-        component_to_load = <ErrorMessage error_message={(api_error as TAPI_error)?.message || api_error} />;
+        component_to_load = <ErrorMessage error_message={(api_error as TAPI_error)?.message ?? api_error} />;
     }
 
     return (

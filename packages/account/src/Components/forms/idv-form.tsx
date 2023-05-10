@@ -45,7 +45,7 @@ const IDVForm = ({
 
     const { selected_country } = props;
 
-    const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv || {};
+    const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
 
     React.useEffect(() => {
         const document_types = Object.keys(document_data);

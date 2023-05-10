@@ -31,7 +31,7 @@ describe('<DerivPassword />', () => {
     afterAll(() => {
         document.body.removeChild(modal_root_el);
     });
-    test('Should render properly', async () => {
+    it('Should render properly', async () => {
         render(<DerivPassword {...mock_props} />);
         expect(
             screen.getByRole('heading', {
@@ -46,7 +46,7 @@ describe('<DerivPassword />', () => {
         expect(screen.queryByText(/unlink from/i)).not.toBeInTheDocument();
     });
 
-    test('displays the correct platform information for non-MF clients', () => {
+    it('displays the correct platform information for non-MF clients', () => {
         render(<DerivPassword {...mock_props} landing_company_shortcode='svg' />);
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
         // expect popover to have length of 4
@@ -55,13 +55,13 @@ describe('<DerivPassword />', () => {
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
 
-    test('displays the correct platform information for MF clients', () => {
+    it('displays the correct platform information for MF clients', () => {
         const { container } = render(<DerivPassword {...mock_props} />);
         const passwordsIconsElement = container.querySelector('.passwords-platform__icons');
         expect(passwordsIconsElement).toBeNull();
     });
 
-    test('displays a change password button for non-social signups', () => {
+    it('displays a change password button for non-social signups', () => {
         render(<DerivPassword {...mock_props} />);
         const change_password_button = screen.getByRole('button', {
             name: /change password/i,
@@ -69,7 +69,7 @@ describe('<DerivPassword />', () => {
         expect(change_password_button).toBeInTheDocument();
     });
 
-    test('should invoke verifyEmail when change password is clicked', async () => {
+    it('should invoke verifyEmail when change password is clicked', async () => {
         render(<DerivPassword {...mock_props} />);
         const ele_change_btn = screen.getByRole('button', {
             name: /change password/i,

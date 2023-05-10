@@ -54,7 +54,7 @@ const AssetSummary = observer(() => {
                         <BalanceText
                             currency={
                                 is_real
-                                    ? platform_real_balance.currency
+                                    ? platform_real_balance.currency || ''
                                     : platform_demo_account?.currency || default_currency
                             }
                             balance={is_real ? real_total_balance : demo_total_balance}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, Badge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TJurisdictionData, TWalletSvgCurrency } from 'Types';
+import { TJurisdictionData, TWalletCurrency } from 'Types';
 
 type TWalletHeaderTitle = {
     is_demo: boolean;
-    currency: TWalletSvgCurrency;
+    currency: TWalletCurrency;
     shortcode: Exclude<TJurisdictionData['jurisdiction'], undefined>;
 };
 

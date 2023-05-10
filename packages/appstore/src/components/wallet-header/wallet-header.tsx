@@ -5,38 +5,18 @@ import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
-import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
+import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletCurrency } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-header.scss';
 
-type TWalletHeaderCommon = {
+type TWalletHeader = {
+    account_type: TAccountCategory;
+    shortcode?: Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+    currency?: TWalletCurrency;
     balance?: string;
+    account_status?: TAccountStatus;
     is_open_wallet?: boolean;
-    shortcode?: TJurisdictionData['jurisdiction'];
 };
-
-type TWalletHeaderDemo = TWalletHeaderCommon & {
-    account_type: Extract<TAccountCategory, 'demo'>;
-    account_status?: never;
-    shortcode?: never;
-    currency?: never;
-};
-
-type TWalletHeaderSvg = TWalletHeaderCommon & {
-    account_status?: TAccountStatus;
-    account_type?: Extract<TAccountCategory, 'real'>;
-    shortcode: Extract<TJurisdictionData['jurisdiction'], 'svg'>;
-    currency: TWalletSvgCurrency;
-};
-
-type TWalletHeaderMalta = TWalletHeaderCommon & {
-    account_status?: TAccountStatus;
-    account_type?: Extract<TAccountCategory, 'real'>;
-    shortcode: Extract<TJurisdictionData['jurisdiction'], 'malta'>;
-    currency: TWalletMaltaCurrency;
-};
-
-type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 
 const WalletHeader = React.memo(
     ({

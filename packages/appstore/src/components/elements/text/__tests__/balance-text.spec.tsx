@@ -46,24 +46,6 @@ describe('BalanceText', () => {
         expect(screen.getByTestId('dt_balance-text__container')).toHaveClass('balance-text--dotted');
     });
 
-    it('should have classname ending with amount if user has selected_account_type demo and no active real account ', () => {
-        const mock = mockStore({
-            traders_hub: {
-                selected_account_type: 'demo',
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
-        const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
-        });
-        expect(container).toBeInTheDocument();
-        expect(screen.getByText('1,000.00')).toHaveClass('balance-text__text--amount');
-    });
-
     it('should have classname ending with demo if user has selected_account_type demo and has an active real account ', () => {
         const mock = mockStore({
             traders_hub: {
@@ -85,24 +67,6 @@ describe('BalanceText', () => {
         expect(screen.getByText('1,000.00')).toHaveClass('balance-text__text--demo');
     });
 
-    it('should have classname ending with no-amount if user has selected_account_type real and no active real account ', () => {
-        const mock = mockStore({
-            traders_hub: {
-                selected_account_type: 'real',
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
-        const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
-            wrapper,
-        });
-        expect(container).toBeInTheDocument();
-        expect(screen.getByText('1,000.00')).toHaveClass('balance-text__text--no-amount');
-    });
-
     it('should have classname ending with real if user has selected_account_type demo and has an active real account ', () => {
         const mock = mockStore({
             traders_hub: {
@@ -122,5 +86,38 @@ describe('BalanceText', () => {
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByText('1,000.00')).toHaveClass('balance-text__text--real');
+    });
+
+    it('should not have classname if selected_account_type is empty ', () => {
+        const mock = mockStore({
+            traders_hub: {
+                selected_account_type: '',
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
+            wrapper,
+        });
+        expect(container).toBeInTheDocument();
+        expect(screen.getByText('1,000.00')).not.toHaveClass('balance-text__text--real');
+        expect(screen.getByText('1,000.00')).not.toHaveClass('balance-text__text--demo');
+    });
+
+    it('should have classname as container if underline_style is none', () => {
+        const mock = mockStore({});
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { container } = render(<BalanceText balance={1000} currency='USD' size='m' underline_style='none' />, {
+            wrapper,
+        });
+        expect(container).toBeInTheDocument();
+        expect(screen.getByTestId('dt_balance-text__container')).toHaveClass('balance-text__container');
     });
 });

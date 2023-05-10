@@ -37,5 +37,7 @@ describe('<TransferAmountInput/>', () => {
     it('should not remove "0.00" when backspacing', () => {
         render(<TransferAmountInput currency={'USD'} />);
         const input = screen.getByRole('textbox');
+        fireEvent.change(input, { target: { value: '0' } });
+        expect(input).toHaveDisplayValue('0.00');
     });
 });

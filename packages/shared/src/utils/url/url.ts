@@ -34,7 +34,9 @@ const isUrl = (str: string) => {
 };
 
 export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) => {
-    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+    // validate if default_language is not url to prevent client-side url redirect vulnerability
+    const language = target_language && !isUrl(target_language) ? target_language : 'EN';
+    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${language}).trim().toLowerCase()}/`);
 };
 
 export const urlForLanguage = (lang: string, url: string = window.location.href) => {
@@ -80,8 +82,7 @@ export const urlFor = (
         return `https://${host_map['bot.binary.com']}`;
     }
 
-    // for security, validate if default_language is not url to prevent client side url redirects
-    const lang = language?.toLowerCase?.() ?? !isUrl(default_language) ? default_language : 'EN';
+    const lang = language?.toLowerCase?.() ?? default_language;
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
         if (getPlatformFromUrl().is_staging_deriv_app) {

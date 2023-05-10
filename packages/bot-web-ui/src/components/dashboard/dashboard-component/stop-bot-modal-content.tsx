@@ -45,12 +45,7 @@ const StopBotModalContent = ({
                             {localize(
                                 'Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the '
                             )}
-                            <Text
-                                as='span'
-                                line_height='s'
-                                size='xs'
-                                styles={{ color: 'var(--button-primary-default)' }}
-                            >
+                            <Text as='span' line_height='s' size='xs'>
                                 <strong>{localize('Reports')}</strong>
                             </Text>
                             {localize(' page.')}
@@ -68,12 +63,7 @@ const StopBotModalContent = ({
                         </Text>
                         <Text as='p' line_height='s' size='xs'>
                             {localize(' Any open contracts can be viewed on the ')}
-                            <Text
-                                as='span'
-                                line_height='s'
-                                size='xs'
-                                styles={{ color: 'var(--button-primary-default)' }}
-                            >
+                            <Text as='span' line_height='s' size='xs'>
                                 <strong>{localize('Reports')}</strong>
                             </Text>
                             {localize(' page.')}

@@ -63,7 +63,6 @@ export default connect(({ run_panel, quick_strategy, ui }: RootStore) => ({
     trade_type_dropdown: quick_strategy.trade_type_dropdown,
     is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
     setCurrentFocus: ui.setCurrentFocus,
-    is_dialog_open: quick_strategy.is_dialog_open,
     toggleStopBotDialog: quick_strategy.toggleStopBotDialog,
     is_running: run_panel.is_running,
     is_contract_dialog_open: quick_strategy.is_contract_dialog_open,

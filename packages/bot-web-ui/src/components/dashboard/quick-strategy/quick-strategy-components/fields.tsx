@@ -158,7 +158,10 @@ const QuickStrategyFields = React.memo(
 
         return <div className='quick-strategy__fields'>{fields}</div>;
     },
-    (prevProps, nextProps) => prevProps.values === nextProps.values && prevProps.errors === nextProps.errors
+    (prevProps, nextProps) =>
+        prevProps.values === nextProps.values &&
+        prevProps.errors === nextProps.errors &&
+        prevProps.duration_unit_dropdown === nextProps.duration_unit_dropdown
 );
 
 QuickStrategyFields.displayName = 'QuickStrategyFields';

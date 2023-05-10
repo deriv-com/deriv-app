@@ -29,12 +29,13 @@ const TransferAmountInput = ({
             <div className='transfer-amount-input-container'>
                 <Input
                     className='transfer-amount-input'
-                    disabled={focus}
+                    disabled={disabled || focus}
                     type='text'
                     value={`${displayNumber(value)} ${currency}`}
                 />
                 <Input
                     className='transfer-amount-input'
+                    data-testid='dt_transfer-amount-input'
                     disabled={disabled}
                     max_characters={displayNumber(Math.pow(10, maxDigits - 1) / decimalPoints).length}
                     onFocus={() => setFocus(true)}

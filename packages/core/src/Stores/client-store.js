@@ -18,6 +18,7 @@ import {
     isStaging,
     isTestLink,
     redirectToLogin,
+    removeCookies,
     routes,
     setCurrencies,
     toMoment,
@@ -72,11 +73,13 @@ export default class ClientStore extends BaseStore {
     account_settings = {};
     account_status = {};
     device_data = {};
+    is_authorize = false;
     is_logging_in = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
     has_enabled_two_fa = false;
+    has_changed_two_fa = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -181,11 +184,13 @@ export default class ClientStore extends BaseStore {
             account_settings: observable,
             account_status: observable,
             device_data: observable,
+            is_authorize: observable,
             is_logging_in: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
             has_enabled_two_fa: observable,
+            has_changed_two_fa: observable,
             landing_companies: observable,
             standpoint: observable,
             upgradeable_landing_companies: observable,
@@ -242,7 +247,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
-            is_crypto: computed,
+            is_crypto: action.bound,
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
@@ -297,6 +302,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_pending_proof_of_ownership: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -331,6 +337,7 @@ export default class ClientStore extends BaseStore {
             setLoginId: action.bound,
             setAccounts: action.bound,
             setSwitched: action.bound,
+            setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
             broadcastAccountChange: action.bound,
@@ -382,6 +389,7 @@ export default class ClientStore extends BaseStore {
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
+            setTwoFAChangedStatus: action.bound,
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
             updateMT5Status: action.bound,
@@ -499,11 +507,11 @@ export default class ClientStore extends BaseStore {
 
     get legal_allowed_currencies() {
         const getDefaultAllowedCurrencies = () => {
-            if (this.landing_companies.gaming_company) {
-                return this.landing_companies.gaming_company.legal_allowed_currencies;
+            if (this.landing_companies?.gaming_company) {
+                return this.landing_companies?.gaming_company?.legal_allowed_currencies;
             }
-            if (this.landing_companies.financial_company) {
-                return this.landing_companies.financial_company.legal_allowed_currencies;
+            if (this.landing_companies?.financial_company) {
+                return this.landing_companies?.financial_company?.legal_allowed_currencies;
             }
             return [];
         };
@@ -656,8 +664,8 @@ export default class ClientStore extends BaseStore {
         return this.default_currency;
     }
 
-    get is_crypto() {
-        return isCryptocurrency(this.currency);
+    is_crypto(currency) {
+        return isCryptocurrency(currency || this.currency);
     }
 
     get default_currency() {
@@ -1079,6 +1087,10 @@ export default class ClientStore extends BaseStore {
         this.loginid = loginid;
     }
 
+    setIsAuthorize(value) {
+        this.is_authorize = value;
+    }
+
     getBasicUpgradeInfo() {
         const upgradeable_landing_companies = [
             ...new Set(State.getResponse('authorize.upgradeable_landing_companies')),
@@ -1177,10 +1189,12 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
+            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
+            Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
+
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('region', { domain });
-            Cookies.remove('client_information', { domain });
+            removeCookies('region', 'client_information', 'is_p2p_disabled');
             this.has_cookie_account = false;
         }
     }
@@ -1234,6 +1248,14 @@ export default class ClientStore extends BaseStore {
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
+        // delete all notifications key when set new account except notifications for this account
+        // need this because when the user switchs accounts we don't use logout
+        const notification_messages = LocalStore.getObject('notification_messages');
+        const messages = notification_messages[this.loginid] ?? [];
+        LocalStore.setObject('notification_messages', {
+            [this.loginid]: messages,
+        });
+
         // For residences without local currency (e.g. ax)
         const default_fractional_digits = 2;
         this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
@@ -1251,6 +1273,7 @@ export default class ClientStore extends BaseStore {
         return new Promise(resolve => {
             let client_accounts;
             const has_client_accounts = !!LocalStore.get(storage_key);
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
 
             runInAction(() => {
                 this.is_populating_account_list = true;
@@ -1259,6 +1282,7 @@ export default class ClientStore extends BaseStore {
             if (this.is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.set(storage_key, JSON.stringify(this.accounts));
+                this.syncWithLegacyPlatforms(client_id, this.accounts);
             }
 
             try {
@@ -1268,7 +1292,6 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};
@@ -1284,6 +1307,7 @@ export default class ClientStore extends BaseStore {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
+                    this.syncWithLegacyPlatforms(client_id, client_accounts);
                 })
                 .catch(error => {
                     // eslint-disable-next-line no-console
@@ -1311,6 +1335,7 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
+        this.root_store.ui.setRealAccountSignupParams(form_values);
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = form_values?.citizen || this.account_settings.citizen || this.residence;
 
@@ -1615,7 +1640,7 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
@@ -1637,8 +1662,9 @@ export default class ClientStore extends BaseStore {
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-
-            await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            if (this.residence) {
+                await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
+            }
             if (!this.is_virtual) await this.getLimits();
 
             await WS.p2pAdvertiserInfo().then(this.setP2pAdvertiserInfo);
@@ -1854,6 +1880,7 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
+        this.setIsAuthorize(false);
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -1957,7 +1984,9 @@ export default class ClientStore extends BaseStore {
     }
 
     setResidence(residence) {
-        this.accounts[this.loginid].residence = residence;
+        if (this.loginid) {
+            this.accounts[this.loginid].residence = residence;
+        }
     }
 
     setCitizen(citizen) {
@@ -1965,8 +1994,10 @@ export default class ClientStore extends BaseStore {
     }
 
     setEmail(email) {
-        this.accounts[this.loginid].email = email;
-        this.email = email;
+        if (this.loginid) {
+            this.accounts[this.loginid].email = email;
+            this.email = email;
+        }
     }
 
     setAccountSettings(settings) {
@@ -1993,6 +2024,15 @@ export default class ClientStore extends BaseStore {
     }
 
     cleanUp() {
+        // delete all notifications keys for this account when logout
+        const notification_messages = LocalStore.getObject('notification_messages');
+        if (notification_messages && this.loginid) {
+            delete notification_messages[this.loginid];
+            LocalStore.setObject('notification_messages', {
+                ...notification_messages,
+            });
+        }
+
         this.root_store.gtm.pushDataLayer({
             event: 'log_out',
         });
@@ -2533,6 +2573,10 @@ export default class ClientStore extends BaseStore {
         return !!this.accounts[this.loginid]?.residence;
     }
 
+    get is_pending_proof_of_ownership() {
+        return this.account_status?.authentication?.needs_verification?.includes('ownership');
+    }
+
     setVisibilityRealityCheck(is_visible) {
         // if reality check timeout has been set, don't make it visible until it runs out
         if (is_visible && typeof this.reality_check_timeout === 'number') {
@@ -2602,6 +2646,10 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    setTwoFAChangedStatus(status) {
+        this.has_changed_two_fa = status;
+    }
+
     async updateMT5Status() {
         this.updateAccountStatus();
         await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
@@ -2614,5 +2662,23 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
+
+    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
+     *
+     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
+     *
+     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
+     * */
+    get is_p2p_enabled() {
+        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
+
+        const is_p2p_supported_currency = Boolean(
+            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
+        );
+
+        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+
+        return is_p2p_visible;
+    }
 }
 /* eslint-enable */

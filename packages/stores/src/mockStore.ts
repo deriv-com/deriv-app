@@ -1,21 +1,11 @@
 import merge from 'lodash.merge';
-import type { TRootStore } from '../types';
+import { TStores } from '../types';
 
-const mock = (): TRootStore => {
+const mock = (): TStores & { is_mock: boolean } => {
     return {
+        is_mock: true,
         client: {
-            accounts: {
-                loginid: {
-                    account_type: 'trading',
-                    created_at: 1674633682,
-                    currency: 'USD',
-                    is_disabled: 0,
-                    is_virtual: 0,
-                    trading: {},
-                    excluded_until: 0,
-                    landing_company_name: 'svg',
-                },
-            },
+            accounts: {},
             active_account_landing_company: '',
             account_limits: {
                 daily_transfers: {
@@ -127,15 +117,18 @@ const mock = (): TRootStore => {
             has_maltainvest_account: false,
             initialized_broadcast: false,
             is_account_setting_loaded: false,
+            is_authorize: false,
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
+            is_low_risk: false,
             is_identity_verification_needed: false,
             is_landing_company_loaded: false,
             is_logged_in: false,
             is_logging_in: false,
+            is_pending_proof_of_ownership: false,
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
@@ -188,7 +181,15 @@ const mock = (): TRootStore => {
             switched: false,
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
-            is_crypto: false,
+            is_crypto: jest.fn(),
+            dxtrade_accounts_list: [],
+            default_currency: 'USD',
+            resetVirtualBalance: jest.fn(),
+            has_enabled_two_fa: false,
+            setTwoFAStatus: jest.fn(),
+            has_changed_two_fa: false,
+            setTwoFAChangedStatus: jest.fn(),
+            real_account_creation_unlock_date: 0,
         },
         common: {
             error: {
@@ -213,6 +214,7 @@ const mock = (): TRootStore => {
             current_language: 'EN',
             is_network_online: false,
             is_language_changing: false,
+            getExchangeRate: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {
@@ -244,15 +246,43 @@ const mock = (): TRootStore => {
             is_ready_to_deposit_modal_visible: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
-            openModal: jest.fn(),
+            combined_cfd_mt5_accounts: [],
             content_flag: '',
+            openModal: jest.fn(),
+            selected_account: {
+                login: '',
+                account_id: '',
+            },
             is_eu_user: false,
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            platform_real_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            platform_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_real_balance: {
+                currency: '',
+                balance: 0,
+            },
+            financial_restricted_countries: false,
+            selected_account_type: 'real',
+            no_CR_account: false,
+            no_MF_account: false,
+            setTogglePlatformType: jest.fn(),
+            is_demo: false,
         },
         menu: {
             attach: jest.fn(),
@@ -270,9 +300,14 @@ const mock = (): TRootStore => {
             setP2PRedirectTo: jest.fn(),
         },
         modules: {},
+        exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
+            unmount: jest.fn(),
+        },
     };
 };
 
-const mockStore = (override: DeepPartial<TRootStore>): TRootStore => merge(mock(), override);
+const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
 export { mockStore };

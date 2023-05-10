@@ -6,6 +6,7 @@ import { getCurrencyName, isMobile } from '@deriv/shared';
 import CryptoDeposit from '../crypto-deposit';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -25,6 +26,24 @@ jest.mock('qrcode.react', () => {
 jest.mock('Components/recent-transaction', () => {
     const RecentTransactions = () => <div>RecentTransactions</div>;
     return RecentTransactions;
+});
+
+jest.mock('@deriv/api', () => {
+    return {
+        ...jest.requireActual('@deriv/api'),
+        useFetch: jest.fn(() => ({
+            data: {
+                currencies_config: {
+                    tUSDT: {
+                        minimum_deposit: 2,
+                        minimum_withdrawal: 4.54,
+                    },
+                },
+            },
+            isLoading: false,
+            isSuccess: true,
+        })),
+    };
 });
 
 describe('<CryptoDeposit />', () => {
@@ -436,5 +455,46 @@ describe('<CryptoDeposit />', () => {
         );
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();
+    });
+
+    it('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
+        const minimum_deposit = 2;
+        const currency = 'tUSDT';
+        const mock = mockStore({
+            client: {
+                currency: 'tUSDT',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => {
+            return (
+                <Router history={history}>
+                    <CashierProviders store={mock}>{children}</CashierProviders>;
+                </Router>
+            );
+        };
+        render(<CryptoDeposit />, { wrapper });
+        expect(
+            screen.getByText(
+                `A minimum deposit value of ${minimum_deposit} ${currency} is required. Otherwise, the funds will be lost and cannot be recovered.`
+            )
+        ).toBeInTheDocument();
     });
 });

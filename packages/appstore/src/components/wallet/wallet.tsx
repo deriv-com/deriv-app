@@ -4,6 +4,7 @@ import WalletHeader from 'Components/wallet-header';
 import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletSvgCurrency } from 'Types';
 import WalletContent from 'Components/wallet-content';
 import './wallet.scss';
+import { CSSTransition } from 'react-transition-group';
 
 export type TWalletTestAccount = {
     account_status: TAccountStatus;
@@ -27,6 +28,7 @@ const Wallet = React.memo(({ account, is_open_wallet = false }: TWallet) => {
     // const Divider = () => <div className='wallet__divider' />;
     // --wallet-demo-divider-color
 
+    const className = 'alert';
     return (
         <div
             className={classNames('wallet', {
@@ -42,7 +44,27 @@ const Wallet = React.memo(({ account, is_open_wallet = false }: TWallet) => {
                 is_open_wallet={is_open}
                 setIsOpen={setIsOpen}
             />
-            {is_open && <WalletContent is_demo={is_demo} is_eu={account.shortcode === 'malta'} />}
+            {/* {is_open && <WalletContent is_demo={is_demo} is_eu={account.shortcode === 'malta'} />} */}
+            <CSSTransition
+                appear
+                in={is_open}
+                timeout={250}
+                classNames='alert'
+                // classNames={{
+                //     appear: `${className}--enter`,
+                //     enter: `${className}--enter`,
+                //     enterDone: `${className}--enter-done`,
+                //     exit: `${className}--exit`,
+                // }}
+                // classNames={{
+                //     enter: `${className}--enter`,
+                //     enterDone: `${className}--enter-done`,
+                //     exit: `${className}--exit`,
+                // }}
+                unmountOnExit
+            >
+                <WalletContent is_demo={is_demo} is_eu={account.shortcode === 'malta'} />
+            </CSSTransition>
         </div>
     );
 });

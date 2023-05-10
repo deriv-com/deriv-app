@@ -29,7 +29,7 @@ type TCalendarProps = {
     }>;
     has_range_selection: boolean;
     keep_open: boolean;
-    onHover: (selected_date: moment.MomentInput | null) => void;
+    onHover?: (selected_date: moment.MomentInput | null) => void;
     should_show_today: boolean;
 };
 

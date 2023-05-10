@@ -1,12 +1,12 @@
 import React from 'react';
 import { addDays, daysFromTodayTo, toMoment, convertDateFormat, getPosition, isMobile } from '@deriv/shared';
-
 import Input from './date-picker-input';
 import Calendar from './date-picker-calendar';
 import Native from './date-picker-native';
 import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
+import { MomentInput } from 'moment';
 
 type TDatePickerOnChangeEvent = {
     date?: string;
@@ -24,6 +24,10 @@ type TDatePicker = Omit<
     footer: React.ReactElement;
     date_format: string;
     has_range_selection: boolean;
+};
+
+type TCalendarRef = {
+    setSelectedDate?: (date: string) => void;
 };
 
 const DatePicker = React.memo((props: TDatePicker) => {
@@ -56,7 +60,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
     } = props;
 
     const datepicker_ref = React.useRef<HTMLDivElement>(null);
-    const calendar_ref = React.useRef<HTMLDivElement>(null);
+    const calendar_ref = React.useRef<TCalendarRef>(null);
     const calendar_el_ref = React.useRef<HTMLDivElement>(null);
     const [placement, setPlacement] = React.useState('');
     const [style, setStyle] = React.useState<React.CSSProperties>({});
@@ -101,11 +105,11 @@ const DatePicker = React.memo((props: TDatePicker) => {
         setIsDatepickerVisible(!is_datepicker_visible);
     };
 
-    const onHover = (hovered_date: string) => {
+    const onHover = (hovered_date: MomentInput) => {
         if (typeof onChange === 'function') {
             onChange({
                 date: toMoment(hovered_date).format(display_format),
-                duration: mode === 'duration' ? daysFromTodayTo(hovered_date) : null,
+                duration: mode === 'duration' ? daysFromTodayTo(hovered_date?.toString()) : null,
             });
         }
     };
@@ -248,7 +252,8 @@ const DatePicker = React.memo((props: TDatePicker) => {
                             onSelect={onSelectCalendar}
                             placement={placement}
                             style={style}
-                            value={getCalendarValue(date)} // Calendar accepts date format yyyy-mm-dd
+                            value={getCalendarValue(date) || ''} // Calendar accepts date format yyyy-mm-dd
+                            start_date=''
                             {...common_props}
                         />
                     </div>

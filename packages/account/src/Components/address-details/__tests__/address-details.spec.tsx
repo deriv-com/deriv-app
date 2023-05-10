@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import AddressDetails from '../address-details';
 import { isDesktop, isMobile, PlatformContext, TLocationList } from '@deriv/shared';
 import { FormikProps, FormikValues } from 'formik';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -34,13 +35,17 @@ describe('<AddressDetails/>', () => {
         'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.';
 
     let modal_root_el: HTMLDivElement;
-
+    let store = mockStore({
+        client: {
+            fetchStatesList: jest.fn(() => Promise.resolve([])),
+            states_list: [],
+            residence: '',
+        },
+    });
     const mock_props: React.ComponentProps<typeof AddressDetails> = {
-        fetchStatesList: jest.fn(() => Promise.resolve([])),
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
         goToPreviousStep: jest.fn(),
-        is_gb_residence: '',
         is_svg: true,
         onCancel: jest.fn(),
         onSave: jest.fn(),
@@ -94,7 +99,11 @@ describe('<AddressDetails/>', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<AddressDetails {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <AddressDetails {...mock_props} />
+            </StoreProvider>
+        );
 
         await waitFor(() => {
             svgCommonRenderCheck();
@@ -108,7 +117,11 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component and trigger buttons', async () => {
-        render(<AddressDetails {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <AddressDetails {...mock_props} />
+            </StoreProvider>
+        );
 
         await waitFor(() => {
             svgCommonRenderCheck();
@@ -170,7 +183,11 @@ describe('<AddressDetails/>', () => {
     it('should render AddressDetails component not svg', async () => {
         mock_props.is_svg = false;
 
-        render(<AddressDetails {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <AddressDetails {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(mock_props.onSubmitEnabledChange).toHaveBeenCalledTimes(1);
 
@@ -198,7 +215,9 @@ describe('<AddressDetails/>', () => {
     it('should render AddressDetails component for appstore', async () => {
         render(
             <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
-                <AddressDetails {...mock_props} />
+                <StoreProvider store={store}>
+                    <AddressDetails {...mock_props} />
+                </StoreProvider>
             </PlatformContext.Provider>
         );
 
@@ -232,12 +251,20 @@ describe('<AddressDetails/>', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        mock_props.states_list = [
-            { text: 'State 1', value: 'State 1' },
-            { text: 'State 2', value: 'State 2' },
-        ] as TLocationList[];
+        store = mockStore({
+            client: {
+                states_list: [
+                    { text: 'State 1', value: 'State 1' },
+                    { text: 'State 2', value: 'State 2' },
+                ] as TLocationList[],
+            },
+        });
 
-        render(<AddressDetails {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <AddressDetails {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByText('Default test state')).toBeInTheDocument();
 
@@ -250,12 +277,20 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component with states_list for desktop', async () => {
-        mock_props.states_list = [
-            { text: 'State 1', value: 'State 1' },
-            { text: 'State 2', value: 'State 2' },
-        ] as TLocationList[];
+        store = mockStore({
+            client: {
+                states_list: [
+                    { text: 'State 1', value: 'State 1' },
+                    { text: 'State 2', value: 'State 2' },
+                ] as TLocationList[],
+            },
+        });
 
-        render(<AddressDetails {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <AddressDetails {...mock_props} />
+            </StoreProvider>
+        );
 
         const address_state_input: HTMLTextAreaElement = screen.getByRole('textbox', { name: 'State/Province' });
         expect(address_state_input).toHaveValue('Default test state');
@@ -269,7 +304,11 @@ describe('<AddressDetails/>', () => {
         mock_props.disabled_items = ['address_line_1', 'address_line_2'];
         mock_props.value.address_state = '';
 
-        render(<AddressDetails {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <AddressDetails {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByPlaceholderText(address_line_1)).toBeDisabled();
         expect(screen.getByPlaceholderText(address_line_2)).toBeDisabled();

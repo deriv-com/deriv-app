@@ -101,6 +101,8 @@ import './cashier/ic-cashier-cimbniaga-light.svg';
 import './cashier/ic-cashier-clipboard.svg';
 import './cashier/ic-cashier-commission-deposit.svg';
 import './cashier/ic-cashier-commission-withdrawal.svg';
+import './cashier/ic-cashier-credit-debit-dark.svg';
+import './cashier/ic-cashier-credit-debit-light.svg';
 import './cashier/ic-cashier-crypto-dark.svg';
 import './cashier/ic-cashier-crypto-light.svg';
 import './cashier/ic-cashier-dai-dark.svg';

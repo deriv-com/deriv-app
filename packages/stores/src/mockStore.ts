@@ -242,7 +242,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
-            real_account_creation_unlock_date: 0,
+            real_account_creation_unlock_date: '',
         },
         common: {
             error: {

@@ -8,9 +8,17 @@
     }
 }
 
+.transfer-amount-input-container {
+    position: relative;
+}
+
 .transfer-amount-input {
     border: none;
+    position: absolute;
     line-height: 30px;
+    display: flex;
+    flex-shrink: 1;
+    margin: 0;
 
     input {
         font-size: 20px;

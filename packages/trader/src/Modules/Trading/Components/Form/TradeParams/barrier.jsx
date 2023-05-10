@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
+import { ValueMovement } from '../Purchase/contract-info';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';
@@ -13,7 +14,7 @@ const Barrier = ({
     barrier_count,
     barrier_pipsize,
     current_focus,
-    // proposal_info,
+    proposal_info,
     duration_unit,
     is_minimized,
     is_absolute_only,
@@ -21,11 +22,14 @@ const Barrier = ({
     setCurrentFocus,
     validation_errors,
 }) => {
-    const [show_modal, setShowModal] = React.useState(false);
-    // console.log('proposal_info', proposal_info);
-    //TODO: Check if we can exctract current price and barier  price
-
+    const contract_type_info = proposal_info?.CALL || proposal_info?.NOTOUCH;
+    const current_price = contract_type_info?.spot || '';
+    const barrier_price = contract_type_info?.barrier || '';
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
+    const [show_modal, setShowModal] = React.useState(false);
+    const last_price = usePrevious(current_price);
+    const has_error_or_not_loaded = contract_type_info?.has_error || !contract_type_info?.id;
+    const current_price_has_increased = current_price > last_price;
 
     if (is_minimized) {
         return barrier_count !== 2 ? (
@@ -120,9 +124,20 @@ const Barrier = ({
                     width='calc(100vw - 32px)'
                     title={localize('Barrier')}
                 >
-                    <Text className='barrier__modal-text' as='div' color='less-prominent' size='xs'>
-                        {localize('Current Price')}
-                    </Text>
+                    <div className='barrier__modal-container'>
+                        <Text className='barrier__modal-text' as='span' color='less-prominent' size='xs'>
+                            {localize('Current Price')}
+                        </Text>
+                        {current_price && (
+                            <ValueMovement
+                                has_error_or_not_loaded={has_error_or_not_loaded}
+                                current_value={current_price}
+                                has_increased={current_price_has_increased}
+                                show_currency={false}
+                            />
+                        )}
+                    </div>
+
                     <LabeledQuantityInputMobile
                         id='dt_barrier_input'
                         input_label={localize('Barrier')}
@@ -147,7 +162,8 @@ const Barrier = ({
                         setCurrentFocus={setCurrentFocus}
                     />
                     <Text className='barrier__modal-price' as='div' color='less-prominent' size='xs'>
-                        {localize('Barrier Price:')}
+                        {localize('Barrier Price: ')}
+                        {barrier_price}
                     </Text>
                 </Modal>
                 <LabeledQuantityInputMobile
@@ -217,7 +233,7 @@ Barrier.propTypes = {
     is_absolute_only: PropTypes.bool,
     is_minimized: PropTypes.bool,
     onChange: PropTypes.func,
-    // proposal_info: PropTypes.object,
+    proposal_info: PropTypes.object,
     setCurrentFocus: PropTypes.func,
     validation_errors: PropTypes.object,
 };
@@ -230,7 +246,7 @@ export default connect(({ modules, ui }) => ({
     current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     onChange: modules.trade.onChange,
-    // proposal_info: modules.trade.proposal_info,
+    proposal_info: modules.trade.proposal_info,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
 }))(Barrier);

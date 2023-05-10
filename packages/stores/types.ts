@@ -310,6 +310,7 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    is_demo: boolean;
 };
 
 /**
